@@ -1708,8 +1708,8 @@ class PagesController extends BaseController
 			),
 		);
 		
-		$filtroLingua = array("tutti" => "VEDI TUTTO") + $this->m[$this->modelName]->selectLingua();
-		$filtroTipo = array("tutti" => "VEDI TUTTO") + $this->m[$this->modelName]->selectTipo("GENERICO");
+		$filtroLingua = array("tutti" => gtext("VEDI TUTTO")) + $this->m[$this->modelName]->selectLingua();
+		$filtroTipo = array("tutti" => gtext("VEDI TUTTO")) + $this->m[$this->modelName]->selectTipo("GENERICO");
 		
 		$this->filters = array(null,"titolo_contenuto","imm_1");
 		

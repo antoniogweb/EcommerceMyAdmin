@@ -149,7 +149,7 @@ class RegusersController extends BaseController
 			$mainFields[] = 'appCrud';
 			$headLabels .= ',APP';
 			
-			$filtri[] = array("codice_app",null,array("tutti"=>"Fonte account","sito"=>"Sito") + $this->m["IntegrazioniloginModel"]->toList("codice", "titolo")->send());
+			$filtri[] = array("codice_app",null,array("tutti"=>gtext("Fonte account"),"sito"=>gtext("Sito web")) + $this->m["IntegrazioniloginModel"]->toList("codice", "titolo")->send());
 		}
 		
 		if (!v("elimina_record_utente_ad_autoeliminazione"))
@@ -161,7 +161,7 @@ class RegusersController extends BaseController
 			}
 			
 			$filtri[] = "token_eliminazione";
-			$filtri[] = array("deleted",null,array("tutti" => "Stato cliente", "no" => "Clienti in anagrafica", "yes" => "Clienti eliminati"));
+			$filtri[] = array("deleted",null,array("tutti" => gtext("Stato cliente"), "no" => gtext("Clienti in anagrafica"), "yes" => gtext("Clienti eliminati")));
 			
 			if ($this->viewArgs["id_nazione"] == "tutti")
 			{

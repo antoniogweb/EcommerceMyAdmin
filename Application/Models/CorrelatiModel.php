@@ -51,7 +51,7 @@ class CorrelatiModel extends GenericModel {
 		{
 			if ($clean["id_page"] === $clean["id_corr"])
 			{
-				$this->notice = "<div class='alert'>Non puoi associare l'elemento stesso</div>";
+				$this->notice = "<div class='alert alert-danger'>".gtext("Non puoi associare l'elemento stesso")."</div>";
 			}
 			else
 			{
@@ -63,7 +63,7 @@ class CorrelatiModel extends GenericModel {
 				
 				if (count($res) > 0)
 				{
-					$this->notice = "<div class='alert'>Questo elemento è già stato collegato alla pagina</div>";
+					$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento è già stato collegato alla pagina")."</div>";
 				}
 				else
 				{
@@ -75,7 +75,7 @@ class CorrelatiModel extends GenericModel {
 		}
 		else
 		{
-			$this->notice = "<div class='alert'>Questo elemento non esiste</div>";
+			$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento non esiste")."</div>";
 		}
 		
 		return false;

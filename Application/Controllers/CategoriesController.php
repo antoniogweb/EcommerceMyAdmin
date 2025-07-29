@@ -354,7 +354,7 @@ class CategoriesController extends BaseController {
 
 		$this->scaffold->fields = "reggroups_categories.*,reggroups.*";
 		$this->scaffold->loadMain('[[checkbox]];reggroups_categories.id_gc;,reggroups.name','reggroups_categories:id_gc','del');
-		$this->scaffold->setHead('[[bulkselect:checkbox_reggroups_categories_id_gc]],GRUPPO');
+		$this->scaffold->setHead('[[bulkselect:checkbox_reggroups_categories_id_gc]],Gruppo');
 		
 		$this->scaffold->itemList->setBulkActions(array(
 			"checkbox_reggroups_categories_id_gc"	=>	array("del","Elimina selezionati","confirm"),

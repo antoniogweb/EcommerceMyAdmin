@@ -5,7 +5,7 @@
 	
 		<?php echo Html_Form::select("id_group","",$listaGruppi,null,"combobox","yes");?>
 		
-		<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi">
+		<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="<?php echo gtext("Aggiungi");?>">
 		
 	</form>
 	<br />

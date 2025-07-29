@@ -8,9 +8,9 @@
 	<div>
 		<?php if ($aggiuntaLibera) { ?>
 		<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/aggiungicaratteristica/$id_page".$this->viewStatus;?>' method='POST'>
-			<?php echo Html_Form::input("titolo_car","","form-control auto","titolo_car",'data-provide="typeahead" autocomplete="off" placeholder="Caratteristica" source="caratteristiche/elenco/'.$sezione.'"');?>
-			<?php echo Html_Form::input("titolo_carval","","form-control auto","titolo_carval",'data-provide="typeahead" autocomplete="off" placeholder="Valore" source="caratteristichevalori/elenco/'.$sezione.'"');?>
-			<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="Aggiungi">
+			<?php echo Html_Form::input("titolo_car","","form-control auto","titolo_car",'data-provide="typeahead" autocomplete="off" placeholder="'.gtext("Caratteristica").'" source="caratteristiche/elenco/'.$sezione.'"');?>
+			<?php echo Html_Form::input("titolo_carval","","form-control auto","titolo_carval",'data-provide="typeahead" autocomplete="off" placeholder="'.gtext("Valore").'" source="caratteristichevalori/elenco/'.$sezione.'"');?>
+			<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="<?php echo gtext("Aggiungi");?>">
 		</form>
 		<?php } ?>
 	</div>

@@ -64,9 +64,9 @@ class Lang_It_Formats_From_Mysql
 		switch ($string)
 		{
 			case "Y":
-				return "Sì";
+				return gtext("Sì");
 			case "N":
-				return "No";
+				return gtext("No");
 		}
 		return $string;
 	}

@@ -51,6 +51,10 @@
 			yearSuffix: ''};
 		$.datepicker.setDefaults($.datepicker.regional['it']);
 	});
+	
+	var stringaSalvaOPerdiIDati = "<?php echo sanitizeJs(gtext("Se non salvi perderai le modifiche effettuate. Confermi il salvataggio?"));?>";
+	var stringaConfermiEliminazione = "<?php echo sanitizeJs(gtext("Confermi che vuoi eliminare l'elemento?"));?>";
+	var doYouConfirmString = "<?php echo sanitizeJs(gtext("Confermi l'azione:"));?> ";
 	</script>
 	
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/functions.js?v=<?php echo rand(1,100000);?>"></script>

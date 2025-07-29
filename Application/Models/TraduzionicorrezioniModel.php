@@ -65,12 +65,19 @@ class TraduzionicorrezioniModel extends GenericModel
 				),
 				'lingua'	=>	array(
 					"type"	=>	"Select",
-					"options"	=>	LingueModel::getSelectLingueNonPrincipali(),
+					"options"	=>	gtextDeep(LingueModel::getSelectLingueNonPrincipali()),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
 			),
 		);
+	}
+	
+	public function getTitoloDaCodice($record)
+	{
+		return gtext(LingueModel::g()->clear()->select("titolo")->where(array(
+			"codice"	=>	sanitizeAll($record["traduzioni_correzioni"]["lingua"]),
+		))->field("descrizione"));
 	}
 	
 	public static function getCorrezioni()

@@ -100,7 +100,7 @@ class DocumentiModel extends GenericModel {
 			'entries' 	=> 	array(
 				'lingua'	=>	array(
 					"type"	=>	"Select",
-					"options"	=>	array("tutte" => "TUTTE") + $this->selectLingua(),
+					"options"	=>	array("tutte" => gtext("TUTTE")) + $this->selectLingua(),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 					"labelString"	=>	"Visibile su lingua",
@@ -299,6 +299,8 @@ class DocumentiModel extends GenericModel {
 			else
 				$str = strtoupper($record[$this->_tables]["lingua"]);
 		}
+		
+		$str = str_replace("TUTTE", gtext("TUTTE"), $str);
 		
 		return "<span class='text text-success text-bold'>".$str."</span>";
 	}

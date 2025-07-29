@@ -750,7 +750,7 @@ class GenericModel extends Model_Tree
 		
 		if (!isset(NazioniModel::$elenco))
 		{
-			$default = $empty ? array("W"	=>	"Tutte le nazioni") : array("0"	=>	"Seleziona");
+			$default = $empty ? array("W"	=>	"Tutte le nazioni") : array("0"	=>	gtext("Seleziona"));
 			NazioniModel::$elenco = $default + $this->selectNazioneNoDefault();
 		}
 		
@@ -860,9 +860,9 @@ class GenericModel extends Model_Tree
 		LingueModel::getValori();
 		
 		if (isset(LingueModel::$valori[$record[$this->_tables]["lingua"]]))
-			return strtoupper(LingueModel::$valori[$record[$this->_tables]["lingua"]]);
+			return strtoupper(gtext(LingueModel::$valori[$record[$this->_tables]["lingua"]]));
 		else
-			return strtoupper($record[$this->_tables]["lingua"]);
+			return strtoupper(gtext($record[$this->_tables]["lingua"]));
 	}
 	
 	// Controllo che la lingua esista

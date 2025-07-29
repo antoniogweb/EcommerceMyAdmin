@@ -7,13 +7,13 @@
 	</div>
 	<div class="panel-body">
 		<form class="form-inline form-modifica-massiva">
-			<?php echo Html_Form::input("codice","","form-control",null,"placeholder='Codice'");?>
-			<?php echo Html_Form::input("price","","form-control",null,"placeholder='Prezzo'");?>
+			<?php echo Html_Form::input("codice","","form-control",null,"placeholder='".gtext("Codice")."'");?>
+			<?php echo Html_Form::input("price","","form-control",null,"placeholder='".gtext("Prezzo")."'");?>
 			<?php if (v("gestisci_sconti_combinazioni_separatamente")) { ?>
-			<?php echo Html_Form::input("price_scontato","","form-control",null,"placeholder='Prezzo scontato'");?>
+			<?php echo Html_Form::input("price_scontato","","form-control",null,"placeholder='".gtext("Prezzo scontato")."'");?>
 			<?php } ?>
-			<?php echo Html_Form::input("peso","","form-control",null,"placeholder='Peso'");?>
-			<?php echo Html_Form::input("giacenza","","form-control",null,"placeholder='Giacenza'");?>
+			<?php echo Html_Form::input("peso","","form-control",null,"placeholder='".gtext("Peso")."'");?>
+			<?php echo Html_Form::input("giacenza","","form-control",null,"placeholder='".gtext("Giacenza")."'");?>
 			<button class="btn btn-success btn-imposta-gruppo"><?php echo gtext("Imposta");?></button>
 		</form>
 	</div>

@@ -52,9 +52,9 @@ class TipicontenutoController extends BaseController
 		$this->shift();
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>'add');
-		$this->mainFields = array("tipi_contenuto.titolo", "tipi_contenuto.tipo", "tipi_contenuto.section");
+		$this->mainFields = array("tipi_contenuto.titolo", "gtext|tipi_contenuto.tipo", "tipi_contenuto.section");
 		$this->mainHead = "Titolo,Tipo,Sezione";
-		$this->filters = array(null, "titolo", array("tipo",null,array("tutti"=>"Tipo") + TipicontenutoModel::$tipi));
+		$this->filters = array(null, "titolo", array("tipo",null,array("tutti"=>gtext("Tipo")) + gtextDeep(TipicontenutoModel::$tipi)));
 		
 		$this->m[$this->modelName]->clear()
 				->where(array(

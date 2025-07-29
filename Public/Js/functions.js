@@ -31,6 +31,9 @@ var tiny_editor_config = {
 var form_modificato = false;
 var riga_modificata = false;
 
+if (typeof stringaSalvaOPerdiIDati == "undefined")
+	var stringaSalvaOPerdiIDati = "Se non salvi perderai le modifiche effettuate. Confermi il salvataggio?";
+
 if (typeof(ajaxfilemanager) !== typeof(Function))
 {
 	function ajaxfilemanager(field_name, url, type, win) {
@@ -426,7 +429,7 @@ $(document).ready(function(){
 			
 			if (form_modificato)
 			{
-				if (!window.confirm("Se non salvi perderai le modifiche effettuate. Confermi il salvataggio?")) {
+				if (!window.confirm(stringaSalvaOPerdiIDati)) {
 					
 				}
 				else
