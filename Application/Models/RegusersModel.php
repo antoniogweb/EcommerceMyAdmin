@@ -355,7 +355,7 @@ class RegusersModel extends FormModel {
 	}
 	
 	// importa i clienti partendo dai dati forniti dal gestionale attivo
-	public static function importaDaDatiGestionale($dati)
+	public static function importaDaDatiGestionale($dati, $eliminaNonPiuPresenti = false)
 	{
 		$ru = new RegusersModel();
 		$sp = new SpedizioniModel();
@@ -422,7 +422,7 @@ class RegusersModel extends FormModel {
 				{
 					$record = $sp->clear()->where(array(
 						"id_user"			=>	(int)$idCliente,
-						"codice_gestionale"	=>	$spedizione["codice_gestionale"],
+						"codice_gestionale"	=>	sanitizeAll($spedizione["codice_gestionale"]),
 					))->record();
 					
 					$sp->sValues($spedizione);
@@ -448,6 +448,31 @@ class RegusersModel extends FormModel {
 							$arrayErrori[] = strip_tags($sp->notice);
 							$arrayErrori[] = is_array($sp->getError()) ? print_r($sp->getError(), true) : $sp->getError();
 						}
+					}
+				}
+				
+				// Elimino gli indirizzi presenti nel sito ma non più presenti nel gestionale
+				if ($eliminaNonPiuPresenti)
+				{
+					$indirizziPresenti = $sp->clear()->where(array(
+						 "id_user"		=>	(int)$idCliente,
+					))->send(false);
+					
+					foreach ($indirizziPresenti as $ind)
+					{
+						$presente = false;
+						
+						foreach ($struttura["spedizioni"] as $spedizione)
+						{
+							if ((string)$spedizione["codice_gestionale"] === (string)$ind["codice_gestionale"])
+							{
+								$presente = true;
+								break;
+							}
+						}
+						
+						if (!$presente)
+							$sp->del($ind["id_spedizione"]);
 					}
 				}
 			}
