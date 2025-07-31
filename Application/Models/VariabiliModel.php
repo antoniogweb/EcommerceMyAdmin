@@ -763,10 +763,11 @@ class VariabiliModel extends GenericModel {
 		"wrap_tag_in_editor_visuale"	=>	'<div>|</div>', // tag di apertura e chiusura quando aggiungo o tolto un elemento in modalità visuale
 		### FAQ ##
 		"mostra_faq"				=>	0, // se attivare o meno la sezione mostra_faq
-		"attiva_gestione_faq_in_evidenza"	=>	1, // se attivato, permette di gestire le FAQ in evidenza
+		"attiva_gestione_faq_in_evidenza"	=>	1, // se impostato a 1, permette di gestire le FAQ in evidenza
 		### SERVIZI ##
 		"mostra_servizi"			=>	0, // Attiva la sezione servizi
-		"attiva_gestione_servizi_in_evidenza"	=>	0, // se attivato, permette di gestire i SERVIZI in evidenza
+		"attiva_gestione_servizi_in_evidenza"	=>	0, // se impostato a 1, permette di gestire i SERVIZI in evidenza
+		"immagine_3_in_servizi"		=>	0, // se impostato a 1, attiva l'immagine 3 in servizi
 		### TEMA ##
 		"theme_folder"				=>	"", // tema frontend
 		### TRADUZIONI ##

@@ -52,5 +52,8 @@ class ServiziController extends GenericsectionController {
 			$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
 			$this->head .= ",In evidenza";
 		}
+		
+		if (v("immagine_3_in_servizi"))
+			$this->queryFields .= ",immagine_3";
 	}
 }
