@@ -160,7 +160,10 @@ class PagesController extends BaseController
 		
 		// Estraggo tutte le tab dei contenuti
 		$data["tabContenuti"] = $this->tabContenuti = $this->m["TipicontenutoModel"]->clear()->where(array(
-			"section" => $clean["section"],
+			"section"	=>	$clean["section"],
+			"ne"		=>	array(
+				"tipo"	=>	"FASCIA",
+			),
 		))->orderBy("id_order")->toList("id_tipo", "titolo")->send();
 		
 		// Estraggo tutte le tab delle caratteristiche

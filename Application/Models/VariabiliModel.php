@@ -347,7 +347,6 @@ class VariabiliModel extends GenericModel {
 		"mostra_ricette"	=>	0, // se mostrare la sezione "ricette"
 		"mostra_storia"	=>	0, // se mostrare la sezione "storia"
 		"mostra_approfondimenti"	=>	0, // se mostrare la sezione "approfondimenti"
-		"mostra_partner"	=>	0, // se mostrare la sezione "partner"
 		"mostra_menu_cucina"	=>	0, // se mostrare la sezione "menù cucina"
 		## immagini ##
 		"rielabora_width"	=>	3000, // larghezza massima entro cui viene rielaborata l'immagine dopo l'upload
@@ -355,6 +354,9 @@ class VariabiliModel extends GenericModel {
 		## SEDI ##
 		"mostra_sedi"	=>	0, // se mostrare la sezione "sedi"
 		"attiva_categorie_sedi"	=>	0, // se attivare o disattivare le categorie delle sedi
+		## PARTNER ##
+		"mostra_partner"	=>	0, // se mostrare la sezione "partner"
+		"immagine_2_in_partner"		=>	0, // mostra la seconda immagine nella sezione partner
 		## GALLERY ##
 		"mostra_gallery"			=>	0, // Attiva la sezione gallery
 		"mostra_immagini_in_gallery"			=>	0, // Se attivare la scheda immagini nella gallery

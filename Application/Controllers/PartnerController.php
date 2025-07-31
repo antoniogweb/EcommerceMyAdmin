@@ -43,6 +43,9 @@ class PartnerController extends GenericsectionController {
 		
 		$this->queryFields = "title,attivo,immagine,sottotitolo,alias,url";
 		
+		if (v("immagine_2_in_partner"))
+			$this->queryFields .= ",immagine_2";
+		
 		$this->colProperties = array(
 			array(
 				'width'	=>	'30px',
