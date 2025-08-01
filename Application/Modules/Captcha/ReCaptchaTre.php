@@ -37,7 +37,7 @@ class ReCaptchaTre extends Captcha
 			return true;
 		
 		$r = new Request();
-		$campoCaptcha = $r->post($this->params["campo_nascosto"],'');
+		$campoCaptcha = (string)$r->post($this->params["campo_nascosto"],'');
 		
 		$secret   = $this->params["secret_server"];
 		$response = file_get_contents(
