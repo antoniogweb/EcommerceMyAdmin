@@ -185,7 +185,7 @@ class Satispay
 	
 	public function validateRitorno()
 	{
-		return true;
+		return $this->validate(false, false);
 	}
 	
 	public function getPagamento()
@@ -220,7 +220,7 @@ class Satispay
 		return false;
 	}
 	
-	public function validate($scriviSuFileLog = true)
+	public function validate($scriviSuFileLog = true, $exitSePending = true)
 	{
 		$clean['banca_token'] = isset($_GET["banca_token"]) ? sanitizeAll($_GET["banca_token"]) : "";
 		$clean['cart_uid'] = isset($_GET["cart_uid"]) ? sanitizeAll($_GET["cart_uid"]) : "";
@@ -265,7 +265,7 @@ class Satispay
 			$this->scriviLog(false, $scriviSuFileLog);
 		}
 		
-		if ($inProgress)
+		if ($exitSePending && $inProgress)
 			die("");
 		
 		return $result;
