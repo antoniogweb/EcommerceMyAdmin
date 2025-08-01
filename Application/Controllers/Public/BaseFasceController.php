@@ -477,4 +477,14 @@ trait BaseFasceController
 		))));
 		return ob_get_clean();
 	}
+	
+	public function getFasciaStoria()
+	{
+		ob_start();
+		include(tpf(ElementitemaModel::p("FASCIA_STORIA","", array(
+			"titolo"	=>	"Fascia storia",
+			"percorso"	=>	"Elementi/Fasce/Storia",
+		))));
+		return ob_get_clean();
+	}
 }

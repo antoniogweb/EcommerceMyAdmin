@@ -1003,6 +1003,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[partner\]/', array($obj,'getFasciaPartner') ,$string);
 		$string = preg_replace_callback('/\[agenti\]/', array($obj,'getFasciaAgenti') ,$string);
 		$string = preg_replace_callback('/\[elenco_documenti\]/', array($obj,'getFasciaDocumenti') ,$string);
+		$string = preg_replace_callback('/\[storia\]/', array($obj,'getFasciaStoria') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{
