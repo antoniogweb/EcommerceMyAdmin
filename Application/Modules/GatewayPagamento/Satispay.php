@@ -185,7 +185,7 @@ class Satispay
 	
 	public function validateRitorno()
 	{
-		return true;
+		return $this->validate(false);
 	}
 	
 	public function getPagamento()
@@ -265,7 +265,7 @@ class Satispay
 			$this->scriviLog(false, $scriviSuFileLog);
 		}
 		
-		if ($inProgress)
+		if ($scriviSuFileLog && $inProgress)
 			die("");
 		
 		return $result;
