@@ -69,6 +69,9 @@ class BlogController extends GenericsectionController {
 			$this->queryFields .= ",autore";
 		}
 		
+		if (v("immagine_2_in_blog"))
+			$this->queryFields .= ",immagine_2";
+		
 		$this->tableFields[] = 'PagesModel.getPubblicatoCheckbox|pages.id_page';
 		
 		$this->head .= ',Pubblicato?';

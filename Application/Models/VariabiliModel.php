@@ -63,7 +63,6 @@ class VariabiliModel extends GenericModel {
 		"mostra_link_in_blog"		=>	0,
 		"attiva_ruoli"				=>	0,
 		"in_evidenza_blog"			=>	0,
-		"contenuti_in_blog"			=>	0,
 		"team_attivo"				=>	1,
 		"immagini_in_referenze"		=>	0,
 		"nome_cognome_anche_azienda"=>	0,
@@ -73,12 +72,10 @@ class VariabiliModel extends GenericModel {
 		"fasce_in_pagine"			=>	1,
 		"download_attivi"			=>	1,
 		"usa_tag"					=>	0, // se attivare i tag
-		"tag_in_blog"				=>	0, // se attivare i tag nella sezione blog
 		"tag_in_prodotti"			=>	1, // se attivare i tag nella sezione prodotti
 		"shop_in_alias_marchio"		=>	1,
 		"reg_expr_file"				=>	"/^[a-zA-Z0-9_\-]+\.(jpg|jpeg|gif|png)$/i",
 		"referenze_attive"			=>	1,
-		"blog_attivo"				=>	1,
 		"shop_in_alias_tag"			=>	0,
 		"menu_class_prefix"			=>	"",
 		"template_attributo"		=>	"",
@@ -190,7 +187,6 @@ class VariabiliModel extends GenericModel {
 		"submenu_item_class"		=>	"menu-item",
 		"linkTextWrapTag"			=>	"",
 		"linkTextWrapClass"			=>	"",
-		"mostra_autore_in_blog"		=>	0,
 		"variabili_gestibili_da_fasce"	=>	"",
 		"tag_blocco_testo"			=>	"div",
 		"contenuti_in_eventi"		=>	1,
@@ -357,6 +353,12 @@ class VariabiliModel extends GenericModel {
 		## PARTNER ##
 		"mostra_partner"	=>	0, // se mostrare la sezione "partner"
 		"immagine_2_in_partner"		=>	0, // mostra la seconda immagine nella sezione partner
+		## BLOG ##
+		"contenuti_in_blog"			=>	0,
+		"tag_in_blog"				=>	0, // se attivare i tag nella sezione blog
+		"blog_attivo"				=>	1,
+		"mostra_autore_in_blog"		=>	0,
+		"immagine_2_in_blog"		=>	0, // mostra la seconda immagine nella sezione blog
 		## GALLERY ##
 		"mostra_gallery"			=>	0, // Attiva la sezione gallery
 		"mostra_immagini_in_gallery"			=>	0, // Se attivare la scheda immagini nella gallery
