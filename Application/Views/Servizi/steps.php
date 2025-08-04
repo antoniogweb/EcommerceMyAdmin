@@ -20,6 +20,7 @@
 	<?php foreach ($tabSezioni as $sec => $titleSection) {
 		$temp = $this->viewArgs;
 		$temp["pcorr_sec"] = $sec;
+		$temp["tipocontenuto"] = "tutti";
 	?>
 	<li class="<?php if ($this->viewArgs["pcorr_sec"] == $sec) { ?>active<?php } ?> <?php echo "help_".encodeUrl($titleSection);?>"><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/paginecorrelate/$id_page".Url::createUrl($temp);?>"><?php echo $titleSection;?></a></li>
 	<?php } ?>

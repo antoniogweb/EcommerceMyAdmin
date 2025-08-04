@@ -22,6 +22,7 @@
 	<li <?php echo $posizioni['meta'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/meta/$id_page".$viewStatusTutti;?>"><?php echo gtext("Meta");?></a></li>
 	<?php foreach ($tabSezioni as $sec => $titleSection) {
 		$temp = $this->viewArgs;
+		$temp["tipocontenuto"] = "tutti";
 		$temp["pcorr_sec"] = $sec;
 	?>
 	<li class="<?php if ($this->viewArgs["pcorr_sec"] == $sec) { ?>active<?php } ?> <?php echo "help_".encodeUrl($titleSection);?>"><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/paginecorrelate/$id_page".Url::createUrl($temp);?>"><?php echo $titleSection;?></a></li>
@@ -29,7 +30,6 @@
 	<?php foreach ($tabContenuti as $idTipoCont => $titoloTipo) {
 		$temp = $this->viewArgs;
 		$temp["tipocontenuto"] = (int)$idTipoCont;
-		$temp["id_tipo_car"] = "tutti";
 		$temp["pcorr_sec"] = "tutti";
 	?>
 	<li class="<?php if ($this->viewArgs["tipocontenuto"] == $idTipoCont) { ?>active<?php } ?> <?php echo "help_".encodeUrl($titoloTipo);?>"><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/testi/$id_page".Url::createUrl($temp);?>"><?php echo ucfirst(strtolower($titoloTipo));?></a></li>
