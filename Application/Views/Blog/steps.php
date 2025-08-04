@@ -37,7 +37,6 @@
 	<?php foreach ($tabContenuti as $idTipoCont => $titoloTipo) {
 		$temp = $this->viewArgs;
 		$temp["tipocontenuto"] = (int)$idTipoCont;
-		$temp["id_tipo_car"] = "tutti";
 		$temp["pcorr_sec"] = "tutti";
 	?>
 	<li class="<?php if ($this->viewArgs["tipocontenuto"] == $idTipoCont) { ?>active<?php } ?> <?php echo "help_".encodeUrl($titoloTipo);?>"><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/testi/$id_page".Url::createUrl($temp);?>"><?php echo ucfirst(strtolower($titoloTipo));?></a></li>
