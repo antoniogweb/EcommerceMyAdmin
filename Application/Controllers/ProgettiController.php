@@ -43,6 +43,9 @@ class ProgettiController extends GenericsectionController {
 		
 		$this->queryFields = "title,attivo,description,immagine,sottotitolo,alias";
 		
+		if (v("immagine_2_in_progetti"))
+			$this->queryFields .= ",immagine_2";
+		
 		$this->filters = array(null,null,'title',array("attivo",null,SlideModel::$YN));
 	}
 }

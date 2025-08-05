@@ -1721,28 +1721,7 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		if ($firstSection != "prodotti")
-		{
-			$data["paginaPrecedente"] = $this->m('PagesModel')->where(array(
-				"OR"	=>	array(
-					"lt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
-					"AND"	=>	array(
-						"pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"]),
-						"lt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
-					),
-				),
-			))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc,pages.id_order desc")->limit(1)->send();
-			
-			$data["paginaSuccessiva"] = $this->m('PagesModel')->where(array(
-				"OR"	=>	array(
-					"gt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
-					"AND"	=>	array(
-						"pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"]),
-						"gt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
-					),
-				),
-			))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news,pages.id_order desc")->limit(1)->send();
-		}
+		$this->getSuccessivoPrecedente($firstSection, $data);
 		
 		if (field($data['pages'][0], "meta_description"))
 			$data["meta_description"] = F::meta(field($data['pages'][0], "meta_description"));
@@ -1928,6 +1907,51 @@ class BaseContenutiController extends BaseController
 		}
 		else
 			$this->load("api_output");
+	}
+	
+	protected function getSuccessivoPrecedente($firstSection, $data)
+	{
+		if ($firstSection != "prodotti")
+		{
+			if ($firstSection == "blog" || $firstSection == "eventi")
+			{
+				$data["paginaPrecedente"] = $this->m('PagesModel')->where(array(
+					"OR"	=>	array(
+						"lt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
+						"AND"	=>	array(
+							"pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"]),
+							"lt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
+						),
+					),
+				))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc,pages.id_order desc")->limit(1)->send();
+				
+				$data["paginaSuccessiva"] = $this->m('PagesModel')->where(array(
+					"OR"	=>	array(
+						"gt"	=>	array("pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"])),
+						"AND"	=>	array(
+							"pages.data_news"	=>	sanitizeDb($data['pages'][0]["pages"]["data_news"]),
+							"gt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
+						),
+					),
+				))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news,pages.id_order desc")->limit(1)->send();
+			}
+			else
+			{
+				$data["paginaPrecedente"] = $this->m('PagesModel')->where(array(
+					"OR"	=>	array(
+						"lt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
+					),
+				))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.id_order desc")->limit(1)->send();
+				
+				$data["paginaSuccessiva"] = $this->m('PagesModel')->where(array(
+					"OR"	=>	array(
+						"gt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
+					),
+				))->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.id_order desc")->limit(1)->send();
+			}
+			
+			$this->append($data);
+		}
 	}
 	
 	//controlla la combinazione (chiamata via ajax)

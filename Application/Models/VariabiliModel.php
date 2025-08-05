@@ -338,7 +338,6 @@ class VariabiliModel extends GenericModel {
 		"permetti_eliminazione_account"	=>	1, // se attivo, gli utenti possono eliminare l'account in autonomia
 		"attiva_modifica_massiva_codici"	=>	0, // permetti la modifica massiva dei codici (solo singola pagina)
 		"mostra_soci"	=>	0, // se mostrare la sezione "soci"
-		"mostra_progetti"	=>	0, // se mostrare la sezione "progetti"
 		"mostra_alimenti"	=>	0, // se mostrare la sezione "alimenti"
 		"mostra_ricette"	=>	0, // se mostrare la sezione "ricette"
 		"mostra_storia"	=>	0, // se mostrare la sezione "storia"
@@ -353,6 +352,9 @@ class VariabiliModel extends GenericModel {
 		## PARTNER ##
 		"mostra_partner"	=>	0, // se mostrare la sezione "partner"
 		"immagine_2_in_partner"		=>	0, // mostra la seconda immagine nella sezione partner
+		## PROGETTI ##
+		"mostra_progetti"	=>	0, // se mostrare la sezione "progetti"
+		"immagine_2_in_progetti"	=>	0, // mostra la seconda immagine nella sezione progetti
 		## BLOG ##
 		"contenuti_in_blog"			=>	0,
 		"tag_in_blog"				=>	0, // se attivare i tag nella sezione blog

@@ -6,6 +6,7 @@
 	<?php
 	$temp = $this->viewArgs;
 	$temp["pcorr_sec"] = "tutti";
+	$temp["tipocontenuto"] = "tutti";
 	$viewStatusTutti = Url::createUrl($temp);
 	?>
 	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id_page".$viewStatusTutti;?>">Dettagli</a></li>
@@ -20,8 +21,17 @@
 	<?php foreach ($tabSezioni as $sec => $titleSection) {
 		$temp = $this->viewArgs;
 		$temp["pcorr_sec"] = $sec;
+		$temp["tipocontenuto"] = "tutti";
 	?>
 	<li class="<?php if ($this->viewArgs["pcorr_sec"] == $sec) { ?>active<?php } ?> <?php echo "help_".encodeUrl($titleSection);?>"><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/paginecorrelate/$id_page".Url::createUrl($temp);?>"><?php echo $titleSection;?></a></li>
+	<?php } ?>
+	<?php foreach ($tabContenuti as $idTipoCont => $titoloTipo) {
+		$temp = $this->viewArgs;
+		$temp["tipocontenuto"] = (int)$idTipoCont;
+		$temp["id_tipo_car"] = "tutti";
+		$temp["pcorr_sec"] = "tutti";
+	?>
+	<li class="<?php if ($this->viewArgs["tipocontenuto"] == $idTipoCont) { ?>active<?php } ?> <?php echo "help_".encodeUrl($titoloTipo);?>"><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/testi/$id_page".Url::createUrl($temp);?>"><?php echo ucfirst(strtolower($titoloTipo));?></a></li>
 	<?php } ?>
 </ul>
 
