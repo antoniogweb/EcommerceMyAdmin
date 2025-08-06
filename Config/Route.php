@@ -390,6 +390,8 @@ class Route
 		'contenutitradotti,form',
 		
 		'contenuti,form',
+		'contenuti,figli',
+		'contenuti,ordina',
 		'contenuti,thumb',
 		'contenuti,gruppi',
 		'contenuti,traduzione',

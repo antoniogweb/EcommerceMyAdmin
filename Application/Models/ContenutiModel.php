@@ -338,6 +338,11 @@ class ContenutiModel extends GenericModel {
 		return "<a class='iframe action_iframe' href='".Url::getRoot()."contenuti/form/update/".$record["contenuti"]["id_cont"]."?partial=Y&nobuttons=Y&tipo=".$record["contenuti"]["tipo"]."'>".$record["contenuti"]["titolo"]."</a>";
 	}
 	
+	public function titoloContenutoFascia($record)
+	{
+		return "<a class='' href='".Url::getRoot()."contenuti/form/update/".$record["contenuti"]["id_cont"]."?partial=Y&tipo=".$record["contenuti"]["tipo"]."&id_tipo=".$record["contenuti"]["id_tipo"]."&id_tipo_figlio=".$record["contenuti"]["id_tipo"]."&id_fascia=".$record["contenuti"]["id_fascia"]."'>".$record["contenuti"]["titolo"]."</a>";
+	}
+	
 	public function attivo($record)
 	{
 		if ($record["contenuti"]["attivo"] == "No")
@@ -562,6 +567,8 @@ class ContenutiModel extends GenericModel {
 				$html = preg_replace('/\[link ([a-zA-Z0-9\_\-]{1,})\]/', '[link ${1}_'.$idCont.']' ,$html);
 				$html = preg_replace('/\[video (.*?)\]/', '[video ${1}_'.$idCont.']' ,$html);
 				
+				$html = preg_replace('/\[custom ([a-zA-Z0-9\_\-]{1,}) ([a-zA-Z0-9\_\-]{1,})\]/', '[custom ${1} fascia '.$idCont.' tipo ${2}]' ,$html);
+				
 				$f["contenuti"]["descrizione"] = nullToBlank($f["contenuti"]["descrizione"]);
 				
 				$html = preg_replace('/\[descrizione\]/', $f["contenuti"]["descrizione"], $html);
@@ -674,4 +681,11 @@ class ContenutiModel extends GenericModel {
 		
 		return "\n".$open."[".strtolower($tipo)." testo_".generateString(8)."]".$close;
 	}
+	
+	public function haFascia($id)
+    {
+		return (int)$this->clear()->select("id_fascia")->where(array(
+			$this->_idFields	=>	(int)$id,
+		))->field("id_fascia");
+    }
 }

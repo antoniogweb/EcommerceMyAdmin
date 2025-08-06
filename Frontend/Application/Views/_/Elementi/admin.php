@@ -163,6 +163,31 @@
 			
 		});
 		
+		$("body").on("click",".edit_blocco_custom", function(e){
+		
+			e.preventDefault();
+			
+			var idFasciaCustom = $(this).attr("id-fascia");
+			var idTipoFiglio = $(this).attr("id-tipo-figlio");
+			
+			var fasciaObj = $(this).closest(".fascia_contenuto");
+			
+			var idPagina = fasciaObj.attr("id-pagina");
+			var idFascia = fasciaObj.attr("id");
+			
+			$.colorbox({
+				iframe:true,
+				width:"95%",
+				height:"95%",
+				href:"<?php echo $this->baseUrlSrc;?>/admin/contenuti/figli/" + idFasciaCustom + "?partial=Y&nobuttons=Y&id_tipo_figlio=" + idTipoFiglio,
+				onClosed: function(){
+// 					location.reload();
+					aggiornaFascia(idPagina, idFascia);
+				}
+			});
+			
+		});
+		
 		$("body").on("click",".iframe", function(e){
 			
 			e.preventDefault();

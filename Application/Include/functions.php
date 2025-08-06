@@ -1004,6 +1004,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[agenti\]/', array($obj,'getFasciaAgenti') ,$string);
 		$string = preg_replace_callback('/\[elenco_documenti\]/', array($obj,'getFasciaDocumenti') ,$string);
 		$string = preg_replace_callback('/\[storia\]/', array($obj,'getFasciaStoria') ,$string);
+		$string = preg_replace_callback('/\[custom ([a-zA-Z0-9\_\-]{1,}) fascia ([0-9]{1,}) tipo ([a-zA-Z0-9\_\-]{1,})\]/', array($obj,'getFasciaCustom') ,$string);
 		
 		if (defined("FASCE_TAGS"))
 		{

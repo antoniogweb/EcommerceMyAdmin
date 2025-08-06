@@ -487,4 +487,38 @@ trait BaseFasceController
 		))));
 		return ob_get_clean();
 	}
+	
+	public function getFasciaCustom($matches)
+	{
+		if (count($matches) !== 4)
+			return "";
+		
+		$customTemplateFile = "Elementi/Custom/".$matches[1].".php";
+		
+		if (file_exists(tpf($customTemplateFile)))
+		{
+			$idFascia = (int)$matches[2];
+			$tipoContenuto = $matches[3];
+			
+			$contenuti = $this->m["ContenutiModel"]->clear()
+			->inner(array("tipo"))
+			->where(array(
+				"id_fascia"	=>	(int)$idFascia,
+				"tipo"		=>	"GENERICO",
+				"tipi_contenuto.titolo"	=>	sanitizeAll($tipoContenuto),
+			))->addJoinTraduzione()->orderBy("contenuti.id_order")->send();
+			
+			$idTipoFiglio = (int)$this->m("TipicontenutoModel")->clear()->select("id_tipo")->where(array(
+				"tipi_contenuto.titolo"	=>	sanitizeAll($tipoContenuto),
+				"tipo"	=>	"GENERICO",
+			))->field("id_tipo");
+			
+			ob_start();
+			include(tpf($customTemplateFile));
+			include(tpf("Elementi/Admin/custom_edit.php"));
+			return ob_get_clean();
+		}
+		
+		return "";
+	}
 }

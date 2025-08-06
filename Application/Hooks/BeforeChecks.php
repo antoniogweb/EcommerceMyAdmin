@@ -138,6 +138,14 @@ Helper_Menu::$htmlLinks = array(
 		'text'	=>	"Torna",
 		"classIconBefore"	=>	'<i class="fa fa-arrow-circle-left"></i>',
 	),
+	"back_fascia" => array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-default make_spinner"',
+		"class"	=>	"btn btn-default",
+		'text'	=>	"Torna",
+		"classIconBefore"	=>	'<i class="fa fa-arrow-circle-left"></i>',
+	),
 	"add" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',

@@ -28,7 +28,14 @@ class ContenutiController extends BaseController
 	
 	public $tabella = "elemento";
 	
-	public $argKeys = array('id_page:sanitizeAll'=>'tutti', 'id_c:sanitizeAll'=>'tutti', 'tipo:sanitizeAll'=>'tutti', 'id_tipo:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'id_page:sanitizeAll'	=>	'tutti',
+		'id_c:sanitizeAll'		=>	'tutti',
+		'tipo:sanitizeAll'		=>	'tutti',
+		'id_tipo:sanitizeAll'	=>	'tutti',
+		'id_fascia:sanitizeAll'	=>	'tutti',
+		'id_tipo_figlio:sanitizeAll'	=>	'tutti',
+	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
@@ -42,9 +49,12 @@ class ContenutiController extends BaseController
 	{
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->menuLinks = $this->menuLinksInsert = "save";
-		
 		$this->shift(2);
+		
+		if ($this->viewArgs["id_fascia"] != "tutti")
+			$this->menuLinks = $this->menuLinksInsert = "back_fascia,save";
+		else
+			$this->menuLinks = $this->menuLinksInsert = "save";
 		
 		$recordTipo = $data["recordTipo"] = array();
 		
@@ -85,16 +95,24 @@ class ContenutiController extends BaseController
 		if (($this->viewArgs["id_tipo"] == "tutti" && $queryType == "insert") || (isset($recordTipo["tipo"]) && $recordTipo["tipo"] != "FASCIA" && $queryType == "update"))
 			$fields .= ",id_tipo";
 		
-		if ($queryType == "update" && !$this->m[$this->modelName]->hasPage((int)$id))
-			$fields .= ",id_page";
+		if ($queryType == "update")
+		{
+			$recordContenuto = $this->m[$this->modelName]->selectId((int)$id);
+			
+			if (!empty($recordContenuto) && !$recordContenuto["id_page"] && !$recordContenuto["id_c"] && !$recordContenuto["id_fascia"])
+				$fields .= ",id_page";
+		}
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		if ($this->viewArgs["id_page"] != "tutti")
-			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);
+			$this->m[$this->modelName]->setValue("id_page", (int)$this->viewArgs["id_page"]);
 		
 		if ($this->viewArgs["id_c"] != "tutti")
-			$this->m[$this->modelName]->setValue("id_c", $this->viewArgs["id_c"]);
+			$this->m[$this->modelName]->setValue("id_c", (int)$this->viewArgs["id_c"]);
+		
+		if ($this->viewArgs["id_fascia"] != "tutti")
+			$this->m[$this->modelName]->setValue("id_fascia", (int)$this->viewArgs["id_fascia"]);
 		
 		if ($this->viewArgs["tipo"] != "tutti")
 		{
@@ -114,6 +132,56 @@ class ContenutiController extends BaseController
 		parent::form($queryType, $id);
 		
 		$this->append($data);
+	}
+	
+	protected function aggiungiUrlmenuScaffold($id)
+	{
+		if (isset($this->scaffold->mainMenu->links['back_fascia']))
+			$this->scaffold->mainMenu->links['back_fascia']['absolute_url'] = $this->baseUrl.'/contenuti/figli/'.$this->viewArgs["id_fascia"]."?partial=Y&id_tipo_figlio=".$this->viewArgs["id_tipo_figlio"];
+	}
+	
+	public function figli($id = 0)
+	{
+		$this->_posizioni['figli'] = 'class="active"';
+		
+		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_cont";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->mainFields = array("titoloContenutoFascia");
+		$this->mainHead = "Titolo";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"figli/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->select("contenuti.*")->orderBy("id_order")->where(array(
+			"id_fascia"			=>	$clean['id'],
+			"id_tipo"			=>	(int)$this->viewArgs["id_tipo_figlio"],
+		))->convert()->save();
+		
+		parent::main();
+		
+		$data['tabella'] = "fascia";
+		
+		$data["titoloRecord"] = $this->m("ContenutiModel")->where(array("id_cont"=>$clean['id']))->field("titolo");
+		
+		$record = $this->m("ContenutiModel")->selectId((int)$id);
+		
+		if (!empty($record))
+			$data["recordTipo"] = $this->m("TipicontenutoModel")->selectId($record["id_tipo"]);
+		
+		$this->append($data);
+	}
+	
+	public function ordina()
+	{
+		$this->orderBy = "id_order";
+		
+		parent::ordina();
 	}
 	
 	public function thumb($field = "", $id = 0)

@@ -54,7 +54,6 @@ class VariabiliModel extends GenericModel {
 		"db_version"				=>	0,
 		"contenuti_in_prodotti"		=>	1,
 		"contenuti_in_categorie"	=>	0,
-		"fasce_in_prodotti"			=>	0,
 		"scaglioni_in_prodotti"		=>	1,
 		"correlati_in_prodotti"		=>	1,
 		"caratteristiche_in_prodotti"=>	1,
@@ -69,7 +68,6 @@ class VariabiliModel extends GenericModel {
 		"accessori_in_prodotti"		=>	1,
 		"contenuti_in_pagine"		=>	1, // se sono visibili oppure no i contenuti nelle pagine
 		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini nelle pagine
-		"fasce_in_pagine"			=>	1,
 		"download_attivi"			=>	1,
 		"usa_tag"					=>	0, // se attivare i tag
 		"tag_in_prodotti"			=>	1, // se attivare i tag nella sezione prodotti
@@ -92,7 +90,6 @@ class VariabiliModel extends GenericModel {
 		"cifre_decimali"			=>	2, // usate nel calcolo dei totali
 		"cifre_decimali_visualizzate"	=>	8, // usate nella visualizzazione delle cifre in admin e nell'import
 		"link_cms"					=>	"blog/main",
-		"mostra_tipi_fasce"			=>	1,
 		"attiva_tipi_azienda"		=>	0,
 		"redirect_permessi"			=>	"checkout", // URL di redirect ammessi dopo login, divisi da ,
 		"controlla_p_iva"			=>	0,
@@ -187,7 +184,6 @@ class VariabiliModel extends GenericModel {
 		"submenu_item_class"		=>	"menu-item",
 		"linkTextWrapTag"			=>	"",
 		"linkTextWrapClass"			=>	"",
-		"variabili_gestibili_da_fasce"	=>	"",
 		"tag_blocco_testo"			=>	"div",
 		"contenuti_in_eventi"		=>	1,
 		"permetti_upload_archivio"	=>	0,
@@ -302,7 +298,6 @@ class VariabiliModel extends GenericModel {
 		"scaglioni_cpc_euro_centesimi"		=>	10, // indica lo scaglione in centesimi di euro del CPC da mostrare nelle etichette del feed di google
 		"scaglioni_margine_di_guadagno"		=>	10, // indica lo scaglione in euro del guadagno assoluto previsto da mostrare nelle etichette del feed di google
 		"rapporto_dollaro_euro"				=>	1.13, // proporzione euro dollaro
-		"filtra_fasce_per_tema"=>	0, // se attivo, mostra solo le fasce del tema impostato (altrimenti mostra tutte le fasce indipendentemente dal tema)
 		"codice_fiscale_obbligatorio_solo_se_fattura"	=>	0, // per privati, il CF è obbligatorio solo se il cliente spunta il campo "fattura"
 		"pixel_nel_footer"			=>	1, // sposta il pixel di Facebook nel footer
 		"pixel_set_time_out"			=>	3000, // secondi dopo i quali attivare il pixel
@@ -861,6 +856,12 @@ class VariabiliModel extends GenericModel {
 		### FASCE ##
 		"attiva_gestione_fasce_frontend"	=>	0, // permetti la gestione delle fasce da frontend
 		"attiva_gestione_fasce_frontend_prodotti"	=>	0, // se impostato su 1, mostra il link per la gestione delle fasce nei prodotti
+		"fasce_in_prodotti"			=>	0,
+		"fasce_in_pagine"			=>	1,
+		"mostra_tipi_fasce"			=>	1,
+		"variabili_gestibili_da_fasce"	=>	"",
+		"filtra_fasce_per_tema"		=>	0, // se attivo, mostra solo le fasce del tema impostato (altrimenti mostra tutte le fasce indipendentemente dal tema)
+		"attiva_contenuti_figli"	=>	0, // se impostato a 1 permette di definire dei contenuyti come figli di fasce (quindi non di pagine o di categorie)
 		### TOKEN ##
 		"token_lista_configurazioni_mancanti"	=>	"", // token per vedere, se loggato in admin, l'elenco delle configurazioni mancanti
 		### IP ##

@@ -1,0 +1,1 @@
+alter table contenuti add id_fascia INT UNSIGNED NOT NULL default 0 after id_c;
