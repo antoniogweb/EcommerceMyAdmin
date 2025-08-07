@@ -1,0 +1,1 @@
+alter table province add nazione char(2) NOT NULL default 'IT';

@@ -1195,7 +1195,8 @@ class BaseRegusersController extends BaseController
 		{
 			$data['values'] = $this->m('RegusersModel')->getFormValues('update','sanitizeHtml',$this->iduser);
 			
-			$data['province'] = $this->m('ProvinceModel')->selectTendina();
+			$data['province'] = $this->m('ProvinceModel')->selectTendina("nazione");
+			$data['provinceSpedizione'] = $this->m('ProvinceModel')->selectTendina("nazione_spedizione");
 			
 			$data["tipoAzione"] = "update";
 			
@@ -1285,7 +1286,8 @@ class BaseRegusersController extends BaseController
 		
 		if (isset($_POST["nazione_spedizione"]))
 		{
-			if ($_POST["nazione_spedizione"] == "IT")
+			// if ($_POST["nazione_spedizione"] == "IT")
+			if (in_array((string)$_POST["nazione_spedizione"], NazioniModel::nazioniConProvince()))
 				$campoObbligatoriProvincia = "provincia_spedizione";
 		}
 		
@@ -1333,7 +1335,8 @@ class BaseRegusersController extends BaseController
 		
 		$data['values'] = $this->m('SpedizioniModel')->getFormValues($submitAction,'sanitizeHtml',$clean["id"],array("nazione_spedizione"=>"IT"));
 		
-		$data['province'] = $this->m('ProvinceModel')->selectTendina();
+		$data['province'] = $this->m('ProvinceModel')->selectTendina("nazione");
+		$data['provinceSpedizione'] = $this->m('ProvinceModel')->selectTendina("nazione_spedizione");
 		
 		$this->append($data);
 		$this->load('modifica_spedizione');

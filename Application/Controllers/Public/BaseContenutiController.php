@@ -2190,6 +2190,24 @@ class BaseContenutiController extends BaseController
 		$this->load('robots');
 	}
 	
+	public function jsonprovince($nazione = "IT")
+	{
+		header ("Content-Type:text/plain");
+		
+		$this->clean();
+		
+		$nazioni = array();
+		
+		if (NazioniModel::esistente(sanitizeAll($nazione)))
+		{
+			$_POST["nazione"] = $nazione;
+			
+			$nazioni = $this->m("ProvinceModel")->selectTendina("nazione", false);
+		}
+		
+		echo json_encode($nazioni);
+	}
+	
 	public function jsoncategorie($section = "")
 	{
 		$this->clean();

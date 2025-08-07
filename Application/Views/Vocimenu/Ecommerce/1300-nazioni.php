@@ -3,7 +3,7 @@
 <li class="<?php echo tm($tm, "nazioni");?> treeview">
 	<a href="#">
 		<i class="fa fa-globe"></i>
-		<span>Nazioni</span>
+		<span><?php echo gtext("Nazioni");?></span>
 	</a>
 	<ul class="treeview-menu">
 		<li><a href="<?php echo $this->baseUrl."/nazioni/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi")?></a></li>

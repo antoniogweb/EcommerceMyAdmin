@@ -31,7 +31,7 @@ class ProvinceModel extends GenericModel
 		parent::__construct();
 	}
 	
-	public function selectTendina()
+	public function selectTendina($campoPostNazione = "", $mostraElementoVuoto = true)
 	{
 		$this->orderBy("provincia")->toList("codice_provincia","provincia");
 		
@@ -40,7 +40,23 @@ class ProvinceModel extends GenericModel
 				"attiva"	=>	1,
 			));
 		
-		return array(""=>"Seleziona") + $this->send();
+		if ($campoPostNazione && isset($_POST["$campoPostNazione"]) && $_POST["$campoPostNazione"] && NazioniModel::esistente(sanitizeAll($_POST["$campoPostNazione"])))
+			$this->aWhere(array(
+				"nazione"	=>	sanitizeAll($_POST["$campoPostNazione"]),
+			));
+		
+		if (App::$isFrontend)
+			$this->sWhere("nazione in (select iso_country_code from nazioni where attiva = 1 or attiva_spedizione = 1)");
+		
+		if ($mostraElementoVuoto)
+			return array(""=>"Seleziona") + $this->send();
+		else
+			return $this->send();
+	}
+	
+	public static function sFindTitoloDaCodice($codice)
+	{
+		return self::g()->findTitoloDaCodice($codice);
 	}
 	
 	public function findTitoloDaCodice($codice)

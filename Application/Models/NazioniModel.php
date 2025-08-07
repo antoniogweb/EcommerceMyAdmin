@@ -30,7 +30,8 @@ class NazioniModel extends GenericModel
 	public static $elencoNazioniInEvidenza = array();
 	public static $elencoCoordinateNazioni = null;
 	public static $elencoSogliePerSpedizione = null;
-
+	public static $nazioniConProvince = null;
+	
 	public static $selectTipi = array(
 		"UE"	=>	"UE",
 		"EX"	=>	"EXTRA UE",
@@ -96,7 +97,7 @@ class NazioniModel extends GenericModel
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>Usata nel caso venga superata la soglia annuale di vendite in Unione Europea</div>"
+						"<div class='form_notice'>".gtext("Usata nel caso venga superata la soglia annuale di vendite in Unione Europea")."</div>"
 					),
 				),
 				'soglia_iva_italiana'	=>	array(
@@ -104,7 +105,7 @@ class NazioniModel extends GenericModel
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>Soglia sotto alla quale si può applicare l'IVA italiana anche per vendite all'estero</div>"
+						"<div class='form_notice'>".gtext("Soglia sotto alla quale si può applicare l'IVA italiana anche per vendite all'estero")."</div>"
 					),
 				),
 				'soglia_spedizioni_gratuite'	=>	array(
@@ -112,7 +113,7 @@ class NazioniModel extends GenericModel
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>Una soglia a 0,00 significa che la spedizione non è mai gratuita per questa nazione</div>"
+						"<div class='form_notice'>".gtext("Una soglia a 0,00 significa che la spedizione non è mai gratuita per questa nazione")."</div>"
 					),
 				),
 				'in_evidenza'	=>	array(
@@ -133,7 +134,7 @@ class NazioniModel extends GenericModel
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>Al cambio nazione nel tema (se impostato), il link verso questa nazione avrà questa lingua</div>"
+						"<div class='form_notice'>".gtext("Al cambio nazione nel tema (se impostato), il link verso questa nazione avrà questa lingua")."</div>"
 					),
 				),
 			),
@@ -147,6 +148,13 @@ class NazioniModel extends GenericModel
 		$iva = new IvaModel();
 		
 		return array(0 => "-") + $iva->clear()->orderBy("id_order")->toList("id_iva","titolo")->send();
+	}
+	
+	public static function esistente($codice)
+	{
+		return self::g()->clear()->where(array(
+			"iso_country_code"	=>	sanitizeDb($codice),
+		))->rowNumber();
 	}
 	
 	public function getNome($codice)
@@ -436,5 +444,27 @@ class NazioniModel extends GenericModel
 		}
 
 		return false;
+	}
+	
+	public static function nazioniConProvince()
+	{
+		if (!isset(self::$nazioniConProvince))
+		{
+			$pModel = new ProvinceModel();
+			
+			$pModel->clear()->select("distinct nazione")->toList("nazione");
+			
+			if (v("mostra_solo_province_attive") && App::$isFrontend)
+				$pModel->aWhere(array(
+					"attiva"	=>	1,
+				));
+			
+			if (App::$isFrontend)
+				$pModel->sWhere("nazione in (select iso_country_code from nazioni where attiva = 1 or attiva_spedizione = 1)");
+			
+			self::$nazioniConProvince = $pModel->send();
+		}
+		
+		return self::$nazioniConProvince;
 	}
 }

@@ -1,0 +1,1 @@
+ALTER TABLE `province` CHANGE `codice_provincia` `codice_provincia` CHAR(5) NOT NULL default '';

@@ -1222,7 +1222,8 @@ class BaseOrdiniController extends BaseController
 		
 		if (isset($_POST["nazione"]))
 		{
-			if ($_POST["nazione"] == "IT")
+			// if ($_POST["nazione"] == "IT")
+			if (in_array((string)$_POST["nazione"], NazioniModel::nazioniConProvince()))
 				$campoObbligatoriProvincia = "provincia";
 		}
 		
@@ -1230,7 +1231,8 @@ class BaseOrdiniController extends BaseController
 		
 		if (isset($_POST["nazione_spedizione"]))
 		{
-			if ($_POST["nazione_spedizione"] == "IT")
+			// if ($_POST["nazione_spedizione"] == "IT")
+			if (in_array((string)$_POST["nazione_spedizione"], NazioniModel::nazioniConProvince()))
 				$campoObbligatoriProvinciaSpedizione = "provincia_spedizione";
 		}
 		
@@ -1648,7 +1650,8 @@ class BaseOrdiniController extends BaseController
 							}
 
 							// Se è nazione estera, salvo la dprovincia in provincia
-                            if (isset($_POST["nazione"]) && $_POST["nazione"] != "IT")
+                            // if (isset($_POST["nazione"]) && $_POST["nazione"] != "IT")
+							if (isset($_POST["nazione"]) && !in_array((string)$_POST["nazione"], NazioniModel::nazioniConProvince()))
                             {
 								$this->m('OrdiniModel')->values = array(
                                     "provincia" => $dprovincia,
@@ -1657,7 +1660,8 @@ class BaseOrdiniController extends BaseController
                             }
                             
                             // Se è nazione estera, salvo la dprovincia_spedizione in provincia_spedizione
-                            if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] != "IT")
+                            // if (isset($_POST["nazione_spedizione"]) && $_POST["nazione_spedizione"] != "IT")
+							if (isset($_POST["nazione_spedizione"]) && !in_array((string)$_POST["nazione_spedizione"], NazioniModel::nazioniConProvince()))
                             {
 								$this->m('OrdiniModel')->values = array(
                                     "provincia_spedizione" => $dprovincia_spedizione,
@@ -1886,7 +1890,8 @@ class BaseOrdiniController extends BaseController
 		
 		$data['values'] = $this->m('OrdiniModel')->getFormValues('insert','sanitizeHtml',null,$defaultValues);
 		
-		$data['province'] = $this->m('ProvinceModel')->selectTendina();
+		$data['province'] = $this->m('ProvinceModel')->selectTendina("nazione");
+		$data['provinceSpedizione'] = $this->m('ProvinceModel')->selectTendina("nazione_spedizione");
 		
 		$this->m('RegusersModel')->fields = "password";
 		

@@ -522,13 +522,14 @@ trait CommonModel {
 	
 	public function setProvinciaFatturazione()
 	{
-		if (isset($this->values["nazione"]) && isset($this->values["provincia"]) && isset($this->values["dprovincia"]) && $this->values["nazione"] != "IT")
+		// if (isset($this->values["nazione"]) && isset($this->values["provincia"]) && isset($this->values["dprovincia"]) && $this->values["nazione"] != "IT")
+		if (isset($this->values["nazione"]) && isset($this->values["provincia"]) && isset($this->values["dprovincia"]) && !in_array((string)$this->values["nazione"], NazioniModel::nazioniConProvince()))
 			$this->values["provincia"] = $this->values["dprovincia"];
 	}
 	
 	public function setProvinciaSpedizione()
 	{
-		if (isset($this->values["nazione_spedizione"]) && isset($this->values["provincia_spedizione"]) && isset($this->values["dprovincia_spedizione"]) && $this->values["nazione_spedizione"] != "IT")
+		if (isset($this->values["nazione_spedizione"]) && isset($this->values["provincia_spedizione"]) && isset($this->values["dprovincia_spedizione"]) && !in_array((string)$this->values["nazione_spedizione"], NazioniModel::nazioniConProvince()))
 			$this->values["provincia_spedizione"] = $this->values["dprovincia_spedizione"];
 	}
 	

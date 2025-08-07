@@ -35,6 +35,8 @@ if (typeof attiva_icheck == "undefined")
 if (typeof ricarica_pagamenti_quando_cambi_nazione == "undefined")
 	var ricarica_pagamenti_quando_cambi_nazione = false;
 
+if (typeof nazioniConProvince == "undefined")
+	var nazioniConProvince = ['IT'];
 
 $ = jQuery;
 
@@ -544,15 +546,56 @@ function sistemaPIva(nazione)
 		$(".blocco_fatturazione_elettronica").css("display","none");
 }
 
+function recuperaProvinceNazione(nazione, obj)
+{
+	$.ajaxQueue({
+		url: baseUrl + "/contenuti/jsonprovince/" + nazione,
+		cache:false,
+		async: true,
+		dataType: "json",
+		success: function(content){
+			
+			if (content)
+			{
+				var selezionato = obj.val();
+				obj.empty();
+				var selecionatoTrovato = false;
+				
+				$.each(content, function(key, value) {
+					
+					if (key == selezionato)
+						selecionatoTrovato = true;
+					
+					obj.append($('<option>', { 
+						value: key,
+						text :value 
+					}));
+				});
+				
+				if (selecionatoTrovato)
+					obj.val(selezionato);
+			}
+		}
+	});
+}
+
 if (typeof sistemaTendinaProvincia !== 'function')
 {
 	window.sistemaTendinaProvincia = function(val)
 	{
-		if (val == "IT")
+		// if (val == "IT")
+		if (nazioniConProvince.indexOf(val) > -1)
 		{
 			$("[name='dprovincia']").css("display","none");
 			$("[name='provincia']").css("display","block");
-			$(".nascondi_fuori_italia").css("display","table-row");
+			
+			if (val == "IT")
+				$(".nascondi_fuori_italia").css("display","table-row");
+			else
+				$(".nascondi_fuori_italia").css("display","none");
+			
+			if (nazioniConProvince.length > 1)
+				recuperaProvinceNazione(val, $("[name='provincia']"));
 		}
 		else
 		{
@@ -573,10 +616,14 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 		if (!attiva_spedizione)
 			return;
 		
-		if (val == "IT")
+		// if (val == "IT")
+		if (nazioniConProvince.indexOf(val) > -1)
 		{
 			$("[name='dprovincia_spedizione']").css("display","none");
 			$("[name='provincia_spedizione']").css("display","block");
+			
+			if (nazioniConProvince.length > 1)
+				recuperaProvinceNazione(val, $("[name='provincia_spedizione']"));
 		}
 		else
 		{

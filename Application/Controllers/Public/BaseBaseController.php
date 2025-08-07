@@ -935,7 +935,8 @@ class BaseBaseController extends Controller
 		
 		$data['values'] = $this->m('RegusersModel')->getFormValues('insert','sanitizeHtml',null,$this->defaultRegistrazione);
 		
-		$data['province'] = $this->m('ProvinceModel')->selectTendina();
+		$data['province'] = $this->m('ProvinceModel')->selectTendina("nazione");
+		$data['provinceSpedizione'] = $this->m('ProvinceModel')->selectTendina("nazione_spedizione");
 		
 		if (strcmp($data['values']["tipo_cliente"],"") === 0)
 		{

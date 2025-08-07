@@ -302,7 +302,8 @@ class BaseRegusersModel extends Model_Tree
 		
 		$campoObbligatoriProvincia = "dprovincia";
 		
-		if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
+		// if (isset($_POST["nazione"]) && $_POST["nazione"] == "IT")
+		if (isset($_POST["nazione"]) && in_array((string)$_POST["nazione"], NazioniModel::nazioniConProvince()))
 			$campoObbligatoriProvincia = "provincia";
 		
 		$campiObbligatoriComuni = "tipo_cliente";

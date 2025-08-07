@@ -42,5 +42,8 @@
 	var password_regular_expression_numero_caratteri = <?php echo v("password_regular_expression_numero_caratteri");?>;
 	<?php } ?>
 	var ricarica_pagamenti_quando_cambi_nazione = <?php echo (isset(OrdiniModel::$pagamenti["contrassegno"]) && !v("permetti_pagamento_contrassegno_fuori_nazione_default")) ? "true" : "false";?>;
+	<?php if (v("attiva_area_riservata")) { ?>
+	var nazioniConProvince = ['<?php echo implode("','",NazioniModel::nazioniConProvince())?>'];
+	<?php } ?>
 </script>
 <?php $jsVariablesLoaded = true;?>

@@ -55,7 +55,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Città");?>:</span> <?php echo $indirizzo["spedizioni"]["citta_spedizione"];?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Provincia");?>:</span> <?php echo $indirizzo["spedizioni"]["nazione_spedizione"] == "IT" ? $indirizzo["spedizioni"]["provincia_spedizione"] : $indirizzo["spedizioni"]["dprovincia_spedizione"];?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Provincia");?>:</span> <?php echo in_array($indirizzo["spedizioni"]["nazione_spedizione"], NazioniModel::nazioniConProvince()) ? ProvinceModel::sFindTitoloDaCodice($indirizzo["spedizioni"]["provincia_spedizione"]) : $indirizzo["spedizioni"]["dprovincia_spedizione"];?>
 			</div>
 			<div class="uk-first-column">
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Telefono");?>:</span> <?php echo $indirizzo["spedizioni"]["telefono_spedizione"];?>
