@@ -23,7 +23,7 @@
 								<?php echo Html_Form::radio("id_spedizione_radio",$values["id_spedizione"],$indirizzo["id_spedizione"],"radio_spedizione","none");?>
 							</div>
 							<div class="uk-margin-left uk-text-small">
-								<span class="uk-text-emphasis"><?php echo gtext("Indirizzo");?>:</span> <span class="uk-text-bold"></span> <?php echo $indirizzo["indirizzo_spedizione"];?>, <?php echo $indirizzo["cap_spedizione"];?><br /> <?php echo $indirizzo["citta_spedizione"];?> (<?php echo $indirizzo["nazione_spedizione"] == "IT" ? $indirizzo["provincia_spedizione"] : $indirizzo["dprovincia_spedizione"];?>), <?php echo nomeNazione($indirizzo["nazione_spedizione"]);?>
+								<span class="uk-text-emphasis"><?php echo gtext("Indirizzo");?>:</span> <span class="uk-text-bold"></span> <?php echo $indirizzo["indirizzo_spedizione"];?>, <?php echo $indirizzo["cap_spedizione"];?><br /> <?php echo $indirizzo["citta_spedizione"];?> (<?php echo in_array((string)$indirizzo["nazione_spedizione"], NazioniModel::nazioniConProvince()) ? ProvinceModel::sFindTitoloDaCodice($indirizzo["provincia_spedizione"]) : $indirizzo["dprovincia_spedizione"];?>), <?php echo nomeNazione($indirizzo["nazione_spedizione"]);?>
 								<?php if (trim($indirizzo["telefono_spedizione"])) { ?>
 								<br /><span class="uk-text-emphasis"><?php echo gtext("Tel");?>:</span> <?php echo $indirizzo["telefono_spedizione"];?>
 								<?php } ?>

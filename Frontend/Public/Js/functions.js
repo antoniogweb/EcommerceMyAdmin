@@ -216,7 +216,7 @@ function impostaCampiSpedizione(id_spedizione)
 				{
 					riempiCampiSpedizione(content);
 					
-					sistemaTendinaProvinciaSpedizione($("[name='nazione_spedizione']").val());
+					sistemaTendinaProvinciaSpedizione($("[name='nazione_spedizione']").val(), content.provincia_spedizione);
 					impostaCorrieriESpeseSpedizione();
 				}
 			}
@@ -546,7 +546,7 @@ function sistemaPIva(nazione)
 		$(".blocco_fatturazione_elettronica").css("display","none");
 }
 
-function recuperaProvinceNazione(nazione, obj)
+function recuperaProvinceNazione(nazione, obj, default_spedizione)
 {
 	$.ajaxQueue({
 		url: baseUrl + "/contenuti/jsonprovince/" + nazione,
@@ -559,12 +559,12 @@ function recuperaProvinceNazione(nazione, obj)
 			{
 				var selezionato = obj.val();
 				obj.empty();
-				var selecionatoTrovato = false;
+				var selezionatoTrovato = false;
 				
 				$.each(content, function(key, value) {
 					
-					if (key == selezionato)
-						selecionatoTrovato = true;
+					if (selezionato != '' && key == selezionato)
+						selezionatoTrovato = true;
 					
 					obj.append($('<option>', { 
 						value: key,
@@ -572,8 +572,10 @@ function recuperaProvinceNazione(nazione, obj)
 					}));
 				});
 				
-				if (selecionatoTrovato)
+				if (selezionatoTrovato)
 					obj.val(selezionato);
+				else if (default_spedizione != undefined)
+					obj.val(default_spedizione);
 			}
 		}
 	});
@@ -611,7 +613,7 @@ if (typeof sistemaTendinaProvincia !== 'function')
 
 if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 {
-	window.sistemaTendinaProvinciaSpedizione = function(val)
+	window.sistemaTendinaProvinciaSpedizione = function(val, default_spedizione)
 	{
 		if (!attiva_spedizione)
 			return;
@@ -623,7 +625,7 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 			$("[name='provincia_spedizione']").css("display","block");
 			
 			if (nazioniConProvince.length > 1)
-				recuperaProvinceNazione(val, $("[name='provincia_spedizione']"));
+				recuperaProvinceNazione(val, $("[name='provincia_spedizione']"), default_spedizione);
 		}
 		else
 		{

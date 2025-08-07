@@ -2202,7 +2202,7 @@ class BaseContenutiController extends BaseController
 		{
 			$_POST["nazione"] = $nazione;
 			
-			$nazioni = $this->m("ProvinceModel")->selectTendina("nazione", false);
+			$nazioni = $this->m("ProvinceModel")->selectTendina("nazione");
 		}
 		
 		echo json_encode($nazioni);
