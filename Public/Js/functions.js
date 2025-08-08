@@ -257,7 +257,7 @@ function recuperaProvinceNazione(nazione, obj, default_spedizione)
 	});
 }
 
-function sistemaTendinaProvinciaSpedizione(val)
+function sistemaTendinaProvinciaSpedizione(val, default_spedizione)
 {
 	// if (val == "IT")
 	if (nazioniConProvince.indexOf(val) > -1)
@@ -266,7 +266,7 @@ function sistemaTendinaProvinciaSpedizione(val)
 		$(".provincia_spedizione").css("display","block");
 		
 		if (nazioniConProvince.length > 1)
-			recuperaProvinceNazione(val, $("[name='provincia_spedizione']"));
+			recuperaProvinceNazione(val, $("[name='provincia_spedizione']"), default_spedizione);
 	}
 	else
 	{

@@ -198,26 +198,40 @@ $(document).ready(function(){
 			
 		});
 		
+		
 		$('[name="id_spedizione"]').on('select2:select', function (e) {
 			
 			var idSpedizione = $(this).val();
 			
-			$.ajaxQueue({
-				url: baseUrl + "/spedizioni/form/update/" + idSpedizione + "?esporta_json",
-				cache:false,
-				async: true,
-				dataType: "json",
-				success: function(content){
-					
-					for (var key in content)
-					{
-						if ($('[name="'+key+'"]').length > 0)
-							$('[name="'+key+'"]').val(content[key]);
+			if (idSpedizione != 0)
+			{
+				$.ajaxQueue({
+					url: baseUrl + "/spedizioni/form/update/" + idSpedizione + "?esporta_json",
+					cache:false,
+					async: true,
+					dataType: "json",
+					success: function(content){
+						
+						var nazioneSpedizione = "";
+						var provinciaSpedizione = undefined;
+						
+						for (var key in content)
+						{
+							if (key == "nazione_spedizione" && content[key] != "")
+								nazioneSpedizione = content[key];
+							
+							if (key == "provincia_spedizione" && content[key] != "")
+								provinciaSpedizione = content[key];
+							
+							if ($('[name="'+key+'"]').length > 0)
+								$('[name="'+key+'"]').val(content[key]);
+						}
+						
+						if (nazioneSpedizione != "")
+							sistemaTendinaProvinciaSpedizione(nazioneSpedizione, provinciaSpedizione);
 					}
-					
-				}
-			});
-			
+				});
+			}
 		});
 	}
 	
