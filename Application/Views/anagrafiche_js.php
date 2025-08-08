@@ -67,7 +67,7 @@ function updateForm()
 	}
 }
 
-function sistemaTendinaProvincia(val)
+function sistemaTendinaProvincia(val, default_fatturazione)
 {
 	// if (val == "IT")
 	if (nazioniConProvince.indexOf(val) > -1)
@@ -76,7 +76,7 @@ function sistemaTendinaProvincia(val)
 		$(".box_provincia").css("display","block");
 		
 		if (nazioniConProvince.length > 1)
-			recuperaProvinceNazione(val, $("[name='provincia']"));
+			recuperaProvinceNazione(val, $("[name='provincia']"), default_fatturazione);
 	}
 	else
 	{
@@ -126,10 +126,22 @@ function caricaTestataESpedizioniUtente(idUser)
 		dataType: "json",
 		success: function(content){
 			
+			var nazioneFatturazione = "";
+			var provinciaFatturazione = undefined;
+			
 			for (var key in content)
 			{
+				if (key == "nazione" && content[key] != "")
+					nazioneFatturazione = content[key];
+				
+				if (key == "provincia" && content[key] != "")
+					provinciaFatturazione = content[key];
+				
 				if ($('[name="'+key+'"]').length > 0)
 					$('[name="'+key+'"]').val(content[key]);
+				
+				if (nazioneFatturazione != "")
+					sistemaTendinaProvincia(nazioneFatturazione, provinciaFatturazione);
 			}
 			
 			$.ajaxQueue({

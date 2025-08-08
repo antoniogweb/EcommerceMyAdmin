@@ -9,4 +9,5 @@
 	var viewStatus = "<?php echo $this->viewStatus;?>";
 	var partial = <?php echo partial() ? "true" : "false";?>;
 	var altezza_aggiuntiva_ricalcola_altezza_dialog = 0;
+	var nazioniConProvince = ['<?php echo implode("','",NazioniModel::nazioniConProvince())?>'];
 </script>
