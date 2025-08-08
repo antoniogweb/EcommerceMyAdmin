@@ -688,4 +688,24 @@ class ContenutiModel extends GenericModel {
 			$this->_idFields	=>	(int)$id,
 		))->field("id_fascia");
     }
+    
+	public function del($id = null, $whereClause = null)
+	{
+		$clean['id'] = (int)$id;
+		
+		if ($this->checkOnDeleteIntegrity($clean['id'], $whereClause))
+		{
+			$record = $this->selectId($clean['id']);
+			
+			if (count($record) > 0)
+			{
+				$this->query(array(
+					"delete from contenuti where id_fascia = ?",
+					array($clean['id']),
+				));
+				
+				parent::del($id, $whereClause);
+			}
+		}
+	}
 }

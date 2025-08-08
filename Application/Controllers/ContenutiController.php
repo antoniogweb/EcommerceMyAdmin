@@ -156,7 +156,7 @@ class ContenutiController extends BaseController
 		$this->mainFields = array("titoloContenutoFascia");
 		$this->mainHead = "Titolo";
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"figli/".$clean['id'],'pageVariable'=>'page_fgl');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'','mainAction'=>"figli/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m[$this->modelName]->select("contenuti.*")->orderBy("id_order")->where(array(
 			"id_fascia"			=>	$clean['id'],
