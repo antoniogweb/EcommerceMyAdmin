@@ -217,6 +217,24 @@ class NazioniController extends BaseController {
 		$this->append($data);
 	}
 	
+	public function jsonprovince($nazione = "IT")
+	{
+		header ("Content-Type:text/plain");
+		
+		$this->clean();
+		
+		$nazioni = array();
+		
+		if (NazioniModel::esistente(sanitizeAll($nazione)))
+		{
+			$_POST["nazione"] = $nazione;
+			
+			$nazioni = $this->m("ProvinceModel")->selectTendina("nazione");
+		}
+		
+		echo json_encode($nazioni);
+	}
+	
 // 	public function importa()
 // 	{
 // 		$this->clean();

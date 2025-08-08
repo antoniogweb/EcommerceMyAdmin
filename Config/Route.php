@@ -459,6 +459,7 @@ class Route
 		'nazioni,form',
 		'nazioni,regioni',
 		'nazioni,regusers',
+		'nazioni,jsonprovince',
 // 		'nazioni,importa',
 		
 		'regioni,main',

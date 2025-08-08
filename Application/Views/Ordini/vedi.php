@@ -385,7 +385,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 								</tr>
 								<tr>
 									<td class="first_column"><?php echo gtext("Provincia");?></td>
-									<td><?php echo $ordine["provincia"];?></td>
+									<td><?php echo NazioniModel::conProvince($ordine["nazione"]) ? ProvinceModel::sFindTitoloDaCodice($ordine["provincia"]) : $ordine["dprovincia"];?></td>
 								</tr>
 								<tr>
 									<td class="first_column"><?php echo gtext("Città");?></td>
@@ -433,7 +433,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 								</tr>
 								<tr>
 									<td class="first_column"><?php echo gtext("Provincia");?></td>
-									<td><?php echo $ordine["provincia_spedizione"];?></td>
+									<td><?php echo NazioniModel::conProvince($ordine["nazione_spedizione"]) ? ProvinceModel::sFindTitoloDaCodice($ordine["provincia_spedizione"]) : $ordine["dprovincia_spedizione"];?></td>
 								</tr>
 								<tr>
 									<td class="first_column"><?php echo gtext("Città");?></td>

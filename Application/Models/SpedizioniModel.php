@@ -120,7 +120,7 @@ class SpedizioniModel extends GenericModel {
 	
 	public function provincia($record)
 	{
-		return ($record["spedizioni"]["nazione_spedizione"] == "IT") ? $record["spedizioni"]["provincia_spedizione"] : $record["spedizioni"]["dprovincia_spedizione"];
+		return (NazioniModel::conProvince($record["spedizioni"]["nazione_spedizione"])) ? ProvinceModel::sFindTitoloDaCodice($record["spedizioni"]["provincia_spedizione"]) : $record["spedizioni"]["dprovincia_spedizione"];
 	}
 	
 	public function indirizzo_spedizione($record)

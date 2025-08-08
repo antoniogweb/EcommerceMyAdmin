@@ -34,6 +34,9 @@ var riga_modificata = false;
 if (typeof stringaSalvaOPerdiIDati == "undefined")
 	var stringaSalvaOPerdiIDati = "Se non salvi perderai le modifiche effettuate. Confermi il salvataggio?";
 
+if (typeof nazioniConProvince == "undefined")
+	var nazioniConProvince = ['IT'];
+
 if (typeof(ajaxfilemanager) !== typeof(Function))
 {
 	function ajaxfilemanager(field_name, url, type, win) {
@@ -219,12 +222,51 @@ function controllaVisibilita()
 	}
 }
 
+function recuperaProvinceNazione(nazione, obj, default_spedizione)
+{
+	$.ajaxQueue({
+		url: baseUrl + "/nazioni/jsonprovince/" + nazione,
+		cache:false,
+		async: true,
+		dataType: "json",
+		success: function(content){
+			
+			if (content)
+			{
+				var selezionato = obj.val();
+				obj.empty();
+				var selezionatoTrovato = false;
+				
+				$.each(content, function(key, value) {
+					
+					if (selezionato != '' && key == selezionato)
+						selezionatoTrovato = true;
+					
+					obj.append($('<option>', { 
+						value: key,
+						text :value 
+					}));
+				});
+				
+				if (selezionatoTrovato)
+					obj.val(selezionato);
+				else if (default_spedizione != undefined)
+					obj.val(default_spedizione);
+			}
+		}
+	});
+}
+
 function sistemaTendinaProvinciaSpedizione(val)
 {
-	if (val == "IT")
+	// if (val == "IT")
+	if (nazioniConProvince.indexOf(val) > -1)
 	{
 		$(".dprovincia_spedizione").css("display","none");
 		$(".provincia_spedizione").css("display","block");
+		
+		if (nazioniConProvince.length > 1)
+			recuperaProvinceNazione(val, $("[name='provincia_spedizione']"));
 	}
 	else
 	{

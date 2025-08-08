@@ -48,7 +48,7 @@
 		</tr>
 		<tr>
 			<td class="first_column"><?php echo gtext("Provincia", false); ?></td>
-			<td><?php echo $ordine["provincia"];?></td>
+			<td><?php echo NazioniModel::conProvince($ordine["nazione"]) ? ProvinceModel::sFindTitoloDaCodice($ordine["provincia"]) : $ordine["dprovincia"];?></td>
 		</tr>
 		<tr>
 			<td class="first_column"><?php echo gtext("Città", false); ?></td>

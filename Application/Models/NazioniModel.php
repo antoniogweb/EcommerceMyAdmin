@@ -467,4 +467,9 @@ class NazioniModel extends GenericModel
 		
 		return self::$nazioniConProvince;
 	}
+	
+	public static function conProvince($nazione)
+	{
+		return in_array($nazione, NazioniModel::nazioniConProvince()) ? true : false;
+	}
 }

@@ -5,7 +5,7 @@
 		<div class="uk-width-1-1 uk-width-1-2@m">
 			<span class="uk-text-emphasis"><?php echo OrdiniModel::getNominativo($ordine);?></span>
 			<?php if ($ordine["indirizzo"]) { ?><br /><span class="uk-text-emphasis"><?php echo gtext("Indirizzo");?>:</span> <?php echo $ordine["indirizzo"];?>
-			<br /><?php echo $ordine["cap"];?>, <?php echo $ordine["citta"];?> (<?php echo $ordine["nazione"] == "IT" ? $ordine["provincia"] : $ordine["dprovincia"];?>)<?php } ?>
+			<br /><?php echo $ordine["cap"];?>, <?php echo $ordine["citta"];?> (<?php echo NazioniModel::conProvince($ordine["nazione"]) ? ProvinceModel::sFindTitoloDaCodice($ordine["provincia"]) : $ordine["dprovincia"];?>)<?php } ?>
 			<br /><span class="uk-text-emphasis"><?php echo gtext("Nazione");?>:</span> <?php echo nomeNazione($ordine["nazione"]);?>
 			<?php if ($ordine["p_iva"]) { ?>
 			<br /><span class="uk-text-emphasis"><?php echo gtext("P. IVA");?>: <?php echo $ordine["p_iva"];?>

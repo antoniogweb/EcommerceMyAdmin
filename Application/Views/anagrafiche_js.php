@@ -69,10 +69,14 @@ function updateForm()
 
 function sistemaTendinaProvincia(val)
 {
-	if (val == "IT")
+	// if (val == "IT")
+	if (nazioniConProvince.indexOf(val) > -1)
 	{
 		$(".box_dprovincia").css("display","none");
 		$(".box_provincia").css("display","block");
+		
+		if (nazioniConProvince.length > 1)
+			recuperaProvinceNazione(val, $("[name='provincia']"));
 	}
 	else
 	{
