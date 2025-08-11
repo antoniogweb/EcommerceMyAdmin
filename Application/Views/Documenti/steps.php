@@ -7,7 +7,7 @@
 	<?php if (v("attiva_altre_lingue_documento")) { ?>
 	<li <?php echo $posizioni['lingue'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/lingue/$id".$this->viewStatus;?>"><?php echo gtext("Altre lingue");?></a></li>
 	<?php } ?>
-	<?php if (v("attiva_gruppi_documenti")) { ?>
+	<?php if (v("attiva_gruppi_documenti") && !v("gestisci_gruppi_da_form")) { ?>
 	<li <?php echo $posizioni['gruppi'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/gruppi/$id".$this->viewStatus;?>"><?php echo gtext("Accessi");?></a></li>
 	<?php } ?>
 	<?php if (v("abilita_traduzioni_documenti")) { ?>

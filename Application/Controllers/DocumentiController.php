@@ -66,6 +66,9 @@ class DocumentiController extends BaseController
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
+		if (v("attiva_gruppi_documenti") && v("gestisci_gruppi_da_form"))
+			$this->m[$this->modelName]->fields .= ",permessi";
+		
 		if ($this->viewArgs["id_page"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);
 		
@@ -73,6 +76,44 @@ class DocumentiController extends BaseController
 			$this->m[$this->modelName]->setValue("id_user", (int)$this->viewArgs["id_user"]);
 		
 		parent::form($queryType, $id);
+	}
+	
+	protected function azioneDopoInsertOUpdate($idDoc = 0)
+	{
+		if (!v("gestisci_gruppi_da_form"))
+			return;
+		
+		$idGruppiInseriti = $this->m[$this->modelName]->idGruppiDocumenti($idDoc);
+		
+		$idGruppiDocumenti = $this->m("ReggroupsModel")->clear()->select("reggroups.id_group")->where(array(
+			"reggroups.usato_per_documenti"	=>	1,
+		))->toList("reggroups.id_group")->send();
+		
+		foreach ($idGruppiDocumenti as $id)
+		{
+			if (isset($_POST["_GR_".$id]))
+			{
+				if (!in_array($id, $idGruppiInseriti))
+				{
+					$this->m("ReggroupsdocumentiModel")->sValues(array(
+						"id_group"	=>	(int)$id,
+						"id_doc"	=>	(int)$idDoc,
+					));
+					
+					$this->m("ReggroupsdocumentiModel")->insert();
+				}
+			}
+			else
+			{
+				if (in_array($id, $idGruppiInseriti))
+				{
+					$this->m("ReggroupsdocumentiModel")->del(null, array(
+						"id_group"	=>	(int)$id,
+						"id_doc"	=>	(int)$idDoc,
+					));
+				}
+			}
+		}
 	}
 	
 	public function lingue($id = 0)

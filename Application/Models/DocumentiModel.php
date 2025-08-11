@@ -123,10 +123,60 @@ class DocumentiModel extends GenericModel {
 					),
 					'wrap'	=>	array(null,null,"<div>","</div>"),
 				),
+				'permessi'	=>	array(
+					// "type"	=>	"Hidden",
+					'entryClass'  => 'form_input_text js_permessi',
+					"className"	=>	"form-control",
+					"labelString"	=>	"Permessi",
+					"attributes"	=>	"style='display:none;'",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='js_permessi_checkbox'>".$this->getHtmlCheckboxPermessi($id)."</div>",
+					),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
 		);
+	}
+	
+	public function idGruppiDocumenti($id)
+	{
+		$rgdModel = new ReggroupsdocumentiModel();
+		
+		return $rgdModel->clear()->where(array(
+			"id_doc"	=>	(int)$id
+		))->toList("id_group")->send();
+	}
+	
+	public function getHtmlCheckboxPermessi($id)
+	{
+		$rgModel = new ReggroupsModel();
+		
+		$idGruppiInseriti = $this->idGruppiDocumenti($id);
+		
+		$permessi = $rgModel ->select("reggroups.name,reggroups.id_group")->where(array(
+			"reggroups.usato_per_documenti"	=>	1,
+		))->orderBy("reggroups.name")->toList("reggroups.id_group","reggroups.name")->send();
+		
+		$html = array();
+		
+		foreach ($permessi as $id => $nome)
+		{
+			if ($this->result && $id)
+				$valore = in_array($id, $idGruppiInseriti) ? $id : "";
+			else if ($this->result && !$id)
+				$valore = "";
+			else if (!$this->result)
+				$valore = isset($_POST["_GR_".$id]) ? $id : "";
+			else
+				$valore = "";
+			
+			$html[] = Html_Form::checkbox("_GR_".$id, $valore, $id, null, null, "style='width:20px;'")." ".$nome;
+		}
+		
+		return implode("<br />", $html);
 	}
 	
 	public function buildContentSelect()

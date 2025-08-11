@@ -289,6 +289,8 @@ class BaseController extends Controller
 // 		}
 // 	}
 	
+	protected function azioneDopoInsertOUpdate($id = 0) {}
+	
 	protected function baseForm($queryType = 'insert', $id = 0)
 	{
 		if (isset($this->formValuesToDb))
@@ -335,6 +337,11 @@ class BaseController extends Controller
 			
 			$data["queryResult"] = $this->m[$this->modelName]->queryResult;
 			
+			if (strcmp($queryType,'insert') === 0 && $this->m[$this->modelName]->queryResult)
+				$this->azioneDopoInsertOUpdate($this->m[$this->modelName]->lId);
+			else if (strcmp($queryType,'update') === 0 && $this->m[$this->modelName]->queryResult)
+				$this->azioneDopoInsertOUpdate($clean["id"]);
+				
 			if (isset($this->viewArgs["cl_on_sv"]) && $this->viewArgs["cl_on_sv"] == "Y" && $this->m[$this->modelName]->queryResult)
 				$data["closeModal"] = $this->closeModal = true;
 			
