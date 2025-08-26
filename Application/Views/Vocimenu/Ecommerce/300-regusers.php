@@ -9,20 +9,20 @@
 		<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_clienti")."/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi cliente");?></a></li>
 		<li <?php if ($this->controller === "regusers" && $this->action == "main" && !RegusersModel::schermataAgenti()) { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/".v("url_elenco_clienti")."/main/1?agente=0";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista clienti");?></a></li>
 		<?php if (v("attiva_agenti")) { ?>
-		<li class="dropdown-header">Agenti</li>
+		<li class="dropdown-header"><?php echo gtext("Agenti");?></li>
 		<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_clienti")."/form/insert/0?agente=1";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi agente");?></a></li>
 		<li <?php if ($this->controller === "regusers" && $this->action == "main" && RegusersModel::schermataAgenti()) { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/".v("url_elenco_clienti")."/main/1?agente=1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista agenti");?></a></li>
 		<?php } ?>
 		<?php if (v("attiva_ruoli")) { ?>
-		<li class="dropdown-header">Ruoli</li>
+		<li class="dropdown-header"><?php echo gtext("Ruoli");?></li>
 		<li class="<?php echo tm($tm, array("ruoli"));?>"><a href="<?php echo $this->baseUrl."/ruoli/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista ruoli");?></a></li>
 		<?php } ?>
 		<?php if (v("attiva_tipi_azienda")) { ?>
-		<li class="dropdown-header">Tipi azienda</li>
+		<li class="dropdown-header"><?php echo gtext("Tipi azienda");?></li>
 		<li class="<?php echo tm($tm, array("tipiazienda"));?>"><a href="<?php echo $this->baseUrl."/tipiazienda/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista tipi aziende");?></a></li>
 		<?php } ?>
 		<?php if (v("attiva_gruppi")) { ?>
-		<li class="dropdown-header">Gruppi</li>
+		<li class="dropdown-header"><?php echo gtext("Gruppi");?></li>
 		<li class="<?php echo tm($tm, array("reggroups"));?>"><a href="<?php echo $this->baseUrl."/reggroups/main/1";?>"><i class="fa fa-group"></i> <?php echo gtext("Lista gruppi");?></a></li>
 			<?php if (v("gruppi_inseriti_da_approvare_alla_registrazione")) {
 				$numeroDaApprovare = RegusersgroupstempModel::numerodaapprovare();
