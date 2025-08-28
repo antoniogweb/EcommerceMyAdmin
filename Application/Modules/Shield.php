@@ -117,4 +117,86 @@ class Shield
 			}
 		}
 	}
+	
+	public static function waf()
+	{
+		$payloadPath = is_dir(FRONT."/Logs/Payload") ? FRONT."/Logs/Payload" : LIBRARY."/Frontend/Logs/Payload";
+		
+		if (is_dir($payloadPath))
+		{
+			$ip = getIp();
+			
+			Files_Log::$logFolder = LIBRARY."/Logs";
+			$log = Files_Log::getInstance("log_monitoring");
+			
+			$erroriBlocco = array();
+			
+			if (trim($ip))
+			{
+				if (isset($_SERVER['REQUEST_URI']) && trim($_SERVER['REQUEST_URI']))
+				{
+					$requestUriPayloadFilePartial = "$payloadPath/URI/partial.txt";
+					
+					$requestUri = trim($_SERVER['REQUEST_URI']);
+					
+					if (is_file($requestUriPayloadFilePartial))
+					{
+						$stringhe = array_map('trim', file($requestUriPayloadFilePartial, FILE_IGNORE_NEW_LINES));
+						
+						foreach ($stringhe as $stringa)
+						{
+							if (stripos($requestUri, $stringa) !== false)
+							{
+								$erroriBlocco[] = "Bloccato IP $ip: stringa pericolosa <b>$stringa</b> nel seguente request uri: <b>$requestUri</b>";
+							}
+						}
+					}
+					
+					$requestUriPayloadFileExact = "$payloadPath/URI/exact.txt";
+					
+					if (is_file($requestUriPayloadFileExact))
+					{
+						$stringhe = array_map('trim', file($requestUriPayloadFileExact, FILE_IGNORE_NEW_LINES));
+						
+						foreach ($stringhe as $stringa)
+						{
+							if (strtolower($requestUri) == strtolower($stringa))
+							{
+								$erroriBlocco[] = "Bloccato IP $ip: stringa pericolosa <b>$stringa</b> nel seguente request uri: <b>$requestUri</b>";
+							}
+						}
+					}
+				}
+				
+				$allPayloadFilePartial = "$payloadPath/ALL/partial.txt";
+					
+				if (is_file($allPayloadFilePartial))
+				{
+					foreach ($_COOKIE as $name => $value)
+					{
+						$stringhe = array_map('trim', file($allPayloadFilePartial, FILE_IGNORE_NEW_LINES));
+						
+						foreach ($stringhe as $stringa)
+						{
+							if (stripos($value, $stringa) !== false)
+							{
+								$erroriBlocco[] = "Bloccato IP $ip: stringa pericolosa <b>$stringa</b> nel cookie <b>$value</b>";
+							}
+						}
+					}
+				}
+				
+				if (count($erroriBlocco) > 0)
+				{
+					foreach ($erroriBlocco as $erroreBlocco)
+					{
+						$log->writeString($erroreBlocco);
+					}
+					
+					http_response_code(403);
+					die();
+				}
+			}
+		}
+	}
 }

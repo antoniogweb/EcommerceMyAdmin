@@ -508,6 +508,8 @@ class BaseContenutiController extends BaseController
 		
 		$data["title"] = Parametri::$nomeNegozio . " - pagina non trovata";
 		
+		ConteggioqueryModel::$codice = 404;
+		
 		if (Output::$html)
 		{
 			header('HTTP/1.0 404 Not Found');

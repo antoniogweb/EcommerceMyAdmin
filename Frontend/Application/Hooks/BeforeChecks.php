@@ -216,4 +216,7 @@ if (v("attiva_gestione_feed"))
 
 Domain::setPath();
 
+if (v("attiva_waf"))
+	Shield::waf();
+
 // User::$nazione = User::$nazioneNavigazione = "FR";

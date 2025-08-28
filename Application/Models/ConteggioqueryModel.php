@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ConteggioqueryModel extends GenericModel
 {
+	public static $codice = 200;
+	
 	public function __construct() {
 		$this->_tables='conteggio_query';
 		$this->_idFields='id_conteggio';
@@ -40,6 +42,7 @@ class ConteggioqueryModel extends GenericModel
 			"data_creazione"	=>	date("Y-m-d H:i:s"),
 			"ip"		=>	getIp(),
 			"url"		=>	isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : "",
+			"codice"	=>	self::$codice,
 		));
 		
 		$cq->insert();

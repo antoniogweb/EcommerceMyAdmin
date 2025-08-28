@@ -1,0 +1,1 @@
+alter table conteggio_query add codice char(4) not null default 200;

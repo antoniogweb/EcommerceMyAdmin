@@ -868,6 +868,8 @@ class VariabiliModel extends GenericModel {
 		### IP ##
 		"attiva_gestione_geolocator"	=>	0, // se permette oppure no la gestione dei geolocator
 		"attiva_ip_location"		=>	0, // se è attiva la ricerca dell'IP all'accesso al sito (vecchia versione)
+		### WAF ##
+		"attiva_waf"			=>	0, // se impostato ad 1, attiva il Web Application Firewall
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
