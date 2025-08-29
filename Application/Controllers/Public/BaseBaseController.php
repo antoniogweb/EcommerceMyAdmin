@@ -759,6 +759,11 @@ class BaseBaseController extends Controller
 		$this->append($data);
 	}
 	
+	protected function setCondizioniDatiUtente($idUser = 0)
+	{
+		
+	}
+	
 	protected function formRegistrazione()
 	{
 		if( !session_id() )
@@ -814,6 +819,8 @@ class BaseBaseController extends Controller
 		
 		if (v("attiva_tipi_azienda"))
 			$this->m('RegusersModel')->fields .= ",id_tipo_azienda";
+		
+		$this->setCondizioniDatiUtente(0);
 		
 		if (isset($_POST['updateAction']))
 		{

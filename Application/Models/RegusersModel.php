@@ -62,11 +62,11 @@ class RegusersModel extends FormModel {
 		
 		if (!$this->usingApi)
 		{
-			$this->addStrongCondition("both",'checkMail',"username|Si prega di ricontrollare il campo Email<div rel='hidden_alert_notice' style='display:none;'>username</div>");
+			$this->addStrongCondition("both",'checkMail',"username|".gtext("Si prega di ricontrollare il campo Email")."<div rel='hidden_alert_notice' style='display:none;'>username</div>");
 			$this->addStrongCondition("insert",'checkNotEmpty',"password,confirmation");
-			$this->addSoftCondition("both",'checkEqual',"password,confirmation|Le due password non coincidono<div rel='hidden_alert_notice' style='display:none;'>password</div><div rel='hidden_alert_notice' style='display:none;'>confirmation</div>");
+			$this->addSoftCondition("both",'checkEqual',"password,confirmation|".gtext("Le due password non coincidono")."<div rel='hidden_alert_notice' style='display:none;'>password</div><div rel='hidden_alert_notice' style='display:none;'>confirmation</div>");
 
-			$this->addDatabaseCondition("both",'checkUnique',"username|Il valore del campo Email è già usato da un altro cliente, si prega di sceglierne un altro<div rel='hidden_alert_notice' style='display:none;'>username</div>");
+			$this->addDatabaseCondition("both",'checkUnique',"username|".gtext("Il valore del campo Email è già usato da un altro cliente, si prega di sceglierne un altro")."<div rel='hidden_alert_notice' style='display:none;'>username</div>");
 		}
 	}
 	

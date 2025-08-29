@@ -349,7 +349,7 @@ class FormModel extends GenericModel {
 				),
 				'genere'	=>	array(
 					"type"	=>	"Select",
-					"options"	=>	array("" => "Seleziona", "M" => "Maschio", "F" => "Femmina"),
+					"options"	=>	array("" => "Seleziona", "M" => gtext("Maschio"), "F" => gtext("Femmina")),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),

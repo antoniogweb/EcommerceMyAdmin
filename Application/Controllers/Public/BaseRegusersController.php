@@ -1157,6 +1157,8 @@ class BaseRegusersController extends BaseController
 		
 		$this->m('RegusersModel')->setConditions($tipo_cliente, "update", $pec, $codiceDestinatario);
 		
+		$this->setCondizioniDatiUtente((int)$this->iduser);
+		
 // 		$this->m('RegusersModel')->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente";
 		
 		if (v("permetti_modifica_account"))

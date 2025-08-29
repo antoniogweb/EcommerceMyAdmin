@@ -49,7 +49,7 @@ class ProvinceModel extends GenericModel
 			$this->sWhere("nazione in (select iso_country_code from nazioni where attiva = 1 or attiva_spedizione = 1)");
 		
 		if ($mostraElementoVuoto)
-			return array(""=>"Seleziona") + $this->send();
+			return array(""=>gtext("Seleziona")) + $this->send();
 		else
 			return $this->send();
 	}
