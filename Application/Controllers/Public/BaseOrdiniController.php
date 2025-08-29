@@ -163,6 +163,8 @@ class BaseOrdiniController extends BaseController
 					{
 						case "Completed":
 							
+							$this->hookOrdinePagato((int)$res[0]["orders"]["id_o"]);
+							
 							$this->mandaMailDopoPagamento($ordine);
 							
 							$mandaFattura = false;
@@ -290,6 +292,13 @@ class BaseOrdiniController extends BaseController
 		}
 	}
 	
+	protected function hookOrdinePagato($idOrdine = 0)
+	{
+		// Hook ordine pagato
+		if (v("hook_ordine_pagato"))
+			callFunction(v("hook_ordine_pagato"), (int)$idOrdine, v("hook_ordine_pagato"));
+	}
+	
 	//IPN carta
 	public function ipncarta()
 	{
@@ -331,6 +340,8 @@ class BaseOrdiniController extends BaseController
 					
 					if (PagamentiModel::gateway()->success())
 					{
+						$this->hookOrdinePagato((int)$res[0]["orders"]["id_o"]);
+						
 						$this->mandaMailDopoPagamento($ordine);
 						
 						$mandaFattura = false;

@@ -786,6 +786,7 @@ class VariabiliModel extends GenericModel {
 		"hook_utente_annulla_ordine"	=>	"", // se diverso da blank, funzione che viene chiamata dopo che l'utente ha annullato l'ordine. Gli viene passato l'ID dell'ordine come unico parametro
 		"hook_after_login_utente"	=>	"", // se diverso da blank, funzione che viene chiamata dopo che l'utente ha eseguito correttamente il login. Gli viene passto l'ID dell'utente come unico parametro
 		"hook_after_creazione_spedizione"	=>	"", // se diverso da blank, funzione che viene chiamata dopo che è stata creata una spedizione con il modulo spedizioni. Gli viene passto l'ID della spedizione come unico parametro
+		"hook_ordine_pagato"		=>	"", // se diversa da blank, funzione che viene chiamata dopo che l'ordine è stato pagato online (dopo IPN). Gli viene passato l'ID dell'ordine come unico parametro
 		### GDPR ##
 		"filtra_html_in_cerca_di_servizi_da_disattivare"	=>	0, // se impostato su 1, filtra l'HTML e disabilita i servizi che attivano cookie terzi (Gmaps, Youtube, etc) inserendo in automatico un messaggio di popup
 		### PASSWORD ##

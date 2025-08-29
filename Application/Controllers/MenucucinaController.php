@@ -42,7 +42,7 @@ class MenucucinaController extends GenericsectionController {
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Categoria,In evidenza,Pubblicato?';
 		
-		$filtroCategoria = array("tutti" => BlogcatModel::g(false)->getTitoloCategoriaPadreSezione()) + BlogcatModel::g(false)->buildSelect(null,false);
+		$filtroCategoria = array("tutti" => MenucucinacatModel::g(false)->getTitoloCategoriaPadreSezione()) + MenucucinacatModel::g(false)->buildSelect(null,false);
 		$this->filters = array(null,null,'title',array("id_c",null,$filtroCategoria),null);
 		
 		$this->queryFields = "title,alias,attivo,description,immagine,id_c,in_evidenza,price_ivato";
