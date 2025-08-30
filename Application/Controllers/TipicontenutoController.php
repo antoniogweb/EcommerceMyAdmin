@@ -86,7 +86,12 @@ class TipicontenutoController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo,tipo,section,campi,descrizione');
+		$fields = 'titolo,tipo,section,campi,descrizione';
+		
+		if (v("aggiunta_fasce_frontend_nuovo"))
+			$fields .= ",immagine,clean_immagine";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
 	}
@@ -94,5 +99,15 @@ class TipicontenutoController extends BaseController
 	public function ordina()
 	{
 		parent::ordina();
+	}
+	
+	public function documento($field = "", $id = 0)
+	{
+		parent::documento($field, $id);
+	}
+	
+	public function thumb($field = "", $id = 0)
+	{
+		parent::thumb($field, $id);
 	}
 }

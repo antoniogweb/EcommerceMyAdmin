@@ -415,6 +415,8 @@ class Route
 		'tipicontenuto,main',
 		'tipicontenuto,form',
 		'tipicontenuto,ordina',
+		'tipicontenuto,documento',
+		'tipicontenuto,thumb',
 		
 		'cron,migrazioni',
 		

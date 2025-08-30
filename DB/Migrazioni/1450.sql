@@ -1,0 +1,1 @@
+alter table tipi_contenuto add clean_immagine varchar(255) not null default '';
