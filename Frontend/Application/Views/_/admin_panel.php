@@ -103,9 +103,9 @@
 											<div>
 												<span class="uk-text-meta uk-text-small">{{ f.tipi_contenuto.titolo }}</span>
 											</div>
-											<div>
+											<!--<div>
 												<span class="uk-text-small">{{ f.contenuti.titolo }}</span>
-											</div>
+											</div>-->
 										</td>
 										<td class="uk-padding-remove-left uk-padding-remove-right"><a title="<?php echo gtext("Modifica");?>" href="#" @click.prevent="modificaFascia(f.contenuti.id_cont)" class="iframe"><span class="" uk-icon="pencil"></span></a></td>
 										<td class="uk-padding-remove-right"><a href="" @click.prevent="eliminaFascia(f.contenuti.id_cont)"><span class="uk-text-danger" uk-icon="trash"></span></a></td>
@@ -115,7 +115,8 @@
 							<div v-if="fasce.length == 0" class="uk-margin uk-alert uk-alert-primary">
 								<?php echo gtext("Nessuna fascia presente");?>
 							</div>
-							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> Nuova fascia</a>
+<!-- 							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> Nuova fascia</a> -->
+							<a @click.prevent="preparaAggiungiDialog()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> Nuova fascia</a>
 							<div v-if="!aggiungi">
 								<input v-bind:class="oggettoErroreTitolo" v-model="titoloNuovaFascia" class="uk-input" placeholder="Titolo fascia nuova fascia"/>
 								<select v-bind:class="oggettoErroreIdTipo" v-model="idTipoFascia" class="uk-select uk-margin-small">
@@ -127,6 +128,26 @@
 						</div>
 					</li>
 				</ul>
+			</div>
+			
+			<div id="modale-tipo-fascia" class="" uk-modal>
+				<div class=" uk-modal-dialog uk-modal-body uk-width-auto">
+					<button class="uk-modal-close-full uk-close large" type="button" uk-close></button>
+					<div class="uk-modal-header">
+						<h2 class="uk-modal-title"><?php echo gtext("Seleziona la fascia");?></h2>
+					</div>
+
+					<div class="uk-modal-body" uk-overflow-auto>
+						<div class="uk-grid-match uk-grid-column-small uk-grid-row-large uk-child-width-1-4@s uk-text-center" uk-grid>
+							<div v-for="(tipoFascia, index) in tipiFasce">
+								<div class="uk-card uk-card-default uk-card-body uk-padding-small">
+									<h3 class="uk-card-title">{{tipoFascia.tipi_contenuto.titolo}}</h3>
+									<a href="" @click.prevent="confermaAggiungiDialog(tipoFascia)"  class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="check"></span> Aggiungi</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</aside>
 		
@@ -280,6 +301,17 @@
 						}
 					});
 				},
+				confermaAggiungiDialog: function(tipoFascia)
+				{
+					console.log(tipoFascia.tipi_contenuto);
+// 					this.confermataAggiunta = true;
+// 					
+					this.titoloNuovaFascia = tipoFascia.tipi_contenuto.titolo;
+					this.idTipoFascia = tipoFascia.tipi_contenuto.id_tipo;
+					
+					this.confermaAggiungi();
+					UIkit.modal("#modale-tipo-fascia",{}).hide();
+				},
 				confermaAggiungi: function()
 				{
 					this.confermataAggiunta = true;
@@ -349,6 +381,10 @@
 				preparaAggiungi: function()
 				{
 					this.aggiungi = false;
+				},
+				preparaAggiungiDialog: function()
+				{
+					UIkit.modal("#modale-tipo-fascia",{}).show();
 				},
 				preparaAggiungiTema: function()
 				{
