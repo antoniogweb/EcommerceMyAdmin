@@ -8,6 +8,9 @@
 		<li <?php echo $posizioni['contenuti'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/contenuti/$id".$this->viewStatus;?>"><?php echo gtext("Fasce");?></a></li>
 	<?php } ?>
 	<li <?php echo $posizioni['meta'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/meta/$id".$this->viewStatus;?>"><?php echo gtext("Meta");?></a></li>
+	<?php if (v("attiva_gruppi_utenti")) { ?>
+	<li <?php echo $posizioni['gruppi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/gruppi/$id".$this->viewStatus;?>"><?php echo gtext("Gruppi");?></a></li>
+	<?php } ?>
 </ul>
 
 <?php } ?>
