@@ -100,31 +100,7 @@ class ProdottiModel extends PagesModel {
 		);
 	}
 	
-	public function setFilters()
-	{
-// 		$this->_popupItemNames = array(
-// 			'attivo'	=>	'attivo',
-// 			'in_evidenza'	=>	'in_evidenza',
-// 			'in_promozione'	=>	'in_promozione',
-// 		);
-// 
-// 		$this->_popupLabels = array(
-// 			'attivo'	=>	'PUBBLICATO?',
-// 			'in_evidenza'	=>	'IN EVIDENZA?',
-// 			'in_promozione'	=>	'IN PROMOZIONE?',
-// 		);
-// 
-// 		$this->_popupFunctions = array(
-// 			'attivo'=>	'getYesNo',
-// 			'in_evidenza'	=>	'getYesNo',
-// 			'in_promozione'	=>	'getYesNo',
-// 		);
-// 		
-// 		$this->_popupOrderBy = array(
-// 		);
-// 		
-// 		$this->_popupWhere[] = array();
-	}
+	public function setFilters() {}
 	
 	// Controlla che il codice non sia già stato usato
 	public function checkCodiceUnivoco($id = 0)
