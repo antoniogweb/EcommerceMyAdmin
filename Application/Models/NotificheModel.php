@@ -115,6 +115,13 @@ class NotificheModel extends GenericModel {
 					"class"	=>	"text-yellow",
 				);
 			
+			if (!v("attiva_waf"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare il WAF. Variabile attiva_waf."),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
 		}
 		
 		return $notifiche;

@@ -49,6 +49,24 @@
 			{
 				background-color:#EEE;
 			}
+			
+			.card_tipo_fascia
+			{
+				display: flex;
+				flex-wrap: wrap;
+			}
+			
+			.card_tipo_fascia_inner_box
+			{
+				display:flex;
+				flex-direction:column;
+				flex:1;
+			}
+			
+			.card_tipo_fascia_aggiungi
+			{
+				margin-top: auto;
+			}
 		</style>
 		
 		
@@ -103,9 +121,11 @@
 											<div>
 												<span class="uk-text-meta uk-text-small">{{ f.tipi_contenuto.titolo }}</span>
 											</div>
+											<?php if (!v("aggiunta_fasce_frontend_nuovo")) { ?>
 											<div>
 												<span class="uk-text-small">{{ f.contenuti.titolo }}</span>
 											</div>
+											<?php } ?>
 										</td>
 										<td class="uk-padding-remove-left uk-padding-remove-right"><a title="<?php echo gtext("Modifica");?>" href="#" @click.prevent="modificaFascia(f.contenuti.id_cont)" class="iframe"><span class="" uk-icon="pencil"></span></a></td>
 										<td class="uk-padding-remove-right"><a href="" @click.prevent="eliminaFascia(f.contenuti.id_cont)"><span class="uk-text-danger" uk-icon="trash"></span></a></td>
@@ -115,7 +135,11 @@
 							<div v-if="fasce.length == 0" class="uk-margin uk-alert uk-alert-primary">
 								<?php echo gtext("Nessuna fascia presente");?>
 							</div>
-							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> Nuova fascia</a>
+							<?php if (!v("aggiunta_fasce_frontend_nuovo")) { ?>
+							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> <?php echo gtext("Nuova fascia");?></a>
+							<?php } else { ?>
+							<a @click.prevent="preparaAggiungiDialog()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> <?php echo gtext("Nuova fascia");?></a>
+							<?php } ?>
 							<div v-if="!aggiungi">
 								<input v-bind:class="oggettoErroreTitolo" v-model="titoloNuovaFascia" class="uk-input" placeholder="Titolo fascia nuova fascia"/>
 								<select v-bind:class="oggettoErroreIdTipo" v-model="idTipoFascia" class="uk-select uk-margin-small">
@@ -127,6 +151,31 @@
 						</div>
 					</li>
 				</ul>
+			</div>
+			
+			<div id="modale-tipo-fascia" class="" uk-modal>
+				<div class=" uk-modal-dialog uk-modal-body uk-width-auto">
+					<button class="uk-modal-close-full uk-close large" type="button" uk-close></button>
+					<div class="uk-modal-header">
+						<h2 class="uk-modal-title"><?php echo gtext("Seleziona la fascia");?></h2>
+					</div>
+
+					<div class="uk-modal-body" uk-overflow-auto>
+						<div class="uk-grid-match uk-grid-column-small uk-grid-row-large uk-child-width-1-4@s uk-text-center" uk-grid>
+							<div v-for="(tipoFascia, index) in tipiFasce">
+								<div class="uk-card uk-card-default uk-card-body uk-padding-small card_tipo_fascia">
+									<div class="card_tipo_fascia_inner_box">
+										<h4>{{tipoFascia.tipi_contenuto.titolo}}</h4>
+										<div>
+											<img v-if="tipoFascia.tipi_contenuto.immagine != ''" v-bind:src="'<?php echo $this->baseUrlSrc."/images/anteprimefasce/";?>' + tipoFascia.tipi_contenuto.immagine" />
+										</div>
+										<a href="" @click.prevent="confermaAggiungiDialog(tipoFascia)"  class="card_tipo_fascia_aggiungi uk-button uk-button-secondary uk-width-1-1"><span uk-icon="check"></span> Aggiungi</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</aside>
 		
@@ -280,6 +329,17 @@
 						}
 					});
 				},
+				confermaAggiungiDialog: function(tipoFascia)
+				{
+					console.log(tipoFascia.tipi_contenuto);
+// 					this.confermataAggiunta = true;
+// 					
+					this.titoloNuovaFascia = tipoFascia.tipi_contenuto.titolo;
+					this.idTipoFascia = tipoFascia.tipi_contenuto.id_tipo;
+					
+					this.confermaAggiungi();
+					UIkit.modal("#modale-tipo-fascia",{}).hide();
+				},
 				confermaAggiungi: function()
 				{
 					this.confermataAggiunta = true;
@@ -349,6 +409,10 @@
 				preparaAggiungi: function()
 				{
 					this.aggiungi = false;
+				},
+				preparaAggiungiDialog: function()
+				{
+					UIkit.modal("#modale-tipo-fascia",{}).show();
 				},
 				preparaAggiungiTema: function()
 				{

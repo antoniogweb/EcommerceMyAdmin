@@ -846,6 +846,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_biblioteca_documenti"	=>	0, // se mostrare o nascondere i link della propria biblioteca in area riservata
 		"attiva_sezione_download_documenti"	=>	0, // se impostato su 1, mostra la voce di menù che manda alle statistiche di scaricamento
 		"gestisci_gruppi_da_form"	=>	0, // se impostato su 1 permette di gestire i gruppi direttamente dal form, senza dover usare la scheda gruppi (chye viene nascosta)
+		"attiva_descrizione_in_documenti"	=>	1, // se impostato su 1, attiva il campo descrizione nei documenti
 		### MAIL LOG ##
 		"email_log_errori"			=>	"",	// // Indirizzi email (divisi da virgola) a cui inviare un avviso se la verifica IPN (o affini) del pagamento non va a buon fine (con errori segnalati dal gateway di pagamento riportati nel corpo della mail)
 		"email_log_pagamento_da_analizzare"	=>	"", // Indirizzi email (divisi da virgola) a cui inviare un avviso via mail se l'ecommerce riceve un pagamento su un ordine che non si trova in uno stato pending (ex un pagamento su un ordine annullato)
@@ -864,6 +865,7 @@ class VariabiliModel extends GenericModel {
 		"variabili_gestibili_da_fasce"	=>	"",
 		"filtra_fasce_per_tema"		=>	0, // se attivo, mostra solo le fasce del tema impostato (altrimenti mostra tutte le fasce indipendentemente dal tema)
 		"attiva_contenuti_figli"	=>	0, // se impostato a 1 permette di definire dei contenuyti come figli di fasce (quindi non di pagine o di categorie)
+		"aggiunta_fasce_frontend_nuovo"	=>	0, // se impostato ad 1, nell'editing delle fasce da frontend attiva la nuova modalità di aggiunta con dialog e immagine
 		### TOKEN ##
 		"token_lista_configurazioni_mancanti"	=>	"", // token per vedere, se loggato in admin, l'elenco delle configurazioni mancanti
 		### IP ##

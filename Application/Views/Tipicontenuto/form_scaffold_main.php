@@ -9,7 +9,7 @@ $().ready(function() {
 });
 </script>
 
-<form class="formClass form_class_tipo_contenuto" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>">
+<form class="formClass form_class_tipo_contenuto" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" <?php if (v("aggiunta_fasce_frontend_nuovo")) { ?>enctype='multipart/form-data'<?php } ?>>
 	<?php echo $form["titolo"];?>
 	
 	<?php echo $form["tipo"];?>
@@ -17,6 +17,10 @@ $().ready(function() {
 	<?php echo $form["section"];?>
 	
 	<?php echo $form["campi"];?>
+	
+	<?php if (v("aggiunta_fasce_frontend_nuovo")) { ?>
+	<?php echo $form["immagine"];?>
+	<?php } ?>
 	
 	<?php echo $form["descrizione"];?>
 	

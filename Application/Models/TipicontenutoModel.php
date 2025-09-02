@@ -36,6 +36,25 @@ class TipicontenutoModel extends GenericModel
 		
 		$this->_idOrder = 'id_order';
 		
+		$this->uploadFields = array(
+			"immagine"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	"images/anteprimefasce",
+				"allowedExtensions"	=>	'png,jpg,jpeg',
+				'allowedMimeTypes'	=>	'',
+				"createImage"	=>	true,
+				"maxFileSize"	=>	v("dimensioni_upload_contenuti"),
+				"clean_field"	=>	"clean_immagine",
+				"Content-Disposition"	=>	"inline",
+				"thumb"	=> array(
+					'imgWidth'		=>	400,
+					'imgHeight'		=>	400,
+					'defaultImage'	=>  null,
+					'cropImage'		=>	'no',
+				),
+			),
+		);
+		
 		parent::__construct();
 	}
 	
@@ -95,4 +114,20 @@ class TipicontenutoModel extends GenericModel
     {
 		$this->aggiungiAGruppoTipo($id, "CO");
     }
+    
+    public function update($id = NULL, $whereClause = NULL)
+	{
+		if ($this->upload("update"))
+			return parent::update($id, $whereClause);
+		
+		return false;
+	}
+	
+	public function insert()
+	{
+		if ($this->upload("insert"))
+			return parent::insert();
+		
+		return false;
+	}
 }

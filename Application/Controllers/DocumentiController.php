@@ -59,7 +59,8 @@ class DocumentiController extends BaseController
 		if (v("attiva_immagine_in_documenti"))
 			$fields .= ",immagine";
 		
-		$fields .= ",descrizione";
+		if (v("attiva_descrizione_in_documenti"))
+			$fields .= ",descrizione";
 		
 		if ($queryType == "update" && !$this->m[$this->modelName]->hasPage((int)$id) && !$this->m[$this->modelName]->hasUser((int)$id))
 			$fields .= ",id_page";
