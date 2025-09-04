@@ -339,11 +339,23 @@ trait BaseCrudController
 			
 			$this->clean();
 			
-			header('Content-disposition: attachment; filename='.date("Y-m-d_H_i_s")."_esportazione_".encodeUrl($data["tabella"]).".xls");
-			header('Content-Type: application/vnd.ms-excel; charset=utf-8');
-			
-			echo "\xEF\xBB\xBF"; // UTF-8 BOM
-			echo $data['main'];
+			if (v("esporta_xls_PhpOffice"))
+			{
+				ob_start();
+				echo "\xEF\xBB\xBF"; // UTF-8 BOM
+				echo $data['main'];
+				$html = ob_get_clean();
+				
+				HtmlToXlsx::download($html, date("Y-m-d_H_i_s")."_esportazione_".encodeUrl($data["tabella"]).".xls");
+			}
+			else
+			{
+				header('Content-disposition: attachment; filename='.date("Y-m-d_H_i_s")."_esportazione_".encodeUrl($data["tabella"]).".xls");
+				header('Content-Type: application/vnd.ms-excel; charset=utf-8');
+				
+				echo "\xEF\xBB\xBF"; // UTF-8 BOM
+				echo $data['main'];
+			}
 		}
 		else if (isset($_GET["esporta_json"]))
 		{

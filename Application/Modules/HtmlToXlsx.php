@@ -22,22 +22,20 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class RegaccessiModel extends GenericModel {
-	
-	public function __construct() {
-		$this->_tables='regaccesses';
-		$this->_idFields='id';
+require_once(LIBRARY."/External/libs/vendor/autoload.php");
+
+class HtmlToXlsx
+{
+	public static function download($html, $titolo)
+	{
+		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Html();
+		$spreadsheet = $reader->loadFromString($html);
+		$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 		
-		parent::__construct();
+		header('Content-disposition: attachment; filename='.$titolo);
+		header('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Cache-Control: max-age=0');
+		ob_end_clean();
+		$writer->save('php://output');
 	}
-	
-	public function cleanDateAccessi($record)
-    {
-		$formato = "d-m-Y";
-		
-		if (isset($record[$this->_tables]["data_creazione"]) && $record[$this->_tables]["data_creazione"])
-			return date($formato,strtotime($record[$this->_tables]["data_creazione"]));
-		
-		return "";
-    }
 }
