@@ -1,11 +1,8 @@
-.well-known/
-/.well-known
 /plugins
 plugins/
 .php
 /wordpress
 wordpress
-traffic-advice
 webuploader
 ==
 wp-includes
@@ -19,7 +16,6 @@ wp-login
 .example
 jquery-1.9.1.min
 .txt
-.json
 /dashboard
 /cms
 /backend
