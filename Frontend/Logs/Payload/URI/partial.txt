@@ -14,7 +14,6 @@ wp-login
 .bak
 .dist
 .example
-.txt
 /dashboard
 /cms
 /backend
