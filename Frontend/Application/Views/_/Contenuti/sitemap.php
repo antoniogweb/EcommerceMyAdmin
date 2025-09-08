@@ -10,7 +10,7 @@
 		$n = isset($n["aggregate"]) ? $n["aggregate"] : $n;
 	?>
 	<url>
-		<loc>
+		<loc><![CDATA[
 			<?php if ($n["id_page"]) { ?>
 			<?php echo $this->baseUrl."/".getUrlAlias($n["id_page"]);?>
 			<?php } else if ($n["id_c"]) { ?>
@@ -20,7 +20,7 @@
 			<?php } else { ?>
 			<?php echo $this->baseUrl;?>
 			<?php } ?>
-		</loc>
+		]]></loc>
 		<lastmod><?php echo date('c', strtotime($n["ultima_modifica"]));?></lastmod>
 		<priority><?php echo number_format($n["priorita"],2,".","");?></priority>
 	</url>
