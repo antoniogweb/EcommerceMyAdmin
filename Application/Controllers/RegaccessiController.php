@@ -41,8 +41,6 @@ class RegaccessiController extends BaseController {
 		'utente:sanitizeAll'=>'tutti',
 	);
 	
-	public $useEditor = true;
-	
 	public $sezionePannello = "utenti";
 	
 	public $tabella = "statistiche download documenti";
