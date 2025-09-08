@@ -6,4 +6,6 @@
 
 <?php echo $form["url"];?>
 
+<?php echo $form["description"];?>
+
 <?php include($this->viewPath("pages_campi_aggiuntivi"));?>

@@ -41,7 +41,7 @@ class PartnerController extends GenericsectionController {
 		
 		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Pubblicato?';
 		
-		$this->queryFields = "title,attivo,immagine,sottotitolo,alias,url";
+		$this->queryFields = "title,attivo,immagine,sottotitolo,alias,url,description";
 		
 		if (v("immagine_2_in_partner"))
 			$this->queryFields .= ",immagine_2";
