@@ -1,0 +1,1 @@
+alter table regaccesses add data_creazione timestamp default CURRENT_TIMESTAMP after id;

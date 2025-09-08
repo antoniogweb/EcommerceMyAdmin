@@ -532,6 +532,7 @@ class VariabiliModel extends GenericModel {
 		"token_login_come_utente"	=>	"", // token per forzare il login come un determinato cliente
 		"conferma_registrazione"	=>	0, // se impostato su 1, l'account verrà creato disabilitato finché il cliente non verifica l'account tramite link inviato via mail e codice di verifica
 		"conferma_registrazione_numero_cifre_codice_verifica"	=>	6, // numero di cifre del codice per confermare l'account (usato solo se conferma_registrazione = 1)
+		"attiva_sezione_accessi_utenti"	=>	0, // se impostato a 1, attiva la sezione per mostrare gli accessi degli utenti
 		## LISTE REGALO ##
 		"attiva_liste_regalo"	=>	0, // se impostato a 0, permetti la creazione e la gestione di liste regalo
 		"nome_cookie_id_lista"	=>	"id_lista_regalo", // nome dell cookie che conterrà l'ID della lista regalo
@@ -873,6 +874,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_ip_location"		=>	0, // se è attiva la ricerca dell'IP all'accesso al sito (vecchia versione)
 		### WAF ##
 		"attiva_waf"			=>	0, // se impostato ad 1, attiva il Web Application Firewall
+		### UTILITY ##
+		"esporta_xls_PhpOffice"	=>	0, // se impostato ad 1, quando esporti un file excel esporta un file XLS vero con PhpOffice
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

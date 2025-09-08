@@ -979,6 +979,8 @@ class Route
 		
 		'geolocator,main',
 		'geolocator,form',
+		
+		'regaccessi,main',
 	);
 	
 	//it can be 'yes' or 'no'

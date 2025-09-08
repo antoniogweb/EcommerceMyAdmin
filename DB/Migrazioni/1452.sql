@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES ('Gestione accessi', 'main', '', '1', 'attiva_sezione_accessi_utenti=1', '109', '1', 'utenti', 'main');

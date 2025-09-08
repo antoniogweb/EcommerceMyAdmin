@@ -1435,6 +1435,11 @@ class BaseContenutiController extends BaseController
 		return "pages.id_order";
 	}
 	
+	protected function sectionLoadCustom($viewFile, $section, $type = "category", $template = null)
+	{
+		return $viewFile;
+	}
+	
 	private function sectionLoad($section, $type = "category", $template = null)
 	{
 		$alloweSections = $this->m("CategoriesModel")->clear()->select("section")->where(array(
@@ -1462,6 +1467,8 @@ class BaseContenutiController extends BaseController
 		{
 			$viewFile = $template;
 		}
+		
+		$viewFile = $this->sectionLoadCustom($viewFile, $section, $type, $template);
 		
 		if (isset($viewFile) and file_exists(tpf("/Contenuti/$viewFile.php")))
 		{
