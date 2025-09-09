@@ -57,8 +57,6 @@ wvstests
 /wvstests/
 wp-load
 makeasmtp
-(
-)
 {
 }
 <
