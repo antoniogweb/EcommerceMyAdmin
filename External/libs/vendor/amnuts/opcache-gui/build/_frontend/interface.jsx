@@ -277,8 +277,9 @@ class Tab extends React.Component {
 function OverviewCounts(props) {
     if (props.overview === false) {
         return (
-            <p class="file-cache-only">
-                {props.txt(`You have <i>opcache.file_cache_only</i> turned on.  As a result, the memory information is not available.  Statistics and file list may also not be returned by <i>opcache_get_statistics()</i>.`)}
+            <p className="file-cache-only"
+                dangerouslySetInnerHTML={{__html: props.txt(`You have <i>opcache.file_cache_only</i> turned on.  As a result, the memory information is not available.  Statistics and file list may also not be returned by <i>opcache_get_statistics()</i>.`)}}
+            >
             </p>
         );
     }
@@ -664,7 +665,7 @@ ReactCustomizableProgressbar.defaultProps = {
 function MemoryUsagePanel(props) {
     return (
         <div className="widget-panel">
-            <h3 className="widget-header">memory usage</h3>
+            <h3 className="widget-header">{props.txt('memory usage')}</h3>
             <div className="widget-value widget-info">
                 <p><b>{props.txt('total memory')}:</b> {props.total}</p>
                 <p><b>{props.txt('used memory')}:</b> {props.used}</p>
@@ -684,7 +685,7 @@ function StatisticsPanel(props) {
         <div className="widget-panel">
             <h3 className="widget-header">{props.txt('opcache statistics')}</h3>
             <div className="widget-value widget-info">
-                <p><b>{props.txt('number of cached')} files:</b> {props.num_cached_scripts}</p>
+                <p><b>{props.txt('number of cached files')}:</b> {props.num_cached_scripts}</p>
                 <p><b>{props.txt('number of hits')}:</b> {props.hits}</p>
                 <p><b>{props.txt('number of misses')}:</b> {props.misses}</p>
                 <p><b>{props.txt('blacklist misses')}:</b> {props.blacklist_miss}</p>
@@ -779,7 +780,7 @@ class CachedFiles extends React.Component {
         }
 
         if (this.props.allFiles.length === 0) {
-            return <p>{this.props.txt('No files have been cached or you have <i>opcache.file_cache_only</i> turned on')}</p>;
+            return <p dangerouslySetInnerHTML={{__html: this.props.txt(`No files have been cached or you have <i>opcache.file_cache_only</i> turned on`)}}></p>;
         }
 
         const { searchTerm, currentPage } = this.state;

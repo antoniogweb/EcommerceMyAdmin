@@ -3,7 +3,19 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com)
-and this project adheres to [Semantic Versioning](https://semver.org).
+and this project adheres to [Semantic Versioning](https://semver.org). This is always true of the master branch. Some earlier branches, including the branch from which you are reading this file, remain supported and security fixes are applied to them; if the security fix represents a breaking change, it may have to be applied as a minor or patch version.
+
+## 2025-08-10 - 1.30.0
+
+### Breaking Changes
+
+- Images will be loaded from an external source (e.g. http://example.com/img.png) only if the reader is explicitly set to allow it via `$reader->setAllowExternalImages(true)`. We do not believe that loading of external images is a widely used feature. This is a necessary change for security purposes. It unfortunately breaks Semantic Versioning for reasons described above; there is no way to start a new major version for this branch.
+
+# 2025-07-23 - 1.29.12
+
+### Added
+
+- Add to all readers the option to allow or forbid fetching external images. This is unconditionally allowed now. The default will be set to "allow", so no code changes are necessary. However, we are giving consideration to changing the default.[PR #4545](https://github.com/PHPOffice/PhpSpreadsheet/pull/4545)
 
 # 2025-06-22 - 1.29.11
 

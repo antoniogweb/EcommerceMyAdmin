@@ -8,7 +8,7 @@ use Exception;
 
 class Service
 {
-    public const VERSION = '3.5.5';
+    public const VERSION = '3.6.0';
 
     protected $tz;
     protected $data;
@@ -416,7 +416,7 @@ class Service
             $config['version'],
             [
                 'php' => PHP_VERSION,
-                'server' => $_SERVER['SERVER_SOFTWARE'] ?: '',
+                'server' => $_SERVER['SERVER_SOFTWARE'] ?? '',
                 'host' => (function_exists('gethostname')
                     ? gethostname()
                     : (php_uname('n')
@@ -445,7 +445,7 @@ class Service
     protected function jitState(array $status, array $directives): array
     {
         $state = [
-            'enabled' => $status['jit']['enabled'],
+            'enabled' => $status['jit']['enabled'] ?? false,
             'reason' => ''
         ];
 

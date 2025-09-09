@@ -4,26 +4,26 @@
  * OPcache GUI - build script
  *
  * @author Andrew Collington, andy@amnuts.com
- * @version 3.5.5
+ * @version 3.6.0
  * @link https://github.com/amnuts/opcache-gui
  * @license MIT, https://acollington.mit-license.org/
  */
 
 $remoteJsLocations = [
     'cloudflare' => [
-        'cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js',
-        'cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js',
-        'cdnjs.cloudflare.com/ajax/libs/axios/1.3.6/axios.min.js',
+        'cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js',
+        'cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js',
+        'cdnjs.cloudflare.com/ajax/libs/axios/1.11.0/axios.min.js',
     ],
     'jsdelivr' => [
-        'cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js',
-        'cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js',
-        'cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+        'cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js',
+        'cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js',
+        'cdn.jsdelivr.net/npm/axios@1.11.0/dist/axios.min.js',
     ],
     'unpkg' => [
-        'unpkg.com/react@18/umd/react.production.min.js',
-        'unpkg.com/react-dom@18/umd/react-dom.production.min.js',
-        'unpkg.com/axios/dist/axios.min.js',
+        'unpkg.com/react@18.3.1/umd/react.production.min.js',
+        'unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js',
+        'unpkg.com/axios@1.11.0/dist/axios.min.js',
     ],
 ];
 $defaultRemoteJsFrom = array_keys($remoteJsLocations)[0];
