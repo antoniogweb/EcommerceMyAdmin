@@ -452,12 +452,12 @@ class PagesController extends BaseController
 			if (strcmp($this->viewArgs['id_c'],'1') === 0 or (!is_array($sId) and strcmp($this->viewArgs['id_c'],$sId) === 0))
 			{
 // 				$sWhere = "id_c in (".implode(",",$children).")";
-				$sWhere = "id_c in (".$this->scaffold->model->placeholdersFromArray($children).")";
+				$sWhere = "pages.id_c in (".$this->scaffold->model->placeholdersFromArray($children).")";
 				$bindedValuesIdC = $children;
 			}
 			else
 			{
-				$sWhere = "id_c = ?";
+				$sWhere = "pages.id_c = ?";
 				$bindedValuesIdC[] = (int)$this->viewArgs['id_c'];
 				
 				if (v("attiva_categorie_in_prodotto"))
