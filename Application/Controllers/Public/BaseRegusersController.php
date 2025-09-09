@@ -494,12 +494,6 @@ class BaseRegusersController extends BaseController
 		}
 	}
 	
-	protected function hookAfterLogin()
-	{
-		if (v("hook_after_login_utente"))
-			callFunction(v("hook_after_login_utente"), (int)$this->s['registered']->status['id_user'], v("hook_after_login_utente"));
-	}
-	
 	protected function unsetAccessToken()
 	{
 		if (isset($_SESSION["access_token"]))

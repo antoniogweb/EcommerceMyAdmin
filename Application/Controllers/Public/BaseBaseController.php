@@ -848,7 +848,12 @@ class BaseBaseController extends Controller
 						
 						//loggo l'utente
 						if (!v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione"))
+						{
 							$statoAccessoUtente = $this->s['registered']->login($clean["username"],$password);
+							
+							if ($statoAccessoUtente == "accepted")
+								$this->hookAfterLogin();
+						}
 						
 						// Iscrizione alla newsletter
 						if (isset($_POST["newsletter"]) && IntegrazioninewsletterModel::integrazioneAttiva())
@@ -1548,5 +1553,11 @@ class BaseBaseController extends Controller
 	protected function redirectTwoFactorSendMail()
 	{
 		$this->redirect($this->applicationUrl.$this->controller."/twofactorsendmail/".RegusersModel::$redirectQueryString,0);
+	}
+	
+	protected function hookAfterLogin()
+	{
+		if (v("hook_after_login_utente"))
+			callFunction(v("hook_after_login_utente"), (int)$this->s['registered']->status['id_user'], v("hook_after_login_utente"));
 	}
 }
