@@ -32,7 +32,7 @@
 						</div>
 						<div class="uk-width-expand uk-margin-remove-top">
 							<?php if (!$p["cart"]["id_p"] && $p["cart"]["prodotto_attivo"]) { ?><a class="uk-text-small" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php } else { ?><span class="uk-link uk-text-small"><?php } ?>
-								<?php echo field($p, "title");?>11
+								<?php echo field($p, "title");?>
 							<?php if (!$p["cart"]["id_p"] && $p["cart"]["prodotto_attivo"]) { ?></a><?php } else { ?></span><?php } ?>
 							<?php if ($p["cart"]["attributi"]) { ?>
 							<br />
