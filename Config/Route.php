@@ -120,6 +120,7 @@ class Route
 		'regusers,emailesistente',
 		'regusers,documenti',
 		'regusers,download',
+		'regusers,inviamailaccountattivato',
 		
 		'reggroups,main',
 		'reggroups,form',

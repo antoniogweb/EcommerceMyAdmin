@@ -73,13 +73,6 @@ class RegaccessiController extends BaseController {
 			->groupBy('date_format(regaccesses.data_creazione,"%Y-%m-%d"),regaccesses.username')
 			->orderBy('date_format(regaccesses.data_creazione,"%Y-%m-%d") desc')->convert();
 		
-		// if ($this->viewArgs["utente"] != "tutti")
-		// {
-		// 	$this->m[$this->modelName]->aWhere(array(
-		// 		"    AND"	=>	RegusersModel::getWhereClauseRicercaLibera($this->viewArgs['utente'], "regusers."),
-		// 	));
-		// }
-		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al']);
 		
 		$this->getTabViewFields("main");

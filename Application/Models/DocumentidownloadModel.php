@@ -90,4 +90,9 @@ class DocumentidownloadModel extends GenericModel {
 	{
 		return $reocrd["aggregate"]["numero_scaricamenti"];
 	}
+	
+	public function lingua($record)
+	{
+		return DocumentiModel::g()->lingua($record);
+	}
 }

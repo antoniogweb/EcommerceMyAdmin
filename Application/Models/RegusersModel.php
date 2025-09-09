@@ -354,6 +354,33 @@ class RegusersModel extends FormModel {
 		return false;
 	}
 	
+	public function inviamailaccountattivato($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && !$record["has_confirmed"])
+		{
+			$linguaUrl = v("attiva_nazione_nell_url") ? $record["lingua"]."_".strtolower($record["nazione"]) : $record["lingua"];
+			
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array($record["username"]),
+				"oggetto"	=>	"Account attivato",
+				"tipologia"	=>	"ACCOUNT_ATTIVATO",
+				"id_user"	=>	(int)$id,
+				"lingua"	=>	$record["lingua"],
+				"testo_path"	=>	"Elementi/Mail/Clienti/account_attivato.php",
+				"array_variabili_tema"	=>	array(
+					"LINK_LOGIN"	=>	Domain::$publicUrl."/".$linguaUrl."/regusers/login",
+					"NOME_CLIENTE"	=>	RegusersModel::getNominativo($record),
+				),
+			));
+			
+			return $res;
+		}
+		
+		return false;
+	}
+	
 	// importa i clienti partendo dai dati forniti dal gestionale attivo
 	public static function importaDaDatiGestionale($dati, $eliminaNonPiuPresenti = false)
 	{

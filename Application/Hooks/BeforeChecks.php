@@ -466,6 +466,14 @@ Helper_Menu::$htmlLinks = array(
 		"classIconBefore"	=>	'<i class="fa fa-user"></i>',
 		"classIconAfter"	=>	'<i class="fa fa-arrow-right"></i>',
 	),
+	"manda_mail_account_attivato" =>	array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-warning make_spinner help_account_attivato"',
+		"class"	=>	"btn btn-warning make_spinner",
+		'text'	=>	"Manda mail account attivato",
+		"classIconBefore"	=>	'<i class="fa fa-envelope"></i>',
+	),
 );
 
 Scaffold::$autoParams["formMenu"] = "panel,back,resetta,save,elimina";

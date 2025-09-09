@@ -533,6 +533,7 @@ class VariabiliModel extends GenericModel {
 		"conferma_registrazione"	=>	0, // se impostato su 1, l'account verrà creato disabilitato finché il cliente non verifica l'account tramite link inviato via mail e codice di verifica
 		"conferma_registrazione_numero_cifre_codice_verifica"	=>	6, // numero di cifre del codice per confermare l'account (usato solo se conferma_registrazione = 1)
 		"attiva_sezione_accessi_utenti"	=>	0, // se impostato a 1, attiva la sezione per mostrare gli accessi degli utenti
+		"attiva_pulsante_invia_mail_account_attivato"	=>	0, // se impostato a 1 mostra il pulsante per inviare la mail di account attivato
 		## LISTE REGALO ##
 		"attiva_liste_regalo"	=>	0, // se impostato a 0, permetti la creazione e la gestione di liste regalo
 		"nome_cookie_id_lista"	=>	"id_lista_regalo", // nome dell cookie che conterrà l'ID della lista regalo

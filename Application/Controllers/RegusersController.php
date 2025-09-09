@@ -346,6 +346,9 @@ class RegusersController extends BaseController
 		if (v("permetti_di_loggarti_come_utente") && $this->m[$this->modelName]->daConfermare((int)$id))
 			$this->menuLinks = str_replace("invia_link_recupero_password", "invia_link_conferma_account", $this->menuLinks);
 		
+		if (v("attiva_pulsante_invia_mail_account_attivato"))
+			$this->menuLinks = $this->menuLinks.",manda_mail_account_attivato";
+		
 		$this->getTabViewFields("form");
 		
 		$this->m[$this->modelName]->setPasswordStrengthCondition();
@@ -601,7 +604,7 @@ class RegusersController extends BaseController
 		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
 	}
 	
-	// Manda al cliente la mail per il recupero della password
+	// Manda al cliente la mail per la conferma dell'account
 	public function inviamailconfermaaccount($id = 0)
 	{
 		$this->clean();
@@ -616,6 +619,21 @@ class RegusersController extends BaseController
 				flash("notice", "<div class='alert alert-success'>".gtext("La mail con le istruzioni per la conferma dell'account è stata inviata correttamente.")."</div>");
 			else
 				flash("notice", "<div class='alert alert-danger'>".gtext("Errore nell'invio della mail.")."</div>");
+		}
+		
+		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
+	}
+	
+	// Manda al cliente la mail per indicare che l'account è stato attivato
+	public function inviamailaccountattivato($id = 0)
+	{
+		$this->clean();
+		
+		$this->shift(1);
+		
+		if (v("attiva_pulsante_invia_mail_account_attivato") && $this->m("RegusersModel")->isAttivo((int)$id))
+		{
+			$res = $this->m("RegusersModel")->inviamailaccountattivato((int)$id);
 		}
 		
 		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
