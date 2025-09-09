@@ -472,7 +472,7 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" class="btn btn-warning make_spinner help_account_attivato"',
 		"class"	=>	"btn btn-warning make_spinner",
 		'text'	=>	"Manda mail account attivato",
-		"classIconBefore"	=>	'<i class="fa fa-envelope"></i>',
+		"classIconBefore"	=>	'<i class="fa fa-envelope-o"></i>',
 	),
 );
 

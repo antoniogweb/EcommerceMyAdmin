@@ -346,7 +346,7 @@ class RegusersController extends BaseController
 		if (v("permetti_di_loggarti_come_utente") && $this->m[$this->modelName]->daConfermare((int)$id))
 			$this->menuLinks = str_replace("invia_link_recupero_password", "invia_link_conferma_account", $this->menuLinks);
 		
-		if (v("attiva_pulsante_invia_mail_account_attivato"))
+		if (v("attiva_pulsante_invia_mail_account_attivato") && $this->m[$this->modelName]->isAttivo((int)$id))
 			$this->menuLinks = $this->menuLinks.",manda_mail_account_attivato";
 		
 		$this->getTabViewFields("form");
