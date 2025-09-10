@@ -247,4 +247,13 @@ class LingueModel extends GenericModel
 			"codice"	=>	sanitizeAll($lingua),
 		))->field("descrizione");
 	}
+	
+	public static function getFrontendLanguage()
+	{
+		// Lingua frontend principale
+		if (v("lingua_default_frontend"))
+			return v("lingua_default_frontend");
+		else
+			return LingueModel::getPrincipaleFrontend();
+	}
 }

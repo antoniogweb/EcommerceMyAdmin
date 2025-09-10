@@ -346,4 +346,22 @@ class ContattiModel extends GenericModel {
 		
 		return $res;
 	}
+	
+	public function paginaCrud($record)
+	{
+		if ($record["contatti"]["id_page"])
+		{
+			$pModel = new PagesModel();
+			
+			$title = $pModel->whereId((int)$record["contatti"]["id_page"])->field("title");
+			
+			$frontendLanguage = LingueModel::getFrontendLanguage();
+			
+			$linguaUrl = v("attiva_nazione_nell_url") ? $frontendLanguage."_".Params::$defaultFrontEndCountry : $frontendLanguage;
+			
+			return "<a target='_blank' href='".Domain::$publicUrl."/$linguaUrl/".$pModel->getUrlAlias((int)$record["contatti"]["id_page"])."'>$title</a>";
+		}
+		
+		return "";
+	}
 }

@@ -42,8 +42,8 @@ class ContattiController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("cleanDateTime", "FORM ;contatti.fonte_iniziale;", "contatti.email", "contatti.nome", "contatti.telefono");
-		$this->mainHead = "Data creazione,Fonte,Email,Nome,Telefono";
+		$this->mainFields = array("cleanDateTime", "FORM ;contatti.fonte_iniziale;", "paginaCrud", "contatti.email", "contatti.nome", "contatti.telefono");
+		$this->mainHead = "Data creazione,Fonte,Pagina,Email,Nome,Telefono";
 		
 		$filtroFonte = array(
 			"tutti"		=>	"Fonte",
