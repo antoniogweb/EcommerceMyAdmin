@@ -21,6 +21,7 @@
 				<?php include(tpf("/Elementi/Riservata/Link/account.php"));?>
 				<?php include(tpf("/Elementi/Riservata/Link/spedizione.php"));?>
 				<?php include(tpf("/Elementi/Riservata/Link/avatar.php"));?>
+				<?php include(tpf("/Elementi/Riservata/Link/notifiche.php"));?>
 				<?php include(tpf("/Elementi/Riservata/Link/password.php"));?>
 				<?php include(tpf("/Elementi/Riservata/Link/privacy.php"));?>
 				<?php include(tpf("/Elementi/Riservata/Link/ticket.php"));?>

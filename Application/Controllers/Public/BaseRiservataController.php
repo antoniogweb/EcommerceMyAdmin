@@ -274,4 +274,23 @@ class BaseRiservataController extends BaseController
 		
 		$this->load('crediti');
 	}
+	
+	public function notifiche()
+	{
+		if (!v("attiva_notifiche_utenti"))
+			$this->responseCode(403);
+		
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/user-notifications/";
+		}
+		
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestione notifiche"));
+		
+		
+		
+		$this->append($data);
+		
+		$this->load('notifiche');
+	}
 }

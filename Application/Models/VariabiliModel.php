@@ -389,6 +389,7 @@ class VariabiliModel extends GenericModel {
 		"nome_cartella_immagine_utente"	=>	"utenti", // nome della cartella dove salvare le immagini di profilo degli utenti
 		"permetti_registrazione"	=>	1, // se impostato su 0, non permette la registrazione
 		"permetti_modifica_account"	=>	1, // se impostato su 0, l'utente non registrato non può modificare i dati dell'account (si usa quando esiste un gestionale collegato e i dato vengono importati dal gestionale)
+		"attiva_notifiche_utenti"	=>	0, // se impostato su 1, attiva la sezione notifiche dell'area riservata
 		## CONTATTI ##
 		"attiva_verifica_contatti"	=>	0, // manda oppure no la mail di conferma della mail del contatto
 		"tempo_conferma_uid_contatto"	=>	86400, // tempo in secondi per confermare il contatto

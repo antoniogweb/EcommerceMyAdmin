@@ -51,6 +51,11 @@
 		<a href="<?php echo $this->baseUrl."/immagine-profilo";?>" title="<?php echo gtext("Immagine profilo", false);?>"><?php echo gtext("Immagine profilo");?></a>
 	</li>
 	<?php } ?>
+	<?php if (v("attiva_notifiche_utenti")) { ?>
+	<li>
+		<a href="<?php echo $this->baseUrl."/user-notifications/";?>" title="<?php echo gtext("Notifiche", false);?>"><?php echo gtext("Notifiche");?></a>
+	</li>
+	<?php } ?>
 	<li>
 		<a href="<?php echo $this->baseUrl."/modifica-password";?>" title="<?php echo gtext("Modifica password", false);?>"><?php echo gtext("Modifica password");?></a>
 	</li>
