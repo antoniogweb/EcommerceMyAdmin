@@ -280,6 +280,16 @@ class BaseRiservataController extends BaseController
 		if (!v("attiva_notifiche_utenti"))
 			$this->responseCode(403);
 		
+		$argKeys = array(
+			'dal:sanitizeAll'	=>	'',
+			'al:sanitizeAll'	=>	'',
+			'id_c:forceInt'	=>	'',
+			'id_page:forceInt'	=>	'',
+		);
+		
+		$this->setArgKeys($argKeys);
+		$this->shift();
+		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/user-notifications/";
@@ -287,7 +297,24 @@ class BaseRiservataController extends BaseController
 		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestione notifiche"));
 		
-		$data['notificheDaLeggere'] = $this->m("RegusersnotificheModel")->daleggere();
+		$this->m("DocumentiModel")->documentiDaleggere()->restore();
+		
+		if ($this->viewArgs["dal"])
+			$this->m("DocumentiModel")->sWhere(array("DATE_FORMAT(documenti.data_file_upload, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs["dal"]))));
+		
+		if ($this->viewArgs["al"])
+			$this->m("DocumentiModel")->sWhere(array("DATE_FORMAT(documenti.data_file_upload, '%Y-%m-%d') <= ?",array(getIsoDate($this->viewArgs["al"]))));
+		
+		if ($this->viewArgs["id_c"])
+			$this->m("DocumentiModel")->sWhere(array("pages.id_c = ?",array($this->viewArgs["id_c"])));
+		
+		if ($this->viewArgs["id_page"])
+			$this->m("DocumentiModel")->sWhere(array("documenti.id_page = ?",array($this->viewArgs["id_page"])));
+		
+		$data['notificheDaLeggere'] = $this->m("DocumentiModel")->send();
+		
+		$data['categorieDaLeggere'] = array(0 => gtext("Seleziona")) + $this->m("DocumentiModel")->categorieConDocumentiDaLeggere();
+		$data['pagineDaLeggere'] = array(0 => gtext("Seleziona")) + $this->m("DocumentiModel")->pagineConDocumentiDaLeggere();
 		
 		$data['loadJqueryUi'] = true;
 		

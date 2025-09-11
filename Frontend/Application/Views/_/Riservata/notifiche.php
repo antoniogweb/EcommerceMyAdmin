@@ -3,10 +3,10 @@
 $breadcrumb = array(
 	gtext("Home") 		=> $this->baseUrl,
 	gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
-	gtext("Gestione notifiche") => "",
+	gtext("Notifiche") => "",
 );
 
-$titoloPagina = gtext("Gestione notifiche");
+$titoloPagina = gtext("Notifiche");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -15,22 +15,25 @@ $attiva = "notifiche";
 include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 
+<form action="<?php echo $this->baseUrl."/user-notifications/";?>" class="uk-grid-small uk-margin-medium-bottom" uk-grid method="GET">
+	<div class="uk-width-1-5@s">
+		<?php echo Html_Form::input("dal",$this->viewArgs["dal"],"uk-input date_picker_generale",null,'placeholder="'.gtext("Dal").'"');?>
+	</div>
+	<div class="uk-width-1-5@s">
+		<?php echo Html_Form::input("al",$this->viewArgs["al"],"uk-input date_picker_generale",null,'placeholder="'.gtext("Al").'"');?>
+	</div>
+	<div class="uk-width-1-5@s">
+		<?php echo Html_Form::select("id_c",$this->viewArgs["id_c"],$categorieDaLeggere,"uk-input",null,'yes','placeholder="'.gtext("Categoria").'"');?>
+	</div>
+	<div class="uk-width-1-5@s">
+		<?php echo Html_Form::select("id_page",$this->viewArgs["id_page"],$pagineDaLeggere,"uk-input",null,'yes','placeholder="'.gtext("Prodotto").'"');?>
+	</div>
+	<div class="uk-width-1-5@s">
+		<button type="submit" class="uk-button uk-button-primary uk-width-1-1"><?php echo gtext("Filtra");?></button>
+	</div>
+</form>
+
 <?php if (count($notificheDaLeggere) > 0) { ?>
-	<form class="uk-grid-small uk-margin-medium-bottom" uk-grid>
-		<div class="uk-width-1-5@s">
-			<input class="uk-input date_picker_generale" type="text" aria-label="<?php echo gtext("Da");?>" placeholder="<?php echo gtext("Da");?>">
-		</div>
-		<div class="uk-width-1-5@s">
-			<input class="uk-input date_picker_generale" type="text" aria-label="<?php echo gtext("A");?>" placeholder="<?php echo gtext("A");?>">
-		</div>
-		<div class="uk-width-1-5@s">
-			<input class="uk-input" type="text" placeholder="<?php echo gtext("Categoria");?>" aria-label="25">
-		</div>
-		<div class="uk-width-1-5@s">
-			<input class="uk-input" type="text" placeholder="<?php echo gtext("Prodotto");?>" aria-label="25">
-		</div>
-	</form>
-	
 	<div class="uk-visible@m">
 		<div class="uk-text-small uk-text-meta uk-text-uppercase uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
@@ -55,7 +58,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div>
 		<div class="uk-text-small uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Data");?>:</span> <?php echo date("d/m/Y", strtotime($notifica["documenti"]["data_documento"]));?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Data");?>:</span> <?php echo date("d/m/Y", strtotime($notifica["documenti"]["data_file_upload"]));?>
 			</div>
 			<div class="uk-first-column uk-text-left">
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Categoria");?>:</span> <?php echo genericField($notifica, "title", "categories", "categorie_tradotte");?>

@@ -714,4 +714,70 @@ class DocumentiModel extends GenericModel {
 			$log->writeString("FINE $labelLogAzione DOCUMENTI");
 		}
 	}
+	
+	public function getStrutturaQueryDaocumentiDaLeggere()
+	{
+		$this->clear()
+			->select("documenti.*,pages.title,categories.title,documenti_tradotti.titolo,pagine_tradotte.title,categorie_tradotte.title,tipi_documento.titolo,categories.id_c,pages.id_page")
+			->inner("pages")->on("pages.id_page = documenti.id_page")
+			->inner("categories")->on("categories.id_c = pages.id_c")
+			->addJoinTraduzione(null, "documenti_tradotti", false)
+			->addJoinTraduzione(null, "pagine_tradotte", false, (new PagesModel()))
+			->addJoinTraduzione(null, "categorie_tradotte", false, (new CategoriesModel()))
+			->left(array("tipo"))
+			->sWhere("documenti.id_doc not in (select id_doc from regusers_notifiche where id_user = ".(int)User::$id.")")
+			->where(array(
+				"pages.attivo"			=>	"Y",
+				"documenti.visibile"	=>	1,
+				"in"	=>	array(
+					"categories.id_c"	=>	CategoriesModel::getIdCategorieAccessibili(),
+				),
+				"ne"	=>	array(
+					"documenti.filename"	=>	"",
+				),
+			))
+			->sWhere(array("DATE_FORMAT(documenti.data_file_upload, '%Y-%m-%d') >= ?",array(sanitizeDb(date("Y-m-d",User::$dettagli["creation_time"])))))
+			->groupBy("documenti.id_doc");
+		
+		if (v("attiva_gruppi_documenti"))
+			$this->addAccessoGruppiWhereClase();
+		
+		return $this;
+	}
+	
+	public function categorieConDocumentiDaLeggere()
+	{
+		$notifiche = $this->getStrutturaQueryDaocumentiDaLeggere()->orderBy("categories.lft")->groupBy("categories.id_c")->send();
+		
+		$arrayCategorie = array();
+		
+		$c = new CategoriesModel();
+		
+		foreach ($notifiche as $n)
+		{
+			$depth = $c->clear()->depth($n["categories"]["id_c"]);
+			$arrayCategorie[$n["categories"]["id_c"]] = str_repeat("-",$depth)." ".genericField($n, "title", "categories", "categorie_tradotte");
+		}
+		
+		return $arrayCategorie;
+	}
+	
+	public function pagineConDocumentiDaLeggere()
+	{
+		$notifiche = $this->getStrutturaQueryDaocumentiDaLeggere()->orderBy("pages.title")->groupBy("pages.id_page")->send();
+		
+		$arrayPagine = array();
+		
+		foreach ($notifiche as $n)
+		{
+			$arrayPagine[$n["pages"]["id_page"]] = genericField($n, "title", "pages", "pagine_tradotte");
+		}
+		
+		return $arrayPagine;
+	}
+	
+	public function documentiDaleggere()
+	{
+		return $this->getStrutturaQueryDaocumentiDaLeggere()->orderBy("data_file_upload desc");
+	}
 }

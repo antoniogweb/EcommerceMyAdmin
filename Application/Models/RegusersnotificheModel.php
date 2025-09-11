@@ -31,45 +31,6 @@ class RegusersnotificheModel extends GenericModel
 		parent::__construct();
 	}
 	
-	public function daleggere($count = false)
-	{
-		$d = new DocumentiModel();
-		$d->clear()
-			->select("documenti.*,pages.title,categories.title,documenti_tradotti.titolo,pagine_tradotte.title,categorie_tradotte.title,tipi_documento.titolo")
-			->inner("pages")->on("pages.id_page = documenti.id_page")
-			->inner("categories")->on("categories.id_c = pages.id_c")
-			->addJoinTraduzione(null, "documenti_tradotti", false)
-			->addJoinTraduzione(null, "pagine_tradotte", false, (new PagesModel()))
-			->addJoinTraduzione(null, "categorie_tradotte", false, (new CategoriesModel()))
-			->left(array("tipo"))
-			->sWhere("documenti.id_doc not in (select id_doc from regusers_notifiche where id_user = ".(int)User::$id.")")
-			->where(array(
-				"gte"	=>	array(
-					"data_documento"	=>	sanitizeDb(date("Y-m-d",User::$dettagli["creation_time"])),
-				),
-				"pages.attivo"			=>	"Y",
-				"documenti.visibile"	=>	1,
-				"in"	=>	array(
-					"categories.id_c"	=>	CategoriesModel::getIdCategorieAccessibili(),
-				),
-				"ne"	=>	array(
-					"documenti.filename"	=>	"",
-				),
-			))
-			->groupBy("documenti.id_doc");
-		
-		if (v("attiva_gruppi_documenti"))
-			$d->addAccessoGruppiWhereClase();
-		
-		if ($count)
-			return $d->rowNumber();
-		
-		$revisioni = $d->orderBy("data_documento desc")->limit(5)->send();
-		// echo $d->getQuery();die();
-		
-		return $revisioni;
-	}
-	
 	public function aggiungiDocumento($idDoc)
 	{
 		$d = new DocumentiModel();
@@ -94,5 +55,12 @@ class RegusersnotificheModel extends GenericModel
 				$this->insert();
 			}
 		}
+	}
+	
+	public static function numero()
+	{
+		$d = new DocumentiModel();
+		
+		return $d->getStrutturaQueryDaocumentiDaLeggere()->rowNumber();
 	}
 }
