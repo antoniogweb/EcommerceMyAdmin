@@ -16,6 +16,8 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/jquery-nstslider-master/dist/jquery.nstSlider.min.css">
 <?php } ?>
 
-<?php if ($this->controller == "listeregalo" && $this->action == "modifica" && !isset($skipJqueryUi)) { ?>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/jquery-ui.min.css">
+<?php if (($this->controller == "listeregalo" && $this->action == "modifica") || isset($loadJqueryUi)) { ?>
+	<?php if (!isset($skipJqueryUi)) { ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/jquery-ui.min.css">
+	<?php } ?>
 <?php } ?>

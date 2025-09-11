@@ -66,6 +66,8 @@ class CategoriesModel extends HierarchicalModel {
 		"menu"			=>	"mostra_menu_cucina",
 	);
 	
+	public static $idCategorieAccessibili = null;
+	
 	public $controller = "categories";
 	
 	public $checkAll = true;
@@ -650,6 +652,31 @@ class CategoriesModel extends HierarchicalModel {
 			return $rg->clear()->orderBy("name")->toList("id_group","name")->send();
 		}
 		
+	}
+	
+	// Restituisce l'ID di tutte le categorie accessibili dall'utente loggato
+	public static function getIdCategorieAccessibili()
+	{
+		if (!isset(self::$idCategorieAccessibili))
+		{
+			self::$idCategorieAccessibili = [];
+			
+			$cModel = new CategoriesModel();
+			
+			$idCs = $cModel->clear()->select("id_c")->where(array(
+				"ne"	=>	array(
+					"id_c"	=>	1,
+				),
+			))->toList("id_c")->send();
+			
+			foreach ($idCs as $idC)
+			{
+				if ($cModel->check($idC))
+					self::$idCategorieAccessibili[] = (int)$idC;
+			}
+		}
+		
+		return self::$idCategorieAccessibili;
 	}
 	
 	//controlla l'accesso alla categoria e restituisce vero o falso

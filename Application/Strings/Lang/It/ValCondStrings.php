@@ -83,7 +83,7 @@ class Lang_It_ValCondStrings extends Lang_En_ValCondStrings {
 	//if the element is not a real date
 	public function getNotDateResultString($element)
 	{
-		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia una data</div>\n".$this->getHiddenAlertElement($element);
+		return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> ".gtext("sia una data")."</div>\n".$this->getHiddenAlertElement($element);
 	}
 	
 	//if the element (string) length exceeds the value of characters (defined by $maxLength)

@@ -287,7 +287,9 @@ class BaseRiservataController extends BaseController
 		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestione notifiche"));
 		
+		$data['notificheDaLeggere'] = $this->m("RegusersnotificheModel")->daleggere();
 		
+		$data['loadJqueryUi'] = true;
 		
 		$this->append($data);
 		

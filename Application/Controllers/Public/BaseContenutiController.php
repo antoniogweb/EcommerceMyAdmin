@@ -2270,12 +2270,15 @@ class BaseContenutiController extends BaseController
 		{
 			if ($this->m("DocumentiModel")->checkAccessoUtente($documento["id_doc"]))
 			{
-				$path = $this->m("DocumentiModel")->getFolderBasePath("filename")."/images/documenti/".$documento['filename'];
+				$path = $this->m("DocumentiModel")->getFolderBasePath("filename")."/images/documenti/".trim($documento['filename']);
 				
-				if (file_exists($path))
+				if (trim($documento['filename']) && file_exists($path))
 				{
 					// Salva il download
 					$idDownload = $this->m("DocumentidownloadModel")->salvaDownload((int)$id);
+					
+					if (v("attiva_notifiche_utenti"))
+						$this->m("RegusersnotificheModel")->aggiungiDocumento((int)$id);
 					
 					// Azione che viene eseguita dopo il download del documento
 					$this->azioneDopoDownloadDocumento((int)$id, (int)$idDownload);
@@ -2295,12 +2298,14 @@ class BaseContenutiController extends BaseController
 					header('Content-Type: '.$contentType);
 					readfile($path);
 				}
+				else
+					$this->responseCode(403);
 			}
 			else
-				$this->redirect("");
+				$this->responseCode(403);
 		}
 		else
-			$this->redirect("");
+			$this->responseCode(403);
 	}
 	
 	protected function azioneDopoDownloadDocumento($idDoc, $idDownload)

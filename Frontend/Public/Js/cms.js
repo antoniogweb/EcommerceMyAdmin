@@ -48,4 +48,11 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
+	if (typeof jQuery.ui !== 'undefined')
+	{
+		$( ".date_picker_generale" ).datepicker({
+			dateFormat: "dd-mm-yy"
+		});
+	}
 });
