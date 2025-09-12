@@ -205,7 +205,7 @@ class Shield
 		}
 	}
 	
-	public static function checkEBloccaIp($log)
+	public static function checkEBloccaIp($log = null)
 	{
 		$secondi = 60;
 		
@@ -213,6 +213,8 @@ class Shield
 		
 		if (!empty($conteggio))
 		{
+			Shield::freeTempIps($log);
+			
 			Shield::blockIps($conteggio, $secondi);
 			
 			$log->writeString("Gli IP sono stati bloccati");

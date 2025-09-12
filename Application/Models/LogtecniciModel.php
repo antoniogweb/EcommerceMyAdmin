@@ -45,4 +45,42 @@ class LogtecniciModel extends GenericModel {
 		
 		$lt->insert();
 	}
+	
+	public static function notifica($log = null)
+	{
+		$lt = new LogtecniciModel();
+		
+		$daInviare = $lt->clear()->where(array(
+			"notificato"	=>	0
+		))->orderBy()->send(false);
+		
+		$struttura = array();
+		
+		$idNotificati = array();
+		
+		foreach ($daInviare as $r)
+		{
+			$struttura[] = $r["data_creazione"]."<br />\nID: ".$r["id_log_tecnico"]."<br />\nTipo: ".$r["tipo"]."<br />\n".$r["descrizione"];
+			
+			$idNotificati[] = $r["id_log_tecnico"];
+		}
+		
+		$testoMail = implode("<br /><br />", $struttura);
+		
+		MailordiniModel::inviaMailLog("Log tecnici piattaforma ".ImpostazioniModel::$valori["nome_sito"], $testoMail, "LOG_TECNICI");
+		
+		foreach ($idNotificati as $id)
+		{
+			$lt->sValues(array(
+				"notificato"	=>	1,
+			));
+			
+			$lt->update((int)$id);
+			
+			if ($log)
+				$log->writeString("Notificato log ID ".(int)$id);
+		}
+		
+		return $struttura;
+	}
 }
