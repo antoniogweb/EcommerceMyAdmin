@@ -96,6 +96,42 @@ if ($params["azione"] == "check-numero-query")
 	$log->writeString("FINE CHECK NUMERO QUERY");
 }
 
+if ($params["azione"] == "check-numero-attacchi")
+{
+	$log->writeString("INIZIO CHECK NUMERO ATTACCHI");
+	
+	$query = $params["query"] ?? 10000;
+	$secondi = $params["secondi"] ?? 60;
+	$mail = isset($params["email"]) ? true : false;
+	$blocca = isset($params["blocca"]) ? true : false;
+	$numero_ip_stessa_rete = $params["numero_ip_stessa_rete"] ?? 30;
+	
+	$conteggio = ConteggioqueryModel::numeroAttacchi($query, $secondi, $numero_ip_stessa_rete);
+	
+	arsort($conteggio);
+	
+	if (!empty($conteggio) && $mail)
+		MailordiniModel::inviaMailLog("Superato il limite di $query attacchi negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
+	
+	if (!empty($conteggio))
+	{
+		$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+		
+		print_r($conteggio);
+	}
+	
+	if (!empty($conteggio) && $blocca)
+	{
+		Shield::blockIps($conteggio, $secondi);
+		
+		$log->writeString("Gli IP sono stati bloccati");
+	}
+	
+	Shield::freeTempIps($log);
+	
+	$log->writeString("FINE CHECK NUMERO ATTACCHI");
+}
+
 if ($params["azione"] == "check-numero-query-network")
 {
 	$log->writeString("INIZIO CHECK NUMERO QUERY NETWORK");
