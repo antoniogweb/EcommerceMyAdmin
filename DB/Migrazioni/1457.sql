@@ -1,0 +1,1 @@
+alter table log_tecnici add ip varchar(50) not null default '';

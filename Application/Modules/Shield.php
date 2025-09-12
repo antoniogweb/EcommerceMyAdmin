@@ -216,6 +216,8 @@ class Shield
 			Shield::blockIps($conteggio, $secondi);
 			
 			$log->writeString("Gli IP sono stati bloccati");
+			
+			LogtecniciModel::aggiungi("ATTACCO", "Superato il limite di ".v("numero_massimo_attacchi_minuto")." attacchi negli ultimi $secondi secondi<br />\n". "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>");
 		}
 	}
 }
