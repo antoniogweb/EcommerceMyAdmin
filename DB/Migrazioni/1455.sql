@@ -1,0 +1,1 @@
+alter table conteggio_query add attacco tinyint not null default 0;

@@ -28,16 +28,16 @@ class Shield
 	
 	public static function createLogFolders()
 	{
-		createFolderFull("Logs/Jail", ROOT);
-		createFolderFull("Logs/Jail/Temp", ROOT);
-		createFolderFull("Logs/Jail/Perm", ROOT);
-		createFolderFull("Logs/Jail/Log", ROOT);
-		createFolderFull("Logs/Jail/Freed", ROOT);
+		createFolderFull("Logs/Jail", LIBRARY);
+		createFolderFull("Logs/Jail/Temp", LIBRARY);
+		createFolderFull("Logs/Jail/Perm", LIBRARY);
+		createFolderFull("Logs/Jail/Log", LIBRARY);
+		createFolderFull("Logs/Jail/Freed", LIBRARY);
 	}
 	
 	public static function writeIp($ip, $query = "--", $secondi = "--")
 	{
-		$pathJail = ROOT."/Logs/Jail/";
+		$pathJail = LIBRARY."/Logs/Jail/";
 		
 		$content = date("Y-m-d H:i:s")."\nQuery:$query\nSecondi:$secondi";
 		
@@ -57,7 +57,7 @@ class Shield
 		
 		self::createLogFolders();
 		
-		$pathJail = ROOT."/Logs/Jail/";
+		$pathJail = LIBRARY."/Logs/Jail/";
 		
 		foreach ($ips as $ip => $query)
 		{
@@ -71,7 +71,7 @@ class Shield
 	
 	public static function freeTempIps($log = null)
 	{
-		$pathJail = ROOT."/Logs/Jail/";
+		$pathJail = LIBRARY."/Logs/Jail/";
 		
 		if (@is_dir($pathJail))
 		{
@@ -100,8 +100,8 @@ class Shield
 	{
 		if (!is_dir(LIBRARY."/Logs/CaptchaDDOS"))
 		{
-			createFolderFull("Logs/CaptchaDDOS", ROOT, false);
-			createFolderFull("Logs/CaptchaDDOS/Img", ROOT, false, false);
+			createFolderFull("Logs/CaptchaDDOS", LIBRARY, false);
+			createFolderFull("Logs/CaptchaDDOS/Img", LIBRARY, false, false);
 			
 			$captcha = new Image_Gd_Captcha(array(
 				"boxWidth"	=>	200,
@@ -193,10 +193,29 @@ class Shield
 						$log->writeString($erroreBlocco);
 					}
 					
+					ConteggioqueryModel::aggiungiConCodice(0, 403, 1);
+					
+					if (v("attiva_blocco_immediato"))
+						self::checkEBloccaIp($log);
+					
 					http_response_code(403);
 					die();
 				}
 			}
+		}
+	}
+	
+	public static function checkEBloccaIp($log)
+	{
+		$secondi = 60;
+		
+		$conteggio = ConteggioqueryModel::numeroAttacchi(v("numero_massimo_attacchi_minuto"), $secondi);
+		
+		if (!empty($conteggio))
+		{
+			Shield::blockIps($conteggio, $secondi);
+			
+			$log->writeString("Gli IP sono stati bloccati");
 		}
 	}
 }

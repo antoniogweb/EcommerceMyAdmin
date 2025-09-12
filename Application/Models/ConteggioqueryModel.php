@@ -25,12 +25,27 @@ if (!defined('EG')) die('Direct access not allowed!');
 class ConteggioqueryModel extends GenericModel
 {
 	public static $codice = 200;
+	public static $attacco = 0;
 	
 	public function __construct() {
 		$this->_tables='conteggio_query';
 		$this->_idFields='id_conteggio';
 		
 		parent::__construct();
+	}
+	
+	public static function aggiungiConCodice($numero, $codice, $attacco = 0)
+	{
+		$tmp = self::$codice;
+		$tmpAttacco = self::$attacco;
+		
+		self::$codice = $codice;
+		self::$attacco = $attacco;
+		
+		self::aggiungi($numero);
+		
+		self::$codice = $tmp;
+		self::$attacco = $tmpAttacco;
 	}
 	
 	public static function aggiungi($numero)
@@ -43,6 +58,7 @@ class ConteggioqueryModel extends GenericModel
 			"ip"		=>	getIp(),
 			"url"		=>	isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : "",
 			"codice"	=>	self::$codice,
+			"attacco"	=>	self::$attacco,
 		));
 		
 		$cq->insert();
@@ -143,6 +159,37 @@ class ConteggioqueryModel extends GenericModel
 // 		
 // 		return $res;
 // 	}
+	
+	public static function numeroAttacchi($soglia = 4, $secondi = 60, $numeroIpStessarete = 10)
+	{
+		$secondi = time() - $secondi;
+		
+		$dataOra = date("Y-m-d H:i:s", $secondi);
+		
+		$cq = new ConteggioqueryModel();
+		
+		$sWhereIp = self::getSWhereIp();
+		
+		// Cerca singolo IP
+		$resIp = $cq->clear()->select("count(numero) as numero_attacchi,ip")->aWhere(array(
+			"gte"	=>	array(
+				"data_creazione"	=>	sanitizeAll($dataOra),
+			),
+		))
+		->sWhere($sWhereIp)
+		->groupBy("ip having numero_attacchi > ".(int)$soglia)->toList("ip", "aggregate.numero_attacchi")->send();
+		
+		// Cerca range
+		$resRange = $cq->clear()->select("count(numero) as numero_attacchi,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
+			"gte"	=>	array(
+				"data_creazione"	=>	sanitizeAll($dataOra),
+			),
+		))
+		->sWhere($sWhereIp)
+		->groupBy("subip having numero_ip > ".(int)$numeroIpStessarete." && numero_attacchi > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_attacchi")->send();
+		
+		return $resIp + $resRange;
+	}
 	
 	public static function numeroQuery($soglia = 1000, $secondi = 60, $numeroIpStessarete = 30)
 	{
