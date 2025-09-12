@@ -175,6 +175,7 @@ class ConteggioqueryModel extends GenericModel
 			"gte"	=>	array(
 				"data_creazione"	=>	sanitizeAll($dataOra),
 			),
+			"attacco"	=>	1,
 		))
 		->sWhere($sWhereIp)
 		->groupBy("ip having numero_attacchi > ".(int)$soglia)->toList("ip", "aggregate.numero_attacchi")->send();
@@ -184,6 +185,7 @@ class ConteggioqueryModel extends GenericModel
 			"gte"	=>	array(
 				"data_creazione"	=>	sanitizeAll($dataOra),
 			),
+			"attacco"	=>	1,
 		))
 		->sWhere($sWhereIp)
 		->groupBy("subip having numero_ip > ".(int)$numeroIpStessarete." && numero_attacchi > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_attacchi")->send();
