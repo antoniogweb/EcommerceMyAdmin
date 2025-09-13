@@ -1,0 +1,1 @@
+alter table ip_filter add rete varchar(100) not null default '';

@@ -72,6 +72,7 @@ class IpfilterModel extends GenericModel
 		return $this->clear()->where(array(
 			"ip"		=>	sanitizeAll($ip),
 			"whitelist"	=>	(int)$whitelist,
+			"rete"		=>	"",
 		))->rowNumber();
 	}
 	
@@ -83,5 +84,79 @@ class IpfilterModel extends GenericModel
 		));
 		
 		$this->insert();
+	}
+	
+	public static function loadIpBot($log = null)
+	{
+		$codici = OpzioniModel::codice("URL_IP_BOT");
+		
+		$ifModel = new IpfilterModel();
+		
+		foreach ($codici as $url => $titolo)
+		{
+			if ($log)
+				$log->writeString("Sto caricando gli IP di $titolo");
+			
+			$ifModel->del(null, array(
+				"rete"	=>	sanitizeAll($titolo),
+			));
+			
+			if (v("usa_transactions"))
+				$ifModel->db->beginTransaction();
+			
+			$struttura = file_get_contents($url);
+			
+			$struttura = json_decode($struttura, true);
+			
+			if (isset($struttura["prefixes"]))
+			{
+				foreach ($struttura["prefixes"] as $p)
+				{
+					if (isset($p["ipv4Prefix"]))
+					{
+						$ipList = self::getIpList($p["ipv4Prefix"]);
+						
+						foreach ($ipList as $ip)
+						{
+							$ifModel->sValues(array(
+								"ip"		=>	$ip,
+								"whitelist"	=>	1,
+								"rete"		=>	$titolo,
+							));
+							
+							$ifModel->insert();
+						}
+					}
+				}
+			}
+			
+			if (v("usa_transactions"))
+				$ifModel->db->commit();
+		}
+	}
+	
+	public static function getIpList($ip_addr_cidr)
+	{
+		$ip_arr = explode("/", $ip_addr_cidr);    
+		$bin = "";
+
+		for($i=1;$i<=32;$i++) {
+			$bin .= $ip_arr[1] >= $i ? '1' : '0';
+		}
+
+		$ip_arr[1] = bindec($bin);
+
+		$ip = ip2long($ip_arr[0]);
+		$nm = $ip_arr[1];
+		$nw = ($ip & $nm);
+		$bc = $nw | ~$nm;
+		$bc_long = ip2long(long2ip($bc));
+
+		for($zm=1;($nw + $zm)<=($bc_long - 1);$zm++)
+		{
+			$ret[]=long2ip($nw + $zm);
+		}
+		
+		return $ret;
 	}
 }

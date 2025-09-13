@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, CURRENT_TIMESTAMP, '1', 'GoogleBot', 'https://developers.google.com/search/apis/ipranges/googlebot.json', 'URL_IP_BOT', '1', '0');

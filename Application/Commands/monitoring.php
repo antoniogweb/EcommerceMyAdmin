@@ -267,3 +267,13 @@ if ($params["azione"] == "elimina-captcha-ddos")
 	
 	$log->writeString("FINE ELIMINAZIONE CAPTCHA");
 }
+
+// Ottieni gli IP dei BOT
+if ($params["azione"] == "ottieni-ip-bot")
+{
+	$log->writeString("INIZIO GET IP BOT");
+	
+	IpfilterModel::loadIpBot($log);
+	
+	$log->writeString("FINE GET IP BOT");
+}

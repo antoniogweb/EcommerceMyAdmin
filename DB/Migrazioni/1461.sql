@@ -1,0 +1,1 @@
+ALTER TABLE `ip_filter` ADD INDEX `ip_filter_ip` (`ip`);

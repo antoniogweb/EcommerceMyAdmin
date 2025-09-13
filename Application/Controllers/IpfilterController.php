@@ -22,9 +22,18 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["ip"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"IP",
+	),
+);
+
 class IpfilterController extends BaseController {
 	
-	public $argKeys = array();
+	public $argKeys = array(
+		'ip:sanitizeAll'=>'tutti',
+	);
 	
 	public $useEditor = true;
 	
@@ -47,7 +56,14 @@ class IpfilterController extends BaseController {
 		$this->mainFields = array("cleanDateTime", "ip_filter.ip", "modalitaCrud");
 		$this->mainHead = "Data/ora,Titolo,Modalità";
 		
-		$this->m[$this->modelName]->orderBy("id_ip_filter desc")->convert()->save();
+		$this->filters = array("ip");
+		
+		$this->m[$this->modelName]->where(array(
+			"lk"	=>	array(
+				"ip"	=>	$this->viewArgs["ip"],
+			),
+			"rete"	=>	"",
+		))->orderBy("id_ip_filter desc")->convert()->save();
 		
 		parent::main();
 	}

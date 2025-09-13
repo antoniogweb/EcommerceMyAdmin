@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, CURRENT_TIMESTAMP, '1', 'GoogleSpecialCrawlers', 'https://developers.google.com/search/apis/ipranges/special-crawlers.json', 'URL_IP_BOT', '2', '0');
