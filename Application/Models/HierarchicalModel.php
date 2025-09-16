@@ -578,6 +578,8 @@ class HierarchicalModel extends GenericModel {
 		
 		if (count($res) > 0)
 		{
+			$tabella = $this->_tables;
+			
 			$lft = $res[$this->_tables]["lft"];
 			$rgt = $res[$this->_tables]["rgt"];
 			
@@ -585,7 +587,7 @@ class HierarchicalModel extends GenericModel {
 			
 			foreach (self::$strutturaCategorie as $idC => $categoria)
 			{
-				if (($self && $categoria["categories"]["lft"] >= $lft && $categoria["categories"]["lft"] <= $rgt) || (!$self && $categoria["categories"]["lft"] > $lft && $categoria["categories"]["lft"] < $rgt))
+				if (($self && $categoria[$tabella]["lft"] >= $lft && $categoria[$tabella]["lft"] <= $rgt) || (!$self && $categoria[$tabella]["lft"] > $lft && $categoria[$tabella]["lft"] < $rgt))
 				{
 					$children[] = $onlyIds ? $idC : $categoria;
 				}
@@ -855,11 +857,13 @@ class HierarchicalModel extends GenericModel {
 		if (isset(self::$strutturaCategorie[$idC]))
 			return self::$strutturaCategorie[$idC];
 		
-		$c = new CategoriesModel();
+		$className = get_called_class();
+		
+		$c = new $className;
 		$tableName = $c->table();
 		$pkName = $c->getPrimaryKey();
 		
-		$res = $c->clear()->addJoinTraduzioneCategoria()->orderBy("categories.lft")->send();
+		$res = $c->clear()->addJoinTraduzioneCategoria()->orderBy($c->_tables.".lft")->send();
 		
 		foreach ($res as $cat)
 		{
@@ -872,6 +876,11 @@ class HierarchicalModel extends GenericModel {
 		return array();
 	}
 	
+	public function addJoinTraduzioneCategoria($fieldTrad = "contenuti_tradotti_categoria")
+	{
+		return $this;
+	}
+	
 	public static function getDataCategoriaRid($idC, $lingua = null)
 	{
 		$lingua = isset($lingua) ? $lingua : Params::$lang;
@@ -879,11 +888,13 @@ class HierarchicalModel extends GenericModel {
 		if (isset(self::$strutturaCategorieRid[$lingua][$idC]))
 			return self::$strutturaCategorieRid[$lingua][$idC];
 		
-		$c = new CategoriesModel();
+		$className = get_called_class();
+		
+		$c = new $className;
 		$tableName = $c->table();
 		$pkName = $c->getPrimaryKey();
 		
-		$res = $c->clear()->addJoinTraduzione($lingua,"contenuti_tradotti")->orderBy("categories.lft")->send();
+		$res = $c->clear()->addJoinTraduzione($lingua,"contenuti_tradotti")->orderBy($c->_tables.".lft")->send();
 		
 		foreach ($res as $cat)
 		{

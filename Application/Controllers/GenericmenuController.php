@@ -207,9 +207,7 @@ class GenericmenuController extends BaseController {
 			$this->scaffold->loadForm($queryType,$this->controller."/form/$queryType/".$clean['id']);
 			
 			if ($queryType === "update")
-			{
-				$this->m[$this->modelName]->form->entry["id_p"]->options = $this->m[$this->modelName]->buildSelect($clean['id']);
-			}
+				$this->m[$this->modelName]->form->entry["id_p"]->options = $this->m[$this->modelName]->buildSelect($clean['id'], true, null, array(), false);
 			
 			$this->scaffold->getFormValues('sanitizeHtml',$clean['id']);
 
