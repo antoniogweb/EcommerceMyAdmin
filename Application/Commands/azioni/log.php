@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
@@ -21,15 +20,34 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-ini_set("memory_limit","-1");
+if (!defined('EG')) die('Direct access not allowed!');
 
-define('APP_CONSOLE', true);
-define('EG','allowed');
+$default = array();
 
-$options = getopt(null, array(
-	"azione::",
-));
+$params = array_merge($default, $options);
 
-require_once(dirname(__FILE__) . "/../../index.php");
+ImpostazioniModel::init();
+VariabiliModel::ottieniVariabili();
+Domain::setPathFromAdmin();
 
-require_once(dirname(__FILE__) . "/azioni/log.php");
+Files_Log::$logFolder = LIBRARY."/Logs";
+
+if (!isset($params["azione"]))
+{
+	echo "si prega di selezionare un'azione con l'istruzione --azione=\"<azione>\" \n";
+	die();
+}
+
+$log = Files_Log::getInstance("log_log_tecnici");
+
+if ($params["azione"] == "notifica-log-tecnici")
+{
+	$log->writeString("INIZIO NOTIFICA LOG TECNICI");
+	
+	$struttura = LogtecniciModel::notifica($log);
+	
+	if (!empty($struttura))
+		print_r($struttura);
+	
+	$log->writeString("FINE NOTIFICA LOG TECNICI");
+}

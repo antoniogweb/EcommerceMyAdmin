@@ -812,6 +812,7 @@ class VariabiliModel extends GenericModel {
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)
+		"token_cron_log_tecnici"	=>	"", // token di sicurezza per chiamare il comando CRON "log" tramite call a URL (viene inizializzato in automatico se vuoto). Serve comunque token_comandi_cron_web
 		### AUTENTICAZIONE DUE FATTORI ##
 		### ---- BACKEND
 		"attiva_autenticazione_due_fattori_admin"	=>	0, // se è attiva l'autenticazione a due fattori nell'admin
@@ -876,8 +877,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_ip_location"		=>	0, // se è attiva la ricerca dell'IP all'accesso al sito (vecchia versione)
 		### WAF ##
 		"attiva_waf"			=>	0, // se impostato ad 1, attiva il Web Application Firewall
-		"numero_massimo_attacchi_minuto"	=>	10, // numero massimo di attacchi al minuto, dopo il quale l'IP viene bloccato (il blocco avviene immediatamente dopo aver rilevato l'attacco solo se attiva_blocco_immediato = 1, altrimenti deve essere impostato tramite CRON)
-		"attiva_blocco_immediato"			=>	0, // se impostato ad 1, attiva il check di numero_massimo_attacchi_minuto ed eventuale blocco dell'IP immediatamente (subito dopo aver rilevato l'attacco)
+		"numero_massimo_attacchi_minuto"	=>	5, // numero massimo di attacchi al minuto, dopo il quale l'IP viene bloccato (il blocco avviene immediatamente dopo aver rilevato l'attacco solo se attiva_blocco_immediato = 1, altrimenti deve essere impostato tramite CRON)
+		"attiva_blocco_immediato"			=>	0, // se impostato ad 1, attiva immediatamente il check di numero_massimo_attacchi_minuto ed eventuale blocco dell'IP (subito dopo aver rilevato l'attacco)
 		### UTILITY ##
 		"esporta_xls_PhpOffice"	=>	0, // se impostato ad 1, quando esporti un file excel esporta un file XLS vero con PhpOffice
 		###
@@ -906,6 +907,7 @@ class VariabiliModel extends GenericModel {
 		"token_comandi_cron_web",
 		"token_login_come_utente",
 		"token_lista_configurazioni_mancanti",
+		"token_cron_log_tecnici",
 	);
 	
 	public static function inizializza($variabili = array())

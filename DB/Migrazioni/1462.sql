@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, '2025-09-13 21:58:18', '1', 'BingBot', 'https://www.bing.com/toolbox/bingbot.json', 'URL_IP_BOT', '3', '0');

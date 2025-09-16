@@ -80,4 +80,20 @@ class BaseCronController extends Controller
 		require_once(ROOT . "/admin/Application/Commands/azioni/prodotti.php");
 		echo "</pre>";
 	}
+	
+	public function logtecnici()
+	{
+		if (!VariabiliModel::checkToken("token_cron_log_tecnici"))
+			$this->responseCode(403);
+		
+		$this->clean();
+		
+		$options = array(
+			"azione" => isset($_GET["azione"]) ? (string)$_GET["azione"] : "",
+		);
+		
+		echo "<pre>";
+		require_once(ROOT . "/admin/Application/Commands/azioni/log.php");
+		echo "</pre>";
+	}
 }
