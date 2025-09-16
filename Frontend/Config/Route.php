@@ -214,6 +214,7 @@ class Route
 		'ticket,scarica',
 		'cron,traduci',
 		'cron,prodotti',
+		'cron,logtecnici',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -406,6 +407,7 @@ class Route
 		'feed/prodotti/(.*)'		=>	'feed/prodotti/${1}',
 		'cron/traduci'				=>	'cron/traduci',
 		'cron/prodotti'				=>	'cron/prodotti',
+		'cron/logtecnici'			=>	'cron/logtecnici',
 		'motoriricerca/cerca/(.*)'	=>	'motoriricerca/cerca/${1}',
 		'captcha/index/([1-2]{1})'	=>	'captcha/index/${1}',
 		'paypal/createorder/([0-9a-fA-F]{32})/([0-9a-fA-F]{32})'	=>	'paypal/createorder/${1}/${2}',
