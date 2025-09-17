@@ -28,7 +28,10 @@ class ElementitemaModel extends GenericModel {
 	
 	public static $variantiPagina = array();
 	
+	public static $struttraElementiContenuti = null;
+	
 	public $esportaTema = false;
+	public $salvaElementoSuContenuto = false;
 	
 	public function __construct() {
 		$this->_tables='elementi_tema';
@@ -64,8 +67,8 @@ class ElementitemaModel extends GenericModel {
 			if ($this->esportaTema)
 				$this->esportaInTema();
 			
-			// if (isset($this->values["nome_file"]))
-			// 	$this->aggiungiElementoAContenuto($id, $this->values["nome_file"]);
+			if ($this->salvaElementoSuContenuto && isset($this->values["nome_file"]))
+				$this->aggiungiElementoAContenuto($id, $this->values["nome_file"]);
 		}
 		
 		return $res;
@@ -191,10 +194,49 @@ class ElementitemaModel extends GenericModel {
 			if (!isset(self::$variantiPagina[$codice]))
 				self::$variantiPagina[$codice] = self::$percorsi[$codice];
 			
-			return self::$percorsi[$codice]["percorso"]."/".self::$percorsi[$codice]["nome_file"].$correlato.".php";
+			$nomeFile = self::getNomeFileContenuto($codice);
+			
+			if ($nomeFile)
+			{
+				self::$variantiPagina[$codice]["nome_file"] = $nomeFile;
+				return self::$percorsi[$codice]["percorso"]."/".$nomeFile.$correlato.".php";
+			}
+			else
+				return self::$percorsi[$codice]["percorso"]."/".self::$percorsi[$codice]["nome_file"].$correlato.".php";
 		}
 		
 		return "";
+	}
+	
+	public static function getNomeFileContenuto($codice)
+	{
+		if (!v("attiva_personalizzazione_elemanti_tema_per_ogni_pagina") || (!PagesModel::$currentIdPage && !CategoriesModel::$currentIdCategory))
+			return "";
+		
+		if (!isset(self::$struttraElementiContenuti))
+		{
+			$etcModel = new ElementitemacontenutiModel();
+			
+			$elementi = $etcModel->clear()->select("elementi_tema.codice,elementi_tema_contenuti.*")->inner(array("elemento"))->send();
+			
+			foreach ($elementi as $e)
+			{
+				self::$struttraElementiContenuti[$e["elementi_tema"]["codice"]][$e["elementi_tema_contenuti"]["tipo_contenuto"]][$e["elementi_tema_contenuti"]["id_elemento"]] = $e["elementi_tema_contenuti"]["nome_file"];
+			}
+		}
+		
+		if (PagesModel::$currentIdPage)
+		{
+			$tipo = "page";
+			$idElemento = PagesModel::$currentIdPage;
+		}
+		else
+		{
+			$tipo = "category";
+			$idElemento = PagesModel::$currentIdCategory;
+		}
+		
+		return self::$struttraElementiContenuti[$codice][$tipo][$idElemento] ?? "";
 	}
 	
 	public static function preparaStrutturaVarianti()

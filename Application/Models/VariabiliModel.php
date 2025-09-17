@@ -774,6 +774,8 @@ class VariabiliModel extends GenericModel {
 		"immagine_3_in_servizi"		=>	0, // se impostato a 1, attiva l'immagine 3 in servizi
 		### TEMA ##
 		"theme_folder"				=>	"", // tema frontend
+		"esporta_layout_tema_su_file_json"	=>	0, // se impostato su 1, esporta la struttura del tema su un file layout.json all'interno della cartella del tema
+		"attiva_personalizzazione_elemanti_tema_per_ogni_pagina"	=>	0, // se impostato su 1, permette di cambiare lo stile dei vari elementi per ogni pagina o categoria del sito
 		### TRADUZIONI ##
 		"attiva_gestione_traduttori"	=>	0, // se impostato a 1, permette di configurare i traduttori e attiva la possibiulità di usare le traduzioni automatiche
 		"considera_traduzione_sempre_esistente"	=>	0, // se impostato a 1, il sistema considera la traduzione di un elemento in contenuti_tradotti sempre esistente e non passa per la tabella originale o usa inner join anziché left join (è più veloce)

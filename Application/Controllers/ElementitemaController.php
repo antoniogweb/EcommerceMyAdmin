@@ -65,7 +65,11 @@ class ElementitemaController extends BaseController
 		
 		$fields = 'titolo,nome_file';
 		
-		// $this->m[$this->modelName]->esportaTema = true;
+		if (v("esporta_layout_tema_su_file_json"))
+			$this->m[$this->modelName]->esportaTema = true;
+		
+		if (v("attiva_personalizzazione_elemanti_tema_per_ogni_pagina"))
+			$this->m[$this->modelName]->salvaElementoSuContenuto = true;
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

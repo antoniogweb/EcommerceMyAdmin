@@ -36,4 +36,10 @@ class ElementitemacontenutiModel extends GenericModel {
 		
 		parent::__construct();
 	}
+	
+	public function relations() {
+        return array(
+			'elemento' => array("BELONGS_TO", 'ElementitemaModel', 'id_elemento_tema',null,"CASCADE"),
+        );
+    }
 }
