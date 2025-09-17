@@ -104,7 +104,7 @@
 					<li v-if="abilitaGestioneVarianti && varianti.length > 0" class="">
 						<a class="uk-accordion-title" href="#"><?php echo gtext("Varianti pagina");?></a>
 						<div class="uk-accordion-content">
-							<variante-item v-for="variante in varianti" v-bind:variante="variante"></variante-item>
+							<variante-item v-for="variante in varianti" v-bind:variante="variante" v-bind:idelemento="idElemento" v-bind:tipoelemento="tipoElemento"></variante-item>
 							<div v-if="abilitaGestioneVarianti && varianti.length > 0" class="uk-margin-small">
 								<a href="#" @click.prevent="resettaTema()" class="uk-button uk-button-danger uk-width-1-1"><?php echo gtext("Resetta varianti")?></a>
 							</div>
@@ -167,7 +167,7 @@
 									<div class="card_tipo_fascia_inner_box">
 										<h4>{{tipoFascia.tipi_contenuto.titolo}}</h4>
 										<div>
-											<img v-if="tipoFascia.tipi_contenuto.immagine != ''" v-bind:src="'<?php echo $this->baseUrlSrc."/images/anteprimefasce/";?>' + tipoFascia.tipi_contenuto.immagine" />
+											<img v-if="tipoFascia.tipi_contenuto.immagine != '' && tipoFascia.tipi_contenuto.immagine != undefined" v-bind:src="'<?php echo $this->baseUrlSrc."/images/anteprimefasce/";?>' + tipoFascia.tipi_contenuto.immagine" />
 										</div>
 										<a href="" @click.prevent="confermaAggiungiDialog(tipoFascia)"  class="card_tipo_fascia_aggiungi uk-button uk-button-secondary uk-width-1-1"><span uk-icon="check"></span> Aggiungi</a>
 									</div>
@@ -204,7 +204,7 @@
 //    		console.log(tendinaTemi);
    		
    		Vue.component('variante-item', {
-			props: ['variante'],
+			props: ['variante','idelemento','tipoelemento'],
 			data: function () {
 				return {
 					nomeFile: "",
@@ -214,7 +214,7 @@
 				sendData: function(value)
 				{
 					var that = this;
-					var url = urlPostElementi + this.variante.id_elemento_tema;
+					var url = urlPostElementi + this.variante.id_elemento_tema + "?id_elemento=" + this.idelemento + "&tipo=" + this.tipoelemento;
 					
 					$.ajaxQueue({
 						url: url,

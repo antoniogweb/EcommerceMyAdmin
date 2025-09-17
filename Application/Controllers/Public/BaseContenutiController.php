@@ -842,7 +842,7 @@ class BaseContenutiController extends BaseController
 		
 		//estrai i dati della categoria
 		$r = $this->m('CategoriesModel')->clear()->select("categories.*,contenuti_tradotti_categoria.*")->addJoinTraduzioneCategoria()->where(array("id_c"=>$clean['id']))->send();
-		$data["datiCategoria"] = CategoriesModel::$currentCategoryData = $r[0];
+		$data["datiCategoria"] = CategoriesModel::$currentCategoryData = $this->cat = $r[0];
 		
 		$this->m('CategoriesModel')->checkAndInCaseRedirect($data["datiCategoria"]);
 		

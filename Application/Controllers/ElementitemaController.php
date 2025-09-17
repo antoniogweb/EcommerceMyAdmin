@@ -65,7 +65,7 @@ class ElementitemaController extends BaseController
 		
 		$fields = 'titolo,nome_file';
 		
-		$this->m[$this->modelName]->esportaTema = true;
+		// $this->m[$this->modelName]->esportaTema = true;
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		

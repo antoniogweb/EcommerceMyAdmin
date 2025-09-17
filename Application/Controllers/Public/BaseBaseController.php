@@ -56,6 +56,7 @@ class BaseBaseController extends Controller
 	public $slide;
 	public $pages = array(); // Array di pagina
 	public $p = array(); // singola pagina
+	public $cat = array(); // singola categoria
 	
 	public $recordHomeMeta = array(); // it contains the meta of the home page and the general meta of the website (title, keywords, meta description)
 	public $defaultRegistrazione = array();

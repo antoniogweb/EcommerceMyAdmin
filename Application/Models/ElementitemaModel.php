@@ -59,10 +59,57 @@ class ElementitemaModel extends GenericModel {
 	{
 		$res = parent::update($id, $where);
 		
-		if ($res && $this->esportaTema)
-			$this->esportaInTema();
+		if ($res)
+		{
+			if ($this->esportaTema)
+				$this->esportaInTema();
+			
+			// if (isset($this->values["nome_file"]))
+			// 	$this->aggiungiElementoAContenuto($id, $this->values["nome_file"]);
+		}
 		
 		return $res;
+	}
+	
+	public function aggiungiElementoAContenuto($id, $nomeFile)
+	{
+		$contenutiPermessi = array("pagine", "categories");
+		
+		if (isset($_GET["id_elemento"]) && isset($_GET["tipo"]) && $_GET["id_elemento"] && $_GET["tipo"] && in_array($_GET["tipo"], $contenutiPermessi))
+		{
+			switch ($_GET["tipo"])
+			{
+				case "pagine":
+					$tipo = "page";
+					$model = new PagesModel();
+					break;
+				default:
+					$tipo = "category";
+					$model = new CategoriesModel();
+					break;
+			}
+			
+			if ($model->clear()->whereId((int)$_GET["id_elemento"])->rowNumber())
+			{
+				$etcModel = new ElementitemacontenutiModel();
+				
+				$values = array(
+					"id_elemento_tema"	=>	(int)$id,
+					"id_elemento"		=>	(int)$_GET["id_elemento"],
+					"tipo_contenuto"	=>	$tipo,
+				);
+				
+				$record = $etcModel->where($values)->record();
+				
+				$etcModel->sValues($values);
+				$etcModel->setValue("nome_file", $nomeFile, "sanitizeDb");
+				
+				if (empty($record))
+					$etcModel->insert();
+				else
+					$etcModel->update((int)$record["id_elemento_tema_contenuto"]);
+			}
+		}
 	}
 	
 	public function esportaInTema()
