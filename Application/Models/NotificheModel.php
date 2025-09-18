@@ -122,6 +122,30 @@ class NotificheModel extends GenericModel {
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
 				);
+			
+			if (!v("attiva_controllo_robustezza_password"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare il controllo sulla robustezza della password. Variabile attiva_controllo_robustezza_password."),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+			
+			if (!v("attiva_autenticazione_due_fattori_admin"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare l'autenticazione a due fattori lato admin. Variabile attiva_autenticazione_due_fattori_admin."),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+			
+			if (v("attiva_area_riservata") && !v("attiva_autenticazione_due_fattori_front"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare l'autenticazione a due fattori lato frontend. Variabile attiva_autenticazione_due_fattori_front."),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
 		}
 		
 		return $notifiche;
