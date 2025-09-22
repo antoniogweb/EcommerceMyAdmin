@@ -31,6 +31,10 @@ $().ready(function() {
 		<div class='col-md-6'>
 			<?php echo $form["titolo"];?>
 			
+			<?php if (isset($form["sottotitolo"])) { ?>
+			<?php echo $form["sottotitolo"];?>
+			<?php } ?>
+			
 			<?php if (isset($form["tipo_layer"])) { ?>
 			<?php echo $form["tipo_layer"];?>
 			<?php } ?>

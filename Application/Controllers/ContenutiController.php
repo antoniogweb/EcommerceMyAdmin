@@ -84,6 +84,9 @@ class ContenutiController extends BaseController
 		
 		$fields .= ",titolo";
 		
+		if (v("attiva_sottotitolo_in_contenuti"))
+			$fields .= ",sottotitolo";
+		
 		$data["editor_visuale"] = true;
 		
 		if (isset($recordTipo["tipo"]) && $recordTipo["tipo"] == "FASCIA" && $queryType == "update")

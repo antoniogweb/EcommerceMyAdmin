@@ -30,6 +30,8 @@ trait TraitController
 		
 		$this->menuLinks = "save";
 		
+		$stringaSottotitolo = v("attiva_sottotitolo_in_contenuti") ? ",sottotitolo" : "";
+		
 		$fields = 'title,alias,sottotitolo,description,meta_title,keywords,meta_description';
 		
 		if ($queryType == "insert")
@@ -63,10 +65,12 @@ trait TraitController
 			$fields = 'titolo,sottotitolo,alias,descrizione,meta_title,keywords,meta_description';
 		else if ($section == "tag" || $section == "-marchio-")
 			$fields = 'titolo,alias,description,meta_title,keywords,meta_description';
-		else if ($section == "documenti" || $section == "contenuti" || $section == "stati_ordine")
+		else if ($section == "documenti" || $section == "stati_ordine")
 			$fields = 'titolo,descrizione';
 		else if ($section == "email_detail")
 			$fields = 'title,editor_visuale,description';
+		else if ($section == "contenuti")
+			$fields = 'title,descrizione'.$stringaSottotitolo;
 		else if ($section == "pagamenti")
 			$fields = 'titolo,descrizione,istruzioni_pagamento';
 		

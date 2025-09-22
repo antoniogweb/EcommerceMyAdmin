@@ -872,6 +872,7 @@ class VariabiliModel extends GenericModel {
 		"filtra_fasce_per_tema"		=>	0, // se attivo, mostra solo le fasce del tema impostato (altrimenti mostra tutte le fasce indipendentemente dal tema)
 		"attiva_contenuti_figli"	=>	0, // se impostato a 1 permette di definire dei contenuyti come figli di fasce (quindi non di pagine o di categorie)
 		"aggiunta_fasce_frontend_nuovo"	=>	0, // se impostato ad 1, nell'editing delle fasce da frontend attiva la nuova modalità di aggiunta con dialog e immagine
+		"attiva_sottotitolo_in_contenuti"	=>	0, // se impostato su 1, attiva il campo sottotitolo nei contenuti
 		### TOKEN ##
 		"token_lista_configurazioni_mancanti"	=>	"", // token per vedere, se loggato in admin, l'elenco delle configurazioni mancanti
 		### IP ##
