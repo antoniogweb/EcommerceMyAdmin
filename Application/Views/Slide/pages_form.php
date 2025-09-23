@@ -82,6 +82,9 @@
 									</div>
 									<?php } ?>
 									<div class='col-md-4'>
+										<?php echo $form["go_to"];?>
+									</div>
+									<div class='col-md-4'>
 										<?php echo $form["url"];?>
 									</div>
 									<div class='col-md-4'>
