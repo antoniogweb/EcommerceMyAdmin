@@ -233,7 +233,7 @@ class ElementitemaModel extends GenericModel {
 		else
 		{
 			$tipo = "category";
-			$idElemento = PagesModel::$currentIdCategory;
+			$idElemento = CategoriesModel::$currentIdCategory;
 		}
 		
 		return self::$struttraElementiContenuti[$codice][$tipo][$idElemento] ?? "";
