@@ -765,6 +765,12 @@ class Route
 		'approfondimenti,paginecorrelate',
 		'approfondimenti,ordinacorrelate',
 		
+		'partnercat,main',
+		'partnercat,form',
+		'partnercat,meta',
+		'partnercat,gruppi',
+		'partnercat,ordina',
+		
 		'partner,main',
 		'partner,aggiungicategoria',
 		'partner,form',

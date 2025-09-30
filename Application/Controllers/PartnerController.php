@@ -34,14 +34,15 @@ class PartnerController extends GenericsectionController {
 			'[[checkbox]];pages.id_page;',
 // 			'<a href="'.$this->baseUrl.'/'.$this->controller.'/form/update/;pages.id_page;'.$this->viewStatus.'">;PagesModel.getThumb|pages.id_page;</a>',
 			"<div class='record_id' style='display:none'>;pages.id_page;</div><a href='".$this->baseUrl."/".$this->controller."/form/update/;pages.id_page;".$this->viewStatus."'>;pages.title;</a>",
+			'PagesModel.categoriesS|pages.id_page',
 			'PagesModel.getPubblicatoCheckbox|pages.id_page',
 		);
 		
 		$this->orderBy = "pages.id_order";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Pubblicato?';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Titolo,Categoria,Pubblicato?';
 		
-		$this->queryFields = "title,attivo,immagine,sottotitolo,alias,url,description";
+		$this->queryFields = "title,attivo,immagine,sottotitolo,alias,url,description,id_c";
 		
 		if (v("immagine_2_in_partner"))
 			$this->queryFields .= ",immagine_2";

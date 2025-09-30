@@ -22,15 +22,6 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class PartnerModel extends BasicsectionModel {
+class PartnercatController extends CategoriesController {
 	
-	public $hModelName = "PartnercatModel";
-	
-	public function setFilters() {}
-	
-	public function setAliasAndCategory()
-	{
-		if (isset($this->values["title"]) && (!isset($this->values["alias"]) || !$this->values["alias"]))
-			$this->values["alias"] = "";
-	}
 }
