@@ -13,7 +13,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
 <?php echo $notice;?>
 
-<div class="uk-child-width-1-3@m uk-text-center" uk-grid>
+<div class="uk-child-width-1-3@m uk-text-center form_reimposta_password" uk-grid>
     <div></div>
     <div>
 		<form action="<?php echo $this->baseUrl."/reimposta-password/$forgot_token";?>" method="POST">

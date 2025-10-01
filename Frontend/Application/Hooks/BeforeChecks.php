@@ -218,6 +218,10 @@ if (v("attiva_gestione_feed"))
 
 Domain::setPath();
 
+Url::$routes = array(
+	"area-riservata"	=>	"area-riservata",
+);
+
 if (v("attiva_waf"))
 	Shield::waf();
 

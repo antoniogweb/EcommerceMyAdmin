@@ -110,7 +110,7 @@ class BaseRegusersController extends BaseController
 			switch($choice) {
 				case 'logged':
 					if (Output::$html)
-						$this->redirect('area-riservata',0);
+						$this->redirect(Url::routeToUrl("area-riservata"),0);
 					break;
 				case 'accepted':
 					
@@ -459,7 +459,7 @@ class BaseRegusersController extends BaseController
 
 			switch($choice) {
 				case 'logged':
-					$this->redirect('area-riservata',0);
+					$this->redirect(Url::routeToUrl("area-riservata"),0);
 					break;
 				case 'accepted':
 					
@@ -552,7 +552,7 @@ class BaseRegusersController extends BaseController
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
-			$this->redirect("area-riservata");
+			$this->redirect(Url::routeToUrl("area-riservata"));
 		}
 		else
 		{
@@ -634,7 +634,7 @@ class BaseRegusersController extends BaseController
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
-			$this->redirect("area-riservata");
+			$this->redirect(Url::routeToUrl("area-riservata"));
 		}
 		else
 		{
@@ -742,7 +742,7 @@ class BaseRegusersController extends BaseController
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
-			$this->redirect("area-riservata");
+			$this->redirect(Url::routeToUrl("area-riservata"));
 		}
 		else
 		{
@@ -830,7 +830,7 @@ class BaseRegusersController extends BaseController
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
-			$this->redirect("area-riservata");
+			$this->redirect(Url::routeToUrl("area-riservata"));
 		}
 		else
 		{
@@ -916,7 +916,7 @@ class BaseRegusersController extends BaseController
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
-			$this->redirect("area-riservata");
+			$this->redirect(Url::routeToUrl("area-riservata"));
 		}
 		else
 		{
@@ -1356,7 +1356,7 @@ class BaseRegusersController extends BaseController
 		
 		if ($this->s['registered']->status['status'] === 'logged')
 		{
-			$this->redirect("area-riservata");
+			$this->redirect(Url::routeToUrl("area-riservata"));
 		}
 		else
 		{
