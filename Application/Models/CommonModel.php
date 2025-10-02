@@ -284,7 +284,7 @@ trait CommonModel {
 	{
 		$h = new HeaderObj();
 		
-		$h->redirect(v("url_redirect_dopo_login"));
+		$h->redirect(Url::routeToUrl(v("url_redirect_dopo_login")));
 	}
 	
 	public static function camboObbligatorio($campo, $controller, $azione = "insert")

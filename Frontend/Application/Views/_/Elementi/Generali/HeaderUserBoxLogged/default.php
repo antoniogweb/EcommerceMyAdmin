@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <ul class="uk-nav uk-dropdown-nav">
 	<li>
-		<a href="<?php echo $this->baseUrl."/area-riservata";?>" title="<?php echo gtext("Area riservata", false);?>"><?php echo gtext("Area riservata");?></a>
+		<a href="<?php echo $this->baseUrl."/".Url::routeToUrl("area-riservata");?>" title="<?php echo gtext("Area riservata", false);?>"><?php echo gtext("Area riservata");?></a>
 	</li>
 	<?php if (v("attiva_biblioteca_documenti")) { ?>
 	<li>
@@ -39,7 +39,7 @@
 		<?php } ?>
 	<?php } ?>
 	<li>
-		<a href="<?php echo $this->baseUrl."/modifica-account";?>" title="<?php echo gtext("I miei dati", false);?>"><?php echo gtext("I miei dati");?></a>
+		<a href="<?php echo $this->baseUrl."/".Url::routeToUrl("modifica-account");?>" title="<?php echo gtext("I miei dati", false);?>"><?php echo gtext("I miei dati");?></a>
 	</li>
 	<?php if (v("attiva_spedizione_area_riservata")) { ?>
 	<li>
