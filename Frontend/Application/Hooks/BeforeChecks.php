@@ -221,6 +221,7 @@ Domain::setPath();
 Url::$routes = array(
 	"area-riservata"	=>	"area-riservata",
 	"modifica-account"	=>	"modifica-account",
+	"esci"				=>	"esci",
 );
 
 if (v("attiva_waf"))

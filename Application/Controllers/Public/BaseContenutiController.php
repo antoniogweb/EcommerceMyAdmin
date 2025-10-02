@@ -873,18 +873,24 @@ class BaseContenutiController extends BaseController
 		$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb();
 		
 		if (v("mostra_categorie_figlie_in_griglia_prodotti"))
-		{
-			$iChildrenGross = $this->m("CategoriesModel")->immediateChildren($clean['id']);
-			
-			$data["iChildren"] = array();
-			foreach ($iChildrenGross as $row)
-			{
-				if ($this->m("CategoriesModel")->hasActivePages($row["categories"]["id_c"]))
-				{
-					$data["iChildren"][] = $row;
-				}
-			}
-		}
+			$data["iChildren"] = $this->getImmediateChildren($clean['id']);
+		
+		if (v("mostra_categorie_sorelle_in_griglia_prodotti") && isset($data["datiCategoria"]))
+			$data["piChildren"] = $this->getImmediateChildren($data["datiCategoria"]["categories"]["id_p"]);
+		
+//		if (v("mostra_categorie_figlie_in_griglia_prodotti"))
+// 		{
+// 			$iChildrenGross = $this->m("CategoriesModel")->immediateChildren($clean['id']);
+// 			
+// 			$data["iChildren"] = array();
+// 			foreach ($iChildrenGross as $row)
+// 			{
+// 				if ($this->m("CategoriesModel")->hasActivePages($row["categories"]["id_c"]))
+// 				{
+// 					$data["iChildren"][] = $row;
+// 				}
+// 			}
+// 		}
 		
 		// Estraggo gli id delle pagine trovate
 		if ($firstSection == "prodotti" && v("attiva_filtri_successivi"))
@@ -1009,6 +1015,25 @@ class BaseContenutiController extends BaseController
 			$this->sectionLoad($section, "category", $template);
 		else
 			$this->load("api_output");
+	}
+	
+	protected function getImmediateChildren($id, $ifOnlyProducts = true)
+	{
+		$clean["id"] = (int)$id;
+		
+		$iChildrenGross = $this->m("CategoriesModel")->immediateChildren($clean['id']);
+		
+		if (!$ifOnlyProducts)
+			return $iChildrenGross;
+		
+		$iChildren = array();
+		foreach ($iChildrenGross as $row)
+		{
+			if ($this->m("CategoriesModel")->hasActivePages($row["categories"]["id_c"]))
+				$iChildren[] = $row;
+		}
+		
+		return $iChildren;
 	}
 	
 	// Aggiungo la parte di JOIN con documenti e il cerca per titolo documento

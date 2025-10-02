@@ -628,6 +628,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_mostra_in_menu"		=>	0, // se impostato a 1, permette di gestire il campo mostra_in_menu nelle categorie
 		"attiva_categorie_in_prodotto"	=>	0, // se impostato ad 1, attiva la scheda con le categorie secondarie nel prodotto
 		"mostra_categorie_figlie_in_griglia_prodotti"	=>	1, // se la navigazione è per sottoblocchi, quindi se una categoria ha delle sottocategorie, mostra le sottocategorie. L'alternativa è una griglia di prodotti esplosi
+		"mostra_categorie_sorelle_in_griglia_prodotti"	=>	0, // se impostato su 1, estrai anche le categorie sorelle (stessa categorie padre)
 		"aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"	=>	0, // se impostato su 1, quando viene aggiornato l'ordine, viene ricalcolata la colonna numero_acquisti_pagina per ogni pagina presente tra le righe dell'ordine
 		"attiva_ricerca_documento"	=>	0, // se impostato su 1 permette di cercare anche i documenti all'interno di una categoria
 		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria

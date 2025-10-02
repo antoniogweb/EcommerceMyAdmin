@@ -69,6 +69,6 @@
 	<?php } ?>
 	<li class="uk-nav-divider"></li>
 	<li>
-		<a href="<?php echo $this->baseUrl."/esci";?>" title="<?php echo gtext("Esci", false);?>"><?php echo gtext("Esci");?></a>
+		<a href="<?php echo $this->baseUrl."/".Url::routeToUrl("esci");?>" title="<?php echo gtext("Esci", false);?>"><?php echo gtext("Esci");?></a>
 	</li>
 </ul>
