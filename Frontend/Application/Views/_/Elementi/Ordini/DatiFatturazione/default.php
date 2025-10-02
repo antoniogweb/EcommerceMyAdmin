@@ -34,7 +34,7 @@
 			<?php echo User::$dettagli["fattura"] ? gtext("Voglio ricevere la fattura") : gtext("Voglio ricevere lo scontrino fiscale");?>
 			<?php } ?>
 			<?php if (User::$dettagli["completo"] && v("permetti_modifica_account")) { ?>
-			<div class="uk-margin-small-top"><a href="<?php echo $this->baseUrl."/modifica-account?redirect=checkout"?>" class="<?php echo $classePulsanteModificaDati;?>"><span class="uk-margin-small-right" uk-icon="icon: pencil"></span><?php echo gtext("Modifica dati")?></a></div>
+			<div class="uk-margin-small-top"><a href="<?php echo $this->baseUrl."/".Url::routeToUrl("modifica-account")."?redirect=checkout"?>" class="<?php echo $classePulsanteModificaDati;?>"><span class="uk-margin-small-right" uk-icon="icon: pencil"></span><?php echo gtext("Modifica dati")?></a></div>
 			<?php } ?>
 		</div>
 	</div>

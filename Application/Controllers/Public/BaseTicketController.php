@@ -90,7 +90,7 @@ class BaseTicketController extends BaseController
 			$this->redirect("regusers/login?redirect=ticket");
 		
 		if (!$this->m('RegusersModel')->haTelefono((int)User::$id))
-			$this->redirect("modifica-account?redirect=ticket");
+			$this->redirect(Url::routeToUrl("modifica-account")."?redirect=ticket");
 	}
 	
 	// Crea ticket

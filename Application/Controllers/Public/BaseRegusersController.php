@@ -1077,7 +1077,7 @@ class BaseRegusersController extends BaseController
 		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica immagine profilo"));
 		$data['notice'] = null;
-		$data['action'] = "/modifica-account".RegusersModel::$redirectQueryString;
+		$data['action'] = "/".Url::routeToUrl("modifica-account").RegusersModel::$redirectQueryString;
 		$data["isAreaRiservata"] = true;
 		
 		if (isset($_GET['deleteFoto']))
@@ -1125,12 +1125,12 @@ class BaseRegusersController extends BaseController
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
-			$data["arrayLingue"][$l] = $l."/modifica-account";
+			$data["arrayLingue"][$l] = $l."/".Url::routeToUrl("modifica-account");
 		}
 		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica account"));
 		$data['notice'] = null;
-		$data['action'] = "/modifica-account".RegusersModel::$redirectQueryString;
+		$data['action'] = "/".Url::routeToUrl("modifica-account").RegusersModel::$redirectQueryString;
 		$data["isAreaRiservata"] = true;
 		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
 		$pec = $this->request->post("pec","","sanitizeAll");
