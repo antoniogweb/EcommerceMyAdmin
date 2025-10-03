@@ -2,7 +2,6 @@
 plugins/
 .php
 /wordpress
-wordpress
 webuploader
 ==
 wp-includes
