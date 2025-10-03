@@ -1370,7 +1370,7 @@ class BaseContenutiController extends BaseController
 			if ($firstSection == Parametri::$nomeSezioneProdotti)
 				$this->m("PagesModel")->orderBy($this->gerOrderByProdotti($this->viewArgs['o']));
 			else
-				$this->m("PagesModel")->orderBy($this->gerOrderBy($firstSection, $this->viewArgs['o']));
+				$this->m("PagesModel")->orderBy($this->gerOrderBy($firstSection));
 		}
 		
 		if (!$urlOrdinamento)
@@ -1452,7 +1452,7 @@ class BaseContenutiController extends BaseController
 		}
 	}
 	
-	protected function gerOrderBy($section, $string = "")
+	protected function gerOrderBy($section)
 	{
 		switch ($section)
 		{
