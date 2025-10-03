@@ -204,6 +204,14 @@ class App
 					"Durata"		=>	v("durata_statistiche_cookie"),
 					"usato"				=>	v("salva_satistiche_visualizzazione_pagina"),
 				),
+				"ord"	=>	array(
+					"Fornitore"	=>	Parametri::$nomeNegozio,
+					gtext("Tipologia")	=>	gtext("Tecnici"),
+					gtext("Necessario")	=>	gtext("Sì"),
+					"Descrizione"=>	gtext("Utilizzato per salvare l'ordinamento di visualizzazione dei prodotti."),
+					"Durata"		=>	v("tempo_durata_cookie_ordinamento_prodotti"),
+					"usato"				=>	v("salva_ordinamento_prodotti"),
+				),
 			);
 			
 			if (v("attiva_modali"))

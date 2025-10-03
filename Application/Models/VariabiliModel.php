@@ -710,6 +710,9 @@ class VariabiliModel extends GenericModel {
 		"mesi_durata_crediti"		=>	12, // numero di mesi prima della scadenza dei crediti
 		"immagine_2_in_prodotto"	=>	0, // se impostata su 1, attiva la seconda immagine nel prodotto
 		"immagine_3_in_prodotto"	=>	0, // se impostata su 1, attiva la terza immagine nel prodotto
+		"default_ordinamento_prodotti"	=>	"tutti", // ordinamento die default dei prodotti (valori ammessi: tutti -> come admin, az -> alfabetico crescente, za -> alfabetico decrescente, crescente -> prezzo crescente, decrescente -> prezzo decrescente, piuvenduto -> dal più venduto al meno venduto, pr -> più recente, mr -> meno recente)
+		"salva_ordinamento_prodotti"	=>	0, // se impostato su 1, salva l'ordinamento prodotti nel cookie "ord"
+		"tempo_durata_cookie_ordinamento_prodotti"	=>	2592000, // tempo in secondi di durata del cookie ordinamento prodotti
 		## BREADCRUMB ##
 		"divisone_breadcrum"		=>	" » ",
 		"togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio"	=>	0, // se impostato a 1, toglie il link alla categoria prodotti nel breadcrumb del dettaglio prodotto
@@ -888,7 +891,6 @@ class VariabiliModel extends GenericModel {
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
-		"default_ordinamento_prodotti"	=>	"tutti", // ordinamento die default dei prodotti (valori ammessi: tutti -> come admin, az -> alfabetico crescente, za -> alfabetico decrescente, crescente -> prezzo crescente, decrescente -> prezzo decrescente, piuvenduto -> dal più venduto al meno venduto)
 		"attiva_filtri_caratteristiche_separati_per_categoria"	=>	0, // se impostato a 1, sarà possibile aggiungere filtri di caratteristiche distini per ogni categoria
 		"carica_tutti_i_model"	=>	1, // carica subito tutti i model
 		"attiva_gruppi_admin"	=>	0, // if impostato a 1 permette di creare gruppi di utenti e di decidere l'accesso a determinati controller per ogni gruppo di utenti

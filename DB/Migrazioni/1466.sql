@@ -1,0 +1,1 @@
+update tipi_documento set id_order = id_tipo_doc where 1;

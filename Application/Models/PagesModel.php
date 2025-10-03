@@ -137,6 +137,10 @@ class PagesModel extends GenericModel {
 		"GUIDA_ACQUISTO"=>	"Pagina Guida all'acquisto",
 	);
 	
+	public static $ordinamentoDefaultProdotti = "";
+	
+	public static $ordinamentiProdottiPermessi = array("tutti", "az", "za", "crescente", "decrescente", "pr", "mr", "piuvenduto");
+	
 	public function __construct() {
 		$this->_tables='pages';
 		$this->_idFields='id_page';
@@ -2729,7 +2733,7 @@ class PagesModel extends GenericModel {
 		return $this->linklinguaGeneric($record["pages"]["id_page"], $lingua, "id_page");
 	}
 	
-	public function getDocumenti($id, $lingua = null, $sWhere = "")
+	public function getDocumenti($id, $lingua = null, $sWhere = "", $returnObject = false)
 	{
 		if (!isset($lingua))
 			$lingua = Params::$lang;
@@ -2777,7 +2781,12 @@ class PagesModel extends GenericModel {
 		if ($sWhere)
 			$d->sWhere($sWhere);
 		
-		$res = $d->orderBy("documenti.id_order")->send();
+		$d->orderBy("documenti.id_order");
+		
+		if ($returnObject)
+			return $d;
+		
+		$res = $d->send();
 		
 // 		echo $d->getQuery();die();
 		
@@ -4828,5 +4837,23 @@ class PagesModel extends GenericModel {
 		}
 		
 		return "";
+	}
+	
+	public function getCookieOrdinamento()
+	{
+		self::$ordinamentoDefaultProdotti = v("default_ordinamento_prodotti");
+		
+		if (!v("salva_ordinamento_prodotti"))
+			return;
+		
+		if (isset($_GET["o"]) && in_array((string)trim($_GET["o"]), self::$ordinamentiProdottiPermessi))
+		{
+			$time = time() + v("tempo_durata_cookie_ordinamento_prodotti");
+			Cookie::set("ord", (string)trim($_GET["o"]), $time, "/");
+		}
+		else if (isset($_COOKIE["ord"]) && in_array((string)trim($_COOKIE["ord"]), self::$ordinamentiProdottiPermessi))
+		{
+			self::$ordinamentoDefaultProdotti = (string)trim($_COOKIE["ord"]);
+		}
 	}
 }

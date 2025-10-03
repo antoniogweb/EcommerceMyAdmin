@@ -30,6 +30,8 @@ class TipidocumentoController extends BaseController
 		'id_group:sanitizeAll'=>'tutti',
 	);
 	
+	public $orderBy = "id_order";
+	
 	public $sezionePannello = "utenti";
 	
 	public $tabella = "tipi documenti";
@@ -54,7 +56,7 @@ class TipidocumentoController extends BaseController
 				->where(array(
 // 					"lk" => array('titolo' => $this->viewArgs['cerca']),
 				))
-				->orderBy("titolo");
+				->orderBy($this->orderBy);
 		
 		if ($this->viewArgs["id_group"] != "tutti")
 		{
@@ -83,6 +85,13 @@ class TipidocumentoController extends BaseController
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function ordina()
+	{
+		$this->modelName = "TipidocumentoModel";
+		
+		parent::ordina();
 	}
 	
 	public function estensioni($id = 0)

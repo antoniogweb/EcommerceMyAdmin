@@ -781,7 +781,7 @@ class BaseContenutiController extends BaseController
 		
 		$argKeys = array(
 			'p:forceNat'	=>	1,
-			'o:sanitizeAll'	=>	v("default_ordinamento_prodotti"),
+			'o:sanitizeAll'	=>	PagesModel::$ordinamentoDefaultProdotti,
 			'search:sanitizeAll'	=>	"",
 		);
 		
@@ -1370,7 +1370,7 @@ class BaseContenutiController extends BaseController
 			if ($firstSection == Parametri::$nomeSezioneProdotti)
 				$this->m("PagesModel")->orderBy($this->gerOrderByProdotti($this->viewArgs['o']));
 			else
-				$this->m("PagesModel")->orderBy($this->gerOrderBy($firstSection));
+				$this->m("PagesModel")->orderBy($this->gerOrderBy($firstSection, $this->viewArgs['o']));
 		}
 		
 		if (!$urlOrdinamento)
@@ -1423,6 +1423,9 @@ class BaseContenutiController extends BaseController
 	
 	protected function gerOrderByProdotti($string)
 	{
+		if (!in_array($string, PagesModel::$ordinamentiProdottiPermessi))
+			return "pages.id_order";
+		
 		switch($string)
 		{
 			case "tutti":
@@ -1435,6 +1438,10 @@ class BaseContenutiController extends BaseController
 				return "combinazioni_minime.prezzo_minimo,pages.id_order";
 			case "decrescente":
 				return "combinazioni_minime.prezzo_minimo desc,pages.id_order";
+			case "pr":
+				return "pages.data_creazione desc";
+			case "mr":
+				return "pages.data_creazione";
 			case "piuvenduto":
 				if (!v("aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"))
 					return "pages.numero_acquisti_pagina desc,pages.id_order";
@@ -1445,7 +1452,7 @@ class BaseContenutiController extends BaseController
 		}
 	}
 	
-	protected function gerOrderBy($section)
+	protected function gerOrderBy($section, $string = "")
 	{
 		switch ($section)
 		{
@@ -1529,7 +1536,7 @@ class BaseContenutiController extends BaseController
 		}
 	}
 	
-	private function checkCategory($id)
+	protected function checkCategory($id)
 	{
 		$clean['id'] = (int)$id;
 		

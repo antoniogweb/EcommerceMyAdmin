@@ -590,7 +590,10 @@ class BaseBaseController extends Controller
 	{
 		// Recupero il cookie di contatto
 		$this->m("ContattiModel")->getCookie();
-
+		
+		// Recupero il cookie di ordinamento prodotti
+		$this->m("PagesModel")->getCookieOrdinamento();
+		
 		if (!v("ecommerce_attivo"))
 			return;
 

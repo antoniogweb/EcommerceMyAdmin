@@ -447,6 +447,7 @@ class Route
 		'tipidocumento,main',
 		'tipidocumento,form',
 		'tipidocumento,estensioni',
+		'tipidocumento,ordina',
 		
 		'tipidocumentoestensioni,form',
 		

@@ -28,6 +28,8 @@ class TipidocumentoModel extends GenericModel
 		$this->_tables = 'tipi_documento';
 		$this->_idFields = 'id_tipo_doc';
 		
+		$this->_idOrder = 'id_order';
+		
 		$this->uploadFields = array(
 			"immagine"	=>	array(
 				"type"	=>	"image",

@@ -1,0 +1,1 @@
+alter table tipi_documento add id_order INT UNSIGNED NOT NULL default 0;
