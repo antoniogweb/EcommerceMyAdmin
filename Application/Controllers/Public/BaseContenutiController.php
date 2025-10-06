@@ -1536,22 +1536,22 @@ class BaseContenutiController extends BaseController
 		}
 	}
 	
-	protected function checkCategory($id)
-	{
-		$clean['id'] = (int)$id;
-		
-		if (!$this->m('CategoriesModel')->check($clean["id"]))
-		{
-			if ($this->islogged)
-			{
-				$this->redirect("contenuti/nonpermesso");
-			}
-			else
-			{
-				$this->redirect("regusers/login");
-			}
-		}
-	}
+// 	protected function checkCategory($id)
+// 	{
+// 		$clean['id'] = (int)$id;
+// 		
+// 		if (!$this->m('CategoriesModel')->check($clean["id"]))
+// 		{
+// 			if ($this->islogged)
+// 			{
+// 				$this->redirect("contenuti/nonpermesso");
+// 			}
+// 			else
+// 			{
+// 				$this->redirect("regusers/login");
+// 			}
+// 		}
+// 	}
 	
 	protected function marchio($id)
 	{

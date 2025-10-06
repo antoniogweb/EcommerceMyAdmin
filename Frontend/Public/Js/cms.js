@@ -1,6 +1,9 @@
 if (typeof stringa_testo_copiato_clipboard == "undefined")
 	var stringa_testo_copiato_clipboard = "Il link della lista è stato copiato negli appunti.";
 
+if (typeof formato_data_date_picker == "undefined")
+	var formato_data_date_picker = "dd-mm-yy";
+
 function copyToClipboard(testo) {
 	var $temp = $("<input>");
 	$("body").append($temp);
@@ -52,7 +55,7 @@ $(document).ready(function(){
 	if (typeof jQuery.ui !== 'undefined')
 	{
 		$( ".date_picker_generale" ).datepicker({
-			dateFormat: "dd-mm-yy"
+			dateFormat: formato_data_date_picker
 		});
 	}
 });

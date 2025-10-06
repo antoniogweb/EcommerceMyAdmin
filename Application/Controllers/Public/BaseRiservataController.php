@@ -297,7 +297,14 @@ class BaseRiservataController extends BaseController
 		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestione notifiche"));
 		
-		$this->m("DocumentiModel")->documentiDaleggere()->restore();
+		if (isset($_GET["markasread"]))
+		{
+			$this->m("DocumentiModel")->clear()->restore()->documentiDaleggere()->segnaComeLetti();
+			Cache_Db::$cachedTables = array();
+		}
+		
+		$this->m("DocumentiModel")->clear()->restore()->documentiDaleggere();
+		$data['numeroNotificheDaLeggere'] = $this->m("DocumentiModel")->rowNumber();
 		
 		if ($this->viewArgs["dal"])
 			$this->m("DocumentiModel")->sWhere(array("DATE_FORMAT(documenti.data_file_upload, '%Y-%m-%d') >= ?",array(getIsoDate($this->viewArgs["dal"]))));
@@ -313,8 +320,8 @@ class BaseRiservataController extends BaseController
 		
 		$data['notificheDaLeggere'] = $this->m("DocumentiModel")->send();
 		
-		$data['categorieDaLeggere'] = array(0 => gtext("Seleziona")) + $this->m("DocumentiModel")->categorieConDocumentiDaLeggere();
-		$data['pagineDaLeggere'] = array(0 => gtext("Seleziona")) + $this->m("DocumentiModel")->pagineConDocumentiDaLeggere();
+		$data['categorieDaLeggere'] = array(0 => gtext("Seleziona")) + $this->m("DocumentiModel")->clear()->restore()->categorieConDocumentiDaLeggere();
+		$data['pagineDaLeggere'] = array(0 => gtext("Seleziona")) + $this->m("DocumentiModel")->clear()->restore()->pagineConDocumentiDaLeggere();
 		
 		$data['loadJqueryUi'] = true;
 		

@@ -303,6 +303,16 @@ class F
 		return '';
 	}
 	
+	public static function getDateInCorrectFormat($time)
+	{
+		return date(v("default_date_format"), $time);
+	}
+	
+	public static function getDateAndTimeInCorrectFormat($time)
+	{
+		return date(v("default_date_format")." H:i", $time);
+	}
+	
 	public static function checkPreparedStatement()
 	{
 		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && defined('CHECK_QUERIES')))

@@ -717,8 +717,7 @@ class DocumentiModel extends GenericModel {
 	
 	public function getStrutturaQueryDaocumentiDaLeggere()
 	{
-		$this->clear()
-			->select("documenti.*,pages.title,categories.title,documenti_tradotti.titolo,pagine_tradotte.title,categorie_tradotte.title,tipi_documento.titolo,categories.id_c,pages.id_page")
+		$this->select("documenti.*,pages.title,categories.title,documenti_tradotti.titolo,pagine_tradotte.title,categorie_tradotte.title,tipi_documento.titolo,categories.id_c,pages.id_page")
 			->inner("pages")->on("pages.id_page = documenti.id_page")
 			->inner("categories")->on("categories.id_c = pages.id_c")
 			->addJoinTraduzione(null, "documenti_tradotti", false)
@@ -726,7 +725,7 @@ class DocumentiModel extends GenericModel {
 			->addJoinTraduzione(null, "categorie_tradotte", false, (new CategoriesModel()))
 			->left(array("tipo"))
 			->sWhere("documenti.id_doc not in (select id_doc from regusers_notifiche where id_user = ".(int)User::$id.")")
-			->where(array(
+			->aWhere(array(
 				"pages.attivo"			=>	"Y",
 				"documenti.visibile"	=>	1,
 				"in"	=>	array(
@@ -779,5 +778,17 @@ class DocumentiModel extends GenericModel {
 	public function documentiDaleggere()
 	{
 		return $this->getStrutturaQueryDaocumentiDaLeggere()->orderBy("data_file_upload desc");
+	}
+	
+	public function segnaComeLetti()
+	{
+		$res = $this->send();
+		
+		$run = new RegusersnotificheModel();
+		
+		foreach ($res as $r)
+		{
+			$run->aggiungiDocumento((int)$r["documenti"]["id_doc"]);
+		}
 	}
 }

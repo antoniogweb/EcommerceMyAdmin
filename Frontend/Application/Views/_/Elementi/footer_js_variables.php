@@ -45,5 +45,6 @@
 	<?php if (v("attiva_area_riservata")) { ?>
 	var nazioniConProvince = ['<?php echo implode("','",NazioniModel::nazioniConProvince())?>'];
 	<?php } ?>
+	var formato_data_date_picker = '<?php echo v("default_date_format_datepicket");?>';
 </script>
 <?php $jsVariablesLoaded = true;?>

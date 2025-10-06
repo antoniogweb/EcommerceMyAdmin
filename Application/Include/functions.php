@@ -1885,15 +1885,18 @@ function getIsoDate($date)
 	}
 	else if (preg_match('/^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/',$date))
 	{
-		$dateObj = DateTime::createFromFormat("d-m-Y", $date);
+		$formato = implode("-", App::$dateFormatArray);
+		$dateObj = DateTime::createFromFormat($formato, $date);
 	}
 	else if (preg_match('/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/',$date))
 	{
-		$dateObj = DateTime::createFromFormat("d/m/Y", $date);
+		$formato = implode("/", App::$dateFormatArray);
+		$dateObj = DateTime::createFromFormat($formato, $date);
 	}
 	else if (preg_match('/^[0-9]{2}\_[0-9]{2}\_[0-9]{4}$/',$date))
 	{
-		$dateObj = DateTime::createFromFormat("d_m_Y", $date);
+		$formato = implode("_", App::$dateFormatArray);
+		$dateObj = DateTime::createFromFormat($formato, $date);
 	}
 
 	if ($dateObj)

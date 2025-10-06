@@ -1564,4 +1564,21 @@ class BaseBaseController extends Controller
 		if (v("hook_after_login_utente"))
 			callFunction(v("hook_after_login_utente"), (int)$this->s['registered']->status['id_user'], v("hook_after_login_utente"));
 	}
+	
+	protected function checkCategory($id)
+	{
+		$clean['id'] = (int)$id;
+		
+		if (!$this->m('CategoriesModel')->check($clean["id"]))
+		{
+			if ($this->islogged)
+			{
+				$this->redirect("contenuti/nonpermesso");
+			}
+			else
+			{
+				$this->redirect("regusers/login");
+			}
+		}
+	}
 }

@@ -41,6 +41,8 @@ class App
 	
 	public static $fileNeutri = array("index.html", ".htaccess");
 	
+	public static $dateFormatArray = array("d", "m", "Y");
+	
 	public static function setPannelli()
 	{
 		self::$pannelli = array(
