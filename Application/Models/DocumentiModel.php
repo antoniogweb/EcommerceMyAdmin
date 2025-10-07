@@ -544,19 +544,6 @@ class DocumentiModel extends GenericModel {
 		return "contenuti/documento/".(int)$id;
 	}
 	
-	public function addAccessoGruppiWhereClase()
-	{
-		if (count(User::$groups) > 0)
-			$this->left(array("gruppi"))->sWhere(array(
-				"(reggroups.name is null OR reggroups.name in (".str_repeat ('?, ',  count (User::$groups) - 1) . '?'."))",
-				User::$groups
-			));
-		else
-			$this->left(array("gruppi"))->sWhere("reggroups.name is null");
-		
-		return $this;
-	}
-	
 	// Restituisce tutti i documenti assegnati manualmente in admin ad un utente
 	public function getDocumentiRiservatiUtente($idUser, $idDoc = 0, $ritornaNumero = false)
 	{
@@ -618,7 +605,7 @@ class DocumentiModel extends GenericModel {
 		{
 			$pModel = new PagesModel();
 			
-			if (!empty($record) && !$pModel->check($record["id_page"]))
+			if (!empty($record) && $record["id_page"] && !$pModel->check($record["id_page"]))
 				return false;
 		}
 		

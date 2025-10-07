@@ -631,6 +631,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_categorie_sorelle_in_griglia_prodotti"	=>	0, // se impostato su 1, estrai anche le categorie sorelle (stessa categorie padre)
 		"aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"	=>	0, // se impostato su 1, quando viene aggiornato l'ordine, viene ricalcolata la colonna numero_acquisti_pagina per ogni pagina presente tra le righe dell'ordine
 		"attiva_ricerca_documento"	=>	0, // se impostato su 1 permette di cercare anche i documenti all'interno di una categoria
+		"estrai_documenti_in_ricerca_documento"	=>	0, // se impostato a 1, estrae anche tutti i documenti (la pagina viene ripetuta). Attivo solo se attiva_ricerca_documento = 1
 		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria
 		"estrai_fasce_in_categoria_prodotti"	=>	1, // se estrarre le fasce nelle categorie prodotti
 		"attiva_campo_redirect"		=>	0, // se impostato ad 1, attiva un campo redirect per le categorie. La categoria sarà un link all'URL specificato nel campo redirect

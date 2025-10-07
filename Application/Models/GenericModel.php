@@ -1973,4 +1973,20 @@ class GenericModel extends Model_Tree
 		
 		return "";
 	}
+	
+	public function addAccessoGruppiWhereClase()
+	{
+		$this->left("reggroups_documenti")->on("documenti.id_doc=reggroups_documenti.id_doc");
+		$this->left("reggroups")->on("reggroups_documenti.id_group=reggroups.id_group");
+		
+		if (count(User::$groups) > 0)
+			$this->sWhere(array(
+				"(reggroups.name is null OR reggroups.name in (".str_repeat ('?, ',  count (User::$groups) - 1) . '?'."))",
+				User::$groups
+			));
+		else
+			$this->sWhere("reggroups.name is null");
+		
+		return $this;
+	}
 }

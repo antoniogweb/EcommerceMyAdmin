@@ -1039,7 +1039,7 @@ class BaseContenutiController extends BaseController
 	// Aggiungo la parte di JOIN con documenti e il cerca per titolo documento
 	protected function getSearchWhereDoc()
 	{
-		$this->m("PagesModel")->inner(array("documenti"))->addJoinTraduzione(null, "contenuti_tradotti_documenti", false, new DocumentiModel());
+		$this->m("PagesModel")->inner(array("documenti"))->addJoinTraduzione(null, "contenuti_tradotti_documenti", false, new DocumentiModel())->addAccessoGruppiWhereClase();
 		
 		if (Params::$lang == Params::$defaultFrontEndLanguage)
 			$this->m("PagesModel")->sWhere(array("(documenti.titolo like ? or documenti.clean_filename like ?)", array("%".addBackSlashLike($this->viewArgs["searchdoc"])."%", "%".addBackSlashLike($this->viewArgs["searchdoc"])."%")));
@@ -1099,7 +1099,12 @@ class BaseContenutiController extends BaseController
 	{
 		$clean['id'] = (int)$id;
 		
-		$this->m("PagesModel")->clear()->restore()->select(PagesModel::getSelectDistinct()."pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->addWhereAttivo();
+		$select = PagesModel::getSelectDistinct()."pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*";
+		
+		if (v("attiva_ricerca_documento") && v("estrai_documenti_in_ricerca_documento") && strcmp($this->viewArgs["searchdoc"],"") !== 0)
+			$select = "distinct documenti.id_doc,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,documenti.*,contenuti_tradotti_documenti.*";
+			
+		$this->m("PagesModel")->clear()->restore()->select($select)->addWhereAttivo();
 		
 		$this->addOrderByClause($firstSection, null, $attivaOrderBy);
 		
