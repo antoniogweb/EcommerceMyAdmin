@@ -169,7 +169,7 @@ class PagesstatsModel extends GenericModel {
 		
 		$params[] = $now->format("Y-m-d");
 		
-		$sql = "select p2.id_page,count(p2.id_page) as NUMERO from (select distinct cart_uid from pages_stats where id_page in (".$this->placeholdersFromArray($idPages).") $queryIp) as p1 inner join (select pages_stats.id_page,pages_stats.cart_uid,pages_stats.data_stat from pages_stats where pages_stats.id_page not in (".$this->placeholdersFromArray($idPages).") $queryIp group by pages_stats.cart_uid,pages_stats.id_page) as p2 on p1.cart_uid = p2.cart_uid where p2.data_stat >= ? group by p2.id_page having NUMERO >= ".(int)$soglia." order by count(p2.id_page) desc,p2.id_page desc;";
+		$sql = "select p2.id_page,count(p2.id_page) as NUMERO from (select distinct cart_uid from pages_stats where id_page in (".$this->placeholdersFromArray($idPages).") $queryIp) as p1 inner join (select pages_stats.id_page,pages_stats.cart_uid,pages_stats.data_stat from pages_stats where pages_stats.id_page not in (".$this->placeholdersFromArray($idPages).") $queryIp AND pages_stats.data_stat >= ? group by pages_stats.cart_uid,pages_stats.id_page) as p2 on p1.cart_uid = p2.cart_uid group by p2.id_page having NUMERO >= ".(int)$soglia." order by count(p2.id_page) desc,p2.id_page desc;";
 		
 		return $this->clear()->query(array(
 			$sql,
