@@ -33,7 +33,7 @@ class RegaccessiModel extends GenericModel {
 	
 	public function cleanDateAccessi($record)
     {
-		$formato = "d-m-Y";
+		$formato = implode("-", App::$dateFormatArray);
 		
 		if (isset($record[$this->_tables]["data_creazione"]) && $record[$this->_tables]["data_creazione"])
 			return date($formato,strtotime($record[$this->_tables]["data_creazione"]));

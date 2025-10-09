@@ -1536,7 +1536,7 @@ class GenericModel extends Model_Tree
     
     public function cleanDateTime($record)
     {
-		$formato = "d-m-Y H:i";
+		$formato = implode("-", App::$dateFormatArray)." H:i";
 		
 		if (isset($record[$this->_tables]["data_creazione"]) && $record[$this->_tables]["data_creazione"])
 			return date($formato,strtotime($record[$this->_tables]["data_creazione"]));

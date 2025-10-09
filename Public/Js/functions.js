@@ -127,7 +127,9 @@ function aggiornaParziale(url)
 }
 
 var inputFieldErrorBorderStyle = "2px solid red";
-var dataFormat = "dd-mm-yy";
+
+if (typeof dataFormat == "undefined")
+	var dataFormat = "dd-mm-yy";
 
 //fa apparire la lightbox
 function open_lightbox(titolo, contenuto)
