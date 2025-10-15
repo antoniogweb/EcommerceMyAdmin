@@ -1,0 +1,1 @@
+UPDATE `controllers` SET `codice` = 'regaccessi' WHERE `controllers`.`titolo` = "Gestione accessi";

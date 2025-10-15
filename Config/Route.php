@@ -989,6 +989,9 @@ class Route
 		'geolocator,form',
 		
 		'regaccessi,main',
+		
+		'ipchecker,main',
+		'ipchecker,form',
 	);
 	
 	//it can be 'yes' or 'no'

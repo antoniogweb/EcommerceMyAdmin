@@ -22,18 +22,18 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class GeolocatorModel extends GenericModel
+class IpcheckerModel extends GenericModel
 {
 	use DIModel;
 	
 	public static $modulo = null;
 	
-	public $cartellaModulo = "Geolocator";
-	public $classeModuloPadre = "Geolocator";
+	public $cartellaModulo = "Ipchecker";
+	public $classeModuloPadre = "Ipchecker";
 	
 	public function __construct() {
-		$this->_tables='geolocator';
-		$this->_idFields='id_geolocator';
+		$this->_tables='ip_checker';
+		$this->_idFields='ip_checker';
 		
 		$this->_idOrder = 'id_order';
 		
@@ -69,7 +69,7 @@ class GeolocatorModel extends GenericModel
 	public function update($id = null, $where = null)
 	{
 		if (isset($this->values["attivo"]) && $this->values["attivo"])
-			$this->db->query("update geolocator set attivo = 0 where 1");
+			$this->db->query("update ip_checker set attivo = 0 where 1");
 		
 		return parent::update($id, $where);
 	}

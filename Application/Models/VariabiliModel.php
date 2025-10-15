@@ -885,6 +885,7 @@ class VariabiliModel extends GenericModel {
 		### IP ##
 		"attiva_gestione_geolocator"	=>	0, // se permette oppure no la gestione dei geolocator
 		"attiva_ip_location"		=>	0, // se è attiva la ricerca dell'IP all'accesso al sito (vecchia versione)
+		"attiva_gestione_ipchecker"	=>	0, // se permette oppure no la gestione degli IP checker
 		### WAF ##
 		"attiva_waf"			=>	0, // se impostato ad 1, attiva il Web Application Firewall
 		"numero_massimo_attacchi_minuto"	=>	5, // numero massimo di attacchi al minuto, dopo il quale l'IP viene bloccato (il blocco avviene immediatamente dopo aver rilevato l'attacco solo se attiva_blocco_immediato = 1, altrimenti deve essere impostato tramite CRON)
