@@ -152,7 +152,7 @@ class RigheModel extends GenericModel {
 			"ne"	=>	array(
 				"orders.stato"	=>	"deleted",
 			),
-		));
+		))->sWhere("orders.stato not in (select codice from stati_ordine where rimborsato = 1)");
 		
 		if ($idC)
 			$r->aWhere(array(
