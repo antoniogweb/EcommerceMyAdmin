@@ -2,10 +2,10 @@
 <?php
 $breadcrumb = array(
 	gtext("Home") 		=> $this->baseUrl,
-	gtext("Pagina non trovata") => "",
+	gtext("Accesso non permesso") => "",
 );
 
-$titoloPagina = gtext("Pagina non trovata");
+$titoloPagina = gtext("Accesso non permesso");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
