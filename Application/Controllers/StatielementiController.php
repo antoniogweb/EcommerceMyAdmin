@@ -41,7 +41,7 @@ class StatielementiController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->queryActions = $this->bulkQueryActions = "";
+		$this->bulkQueryActions = "";
 		$this->addBulkActions = false;
 		$this->colProperties = array();
 		
