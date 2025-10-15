@@ -318,7 +318,7 @@ class ListeregaloModel extends GenericModel
 		
 		$res = $lrp->clear()->select("*")
 			->inner(array("pagina"))
-			->left("(select id_c,orders.id_lista_regalo as id_lista from righe inner join orders on righe.id_o = orders.id_o where orders.stato != 'deleted') as r")->on("r.id_c = liste_regalo_pages.id_c and r.id_lista = liste_regalo_pages.id_lista_regalo")
+			->left("(select id_c,orders.id_lista_regalo as id_lista from righe inner join orders on righe.id_o = orders.id_o where orders.stato != 'deleted' and orders.stato not in (select codice from stati_ordine where rimborsato = 1)) as r")->on("r.id_c = liste_regalo_pages.id_c and r.id_lista = liste_regalo_pages.id_lista_regalo")
 			->addJoinTraduzione(null, "contenuti_tradotti", false, (new PagesModel()))
 			->inner("categories")->on("categories.id_c = pages.id_c")
 			->aWhere(array(
