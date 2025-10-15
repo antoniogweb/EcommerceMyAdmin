@@ -88,6 +88,8 @@ if ($params["azione"] == "check-numero-query")
 	{
 		Shield::blockIps($conteggio, $secondi);
 		
+		LogtecniciModel::aggiungiMolti("LIMITE QUERY", "Superato il limite di $query query negli ultimi $secondi secondi", $conteggio);
+		
 		$log->writeString("Gli IP sono stati bloccati");
 	}
 	
@@ -123,6 +125,8 @@ if ($params["azione"] == "check-numero-attacchi")
 	if (!empty($conteggio) && $blocca)
 	{
 		Shield::blockIps($conteggio, $secondi);
+		
+		LogtecniciModel::aggiungiMolti("LIMITE ATTACCHI", "Superato il limite di $query attacchi negli ultimi $secondi secondi", $conteggio);
 		
 		$log->writeString("Gli IP sono stati bloccati");
 	}

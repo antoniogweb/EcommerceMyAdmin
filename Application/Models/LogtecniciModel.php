@@ -31,6 +31,25 @@ class LogtecniciModel extends GenericModel {
 		parent::__construct();
 	}
 	
+	public static function aggiungiMolti($tipo, $descrizione, $ipS)
+	{
+		$lt = new LogtecniciModel();
+		
+		$lt->sValues(array(
+			"data_creazione"	=>	date("Y-m-d H:i:s"),
+			"tipo"			=>	$tipo,
+			"da_notificare_via_mail"	=>	1,
+		), "sanitizeDb");
+		
+		foreach ($ipS as $ip => $numero)
+		{
+			$lt->setValue("ip", $ip);
+			$lt->setValue("descrizione", $descrizione." (numero: $numero)");
+		}
+		
+		$lt->insert();
+	}
+	
 	public static function aggiungi($tipo, $descrizione, $daNotificare = 1)
 	{
 		$lt = new LogtecniciModel();
