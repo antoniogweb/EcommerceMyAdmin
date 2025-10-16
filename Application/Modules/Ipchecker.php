@@ -25,4 +25,28 @@ if (!defined('EG')) die('Direct access not allowed!');
 class Ipchecker
 {
 	use Modulo;
+	
+	public function getLogPath($ip = 0)
+	{
+		$ip = F::checkIpESubIp($ip);
+		
+		if (!$ip)
+			return;
+		
+		$moduleFullPath = $this->cacheAbsolutePath."/".trim($this->params["codice"]);
+		
+		// Controllo e in caso creo la cartella della spedizione o invio
+		if (!@is_dir($moduleFullPath."/$ip"))
+			createFolderFull($ip, $moduleFullPath);
+		
+		return $moduleFullPath."/$ip";
+	}
+	
+	public function logCall($ip, $output)
+	{
+		$path = $this->getLogPath($ip);
+		$path .= "/".date("Ymdhis").".txt";
+		
+		FilePutContentsAtomic($path, $output);
+	}
 }

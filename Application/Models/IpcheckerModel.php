@@ -73,4 +73,10 @@ class IpcheckerModel extends GenericModel
 		
 		return parent::update($id, $where);
 	}
+	
+	public static function checkIp($ip)
+	{
+		if (IpcheckerModel::getModulo()->isAttivo())
+			return IpcheckerModel::getModulo()->check($ip);
+	}
 }

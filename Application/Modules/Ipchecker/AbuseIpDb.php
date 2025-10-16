@@ -20,8 +20,10 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-class AbuseIpDb extends Geolocator
+class AbuseIpDb extends Ipchecker
 {
+	public static $minConfidenceScore = 10;
+	
 	public function gCampiForm()
 	{
 		return 'titolo,attivo,key_1';
@@ -38,5 +40,41 @@ class AbuseIpDb extends Geolocator
 	public function editFormStruct($model, $record)
 	{
 		$model->formStruct["entries"]["key_1"]["labelString"] = "AbuseIpDB ApiKey";
+		$model->formStruct["entries"]["key_1"]["type"] = "Password";
+		$model->formStruct["entries"]["key_1"]["fill"] = true;
+	}
+	
+	public function check($ip)
+	{
+		if (!F::checkIpESubIp($ip))
+			return null;
+		
+		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
+		
+		$client = new GuzzleHttp\Client([
+			'base_uri' => 'https://api.abuseipdb.com/api/v2/'
+		]);
+
+		$response = $client->request('GET', 'check', [
+			'query' => [
+				'ipAddress' => $ip,
+				'maxAgeInDays' => '90',
+			],
+			'headers' => [
+				'Accept' => 'application/json',
+				'Key' => $this->getParam("key_1")
+		],
+		]);
+
+		$output = $response->getBody();
+		
+		$this->logCall($ip, $output);
+		
+		$ipDetails = json_decode($output, true);
+		
+		if ($ipDetails["data"]["abuseConfidenceScore"] >= self::$minConfidenceScore)
+			return false;
+		
+		return true;
 	}
 }

@@ -51,3 +51,15 @@ if ($params["azione"] == "notifica-log-tecnici")
 	
 	$log->writeString("FINE NOTIFICA LOG TECNICI");
 }
+
+if ($params["azione"] == "check-ip-log-tecnici")
+{
+	$log->writeString("INIZIO CHECK IP LOG TECNICI");
+	
+// 	$res = IpcheckerModel::checkIp();
+// 	
+// 	if ($res !== NULL)
+// 		var_dump($res);
+	
+	$log->writeString("FINE CHECK IP LOG TECNICI");
+}
