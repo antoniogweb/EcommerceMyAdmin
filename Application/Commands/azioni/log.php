@@ -56,10 +56,7 @@ if ($params["azione"] == "check-ip-log-tecnici")
 {
 	$log->writeString("INIZIO CHECK IP LOG TECNICI");
 	
-// 	$res = IpcheckerModel::checkIp();
-// 	
-// 	if ($res !== NULL)
-// 		var_dump($res);
+	LogtecniciModel::controllaIp();
 	
 	$log->writeString("FINE CHECK IP LOG TECNICI");
 }

@@ -65,12 +65,42 @@ class LogtecniciModel extends GenericModel {
 		$lt->insert();
 	}
 	
+	public static function controllaIp()
+	{
+		$lt = new LogtecniciModel();
+		
+		$daControllare = $lt->clear()->where(array(
+			"notificato"	=>	0,
+			"da_notificare_via_mail"	=>	1,
+			"check_ip"		=>	0,
+		))->sWhere("IS_IPV4(ip)")->groupBy("ip")->orderBy()->toList("ip")->send();
+		
+		foreach ($daControllare as $ip)
+		{
+			$res = IpcheckerModel::checkIp($ip);
+			
+			$daNotificare = (!$res) ? 0 : 1;
+			
+			$lt->sValues(array(
+				"da_notificare_via_mail"	=>	$daNotificare,
+				"check_ip"					=>	1,
+				"check_ip_date_time"		=>	date("Y-m-d H:i:s"),
+			));
+			
+			$lt->update(null, array(
+				"ip"		=>	sanitizeAll($ip),
+				"check_ip"	=>	0,
+			));
+		}
+	}
+	
 	public static function notifica($log = null)
 	{
 		$lt = new LogtecniciModel();
 		
 		$daInviare = $lt->clear()->where(array(
-			"notificato"	=>	0
+			"notificato"	=>	0,
+			"da_notificare_via_mail"	=>	1,
 		))->orderBy()->send(false);
 		
 		$struttura = array();
@@ -79,7 +109,7 @@ class LogtecniciModel extends GenericModel {
 		
 		foreach ($daInviare as $r)
 		{
-			$struttura[] = $r["data_creazione"]."<br />\nID: ".$r["id_log_tecnico"]."<br />\nTipo: ".$r["tipo"]."<br />\n".$r["descrizione"];
+			$struttura[] = $r["data_creazione"]."<br />\nIP: ".$r["ip"]."<br />\nTipo: ".$r["tipo"]."<br />\n".$r["descrizione"];
 			
 			$idNotificati[] = $r["id_log_tecnico"];
 		}

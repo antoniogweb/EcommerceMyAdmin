@@ -1,0 +1,1 @@
+alter table log_tecnici add check_ip_date_time datetime null;
