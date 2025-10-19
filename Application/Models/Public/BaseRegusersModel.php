@@ -351,7 +351,12 @@ class BaseRegusersModel extends Model_Tree
 		$campiObbligatori = $campiObbligatoriComuni.$campiNominativi.",".$campoPIva."username".$campiObbligatoriAggiuntivi;
 		
 		if ($queryType == "insert")
+		{
 			$campiObbligatori .= $campiObbligatoriConfermaAccount.",accetto,password";
+			
+			if (v("attiva_accetto_2"))
+				$campiObbligatori .= ",accetto_2";
+		}
 		
 		$this->addStrongCondition("both",'checkNotEmpty',$campiObbligatori);
 		
@@ -383,6 +388,13 @@ class BaseRegusersModel extends Model_Tree
 			$evidenziaAccetto = Output::$html ? "<div class='evidenzia'>class_accetto</div>" : "";
 			
 			$this->addStrongCondition("both",'checkIsStrings|accetto',"accetto|<b>".gtext("Si prega di accettare le condizioni di privacy")."</b>$evidenziaAccetto");
+			
+			if (v("attiva_accetto_2"))
+			{
+				$evidenziaAccetto2 = Output::$html ? "<div class='evidenzia'>class_accetto_2</div>" : "";
+				
+				$this->addStrongCondition("both",'checkIsStrings|accetto',"accetto_2|<b>".gtext("Si prega di accettare le condizioni aggiuntive")."</b>$evidenziaAccetto2");
+			}
 		}
 		
 		if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_UTENTE", "pagamento") && isset($_POST["nazione"]) && $_POST["nazione"])

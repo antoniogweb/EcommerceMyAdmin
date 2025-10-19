@@ -189,8 +189,11 @@ class PagesModel extends GenericModel {
 			self::$tipiPagina["CREDITI"] = "Pagina di approfondimento sui CREDITI";
 		}
 		
-		IF (V("attiva_agenti"))
+		if (v("attiva_agenti"))
 			self::$tipiPagina["AGENTI"] = "Pagina di approfondimento per la registrazione di un agente";
+		
+		if (v("attiva_accetto_2"))
+			self::$tipiPagina["CONDIZIONI_AGG"] = "Pagina condizioni aggiuntive da accettare alla registrazione";
 		
 		foreach (self::$tipiPaginaAddizionali as $tipo => $label)
 		{

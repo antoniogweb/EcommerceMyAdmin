@@ -29,7 +29,7 @@ USERNAME: <b><?php echo $clean["username"];?></b><br />
 <?php echo gtext("INDIRIZZO");?>: <b><?php echo $datiCliente["indirizzo"];?></b><br />
 <?php echo gtext("CAP");?>: <b><?php echo $datiCliente["cap"];?></b><br />
 <?php echo gtext("NAZIONE");?>: <b><?php echo nomeNazione($datiCliente["nazione"]);?></b><br />
-<?php echo gtext("PROVINCIA");?>: <b><?php echo $datiCliente["nazione"] == "IT" ? $datiCliente["provincia"] : $datiCliente["dprovincia"];?></b><br />
+<?php echo gtext("PROVINCIA");?>: <b><?php echo NazioniModel::conProvince($datiCliente["nazione"]) ? ProvinceModel::sFindTitoloDaCodice($datiCliente["provincia"]) : $datiCliente["dprovincia"];?></b><br />
 <?php echo gtext("CITTÀ");?>: <b><?php echo $datiCliente["citta"];?></b><br />
 <?php echo gtext("TELEFONO");?>: <b><?php echo $datiCliente["telefono"];?></b><br />
 <?php echo gtext("EMAIL");?>: <b><?php echo $datiCliente["username"];?></b><br />

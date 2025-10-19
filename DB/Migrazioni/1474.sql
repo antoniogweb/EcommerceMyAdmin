@@ -1,0 +1,1 @@
+alter table orders add accetto_2 char(10) not null default '' after accetto;

@@ -40,7 +40,6 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<?php include(tpf("Regusers/form_dati_cliente.php"));?>
 	
 	<?php if (strcmp($this->action,"modify") !== 0) { ?>
-		
 		<br />
 		<?php
 		include(tpf(ElementitemaModel::p("CHECKOUT_NEWSLETTER","", array(
@@ -49,17 +48,8 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		))));
 		?>
 		<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
-		<div class="condizioni_privacy uk-margin uk-text-muted uk-text-small">
-			<?php echo gtext("Ho letto e accettato le");?>
-			<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
-			<?php if ($idPrivacy) { ?>
-			<a class="uk-text-secondary" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("condizioni di privacy");?></a>
-			<?php } ?>
-		</div>
-
-		<div class="class_accetto">
-			<?php echo Html_Form::radio("accetto",$values['accetto'],array("<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("NON ACCETTO")."</span><span style='margin-right:20px;'></span>" => "non_accetto", "<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("ACCETTO")."</span>" => "accetto"),"radio_2");?>
-		</div>
+		
+		<?php include(tpf("Regusers/form_accetto.php"));?>
 	<?php } ?>
 	
 	<div class="<?php echo $classeBoxPulsanteRegistrazione;?>">

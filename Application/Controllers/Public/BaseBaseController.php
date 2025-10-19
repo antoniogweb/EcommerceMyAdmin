@@ -794,6 +794,9 @@ class BaseBaseController extends Controller
 		
 		$baseFields .= ",accetto";
 		
+		if (v("attiva_accetto_2"))
+			$baseFields .= ",accetto_2";
+		
 		// BASE: 'nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,accetto,tipo_cliente,nazione,pec,codice_destinatario,dprovincia,telefono_2';
 		
 		$fields = $baseFields.',password:'.PASSWORD_HASH;
