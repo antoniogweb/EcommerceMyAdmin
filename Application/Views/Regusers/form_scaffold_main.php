@@ -125,6 +125,11 @@
 				<div class='col-md-3'>
 					<?php echo $form["confirmation"];?>
 				</div>
+				<?php if (v("attiva_scadenza_account")) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["data_scadenza"];?>
+				</div>
+				<?php } ?>
 				<div class='col-md-3'>
 					<?php echo $form["lingua"];?>
 				</div>

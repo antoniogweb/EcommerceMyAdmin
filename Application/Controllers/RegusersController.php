@@ -312,6 +312,12 @@ class RegusersController extends BaseController
 			$formFields .= ",prezzi_ivati_in_carrello";
 		}
 		
+		if (v("giorni_scadenza_account"))
+		{
+			$fields .= ",data_scadenza";
+			$formFields .= ",data_scadenza";
+		}
+		
 		return array($fields, $formFields);
 	}
 	

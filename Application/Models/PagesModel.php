@@ -195,6 +195,9 @@ class PagesModel extends GenericModel {
 		if (v("attiva_accetto_2"))
 			self::$tipiPagina["CONDIZIONI_AGG"] = "Pagina condizioni aggiuntive da accettare alla registrazione";
 		
+		if (v("attiva_scadenza_account"))
+			self::$tipiPagina["SCADUTO"] = "Pagina testo account scaduto";
+		
 		foreach (self::$tipiPaginaAddizionali as $tipo => $label)
 		{
 			self::$tipiPagina[$tipo] = $label;

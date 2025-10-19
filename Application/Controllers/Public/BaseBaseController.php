@@ -237,6 +237,9 @@ class BaseBaseController extends Controller
 				if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
 					VariabiliModel::$valori["prezzi_ivati_in_carrello"] = (int)User::$dettagli["prezzi_ivati_in_carrello"];
 				
+				// Controlla la scadenza dell'account
+				$this->controllaScadenzaAccount();
+				
 				// Imposta le preferenze sulla base dell'utente loggato
 				$this->settaPreferenzeUtenteLoggato();
 			}
@@ -373,6 +376,33 @@ class BaseBaseController extends Controller
 			return true;
 		
 		return false;
+	}
+	
+	// Controlla la scadenza dell'account
+	protected function controllaScadenzaAccount()
+	{
+		if ($this->dettagliUtente["data_scadenza"])
+		{
+			if (checkIsoDate($this->dettagliUtente["data_scadenza"]))
+			{
+				$dataScadenza = DateTime::createFromFormat("Y-m-d", $this->dettagliUtente["data_scadenza"]);
+				$dataScadenza->setTime(0, 0, 0);
+				$dataOggi = new DateTime();
+				$dataOggi->setTime(0, 0, 0);
+				
+				if ($dataOggi >= $dataScadenza)
+				{
+					$this->s['registered']->logout();
+					
+					$idScaduto = PagineModel::gTipoPagina("SCADUTO");
+					
+					if ($idScaduto)
+						$this->redirect(getUrlAlias($idScaduto).F::partial());
+					else
+						$this->redirect("");
+				}
+			}
+		}
 	}
 	
 	// Imposta le preferenze sulla base dell'utente loggato

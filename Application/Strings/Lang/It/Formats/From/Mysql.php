@@ -52,8 +52,11 @@ class Lang_It_Formats_From_Mysql
 		
 		if (preg_match('/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/',$date))
 		{
-			$dateArray = explode('-',$date);
-			return $dateArray[2]."-".$dateArray[1]."-".$dateArray[0];
+			$formato = implode("-", App::$dateFormatArray);
+			return date($formato, strtotime($date));
+			
+			// $dateArray = explode('-',$date);
+			// return $dateArray[2]."-".$dateArray[1]."-".$dateArray[0];
 		}
 		return $date;
 	}

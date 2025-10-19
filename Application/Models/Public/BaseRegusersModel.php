@@ -69,6 +69,17 @@ class BaseRegusersModel extends Model_Tree
 		return !$forzaDb ? $this->lId : $this->db->lastId();
 	}
 	
+	public function impostaScadenza()
+	{
+		if (v("attiva_scadenza_account"))
+		{
+			$scadenza = new DateTime();
+			$scadenza->modify('+'.v("giorni_scadenza_account").' day');
+			
+			$this->values["data_scadenza"] = sanitizeDb($scadenza->format("Y-m-d"));
+		}
+	}
+	
 	public function insert()
 	{
 		$this->values['forgot_token'] = $this->getUniqueToken(md5(randString(20).microtime().uniqid(mt_rand(),true)));
@@ -98,6 +109,8 @@ class BaseRegusersModel extends Model_Tree
 			$this->setProvinciaFatturazione();
 			
 			$this->sistemaMaiuscole();
+			
+			$this->impostaScadenza();
 			
 			$res = parent::insert();
 			

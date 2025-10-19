@@ -1,0 +1,1 @@
+alter table regusers add data_scadenza date null; 
