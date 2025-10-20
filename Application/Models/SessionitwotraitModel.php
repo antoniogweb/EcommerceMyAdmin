@@ -110,7 +110,7 @@ trait SessionitwotraitModel
 			"uid_two"	=>	sanitizeAll($this->uidt),
 			"user_agent_md5"	=>	getUserAgent(),
 			"user_agent"	=>	$_SERVER['HTTP_USER_AGENT'] ?? "",
-			"codice_verifica"	=>	generateString($this->numeroCifreCodice, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+			"codice_verifica"	=>	Aes::encrypt(generateString($this->numeroCifreCodice, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")),
 			"uid"		=>	$uid,
 			"ip"		=>	getIp(),
 			"time_creazione"	=>	time(),
@@ -200,7 +200,7 @@ trait SessionitwotraitModel
 				"tipologia"	=>	"INVIO_CODICE_TWO",
 				"testo_path"	=>	"Elementi/Mail/Clienti/codice_due_fattori.php",
 				"array_variabili_tema"	=>	array(
-					"CODICE"		=>	$sessioneTwo["codice_verifica"],
+					"CODICE"		=>	Aes::decrypt($sessioneTwo["codice_verifica"]),
 					"NOME_CLIENTE"	=>	$user["username"],
 				),
 			));
@@ -231,7 +231,7 @@ trait SessionitwotraitModel
 			"user_agent_md5"	=>	getUserAgent(),
 		))->record();
 		
-		if (!empty($record) && hash_equals($codice, $record["codice_verifica"]))
+		if (!empty($record) && hash_equals($codice, Aes::decrypt($record["codice_verifica"])))
 		{
 			$this->sValues(array(
 				"attivo"				=>	1,
