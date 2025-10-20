@@ -224,18 +224,19 @@ trait SessionitwotraitModel
 	
 	public function checkCodice($sessioneTwo, $codice)
 	{
-		$numero = $this->clear()->where(array(
-			"codice_verifica"	=>	sanitizeAll($codice),
+		$record = $this->clear()->where(array(
+			// "codice_verifica"	=>	sanitizeAll($codice),
 			"uid_two"	=>	sanitizeAll($sessioneTwo["uid_two"]),
 			"attivo"	=>	0,
 			"user_agent_md5"	=>	getUserAgent(),
-		))->rowNumber();
+		))->record();
 		
-		if ($numero)
+		if (!empty($record) && hash_equals($codice, $record["codice_verifica"]))
 		{
 			$this->sValues(array(
 				"attivo"				=>	1,
 				"time_per_scadenza"		=>	time(),
+				"codice_verifica"		=>	"",
 			));
 			
 			$res = true;

@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'f7a83b8d4d9b53b68c89624af555a37c2669f344',
+        'reference' => 'a7bd0a74a5cb7e9d2a6022a98bb737668eaad2b2',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'f7a83b8d4d9b53b68c89624af555a37c2669f344',
+            'reference' => 'a7bd0a74a5cb7e9d2a6022a98bb737668eaad2b2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -47,9 +47,9 @@
             'dev_requirement' => false,
         ),
         'aws/aws-sdk-php' => array(
-            'pretty_version' => '3.356.13',
-            'version' => '3.356.13.0',
-            'reference' => 'ec28d17cc940a4f996638050ab95dcc2a07f1a6b',
+            'pretty_version' => '3.356.42',
+            'version' => '3.356.42.0',
+            'reference' => 'c886d60206d2f100c2d132052875f53ce3f999f7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../aws/aws-sdk-php',
             'aliases' => array(),
@@ -101,9 +101,9 @@
             'dev_requirement' => false,
         ),
         'ezyang/htmlpurifier' => array(
-            'pretty_version' => 'v4.18.0',
-            'version' => '4.18.0.0',
-            'reference' => 'cb56001e54359df7ae76dc522d08845dc741621b',
+            'pretty_version' => 'v4.19.0',
+            'version' => '4.19.0.0',
+            'reference' => 'b287d2a16aceffbf6e0295559b39662612b77fcf',
             'type' => 'library',
             'install_path' => __DIR__ . '/../ezyang/htmlpurifier',
             'aliases' => array(),
@@ -421,9 +421,9 @@
             'dev_requirement' => false,
         ),
         'phpseclib/phpseclib' => array(
-            'pretty_version' => '2.0.48',
-            'version' => '2.0.48.0',
-            'reference' => 'eaa7be704b8b93a6913b69eb7f645a59d7731b61',
+            'pretty_version' => '2.0.49',
+            'version' => '2.0.49.0',
+            'reference' => '4de468f48f0ab9709fc875aca0762abdc81cfa9b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpseclib/phpseclib',
             'aliases' => array(),
@@ -475,9 +475,9 @@
             'dev_requirement' => true,
         ),
         'phpunit/phpunit' => array(
-            'pretty_version' => '9.6.25',
-            'version' => '9.6.25.0',
-            'reference' => '049c011e01be805202d8eebedef49f769a8ec7b7',
+            'pretty_version' => '9.6.29',
+            'version' => '9.6.29.0',
+            'reference' => '9ecfec57835a5581bc888ea7e13b51eb55ab9dd3',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),
@@ -495,8 +495,8 @@
         'psr/http-client-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/http-factory' => array(
@@ -511,8 +511,8 @@
         'psr/http-factory-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/http-message' => array(
@@ -527,8 +527,8 @@
         'psr/http-message-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/log' => array(
@@ -631,9 +631,9 @@
             'dev_requirement' => true,
         ),
         'sebastian/exporter' => array(
-            'pretty_version' => '4.0.6',
-            'version' => '4.0.6.0',
-            'reference' => '78c00df8f170e02473b682df15bfcdacc3d32d72',
+            'pretty_version' => '4.0.8',
+            'version' => '4.0.8.0',
+            'reference' => '14c6ba52f95a36c3d27c835d65efc7123c446e8c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../sebastian/exporter',
             'aliases' => array(),
