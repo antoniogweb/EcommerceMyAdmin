@@ -867,7 +867,9 @@ class BaseBaseController extends Controller
 				{
 					$tokenConferma = $this->m('RegusersModel')->values['confirmation_token'] = md5(randString(20).microtime().uniqid(mt_rand(),true));
 					$tokenReinvio = $this->m('RegusersModel')->values['token_reinvio'] = md5(randString(30).microtime().uniqid(mt_rand(),true));
-					$codiceConfermaRegistrazione = $this->m('RegusersModel')->values['codice_verifica'] = sanitizeAll(generateString(v("conferma_registrazione_numero_cifre_codice_verifica"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+					$codiceConfermaRegistrazione = generateString(v("conferma_registrazione_numero_cifre_codice_verifica"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+					
+					$this->m('RegusersModel')->values['codice_verifica'] = sanitizeAll(Aes::encrypt($codiceConfermaRegistrazione));
 					
 					if ($this->registrazioneAgente)
 						$this->m('RegusersModel')->values['agente'] = 1;

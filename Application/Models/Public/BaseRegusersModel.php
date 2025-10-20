@@ -656,7 +656,7 @@ class BaseRegusersModel extends Model_Tree
 			$this->sValues(array(
 				"confirmation_token"	=>	$tokenConferma,
 				"token_reinvio"			=>	$tokenReinvio,
-				"codice_verifica"		=>	$codiceConfermaRegistrazione,
+				"codice_verifica"		=>	Aes::encrypt($codiceConfermaRegistrazione),
 				"confirmation_time"		=>	0,
 				"time_token_reinvio"	=>	0,
 			));
@@ -671,7 +671,7 @@ class BaseRegusersModel extends Model_Tree
 	{
 		$record = $this->selectId((int)$idUser);
 		
-		$numero = $this->clear()->where(array(
+		$record = $this->clear()->where(array(
 			"confirmation_token"	=>	sanitizeAll($tokenConferma),
 			"has_confirmed"			=>	1,
 			"ha_confermato"			=>	0,
@@ -679,13 +679,13 @@ class BaseRegusersModel extends Model_Tree
 			"ne"	=>	array(
 				"confirmation_token"	=>	"",
 			),
-			"codice_verifica"	=>	sanitizeAll($codice),
+			// "codice_verifica"	=>	sanitizeAll($codice),
 			" ne"	=>	array(
 				"codice_verifica"	=>	"",
 			),
-		))->rowNumber();
+		))->record();
 		
-		if (trim($codice) && $numero)
+		if (trim($codice) && !empty($record) && hash_equals($codice, Aes::decrypt($record["codice_verifica"])))
 		{
 			$this->sValues(array(
 				"has_confirmed"	=>	0,
@@ -693,6 +693,7 @@ class BaseRegusersModel extends Model_Tree
 				"confirmation_time"		=>	0,
 				"time_token_reinvio"	=>	0,
 				"confirmation_token"	=>	"",
+				"codice_verifica"		=>	"",
 			));
 			
 			$res = true;

@@ -22,8 +22,6 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(LIBRARY."/External/libs/vendor/autoload.php");
-
 class Aes
 {
 	// ENCRYPT: prende OTP 6 cifre, chiavi binarie (32B), ritorna HEX (IV||CT||MAC)
@@ -31,6 +29,8 @@ class Aes
 		
 		if (!defined('AES_KEY') || !defined('MAC_KEY'))
 			return $text;
+		
+		require_once(LIBRARY."/External/libs/vendor/autoload.php");
 		
 		// IV 16 byte
 		$iv = random_bytes(16);
@@ -52,6 +52,8 @@ class Aes
 		
 		if (!defined('AES_KEY') || !defined('MAC_KEY'))
 			return $hexBlob;
+		
+		require_once(LIBRARY."/External/libs/vendor/autoload.php");
 		
 		$bin = hex2bin($hexBlob);
 		if ($bin === false) return null;

@@ -140,7 +140,8 @@ class VariabiliModel extends GenericModel {
 		"debug_get_variable"		=>	"",
 		"debug_retargeting_get_variable"		=>	"",
 		"insert_account_sdi_pec_obbligatorio"	=>	1,
-		"ore_durata_link_conferma"	=>	24,
+		"ore_durata_link_conferma"	=>	24, // non più usato
+		"minuti_durata_link_conferma"	=>	10, // numero di MINUTI che è valido il link per la conferma dell'account
 		"main_slide_order"			=>	"pages.id_order desc",
 		"salva_conteggio_query"		=>	0,
 		"abilita_blocco_acquisto_diretto"	=>	0,
