@@ -214,3 +214,8 @@ MaxMind GeoIP2 PHP API
 -------
 License:	Apache-2.0 license
 link: 		https://github.com/maxmind/GeoIP2-php
+
+phpseclib - PHP Secure Communications Library
+-------
+License:	The MIT License (MIT)
+link: 		https://github.com/phpseclib/phpseclib
