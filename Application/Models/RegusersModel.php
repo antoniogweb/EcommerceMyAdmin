@@ -531,4 +531,67 @@ class RegusersModel extends FormModel {
 			"bloccato"		=>	0,
 		))->rowNumber();
 	}
+	
+	// Manda avviso via mail della scadenza dell'account
+	public function mandaAvvisiScadenzaAccount($log = null)
+	{
+		$avvisi = OpzioniModel::codice("GIORNI_AVVISO_SCADENZA", "valore", "id_order");
+		
+		$indice = 0;
+		
+		$usernameGiaInviataMail = array();
+		
+		foreach ($avvisi as $giorni => $titolo)
+		{
+			$date = new DateTime();
+			$date->modify('+'.$giorni.' day');
+			$dataScadenza = $date->format("Y-m-d");
+			
+			$utenti = $this->query(array(
+				"select id_user,username,data_scadenza,lingua,numero_avvisi_scadenza,nazione_navigazione from regusers where has_confirmed = 0 and data_scadenza is not null and data_scadenza > ? and data_scadenza <= ? and numero_avvisi_scadenza = ?",
+				array(date("Y-m-d"), $dataScadenza, $indice),
+			));
+			
+			foreach ($utenti as $u)
+			{
+				if (in_array($u["regusers"]["username"], $usernameGiaInviataMail))
+					continue;
+				
+				if (checkMail($u["regusers"]["username"]))
+				{
+					$token = randomToken();
+					
+					$res = MailordiniModel::inviaMail(array(
+						"emails"	=>	array($u["regusers"]["username"]),
+						"oggetto"	=>	"Account in scadenza",
+						"tipologia"	=>	"SCADENZA_ACCOUNT",
+						"testo_path"	=>	"Elementi/Mail/Clienti/mail_rinnovo.php",
+						"lingua"	=>	$u["regusers"]["lingua"],
+						"array_variabili_tema"	=>	array(
+							"DATA_SCADENZA"	=>	F::getDateInCorrectFormat(strtotime($u["regusers"]["data_scadenza"])),
+							"URL_RINNOVO"	=>	Domain::$publicUrl."/".F::getLinguaUrl($u["regusers"]["lingua"]).F::getNazioneUrl($u["regusers"]["nazione_navigazione"])."/account-renewal/$token",
+						),
+					));
+					
+					if ($res)
+					{
+						$this->sValues(array(
+							"token_rinnovo_scadenza"		=>	$token,
+							"time_token_rinnovo_scadenza"	=>	time(),
+							"numero_avvisi_scadenza"		=>	(int)($u["regusers"]["numero_avvisi_scadenza"] + 1),
+						));
+						
+						$this->pUpdate($u["regusers"]["id_user"]);
+						
+						$usernameGiaInviataMail[] = $u["regusers"]["username"];
+						
+						if ($log)
+							$log->writeString("Email: ".$u["regusers"]["username"]." - ID:".$u["regusers"]["id_user"]." - $titolo");
+					}
+				}
+			}
+			
+			$indice++;
+		}
+	}
 }

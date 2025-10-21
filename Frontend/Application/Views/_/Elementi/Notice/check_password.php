@@ -4,7 +4,7 @@
 <?php if (isset($_POST["password"])) { ?>
 <ul>
 	<?php if (strlen($_POST["password"]) < v("password_regular_expression_numero_caratteri")) { ?>
-	<li><?php echo gtext("Deve essere lunga almeno 8 caratteri");?></li>
+	<li><?php echo gtext("Deve essere lunga almeno ".v("password_regular_expression_numero_caratteri")." caratteri");?></li>
 	<?php } ?>
 	<?php if (!preg_match('/^'.v("password_regular_expression_caratteri_minuscoli").'.{1,}$/',$_POST["password"])) {  ?>
 	<li><?php echo gtext("Deve contenere almeno un carattere minuscolo [a - z]");?></li>

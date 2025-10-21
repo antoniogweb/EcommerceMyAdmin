@@ -678,7 +678,8 @@ class ListeregaloModel extends GenericModel
 			
 			if ($res)
 			{
-				$log->writeString("Mandato avviso alla mail ".$lista["lista"]["EMAIL_CREATORE_LISTA"].", lista ".$lista["lista"]["TITOLO_LISTA"].", per i seguenti prodotti:");
+				if ($log)
+					$log->writeString("Mandato avviso alla mail ".$lista["lista"]["EMAIL_CREATORE_LISTA"].", lista ".$lista["lista"]["TITOLO_LISTA"].", per i seguenti prodotti:");
 				
 				foreach ($lista["prodotti"] as $prodotto)
 				{

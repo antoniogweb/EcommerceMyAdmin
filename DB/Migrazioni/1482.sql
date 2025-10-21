@@ -1,0 +1,1 @@
+alter table regusers add time_token_rinnovo_scadenza int UNSIGNED not null default 0;

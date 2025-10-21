@@ -1,0 +1,1 @@
+alter table regusers add numero_avvisi_scadenza tinyint UNSIGNED not null default 0;

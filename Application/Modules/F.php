@@ -183,6 +183,14 @@ class F
 		return v("attiva_nazione_nell_url") ? "_".strtolower($nazione) : "";
 	}
 	
+	public static function getLinguaUrl($lingua)
+	{
+		if (!$lingua || !LingueModel::checkLinguaAttiva($lingua))
+			return LingueModel::getFrontendLanguage();
+		
+		return $lingua;
+	}
+	
 	public static function blank($string)
 	{
 		return trim(strip_tags(htmlentitydecode($string))) ? false : true;

@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, CURRENT_TIMESTAMP, '1', 'Avviso 30 giorni', '30', 'GIORNI_AVVISO_SCADENZA', '1', '0'), (NULL, CURRENT_TIMESTAMP, '1', 'Avviso 2 giorni', '2', 'GIORNI_AVVISO_SCADENZA', '2', '0');

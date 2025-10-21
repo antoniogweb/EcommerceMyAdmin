@@ -10,7 +10,7 @@
 		</div>
 		<?php echo gtext("La password deve contenere:");?>
 		<span class="avviso_numero_caratteri uk-text-danger">
-			<?php echo gtext("almeno 8 caratteri,");?>
+			<?php echo gtext("almeno ".v("password_regular_expression_numero_caratteri")." caratteri,");?>
 		</span>
 		<span class="avviso_caratteri_minuscoli uk-text-danger">
 			<?php echo gtext("minuscole,");?>
