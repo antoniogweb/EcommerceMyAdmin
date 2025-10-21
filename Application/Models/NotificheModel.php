@@ -146,6 +146,14 @@ class NotificheModel extends GenericModel {
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
 				);
+			
+			if ((v("attiva_autenticazione_due_fattori_front") || v("attiva_autenticazione_due_fattori_admin")) && (!defined('AES_KEY') || !defined('MAC_KEY')))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Definire le chiavi AES e MAC per la cifratura del codice a 2 fattori"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
 		}
 		
 		return $notifiche;
