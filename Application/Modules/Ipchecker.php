@@ -45,7 +45,7 @@ class Ipchecker
 	public function logCall($ip, $output)
 	{
 		$path = $this->getLogPath($ip);
-		$path .= "/".date("Ymdhis").".txt";
+		$path .= "/".date("YmdHis").".txt";
 		
 		FilePutContentsAtomic($path, $output);
 	}
