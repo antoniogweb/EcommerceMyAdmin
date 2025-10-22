@@ -535,6 +535,9 @@ class RegusersModel extends FormModel {
 	// Manda avviso via mail della scadenza dell'account
 	public function mandaAvvisiScadenzaAccount($log = null)
 	{
+		VariabiliModel::$valori["max_numero_email_ora"] = 0;
+		VariabiliModel::$valori["max_numero_email_giorno"] = 0;
+		
 		$avvisi = OpzioniModel::codice("GIORNI_AVVISO_SCADENZA", "valore", "id_order");
 		
 		$indice = 0;

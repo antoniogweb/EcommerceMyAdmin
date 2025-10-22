@@ -334,7 +334,7 @@ class MailordiniModel extends GenericModel
 			$tradModel = new TraduzioniModel();
 			$tradModel->ottieniTraduzioni();
 			
-			$mail->AltBody = "Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML";
+			$mail->AltBody = gtext("Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML");
 			$mail->MsgHTML($testo);
 			
 // 			$mail->SMTPDebug = 2;
