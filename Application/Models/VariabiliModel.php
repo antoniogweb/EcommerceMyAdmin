@@ -140,8 +140,6 @@ class VariabiliModel extends GenericModel {
 		"debug_get_variable"		=>	"",
 		"debug_retargeting_get_variable"		=>	"",
 		"insert_account_sdi_pec_obbligatorio"	=>	1,
-		"ore_durata_link_conferma"	=>	24, // non più usato
-		"minuti_durata_link_conferma"	=>	10, // numero di MINUTI che è valido il link per la conferma dell'account
 		"main_slide_order"			=>	"pages.id_order desc",
 		"salva_conteggio_query"		=>	0,
 		"abilita_blocco_acquisto_diretto"	=>	0,
@@ -538,7 +536,10 @@ class VariabiliModel extends GenericModel {
 		"attiva_pulsante_invia_mail_account_attivato"	=>	0, // se impostato a 1 mostra il pulsante per inviare la mail di account attivato
 		"attiva_accetto_2"		=>	0, // se impostato su 1, fa comparire le secondi condizioni da approvare alla registrazione
 		"attiva_scadenza_account"	=>	0, // se impostato su 1, permetti di impostare una data di scadenza per l'account.
+		"ore_durata_link_rinnovo"	=>	48, // numero di ore in cui vale il link per il rinnovo dell'account
 		"giorni_scadenza_account"	=>	365, // giorni di default prima della scadenza dell'account (ha effetto solo se attiva_scadenza_account = 1)
+		"ore_durata_link_conferma"	=>	24, // non più usato
+		"minuti_durata_link_conferma"	=>	10, // numero di MINUTI che è valido il link per la conferma dell'account
 		## LISTE REGALO ##
 		"attiva_liste_regalo"	=>	0, // se impostato a 0, permetti la creazione e la gestione di liste regalo
 		"nome_cookie_id_lista"	=>	"id_lista_regalo", // nome dell cookie che conterrà l'ID della lista regalo

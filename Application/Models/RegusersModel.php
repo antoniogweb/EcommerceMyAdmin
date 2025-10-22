@@ -535,6 +535,8 @@ class RegusersModel extends FormModel {
 	// Manda avviso via mail della scadenza dell'account
 	public function mandaAvvisiScadenzaAccount($log = null)
 	{
+		require_once(LIBRARY."/Frontend/Application/Hooks/RouteInitialization.php");
+		
 		VariabiliModel::$valori["max_numero_email_ora"] = 0;
 		VariabiliModel::$valori["max_numero_email_giorno"] = 0;
 		
@@ -572,7 +574,7 @@ class RegusersModel extends FormModel {
 						"lingua"	=>	$u["regusers"]["lingua"],
 						"array_variabili_tema"	=>	array(
 							"DATA_SCADENZA"	=>	F::getDateInCorrectFormat(strtotime($u["regusers"]["data_scadenza"])),
-							"URL_RINNOVO"	=>	Domain::$publicUrl."/".F::getLinguaUrl($u["regusers"]["lingua"]).F::getNazioneUrl($u["regusers"]["nazione_navigazione"])."/account-renewal/$token",
+							"URL_RINNOVO"	=>	Domain::$publicUrl."/".F::getLinguaUrl($u["regusers"]["lingua"]).F::getNazioneUrl($u["regusers"]["nazione_navigazione"])."/".Url::routeToUrl("rinnovo")."/$token",
 						),
 					));
 					

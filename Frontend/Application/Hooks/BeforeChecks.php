@@ -218,11 +218,14 @@ if (v("attiva_gestione_feed"))
 
 Domain::setPath();
 
-Url::$routes = array(
-	"area-riservata"	=>	"area-riservata",
-	"modifica-account"	=>	"modifica-account",
-	"esci"				=>	"esci",
-);
+require_once(LIBRARY."/Frontend/Application/Hooks/RouteInitialization.php");
+
+// Url::$routes = array(
+// 	"area-riservata"	=>	"area-riservata",
+// 	"modifica-account"	=>	"modifica-account",
+// 	"esci"				=>	"esci",
+// 	"rinnovo"			=>	"account-renewal",
+// );
 
 if (v("attiva_waf"))
 	Shield::waf();

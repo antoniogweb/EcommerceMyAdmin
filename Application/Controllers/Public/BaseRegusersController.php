@@ -741,6 +741,59 @@ class BaseRegusersController extends BaseController
 		}
 	}
 	
+	public function rinnovo($token = "")
+	{
+		if (!v("attiva_scadenza_account"))
+			$this->responseCode(403);
+		
+		IpcheckModel::check("RINNOVO");
+		
+		$this->clean();
+		
+		$clean["token_reinvio"] = sanitizeAll(trim((string)$token));
+		
+		$_SESSION['result'] = 'invalid_token';
+		
+		if ($clean["token_reinvio"])
+		{
+			$record = $this->m('RegusersModel')->clear()->where(array(
+				"token_rinnovo_scadenza"	=>	$clean['token_reinvio'],
+				"has_confirmed"			=>	0,
+				"ha_confermato"			=>	1,
+				"bloccato"				=>	0,
+				"ne"	=>	array(
+					"token_rinnovo_scadenza"	=>	"",
+				),
+			))->record();
+			
+			if (!empty($record) && checkIsoDate($record["data_scadenza"]))
+			{
+				$confirmSeconds = (int)v("ore_durata_link_rinnovo")*3600;
+				
+				$now = time();
+				$checkTime = $record['time_token_rinnovo_scadenza'] + $confirmSeconds;
+				
+				if ($checkTime > $now)
+				{
+					$nuovaScadenza = DateTime::createFromFormat("Y-m-d", $record["data_scadenza"]);
+					$nuovaScadenza->modify('+'.v("giorni_scadenza_account").' day');
+					
+					$this->m('RegusersModel')->sValues(array(
+						"data_scadenza"	=>	sanitizeDb($nuovaScadenza->format("Y-m-d")),
+						"token_rinnovo_scadenza"		=>	randomToken(),
+						"time_token_rinnovo_scadenza"	=>	time(),
+						"numero_avvisi_scadenza"		=>	0
+					));
+					
+					if ($this->m('RegusersModel')->pUpdate((int)$record["id_user"]))
+						$_SESSION['result'] = "account_rinnovato";
+				}
+			}
+		}
+		
+		$this->redirect("avvisi");
+	}
+	
 	public function reinviamailconferma()
 	{
 		if (!v("conferma_registrazione") || !isset($_SESSION["token_reinvio"]) || !trim($_SESSION["token_reinvio"]))

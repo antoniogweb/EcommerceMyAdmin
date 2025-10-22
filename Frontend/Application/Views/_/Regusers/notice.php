@@ -64,6 +64,15 @@ if (isset($_SESSION['result']))
 		
 		$titoloPagina = gtext("Errore");
 	}
+	else if (strcmp($_SESSION['result'],'account_rinnovato') === 0)
+	{
+		$breadcrumb = array(
+			gtext("Home") 		=> $this->baseUrl,
+			gtext("Account rinnovato")	=>	"",
+		);
+		
+		$titoloPagina = gtext("Account rinnovato");
+	}
 }
 else
 {
@@ -92,6 +101,8 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 			<?php include(tpf("/Elementi/Registrazione/Resoconto/password_cambiata.php")); ?>
 		<?php } else if (strcmp($_SESSION['result'],'account_confermato') === 0) { ?>
 			<?php include(tpf("/Elementi/Registrazione/Resoconto/account_confermato.php")); ?>
+		<?php } else if (strcmp($_SESSION['result'],'account_rinnovato') === 0) { ?>
+			<?php include(tpf("/Elementi/Registrazione/Resoconto/account_rinnovato.php")); ?>
 		<?php } else if (strcmp($_SESSION['result'],'utente_creato') === 0 || strcmp($_SESSION['result'],'agente_creato') === 0) { ?>
 			<?php if (!v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione")) { ?>
 				<?php if ($_SESSION['result'] == "agente_creato") { ?>
