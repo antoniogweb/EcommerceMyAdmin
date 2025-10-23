@@ -255,7 +255,7 @@ class ImpostazioniModel extends GenericModel {
 			Parametri::$SMTPUsername = self::$valori["smtp_user"];
 			Parametri::$SMTPPassword = self::$valori["smtp_psw"];
 			Parametri::$mailFrom = self::$valori["smtp_from"];
-			Parametri::$mailFromName = self::$valori["smtp_nome"];
+			Parametri::$mailFromName = htmlentitydecode(self::$valori["smtp_nome"]);
 			Parametri::$mailInvioOrdine = self::$valori["mail_invio_ordine"];
 			Parametri::$mailInvioConfermaPagamento = self::$valori["mail_invio_conferma_pagamento"];
 			Parametri::$nomeNegozio = htmlentitydecode(self::$valori["nome_sito"]);

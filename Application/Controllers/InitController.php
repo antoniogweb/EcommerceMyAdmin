@@ -57,7 +57,7 @@ trait InitController
 			Parametri::$SMTPUsername = ImpostazioniModel::$valori["smtp_user"];
 			Parametri::$SMTPPassword = ImpostazioniModel::$valori["smtp_psw"];
 			Parametri::$mailFrom = ImpostazioniModel::$valori["smtp_from"];
-			Parametri::$mailFromName = ImpostazioniModel::$valori["smtp_nome"];
+			Parametri::$mailFromName = htmlentitydecode(ImpostazioniModel::$valori["smtp_nome"]);
 			Parametri::$mailInvioOrdine = ImpostazioniModel::$valori["mail_invio_ordine"];
 			Parametri::$mailInvioConfermaPagamento = ImpostazioniModel::$valori["mail_invio_conferma_pagamento"];
 			Parametri::$nomeNegozio = htmlentitydecode(ImpostazioniModel::$valori["nome_sito"]);
