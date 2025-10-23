@@ -258,7 +258,7 @@ class ImpostazioniModel extends GenericModel {
 			Parametri::$mailFromName = self::$valori["smtp_nome"];
 			Parametri::$mailInvioOrdine = self::$valori["mail_invio_ordine"];
 			Parametri::$mailInvioConfermaPagamento = self::$valori["mail_invio_conferma_pagamento"];
-			Parametri::$nomeNegozio = self::$valori["nome_sito"];
+			Parametri::$nomeNegozio = htmlentitydecode(self::$valori["nome_sito"]);
 			Parametri::$iva = self::$valori["iva"];
 			Parametri::$ivaInclusa = self::$valori["iva_inclusa"] == "Y" ? true : false;
 			Parametri::$useSandbox = self::$valori["usa_sandbox"] == "Y" ? true : false;

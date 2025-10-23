@@ -60,7 +60,7 @@ trait InitController
 			Parametri::$mailFromName = ImpostazioniModel::$valori["smtp_nome"];
 			Parametri::$mailInvioOrdine = ImpostazioniModel::$valori["mail_invio_ordine"];
 			Parametri::$mailInvioConfermaPagamento = ImpostazioniModel::$valori["mail_invio_conferma_pagamento"];
-			Parametri::$nomeNegozio = ImpostazioniModel::$valori["nome_sito"];
+			Parametri::$nomeNegozio = htmlentitydecode(ImpostazioniModel::$valori["nome_sito"]);
 			Parametri::$iva = ImpostazioniModel::$valori["iva"];
 			Parametri::$ivaInclusa = ImpostazioniModel::$valori["iva_inclusa"] == "Y" ? true : false;
 			Parametri::$mailReplyTo = (isset(ImpostazioniModel::$valori["reply_to_mail"]) && ImpostazioniModel::$valori["reply_to_mail"]) ? ImpostazioniModel::$valori["reply_to_mail"] : Parametri::$mailFrom;
