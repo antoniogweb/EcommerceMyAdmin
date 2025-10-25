@@ -1032,9 +1032,11 @@ class PagesModel extends GenericModel {
 					continue;
 				
 				$codice = strtolower($codice);
-				Params::sLang($codice);
+				TraduzioniModel::sLingua($codice, "front");
+				// Params::sLang($codice);
 				$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0, $idC, $soloAttivi);
-				Params::rLang();
+				// Params::rLang();
+				TraduzioniModel::rLingua();
 				
 				if (count($strutturaProdotti) > 0)
 				{
@@ -4867,4 +4869,41 @@ class PagesModel extends GenericModel {
 			self::$ordinamentoDefaultProdotti = (string)trim($_COOKIE["ord"]);
 		}
 	}
+	
+// 	public function getPageEmbeddings($id = 0, $lingua = null, $log = null)
+// 	{
+// 		$record = $this->selectId((int)$id);
+// 		
+// 		// var_dump($lingua);
+// 		
+// 		if (!empty($record))
+// 		{
+// 			// Estraggo le lingue attive
+// 			LingueModel::getValoriAttivi();
+// 			
+// 			// Estraggo la lingua pricipale del frontend
+// 			$codiceLinguaPrincipale = LingueModel::getPrincipaleFrontend();
+// 			
+// 			$ctModel = new ContenutitradottiModel();
+// 			
+// 			foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
+// 			{
+// 				// Se è impostata la lingua e non è la lingua corrente, continua
+// 				if ($lingua && $lingua != $codice)
+// 					continue;
+// 				
+// 				$codice = strtolower($codice);
+// 				Params::sLang($codice);
+// 				$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0);
+// 				Params::rLang();
+// 				
+// 				if (count($strutturaProdotti) > 0)
+// 				{
+// 					$o = $strutturaProdotti[0];
+// 					
+// 					print_r($o);
+// 				}
+// 			}
+// 		}
+// 	}
 }

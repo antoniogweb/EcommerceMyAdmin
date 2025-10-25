@@ -26,9 +26,16 @@ define('EG','allowed');
 
 $options = getopt(null, array(
 	"azione::",
+	"lingua::",
+	"id_record::",
+	"limit::",
 ));
 
-$default = array();
+$default = array(
+	"lingua"	=>	null,
+	"id_record"	=>	0,
+	"limit"		=>	10,
+);
 
 $params = array_merge($default, $options);
 
@@ -51,13 +58,15 @@ if (!isset($params["azione"]))
 	die();
 }
 
-$log = Files_Log::getInstance("log_comandi_utenti");
+$log = Files_Log::getInstance("log_ai");
 
-if ($params["azione"] == "manda-avviso-account-in-scadenza")
+if ($params["azione"] == "crea-embeddings")
 {
-	$log->writeString("INIZIO AVVISO ACCOUNT IN SCADENZA");
+	$log->writeString("INIZIO CREAZIONE EMBEDDINGS");
 	
-	RegusersModel::g(false)->mandaAvvisiScadenzaAccount($log);
+	$p = new PagesModel();
 	
-	$log->writeString("FINE AVVISO ACCOUNT IN SCADENZA");
+	// PagesModel::g(false)->getPageEmbeddings($params["id_record"], $params["lingua"], $log);
+	
+	$log->writeString("FINE CREAZIONE EMBEDDINGS");
 }
