@@ -49,6 +49,8 @@ ImpostazioniModel::init();
 VariabiliModel::ottieniVariabili();
 Domain::$parentRoot = ROOT."/..";
 Domain::$publicUrl = rtrim(Url::getFileRoot(), "/");
+TraduzioniModel::$contestoStatic = "front";
+TraduzioniModel::getInstance()->ottieniTraduzioni();
 
 Files_Log::$logFolder = LIBRARY."/Logs";
 
@@ -64,9 +66,7 @@ if ($params["azione"] == "crea-embeddings")
 {
 	$log->writeString("INIZIO CREAZIONE EMBEDDINGS");
 	
-	$p = new PagesModel();
-	
-	// PagesModel::g(false)->getPageEmbeddings($params["id_record"], $params["lingua"], $log);
+	PagesModel::g(false)->getPageEmbeddings($params["id_record"], $params["lingua"], $log);
 	
 	$log->writeString("FINE CREAZIONE EMBEDDINGS");
 }

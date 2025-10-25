@@ -69,28 +69,32 @@ class ChatGPT35Turbo extends ModelloAI
 		return $messaggiChat;
 	}
 
-// 	public function embeddings($text)
-// 	{
-// 		$client = $this->getClient();
-// 
-// 		if (isset($client))
-// 		{
-// 			try
-// 			{
-// 				$response = $client->embeddings()->create([
-// 					'model' => $this->getParam("nome_modello"),
-// 					'input' => $text,
-// 				]);
-// 				
-// 				print_r($this->getParam("nome_modello"));
-// 				
-// 			} catch (Exception $e) {
-// 				return "";
-// 			}
-// 		}
-// 		
-// 		return "";
-// 	}
+	public function embeddings($text)
+	{
+		$client = $this->getClient();
+
+		if (isset($client))
+		{
+			try
+			{
+				$response = $client->embeddings()->create([
+					'model' => 'text-embedding-3-small',
+					'input' => $text,
+				]);
+				
+				$responseArray = $response->toArray();
+				
+				if (isset($responseArray["data"][0]["embedding"]) && is_array($responseArray["data"][0]["embedding"]) && count($responseArray["data"][0]["embedding"]) > 0)
+					return json_encode($responseArray["data"][0]["embedding"]);
+				else
+					return "";
+			} catch (Exception $e) {
+				return "";
+			}
+		}
+		
+		return "";
+	}
 	
 	public function chat($messaggi, $contesto = "")
 	{

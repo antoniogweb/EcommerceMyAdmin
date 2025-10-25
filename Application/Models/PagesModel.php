@@ -4870,40 +4870,56 @@ class PagesModel extends GenericModel {
 		}
 	}
 	
-// 	public function getPageEmbeddings($id = 0, $lingua = null, $log = null)
-// 	{
-// 		$record = $this->selectId((int)$id);
-// 		
-// 		// var_dump($lingua);
-// 		
-// 		if (!empty($record))
-// 		{
-// 			// Estraggo le lingue attive
-// 			LingueModel::getValoriAttivi();
-// 			
-// 			// Estraggo la lingua pricipale del frontend
-// 			$codiceLinguaPrincipale = LingueModel::getPrincipaleFrontend();
-// 			
-// 			$ctModel = new ContenutitradottiModel();
-// 			
-// 			foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
-// 			{
-// 				// Se è impostata la lingua e non è la lingua corrente, continua
-// 				if ($lingua && $lingua != $codice)
-// 					continue;
-// 				
-// 				$codice = strtolower($codice);
-// 				Params::sLang($codice);
-// 				$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0);
-// 				Params::rLang();
-// 				
-// 				if (count($strutturaProdotti) > 0)
-// 				{
-// 					$o = $strutturaProdotti[0];
-// 					
-// 					print_r($o);
-// 				}
-// 			}
-// 		}
-// 	}
+	public function getPageEmbeddings($id = 0, $lingua = null, $log = null)
+	{
+		$idModelloPredefinito = (int)AimodelliModel::g(false)->getIdPredefinito();
+		
+		if (!AimodelliModel::getModulo($idModelloPredefinito)->isAttivo())
+			return;
+		
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record))
+		{
+			// Estraggo le lingue attive
+			LingueModel::getValoriAttivi();
+			
+			// Estraggo la lingua pricipale del frontend
+			$codiceLinguaPrincipale = LingueModel::getPrincipaleFrontend();
+			
+			$ctModel = new ContenutitradottiModel();
+			
+			foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
+			{
+				// Se è impostata la lingua e non è la lingua corrente, continua
+				if ($lingua && $lingua != $codice)
+					continue;
+				
+				$codice = strtolower($codice);
+				TraduzioniModel::sLingua($codice, "front");
+				$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0);
+				TraduzioniModel::rLingua();
+				
+				if (count($strutturaProdotti) > 0)
+				{
+					$o = $strutturaProdotti[0];
+					
+					$embeddingArray = array();
+					
+					if (trim($o["titolo"]))
+						$embeddingArray[] = strip_tags(htmlentitydecode($o["titolo"]));
+					
+					if (trim($o["sottotitolo"]))
+						$embeddingArray[] = trim(strip_tags(htmlentitydecode($o["sottotitolo"])));
+					
+					if (trim($o["descrizione"]))
+						$embeddingArray[] = trim(strip_tags(htmlentitydecode($o["descrizione"])));
+					
+					$embeddingText = implode(" ", $embeddingArray);
+					
+					$response = AimodelliModel::getModulo($idModelloPredefinito)->embeddings($embeddingText);
+				}
+			}
+		}
+	}
 }

@@ -98,4 +98,11 @@ class AimodelliModel extends GenericModel
 	{
 		return $record[$this->_tables]["predefinito"] ? "<i class='fa fa-check text text-success'></i>" : "";
 	}
+	
+	public function getIdPredefinito()
+	{
+		return (int)$this->clear()->where(array(
+			"predefinito"	=>	1,
+		))->field("id_ai_modello");
+	}
 }
