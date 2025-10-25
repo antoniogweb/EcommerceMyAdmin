@@ -823,7 +823,7 @@ class PagesModel extends GenericModel {
 	
 	public function selectTipiPagina()
 	{
-		return array(""=>"--") + self::$tipiPagina;
+		return array(""=>"--") + array_map('gtext', self::$tipiPagina);
 	}
 	
 	public static $tabellaIva = null;
@@ -3448,7 +3448,7 @@ class PagesModel extends GenericModel {
 	public function tipopagina($record)
 	{
 		if (isset(self::$tipiPagina[$record["pages"]["tipo_pagina"]]))
-			return self::$tipiPagina[$record["pages"]["tipo_pagina"]];
+			return gtext(self::$tipiPagina[$record["pages"]["tipo_pagina"]]);
 		
 		return "";
 	}

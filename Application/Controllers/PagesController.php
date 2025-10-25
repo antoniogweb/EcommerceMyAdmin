@@ -201,11 +201,6 @@ class PagesController extends BaseController
 			'PagesModel.getInEvidenzaCheckbox|pages.id_page',
 			'PagesModel.getInputOrdinamento|pages.id_page',
 		);
-		
-		foreach (PagesModel::$tipiPagina as $tipoPagina => $testoTipoPagina)
-		{
-			PagesModel::$tipiPagina[$tipoPagina] = gtext($testoTipoPagina);
-		}
 	}
 	
 	public function pubblica($id,$value)
