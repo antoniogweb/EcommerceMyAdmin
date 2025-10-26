@@ -49,21 +49,6 @@ class Vector
 		return sqrt($sum);
 	}
 	
-// 	public static function normalizzal2(array $v) : array {
-// 		$norma = self::l2Norm($v);
-// 		
-// 		if ($norma <= 0)
-// 			return $v;
-// 		
-// 		$n = array();
-// 		
-// 		for ($i = 0; $i < count($v); $i++) {
-// 			$n[$i] = (float)($v[$i] / $norma);
-// 		}
-// 		
-// 		return $n;
-// 	}
-	
 	/**
 	* Cosine similarity tra due vettori.
 	* Ritorna 0.0 se una norma è zero o le dimensioni non corrispondono.
