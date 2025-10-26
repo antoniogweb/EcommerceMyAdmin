@@ -28,13 +28,15 @@ $options = getopt(null, array(
 	"azione::",
 	"lingua::",
 	"id_record::",
-	"limit::",
+	"query::",
+	"numero_risultati::",
 ));
 
 $default = array(
 	"lingua"	=>	null,
 	"id_record"	=>	0,
-	"limit"		=>	10,
+	"query"	=>	0,
+	"numero_risultati"	=>	10,
 );
 
 $params = array_merge($default, $options);
@@ -62,11 +64,31 @@ if (!isset($params["azione"]))
 
 $log = Files_Log::getInstance("log_ai");
 
-if ($params["azione"] == "crea-embeddings")
+if ($params["azione"] == "crea-embeddings-pagina")
 {
-	$log->writeString("INIZIO CREAZIONE EMBEDDINGS");
+	$log->writeString("INIZIO CREAZIONE EMBEDDINGS PAGINA");
 	
-	PagesModel::g(false)->getPageEmbeddings($params["id_record"], $params["lingua"], $log);
+	EmbeddingsModel::g(false)->getPageEmbeddings($params["id_record"], $params["lingua"], $log);
 	
-	$log->writeString("FINE CREAZIONE EMBEDDINGS");
+	$log->writeString("FINE CREAZIONE EMBEDDINGS PAGINA");
+}
+
+if ($params["azione"] == "crea-embeddings-categoria")
+{
+	$log->writeString("INIZIO CREAZIONE EMBEDDINGS CATEGORIA");
+	
+	EmbeddingsModel::g(false)->getCategoryEmbeddings($params["id_record"], $params["lingua"], $log);
+	
+	$log->writeString("FINE CREAZIONE EMBEDDINGS CATEGORIA");
+}
+
+if ($params["azione"] == "ricerca-semantica")
+{
+	$log->writeString("INIZIO RICERCA SEMANTICA");
+	
+	$risultati = EmbeddingsModel::g(false)->ricercaSemantica($params["query"], $params["lingua"], $params["numero_risultati"], $log);
+	
+	print_r($risultati);
+	
+	$log->writeString("FINE RICERCA SEMANTICA");
 }
