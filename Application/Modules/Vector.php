@@ -57,18 +57,12 @@ class Vector
 		if (count($a) === 0 || count($b) === 0 || count($a) !== count($b)) {
 			return 0.0;
 		}
-/*		
-		echo md5(json_encode($a))."\n";
-		echo md5(json_encode($b))."\n";*/
 		
 		$dot = self::dotProduct($a, $b);
-		// echo $dot."\n";
 		$na  = self::l2Norm($a);
-		// echo $na."\n";
 		$nb  = self::l2Norm($b);
-		// echo $nb."\n";
 		$den = $na * $nb;
-		// echo ($dot / $den)."\n";
+		
 		return $den > 0.0 ? $dot / $den : 0.0;
 	}
 }
