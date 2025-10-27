@@ -60,3 +60,13 @@ if ($params["azione"] == "check-ip-log-tecnici")
 	
 	$log->writeString("FINE CHECK IP LOG TECNICI");
 }
+
+if ($params["azione"] == "check-ip-e-notifica")
+{
+	$log->writeString("INIZIO CHECK IP E NOTIFICA LOG TECNICI");
+	
+	LogtecniciModel::controllaIp();
+	$struttura = LogtecniciModel::notifica($log);
+	
+	$log->writeString("FINE CHECK IP E NOTIFICA LOG TECNICI");
+}
