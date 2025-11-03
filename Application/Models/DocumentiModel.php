@@ -279,6 +279,9 @@ class DocumentiModel extends GenericModel {
 			if (self::$uploadFile)
 				$this->recuperaEstensione();
 			
+			if (!v("attiva_data_documento"))
+				$this->values["data_documento"] = date("Y-m-d");
+			
 			$res = parent::insert();
 			
 			if ($res && v("attiva_reggroups_tipi"))
