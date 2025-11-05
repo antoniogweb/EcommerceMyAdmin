@@ -7,7 +7,6 @@ webuploader
 wp-includes
 wlwmanifest
 xmlrpc
-.json
 .env
 wp-login
 .bak
