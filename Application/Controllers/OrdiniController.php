@@ -309,13 +309,14 @@ class OrdiniController extends BaseController {
 		
 		if (v("nascondi_ordini_pending_in_admin") && $this->viewArgs['stato'] == "tutti")
 		{
-			$ordiniDaNascondereDiDefault = explode(",", v("stati_ordine_da_nascondere_in_admin"));
-			
-			$this->m[$this->modelName]->aWhere(array(
-				"nin"	=>	array(
-					"stato"	=>	sanitizeAllDeep($ordiniDaNascondereDiDefault),
-				),
-			));
+			$this->m[$this->modelName]->addWhereNascondiStatiInAdmin();
+// 			$ordiniDaNascondereDiDefault = explode(",", v("stati_ordine_da_nascondere_in_admin"));
+// 			
+// 			$this->m[$this->modelName]->aWhere(array(
+// 				"nin"	=>	array(
+// 					"stato"	=>	sanitizeAllDeep($ordiniDaNascondereDiDefault),
+// 				),
+// 			));
 		}
 		
 		if (strcmp($this->viewArgs['email'],'tutti') !== 0)

@@ -2953,4 +2953,20 @@ class OrdiniModel extends FormModel {
 		
 		return $this;
 	}
+	
+	public function addWhereNascondiStatiInAdmin()
+	{
+		$ordiniDaNascondereDiDefault = explode(",", v("stati_ordine_da_nascondere_in_admin"));
+		
+		if (count($ordiniDaNascondereDiDefault) > 0)
+		{
+			$this->aWhere(array(
+				"nin"	=>	array(
+					"stato"	=>	sanitizeAllDeep($ordiniDaNascondereDiDefault),
+				),
+			));
+		}
+		
+		return $this;
+	}
 }

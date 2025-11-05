@@ -484,7 +484,12 @@ class RegusersController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>$this->action."/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->select("orders.*")->orderBy("orders.id_o desc")->where(array($this->nomeCampoIdOrdini=>$clean['id']))->save();
+		$this->m[$this->modelName]->select("orders.*")->orderBy("orders.id_o desc")->where(array($this->nomeCampoIdOrdini=>$clean['id']));
+		
+		if (v("nascondi_ordini_pending_in_admin"))
+			$this->m[$this->modelName]->addWhereNascondiStatiInAdmin();
+		
+		$this->m[$this->modelName]->save();
 		
 		parent::main();
 		
