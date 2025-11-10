@@ -72,7 +72,7 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								Traduzioni
+								<?php echo gtext("Traduzioni");?>
 							</div>
 							<div class="panel-body">
 								<?php include($this->viewPath("pages_traduzioni"));?>
@@ -88,7 +88,7 @@
 						<?php if (v("immagine_2_in_pagine")) { ?>
 						<div class="panel panel-info">
 							<?php
-							$labelBlocco = "Immagine sfondo";
+							$labelBlocco = gtext("Immagine sfondo");
 							$numeroImmagine = "2";
 							include($this->viewPath("pages_form_immagine"));?>
 						</div>
