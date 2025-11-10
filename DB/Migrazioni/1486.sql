@@ -1,0 +1,1 @@
+INSERT INTO `opzioni` (`id_opzione`, `data_creazione`, `attivo`, `titolo`, `valore`, `codice`, `id_order`, `traduzione`) VALUES (NULL, '2025-10-25 19:03:41', '1', 'GoogleFetcherAttivatiDaUtenti', 'https://developers.google.com/search/apis/ipranges/user-triggered-fetchers-google.json', 'URL_IP_BOT', '4', '0');

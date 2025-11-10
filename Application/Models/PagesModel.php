@@ -168,40 +168,35 @@ class PagesModel extends GenericModel {
 		
 		$this->uploadFields = array();
 		
-		foreach (self::$tipiPagina as $tipoPagina => $testoTipoPagina)
-		{
-			self::$tipiPagina[$tipoPagina] = gtext($testoTipoPagina);
-		}
-		
 		if (v("abilita_feedback"))
 		{
-			self::$tipiPagina["FORM_FEEDBACK"] = gtext("Pagina inserimento feedback cliente");
-			self::$tipiPagina["CONDIZIONI_FEEDBACK"] = gtext("Pagina condizioni inserimento feedback");
-			self::$tipiPagina["GRAZIE_FEEDBACK"] = gtext("Pagina ringraziamento feedback");
+			self::$tipiPagina["FORM_FEEDBACK"] = "Pagina inserimento feedback cliente";
+			self::$tipiPagina["CONDIZIONI_FEEDBACK"] = "Pagina condizioni inserimento feedback";
+			self::$tipiPagina["GRAZIE_FEEDBACK"] = "Pagina ringraziamento feedback";
 		}
 		
 		if (v("attiva_verifica_contatti"))
-			self::$tipiPagina["CONF_CONT_SCADUTO"] = gtext("Pagina informativa link conferma contatto scaduto");
+			self::$tipiPagina["CONF_CONT_SCADUTO"] = "Pagina informativa link conferma contatto scaduto";
 		
 		if (v("attiva_liste_regalo"))
 		{
-			self::$tipiPagina["LISTA_REGALO"] = gtext("Pagina pubblica lista regalo");
-			self::$tipiPagina["LISTA_REGALO_NE"] = gtext("Pagina lista regalo non esistente o scaduta");
+			self::$tipiPagina["LISTA_REGALO"] = "Pagina pubblica lista regalo";
+			self::$tipiPagina["LISTA_REGALO_NE"] = "Pagina lista regalo non esistente o scaduta";
 		}
 		
 		if (v("attiva_crediti"))
 		{
-			self::$tipiPagina["CREDITI"] = gtext("Pagina di approfondimento sui CREDITI");
+			self::$tipiPagina["CREDITI"] = "Pagina di approfondimento sui CREDITI";
 		}
 		
 		if (v("attiva_agenti"))
-			self::$tipiPagina["AGENTI"] = gtext("Pagina di approfondimento per la registrazione di un agente");
+			self::$tipiPagina["AGENTI"] = "Pagina di approfondimento per la registrazione di un agente";
 		
 		if (v("attiva_accetto_2"))
-			self::$tipiPagina["CONDIZIONI_AGG"] = gtext("Pagina condizioni aggiuntive da accettare alla registrazione");
+			self::$tipiPagina["CONDIZIONI_AGG"] = "Pagina condizioni aggiuntive da accettare alla registrazione";
 		
 		if (v("attiva_scadenza_account"))
-			self::$tipiPagina["SCADUTO"] = gtext("Pagina testo account scaduto");
+			self::$tipiPagina["SCADUTO"] = "Pagina testo account scaduto";
 		
 		foreach (self::$tipiPaginaAddizionali as $tipo => $label)
 		{
@@ -828,7 +823,7 @@ class PagesModel extends GenericModel {
 	
 	public function selectTipiPagina()
 	{
-		return array(""=>"--") + self::$tipiPagina;
+		return array(""=>"--") + array_map('gtext', self::$tipiPagina);
 	}
 	
 	public static $tabellaIva = null;
@@ -1032,9 +1027,11 @@ class PagesModel extends GenericModel {
 					continue;
 				
 				$codice = strtolower($codice);
-				Params::sLang($codice);
+				TraduzioniModel::sLingua($codice, "front");
+				// Params::sLang($codice);
 				$strutturaProdotti = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti(null, (int)$id, 0, false, 0, $idC, $soloAttivi);
-				Params::rLang();
+				// Params::rLang();
+				TraduzioniModel::rLingua();
 				
 				if (count($strutturaProdotti) > 0)
 				{
@@ -3451,7 +3448,7 @@ class PagesModel extends GenericModel {
 	public function tipopagina($record)
 	{
 		if (isset(self::$tipiPagina[$record["pages"]["tipo_pagina"]]))
-			return self::$tipiPagina[$record["pages"]["tipo_pagina"]];
+			return gtext(self::$tipiPagina[$record["pages"]["tipo_pagina"]]);
 		
 		return "";
 	}

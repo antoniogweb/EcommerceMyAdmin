@@ -57,7 +57,9 @@ trait TraitdocumentiController
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$filtroLingua = array("tutti" => gtext("VEDI TUTTO")) + array("tutte" => gtext("TUTTE LE LINGUE")) + $this->m[$this->modelName]->selectLingua();
+		$selectLingue = $this->m[$this->modelName]->selectLingua();
+		
+		$filtroLingua = array("tutti" => gtext("VEDI TUTTO")) + array("tutte" => gtext("TUTTE LE LINGUE")) + $selectLingue;
 		$filtroTipoDoc = array("tutti" => gtext("VEDI TUTTO")) + $this->m[$this->modelName]->selectTipo("ecludi ");
 		
 		$this->aggregateFilters = false;
@@ -65,9 +67,9 @@ trait TraitdocumentiController
 		
 		if (v("attiva_immagine_in_documenti"))
 		{
-			$this->filters = array(null,null,"titolo_documento", null, array("lingua_doc","",$filtroLingua));
-			$this->mainFields = array("immagine","titoloDocumento","filename","lingua");
-			$this->mainHead = "Thumb,Titolo,File,Visibile su lingua";
+			$this->filters = array(null,null,"titolo_documento", null);
+			$this->mainFields = array("immagine","titoloDocumento","filename");
+			$this->mainHead = "Thumb,Titolo,File";
 			
 			$this->colProperties = array(
 				array(
@@ -80,15 +82,22 @@ trait TraitdocumentiController
 		}
 		else
 		{
-			$this->filters = array(null,"titolo_documento", null, array("lingua_doc","",$filtroLingua));
-			$this->mainFields = array("titoloDocumento","filename","lingua");
-			$this->mainHead = "Titolo,File,Visibile su lingua";
+			$this->filters = array(null,"titolo_documento", null);
+			$this->mainFields = array("titoloDocumento","filename");
+			$this->mainHead = "Titolo,File";
 			
 			$this->colProperties = array(
 				array(
 					'width'	=>	'60px',
 				),
 			);
+		}
+		
+		if (count($selectLingue) > 1)
+		{
+			$this->mainFields[] = "lingua";
+			$this->mainHead .= ",Visibile su lingua";
+			$this->filters[] = array("lingua_doc","",$filtroLingua);
 		}
 		
 		if (v("attiva_altre_lingue_documento"))

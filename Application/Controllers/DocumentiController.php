@@ -28,7 +28,7 @@ class DocumentiController extends BaseController
 	
 	public $tabella = "documenti";
 	
-	public $campiBaseFormDocumenti = "titolo,id_tipo_doc,filename,data_documento,lingua";
+	public $campiBaseFormDocumenti = "titolo,id_tipo_doc,filename";
 	
 	public $argKeys = array(
 		'id_page:sanitizeAll'	=>	'tutti',
@@ -55,6 +55,14 @@ class DocumentiController extends BaseController
 		$this->shift(2);
 		
 		$fields = $this->campiBaseFormDocumenti;
+		
+		if (v("attiva_data_documento"))
+			$fields .= ",data_documento";
+		
+		$selectLingua = $this->m[$this->modelName]->selectLingua();
+		
+		if (count($selectLingua) > 1)
+			$fields .= ",lingua";
 		
 		if (v("attiva_immagine_in_documenti"))
 			$fields .= ",immagine";

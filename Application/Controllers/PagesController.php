@@ -201,7 +201,6 @@ class PagesController extends BaseController
 			'PagesModel.getInEvidenzaCheckbox|pages.id_page',
 			'PagesModel.getInputOrdinamento|pages.id_page',
 		);
-		
 	}
 	
 	public function pubblica($id,$value)

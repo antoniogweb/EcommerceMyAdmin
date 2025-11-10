@@ -26,9 +26,18 @@ define('EG','allowed');
 
 $options = getopt(null, array(
 	"azione::",
+	"lingua::",
+	"id_record::",
+	"query::",
+	"numero_risultati::",
 ));
 
-$default = array();
+$default = array(
+	"lingua"	=>	null,
+	"id_record"	=>	0,
+	"query"	=>	0,
+	"numero_risultati"	=>	10,
+);
 
 $params = array_merge($default, $options);
 
@@ -42,6 +51,8 @@ ImpostazioniModel::init();
 VariabiliModel::ottieniVariabili();
 Domain::$parentRoot = ROOT."/..";
 Domain::$publicUrl = rtrim(Url::getFileRoot(), "/");
+TraduzioniModel::$contestoStatic = "front";
+TraduzioniModel::getInstance()->ottieniTraduzioni();
 
 Files_Log::$logFolder = LIBRARY."/Logs";
 
@@ -51,13 +62,33 @@ if (!isset($params["azione"]))
 	die();
 }
 
-$log = Files_Log::getInstance("log_comandi_utenti");
+$log = Files_Log::getInstance("log_ai");
 
-if ($params["azione"] == "manda-avviso-account-in-scadenza")
+if ($params["azione"] == "crea-embeddings-pagina")
 {
-	$log->writeString("INIZIO AVVISO ACCOUNT IN SCADENZA");
+	$log->writeString("INIZIO CREAZIONE EMBEDDINGS PAGINA");
 	
-	RegusersModel::g(false)->mandaAvvisiScadenzaAccount($log);
+	EmbeddingsModel::g(false)->getPageEmbeddings($params["id_record"], $params["lingua"], $log);
 	
-	$log->writeString("FINE AVVISO ACCOUNT IN SCADENZA");
+	$log->writeString("FINE CREAZIONE EMBEDDINGS PAGINA");
+}
+
+if ($params["azione"] == "crea-embeddings-categoria")
+{
+	$log->writeString("INIZIO CREAZIONE EMBEDDINGS CATEGORIA");
+	
+	EmbeddingsModel::g(false)->getCategoryEmbeddings($params["id_record"], $params["lingua"], $log);
+	
+	$log->writeString("FINE CREAZIONE EMBEDDINGS CATEGORIA");
+}
+
+if ($params["azione"] == "ricerca-semantica")
+{
+	$log->writeString("INIZIO RICERCA SEMANTICA");
+	
+	$risultati = EmbeddingsModel::g(false)->ricercaSemantica($params["query"], $params["lingua"], $params["numero_risultati"], $log);
+	
+	print_r($risultati);
+	
+	$log->writeString("FINE RICERCA SEMANTICA");
 }

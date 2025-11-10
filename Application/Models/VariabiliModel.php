@@ -865,6 +865,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_sezione_download_documenti"	=>	0, // se impostato su 1, mostra la voce di menù che manda alle statistiche di scaricamento
 		"gestisci_gruppi_da_form"	=>	0, // se impostato su 1 permette di gestire i gruppi direttamente dal form, senza dover usare la scheda gruppi (chye viene nascosta)
 		"attiva_descrizione_in_documenti"	=>	1, // se impostato su 1, attiva il campo descrizione nei documenti
+		"attiva_data_documento"		=>	1, // se impostato su 1, attiva il campo data_documento nel documento. Altrimenti la data viene impostata automaticamente alla data corrente alla creazione del documento
 		### MAIL LOG ##
 		"email_log_errori"			=>	"",	// // Indirizzi email (divisi da virgola) a cui inviare un avviso se la verifica IPN (o affini) del pagamento non va a buon fine (con errori segnalati dal gateway di pagamento riportati nel corpo della mail)
 		"email_log_pagamento_da_analizzare"	=>	"", // Indirizzi email (divisi da virgola) a cui inviare un avviso via mail se l'ecommerce riceve un pagamento su un ordine che non si trova in uno stato pending (ex un pagamento su un ordine annullato)

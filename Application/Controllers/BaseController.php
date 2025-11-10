@@ -82,6 +82,8 @@ class BaseController extends Controller
 		if( !session_id() )
 			session_start();
 		
+		$this->init();
+		
 		$this->creaSessioneAdmin();
 		
 		$data['token'] = null;
@@ -115,8 +117,6 @@ class BaseController extends Controller
 			if (v("hook_after_login_admin"))
 				callFunction(v("hook_after_login_admin"), $this, v("hook_after_login_admin"));
 		}
-		
-		$this->init();
 		
 		// Help wizard
 		$this->model("HelpModel");
