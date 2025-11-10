@@ -1554,6 +1554,8 @@ class GenericModel extends Model_Tree
 		
 		if ($al != "tutti")
 			$this->sWhere(array("DATE_FORMAT(".$table.".$field, '%Y-%m-%d') <= ?",array(getIsoDate($al))));
+		
+		return $this;
     }
     
     public function overrideFormStruct() {}
