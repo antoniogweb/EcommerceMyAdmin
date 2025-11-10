@@ -8,6 +8,7 @@
 
 	<?php foreach ($nodi as $n) {
 		$n = isset($n["aggregate"]) ? $n["aggregate"] : $n;
+		$dataModifica = $n["ultima_modifica"] ? $n["ultima_modifica"] : date("Y-m-d");
 	?>
 	<url>
 		<loc><![CDATA[
@@ -21,7 +22,7 @@
 			<?php echo $this->baseUrl;?>
 			<?php } ?>
 		]]></loc>
-		<lastmod><?php echo date('c', strtotime($n["ultima_modifica"]));?></lastmod>
+		<lastmod><?php echo date('c', strtotime(nullToBlank($dataModifica)));?></lastmod>
 		<priority><?php echo number_format($n["priorita"],2,".","");?></priority>
 	</url>
 	<?php } ?>
