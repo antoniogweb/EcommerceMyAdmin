@@ -47,7 +47,7 @@
 					<?php if (!$flash) echo $notice;?>
 					
 					<div class="scroll-x">
-						<?php echo $main;?>
+						<?php include($this->viewPath("main_list"));?>
 					</div>
 					
 					<?php

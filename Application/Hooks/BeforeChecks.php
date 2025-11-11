@@ -906,6 +906,18 @@ Helper_List::$filtersFormLayout = array(
 				'<div class="input-group date">','<span class="input-group-addon"><i class="fa fa-calendar"></i></span></div>'
 			),
 		),
+		"dalle"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
+		"alle"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(
