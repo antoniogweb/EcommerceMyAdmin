@@ -188,7 +188,7 @@ class App
 					gtext("Necessario")	=>	gtext("Sì"),
 					"Descrizione"=>	gtext("Utilizzato per il mantenimento della sessione utente"),
 					"Durata"		=>	REG_SESSION_EXPIRE,
-					"usato"				=>	1,
+					"usato"				=>	v("attiva_area_riservata"),
 				),
 				// "uid"	=>	array(
 				// 	"Fornitore"	=>	Parametri::$nomeNegozio,
