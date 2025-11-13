@@ -149,8 +149,8 @@ class OrdiniController extends BaseController {
 		'alp:sanitizeAll'=>'tutti',
 		'dalr:sanitizeAll'=>'tutti',
 		'alr:sanitizeAll'=>'tutti',
-		'dalle:sanitizeTime'=>'tutti',
-		'alle:sanitizeTime'=>'tutti',
+		'dalle:sanitizeAll'=>'tutti',
+		'alle:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
