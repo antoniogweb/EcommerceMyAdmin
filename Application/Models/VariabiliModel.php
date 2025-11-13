@@ -349,6 +349,7 @@ class VariabiliModel extends GenericModel {
 		## PROGETTI ##
 		"mostra_progetti"	=>	0, // se mostrare la sezione "progetti"
 		"immagine_2_in_progetti"	=>	0, // mostra la seconda immagine nella sezione progetti
+		"url_in_progetti"	=>	0, // se impostato su 1 attiva il campo url nella scheda di un progetto
 		## BLOG ##
 		"contenuti_in_blog"			=>	0,
 		"tag_in_blog"				=>	0, // se attivare i tag nella sezione blog
