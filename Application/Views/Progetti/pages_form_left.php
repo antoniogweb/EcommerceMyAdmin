@@ -6,4 +6,6 @@
 
 <?php echo $form["sottotitolo"];?>
 
+<?php echo $form["url"] ?? "";?>
+
 <?php echo $form["description"];?>

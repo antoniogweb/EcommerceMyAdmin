@@ -27,4 +27,11 @@ class ProgettiModel extends BasicsectionModel {
 	public $hModelName = "ProgetticatModel";
 	
 	public function setFilters() {}
+	
+	public function overrideFormStruct()
+	{
+		$this->formStruct["entries"]["url"] = array(
+			'labelString'	=>	'Link al progetto',
+		);
+	}
 }
