@@ -22,6 +22,9 @@
 				?>
 			</div>
 			<?php } ?>
+			
+			<?php include($this->viewPath("main_top"));?>
+			
 			<div class="box">
 				<div class="box-header with-border main">
 					<?php if (!nofiltri()) { ?>

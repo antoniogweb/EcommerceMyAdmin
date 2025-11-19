@@ -183,7 +183,12 @@ class OrdiniController extends BaseController {
 		
 		$this->generaPosizioni();
 	}
-
+	
+	protected function setMainMenu($mainMenu)
+	{
+		return $mainMenu;
+	}
+	
 	public function main()
 	{
 		$this->shift();
@@ -192,6 +197,8 @@ class OrdiniController extends BaseController {
 		$this->addBulkActions = false;
 		
 		$mainMenu = (v("permetti_ordini_offline") && !partial()) ? "add" : "";
+		
+		$mainMenu = $this->setMainMenu($mainMenu);
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>$mainMenu, 'modifyAction'=>'vedi');
 		
