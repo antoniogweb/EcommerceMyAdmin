@@ -92,6 +92,13 @@ function getUrlAlias($id_page, $idC = 0)
 // 	return $p->getUrlAlias($clean["id_page"], null, $idC);
 }
 
+function getUrlPagina($id_page, $idC = 0)
+{
+	$clean["id_page"] = (int)$id_page;
+	
+	return Cache_Functions::getInstance()->load(new PagesModel())->getUrlPagina($clean["id_page"], null, $idC);
+}
+
 function getCategoryUrlAlias($id_c)
 {
 	$clean["id_c"] = (int)$id_c;

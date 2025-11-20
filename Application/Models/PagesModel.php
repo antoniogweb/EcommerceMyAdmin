@@ -1931,6 +1931,12 @@ class PagesModel extends GenericModel {
 		return ($tipo == 1) ? ".html" : "/";
 	}
 	
+	public function getUrlPagina($id, $lingua = null, $idC = 0)
+	{
+		$paginaPrivacy = PagineModel::getPageDetailsPreloaded($id);
+		return $paginaPrivacy["pages"]["redirect"] ? $paginaPrivacy["pages"]["redirect"] : $this->baseUrl."/".$this->getUrlAlias($id, $lingua, $idC);
+	}
+	
 	//get the URL of a content
 	public function getUrlAlias($id, $lingua = null, $idC = 0)
 	{

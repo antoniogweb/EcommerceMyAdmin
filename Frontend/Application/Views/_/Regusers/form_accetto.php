@@ -3,7 +3,7 @@
 	<?php echo gtext("Ho letto e accettato le");?>
 	<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
 	<?php if ($idPrivacy) { ?>
-	<a class="uk-text-secondary" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("condizioni di privacy");?></a>
+	<a class="uk-text-secondary" href="<?php echo getUrlPagina($idPrivacy);?>"><?php echo gtext("condizioni di privacy");?></a>
 	<?php } ?>
 </div>
 
@@ -16,7 +16,7 @@
 	<?php echo gtext("Ho letto e accettato le");?>
 	<?php $idPrivacy = PagineModel::gTipoPagina("CONDIZIONI_AGG"); ?>
 	<?php if ($idPrivacy) { ?>
-	<a class="uk-text-secondary" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("condizioni aggiuntive");?></a>
+	<a class="uk-text-secondary" href="<?php echo getUrlPagina($idPrivacy);?>"><?php echo gtext("condizioni aggiuntive");?></a>
 	<?php } ?>
 </div>
 
