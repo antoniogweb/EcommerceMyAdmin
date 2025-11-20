@@ -579,6 +579,9 @@ class OrdiniController extends BaseController {
 		if ($this->campiForm)
 			$fields = $this->campiForm;
 		
+		if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "data_documento"))
+			$fields .= ",data_documento";
+		
 		$this->functionsIfFromDb = array(
 			"data_consegna"	=>	"fakeDataToBlank",
 		);

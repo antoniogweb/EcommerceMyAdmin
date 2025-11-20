@@ -178,6 +178,11 @@
 					<?php echo $form["id_p"];?>
 				</div>
 				<?php } ?>
+				<?php if (OpzioniModel::isAttiva("CAMPI_FORM_CHECKOUT", "data_documento")) { ?>
+				<div class='col-md-3'>
+					<?php echo $form["data_documento"];?>
+				</div>
+				<?php } ?>
 			</div>
 		</div>
 		<div class='col-md-6'>
