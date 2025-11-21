@@ -1,0 +1,1 @@
+ALTER TABLE eventi_retargeting_elemento ADD INDEX idx_evento_email (id_evento, email);
