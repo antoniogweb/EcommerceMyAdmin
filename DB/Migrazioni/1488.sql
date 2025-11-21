@@ -1,0 +1,1 @@
+CREATE INDEX idx_conteggio_query_data_attacco_ip ON conteggio_query (data_creazione, attacco, ip);
