@@ -94,7 +94,9 @@ trait InitController
 		
 		Lang_It_ModelStrings::$staticStrings = array(
 			"error" => "<div class='alert'>".gtext("Errore nella query: contatta l'amministratore!")."</div>\n",
-			"executed" => "<div class='alert alert-success'>".gtext("operazione eseguita!")."</div>\n",
+			"executed"	=>	"<div class='alert alert-success'>".gtext("Operazione eseguita!")."</div>",
+			"not-allowed-ext" => "<div class='alert alert-danger'>".gtext("L'estensione del file che vuoi caricare non è consentita")."</div>\n",
+			"not-allowed-mime-type" => "<div class='alert alert-danger'>".gtext("Il tipo MIME del file che vuoi caricare non è consentito")."</div>\n",
 		);
 		
 		Helper_List::$actionsLayout = array(

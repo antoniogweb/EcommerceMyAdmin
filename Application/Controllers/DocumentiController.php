@@ -44,6 +44,9 @@ class DocumentiController extends BaseController
 		$this->model("DocumentilingueModel");
 		
 		$this->m[$this->modelName]->uploadFields["filename"]["allowedExtensions"] = v("estensioni_accettate_documenti");
+		
+		if (v("mime_type_accettati_documenti"))
+			$this->m[$this->modelName]->uploadFields["filename"]["allowedMimeTypes"] = v("mime_type_accettati_documenti");
 	}
 	
 	public function form($queryType = 'insert', $id = 0)

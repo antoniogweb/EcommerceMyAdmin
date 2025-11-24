@@ -859,6 +859,7 @@ class VariabiliModel extends GenericModel {
 		"cerca_lingua_documento_da_nome_file"	=>	1, // se impostato su 1, cerca la lingua del documento dal nome del file
 		"lingua_default_documenti"	=>	"tutte", // lingua di default dei documenti
 		"estensioni_accettate_documenti"	=>	"pdf,png,jpg,jpeg", // estensioni accettate per i documenti
+		"mime_type_accettati_documenti"	=>	"", // se diverso da blank, elenco mime type accettati per i documenti
 		"dimensioni_upload_documenti"	=>	3000000, // dimensione massima degli upload nei documenti
 		"attiva_link_documenti"		=>	0, // se impostato su 1, attiva la possibilità di impostare un link ad un documento (ex in slide, etc)
 		"documenti_in_clienti"		=>	0, // se impostato su 1, attiva la possibilità di caricare documenti legati ai clienti
