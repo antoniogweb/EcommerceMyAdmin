@@ -67,3 +67,21 @@ if (trim($ip))
         die();
     }
 }
+else if (!defined('APP_CONSOLE'))
+{
+    if (@is_dir(ROOT."/admin/Logs/NoIp"))
+    {
+        $file = date("YmdHis")."_".microtime(true);
+        $fp = fopen(ROOT.'/admin/Logs/NoIp/'.$file.'.txt', 'a+');
+        fwrite($fp, date("Y-m-d H:i:s")."\n");
+        fwrite($fp, print_r($_COOKIE,true));
+        fwrite($fp, print_r($_GET,true));
+        fwrite($fp, print_r($_POST,true));
+        if (isset($_SERVER))
+            fwrite($fp, print_r($_SERVER,true));
+        fclose($fp);
+    }
+    
+    http_response_code(403);
+    die();
+}
