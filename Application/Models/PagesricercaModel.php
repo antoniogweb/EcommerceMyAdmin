@@ -57,7 +57,7 @@ class PagesricercaModel extends GenericModel {
 		);
     }
     
-    public static function inserisci($idPage, $values, $lingua = "it")
+    public static function inserisci($idPage, $values, $lingua = "it", $usaTransaction = true)
     {
 		$pRicercaModel = new PagesricercaModel();
 		
@@ -66,7 +66,7 @@ class PagesricercaModel extends GenericModel {
 			"lingua"	=>	sanitizeAll($lingua),
 		));
 		
-		if (v("usa_transactions"))
+		if ($usaTransaction && v("usa_transactions"))
 			$pRicercaModel->db->beginTransaction();
 		
 		foreach ($values as $key => $value)
@@ -81,7 +81,7 @@ class PagesricercaModel extends GenericModel {
 			$pRicercaModel->insert();
 		}
 		
-		if (v("usa_transactions"))
+		if ($usaTransaction && v("usa_transactions"))
 			$pRicercaModel->db->commit();
     }
     

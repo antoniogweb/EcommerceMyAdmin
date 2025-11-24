@@ -1020,6 +1020,9 @@ class PagesModel extends GenericModel {
 			
 			$ctModel = new ContenutitradottiModel();
 			
+			if (v("usa_transactions"))
+				$this->db->beginTransaction();
+			
 			foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
 			{
 				// Se è impostata la lingua e non è la lingua corrente, continua
@@ -1055,14 +1058,16 @@ class PagesModel extends GenericModel {
 							"lingua"	=>	sanitizeAll($codice),
 						))->field("id_ct");
 						
-						if (!$idCt)
-							return;
+						$res = false;
 						
-						$ctModel->sValues(array(
-							"campo_cerca"	=>	implode(" ", $stringSearchArray),
-						));
-						
-						$res = $ctModel->pUpdate((int)$idCt);
+						if ($idCt)
+						{
+							$ctModel->sValues(array(
+								"campo_cerca"	=>	implode(" ", $stringSearchArray),
+							));
+							
+							$res = $ctModel->pUpdate((int)$idCt);
+						}
 					}
 					else
 					{
@@ -1079,10 +1084,13 @@ class PagesModel extends GenericModel {
 						$oggettoRicerca = PagesricercaModel::creaStrutturaOggettoRicerca($marchio, $categorie, $titolo);
 						
 						// riempio la tabella pages_ricerca
-						PagesricercaModel::inserisci($id, $oggettoRicerca, $codice);
+						PagesricercaModel::inserisci($id, $oggettoRicerca, $codice, false);
 					}
 				}
 			}
+			
+			if (v("usa_transactions"))
+				$this->db->commit();
 		}
 	}
 	
