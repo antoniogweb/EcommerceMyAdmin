@@ -923,21 +923,6 @@ class BaseBaseController extends Controller
 						
 						if (!v("conferma_registrazione"))
 							$this->maindaMailNegozioNuovaRegistrazione($lId);
-
-// 						ob_start();
-// 						include tpf("Regusers/mail_al_negozio_registr_nuovo_cliente.php");
-// 						$output = ob_get_clean();
-// 						
-// 						$emailCMS = (ImpostazioniModel::$valori["mail_registrazione_utenti"] && checkMail(ImpostazioniModel::$valori["mail_registrazione_utenti"])) ? ImpostazioniModel::$valori["mail_registrazione_utenti"] : Parametri::$mailInvioOrdine;
-// 						
-// 						$res = MailordiniModel::inviaMail(array(
-// 							"emails"	=>	array($emailCMS),
-// 							"oggetto"	=>	$this->registrazioneAgente ? "invio dati nuovo agente" : "invio dati nuovo utente",
-// 							"testo"		=>	$output,
-// 							"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",
-// 							"id_user"	=>	(int)$lId,
-// 							"id_page"	=>	0,
-// 						));
 						
 						F::checkPreparedStatement();
 						
