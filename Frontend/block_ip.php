@@ -22,6 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+include_once(LIBRARY."/config.php");
+
 function sanitizeIpToCheck($ip)
 {
 	return preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip) ? $ip : '';
