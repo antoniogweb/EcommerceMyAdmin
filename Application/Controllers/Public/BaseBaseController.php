@@ -381,7 +381,7 @@ class BaseBaseController extends Controller
 	// Controlla la scadenza dell'account
 	protected function controllaScadenzaAccount()
 	{
-		if ($this->dettagliUtente["data_scadenza"])
+		if (v("attiva_scadenza_account") && $this->dettagliUtente["data_scadenza"])
 		{
 			if (checkIsoDate($this->dettagliUtente["data_scadenza"]))
 			{
