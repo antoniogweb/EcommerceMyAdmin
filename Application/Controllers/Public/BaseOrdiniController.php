@@ -1137,7 +1137,7 @@ class BaseOrdiniController extends BaseController
 		{
 			$numeroIndirizzi = SpedizioniModel::numeroIndirizziDiSpedizioneUtente(User::$id);
 			
-			if (!$numeroIndirizzi)
+			if (!$numeroIndirizzi && v("attiva_spedizione"))
 				$this->redirect("carrello/vedi");
 		}
 	}
