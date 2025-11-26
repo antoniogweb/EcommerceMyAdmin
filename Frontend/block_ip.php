@@ -32,28 +32,35 @@ function sanitizeIpToCheck($ip)
 function getIpToCheck()
 {
     $ip = "";
-	$trustedProxies = defined('TRUSTED_PROXIES') ? TRUSTED_PROXIES : array();
 	
     if (isset($_SERVER))
     {
 		$remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
 		
-		$isTrustedProxy = ($remoteAddr !== '' && in_array($remoteAddr, $trustedProxies, true));
-		
-		if ($isTrustedProxy && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-			
-			$parts = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-			$first = trim($parts[0]);
-			if (filter_var($first, FILTER_VALIDATE_IP)) {
-				$ip = $first;
+		if (defined('TRUSTED_PROXIES'))
+		{
+			if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+			{
+				$trustedProxies = TRUSTED_PROXIES;
+				$isTrustedProxy = ($remoteAddr !== '' && in_array($remoteAddr, $trustedProxies, true));
+				
+				if ($isTrustedProxy)
+				{
+					$parts = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+					$first = trim($parts[0]);
+					
+					if (filter_var($first, FILTER_VALIDATE_IP))
+					{
+						$ip = $first;
+					}
+				}
 			}
 		}
-		
-		// fallback sempre su REMOTE_ADDR
-		if ($ip === '' && $remoteAddr !== '' && filter_var($remoteAddr, FILTER_VALIDATE_IP)) {
+		else if ($remoteAddr !== '' && filter_var($remoteAddr, FILTER_VALIDATE_IP))
+		{
 			$ip = $remoteAddr;
 		}
-    }
+	}
     
     return $ip;
 }
