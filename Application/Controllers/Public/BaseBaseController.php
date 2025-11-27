@@ -537,8 +537,10 @@ class BaseBaseController extends Controller
 		
 		$data["tipiClienti"] = TipiclientiModel::getArrayTipi();
 		
-		$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttive();
-		$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttiveSpedizione();
+		$this->estraiNazioni();
+		
+		// $data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttive();
+		// $data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttiveSpedizione();
 		
 		$data["selectRuoli"] = RuoliModel::$listaElementi = $this->m("RuoliModel")->selectTipi(true);
 		
@@ -596,6 +598,14 @@ class BaseBaseController extends Controller
 				}
 			}
 		}
+		
+		$this->append($data);
+	}
+	
+	protected function estraiNazioni()
+	{
+		$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttive();
+		$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttiveSpedizione();
 		
 		$this->append($data);
 	}
@@ -971,13 +981,22 @@ class BaseBaseController extends Controller
 		
 		$data['values'] = $this->m('RegusersModel')->getFormValues('insert','sanitizeHtml',null,$this->defaultRegistrazione);
 		
-		$data['province'] = $this->m('ProvinceModel')->selectTendina("nazione");
-		$data['provinceSpedizione'] = $this->m('ProvinceModel')->selectTendina("nazione_spedizione");
+		$this->estraiProvince();
+		// $data['province'] = $this->m('ProvinceModel')->selectTendina("nazione");
+		// $data['provinceSpedizione'] = $this->m('ProvinceModel')->selectTendina("nazione_spedizione");
 		
 		if (strcmp($data['values']["tipo_cliente"],"") === 0)
 		{
 			$data['values']["tipo_cliente"] = "privato";
 		}
+		
+		$this->append($data);
+	}
+	
+	protected function estraiProvince()
+	{
+		$data['province'] = $this->m('ProvinceModel')->selectTendina("nazione");
+		$data['provinceSpedizione'] = $this->m('ProvinceModel')->selectTendina("nazione_spedizione");
 		
 		$this->append($data);
 	}

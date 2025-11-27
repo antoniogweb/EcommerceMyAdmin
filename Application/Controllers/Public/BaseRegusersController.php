@@ -1257,8 +1257,10 @@ class BaseRegusersController extends BaseController
 		{
 			$data['values'] = $this->m('RegusersModel')->getFormValues('update','sanitizeHtml',$this->iduser);
 			
-			$data['province'] = $this->m('ProvinceModel')->selectTendina("nazione");
-			$data['provinceSpedizione'] = $this->m('ProvinceModel')->selectTendina("nazione_spedizione");
+			$this->estraiProvince();
+			
+			// $data['province'] = $this->m('ProvinceModel')->selectTendina("nazione");
+			// $data['provinceSpedizione'] = $this->m('ProvinceModel')->selectTendina("nazione_spedizione");
 			
 			$data["tipoAzione"] = "update";
 			
