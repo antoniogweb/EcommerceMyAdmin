@@ -105,6 +105,9 @@ class LogtecniciModel extends GenericModel {
 		
 		$struttura = array();
 		
+		if ((int)count($daInviare) === 0)
+			return $struttura;
+		
 		$idNotificati = array();
 		
 		foreach ($daInviare as $r)
