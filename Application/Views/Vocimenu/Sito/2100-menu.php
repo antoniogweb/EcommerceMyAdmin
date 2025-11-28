@@ -7,7 +7,7 @@
 	</a>
 	<ul class="treeview-menu">
 		<li><a href="<?php echo $this->baseUrl."/menu/main?lingua=".Params::$defaultFrontEndLanguage;?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-		<li><a href="<?php echo $this->baseUrl."/menu/form/insert/0?lingua=Params::$defaultFrontEndLanguage";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
+		<li><a href="<?php echo $this->baseUrl."/menu/form/insert/0?lingua=".Params::$defaultFrontEndLanguage;?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
 	</ul>
 </li>
 <?php } ?>
