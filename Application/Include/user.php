@@ -24,6 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class User
 {
 	public static $id = 0;
+	public static $email = 0;
 	public static $logged = false;
 	public static $token = '';
 	public static $name = '';

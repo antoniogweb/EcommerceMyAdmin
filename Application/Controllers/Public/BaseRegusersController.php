@@ -80,6 +80,16 @@ class BaseRegusersController extends BaseController
 		Output::setHeaderValue("Nome",$nomeCliente);
 	}
 	
+	protected function logAccountCheck($azione, $email)
+	{
+		LogaccountModel::getInstance($azione)->check($email);
+	}
+	
+	protected function logAccountSet($risultato)
+	{
+		LogaccountModel::getInstance()->set($risultato);
+	}
+	
 	public function login()
 	{
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Login'));
@@ -107,6 +117,9 @@ class BaseRegusersController extends BaseController
 			$username = checkMail($_POST['username']) ? sanitizeAll($_POST['username']) : '';
 			$choice = $this->s['registered']->login(sanitizeAll($_POST['username']),$_POST['password']);
 			
+			if ($username)
+				$this->logAccountCheck("LOGIN", $_POST['username']);
+			
 			switch($choice) {
 				case 'logged':
 					if (Output::$html)
@@ -114,6 +127,7 @@ class BaseRegusersController extends BaseController
 					break;
 				case 'accepted':
 					
+					$this->logAccountSet(1);
 					$this->hookAfterLogin();
 					
 					if (Output::$html)
@@ -126,9 +140,12 @@ class BaseRegusersController extends BaseController
 					}
 					break;
 				case 'two-factor':
+					$this->logAccountSet(0);
 					$this->redirectTwoFactorSendMail();
 					break;
 				case 'login-error':
+					$this->logAccountSet(0);
+					
 					if (Output::$html)
 					{
 						if (v("conferma_registrazione"))
@@ -149,6 +166,8 @@ class BaseRegusersController extends BaseController
 						Output::setHeaderValue("Status","login-error");
 					break;
 				case 'wait':
+					$this->logAccountSet(0);
+					
 					if (Output::$html)
 						$data['notice'] = '<div class="'.v("alert_error_class").'">'.gtext('Devi aspettare 5 secondi prima di poter tentare nuovamente il login').'</div>';
 					else
@@ -190,6 +209,7 @@ class BaseRegusersController extends BaseController
 		$sessioneTwo = $this->s['registered']->getTwoFactorModel()->clear()->where(array(
 			"uid_two"	=>	sanitizeAll($uidt),
 			"attivo"	=>	0,
+			"id_user"	=>	(int)$this->s['registered']->status["id_user"],
 			// "user_agent_md5"	=>	getUserAgent(),
 		))->record();
 		

@@ -213,6 +213,8 @@ class BaseBaseController extends Controller
 				$this->iduser = User::$id = (int)$this->s['registered']->status['id_user'];
 				$data['iduser'] = $this->iduser;
 
+				User::$email = User::$dettagli["username"];
+				
 				$data['islogged'] = true;
 				$this->islogged = User::$logged = $data['islogged'];
 				

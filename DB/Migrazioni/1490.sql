@@ -1,0 +1,1 @@
+alter table log_account add ip char(15) not null default '';

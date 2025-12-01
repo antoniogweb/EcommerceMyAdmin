@@ -159,6 +159,7 @@ class UsersController extends BaseController {
 		$sessioneTwo = $this->s['admin']->getTwoFactorModel()->clear()->where(array(
 			"uid_two"	=>	sanitizeAll($uidt),
 			"attivo"	=>	0,
+			"id_user"	=>	(int)$this->s['admin']->status["id_user"],
 			// "user_agent_md5"	=>	getUserAgent(),
 		))->record();
 		
