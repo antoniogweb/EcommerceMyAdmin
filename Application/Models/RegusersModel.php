@@ -36,6 +36,7 @@ class RegusersModel extends FormModel {
 	public $ordiniModelAssociato = "OrdiniModel";
 	
 	public $documentiModelAssociato = "DocumentiModel";
+	public $campoDataCreazione = "creation_date";
 	
 	public function __construct() {
 		$this->_tables='regusers';

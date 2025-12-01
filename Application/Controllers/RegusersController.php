@@ -184,6 +184,9 @@ class RegusersController extends BaseController
 			$filtri[] = "codice_gestionale";
 		}
 		
+		$mainFields[] = 'cleanDateTime';
+		$headLabels .= ',Data creazione';
+		
 		$this->mainFields = $mainFields;
 		$this->mainHead = $headLabels;
 		

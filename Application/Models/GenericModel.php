@@ -40,6 +40,8 @@ class GenericModel extends Model_Tree
 		"on-c"	=>	"check-v"
 	);
 	
+	public $campoDataCreazione = "data_creazione";
+	
 	protected $nomeCampoIdUser = "id_user";
 	
 	public static $entryAttivo = array(
@@ -1538,8 +1540,8 @@ class GenericModel extends Model_Tree
     {
 		$formato = implode("-", App::$dateFormatArray)." H:i";
 		
-		if (isset($record[$this->_tables]["data_creazione"]) && $record[$this->_tables]["data_creazione"])
-			return date($formato,strtotime($record[$this->_tables]["data_creazione"]));
+		if (isset($record[$this->_tables][$this->campoDataCreazione]) && $record[$this->_tables][$this->campoDataCreazione])
+			return date($formato,strtotime($record[$this->_tables][$this->campoDataCreazione]));
 		
 		return "";
     }
