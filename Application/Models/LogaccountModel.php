@@ -24,11 +24,14 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class LogaccountModel extends GenericModel
 {
+	public static $arrayPause = array(
+		// "LOGIN"				=>	array("20"	=>	60),
+		"RECUPERO_PASSWORD"	=>	array("5"	=>	60),
+	);
+	
 	private static $instance = null; //instance of this class
 	
 	private $azione = "LOGIN";
-	
-	public $inizializzato = false;
 	
 	protected function __construct() {
 		$this->_tables='log_account';
@@ -58,28 +61,116 @@ class LogaccountModel extends GenericModel
 		$this->azione = $azione;
 	}
 	
+	private function inPausa($email, $azione)
+	{
+		$contesto = App::$isFrontend ? "FRONT" : "BACK";
+		
+		$where = array(
+			"contesto"	=>	sanitizeAll($contesto),
+			"email"		=>	sanitizeAll($email),
+			"azione"	=>	sanitizeAll($azione)
+		);
+		
+		$numeroInPausa = self::$instance->clear()->where($where)->aWhere(array(
+			"gt"	=>	array(
+				"in_pausa_fino_a_time"	=> time(),
+			)
+		))->forUpdate()->rowNumber();
+		
+		return $numeroInPausa ? true : false;
+	}
+	
+	private function getNumeroMinutiDiPausaEmailAzione($email, $azione)
+	{
+		$contesto = App::$isFrontend ? "FRONT" : "BACK";
+		
+		$where = array(
+			"risultato"	=>	1,
+			"contesto"	=>	sanitizeAll($contesto),
+			"email"		=>	sanitizeAll($email),
+			"azione"	=>	sanitizeAll($azione)
+		);
+		
+		$idUltimoSuccesso = self::$instance->clear()->where($where)->orderBy("id_log_account desc")->forUpdate()->field("id_log_account");
+		
+		if (!$idUltimoSuccesso)
+			$idUltimoSuccesso = 0;
+		
+		$where["risultato"] = 0;
+		
+		$numeroFallimenti = self::$instance->clear()->where($where)->aWhere(array(
+			"gte"	=>	array(
+				"id_log_account"	=>	(int)$idUltimoSuccesso,
+			)
+		))->orderBy("id_log_account desc")->forUpdate()->rowNumber();
+		
+		$numeroFallimenti++;
+		
+		if (isset(self::$arrayPause[$azione]))
+		{
+			foreach (self::$arrayPause[$azione] as $limite => $minuti)
+			{
+				if ($numeroFallimenti >= $limite)
+					return $minuti;
+			}
+		}
+		
+		return 0;
+	}
+	
 	public function check($email)
 	{
+		$azione = self::$instance->getAzione();
+		
+		self::$instance->db->beginTransaction();
+		
+		$inPausa = self::$instance->inPausa($email, $azione);
+		
+		if ($inPausa)
+		{
+			self::$instance->db->commit();
+			
+			return false;
+		}
+		
+		$minuti = self::$instance->getNumeroMinutiDiPausaEmailAzione($email, $azione);
+		$secondiPausa = $minuti * 60;
+		
 		self::$instance->sValues(array(
 			"data_creazione"	=>	date("Y-m-d H:i:s"),
 			"time_creazione"	=>	time(),
 			"id_user"			=>	User::$id,
 			"email"				=>	$email,
 			"ip"				=>	getIp(),
-			"azione"			=>	self::$instance->getAzione(),
+			"azione"			=>	$azione,
+			"risultato"			=>	$minuti ? 1 : 0,
 			"contesto"			=>	App::$isFrontend ? "FRONT" : "BACK",
+			"in_pausa_fino_a_time"	=>	$minuti ? (time() + $secondiPausa) : 0,
 		), "sanitizeAll");
 		
-		self::$instance->inizializzato = true;
+		self::$instance->insert();
+		
+		self::$instance->db->commit();
+		
+		return true;
 	}
 	
 	public function set($risultato = 1)
 	{
-		if (self::$instance->inizializzato)
+		if (self::$instance->lId)
 		{
 			self::$instance->setValue("risultato", (int)$risultato);
+			self::$instance->setValue("in_pausa_fino_a_time", 0);
 		
-			self::$instance->insert();
+			self::$instance->update((int)self::$instance->lId);
+		}
+	}
+	
+	public function remove()
+	{
+		if (self::$instance->lId)
+		{
+			self::$instance->del((int)self::$instance->lId);
 		}
 	}
 }

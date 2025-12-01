@@ -82,12 +82,13 @@ class BaseRegusersController extends BaseController
 	
 	protected function logAccountCheck($azione, $email)
 	{
-		LogaccountModel::getInstance($azione)->check($email);
-	}
-	
-	protected function logAccountSet($risultato)
-	{
-		LogaccountModel::getInstance()->set($risultato);
+		$result = LogaccountModel::getInstance($azione)->check($email);
+		
+		if (!$result)
+		{
+			$_SESSION['result'] = 'pausa_'.$azione;
+			$this->redirect("avvisi");
+		}
 	}
 	
 	public function login()
@@ -126,8 +127,8 @@ class BaseRegusersController extends BaseController
 						$this->redirect(Url::routeToUrl("area-riservata"),0);
 					break;
 				case 'accepted':
+					LogaccountModel::getInstance()->set(1);
 					
-					$this->logAccountSet(1);
 					$this->hookAfterLogin();
 					
 					if (Output::$html)
@@ -140,12 +141,9 @@ class BaseRegusersController extends BaseController
 					}
 					break;
 				case 'two-factor':
-					$this->logAccountSet(0);
 					$this->redirectTwoFactorSendMail();
 					break;
 				case 'login-error':
-					$this->logAccountSet(0);
-					
 					if (Output::$html)
 					{
 						if (v("conferma_registrazione"))
@@ -166,7 +164,7 @@ class BaseRegusersController extends BaseController
 						Output::setHeaderValue("Status","login-error");
 					break;
 				case 'wait':
-					// $this->logAccountSet(0);
+					LogaccountModel::getInstance()->remove();
 					
 					if (Output::$html)
 						$data['notice'] = '<div class="'.v("alert_error_class").'">'.gtext('Devi aspettare 5 secondi prima di poter tentare nuovamente il login').'</div>';
@@ -686,8 +684,7 @@ class BaseRegusersController extends BaseController
 							
 							if (count($res) > 0)
 							{
-								$this->logAccountCheck("CAMBIO_PASSWORD", $_POST['username']);
-								$this->logAccountSet(0);
+								$this->logAccountCheck("RECUPERO_PASSWORD", $_POST['username']);
 								
 								$e_mail = $res[0]['regusers']['username'];
 								$id_user = (int)$res[0]['regusers']['id_user'];

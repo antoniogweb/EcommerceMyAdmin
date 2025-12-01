@@ -1,0 +1,1 @@
+ALTER TABLE `log_account` ADD INDEX `log_account_risultato_contesto_email_azione` (`risultato`, `contesto`, `email`, `azione`);

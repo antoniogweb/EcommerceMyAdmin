@@ -1,0 +1,1 @@
+ALTER TABLE `log_account` ADD in_pausa_fino_a_time int not null default 0;

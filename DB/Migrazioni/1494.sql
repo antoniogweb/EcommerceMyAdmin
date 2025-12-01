@@ -1,0 +1,1 @@
+ALTER TABLE `log_account` ADD INDEX `log_account_contesto_email_azione_pausa` (`contesto`, `email`, `azione`, `in_pausa_fino_a_time`);

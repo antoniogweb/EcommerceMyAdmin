@@ -1,0 +1,1 @@
+ALTER TABLE `log_account` DROP `in_pausa`;
