@@ -68,7 +68,7 @@ class LogaccountModel extends GenericModel
 			"ip"				=>	getIp(),
 			"azione"			=>	self::$instance->getAzione(),
 			"contesto"			=>	App::$isFrontend ? "FRONT" : "BACK",
-		), "sanitizeDb");
+		), "sanitizeAll");
 		
 		self::$instance->inizializzato = true;
 	}
@@ -77,7 +77,7 @@ class LogaccountModel extends GenericModel
 	{
 		if (self::$instance->inizializzato)
 		{
-			self::$instance->setvalue("risultato", (int)$risultato);
+			self::$instance->setValue("risultato", (int)$risultato);
 		
 			self::$instance->insert();
 		}

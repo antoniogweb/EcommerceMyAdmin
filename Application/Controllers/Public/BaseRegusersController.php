@@ -686,6 +686,9 @@ class BaseRegusersController extends BaseController
 							
 							if (count($res) > 0)
 							{
+								$this->logAccountCheck("CAMBIO_PASSWORD", $_POST['username']);
+								$this->logAccountSet(0);
+								
 								$e_mail = $res[0]['regusers']['username'];
 								$id_user = (int)$res[0]['regusers']['id_user'];
 								$forgot_token = $this->m("RegusersModel")->getUniqueToken(md5(randString(20).microtime().uniqid(mt_rand(),true)));

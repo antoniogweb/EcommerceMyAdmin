@@ -11,7 +11,9 @@ $titoloPagina = gtext("Imposta la password");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
-<?php echo $notice;?>
+<div class="uk-text-center">
+	<?php echo $notice;?>
+</div>
 
 <div class="uk-child-width-1-3@m uk-text-center form_reimposta_password" uk-grid>
     <div></div>
