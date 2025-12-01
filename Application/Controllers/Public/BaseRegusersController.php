@@ -166,7 +166,7 @@ class BaseRegusersController extends BaseController
 						Output::setHeaderValue("Status","login-error");
 					break;
 				case 'wait':
-					$this->logAccountSet(0);
+					// $this->logAccountSet(0);
 					
 					if (Output::$html)
 						$data['notice'] = '<div class="'.v("alert_error_class").'">'.gtext('Devi aspettare 5 secondi prima di poter tentare nuovamente il login').'</div>';
