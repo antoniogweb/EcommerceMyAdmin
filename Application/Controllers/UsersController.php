@@ -156,12 +156,13 @@ class UsersController extends BaseController {
 		if (empty($user) || !$uidt)
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
 		
-		$sessioneTwo = $this->s['admin']->getTwoFactorModel()->clear()->where(array(
-			"uid_two"	=>	sanitizeAll($uidt),
-			"attivo"	=>	0,
-			"id_user"	=>	(int)$this->s['admin']->status["id_user"],
-			// "user_agent_md5"	=>	getUserAgent(),
-		))->record();
+		$sessioneTwo = $this->s['admin']->getTwoFactorSession();
+		// $sessioneTwo = $this->s['admin']->getTwoFactorModel()->clear()->where(array(
+		// 	"uid_two"	=>	sanitizeAll($uidt),
+		// 	"attivo"	=>	0,
+		// 	"id_user"	=>	(int)$this->s['admin']->status["id_user"],
+		// 	// "user_agent_md5"	=>	getUserAgent(),
+		// ))->record();
 		
 		if (empty($sessioneTwo) || $sessioneTwo["tentativi_verifica"] >= (int)v("autenticazione_due_fattori_numero_massimo_tentativi_admin"))
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
@@ -210,7 +211,7 @@ class UsersController extends BaseController {
 		
 		if ($clean["codice"])
 		{
-			if ($this->s['admin']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"]))
+			if ($this->s['admin']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"], (int)$user["id_user"]))
 				$this->redirect($this->redirectUrlDopoLogin);
 			else
 				flash("notice","<div class='alert alert-danger'>".gtext("Attenzione, il codice non è corretto, si prega di riprovare")."</div>");

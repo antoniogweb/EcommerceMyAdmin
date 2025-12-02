@@ -204,12 +204,13 @@ class BaseRegusersController extends BaseController
 		if (empty($user) || !$uidt)
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
 		
-		$sessioneTwo = $this->s['registered']->getTwoFactorModel()->clear()->where(array(
-			"uid_two"	=>	sanitizeAll($uidt),
-			"attivo"	=>	0,
-			"id_user"	=>	(int)$this->s['registered']->status["id_user"],
-			// "user_agent_md5"	=>	getUserAgent(),
-		))->record();
+		$sessioneTwo = $this->s['registered']->getTwoFactorSession();
+		// $sessioneTwo = $this->s['registered']->getTwoFactorModel()->clear()->where(array(
+		// 	"uid_two"	=>	sanitizeAll($uidt),
+		// 	"attivo"	=>	0,
+		// 	"id_user"	=>	(int)$this->s['registered']->status["id_user"],
+		// 	// "user_agent_md5"	=>	getUserAgent(),
+		// ))->record();
 		
 		if (empty($sessioneTwo) || $sessioneTwo["tentativi_verifica"] >= (int)v("autenticazione_due_fattori_numero_massimo_tentativi_front"))
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
@@ -272,7 +273,7 @@ class BaseRegusersController extends BaseController
 		
 		if ($clean["codice"])
 		{
-			if ($this->s['registered']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"]))
+			if ($this->s['registered']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"], (int)$user["id_user"]))
 			{
 				$this->hookAfterLogin();
 				

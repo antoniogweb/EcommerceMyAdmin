@@ -68,7 +68,10 @@ trait SessionitwotraitModel
 	
 	protected function getCookieName($idUser)
 	{
-		return md5($this->cookieName."_".(int)$idUser);
+		if (v("attiva_autenticazione_due_fattori_front"))
+			return $this->cookieName."_".md5((int)$idUser);
+		else
+			return md5($this->cookieName."_".(int)$idUser);
 	}
 	
 	public function getUidt($idUser)
@@ -188,6 +191,17 @@ trait SessionitwotraitModel
 		return false;
 	}
 	
+	public function getSession($idUser)
+	{
+		$uidt = $this->getUidt($idUser);
+		
+		return $this->clear()->where(array(
+			"uid_two"	=>	sanitizeAll($uidt),
+			"attivo"	=>	0,
+			"id_user"	=>	(int)$idUser,
+		))->record();
+	}
+	
 	public function inviaCodice($sessioneTwo, $user, $campo = "email")
 	{
 		$email = trim($user[$campo]);
@@ -222,13 +236,14 @@ trait SessionitwotraitModel
 		return false;
 	}
 	
-	public function checkCodice($sessioneTwo, $codice)
+	public function checkCodice($sessioneTwo, $codice, $idUser)
 	{
 		$record = $this->clear()->where(array(
 			// "codice_verifica"	=>	sanitizeAll($codice),
 			"uid_two"	=>	sanitizeAll($sessioneTwo["uid_two"]),
 			"attivo"	=>	0,
 			"user_agent_md5"	=>	getUserAgent(),
+			"id_user"	=>	(int)$idUser,
 		))->record();
 		
 		if (!empty($record) && hash_equals($codice, Aes::decrypt($record["codice_verifica"])))
