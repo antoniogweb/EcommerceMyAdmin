@@ -190,6 +190,14 @@ class App
 					"Durata"		=>	REG_SESSION_EXPIRE,
 					"usato"				=>	v("attiva_area_riservata"),
 				),
+				"uidtr_*"	=>	array(
+					"Fornitore"	=>	Parametri::$nomeNegozio,
+					gtext("Tipologia")	=>	gtext("Tecnici"),
+					gtext("Necessario")	=>	gtext("Sì"),
+					"Descrizione"=>	gtext("Utilizzato per il mantenimento della sessione utente"),
+					"Durata"		=>	v("autenticazione_due_fattori_front_durata_cookie"),
+					"usato"			=>	v("attiva_autenticazione_due_fattori_front"),
+				),
 				// "uid"	=>	array(
 				// 	"Fornitore"	=>	Parametri::$nomeNegozio,
 				// 	gtext("Tipologia")	=>	gtext("Tecnici"),
