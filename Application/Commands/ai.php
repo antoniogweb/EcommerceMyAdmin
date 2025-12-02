@@ -35,7 +35,7 @@ $options = getopt(null, array(
 $default = array(
 	"lingua"	=>	null,
 	"id_record"	=>	0,
-	"query"	=>	0,
+	"query"		=>	"",
 	"numero_risultati"	=>	10,
 );
 
