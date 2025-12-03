@@ -26,12 +26,189 @@ class ConteggioqueryModel extends GenericModel
 {
 	public static $codice = 200;
 	public static $attacco = 0;
+	private static $logDir = null;
 	
 	public function __construct() {
 		$this->_tables='conteggio_query';
 		$this->_idFields='id_conteggio';
 		
 		parent::__construct();
+	}
+
+	private static function salvaSuFile()
+	{
+		return (int)v("salva_conteggio_query_su_file") === 1;
+	}
+
+	private static function getLogDir()
+	{
+		if (self::$logDir === null)
+		{
+			self::$logDir = rtrim(LIBRARY . "/Logs/ConteggioQuery", "/");
+		}
+
+		return self::$logDir;
+	}
+
+	private static function ensureLogDir()
+	{
+		$dir = self::getLogDir();
+
+		if (!is_dir($dir))
+			@mkdir($dir, 0777, true);
+	}
+
+	private static function scriviFile($numero)
+	{
+		self::ensureLogDir();
+
+		$fileName = self::getLogDir() . "/" . microtime(true) . "-" . uniqid("", true) . ".log";
+
+		$record = array(
+			"time"		=>	microtime(true),
+			"numero"	=>	(int)$numero,
+			"ip"		=>	getIp(),
+			"url"		=>	isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : "",
+			"codice"	=>	self::$codice,
+			"attacco"	=>	self::$attacco,
+		);
+
+		return @file_put_contents($fileName, json_encode($record), LOCK_EX) !== false;
+	}
+
+	private static function cancellaFileVecchi()
+	{
+		$minutiPulizia = (int)v("elimina_file_conteggio_query_ogni_minuti");
+
+		if ($minutiPulizia <= 0)
+			$minutiPulizia = 10;
+
+		$limite = microtime(true) - ($minutiPulizia * 60);
+		$dir = self::getLogDir();
+
+		if (!is_dir($dir))
+			return;
+
+		$files = glob($dir . "/*.log");
+
+		if (empty($files))
+			return;
+
+		foreach ($files as $file)
+		{
+			$ctime = (float)basename($file);
+
+			if (!$ctime)
+				$ctime = (float)@filemtime($file);
+
+			if ($ctime > 0 && $ctime < $limite)
+				@unlink($file);
+		}
+	}
+
+	private static function getWhitelistIps()
+	{
+		$ips = array();
+
+		try
+		{
+			$ipFilter = new IpfilterModel();
+			$ips = $ipFilter->clear()->select("ip")->where(array(
+				"whitelist"	=>	1,
+			))->toList("ip")->send();
+		}
+		catch (Throwable $e)
+		{
+			$ips = array();
+		}
+
+		return is_array($ips) ? $ips : array();
+	}
+
+	private static function numeroDaFile($soglia, $secondi, $numeroIpStessarete, $attacco = null)
+	{
+		$inizio = microtime(true) - $secondi;
+
+		$dir = self::getLogDir();
+
+		if (!is_dir($dir))
+			return array();
+
+		$whitelistIps = self::getWhitelistIps();
+		$ipSito = sanitizeIp(v("ip_sito"));
+
+		$conteggiIp = array();
+		$conteggiRete = array();
+
+		$files = glob($dir . "/*.log");
+
+		if (empty($files))
+			return array();
+
+		foreach ($files as $file)
+		{
+			$contenuto = @file_get_contents($file);
+			$dati = json_decode($contenuto, true);
+
+			if (!is_array($dati))
+			{
+				@unlink($file);
+				continue;
+			}
+
+			$tempo = isset($dati["time"]) ? (float)$dati["time"] : (float)@filemtime($file);
+
+			if ($tempo < $inizio)
+				continue;
+
+			$ip = isset($dati["ip"]) ? trim($dati["ip"]) : "";
+
+			if ($ip === "" || $ip === $ipSito || in_array($ip, $whitelistIps))
+				continue;
+
+			if ($attacco !== null && (int)$dati["attacco"] !== (int)$attacco)
+				continue;
+
+			$numero = isset($dati["numero"]) ? (int)$dati["numero"] : 0;
+
+			if ($numero <= 0)
+				$numero = 1;
+
+			$conteggiIp[$ip] = isset($conteggiIp[$ip]) ? $conteggiIp[$ip] + $numero : $numero;
+
+			$subIp = implode(".", array_slice(explode(".", $ip), 0, 3));
+
+			if ($subIp)
+			{
+				if (!isset($conteggiRete[$subIp]))
+					$conteggiRete[$subIp] = array("numero_query" => 0, "ip" => array());
+
+				$conteggiRete[$subIp]["numero_query"] += $numero;
+				$conteggiRete[$subIp]["ip"][$ip] = true;
+			}
+		}
+
+		self::cancellaFileVecchi();
+
+		$resIp = array();
+
+		foreach ($conteggiIp as $ip => $numero)
+		{
+			if ($numero > $soglia)
+				$resIp[$ip] = $numero;
+		}
+
+		$resRange = array();
+
+		foreach ($conteggiRete as $subIp => $info)
+		{
+			$numeroIp = isset($info["ip"]) ? count($info["ip"]) : 0;
+
+			if ($numeroIp > $numeroIpStessarete && $info["numero_query"] > $soglia)
+				$resRange[$subIp] = $info["numero_query"];
+		}
+
+		return $resIp + $resRange;
 	}
 	
 	public static function aggiungiConCodice($numero, $codice, $attacco = 0)
@@ -50,6 +227,9 @@ class ConteggioqueryModel extends GenericModel
 	
 	public static function aggiungi($numero)
 	{
+		if (self::salvaSuFile())
+			self::scriviFile($numero);
+
 		$cq = new ConteggioqueryModel();
 		
 		$cq->setValues(array(
@@ -162,6 +342,9 @@ class ConteggioqueryModel extends GenericModel
 	
 	public static function numeroAttacchi($soglia = 4, $secondi = 60, $numeroIpStessarete = 10)
 	{
+		if (self::salvaSuFile())
+			return self::numeroDaFile($soglia, $secondi, $numeroIpStessarete, 1);
+
 		$secondi = time() - $secondi;
 		
 		$dataOra = date("Y-m-d H:i:s", $secondi);
@@ -195,6 +378,9 @@ class ConteggioqueryModel extends GenericModel
 	
 	public static function numeroQuery($soglia = 1000, $secondi = 60, $numeroIpStessarete = 30)
 	{
+		if (self::salvaSuFile())
+			return self::numeroDaFile($soglia, $secondi, $numeroIpStessarete);
+
 		$secondi = time() - $secondi;
 		
 		$dataOra = date("Y-m-d H:i:s", $secondi);
@@ -226,6 +412,9 @@ class ConteggioqueryModel extends GenericModel
 	
 	public static function svuotaConteggioQueryPiuVecchioDiGiorni($giorni)
 	{
+		if (self::salvaSuFile())
+			self::cancellaFileVecchi();
+		
 		$giorni = (int)$giorni;
 		
 		$dataOra = new DateTime();

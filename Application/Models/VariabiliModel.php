@@ -141,7 +141,6 @@ class VariabiliModel extends GenericModel {
 		"debug_retargeting_get_variable"		=>	"",
 		"insert_account_sdi_pec_obbligatorio"	=>	1,
 		"main_slide_order"			=>	"pages.id_order desc",
-		"salva_conteggio_query"		=>	0,
 		"abilita_blocco_acquisto_diretto"	=>	0,
 		"tipo_cliente_default"		=>	"privato",
 		"codice_gtm"				=>	"",
@@ -898,6 +897,10 @@ class VariabiliModel extends GenericModel {
 		"attiva_waf"			=>	0, // se impostato ad 1, attiva il Web Application Firewall
 		"numero_massimo_attacchi_minuto"	=>	5, // numero massimo di attacchi al minuto, dopo il quale l'IP viene bloccato (il blocco avviene immediatamente dopo aver rilevato l'attacco solo se attiva_blocco_immediato = 1, altrimenti deve essere impostato tramite CRON)
 		"attiva_blocco_immediato"			=>	0, // se impostato ad 1, attiva immediatamente il check di numero_massimo_attacchi_minuto ed eventuale blocco dell'IP (subito dopo aver rilevato l'attacco)
+		### DOS ##
+		"salva_conteggio_query"		=>	0, // salva il conteggio delle query
+		"salva_conteggio_query_su_file"	=>	0, // salva il conteggio delle query su file
+		"elimina_file_conteggio_query_ogni_minuti"	=>	10, // elimina i file delle query ogni X minuti (solo se salva_conteggio_query_su_file = 1)
 		### UTILITY ##
 		"esporta_xls_PhpOffice"	=>	0, // se impostato ad 1, quando esporti un file excel esporta un file XLS vero con PhpOffice
 		###
