@@ -24,23 +24,24 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 trait SessionitwotraitModel
 {
-	public static function getInstance($cookieName = "uidt", $twoFactorCookieDurationTime = 86400, $twoFactorCookiePath = "/", $tempoDurataVerificaCodice = 60, $numeroCifreCodice = 6)
+	public static function getInstance($cookieName = "uidt", $twoFactorCookieDurationTime = 86400, $twoFactorCookiePath = "/", $tempoDurataVerificaCodice = 60, $numeroCifreCodice = 6, $userModel = null)
 	{
 		if (!isset(self::$instance)) {
 			$className = __CLASS__;
-			self::$instance = new $className($cookieName,$twoFactorCookieDurationTime,$twoFactorCookiePath,$tempoDurataVerificaCodice, $numeroCifreCodice);
+			self::$instance = new $className($cookieName,$twoFactorCookieDurationTime,$twoFactorCookiePath,$tempoDurataVerificaCodice, $numeroCifreCodice, $userModel);
 		}
 
 		return self::$instance;
 	}
 	
-	public function setValoriConfigurazione($cookieName, $twoFactorCookieDurationTime, $twoFactorCookiePath, $tempoDurataVerificaCodice, $numeroCifreCodice)
+	public function setValoriConfigurazione($cookieName, $twoFactorCookieDurationTime, $twoFactorCookiePath, $tempoDurataVerificaCodice, $numeroCifreCodice, $userModel)
 	{
 		$this->cookieName = $cookieName;
 		$this->twoFactorCookieDurationTime = $twoFactorCookieDurationTime;
 		$this->twoFactorCookiePath = $twoFactorCookiePath;
 		$this->tempoDurataVerificaCodice = $tempoDurataVerificaCodice;
 		$this->numeroCifreCodice = $numeroCifreCodice;
+		$this->userModel = $userModel;
 	}
 	
 	public function cleanSessions()
@@ -68,10 +69,12 @@ trait SessionitwotraitModel
 	
 	protected function getCookieName($idUser)
 	{
+		$username = $this->userModel->clear()->whereId((int)$idUser)->field("username");
+		
 		if (v("attiva_autenticazione_due_fattori_front"))
-			return $this->cookieName."_".md5((int)$idUser);
+			return $this->cookieName."_".md5($username);
 		else
-			return md5($this->cookieName."_".(int)$idUser);
+			return md5($this->cookieName."_".$username);
 	}
 	
 	public function getUidt($idUser)

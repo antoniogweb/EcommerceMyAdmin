@@ -34,13 +34,14 @@ class SessionitwoModel extends GenericModel
 	protected $cookieName = "uidt";
 	protected $tempoDurataVerificaCodice = 60;
 	protected $numeroCifreCodice = 6;
+	protected $userModel = null;
 	
-	public function __construct($cookieName = "uidt", $twoFactorCookieDurationTime = 86400, $twoFactorCookiePath = "/", $tempoDurataVerificaCodice = 60, $numeroCifreCodice = 6)
+	public function __construct($cookieName = "uidt", $twoFactorCookieDurationTime = 86400, $twoFactorCookiePath = "/", $tempoDurataVerificaCodice = 60, $numeroCifreCodice = 6, $userModel = null)
 	{
 		$this->_tables='adminsessions_two';
 		$this->_idFields='id_adminsession_two';
 		
-		$this->setValoriConfigurazione($cookieName, $twoFactorCookieDurationTime, $twoFactorCookiePath, $tempoDurataVerificaCodice, $numeroCifreCodice);
+		$this->setValoriConfigurazione($cookieName, $twoFactorCookieDurationTime, $twoFactorCookiePath, $tempoDurataVerificaCodice, $numeroCifreCodice, $userModel);
 		
 		parent::__construct();
 		
