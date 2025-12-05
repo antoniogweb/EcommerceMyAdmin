@@ -69,7 +69,10 @@ trait SessionitwotraitModel
 	
 	protected function getCookieName($idUser)
 	{
-		$username = $this->userModel->clear()->whereId((int)$idUser)->field("username");
+		if (v("autenticazione_due_fattori_usa_id_user"))
+			$username = (int)$idUser;
+		else
+			$username = $this->userModel->clear()->whereId((int)$idUser)->field("username");
 		
 		if (v("attiva_autenticazione_due_fattori_front"))
 			return $this->cookieName."_".md5($username);

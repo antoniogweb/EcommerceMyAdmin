@@ -154,6 +154,14 @@ class NotificheModel extends GenericModel {
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
 				);
+			
+			if ((v("attiva_autenticazione_due_fattori_front") || v("attiva_autenticazione_due_fattori_admin")) && v("autenticazione_due_fattori_usa_id_user"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Non usare l'ID user nel cookie dei due fattori. Variabile autenticazione_due_fattori_usa_id_user"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
 		}
 		
 		return $notifiche;

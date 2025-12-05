@@ -829,6 +829,7 @@ class VariabiliModel extends GenericModel {
 		"token_cron_log_tecnici"	=>	"", // token di sicurezza per chiamare il comando CRON "log" tramite call a URL (viene inizializzato in automatico se vuoto). Serve comunque token_comandi_cron_web
 		### AUTENTICAZIONE DUE FATTORI ##
 		### ---- BACKEND
+		"autenticazione_due_fattori_usa_id_user"	=>	1, // se 1, usa id_user per il nome del token
 		"attiva_autenticazione_due_fattori_admin"	=>	0, // se è attiva l'autenticazione a due fattori nell'admin
 		"autenticazione_due_fattori_admin_durata_cookie"	=>	2592000, // durata del cookie dell'autenticazione a due fattori (default 30 giorni)
 		"autenticazione_due_fattori_numero_cifre_admin"	=>	6, // numero delle cifre del codice di verifica inviato nell'autenticazione a due fattori lato admin
