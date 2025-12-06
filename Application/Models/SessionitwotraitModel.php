@@ -114,6 +114,11 @@ trait SessionitwotraitModel
 		
 		list ($os, $browser, $browserVersion) = $this->getOsBrowser();
 		
+		$this->del(null, array(
+			"id_user"	=>	(int)$idUser,
+			"attivo"	=>	0,
+		));
+		
 		$this->sValues(array(
 			"id_user"	=>	(int)$idUser,
 			"uid_two"	=>	sanitizeAll($this->uidt),
