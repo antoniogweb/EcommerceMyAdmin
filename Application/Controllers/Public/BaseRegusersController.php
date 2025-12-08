@@ -116,10 +116,11 @@ class BaseRegusersController extends BaseController
 		if (isset($_POST['username']) and isset($_POST['password']))
 		{
 			$username = checkMail($_POST['username']) ? sanitizeAll($_POST['username']) : '';
-			$choice = $this->s['registered']->login(sanitizeAll($_POST['username']),$_POST['password']);
 			
-			if ($username)
+			if (trim($_POST['username']))
 				$this->logAccountCheck("LOGIN", $_POST['username']);
+			
+			$choice = $this->s['registered']->login(sanitizeAll($_POST['username']),$_POST['password']);
 			
 			switch($choice) {
 				case 'logged':

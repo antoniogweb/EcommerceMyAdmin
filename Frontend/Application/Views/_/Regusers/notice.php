@@ -113,10 +113,10 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 		<?php } else if (strcmp($_SESSION['result'],'account_rinnovato') === 0) { ?>
 			<?php include(tpf("/Elementi/Registrazione/Resoconto/account_rinnovato.php")); ?>
 		<?php } else if (strcmp($_SESSION['result'],'pausa_LOGIN') === 0) { ?>
-			<p><?php echo gtext("Sono stati eseguiti troppi tentativi di accesso non andati a buon fine e l'account è stato temporaneamente messo in pausa.");?><br /><?php echo gtext("Si prega di riprovare più tardi.");?></p>
+			<?php include(tpf("/Elementi/Registrazione/Resoconto/account_pausa_LOGIN.php")); ?>
 			<?php include(tpf("/Elementi/Registrazione/vai_alla_home.php")); ?>
 		<?php } else if (strcmp($_SESSION['result'],'pausa_RECUPERO_PASSWORD') === 0) { ?>
-			<p><?php echo gtext("Sono stati eseguiti troppi tentativi di recupero password non andati a buon fine e il recupero password è stato temporaneamente messo in pausa.");?><br /><?php echo gtext("Si prega di riprovare più tardi.");?></p>
+			<?php include(tpf("/Elementi/Registrazione/Resoconto/account_pausa_RECUPERO_PASSWORD.php")); ?>
 			<?php include(tpf("/Elementi/Registrazione/vai_alla_home.php")); ?>
 		<?php } else if (strcmp($_SESSION['result'],'utente_creato') === 0 || strcmp($_SESSION['result'],'agente_creato') === 0) { ?>
 			<?php if (!v("conferma_registrazione") && !v("gruppi_inseriti_da_approvare_alla_registrazione")) { ?>

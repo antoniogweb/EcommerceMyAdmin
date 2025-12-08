@@ -54,7 +54,7 @@ class UsersController extends BaseController {
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		if ($action != "login" && $action != "logout" && $action != "twofactor" && $action != "twofactorinviamail" && $action != "twofactorcheck")
+		if ($action != "login" && $action != "logout" && $action != "twofactor" && $action != "twofactorinviamail" && $action != "twofactorcheck" && $action != "notice")
 		{
 			$this->s['admin']->check();
 			
@@ -75,7 +75,40 @@ class UsersController extends BaseController {
 		
 		$this->append($data);
 	}
-
+	
+	protected function logAccountCheck($azione, $email)
+	{
+		$result = LogaccountModel::getInstance($azione)->check($email);
+		
+		if (!$result)
+		{
+			$_SESSION['result'] = 'pausa_'.$azione;
+			$this->redirect("users/notice");
+		}
+	}
+	
+	public function notice()
+	{
+		$this->checkLogged();
+		
+		ob_start();
+		include(tpf("/Elementi/Registrazione/Resoconto/account_pausa_LOGIN.php"));
+		$data["output"] = ob_get_clean();
+		
+		$this->append($data);
+		$this->load("notice");
+	}
+	
+	protected function checkLogged()
+	{
+		$this->s['admin']->checkStatus();
+		if ($this->s['admin']->status['status']=='logged') { //check if already logged
+			$this->s['admin']->redirect('logged');
+		} else if ($this->s['admin']->status['status']=='two-factor') {
+			$this->s['admin']->logout();
+		}
+	}
+	
 	public function login()
 	{
 		if (!empty($_POST))
@@ -84,22 +117,27 @@ class UsersController extends BaseController {
 		$data['action'] = $this->baseUrl."/".$this->loginFormAction;
 		$data['notice'] = null;
 		
-		$this->s['admin']->checkStatus();
-		if ($this->s['admin']->status['status']=='logged') { //check if already logged
-			$this->s['admin']->redirect('logged');
-		} else if ($this->s['admin']->status['status']=='two-factor') {
-			$this->s['admin']->logout();
-		}
+		$this->checkLogged();
+		// $this->s['admin']->checkStatus();
+		// if ($this->s['admin']->status['status']=='logged') { //check if already logged
+		// 	$this->s['admin']->redirect('logged');
+		// } else if ($this->s['admin']->status['status']=='two-factor') {
+		// 	$this->s['admin']->logout();
+		// }
 		
 		if (isset($_POST['username']) and isset($_POST['password']))
 		{
+			if (trim($_POST['username']))
+				$this->logAccountCheck("LOGIN", $_POST['username']);
+			
 			$choice = $this->s['admin']->login(sanitizeAll($_POST['username']),$_POST['password']);
-
+			
 			switch($choice) {
 				case 'logged':
 					$this->redirect($this->redirectUrlDopoLogin,3,'Sei già loggato...');
 					break;
 				case 'accepted':
+					LogaccountModel::getInstance()->set(1);
 					$this->redirect($this->redirectUrlDopoLogin,0);
 					break;
 				case 'two-factor':
@@ -109,6 +147,7 @@ class UsersController extends BaseController {
 					$data['notice'] = '<div class="alert alert-danger">Username o password sbagliati</div>';
 					break;
 				case 'wait':
+					LogaccountModel::getInstance()->remove();
 					$data['notice'] = '<div class="alert alert-danger">Devi aspettare 5 secondi prima di poter eseguire nuovamente il login</div>';
 					break;
 			}
