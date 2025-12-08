@@ -1,0 +1,1 @@
+ALTER TABLE `log_account` DROP INDEX `log_account_contesto_email_azione_pausa`, ADD INDEX `log_account_risultato_contesto_email_azione_pausa` (`risultato`, `contesto`, `email`, `azione`, `in_pausa_fino_a_time`) USING BTREE;

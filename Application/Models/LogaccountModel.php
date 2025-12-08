@@ -25,7 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class LogaccountModel extends GenericModel
 {
 	public static $arrayPause = array(
-		// "LOGIN"				=>	array("20"	=>	60),
+		"LOGIN"				=>	array("10"	=>	60),
 		"RECUPERO_PASSWORD"	=>	array("5"	=>	60),
 	);
 	
@@ -98,12 +98,13 @@ class LogaccountModel extends GenericModel
 		
 		$where["risultato"] = 0;
 		
-		$numeroFallimenti = self::$instance->clear()->where($where)->aWhere(array(
+		$fallimenti = self::$instance->clear()->where($where)->aWhere(array(
 			"gte"	=>	array(
 				"id_log_account"	=>	(int)$idUltimoSuccesso,
 			)
-		))->orderBy("id_log_account desc")->forUpdate()->rowNumber();
+		))->orderBy("id_log_account desc")->forUpdate()->send(false);
 		
+		$numeroFallimenti = count($fallimenti);
 		$numeroFallimenti++;
 		
 		if (isset(self::$arrayPause[$azione]))

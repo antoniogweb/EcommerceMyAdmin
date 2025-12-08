@@ -35,10 +35,12 @@ class IpcheckModel extends Model_Tree
 	{
 		$timeSecondi = time() - (int)$secondi;
 		
-		$sql = "select count(id_ip_check) as NUMERO from ip_check where ip=? and chiave = ? and time_creazione > ? for update";
+		$sql = "select id_ip_check from ip_check where ip=? and chiave = ? and time_creazione > ? for update";
 		$resOra = $this->query(array($sql, array(getIp(), sanitizeAll($chiave), $timeSecondi)));
 		
-		return isset($resOra[0]["aggregate"]["NUMERO"]) ? (int)$resOra[0]["aggregate"]["NUMERO"] : 0;
+		return (int)count($resOra);
+		
+		// return isset($resOra[0]["aggregate"]["NUMERO"]) ? (int)$resOra[0]["aggregate"]["NUMERO"] : 0;
 	}
 	
 	public static function deleteScaduti()
