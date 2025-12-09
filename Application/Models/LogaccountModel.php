@@ -25,7 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class LogaccountModel extends GenericModel
 {
 	public static $arrayPause = array(
-		"LOGIN"				=>	array("10"	=>	60),
+		"LOGIN"				=>	array("6"	=>	60),
 		"RECUPERO_PASSWORD"	=>	array("5"	=>	60),
 	);
 	
