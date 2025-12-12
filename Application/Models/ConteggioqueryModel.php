@@ -127,6 +127,8 @@ class ConteggioqueryModel extends GenericModel
 
 	private static function numeroDaFile($soglia, $secondi, $numeroIpStessarete, $attacco = null)
 	{
+		self::cancellaFileVecchi();
+		
 		$inizio = microtime(true) - $secondi;
 
 		$dir = self::getLogDir();
@@ -187,8 +189,6 @@ class ConteggioqueryModel extends GenericModel
 				$conteggiRete[$subIp]["ip"][$ip] = true;
 			}
 		}
-
-		self::cancellaFileVecchi();
 
 		$resIp = array();
 
