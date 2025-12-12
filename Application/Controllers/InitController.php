@@ -116,6 +116,9 @@ trait InitController
 			),
 		);
 		
+		if (v("attiva_azioni_ajax"))
+			Helper_List::$actionsLayout["del"]["attributes"]["class"] .= " ajlink";
+		
 		Form_Form::$defaultEntryAttributes["submitHtml"] = "<i class='fa fa-save'></i> ".gtext("Salva");
 		
 		$this->parentRoot = $data['parentRoot'] = Domain::$name = str_replace("/admin","",$this->baseUrlSrc);

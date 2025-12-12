@@ -510,9 +510,6 @@ Helper_Popup::$popupHtml["after_loop"] = "</div>";
 
 Helper_List::$tableAttributes = array('class'=>'table table-striped table-scaffolding','cellspacing'=>'0');
 
-if (v("attiva_azioni_ajax"))
-	Helper_List::$actionsLayout["del"]["attributes"]["class"] .= " ajlink";
-
 Helper_List::$filtersFormLayout = array(
 	"form"	=>	array(
 		"attributes"	=>	array(
