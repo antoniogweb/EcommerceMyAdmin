@@ -65,7 +65,7 @@ class AWSTranslate extends Traduttore
 			TraduzionicorrezioniModel::getCorrezioni();
 
 			if (isset(TraduzionicorrezioniModel::$correzioni[0][$targetLanguage][$textToTranslate]))
-				return TraduzionicorrezioniModel::$correzioni[0][$targetLanguage][$textToTranslate];
+				return htmlentitydecode(TraduzionicorrezioniModel::$correzioni[0][$targetLanguage][$textToTranslate]);
 
 			// Elaboro il testo per gestire i placeholder
 			$textToTranslate = $this->elaboraTesto($textToTranslate, $currentLanguage, $targetLanguage);
