@@ -813,7 +813,8 @@ class VariabiliModel extends GenericModel {
 		"password_regular_expression_caratteri_minuscoli"	=>	"(?=.*?[a-z])", // Espressione regolare per i caratteri minuscoli
 		"password_regular_expression_caratteri_numerici"	=>	"(?=.*?[0-9])", // Espressione regolare per i caratteri numerici
 		"password_regular_expression_caratteri_speciali"	=>	"#?!@$%^*-", // Elenco di caratteri speciali nella password (deve essere presente almeno uno di tali caratteri)
-		"password_regular_expression_numero_caratteri"		=>	8, // Numero minimo di caratteri nella password
+		"password_regular_expression_numero_caratteri"		=>	8, // Numero minimo di caratteri nella password lato frontend
+		"password_regular_expression_numero_caratteri_admin"		=>	8, // Numero minimo di caratteri nella password lato admin
 		### LINGUE ##
 		"lingue_abilitate_frontend"	=>	"it",
 		"token_gestisci_lingue_da_admin"	=>	"", // token per poter gestire le lingue da admin (oltre a dover essere loggati)
@@ -1284,7 +1285,7 @@ class VariabiliModel extends GenericModel {
 
 	public static function setPasswordRegularExpression()
 	{
-		return "/^".v("password_regular_expression_caratteri_maiuscoli").v("password_regular_expression_caratteri_minuscoli").v("password_regular_expression_caratteri_numerici")."(?=.*?[".v("password_regular_expression_caratteri_speciali")."]).{".v("password_regular_expression_numero_caratteri").",}$/";
+		return "/^".v("password_regular_expression_caratteri_maiuscoli").v("password_regular_expression_caratteri_minuscoli").v("password_regular_expression_caratteri_numerici")."(?=.*?[".v("password_regular_expression_caratteri_speciali")."]).{".self::getNumeroCaratteriPassword().",}$/";
 	}
 	
 	public static function classeHelpWizardPassword()
@@ -1312,5 +1313,10 @@ class VariabiliModel extends GenericModel {
 			return true;
 		
 		return false;
+	}
+	
+	public static function getNumeroCaratteriPassword()
+	{
+		return App::$isFrontend ? v("password_regular_expression_numero_caratteri") : v("password_regular_expression_numero_caratteri_admin");
 	}
 }
