@@ -87,7 +87,7 @@ class FormModel extends GenericModel {
 				'tipo_cliente'		=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Tipologia cliente',
-					'options'	=>	array("privato"=>"Privato","azienda"=>"Azienda","libero_professionista"=>"Libero professionista"),
+					'options'	=>	array("privato"=>gtext("Privato"),"azienda"=>gtext("Azienda"),"libero_professionista"=>gtext("Libero professionista")),
 					'className'	=>	'radio_cliente for_print form-control',
 					'reverse'	=>	'yes',
 				),

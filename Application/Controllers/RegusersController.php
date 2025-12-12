@@ -360,6 +360,7 @@ class RegusersController extends BaseController
 		
 		$this->getTabViewFields("form");
 		
+		VariabiliModel::$valori["password_regular_expression_numero_caratteri_admin"] = v("password_regular_expression_numero_caratteri");
 		$this->m[$this->modelName]->setPasswordStrengthCondition();
 
 		parent::form($queryType, $id);
