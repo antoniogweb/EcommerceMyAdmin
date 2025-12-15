@@ -276,6 +276,9 @@ class BaseRegusersController extends BaseController
 		{
 			if ($this->s['registered']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"], (int)$user["id_user"]))
 			{
+				// Segno il login come avvenuto con successo
+				LogaccountModel::getInstance("LOGIN")->restoreFromSession()->set(1);
+				
 				$this->hookAfterLogin();
 				
 				$this->redirectUser();

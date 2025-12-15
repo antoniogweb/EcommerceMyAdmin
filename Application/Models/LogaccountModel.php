@@ -134,8 +134,13 @@ class LogaccountModel extends GenericModel
 			return false;
 		}
 		
+		if( !session_id() )
+			session_start();
+		
 		$minuti = self::$instance->getNumeroMinutiDiPausaEmailAzione($email, $azione);
 		$secondiPausa = $minuti * 60;
+		
+		$uniqueId = randomToken(33);
 		
 		self::$instance->sValues(array(
 			"data_creazione"	=>	date("Y-m-d H:i:s"),
@@ -147,13 +152,42 @@ class LogaccountModel extends GenericModel
 			"risultato"			=>	$minuti ? 1 : 0,
 			"contesto"			=>	App::$isFrontend ? "FRONT" : "BACK",
 			"in_pausa_fino_a_time"	=>	$minuti ? (time() + $secondiPausa) : 0,
+			"unique_id"			=>	$uniqueId,
 		), "sanitizeAll");
+		
+		$_SESSION["log_account_unique_id"] = $uniqueId;
 		
 		self::$instance->insert();
 		
 		self::$instance->db->commit();
 		
 		return true;
+	}
+	
+	public function restoreFromSession()
+	{
+		if( !session_id() )
+			session_start();
+		
+		if (isset($_SESSION["log_account_unique_id"]))
+		{
+			$clean["uniqueId"] = sanitizeAll($_SESSION["log_account_unique_id"]);
+			
+			$contesto = App::$isFrontend ? "FRONT" : "BACK";
+			
+			$idLogAccount = (int)self::$instance->clear()->where(array(
+				"contesto"	=>	sanitizeAll($contesto),
+				"unique_id"	=>	$clean["uniqueId"],
+				"ne"	=>	array(
+					"unique_id"	=>	"",
+				)
+			))->field("id_log_account");
+			
+			if ($idLogAccount)
+				self::$instance->lId = $idLogAccount;
+		}
+		
+		return self::$instance;
 	}
 	
 	public function set($risultato = 1)

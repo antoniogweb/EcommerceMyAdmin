@@ -1,0 +1,1 @@
+ALTER TABLE `log_account` ADD unique_id char(32) not null default '';

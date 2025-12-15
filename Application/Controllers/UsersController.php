@@ -251,7 +251,12 @@ class UsersController extends BaseController {
 		if ($clean["codice"])
 		{
 			if ($this->s['admin']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"], (int)$user["id_user"]))
+			{
+				// Segno il login come avvenuto con successo
+				LogaccountModel::getInstance("LOGIN")->restoreFromSession()->set(1);
+				
 				$this->redirect($this->redirectUrlDopoLogin);
+			}
 			else
 				flash("notice","<div class='alert alert-danger'>".gtext("Attenzione, il codice non è corretto, si prega di riprovare")."</div>");
 		}
