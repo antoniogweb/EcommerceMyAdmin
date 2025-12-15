@@ -9,7 +9,7 @@
 					<?php if (isset($_SESSION['result'])) { ?>
 					<div class="text text-danger"><?php echo $output;?></div>
 					<?php } ?>
-					<a class="btn btn-info make_spinner" href="<?php echo $this->baseUrl."/regusers/login"?>"><?php echo gtext("Torna al login");?> <i class="fa fa-arrow-right"></i></a>
+					<a class="btn btn-info make_spinner" href="<?php echo $this->baseUrl."/users/login"?>"><?php echo gtext("Torna al login");?> <i class="fa fa-arrow-right"></i></a>
 				</div>
 			</div>
 		</div>
