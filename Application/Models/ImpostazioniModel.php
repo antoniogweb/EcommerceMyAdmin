@@ -180,6 +180,8 @@ class ImpostazioniModel extends GenericModel {
 					),
 				),
 				'smtp_psw'		=>	array(
+					'type'		=>	"Password",
+					'fill'		=>	true,
 					'labelString'=>	gtext("Password usata per il servizio esterno SMTP"),
 					'wrap'		=>	array(
 						null,
