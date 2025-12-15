@@ -294,13 +294,14 @@ class MailordiniModel extends GenericModel
 			$mail->Subject  = Parametri::$nomeNegozio." - $oggetto";
 			$mail->IsHTML(true);
 			
-			$mail->SMTPOptions = array(
-				'ssl' => array(
-					'verify_peer' => false,
-					'verify_peer_name' => false,
-					'allow_self_signed' => true
-				)
-			);
+			if (!ImpostazioniModel::$valori["smtp_verify_tls"])
+				$mail->SMTPOptions = array(
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true
+					)
+				);
 			
 			// Svuoto tutte le mail
 			$mail->ClearAllRecipients();

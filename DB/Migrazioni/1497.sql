@@ -1,0 +1,1 @@
+ALTER TABLE `impostazioni` ADD smtp_verify_tls tinyint not null default 0;

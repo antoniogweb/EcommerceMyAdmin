@@ -162,6 +162,14 @@ class NotificheModel extends GenericModel {
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
 				);
+			
+			if (!ImpostazioniModel::$valori["smtp_verify_tls"])
+				$notifiche[] = array(
+					"testo"	=>	gtext("Verificare l'autenticità del server SMTP e del certificato. Impostazione smtp_verify_tls"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
 		}
 		
 		return $notifiche;

@@ -133,6 +133,21 @@ class ImpostazioniModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Compilare solo se si impostano le porte 465 o 587")."</div>",
 					),
 				),
+				'smtp_verify_tls'		=>	array(
+					'labelString'=>	'Verifica la connessione TLS',
+					"type"	=>	"Select",
+					"options"	=>	array(
+						0	=>	"No",
+						1	=>	"Sì",
+					),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Verifica l'identità del server SMTP e il certificato")."</div>",
+					),
+				),
 				'reply_to_mail'		=>	array(
 					'labelString'=>	'Reply To nelle mail di sistema',
 				),
