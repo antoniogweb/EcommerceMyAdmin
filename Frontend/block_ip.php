@@ -47,22 +47,26 @@ function getIpToCheck()
 				if ($isTrustedProxy)
 				{
 					$parts = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-					$first = trim($parts[0]);
 					
-					if (filter_var($first, FILTER_VALIDATE_IP))
+					if (is_array($parts))
 					{
-						$ip = $first;
+						$last = trim($parts[count($parts)-1]);
+						
+						if (filter_var($last, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						{
+							$ip = $last;
+						}
 					}
 				}
 			}
 		}
-		else if ($remoteAddr !== '' && filter_var($remoteAddr, FILTER_VALIDATE_IP))
+		else if ($remoteAddr !== '' && filter_var($remoteAddr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
 		{
 			$ip = $remoteAddr;
 		}
 	}
-    
-    return $ip;
+	
+	return $ip;
 }
 
 $ip = sanitizeIpToCheck(getIpToCheck());
