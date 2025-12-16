@@ -1,0 +1,1 @@
+ALTER TABLE `regsessions_two` CHANGE `uid_two` `uid_two` CHAR(64) NOT NULL default '';

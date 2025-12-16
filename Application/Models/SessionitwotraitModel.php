@@ -84,7 +84,7 @@ trait SessionitwotraitModel
 	{
 		$cookieName = $this->getCookieName($idUser);
 		
-		$this->uidt = isset($_COOKIE[$cookieName]) ? sanitizeAll((string)$_COOKIE[$cookieName]) : null;
+		$this->uidt = isset($_COOKIE[$cookieName]) ? sanitizeAll(hash('sha256',(string)$_COOKIE[$cookieName])) : null;
 		
 		return $this->uidt;
 	}
@@ -121,7 +121,7 @@ trait SessionitwotraitModel
 		
 		$this->sValues(array(
 			"id_user"	=>	(int)$idUser,
-			"uid_two"	=>	sanitizeAll($this->uidt),
+			"uid_two"	=>	sanitizeAll(hash('sha256',$this->uidt)),
 			"user_agent_md5"	=>	getUserAgent(),
 			"user_agent"	=>	$_SERVER['HTTP_USER_AGENT'] ?? "",
 			"codice_verifica"	=>	Aes::encrypt(generateString($this->numeroCifreCodice, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")),
