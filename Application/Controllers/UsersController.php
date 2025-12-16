@@ -250,6 +250,9 @@ class UsersController extends BaseController {
 		
 		if ($clean["codice"])
 		{
+			if (!LogaccountModel::getInstance("LOGIN")->hasId())
+				$clean["codice"] = randomToken();
+			
 			if ($this->s['admin']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"], (int)$user["id_user"]))
 			{
 				// Segno il login come avvenuto con successo

@@ -164,6 +164,13 @@ class LogaccountModel extends GenericModel
 		return true;
 	}
 	
+	public function hasId()
+	{
+		$id = (int)$this->restoreFromSession()->lId;
+		
+		return $id ? true : false;
+	}
+	
 	public function restoreFromSession()
 	{
 		if( !session_id() )
