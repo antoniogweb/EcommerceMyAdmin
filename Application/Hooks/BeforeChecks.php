@@ -85,6 +85,9 @@ if (defined("APPS"))
 
 VariabiliModel::ottieniVariabili();
 
+if (v("hash_function_tokens_in_db"))
+	Params::$functionToHashAccessTokens = v("hash_function_tokens_in_db");
+
 if (VariabiliModel::valore("usa_transactions"))
 	Users_CheckAdmin::$useConcurrencyCheckInLastFailureTime = true;
 

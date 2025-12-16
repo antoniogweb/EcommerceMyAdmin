@@ -540,6 +540,7 @@ class VariabiliModel extends GenericModel {
 		"giorni_scadenza_account"	=>	365, // giorni di default prima della scadenza dell'account (ha effetto solo se attiva_scadenza_account = 1)
 		"ore_durata_link_conferma"	=>	24, // non più usato
 		"minuti_durata_link_conferma"	=>	10, // numero di MINUTI che è valido il link per la conferma dell'account
+		"hash_function_tokens_in_db"	=>	"", // hash function to hash unique tokens
 		## LISTE REGALO ##
 		"attiva_liste_regalo"	=>	0, // se impostato a 0, permetti la creazione e la gestione di liste regalo
 		"nome_cookie_id_lista"	=>	"id_lista_regalo", // nome dell cookie che conterrà l'ID della lista regalo

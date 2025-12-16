@@ -46,6 +46,9 @@ if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
 
 VariabiliModel::ottieniVariabili();
 
+if (VariabiliModel::valore("hash_function_tokens_in_db"))
+	Params::$functionToHashAccessTokens = VariabiliModel::valore("hash_function_tokens_in_db");
+
 if (VariabiliModel::valore("usa_transactions"))
 	Users_CheckAdmin::$useConcurrencyCheckInLastFailureTime = true;
 

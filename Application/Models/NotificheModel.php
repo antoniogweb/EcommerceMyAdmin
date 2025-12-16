@@ -163,6 +163,14 @@ class NotificheModel extends GenericModel {
 					"class"	=>	"text-yellow",
 				);
 			
+			if (!v("hash_function_tokens_in_db"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare l'hash 256 per gli access token nel DB. Variabile hash_function_tokens_in_db = sha256."),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+			
 			if (!ImpostazioniModel::$valori["smtp_verify_tls"])
 				$notifiche[] = array(
 					"testo"	=>	gtext("Verificare l'autenticità del server SMTP e del certificato. Impostazione smtp_verify_tls"),

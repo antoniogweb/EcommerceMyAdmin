@@ -1,0 +1,1 @@
+ALTER TABLE `adminsessions` CHANGE `uid` `uid` CHAR(64) NOT NULL default '';
