@@ -46,7 +46,6 @@ crossdomain.xml
 clientaccesspolicy.xml
 _mmServerScripts
 .idea
-wp-content
 wvstests
 /Templates/
 /administrator/
