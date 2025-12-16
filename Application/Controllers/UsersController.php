@@ -196,15 +196,12 @@ class UsersController extends BaseController {
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
 		
 		$sessioneTwo = $this->s['admin']->getTwoFactorSession();
-		// $sessioneTwo = $this->s['admin']->getTwoFactorModel()->clear()->where(array(
-		// 	"uid_two"	=>	sanitizeAll($uidt),
-		// 	"attivo"	=>	0,
-		// 	"id_user"	=>	(int)$this->s['admin']->status["id_user"],
-		// 	// "user_agent_md5"	=>	getUserAgent(),
-		// ))->record();
 		
 		if (empty($sessioneTwo) || $sessioneTwo["tentativi_verifica"] >= (int)v("autenticazione_due_fattori_numero_massimo_tentativi_admin"))
+		{
+			flash("notice");
 			$this->redirect($this->redirectUrlErroreTwoFactor,0);
+		}
 		
 		return array($sessioneTwo, $user);
 	}
