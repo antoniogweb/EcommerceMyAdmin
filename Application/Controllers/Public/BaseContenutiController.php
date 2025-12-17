@@ -527,6 +527,7 @@ class BaseContenutiController extends BaseController
 				$this->estraiDatiFiltri();
 				
 				VariabiliModel::checkCookieTerzeParti();
+				VariabiliModel::noCookieAlert();
 				User::$id = 0;
 				User::$cart_uid = 0;
 				User::$wishlist_uid = 0;
