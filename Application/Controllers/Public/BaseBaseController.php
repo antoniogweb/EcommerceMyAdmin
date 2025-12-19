@@ -936,8 +936,6 @@ class BaseBaseController extends Controller
 						if (!v("conferma_registrazione"))
 							$this->maindaMailNegozioNuovaRegistrazione($lId);
 						
-						F::checkPreparedStatement();
-						
 						$logSubmit->write(LogModel::LOG_REGISTRAZIONE, LogModel::REGISTRAZIONE_ESEGUITA);
 						
 						$urlRedirect = RegusersModel::getUrlRedirect();

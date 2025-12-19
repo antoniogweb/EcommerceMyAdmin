@@ -98,8 +98,6 @@ trait BaseCrudController
 				
 				flash("notice",$notice);
 				
-				F::checkPreparedStatement();
-				
 				if (isset($this->insertRedirectUrl))
 					$this->redirect($this->insertRedirectUrl);
 				else
@@ -112,8 +110,6 @@ trait BaseCrudController
 			flash("notice",$notice);
 			
 			$queryStringOk = !$frontend ? "&insert=ok" : "";
-			
-			F::checkPreparedStatement();
 			
 			if (($this->updateRedirect or isset($_POST["redirectToList"])) && !$frontend)
 				$this->redirect($this->controller.'/main/'.$this->viewStatus);
@@ -280,8 +276,6 @@ trait BaseCrudController
 			flash("notice",$this->m[$this->modelName]->notice);
 			
 			$urlId = (int)$this->id ? "/".$this->id : "";
-			
-			F::checkPreparedStatement();
 			
 			$this->redirect($this->applicationUrl.$this->controller.'/'.$this->action.$urlId.$this->viewStatus);
 		}

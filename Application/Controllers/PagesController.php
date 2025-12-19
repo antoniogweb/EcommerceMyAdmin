@@ -790,8 +790,6 @@ class PagesController extends BaseController
 					{
 						flash("notice",$this->m[$this->modelName]->notice);
 						
-						F::checkPreparedStatement();
-						
 						$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus);
 					}
 				}
@@ -799,8 +797,6 @@ class PagesController extends BaseController
 				if (strcmp($queryType,'update') === 0 and $this->m[$this->modelName]->queryResult)
 				{
 					flash("notice",$this->m[$this->modelName]->notice);
-					
-					F::checkPreparedStatement();
 					
 					$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$clean["id"].$this->viewStatus);
 				}

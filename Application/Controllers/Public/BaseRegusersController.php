@@ -1262,8 +1262,6 @@ class BaseRegusersController extends BaseController
 			{
 				$data['notice'] = $this->m('RegusersModel')->notice;
 				
-				F::checkPreparedStatement();
-				
 				$urlRedirect = RegusersModel::getUrlRedirect();
 				
 				if ($statoAccessoUtente == 'two-factor')

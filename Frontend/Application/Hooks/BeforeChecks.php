@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 date_default_timezone_set('Europe/Rome');
 
-Params::$logFunctionBeforeRedirect = array("F","checkPreparedStatement");
+// Params::$logFunctionBeforeRedirect = array("F","checkPreparedStatement");
 
 Factory_Timer::getInstance(false);
 
