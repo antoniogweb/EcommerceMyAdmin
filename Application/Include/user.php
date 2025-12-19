@@ -107,6 +107,26 @@ class User
 			User::$nazione = sanitizeAll($paramsCountry);
 	}
 	
+	public static function setUserCountryFromPostSpedizione()
+	{
+		if (isset($_POST["nazione_spedizione"]))
+		{
+			$country = sanitizeAll(strtoupper((string)$_POST["nazione_spedizione"]));
+			
+			if (trim($country) && $country != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($country))
+				User::$nazione = $country;
+		}
+	}
+	
+	public static function setUserCountryFromPostSpedizioneOrFromUrl()
+	{
+		if (isset($_POST["nazione_spedizione"]))
+			User::setUserCountryFromPostSpedizione();
+		
+		if (!User::$nazione)
+			User::setUserCountryFromUrl();
+	}
+	
 	public static function setPostCountryFromUrl()
 	{
 		User::setUserCountryFromUrl();
@@ -171,9 +191,6 @@ class User
 			
 			if (v("mostra_prezzi_con_aliquota_estera"))
 				IvaModel::getAliquotaEstera();
-			
-			if (v("imposta_la_nazione_dell_utente_a_quella_nell_url"))
-				User::setUserCountryFromUrl();
 		}
 	}
 

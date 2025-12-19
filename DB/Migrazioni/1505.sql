@@ -1,0 +1,1 @@
+ALTER TABLE `cart` add listino char(2) not null default '';

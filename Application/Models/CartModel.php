@@ -1181,6 +1181,7 @@ class CartModel extends GenericModel {
 				$this->values["prodotto_attivo"] = $rPage[0]["pages"]["attivo"] == "Y" ? 1 : 0;
 				
 				$this->values["nazione_navigazione"] = sanitizeHtml(User::getNazioneNavigazione());
+				$this->values["listino"] = sanitizeHtml(nullToBlank(User::$nazione));
 				
 				$this->aggiungiCampoAttributiBackend($clean["id_c"], $jsonPers);
 				
@@ -1285,19 +1286,9 @@ class CartModel extends GenericModel {
 				else
 					$this->values["in_promozione"] = "N";
 				
-// 				echo number_format($this->values["price"],2,".","")." ".number_format($this->values["prezzo_intero"],2,".","");
-// 				
-// 				echo $this->values["in_promozione"];
-// 				die();
-				
-// 				print_r($this->values);
-				
 				$this->sanitize();
 				$this->insert();
 				
-// 				echo $this->notice;
-// 				echo $this->getQuery();
-// 				echo $this->getError();
 				$lId = $this->lastId();
 				
 				// Hook ad aggiunta nel carrello
@@ -1310,6 +1301,16 @@ class CartModel extends GenericModel {
 		
 		return 0;
 	}
+	
+// 	public function checkPrezziListino()
+// 	{
+// 		$listino = nullToBlank(User::$nazione);
+// 		
+// 		$righeDaCorreggere = $this->getRigheCart(array(
+// 			"listino != ?",
+// 			array(sanitizeAll($listino))
+// 		));
+// 	}
 	
 	public static function operazioneCarrelloOk($res)
 	{

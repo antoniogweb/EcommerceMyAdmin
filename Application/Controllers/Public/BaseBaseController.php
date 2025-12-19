@@ -275,8 +275,18 @@ class BaseBaseController extends Controller
 			// Recuperta dati da cliente loggato
 			$this->m("CartModel")->collegaDatiCliente($data["carrello"]);
 			
-			// Correggi decimali imponibili sulla base dell'IVA estera
-			$this->m("CartModel")->correggiPrezzi();
+			if (v("ecommerce_attivo"))
+			{
+				if (v("imposta_la_nazione_dell_utente_a_quella_nell_url"))
+				{
+					User::setUserCountryFromPostSpedizioneOrFromUrl();
+					
+					// $this->m("CartModel")->checkPrezziListino();
+				}
+				
+				// Correggi decimali imponibili sulla base dell'IVA estera
+				$this->m("CartModel")->correggiPrezzi();
+			}
 			
 			$data["prodInCart"] = $this->m("CartModel")->numberOfItems();
 			$data["prodInWishlist"] = $this->m("WishlistModel")->numberOfItems();
