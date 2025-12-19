@@ -22,10 +22,6 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-header('X-Content-Type-Options: nosniff');
-header("X-Frame-Options: SAMEORIGIN");
-header('Strict-Transport-Security: max-age=31536000; includeSubDomains; preload');
-
 require(LIBRARY."/Application/Models/ContattiModel.php");
 require_once(LIBRARY."/Frontend/Application/Hooks/BeforeChecksLegacy.php");
 
