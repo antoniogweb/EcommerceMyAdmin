@@ -223,14 +223,5 @@ Domain::setPath();
 
 require_once(LIBRARY."/Frontend/Application/Hooks/RouteInitialization.php");
 
-// Url::$routes = array(
-// 	"area-riservata"	=>	"area-riservata",
-// 	"modifica-account"	=>	"modifica-account",
-// 	"esci"				=>	"esci",
-// 	"rinnovo"			=>	"account-renewal",
-// );
-
 if (v("attiva_waf"))
 	Shield::waf();
-
-// User::$nazione = User::$nazioneNavigazione = "FR";

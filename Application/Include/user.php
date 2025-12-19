@@ -98,9 +98,12 @@ class User
 		
 		User::$nazione = null;
 		
-		if (isset($_GET["listino"]) && $_GET["listino"] != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($_GET["listino"]))
-			User::$nazione = sanitizeAll(strtoupper($_GET["listino"]));
-		else if (isset($paramsCountry) && $paramsCountry != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($paramsCountry))
+		// if (isset($_GET["listino"]) && $_GET["listino"] != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($_GET["listino"]))
+		// 	User::$nazione = sanitizeAll(strtoupper($_GET["listino"]));
+		// else if (isset($paramsCountry) && $paramsCountry != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($paramsCountry))
+		// 	User::$nazione = sanitizeAll($paramsCountry);
+		
+		if (isset($paramsCountry) && $paramsCountry != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($paramsCountry))
 			User::$nazione = sanitizeAll($paramsCountry);
 	}
 	
@@ -168,6 +171,9 @@ class User
 			
 			if (v("mostra_prezzi_con_aliquota_estera"))
 				IvaModel::getAliquotaEstera();
+			
+			if (v("imposta_la_nazione_dell_utente_a_quella_nell_url"))
+				User::setUserCountryFromUrl();
 		}
 	}
 

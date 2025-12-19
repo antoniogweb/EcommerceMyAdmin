@@ -25,6 +25,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 if (!defined("FRONT"))
 	define('FRONT', ROOT);
 
+header('X-Content-Type-Options: nosniff');
+header("X-Frame-Options: SAMEORIGIN");
+header('Strict-Transport-Security: max-age=31536000; includeSubDomains; preload');
+
 class BaseThumbController extends Controller {
 	
 	public static $genericParams = array(
