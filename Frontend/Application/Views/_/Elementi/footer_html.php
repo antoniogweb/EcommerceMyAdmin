@@ -3,6 +3,7 @@
 <?php include(tpf(ElementitemaModel::p("FOOTER")));?>
 
 <?php include(tpf("/Elementi/menu-offcanvas.php"));?>
+<?php include(tpf("/Elementi/avviso_cambio_listino.php"));?>
 
 <div id="cart-offcanvas" uk-offcanvas="overlay: true; flip: true">
 	<aside class="uk-offcanvas-bar uk-padding-remove carrello_secondario">

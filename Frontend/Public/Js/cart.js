@@ -414,6 +414,11 @@ function nascondiTendinaCaricamento()
 	}
 }
 
+function mostraTendinaAvvisoCambioListino()
+{
+	UIkit.modal("#modal-listini").show();
+}
+
 //lanciata ogni volta che seleziono una combinazione diversa
 function combinazione(obj)
 {
@@ -1302,4 +1307,7 @@ $(document).ready(function(){
 	},function(){
 		$("#carrello_secondario").css("display","none");
 	});
+	
+	if ($("#modal-listini").length > 0 && $("#modal-listini").hasClass("modal-listini-open"))
+		mostraTendinaAvvisoCambioListino();
 })

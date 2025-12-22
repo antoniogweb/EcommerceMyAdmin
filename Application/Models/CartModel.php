@@ -1311,8 +1311,13 @@ class CartModel extends GenericModel {
 			array(sanitizeAll($listino))
 		));
 		
+		$prezziRicalcolati = false;
+		
 		if (count($righeDaCorreggere) > 0)
 		{
+			if( !session_id() )
+				session_start();
+			
 			$combModel = new CombinazioniModel();
 			
 			foreach ($righeDaCorreggere as $riga)
@@ -1337,20 +1342,26 @@ class CartModel extends GenericModel {
 						$prezzoInteroIvato = $combModel->getPrezzoListino($idC, User::$nazione, $prezzoInteroIvato, "price_ivato");
 				}
 				
-				// echo $listino."-".$prezzoIntero."-".$prezzoInteroIvato;die();
-				
-				$this->sValues(array(
-					"prezzo_intero"			=>	$prezzoIntero,
-					"prezzo_intero_ivato"	=>	$prezzoInteroIvato,
-					"listino"				=>	$listino,
-				));
-				
-				if ($this->update($idCart))
-					$this->set($idCart, $quantity);
+				if (number_format($prezzoIntero, v("cifre_decimali"),".","") != number_format($riga["prezzo_intero"], v("cifre_decimali"),".",""))
+				{
+					$this->sValues(array(
+						"prezzo_intero"			=>	$prezzoIntero,
+						"prezzo_intero_ivato"	=>	$prezzoInteroIvato,
+						"listino"				=>	$listino,
+					));
+					
+					if ($this->update($idCart))
+					{
+						$this->set($idCart, $quantity);
+						
+						$prezziRicalcolati = true;
+					}
+				}
 			}
+			
+			if ($prezziRicalcolati)
+				$_SESSION["carrello_ricalcolato"] = json_encode($righeDaCorreggere);
 		}
-		
-		// print_r($righeDaCorreggere);
 	}
 	
 	public static function operazioneCarrelloOk($res)

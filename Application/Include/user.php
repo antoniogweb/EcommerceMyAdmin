@@ -122,8 +122,7 @@ class User
 	{
 		if (isset($_POST["nazione_spedizione"]))
 			User::setUserCountryFromPostSpedizione();
-		
-		if (!User::$nazione)
+		else
 			User::setUserCountryFromUrl();
 	}
 	

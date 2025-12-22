@@ -613,6 +613,7 @@ class VariabiliModel extends GenericModel {
 		## JAVASCRIPT ##
 		"usa_defear"	=>	0, // se impostato a 1, usa defear sui JS nell'header
 		"usa_versione_random"	=>	0, // se impostato a 1, metti ?v=rand(1,10000) al caricamento (da usare solo in sviluppo)
+		"js_version_number"		=>	1, // modificabile per forzare il caricamento dei JS
 		## DDOS ##
 		"svuota_ip_ogni_x_ore"		=>	30, // numero di ore dopo le quali svuota gli IP
 		"time_ultima_eliminazione_ip"	=>	0, // unix time stamp dell'ultima volta he ha svuotato gli IP
