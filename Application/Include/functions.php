@@ -439,11 +439,6 @@ function getSubTotalN($ivato = 0)
 	$c = new CartModel();
 	$total = $c->total(false);
 	
-// 	IvaModel::getAliquotaEstera();
-// 	
-// 	if (isset(IvaModel::$titoloAliquotaEstera))
-// 		$ivato = 0;
-	
 	if ($ivato)
 		$total += $c->iva(false, true);
 	
@@ -459,11 +454,6 @@ function getPrezzoScontatoN($conSpedizione = false, $ivato = 0, $pieno = false, 
 {
 	$c = new CartModel();
 	$totale = $c->totaleScontato($conSpedizione, $pieno, $conCrediti, $conCouponAssoluto);
-	
-// 	IvaModel::getAliquotaEstera();
-// 	
-// 	if (isset(IvaModel::$titoloAliquotaEstera))
-// 		$ivato = 0;
 	
 	if ($ivato)
 		$totale += $c->iva($conSpedizione, $pieno, $conCrediti, $conCouponAssoluto);
@@ -558,11 +548,6 @@ function getSpedizioneN($pieno = null)
 
 function getSpedizione($ivato = false)
 {
-// 	IvaModel::getAliquotaEstera();
-// 	
-// 	if (isset(IvaModel::$titoloAliquotaEstera))
-// 		$ivato = 0;
-	
 	if ($ivato)
 	{
 		$ivaSpedizione = CartModel::getAliquotaIvaSpedizione();
@@ -2118,8 +2103,6 @@ function prezzoMinimo($id_page)
 
 function p($c, $prezzo)
 {
-// 	IvaModel::getAliquotaEstera();
-	
 	if (v("prezzi_ivati_in_carrello"))
 	{
 // 		$prezzo = number_format($prezzo, v("cifre_decimali"), ".", "");

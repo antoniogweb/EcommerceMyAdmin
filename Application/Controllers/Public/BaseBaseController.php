@@ -270,14 +270,9 @@ class BaseBaseController extends Controller
 			// Controlla quantità prodotti in base a lista (se hai prodotti in una lista regalo)
 			$this->m("CartModel")->controllaQuantitaProdottiListaInCarrello();
 			
-			$data["carrello"] = $this->m("CartModel")->getProdotti();
-			
-			// Recuperta dati da cliente loggato
-			$this->m("CartModel")->collegaDatiCliente($data["carrello"]);
-			
 			if (v("ecommerce_attivo"))
 			{
-				if (v("imposta_la_nazione_dell_utente_a_quella_nell_url"))
+				if (v("imposta_la_nazione_dell_utente_a_quella_nell_url") && ($controller != "ordini" || ($action == "index" || $action == "totale")))
 				{
 					User::setUserCountryFromPostSpedizioneOrFromUrl();
 					
@@ -288,6 +283,11 @@ class BaseBaseController extends Controller
 				// Correggi decimali imponibili sulla base dell'IVA estera
 				$this->m("CartModel")->correggiPrezzi();
 			}
+			
+			$data["carrello"] = $this->m("CartModel")->getProdotti();
+			
+			// Recuperta dati da cliente loggato
+			$this->m("CartModel")->collegaDatiCliente($data["carrello"]);
 			
 			$data["prodInCart"] = $this->m("CartModel")->numberOfItems();
 			$data["prodInWishlist"] = $this->m("WishlistModel")->numberOfItems();

@@ -297,6 +297,9 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 				{
 					$(".prezzo_bottom").text($(".totale_ordine").text());
 				}
+				
+				if ($(".modal-listini-open-checkout").length > 0)
+					mostraTendinaAvvisoCambioListino();
 			}
 			
 			checkCouponAttivo();
@@ -781,6 +784,11 @@ function debounce(func, wait, immediate) {
         if (callNow) func.apply(context, args);
     };
 };
+
+function mostraTendinaAvvisoCambioListino()
+{
+	UIkit.modal("#modal-listini").show();
+}
 
 $(document).ready(function(){
 	
@@ -1372,4 +1380,7 @@ $(document).ready(function(){
 			box.find(".nascondi_password").addClass("uk-hidden");
 		}
 	});
+	
+	if ($("#modal-listini").length > 0 && $("#modal-listini").hasClass("modal-listini-open"))
+		mostraTendinaAvvisoCambioListino();
 });

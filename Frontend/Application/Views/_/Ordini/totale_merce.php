@@ -42,3 +42,8 @@ include(tpf(ElementitemaModel::p("CHECKOUT_PULSANTE_ACQUISTA","", array(
 	"percorso"	=>	"Elementi/Ordini/PulsanteCompletaAcquisto",
 ))));
 } ?>
+
+<?php if (v("imposta_la_nazione_dell_utente_a_quella_nell_url") && isset($_SESSION["carrello_ricalcolato"])) { ?>
+<div style="display:none;" class="modal-listini-open-checkout"></div>
+<?php unset($_SESSION['carrello_ricalcolato']);?>aaa
+<?php } ?>

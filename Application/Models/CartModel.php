@@ -123,8 +123,6 @@ class CartModel extends GenericModel {
 	// Totale scontato
 	public function totaleScontato($conSpedizione = false, $pieno = false, $conCrediti = true, $conCouponAssoluto = true)
 	{
-// 		IvaModel::getAliquotaEstera();
-		
 // 		$cifre = v("cifre_decimali");
 		$cifre = self::getCifreCalcolo();
 		$cifreAliquota = self::getCifreApprossimazioneAliquotaIva();
@@ -217,8 +215,6 @@ class CartModel extends GenericModel {
 	//get the total from the cart
 	public function total($conSpedizione = false)
 	{
-// 		IvaModel::getAliquotaEstera();
-		
 // 		$cifre = v("cifre_decimali");
 		$cifre = self::getCifreCalcolo();
 		
@@ -335,8 +331,6 @@ class CartModel extends GenericModel {
 	
 	public static function getAliquotaIvaSpedizione()
 	{
-// 		IvaModel::getAliquotaEstera();
-		
 		if (IvaModel::getIvaSpedizione("valore"))
 			$ivaSped = IvaModel::getIvaSpedizione("valore");
 		else
@@ -370,8 +364,6 @@ class CartModel extends GenericModel {
 	{
 // 		$cifre = v("cifre_decimali");
 		$cifre = self::getCifreCalcolo();
-		
-// 		IvaModel::getAliquotaEstera();
 		
 		$sconto = 0;
 		$tipoSconto = "PERCENTUALE";
@@ -1313,6 +1305,9 @@ class CartModel extends GenericModel {
 		
 		$prezziRicalcolati = false;
 		
+		if (isset($_SESSION['carrello_ricalcolato']))
+			unset($_SESSION['carrello_ricalcolato']);
+		
 		if (count($righeDaCorreggere) > 0)
 		{
 			if( !session_id() )
@@ -1342,21 +1337,17 @@ class CartModel extends GenericModel {
 						$prezzoInteroIvato = $combModel->getPrezzoListino($idC, User::$nazione, $prezzoInteroIvato, "price_ivato");
 				}
 				
+				$this->sValues(array(
+					"prezzo_intero"			=>	$prezzoIntero,
+					"prezzo_intero_ivato"	=>	$prezzoInteroIvato,
+					"listino"				=>	$listino,
+				));
+				
+				if ($this->update($idCart))
+					$this->set($idCart, $quantity);
+				
 				if (number_format($prezzoIntero, v("cifre_decimali"),".","") != number_format($riga["prezzo_intero"], v("cifre_decimali"),".",""))
-				{
-					$this->sValues(array(
-						"prezzo_intero"			=>	$prezzoIntero,
-						"prezzo_intero_ivato"	=>	$prezzoInteroIvato,
-						"listino"				=>	$listino,
-					));
-					
-					if ($this->update($idCart))
-					{
-						$this->set($idCart, $quantity);
-						
-						$prezziRicalcolati = true;
-					}
-				}
+					$prezziRicalcolati = true;
 			}
 			
 			if ($prezziRicalcolati)
