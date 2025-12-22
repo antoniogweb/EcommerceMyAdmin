@@ -279,9 +279,10 @@ class BaseBaseController extends Controller
 			{
 				if (v("imposta_la_nazione_dell_utente_a_quella_nell_url"))
 				{
-					User::setUserCountryFromPostSpedizioneOrFromUrl();
+					// User::setUserCountryFromPostSpedizioneOrFromUrl();
 					
-					// $this->m("CartModel")->checkPrezziListino();
+					// Ricolcola prezzi come da listino se è cambiata la nazione
+					// $this->m("CartModel")->checkERicalcolaPrezziListino();
 				}
 				
 				// Correggi decimali imponibili sulla base dell'IVA estera

@@ -1302,15 +1302,56 @@ class CartModel extends GenericModel {
 		return 0;
 	}
 	
-// 	public function checkPrezziListino()
-// 	{
-// 		$listino = nullToBlank(User::$nazione);
-// 		
-// 		$righeDaCorreggere = $this->getRigheCart(array(
-// 			"listino != ?",
-// 			array(sanitizeAll($listino))
-// 		));
-// 	}
+	public function checkERicalcolaPrezziListino()
+	{
+		$listino = nullToBlank(User::$nazione);
+		
+		$righeDaCorreggere = $this->getRigheCart(array(
+			"listino != ?",
+			array(sanitizeAll($listino))
+		));
+		
+		if (count($righeDaCorreggere) > 0)
+		{
+			$combModel = new CombinazioniModel();
+			
+			foreach ($righeDaCorreggere as $riga)
+			{
+				$idCart = (int)$riga["id_cart"];
+				$idC = (int)$riga["id_c"];
+				$quantity = (int)$riga["quantity"];
+				
+				$combinazione = $combModel->clear()->select("price,price_ivato")->whereId($idC)->record();
+				
+				if (empty($combinazione))
+					continue;
+				
+				$prezzoIntero = $combinazione["price"];
+				$prezzoInteroIvato = v("prezzi_ivati_in_prodotti") ? $combinazione["price_ivato"] : 0;
+				
+				if ($listino)
+				{
+					$prezzoIntero = $combModel->getPrezzoListino($idC, User::$nazione, $prezzoIntero);
+					
+					if (v("prezzi_ivati_in_prodotti"))
+						$prezzoInteroIvato = $combModel->getPrezzoListino($idC, User::$nazione, $prezzoInteroIvato, "price_ivato");
+				}
+				
+				// echo $listino."-".$prezzoIntero."-".$prezzoInteroIvato;die();
+				
+				$this->sValues(array(
+					"prezzo_intero"			=>	$prezzoIntero,
+					"prezzo_intero_ivato"	=>	$prezzoInteroIvato,
+					"listino"				=>	$listino,
+				));
+				
+				if ($this->update($idCart))
+					$this->set($idCart, $quantity);
+			}
+		}
+		
+		// print_r($righeDaCorreggere);
+	}
 	
 	public static function operazioneCarrelloOk($res)
 	{
