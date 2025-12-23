@@ -40,9 +40,18 @@ class ProvinceModel extends GenericModel
 				"attiva"	=>	1,
 			));
 		
-		if ($campoPostNazione && isset($_POST["$campoPostNazione"]) && $_POST["$campoPostNazione"] && NazioniModel::esistente(sanitizeAll($_POST["$campoPostNazione"])))
+		if (v("gestisci_province_estere"))
+		{
+			if ($campoPostNazione && isset($_POST["$campoPostNazione"]) && $_POST["$campoPostNazione"] && NazioniModel::esistente(sanitizeAll($_POST["$campoPostNazione"])))
+				$this->aWhere(array(
+					"nazione"	=>	sanitizeAll($_POST["$campoPostNazione"]),
+				));
+		}
+		else
 			$this->aWhere(array(
-				"nazione"	=>	sanitizeAll($_POST["$campoPostNazione"]),
+				"ne"	=>	array(
+					"nazione"	=>	v("nazione_default"),
+				),
 			));
 		
 		if (App::$isFrontend)
