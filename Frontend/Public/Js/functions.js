@@ -626,7 +626,7 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 			$("[name='dprovincia_spedizione']").css("display","none");
 			$("[name='provincia_spedizione']").css("display","block");
 			
-			if (nazioniConProvince.length > 1)
+			if (nazioniConProvince.length > 0)
 				recuperaProvinceNazione(val, $("[name='provincia_spedizione']"), default_spedizione);
 		}
 		else
