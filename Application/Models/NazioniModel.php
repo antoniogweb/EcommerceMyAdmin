@@ -453,6 +453,9 @@ class NazioniModel extends GenericModel
 	
 	public static function nazioniConProvince()
 	{
+		if (!v("gestisci_province_estere"))
+			return array(v("nazione_default"));
+		
 		if (!isset(self::$nazioniConProvince))
 		{
 			$pModel = new ProvinceModel();

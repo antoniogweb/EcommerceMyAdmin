@@ -49,9 +49,7 @@ class ProvinceModel extends GenericModel
 		}
 		else
 			$this->aWhere(array(
-				"ne"	=>	array(
-					"nazione"	=>	v("nazione_default"),
-				),
+				"nazione"	=>	v("nazione_default"),
 			));
 		
 		if (App::$isFrontend)
