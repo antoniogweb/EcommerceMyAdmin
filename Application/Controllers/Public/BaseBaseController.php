@@ -272,7 +272,7 @@ class BaseBaseController extends Controller
 			
 			if (v("ecommerce_attivo"))
 			{
-				if (v("imposta_la_nazione_dell_utente_a_quella_nell_url") && ($controller != "ordini" || ($action == "index" || $action == "totale")))
+				if (v("imposta_la_nazione_dell_utente_a_quella_nell_url") && ($controller != "ordini" || $action == "totale"))
 				{
 					User::setUserCountryFromPostSpedizioneOrFromUrl();
 					

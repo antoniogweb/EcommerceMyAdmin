@@ -298,8 +298,7 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 					$(".prezzo_bottom").text($(".totale_ordine").text());
 				}
 				
-				if ($(".modal-listini-open-checkout").length > 0)
-					mostraTendinaAvvisoCambioListino();
+				mostraTendinaAvvisoCambioListino();
 			}
 			
 			checkCouponAttivo();
@@ -599,7 +598,7 @@ if (typeof sistemaTendinaProvincia !== 'function')
 			else
 				$(".nascondi_fuori_italia").css("display","none");
 			
-			if (nazioniConProvince.length > 1)
+			if (nazioniConProvince.length > 0)
 				recuperaProvinceNazione(val, $("[name='provincia']"));
 		}
 		else
@@ -787,7 +786,12 @@ function debounce(func, wait, immediate) {
 
 function mostraTendinaAvvisoCambioListino()
 {
-	UIkit.modal("#modal-listini").show();
+	if ($("#modal-listini").length > 0 && $("#modal-listini").hasClass("modal-listini-open"))
+	{
+		UIkit.modal("#modal-listini").show();
+		
+		$("#modal-listini").removeClass("modal-listini-open");
+	}
 }
 
 $(document).ready(function(){
@@ -1381,6 +1385,5 @@ $(document).ready(function(){
 		}
 	});
 	
-	if ($("#modal-listini").length > 0 && $("#modal-listini").hasClass("modal-listini-open"))
-		mostraTendinaAvvisoCambioListino();
+	mostraTendinaAvvisoCambioListino();
 });
