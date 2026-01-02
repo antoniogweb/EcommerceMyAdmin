@@ -274,4 +274,21 @@ class ProdottiModel extends PagesModel {
 
 		return $p->send();
 	}
+	
+	public static function listinoModificato($idPage)
+	{
+		$cModel = new CombinazioniModel();
+		
+		$idCS = $cModel->clear()->select("id_c")->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->toList("id_c")->send();
+		
+		foreach ($idCS as $idC)
+		{
+			if (CombinazioniModel::listinoCombinazioneModificato((int)$idC))
+				return true;
+		}
+		
+		return false;
+	}
 }

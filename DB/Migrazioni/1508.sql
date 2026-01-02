@@ -1,0 +1,1 @@
+ALTER TABLE `combinazioni_listini` add id_page int not null default 0 after data_creazione;

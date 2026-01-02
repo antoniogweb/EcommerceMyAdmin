@@ -1432,6 +1432,10 @@ class PagesController extends BaseController
 		$this->h['List']->position = array(1,1);
 		$this->h['List']->model = $this->m['CombinazioniModel'];
 		
+		$this->h['List']->rowAttributes = array(
+			"class"	=>	"listRow ;classeListinoModificato;",
+		);
+		
 		$filtriArray = [];
 		
 		if (v("immagine_in_varianti"))

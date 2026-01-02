@@ -64,10 +64,15 @@ class CombinazionilistiniModel extends GenericModel {
 		if (isset($this->values["id_c"]))
 		{
 			$c = new CombinazioniModel();
-			$comb = $c->selectId($this->values["id_c"]);
+			$comb = $c->clear()->select("id_page")->whereId($this->values["id_c"])->record();
+			// $comb = $c->selectId($this->values["id_c"]);
 			
 			if (!empty($comb))
+			{
 				$this->setPriceNonIvato($comb["id_page"]);
+				
+				$this->values["id_page"] = $comb["id_page"];
+			}
 		}
 		
 		$this->settaCifreDecimali();
@@ -85,6 +90,9 @@ class CombinazionilistiniModel extends GenericModel {
 			$this->setPriceNonIvato($res[0]["combinazioni"]["id_page"]);
 		
 		$this->settaCifreDecimali();
+		
+		// Imposta come prezzo modificato rispetto al prezzo di default
+		$this->values["modificato"] = 1;
 		
 		if (parent::update($id, $where))
 			return true;

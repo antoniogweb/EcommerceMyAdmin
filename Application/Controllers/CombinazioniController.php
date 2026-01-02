@@ -43,6 +43,10 @@ Helper_List::$filtersFormLayout["filters"]["acquistabile"] = array(
 	),
 );
 
+if (isset($_GET["listino"]) && $_GET["listino"] != "tutti")
+	Helper_Menu::$htmlLinks["save_combinazioni"]["attributes"] = str_replace("save_combinazioni", "save_combinazioni save_combinazioni_listino", Helper_Menu::$htmlLinks["save_combinazioni"]["attributes"]);
+
+
 class CombinazioniController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
@@ -242,6 +246,10 @@ class CombinazioniController extends BaseController
 			$this->mainFields[] = "linkMovimentiCrud";
 			$this->mainHead .= ",Mov.";
 		}
+		
+		$this->rowAttributes = array(
+			"class"	=>	"listRow ;classeListinoModificato;",
+		);
 		
 // 		if (v("attiva_campo_giacenza") || v("attiva_giacenza"))
 // 			$this->colProperties = array(
@@ -546,7 +554,7 @@ class CombinazioniController extends BaseController
 		foreach ($valori as $v)
 		{
 			if (v("usa_transactions"))
-				$record = $this->m[$this->modelName]->whereId((int)$v["id_c"])->forUpdate()->record();
+				$record = $this->m[$this->modelName]->clear()->whereId((int)$v["id_c"])->forUpdate()->record();
 			else
 				$record = $this->m[$this->modelName]->selectId((int)$v["id_c"]);
 			

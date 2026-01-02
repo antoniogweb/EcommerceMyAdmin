@@ -1,0 +1,1 @@
+ALTER TABLE `combinazioni_listini` add data_ora_modifica datetime null default null;

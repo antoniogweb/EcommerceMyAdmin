@@ -118,6 +118,11 @@ body {
     background-color: #e6e6e6;
 }
 
+.table-striped > tbody > tr.classe_riga_listino_modificato
+{
+	background-color: #f9d4a6;
+}
+
 #list_filter_input_dal, #list_filter_input_al
 {
 	width:120px !important;

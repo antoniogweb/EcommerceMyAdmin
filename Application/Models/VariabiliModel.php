@@ -459,6 +459,7 @@ class VariabiliModel extends GenericModel {
 		"permetti_pagamento_contrassegno_fuori_nazione_default"	=>	0, // se impostato su 1, permette il pagamento con contrassegno fuori dalla nazione di default
 		"forza_commercio_indiretto"	=>	1, // se impostata a 1, considera sempre l'acquisto come commercio INDIRETTO (beni fisici)
 		"forza_aliquota_iva_b2c"	=>	0, // se impostato a 1, nel calcolo dell'aliquota IVA considera sempre come se fosse un B2C
+		"mantieni_listini_esteri_sincronizzati_se_non_modificati"	=>	0, // se impostato a 1, usa sempre il listino della nazione di default (variabile nazione_default) se il listino della nazione specifica (ex FR) non è stato modificato. Se impostato a 0, usa sempre il listino della nazione (ex FR) se esistente (anche se mai modificato rispetto alla nazione di efault, ex IT)
 		## FASCE PREZZO ##
 		"mostra_fasce_prezzo"		=>	0, // se impostato su 1 attiva la gestione delle fasce di prezzo in admin e attiva il filtro per fascia prezzo nel frontend
 		"filtro_prezzo_slider"		=>	0, // se impostato su 1 attiva il filtro per range di prezzo
