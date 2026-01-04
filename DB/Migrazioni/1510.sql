@@ -1,0 +1,1 @@
+ALTER TABLE `orders` CHANGE `ip` `ip` CHAR(50) NOT NULL default '';

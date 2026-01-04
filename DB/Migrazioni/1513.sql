@@ -1,0 +1,1 @@
+ALTER TABLE `accesses` CHANGE `ip` `ip` CHAR(50) NOT NULL default '';
