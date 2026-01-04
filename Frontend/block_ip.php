@@ -24,10 +24,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 include_once(LIBRARY."/config.php");
 
-function sanitizeIpToCheck($ip)
-{
-	return preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip) ? $ip : '';
-}
+// function sanitizeIpToCheck($ip)
+// {
+// 	return preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip) ? $ip : '';
+// }
 
 function getIpToCheck()
 {
@@ -52,7 +52,7 @@ function getIpToCheck()
 					{
 						$last = trim($parts[count($parts)-1]);
 						
-						if (filter_var($last, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+						if (filter_var($last, FILTER_VALIDATE_IP))
 						{
 							$ip = $last;
 						}
@@ -60,7 +60,7 @@ function getIpToCheck()
 				}
 			}
 		}
-		else if ($remoteAddr !== '' && filter_var($remoteAddr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		else if ($remoteAddr !== '' && filter_var($remoteAddr, FILTER_VALIDATE_IP))
 		{
 			$ip = $remoteAddr;
 		}
@@ -69,13 +69,13 @@ function getIpToCheck()
 	return $ip;
 }
 
-$ip = sanitizeIpToCheck(getIpToCheck());
+$ip = getIpToCheck();
 
 if (trim($ip))
 {
     $ipArray = explode(".", $ip);
     
-    $subIp = $ipArray[0].".".$ipArray[1].".".$ipArray[2];
+    $subIp = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? $ipArray[0].".".$ipArray[1].".".$ipArray[2] : $ip;
     
     if (@is_file(ROOT."/admin/Logs/Jail/Temp/$ip") || @is_file(ROOT."/admin/Logs/Jail/Perm/$ip") || @is_file(ROOT."/admin/Logs/Jail/Temp/$subIp") || @is_file(ROOT."/admin/Logs/Jail/Perm/$subIp"))
     {
