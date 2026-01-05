@@ -789,26 +789,52 @@ class CombinazioniModel extends GenericModel {
 		))->field("giacenza");
 	}
 	
-	public static function listinoCombinazioneModificato($idC)
+	public static function listinoModificato($nazione)
 	{
-		if (!isset(self::$idsListiniModificati))
+		$clModel = new CombinazionilistiniModel();
+		
+		return $clModel->clear()->where(array(
+			"modificato"	=>	1,
+			"nazione"		=>	sanitizeAll($nazione),
+		))->toList("id_c")->rowNumber();
+	}
+	
+	public static function listinoCombinazioneModificato($idC, $nazione = "-")
+	{
+		if (!isset(self::$idsListiniModificati[$nazione]))
 		{
 			$clModel = new CombinazionilistiniModel();
 			
-			self::$idsListiniModificati = $clModel->clear()->select("distinct id_c")->where(array(
-				"modificato"	=>	1
-			))->toList("id_c")->send();
+			if ($nazione == "-")
+				self::$idsListiniModificati[$nazione] = $clModel->clear()->select("distinct id_c")->where(array(
+					"modificato"	=>	1
+				))->toList("id_c")->send();
+			else
+				self::$idsListiniModificati[$nazione] = $clModel->clear()->select("id_c")->where(array(
+					"modificato"	=>	1,
+					"nazione"		=>	sanitizeAll($nazione),
+				))->toList("id_c")->send();
 		}
 		
-		return in_array($idC, self::$idsListiniModificati) ? true : false;
+		return in_array($idC, self::$idsListiniModificati[$nazione]) ? true : false;
 	}
 	
 	public function classeListinoModificato($record)
 	{
 		if (v("mantieni_listini_esteri_sincronizzati_se_non_modificati"))
 		{
-			if (self::listinoCombinazioneModificato($record["combinazioni"]["id_c"]))
-				return "classe_riga_listino_modificato";
+			if (isset($_GET["listino"]) && (string)$_GET["listino"] !== "tutti" && ((string)$_GET["listino"] === "W" || NazioniModel::esistente($_GET["listino"])))
+				$nazione = (string)$_GET["listino"];
+			else
+				$nazione = "-";
+			
+			if (self::listinoCombinazioneModificato($record["combinazioni"]["id_c"], $nazione))
+			{
+				if ($nazione == "-")
+					return "classe_riga_listino_modificato_default";
+				else
+					return "classe_riga_listino_modificato";
+			}
 		}
 		
 		return "";

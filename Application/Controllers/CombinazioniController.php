@@ -661,6 +661,9 @@ class CombinazioniController extends BaseController
 		
 		$this->shift();
 		
+		$data["listiniAttivabili"] = $this->m("CombinazionilistiniModel")->elencoListiniAttivabili();
+		
+		$this->append($data);
 		$this->load("aggiungi_listino");
 	}
 }

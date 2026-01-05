@@ -44,6 +44,20 @@ class CombinazionilistiniModel extends GenericModel {
 		return $cl->clear()->select("distinct nazione")->toList("nazione")->send();
 	}
 	
+	public static function elencoListiniAttivabili()
+	{
+		$nModel = new NazioniModel();
+		
+		return $nModel->clear()->select("iso_country_code,titolo")->where(array(
+				"attiva_spedizione"	=>	"1",
+				"ne"	=>	array(
+					"iso_country_code"	=>	v("nazione_default"),
+				),
+			))
+			->sWhere("iso_country_code not in (select distinct nazione from combinazioni_listini)")
+			->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+	}
+	
 	public function setPriceNonIvato($idPage = 0)
 	{
 		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["price_scontato_ivato"])))

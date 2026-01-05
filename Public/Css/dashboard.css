@@ -120,7 +120,12 @@ body {
 
 .table-striped > tbody > tr.classe_riga_listino_modificato
 {
-	background-color: #f9d4a6;
+	background-color: rgba(243, 156, 18, 0.2);
+}
+
+.table-striped > tbody > tr.classe_riga_listino_modificato_default
+{
+	background-color: rgba(0, 192, 239, 0.2);
 }
 
 #list_filter_input_dal, #list_filter_input_al
