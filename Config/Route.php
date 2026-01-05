@@ -411,6 +411,7 @@ class Route
 		'combinazioni,rendicanonical',
 		'combinazioni,modificaacquistabile',
 		'combinazioni,modificaattributicombinazioni',
+		'combinazioni,aggiungilistino',
 		
 		'combinazionimovimenti,main',
 		

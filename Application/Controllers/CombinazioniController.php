@@ -653,4 +653,14 @@ class CombinazioniController extends BaseController
 			$this->m[$this->modelName]->pUpdate((int)$idC);
 		}
 	}
+	
+	public function aggiungilistino()
+	{
+		if (!v("permetti_aggiunta_listino_estero"))
+			$this->responseCode(403);
+		
+		$this->shift();
+		
+		$this->load("aggiungi_listino");
+	}
 }

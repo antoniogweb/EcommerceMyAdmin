@@ -452,6 +452,7 @@ class VariabiliModel extends GenericModel {
 		"imposta_la_nazione_di_default_a_quella_nell_url"	=>	0, // se impostato a 1, al checkout e al carrello imposta come nazione di default quella indicata nell'URL
 		"mostra_prezzi_con_aliquota_estera"	=>	0, // mostra i prezzi con l'IVA derlla nazione che si sta visualizzando
 		"imposta_la_nazione_dell_utente_a_quella_nell_url"	=> 0, // se impostato a 1, prende il listino dalla nazione dell'URL
+		"permetti_aggiunta_listino_estero"	=>	0, // se impostato su 1, permette di aggiungere un listino estero
 		## VENDITE ESTERO ##
 		"scorpora_iva_prezzo_estero"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default (solo per prodotti)
 		"scorpora_iva_prezzo_estero_azienda"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default (solo per prodotti) per le aziende anche se scorpora_iva_prezzo_estero = 0
