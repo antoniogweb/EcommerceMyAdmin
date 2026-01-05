@@ -1,0 +1,1 @@
+ALTER TABLE `ip_filter` CHANGE `ip` `ip` CHAR(50) NOT NULL default '';

@@ -1,0 +1,1 @@
+ALTER TABLE `pages_stats` CHANGE `ip` `ip` CHAR(50) NOT NULL default '';
