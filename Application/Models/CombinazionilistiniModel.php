@@ -62,7 +62,7 @@ class CombinazionilistiniModel extends GenericModel {
 	{
 		$nModel = new NazioniModel();
 		
-		return $nModel->clear()->select("iso_country_code,titolo")->where(array(
+		return array("W" => gtext("Mondo")) + $nModel->clear()->select("iso_country_code,titolo")->where(array(
 				"attiva_spedizione"	=>	"1",
 			))
 			->orderBy("titolo")->toList("iso_country_code","titolo")->send();
@@ -72,7 +72,7 @@ class CombinazionilistiniModel extends GenericModel {
 	{
 		$elencoPermessi = self::elencoListiniPermessi();
 		
-		if (isset($elencoPermessi[$listino]) || $listino == "W")
+		if (isset($elencoPermessi[$listino]))
 			return true;
 		
 		return false;

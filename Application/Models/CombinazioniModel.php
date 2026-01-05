@@ -799,11 +799,6 @@ class CombinazioniModel extends GenericModel {
 		))->toList("id_c")->rowNumber();
 	}
 	
-	public static function listinoPermesso()
-	{
-		
-	}
-	
 	public static function listinoCombinazioneModificato($idC, $nazione = "-")
 	{
 		if (!isset(self::$idsListiniModificati[$nazione]))
