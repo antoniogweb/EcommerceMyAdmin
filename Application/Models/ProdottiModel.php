@@ -275,7 +275,7 @@ class ProdottiModel extends PagesModel {
 		return $p->send();
 	}
 	
-	public static function listinoModificato($idPage)
+	public static function listinoModificato($idPage, $listino = "-")
 	{
 		$cModel = new CombinazioniModel();
 		
@@ -285,7 +285,7 @@ class ProdottiModel extends PagesModel {
 		
 		foreach ($idCS as $idC)
 		{
-			if (CombinazioniModel::listinoCombinazioneModificato((int)$idC))
+			if (CombinazioniModel::listinoCombinazioneModificato((int)$idC, $listino))
 				return true;
 		}
 		

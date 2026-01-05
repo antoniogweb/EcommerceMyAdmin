@@ -140,6 +140,9 @@ class CombinazioniController extends BaseController
 		}
 		else
 		{
+			if (!CombinazionilistiniModel::listinoPermesso($this->viewArgs["listino"]))
+				$this->responseCode(403);
+			
 			$prezzoLabel .= " (".findTitoloDaCodice($this->viewArgs["listino"]).")";
 			$prezzoScontatoLabel .= " (".findTitoloDaCodice($this->viewArgs["listino"]).")";
 		}

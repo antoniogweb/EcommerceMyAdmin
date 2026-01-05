@@ -799,6 +799,11 @@ class CombinazioniModel extends GenericModel {
 		))->toList("id_c")->rowNumber();
 	}
 	
+	public static function listinoPermesso()
+	{
+		
+	}
+	
 	public static function listinoCombinazioneModificato($idC, $nazione = "-")
 	{
 		if (!isset(self::$idsListiniModificati[$nazione]))
@@ -823,7 +828,7 @@ class CombinazioniModel extends GenericModel {
 	{
 		if (v("mantieni_listini_esteri_sincronizzati_se_non_modificati"))
 		{
-			if (isset($_GET["listino"]) && (string)$_GET["listino"] !== "tutti" && ((string)$_GET["listino"] === "W" || NazioniModel::esistente($_GET["listino"])))
+			if (isset($_GET["listino"]) && (string)$_GET["listino"] !== "tutti" && ((string)$_GET["listino"] === "W" || CombinazionilistiniModel::listinoPermesso($_GET["listino"])))
 				$nazione = (string)$_GET["listino"];
 			else
 				$nazione = "-";

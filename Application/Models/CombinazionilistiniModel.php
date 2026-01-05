@@ -58,6 +58,26 @@ class CombinazionilistiniModel extends GenericModel {
 			->orderBy("titolo")->toList("iso_country_code","titolo")->send();
 	}
 	
+	public static function elencoListiniPermessi()
+	{
+		$nModel = new NazioniModel();
+		
+		return $nModel->clear()->select("iso_country_code,titolo")->where(array(
+				"attiva_spedizione"	=>	"1",
+			))
+			->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+	}
+	
+	public static function listinoPermesso($listino)
+	{
+		$elencoPermessi = self::elencoListiniPermessi();
+		
+		if (isset($elencoPermessi[$listino]) || $listino == "W")
+			return true;
+		
+		return false;
+	}
+	
 	public function setPriceNonIvato($idPage = 0)
 	{
 		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["price_scontato_ivato"])))
