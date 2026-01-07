@@ -43,7 +43,10 @@ $(document).ready(function(){
 <?php } ?>
 
 <?php if (v("mantieni_listini_esteri_sincronizzati_se_non_modificati") && $this->viewArgs["id_page"] != "tutti" && $this->viewArgs["listino"] != "tutti" && CombinazionilistiniModel::listinoPermesso($this->viewArgs["listino"]) && ProdottiModel::listinoModificato((int)$this->viewArgs["id_page"], $this->viewArgs["listino"])) { ?>
-<div class="callout callout-warning"><?php echo gtext("Il listino")." <b>(".findTitoloDaCodice($this->viewArgs["listino"]).")</b> ".gtext("non è sincronizzato con quello di default")." <b>(".findTitoloDaCodice(v("nazione_default")).")</b>.";?></div>
+<div class="callout callout-warning">
+	<?php echo gtext("Il listino")." <b>(".findTitoloDaCodice($this->viewArgs["listino"]).")</b> ".gtext("non è sincronizzato con quello di default")." <b>(".findTitoloDaCodice(v("nazione_default")).")</b>.";?>
+	<a style="text-decoration:none;" class="badge badge-default pull-right" href="<?php echo $this->baseUrl."/combinazioni/main".$this->viewStatus."&sincronizza";?>"><?php echo gtext("Sincronizza il listino");?></a>
+</div>
 <?php } ?>
 
 <?php echo $filtri;?>

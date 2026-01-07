@@ -78,6 +78,17 @@ class CombinazionilistiniModel extends GenericModel {
 		return false;
 	}
 	
+	public function eliminaListinoProdotto($nazione, $idPage)
+	{
+		$this->del(null, array(
+			"nazione = ? and id_c in (select id_c from combinazioni where id_page = ?)",
+			array(
+				sanitizeAll($nazione),
+				(int)$idPage
+			)
+		));
+	}
+	
 	public function setPriceNonIvato($idPage = 0)
 	{
 		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["price_scontato_ivato"])))

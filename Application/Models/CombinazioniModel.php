@@ -789,14 +789,21 @@ class CombinazioniModel extends GenericModel {
 		))->field("giacenza");
 	}
 	
-	public static function listinoModificato($nazione)
+	public static function listinoModificato($nazione, $idPage = 0)
 	{
 		$clModel = new CombinazionilistiniModel();
 		
-		return $clModel->clear()->where(array(
+		$clModel->clear()->where(array(
 			"modificato"	=>	1,
 			"nazione"		=>	sanitizeAll($nazione),
-		))->toList("id_c")->rowNumber();
+		));
+		
+		if ($idPage)
+			$clModel->aWhere(array(
+				"id_page"	=>	(int)$idPage,
+			));
+		
+		return $clModel->rowNumber();
 	}
 	
 	public static function listinoCombinazioneModificato($idC, $nazione = "-")

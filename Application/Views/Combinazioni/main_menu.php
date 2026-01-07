@@ -6,11 +6,12 @@
 	<?php } ?>
 	<?php $listini = CombinazionilistiniModel::elencoListini();?>
 	<?php
+	$idProdotto = $this->viewArgs["id_page"] != "tutti" ? (int)$this->viewArgs["id_page"] : 0;
 	foreach ($listini as $l) {
 		$temp = $this->viewArgs;
 		$temp["listino"] = $l;
 		$titoloListino = $l == "W" ? "Mondo" : findTitoloDaCodice($l);
-		$defaultLabel = (v("mantieni_listini_esteri_sincronizzati_se_non_modificati") && CombinazioniModel::listinoModificato($l) && $l != v("nazione_default")) ? "warning" : "default";
+		$defaultLabel = (v("mantieni_listini_esteri_sincronizzati_se_non_modificati") && CombinazioniModel::listinoModificato($l, $idProdotto) && $l != v("nazione_default")) ? "warning" : "default";
 	?>
 	<a style="margin-left:10px;" href="<?php echo $this->baseUrl."/combinazioni/main".Url::createUrl($temp);?>" class="btn btn-<?php if ($this->viewArgs["listino"] == $l) { ?>info<?php } else { ?><?php echo $defaultLabel;?><?php } ?> pull-right"><?php echo gtext($titoloListino);?></a>
 	<?php } ?>
