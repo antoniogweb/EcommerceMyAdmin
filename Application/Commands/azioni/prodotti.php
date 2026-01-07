@@ -131,3 +131,14 @@ if ($params["azione"] == "crea-associazioni-acquisti")
 	$log->writeString("FINE CREAZIONE ASSOCIAZIONE ACQUISTI");
 }
 
+if ($params["azione"] == "sincronizza-listini")
+{
+	$log->writeString("INIZIO SINCRONIZZAZIONE LISTINI");
+	
+	$pModel = new ProdottiModel();
+	
+	$pModel->sincronizzaListini();
+	
+	$log->writeString("FINE SINCRONIZZAZIONE LISTINI");
+}
+

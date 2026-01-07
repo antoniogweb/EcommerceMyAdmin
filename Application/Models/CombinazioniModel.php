@@ -276,24 +276,32 @@ class CombinazioniModel extends GenericModel {
 		}
 	}
 	
-	public function aggiornaPrezzoListini($idC)
+	public function aggiornaPrezzoListini($idC = 0)
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		
 		$clModel = new CombinazionilistiniModel();
 		
-		$idClS = $clModel->clear()->select("id_combinazione_listino")->where(array(
-			"id_c"			=>	(int)$idC,
-			"modificato"	=>	0
-		))->toList("id_combinazione_listino")->send();
+		$idClS = $clModel->clear()->select("combinazioni_listini.id_combinazione_listino,combinazioni.id_c")->inner(array("combinazione"))->where(array(
+			"combinazioni_listini.modificato"	=>	0
+		))
+		->sWhere("(combinazioni_listini.price != combinazioni.price OR combinazioni_listini.price_ivato != combinazioni.price_ivato OR combinazioni_listini.price_scontato != combinazioni.price_scontato OR combinazioni_listini.price_scontato_ivato != combinazioni.price_scontato_ivato)")
+		->toList("combinazioni_listini.id_combinazione_listino", "combinazioni.id_c");
+		
+		if ($idC)
+			$clModel->aWhere(array(
+				"combinazioni_listini.id_c"	=>	(int)$idC,
+			));
+		
+		$idClS = $clModel->send();
 		
 		if (count($idClS) > 0)
 		{
-			$record = $this->clear()->select("price,price_ivato,price_scontato,price_scontato_ivato")->whereId((int)$idC)->record();
-			
-			if (!empty($record))
+			foreach ($idClS as $idCl => $idComb)
 			{
-				foreach ($idClS as $idCl)
+				$record = $this->clear()->select("price,price_ivato,price_scontato,price_scontato_ivato")->whereId((int)$idComb)->record();
+			
+				if (!empty($record))
 				{
 					$clModel->sValues($record, "sanitizeDb");
 					$clModel->values["data_ora_modifica"] = date("Y-m-d H:i:s");

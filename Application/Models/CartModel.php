@@ -1346,7 +1346,7 @@ class CartModel extends GenericModel {
 				if ($this->update($idCart))
 					$this->set($idCart, $quantity);
 				
-				if (number_format($prezzoIntero, v("cifre_decimali"),".","") != number_format($riga["prezzo_intero"], v("cifre_decimali"),".",""))
+				if (number_format($prezzoIntero, v("cifre_decimali"),".","") != number_format($riga["prezzo_intero"], v("cifre_decimali"),".","") || number_format($this->values["price"], v("cifre_decimali"),".","") != number_format($riga["price"], v("cifre_decimali"),".",""))
 					$prezziRicalcolati = true;
 			}
 			

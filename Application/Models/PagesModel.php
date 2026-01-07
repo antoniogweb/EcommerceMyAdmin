@@ -1280,7 +1280,7 @@ class PagesModel extends GenericModel {
 			
 			if (!v("gestisci_sconti_combinazioni_separatamente") || ((int)$numeroVarianti === 0 && self::$aggiornaPrezziCombinazioniQuandoSalvi))
 			{
-				$combinazioniListini = $clModel->clear()->sWhere(array("id_c in (select id_c from combinazioni where id_page = ?)",array((int)$id)))->send(false);
+				$combinazioniListini = $clModel->clear()->sWhere(array("id_c in (select id_c from combinazioni where id_page = ?) and modificato = 0",array((int)$id)))->send(false);
 				
 				if (v("usa_transactions"))
 					$this->db->beginTransaction();
