@@ -1149,7 +1149,7 @@ class CategoriesModel extends HierarchicalModel {
 		}
 		
 		if ($this->section && !isset($_GET["esporta"]))
-			$str = "<div class='record_id' style='display:none'>$id</div><i title='Trascina per ordinare' class='ancora_ordinamento fa fa-arrows text text-warning' style='padding-right:3px;font-size:12px;'></i>";
+			$str = "<i style='position:relative;left:-20px;top:1px;' class='toogle_category_tree fa ".UsersopzioniModel::gOpz($id, v("fawe_folder_opened_class"))."' aria-hidden='true'></i> <div class='record_id' style='display:none'>$id</div><i title='Trascina per ordinare' class='ancora_ordinamento fa fa-arrows text text-warning' style='padding-right:3px;font-size:12px;'></i>";
 		
 		$strAlias = strcmp($strAlias,"") !== 0 ? $strAlias."&nbsp" : "";
 		

@@ -30,6 +30,7 @@ class Route
 	public static $allowed = array(
 		'panel,main',
 		'panel,salvasidebar',
+		'panel,salvaopzione',
 		'users,notice',
 		'users,login',
 		'users,twofactor',

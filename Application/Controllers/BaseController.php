@@ -172,6 +172,10 @@ class BaseController extends Controller
 		
 		$this->generaPosizioni();
 		
+		UsersopzioniModel::$sApp = nullToBlank($application);
+		UsersopzioniModel::$sController = $controller;
+		UsersopzioniModel::$sAction = $action;
+		
 		// Controlla che tutti i prodotti abbiano la combinazione canonical
 		if (v("ecommerce_attivo") && VariabiliModel::combinazioniLinkVeri())
 			CombinazioniModel::g(false)->checkCanonicalAll();

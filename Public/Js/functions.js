@@ -322,6 +322,27 @@ function copyToClipboard(testo) {
 	$temp.remove();
 }
 
+function salvaOpzione(id_record, valore)
+{
+	$.ajaxQueue({
+		url: baseUrl + "/panel/salvaopzione",
+		cache:false,
+		async: true,
+		dataType: "html",
+		type: "POST",
+		data: {
+			app: applicationNameNoTrailingSlash,
+			controller: controllerName,
+			action: actionName,
+			id_record: id_record,
+			valore: valore
+		},
+		success: function(content) {
+			
+		}
+	});
+}
+
 $(document).ready(function(){
 	
 	if ($("[name='nazione_spedizione']").length > 0)
