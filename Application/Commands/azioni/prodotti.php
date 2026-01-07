@@ -135,9 +135,9 @@ if ($params["azione"] == "sincronizza-listini")
 {
 	$log->writeString("INIZIO SINCRONIZZAZIONE LISTINI");
 	
-	$pModel = new ProdottiModel();
+	$cModel = new CombinazioniModel();
 	
-	$pModel->sincronizzaListini();
+	$cModel->aggiornaPrezzoListini(0, $log);
 	
 	$log->writeString("FINE SINCRONIZZAZIONE LISTINI");
 }

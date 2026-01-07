@@ -276,7 +276,7 @@ class CombinazioniModel extends GenericModel {
 		}
 	}
 	
-	public function aggiornaPrezzoListini($idC = 0)
+	public function aggiornaPrezzoListini($idC = 0, $log = null)
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		
@@ -307,6 +307,9 @@ class CombinazioniModel extends GenericModel {
 					$clModel->values["data_ora_modifica"] = date("Y-m-d H:i:s");
 					
 					$clModel->pUpdate((int)$idCl);
+					
+					if ($log)
+						$log->writeString("ID Combinazione: $idComb, ID Listino: $idCl");
 				}
 			}
 		}
