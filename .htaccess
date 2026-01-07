@@ -3,7 +3,15 @@ Options -Indexes
 # <IfModule mod_rewrite.c>
 # 	Options +FollowSymlinks
 	RewriteEngine on
-	RedirectMatch 404 /(\.git|Logs)
+	# File Git
+	RewriteRule (^|/)\.git(ignore|modules)$ - [R=404,L]
+
+	# Cartella .git
+	RewriteRule (^|/)\.git(/|$) - [R=404,L]
+
+	# Cartella Log
+	RewriteRule (^|/)Logs(/|$) - [R=404,L]
+	
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
 	
