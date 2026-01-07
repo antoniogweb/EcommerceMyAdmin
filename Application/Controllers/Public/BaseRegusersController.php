@@ -599,8 +599,8 @@ class BaseRegusersController extends BaseController
 								$e_mail = $res[0]['regusers']['username'];
 								$id_user = (int)$res[0]['regusers']['id_user'];
 								
-								$tokenConferma = md5(randString(30).microtime().uniqid(mt_rand(),true));
-								$tokenReinvio = md5(randString(30).microtime().uniqid(mt_rand(),true));
+								$tokenConferma = md5(randomToken(40));
+								$tokenReinvio = md5(randomToken(40));
 								
 								$codiceConfermaRegistrazione = sanitizeAll(Aes::encrypt(generateString(v("conferma_registrazione_numero_cifre_codice_verifica"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")));
 								
@@ -693,7 +693,7 @@ class BaseRegusersController extends BaseController
 								
 								$e_mail = $res[0]['regusers']['username'];
 								$id_user = (int)$res[0]['regusers']['id_user'];
-								$forgot_token = $this->m("RegusersModel")->getUniqueToken(md5(randString(20).microtime().uniqid(mt_rand(),true)));
+								$forgot_token = $this->m("RegusersModel")->getUniqueToken(randomToken(40));
 								$forgot_time = time();
 								$updateArray = array($forgot_token, $forgot_time);
 
@@ -862,7 +862,6 @@ class BaseRegusersController extends BaseController
 					
 					if ($checkTime > $now)
 					{
-						// $tokenConferma = md5(randString(20).microtime().uniqid(mt_rand(),true));
 						$tokenConferma = $res[0]["regusers"]["confirmation_token"];
 						
 						$resInvio = MailordiniModel::inviaMail(array(
