@@ -410,7 +410,7 @@ class HierarchicalModel extends GenericModel {
 		if (isset($lingua))
 		{
 			$whereLingua = " (node.lingua = ? OR node.lingua = ?) and ";
-			$bindedValues[] = $lingua;
+			$bindedValues[] = sanitizeDb($lingua);
 			$bindedValues[] = '';
 // 			$whereLingua = " (node.lingua='".$lingua."' OR node.lingua='') and ";
 		}

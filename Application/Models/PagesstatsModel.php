@@ -146,6 +146,8 @@ class PagesstatsModel extends GenericModel {
 	// Mostra i prodotti visti da altri clienti che hanno visto il prodotto attuale
 	public function vistiDaAltriUtenti($idPages, $soglia = 3)
 	{
+		$idPages = forceIntDeep($idPages);
+		
 		$params = $idPages;
 		
 		$queryIp = "";
