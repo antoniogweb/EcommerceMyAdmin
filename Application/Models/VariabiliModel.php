@@ -951,7 +951,7 @@ class VariabiliModel extends GenericModel {
 		foreach ($daInizializzare as $var)
 		{
 			if (!trim(v($var)))
-				VariabiliModel::setValore($var, md5(randString(20).uniqid(mt_rand(),true)));
+				VariabiliModel::setValore($var, randomToken());
 		}
 	}
 	

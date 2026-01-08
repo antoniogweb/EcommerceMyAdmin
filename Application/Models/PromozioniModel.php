@@ -785,7 +785,7 @@ class PromozioniModel extends GenericModel {
 					"al"	=>	$ora->format("d-m-Y"),
 					"sconto"	=>	$riga["prezzo_intero_ivato"],
 					"titolo"	=>	$riga["title"],
-					"codice"	=>	$this->getCodiceRandom("GIFT".generateString(10)), //md5(randString(20).microtime().uniqid(mt_rand(),true)),
+					"codice"	=>	$this->getCodiceRandom("GIFT".generateString(10)),
 					"numero_utilizzi"	=>	9999,
 					"tipo_sconto"	=>	"ASSOLUTO",
 					"id_r"		=>	$idR,

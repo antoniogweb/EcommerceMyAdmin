@@ -450,7 +450,7 @@ class OrdiniModel extends FormModel {
 		
 		if (count($res) > 0)
 		{
-			$nUid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+			$nUid = randomToken();
 			return $this->getUniqueId($nUid);
 		}
 		
@@ -1986,8 +1986,8 @@ class OrdiniModel extends FormModel {
 		}
 		
 		$this->values["cart_uid"] = User::$cart_uid;
-		$this->values["admin_token"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
-		$this->values["banca_token"] = md5(randString(18).microtime().uniqid(mt_rand(),true));
+		$this->values["admin_token"] = randomToken();
+		$this->values["banca_token"] = randomToken();
 		
 		$this->values["total_pieno"] = $this->values["subtotal_ivato"] + $this->values["spedizione_ivato"] + $this->values["costo_pagamento_ivato"];
 		

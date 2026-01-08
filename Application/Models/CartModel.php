@@ -1886,7 +1886,7 @@ class CartModel extends GenericModel {
 	
 	public function setCartUidCookie()
 	{
-		User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+		User::$cart_uid = randomToken();
 		$time = time() + v("durata_carrello_wishlist_coupon");
 		setcookie("cart_uid",User::$cart_uid,$time,"/");
 		
@@ -1909,19 +1909,11 @@ class CartModel extends GenericModel {
 			if ($oModel->cartUidAlreadyPresent(User::$cart_uid))
 			{
 				$this->setCartUidCookie();
-				
-// 				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-// 				$time = time() + v("durata_carrello_wishlist_coupon");
-// 				setcookie("cart_uid",User::$cart_uid,$time,"/");
 			}
 		}
 		else
 		{
 			$this->setCartUidCookie();
-			
-// 			User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-// 			$time = time() + v("durata_carrello_wishlist_coupon");
-// 			setcookie("cart_uid",User::$cart_uid,$time,"/");
 		}
 		
 		self::$checkCart = false;
