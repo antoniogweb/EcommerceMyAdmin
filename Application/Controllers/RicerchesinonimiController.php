@@ -64,7 +64,7 @@ class RicerchesinonimiController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$this->m[$this->modelName]->setValuesFromPost('titolo:sanitizeAll,sinonimi', 'none');
+		$this->m[$this->modelName]->setValuesFromPost('titolo:sanitizeAll,sinonimi:sanitizeAll', 'none');
 		
 		parent::form($queryType, $id);
 	}
