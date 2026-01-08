@@ -1433,7 +1433,7 @@ class PagesModel extends GenericModel {
 			
 			if (!isset($this->values["codice_alfa"]))
 			{
-				$this->values["codice_alfa"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
+				$this->values["codice_alfa"] = randomToken();
 			}
 			
 			// Salva informazioni meta della pagina
@@ -4313,7 +4313,7 @@ class PagesModel extends GenericModel {
 			$this->delFields("data_creazione");
 			$this->delFields("id_order");
 			
-			$this->values["codice_alfa"] = md5(randString(22).microtime().uniqid(mt_rand(),true));
+			$this->values["codice_alfa"] = randomToken();
 			
 			$this->sanitize();
 

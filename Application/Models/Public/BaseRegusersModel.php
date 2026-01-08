@@ -82,7 +82,7 @@ class BaseRegusersModel extends Model_Tree
 	
 	public function insert()
 	{
-		$this->values['forgot_token'] = $this->getUniqueToken(md5(randString(20).microtime().uniqid(mt_rand(),true)));
+		$this->values['forgot_token'] = $this->getUniqueToken(randomToken());
 		
 		if (v("conferma_registrazione") || v("gruppi_inseriti_da_approvare_alla_registrazione"))
 			$this->values["has_confirmed"] = 1;
@@ -219,7 +219,7 @@ class BaseRegusersModel extends Model_Tree
 		
 		if (count($res) > 0)
 		{
-			$nForgotToken = md5(randString(10).microtime().uniqid(mt_rand(),true));
+			$nForgotToken = randomToken();
 			return $this->getUniqueToken($nForgotToken);
 		}
 		
@@ -649,8 +649,8 @@ class BaseRegusersModel extends Model_Tree
 		
 		if ($numero >= 3)
 		{
-			$tokenConferma = md5(randString(30).microtime().uniqid(mt_rand(),true));
-			$tokenReinvio = md5(randString(30).microtime().uniqid(mt_rand(),true));
+			$tokenConferma = randomToken();
+			$tokenReinvio = randomToken();
 			$codiceConfermaRegistrazione = sanitizeAll(generateString(v("conferma_registrazione_numero_cifre_codice_verifica"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
 			
 			$this->sValues(array(
