@@ -370,7 +370,7 @@ class DocumentiModel extends GenericModel {
 			
 			self::creaCartellaImages("images/tmp", true);
 			
-			$tempFolder = md5(randString(22).microtime().uniqid(mt_rand(),true));
+			$tempFolder = randomToken();
 			
 			GenericModel::creaCartellaImages("images/tmp/$tempFolder", false, false);
 			
@@ -454,7 +454,7 @@ class DocumentiModel extends GenericModel {
 		{
 			$this->files->setBase($extractPath);
 			
-			$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
+			$fileName = randomToken();
 			
 			$ext = $this->files->getFileExtension($this_file);
 			
