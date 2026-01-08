@@ -54,7 +54,7 @@ class OrdinipdfModel extends GenericModel
 		if (empty($ordine))
 			return [];
 		
-		$fileName = md5(randString(30).uniqid(mt_rand(),true)).".pdf";
+		$fileName = randomToken().".pdf";
 		
 		$titolo = "Ordine_".(int)$ordine["id_o"]."_".date("d_m_Y",strtotime($ordine["data_creazione"])).".pdf";
 

@@ -2565,7 +2565,7 @@ class PagesController extends BaseController
 						
 						if ($this->m[$this->modelName]->fileNameRandom)
 						{
-							$clean['fileName'] = md5(randString(22).microtime().uniqid(mt_rand(),true)).".$ext";
+							$clean['fileName'] = randomToken().".$ext";
 							$clean['fileName_clean'] = sanitizeHtml(basename($_FILES['Filedata']['name']));
 						}
 						else

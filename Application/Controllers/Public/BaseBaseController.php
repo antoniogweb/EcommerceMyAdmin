@@ -667,7 +667,7 @@ class BaseBaseController extends Controller
 		}
 		else
 		{
-			User::$wishlist_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+			User::$wishlist_uid = randomToken();
 			$time = time() + v("durata_carrello_wishlist_coupon");
 			setcookie("wishlist_uid",User::$wishlist_uid,$time,"/");
 		}
@@ -888,8 +888,8 @@ class BaseBaseController extends Controller
 			{
 				if ($this->m('RegusersModel')->checkConditions('insert'))
 				{
-					$tokenConferma = $this->m('RegusersModel')->values['confirmation_token'] = md5(randString(20).microtime().uniqid(mt_rand(),true));
-					$tokenReinvio = $this->m('RegusersModel')->values['token_reinvio'] = md5(randString(30).microtime().uniqid(mt_rand(),true));
+					$tokenConferma = $this->m('RegusersModel')->values['confirmation_token'] = randomToken();
+					$tokenReinvio = $this->m('RegusersModel')->values['token_reinvio'] = randomToken();
 					$codiceConfermaRegistrazione = generateString(v("conferma_registrazione_numero_cifre_codice_verifica"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 					
 					$this->m('RegusersModel')->values['codice_verifica'] = sanitizeAll(Aes::encrypt($codiceConfermaRegistrazione));
@@ -1550,7 +1550,7 @@ class BaseBaseController extends Controller
 			if (isset($_SESSION["ok_csrf"]))
 				unset($_SESSION["ok_csrf"]);
 			
-			$data["csrf_code"] = $_SESSION["csrf_code"] = md5(randString(15).uniqid(mt_rand(),true));
+			$data["csrf_code"] = $_SESSION["csrf_code"] = randomToken();
 			
 			$data["elencoAppLogin"] = IntegrazioniloginModel::g()->clear()->where(array(
 				"attivo"	=>	1,
