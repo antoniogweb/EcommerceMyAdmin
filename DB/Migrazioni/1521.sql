@@ -1,0 +1,1 @@
+ALTER TABLE `log_account` add azione_verificata tinyint not null default 0;

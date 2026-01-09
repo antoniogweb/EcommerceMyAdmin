@@ -27,6 +27,7 @@ class LogaccountModel extends GenericModel
 	public static $arrayPause = array(
 		"LOGIN"				=>	array("6"	=>	60),
 		"RECUPERO_PASSWORD"	=>	array("5"	=>	60),
+		"CAMBIO_EMAIL"		=>	array("0"	=>	60),
 	);
 	
 	private static $instance = null; //instance of this class
@@ -67,10 +68,15 @@ class LogaccountModel extends GenericModel
 		
 		$where = array(
 			"contesto"	=>	sanitizeAll($contesto),
-			"email"		=>	sanitizeAll($email),
+			// "email"		=>	sanitizeAll($email),
 			"azione"	=>	sanitizeAll($azione)
 		);
 		
+		if ((int)User::$id)
+			$where["id_user"] = (int)User::$id;
+		else
+			$where["email"] = sanitizeAll($email);
+			
 		$numeroInPausa = self::$instance->clear()->where($where)->aWhere(array(
 			"gt"	=>	array(
 				"in_pausa_fino_a_time"	=> time(),
@@ -87,9 +93,14 @@ class LogaccountModel extends GenericModel
 		$where = array(
 			"risultato"	=>	1,
 			"contesto"	=>	sanitizeAll($contesto),
-			"email"		=>	sanitizeAll($email),
+			// "email"		=>	sanitizeAll($email),
 			"azione"	=>	sanitizeAll($azione)
 		);
+		
+		if ((int)User::$id)
+			$where["id_user"] = (int)User::$id;
+		else
+			$where["email"] = sanitizeAll($email);
 		
 		$idUltimoSuccesso = self::$instance->clear()->where($where)->orderBy("id_log_account desc")->forUpdate()->field("id_log_account");
 		
@@ -111,7 +122,7 @@ class LogaccountModel extends GenericModel
 		{
 			foreach (self::$arrayPause[$azione] as $limite => $minuti)
 			{
-				if ($numeroFallimenti >= $limite)
+				if ($limite > 0 && $numeroFallimenti >= $limite)
 					return $minuti;
 			}
 		}
@@ -140,7 +151,7 @@ class LogaccountModel extends GenericModel
 		$minuti = self::$instance->getNumeroMinutiDiPausaEmailAzione($email, $azione);
 		$secondiPausa = $minuti * 60;
 		
-		$uniqueId = randomToken(33);
+		$uniqueId = randomToken();
 		
 		self::$instance->sValues(array(
 			"data_creazione"	=>	date("Y-m-d H:i:s"),
@@ -182,16 +193,19 @@ class LogaccountModel extends GenericModel
 			
 			$contesto = App::$isFrontend ? "FRONT" : "BACK";
 			
-			$idLogAccount = (int)self::$instance->clear()->where(array(
+			$record = self::$instance->clear()->where(array(
 				"contesto"	=>	sanitizeAll($contesto),
 				"unique_id"	=>	$clean["uniqueId"],
 				"ne"	=>	array(
 					"unique_id"	=>	"",
 				)
-			))->field("id_log_account");
+			))->record();
 			
-			if ($idLogAccount)
-				self::$instance->lId = $idLogAccount;
+			if (!empty($record))
+			{
+				self::$instance->lId = (int)$record["id_log_account"];
+				self::$instance->azione = $record["azione"];
+			}
 		}
 		
 		return self::$instance;
@@ -201,9 +215,14 @@ class LogaccountModel extends GenericModel
 	{
 		if (self::$instance->lId)
 		{
-			self::$instance->setValue("risultato", (int)$risultato);
-			self::$instance->setValue("in_pausa_fino_a_time", 0);
-		
+			if (self::$instance->azione != "RECUPERO_PASSWORD")
+			{
+				self::$instance->setValue("risultato", (int)$risultato);
+				self::$instance->setValue("in_pausa_fino_a_time", 0);
+			}
+			
+			self::$instance->setValue("azione_verificata", (int)$risultato);
+			
 			self::$instance->update((int)self::$instance->lId);
 		}
 	}

@@ -271,13 +271,13 @@ class BaseRegusersController extends BaseController
 		
 		if ($clean["codice"])
 		{
-			if (!LogaccountModel::getInstance("LOGIN")->hasId())
+			if (!LogaccountModel::getInstance()->hasId())
 				$clean["codice"] = randomToken();
 			
 			if ($this->s['registered']->getTwoFactorModel()->checkCodice($sessioneTwo, $clean["codice"], (int)$user["id_user"]))
 			{
 				// Segno il login come avvenuto con successo
-				LogaccountModel::getInstance("LOGIN")->restoreFromSession()->set(1);
+				LogaccountModel::getInstance()->restoreFromSession()->set(1);
 				
 				$this->hookAfterLogin();
 				
@@ -1043,6 +1043,9 @@ class BaseRegusersController extends BaseController
 								
 								if ($this->m('RegusersModel')->pUpdate($clean['id_user']))
 								{
+									// Segno il login come avvenuto con successo
+									LogaccountModel::getInstance()->restoreFromSession()->set(1);
+									
 									$_SESSION['result'] = 'password_cambiata';
 									
 									$this->redirect("avvisi".$urlAdd);
@@ -1255,7 +1258,11 @@ class BaseRegusersController extends BaseController
 			$statoAccessoUtente = "logged";
 			
 			if ($this->m('RegusersModel')->modificataEmail)
+			{
+				$this->logAccountCheck("CAMBIO_EMAIL", $this->m('RegusersModel')->clear()->whereId((int)User::$id)->field("username"));
+				
 				$statoAccessoUtente = $this->s['registered']->twoFactorResetSession();
+			}
 			
 			if (Output::$html)
 			{
