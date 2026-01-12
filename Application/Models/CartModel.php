@@ -123,8 +123,6 @@ class CartModel extends GenericModel {
 	// Totale scontato
 	public function totaleScontato($conSpedizione = false, $pieno = false, $conCrediti = true, $conCouponAssoluto = true)
 	{
-// 		IvaModel::getAliquotaEstera();
-		
 // 		$cifre = v("cifre_decimali");
 		$cifre = self::getCifreCalcolo();
 		$cifreAliquota = self::getCifreApprossimazioneAliquotaIva();
@@ -217,8 +215,6 @@ class CartModel extends GenericModel {
 	//get the total from the cart
 	public function total($conSpedizione = false)
 	{
-// 		IvaModel::getAliquotaEstera();
-		
 // 		$cifre = v("cifre_decimali");
 		$cifre = self::getCifreCalcolo();
 		
@@ -335,8 +331,6 @@ class CartModel extends GenericModel {
 	
 	public static function getAliquotaIvaSpedizione()
 	{
-// 		IvaModel::getAliquotaEstera();
-		
 		if (IvaModel::getIvaSpedizione("valore"))
 			$ivaSped = IvaModel::getIvaSpedizione("valore");
 		else
@@ -370,8 +364,6 @@ class CartModel extends GenericModel {
 	{
 // 		$cifre = v("cifre_decimali");
 		$cifre = self::getCifreCalcolo();
-		
-// 		IvaModel::getAliquotaEstera();
 		
 		$sconto = 0;
 		$tipoSconto = "PERCENTUALE";
@@ -1181,6 +1173,7 @@ class CartModel extends GenericModel {
 				$this->values["prodotto_attivo"] = $rPage[0]["pages"]["attivo"] == "Y" ? 1 : 0;
 				
 				$this->values["nazione_navigazione"] = sanitizeHtml(User::getNazioneNavigazione());
+				$this->values["listino"] = sanitizeHtml(nullToBlank(User::$nazione));
 				
 				$this->aggiungiCampoAttributiBackend($clean["id_c"], $jsonPers);
 				
@@ -1285,19 +1278,9 @@ class CartModel extends GenericModel {
 				else
 					$this->values["in_promozione"] = "N";
 				
-// 				echo number_format($this->values["price"],2,".","")." ".number_format($this->values["prezzo_intero"],2,".","");
-// 				
-// 				echo $this->values["in_promozione"];
-// 				die();
-				
-// 				print_r($this->values);
-				
 				$this->sanitize();
 				$this->insert();
 				
-// 				echo $this->notice;
-// 				echo $this->getQuery();
-// 				echo $this->getError();
 				$lId = $this->lastId();
 				
 				// Hook ad aggiunta nel carrello
@@ -1309,6 +1292,67 @@ class CartModel extends GenericModel {
 		}
 		
 		return 0;
+	}
+	
+	public function checkERicalcolaPrezziListino()
+	{
+		$listino = nullToBlank(User::$nazione);
+		
+		$righeDaCorreggere = $this->getRigheCart(array(
+			"listino != ?",
+			array(sanitizeAll($listino))
+		));
+		
+		$prezziRicalcolati = false;
+		
+		if (isset($_SESSION['carrello_ricalcolato']))
+			unset($_SESSION['carrello_ricalcolato']);
+		
+		if (count($righeDaCorreggere) > 0)
+		{
+			if( !session_id() )
+				session_start();
+			
+			$combModel = new CombinazioniModel();
+			
+			foreach ($righeDaCorreggere as $riga)
+			{
+				$idCart = (int)$riga["id_cart"];
+				$idC = (int)$riga["id_c"];
+				$quantity = (int)$riga["quantity"];
+				
+				$combinazione = $combModel->clear()->select("price,price_ivato")->whereId($idC)->record();
+				
+				if (empty($combinazione))
+					continue;
+				
+				$prezzoIntero = $combinazione["price"];
+				$prezzoInteroIvato = v("prezzi_ivati_in_prodotti") ? $combinazione["price_ivato"] : 0;
+				
+				if ($listino)
+				{
+					$prezzoIntero = $combModel->getPrezzoListino($idC, User::$nazione, $prezzoIntero);
+					
+					if (v("prezzi_ivati_in_prodotti"))
+						$prezzoInteroIvato = $combModel->getPrezzoListino($idC, User::$nazione, $prezzoInteroIvato, "price_ivato");
+				}
+				
+				$this->sValues(array(
+					"prezzo_intero"			=>	$prezzoIntero,
+					"prezzo_intero_ivato"	=>	$prezzoInteroIvato,
+					"listino"				=>	$listino,
+				));
+				
+				if ($this->update($idCart))
+					$this->set($idCart, $quantity);
+				
+				if (number_format($prezzoIntero, v("cifre_decimali"),".","") != number_format($riga["prezzo_intero"], v("cifre_decimali"),".","") || number_format($this->values["price"], v("cifre_decimali"),".","") != number_format($riga["price"], v("cifre_decimali"),".",""))
+					$prezziRicalcolati = true;
+			}
+			
+			if ($prezziRicalcolati)
+				$_SESSION["carrello_ricalcolato"] = json_encode($righeDaCorreggere);
+		}
 	}
 	
 	public static function operazioneCarrelloOk($res)
@@ -1842,7 +1886,7 @@ class CartModel extends GenericModel {
 	
 	public function setCartUidCookie()
 	{
-		User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+		User::$cart_uid = randomToken();
 		$time = time() + v("durata_carrello_wishlist_coupon");
 		setcookie("cart_uid",User::$cart_uid,$time,"/");
 		
@@ -1865,19 +1909,11 @@ class CartModel extends GenericModel {
 			if ($oModel->cartUidAlreadyPresent(User::$cart_uid))
 			{
 				$this->setCartUidCookie();
-				
-// 				User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-// 				$time = time() + v("durata_carrello_wishlist_coupon");
-// 				setcookie("cart_uid",User::$cart_uid,$time,"/");
 			}
 		}
 		else
 		{
 			$this->setCartUidCookie();
-			
-// 			User::$cart_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
-// 			$time = time() + v("durata_carrello_wishlist_coupon");
-// 			setcookie("cart_uid",User::$cart_uid,$time,"/");
 		}
 		
 		self::$checkCart = false;

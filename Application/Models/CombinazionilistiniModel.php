@@ -44,6 +44,51 @@ class CombinazionilistiniModel extends GenericModel {
 		return $cl->clear()->select("distinct nazione")->toList("nazione")->send();
 	}
 	
+	public static function elencoListiniAttivabili()
+	{
+		$nModel = new NazioniModel();
+		
+		return $nModel->clear()->select("iso_country_code,titolo")->where(array(
+				"attiva_spedizione"	=>	"1",
+				"ne"	=>	array(
+					"iso_country_code"	=>	v("nazione_default"),
+				),
+			))
+			->sWhere("iso_country_code not in (select distinct nazione from combinazioni_listini)")
+			->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+	}
+	
+	public static function elencoListiniPermessi()
+	{
+		$nModel = new NazioniModel();
+		
+		return array("W" => gtext("Mondo")) + $nModel->clear()->select("iso_country_code,titolo")->where(array(
+				"attiva_spedizione"	=>	"1",
+			))
+			->orderBy("titolo")->toList("iso_country_code","titolo")->send();
+	}
+	
+	public static function listinoPermesso($listino)
+	{
+		$elencoPermessi = self::elencoListiniPermessi();
+		
+		if (isset($elencoPermessi[$listino]))
+			return true;
+		
+		return false;
+	}
+	
+	public function eliminaListinoProdotto($nazione, $idPage)
+	{
+		$this->del(null, array(
+			"nazione = ? and id_c in (select id_c from combinazioni where id_page = ?)",
+			array(
+				sanitizeAll($nazione),
+				(int)$idPage
+			)
+		));
+	}
+	
 	public function setPriceNonIvato($idPage = 0)
 	{
 		if (v("prezzi_ivati_in_prodotti") && (isset($this->values["price_ivato"]) || isset($this->values["price_scontato_ivato"])))
@@ -64,10 +109,15 @@ class CombinazionilistiniModel extends GenericModel {
 		if (isset($this->values["id_c"]))
 		{
 			$c = new CombinazioniModel();
-			$comb = $c->selectId($this->values["id_c"]);
+			$comb = $c->clear()->select("id_page")->whereId($this->values["id_c"])->record();
+			// $comb = $c->selectId($this->values["id_c"]);
 			
 			if (!empty($comb))
+			{
 				$this->setPriceNonIvato($comb["id_page"]);
+				
+				$this->values["id_page"] = $comb["id_page"];
+			}
 		}
 		
 		$this->settaCifreDecimali();
@@ -85,6 +135,9 @@ class CombinazionilistiniModel extends GenericModel {
 			$this->setPriceNonIvato($res[0]["combinazioni"]["id_page"]);
 		
 		$this->settaCifreDecimali();
+		
+		// Imposta come prezzo modificato rispetto al prezzo di default
+		$this->values["modificato"] = 1;
 		
 		if (parent::update($id, $where))
 			return true;

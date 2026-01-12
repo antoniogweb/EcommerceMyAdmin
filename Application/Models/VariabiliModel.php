@@ -449,8 +449,10 @@ class VariabiliModel extends GenericModel {
 		"nazione_default"			=>	"IT", // Codice ISO nazione di default
 		"abilita_solo_nazione_navigazione"	=>	1, // permetti al checkout o come nazioni permesse, solo la nazione di navigazione o quella di default
 		"attiva_nazione_nell_url"	=>	0, // se impostato a 1 nell'URL verrà aggiunto il codice della nazione
-		"imposta_la_nazione_di_default_a_quella_nell_url"	=>	0, // se impostayto a 1, al checkout e al carrello imposta come nazione di default quella indicata nell'URL
+		"imposta_la_nazione_di_default_a_quella_nell_url"	=>	0, // se impostato a 1, al checkout e al carrello imposta come nazione di default quella indicata nell'URL
 		"mostra_prezzi_con_aliquota_estera"	=>	0, // mostra i prezzi con l'IVA derlla nazione che si sta visualizzando
+		"imposta_la_nazione_dell_utente_a_quella_nell_url"	=> 0, // se impostato a 1, prende il listino dalla nazione dell'URL
+		"permetti_aggiunta_listino_estero"	=>	0, // se impostato su 1, permette di aggiungere un listino estero
 		## VENDITE ESTERO ##
 		"scorpora_iva_prezzo_estero"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default (solo per prodotti)
 		"scorpora_iva_prezzo_estero_azienda"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default (solo per prodotti) per le aziende anche se scorpora_iva_prezzo_estero = 0
@@ -458,6 +460,7 @@ class VariabiliModel extends GenericModel {
 		"permetti_pagamento_contrassegno_fuori_nazione_default"	=>	0, // se impostato su 1, permette il pagamento con contrassegno fuori dalla nazione di default
 		"forza_commercio_indiretto"	=>	1, // se impostata a 1, considera sempre l'acquisto come commercio INDIRETTO (beni fisici)
 		"forza_aliquota_iva_b2c"	=>	0, // se impostato a 1, nel calcolo dell'aliquota IVA considera sempre come se fosse un B2C
+		"mantieni_listini_esteri_sincronizzati_se_non_modificati"	=>	0, // se impostato a 1, usa sempre il listino della nazione di default (variabile nazione_default) se il listino della nazione specifica (ex FR) non è stato modificato. Se impostato a 0, usa sempre il listino della nazione (ex FR) se esistente (anche se mai modificato rispetto alla nazione di efault, ex IT)
 		## FASCE PREZZO ##
 		"mostra_fasce_prezzo"		=>	0, // se impostato su 1 attiva la gestione delle fasce di prezzo in admin e attiva il filtro per fascia prezzo nel frontend
 		"filtro_prezzo_slider"		=>	0, // se impostato su 1 attiva il filtro per range di prezzo
@@ -595,6 +598,7 @@ class VariabiliModel extends GenericModel {
 		"soglia_spedizione_gratuita_attiva_in_tutte_le_nazioni"	=>	1, // se impostato ad 1, la soglia oltre alla quale la spedizione è gratuita vale in tutto il mondo, altrimenti vale solo nella nazione di default (variabile nazione_default)
 		"soglia_spedizioni_gratuite_diversa_per_ogni_nazione"	=>	0, // se impostata a 1, la soglia sopra la quale la spedizione è gratuita non viene più impostata sotto Preferenze > Impostazioni ma nel dettaglio della singola nazione
 		"mostra_solo_province_attive"	=>	0, // se impostato su 1, mostra solo le province attive
+		"gestisci_province_estere"		=>	1, // se impostato su 1, gestisce anche province fuori Italia
 		## CORRIERI ##
 		"scegli_il_corriere_dalla_categoria_dei_prodotti"	=>	0, // se impostato ad 1, il corriere verrà scelto in funzione della categoria del prodotto (se viene trovata un'associazione)
 		"attiva_campo_ritiro_in_sede_su_corrieri"	=>	0, // se impostato ad 1, permette di selezionare se un corriere è un ritiro in sede
@@ -612,6 +616,7 @@ class VariabiliModel extends GenericModel {
 		## JAVASCRIPT ##
 		"usa_defear"	=>	0, // se impostato a 1, usa defear sui JS nell'header
 		"usa_versione_random"	=>	0, // se impostato a 1, metti ?v=rand(1,10000) al caricamento (da usare solo in sviluppo)
+		"js_version_number"		=>	1, // modificabile per forzare il caricamento dei JS
 		## DDOS ##
 		"svuota_ip_ogni_x_ore"		=>	30, // numero di ore dopo le quali svuota gli IP
 		"time_ultima_eliminazione_ip"	=>	0, // unix time stamp dell'ultima volta he ha svuotato gli IP
@@ -641,6 +646,8 @@ class VariabiliModel extends GenericModel {
 		"estrai_categorie_figlie"	=>	1, // estrae le categorie figlie della categoria
 		"estrai_fasce_in_categoria_prodotti"	=>	1, // se estrarre le fasce nelle categorie prodotti
 		"attiva_campo_redirect"		=>	0, // se impostato ad 1, attiva un campo redirect per le categorie. La categoria sarà un link all'URL specificato nel campo redirect
+		"fawe_folder_opened_class"	=>	"fa-folder-open-o", // classe dell'icona usata per folder opened
+		"fawe_folder_closed_class"	=>	"fa-folder", // classe dell'icona usata per folder closed
 		## PAGINE ##
 		"attiva_campo_redirect_pagine"		=>	0, // se impostato ad 1, attiva un campo redirect per le pagine. La pagina sarà un link all'URL specificato nel campo redirect
 		"attiva_campo_css"			=>	0, // se impostato ad 1 e se previsto dal tema, permette di integrare un CSS personalizzato per ogni pagina
@@ -915,6 +922,7 @@ class VariabiliModel extends GenericModel {
 		"cartella_backend"		=>	"admin", // la cartella con il backoffice e i file del CMS
 		"usa_sotto_query_in_elenco"	=>	0, // se fare un'unica query in join o tante piccole sotto query per i prodotti nella griglia
 		"ip_sito"				=>	'', // se impostato, l'IP del server del sito
+		"token_migrazioni_no_admin"	=>	'', // per poter lanciare le migrazioni via web senza senza essere loggato in admin (deve essere attivo attiva_cron_web e bisogna passare anche token_comandi_cron_web)
 	);
 	
 	public static $daInizializzare = array(
@@ -932,6 +940,7 @@ class VariabiliModel extends GenericModel {
 		"token_login_come_utente",
 		"token_lista_configurazioni_mancanti",
 		"token_cron_log_tecnici",
+		"token_migrazioni_no_admin",
 	);
 	
 	public static function inizializza($variabili = array())
@@ -944,7 +953,7 @@ class VariabiliModel extends GenericModel {
 		foreach ($daInizializzare as $var)
 		{
 			if (!trim(v($var)))
-				VariabiliModel::setValore($var, md5(randString(20).uniqid(mt_rand(),true)));
+				VariabiliModel::setValore($var, randomToken());
 		}
 	}
 	

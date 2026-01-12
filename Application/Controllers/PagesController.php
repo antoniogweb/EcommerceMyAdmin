@@ -790,8 +790,6 @@ class PagesController extends BaseController
 					{
 						flash("notice",$this->m[$this->modelName]->notice);
 						
-						F::checkPreparedStatement();
-						
 						$this->redirect($this->applicationUrl.$this->controller."/form/update/".$this->m[$this->modelName]->lId.$this->viewStatus);
 					}
 				}
@@ -799,8 +797,6 @@ class PagesController extends BaseController
 				if (strcmp($queryType,'update') === 0 and $this->m[$this->modelName]->queryResult)
 				{
 					flash("notice",$this->m[$this->modelName]->notice);
-					
-					F::checkPreparedStatement();
 					
 					$this->redirect($this->applicationUrl.$this->controller.'/form/update/'.$clean["id"].$this->viewStatus);
 				}
@@ -1435,6 +1431,10 @@ class PagesController extends BaseController
 		$this->h['List']->submitImageType = 'yes';
 		$this->h['List']->position = array(1,1);
 		$this->h['List']->model = $this->m['CombinazioniModel'];
+		
+		$this->h['List']->rowAttributes = array(
+			"class"	=>	"listRow ;classeListinoModificato;",
+		);
 		
 		$filtriArray = [];
 		
@@ -2565,7 +2565,7 @@ class PagesController extends BaseController
 						
 						if ($this->m[$this->modelName]->fileNameRandom)
 						{
-							$clean['fileName'] = md5(randString(22).microtime().uniqid(mt_rand(),true)).".$ext";
+							$clean['fileName'] = randomToken().".$ext";
 							$clean['fileName_clean'] = sanitizeHtml(basename($_FILES['Filedata']['name']));
 						}
 						else

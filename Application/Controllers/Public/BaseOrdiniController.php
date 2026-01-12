@@ -1225,7 +1225,7 @@ class BaseOrdiniController extends BaseController
 		IvaModel::getAliquotaEstera();
 		
 		if (isset(IvaModel::$aliquotaEstera))
-			$data["pages"] = $this->m("CartModel")->getProdotti();
+			$data["pages"] = $data["carrello"] = $this->m("CartModel")->getProdotti();
 		
 		$descrizioneAcquisto = serialize($data["pages"]);
 		
@@ -1772,8 +1772,6 @@ class BaseOrdiniController extends BaseController
 								$toPaypal = "";
 
 							$logSubmit->write(LogModel::LOG_CHECKOUT, LogModel::ORDINE_ESEGUITO);
-							
-							F::checkPreparedStatement();
 							
 							if (Output::$html)
 								$this->redirect("resoconto-acquisto/".$clean['lastId']."/".$clean["cart_uid"]."/".$ordine["admin_token"].$toPaypal);

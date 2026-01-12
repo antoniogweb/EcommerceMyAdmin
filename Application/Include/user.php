@@ -98,10 +98,32 @@ class User
 		
 		User::$nazione = null;
 		
-		if (isset($_GET["listino"]) && $_GET["listino"] != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($_GET["listino"]))
-			User::$nazione = sanitizeAll(strtoupper($_GET["listino"]));
-		else if (isset($paramsCountry) && $paramsCountry != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($paramsCountry))
+		// if (isset($_GET["listino"]) && $_GET["listino"] != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($_GET["listino"]))
+		// 	User::$nazione = sanitizeAll(strtoupper($_GET["listino"]));
+		// else if (isset($paramsCountry) && $paramsCountry != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($paramsCountry))
+		// 	User::$nazione = sanitizeAll($paramsCountry);
+		
+		if (isset($paramsCountry) && $paramsCountry != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($paramsCountry))
 			User::$nazione = sanitizeAll($paramsCountry);
+	}
+	
+	public static function setUserCountryFromPostSpedizione()
+	{
+		if (isset($_POST["nazione_spedizione"]))
+		{
+			$country = sanitizeAll(strtoupper((string)$_POST["nazione_spedizione"]));
+			
+			if (trim($country) && $country != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($country))
+				User::$nazione = $country;
+		}
+	}
+	
+	public static function setUserCountryFromPostSpedizioneOrFromUrl()
+	{
+		if (isset($_POST["nazione_spedizione"]))
+			User::setUserCountryFromPostSpedizione();
+		else
+			User::setUserCountryFromUrl();
 	}
 	
 	public static function setPostCountryFromUrl()

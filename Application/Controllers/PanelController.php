@@ -67,9 +67,48 @@ class PanelController extends BaseController {
 		$time = time() + 3600*24*365*10;
 		
 		if ((int)$tipo === 1)
-			setcookie("tipo_sidebar",1,$time,"/");
+			Cookie::set("tipo_sidebar", 1, $time, "/", true, 'Lax');
 		else
-			setcookie("tipo_sidebar",2,$time,"/");
+			Cookie::set("tipo_sidebar", 2, $time, "/", true, 'Lax');
 	}
 	
+	public function salvaopzione()
+	{
+		$this->clean();
+		
+		$app = $this->request->post("app","","forceAlNum");
+		$controller = $this->request->post("controller","","forceAlNum");
+		$action = $this->request->post("action","","forceAlNum");
+		$idRecord = $this->request->post("id_record",0,"forceInt");
+		$valore = $this->request->post("valore","");
+		
+		$action = forceAlNum(rtrim($action, "/"));
+		
+		if (!preg_match('/^[a-zA-Z_0-9\-\_\,]$/',$valore))
+		{
+			$where = array(
+				"id_user"		=>	(int)User::$id,
+				"app"			=>	sanitizeAll($app),
+				"controller"	=>	sanitizeAll($controller),
+				"action"		=>	sanitizeAll($action),
+				"id_record"		=>	(int)$idRecord,
+			);
+			
+			$this->m("UsersopzioniModel")->sValues(array(
+				"id_user"		=>	(int)User::$id,
+				"app"			=>	$app,
+				"controller"	=>	$controller,
+				"action"		=>	$action,
+				"id_record"		=>	$idRecord,
+				"valore"		=>	$valore,
+			));
+			
+			$idOpzione = (int)$this->m("UsersopzioniModel")->clear()->select("id_adminuser_opzione")->where($where)->field("id_adminuser_opzione");
+			
+			if ($idOpzione)
+				$this->m("UsersopzioniModel")->update($idOpzione);
+			else
+				$this->m("UsersopzioniModel")->insert();
+		}
+	}
 }

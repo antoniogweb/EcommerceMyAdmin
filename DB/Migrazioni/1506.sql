@@ -1,0 +1,1 @@
+ALTER TABLE `righe` add listino char(2) not null default '';

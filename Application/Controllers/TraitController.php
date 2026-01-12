@@ -74,6 +74,9 @@ trait TraitController
 		else if ($section == "pagamenti")
 			$fields = 'titolo,descrizione,istruzioni_pagamento';
 		
+		if (isset($this->contenutiTradottiFields))
+			$fields = $this->contenutiTradottiFields;
+		
 		if (defined("CAMPI_AGGIUNTIVI_PAGINE") && isset(CAMPI_AGGIUNTIVI_PAGINE[$section]))
 		{
 			foreach (CAMPI_AGGIUNTIVI_PAGINE[$section] as $campo => $form)

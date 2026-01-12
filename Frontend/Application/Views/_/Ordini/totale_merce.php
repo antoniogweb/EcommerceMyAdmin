@@ -42,3 +42,5 @@ include(tpf(ElementitemaModel::p("CHECKOUT_PULSANTE_ACQUISTA","", array(
 	"percorso"	=>	"Elementi/Ordini/PulsanteCompletaAcquisto",
 ))));
 } ?>
+
+<?php include(tpf("/Elementi/avviso_cambio_listino.php"));?>

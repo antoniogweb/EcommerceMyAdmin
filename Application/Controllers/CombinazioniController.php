@@ -43,6 +43,17 @@ Helper_List::$filtersFormLayout["filters"]["acquistabile"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["sincr"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
+if (isset($_GET["listino"]) && $_GET["listino"] != "tutti")
+	Helper_Menu::$htmlLinks["save_combinazioni"]["attributes"] = str_replace("save_combinazioni", "save_combinazioni save_combinazioni_listino", Helper_Menu::$htmlLinks["save_combinazioni"]["attributes"]);
+
+
 class CombinazioniController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
@@ -70,6 +81,7 @@ class CombinazioniController extends BaseController
 			'attivo:sanitizeAll'=>'tutti',
 			'id_marchio:sanitizeAll'=>'tutti',
 			'acquistabile:sanitizeAll'=>'1',
+			'sincr:sanitizeAll'=>'tutti',
 		);
 		
 		$this->model("PagesattributiModel");
@@ -136,6 +148,9 @@ class CombinazioniController extends BaseController
 		}
 		else
 		{
+			if (!CombinazionilistiniModel::listinoPermesso($this->viewArgs["listino"]))
+				$this->responseCode(403);
+			
 			$prezzoLabel .= " (".findTitoloDaCodice($this->viewArgs["listino"]).")";
 			$prezzoScontatoLabel .= " (".findTitoloDaCodice($this->viewArgs["listino"]).")";
 		}
@@ -243,6 +258,10 @@ class CombinazioniController extends BaseController
 			$this->mainHead .= ",Mov.";
 		}
 		
+		$this->rowAttributes = array(
+			"class"	=>	"listRow ;classeListinoModificato;",
+		);
+		
 // 		if (v("attiva_campo_giacenza") || v("attiva_giacenza"))
 // 			$this->colProperties = array(
 // 				array(
@@ -316,11 +335,12 @@ class CombinazioniController extends BaseController
 			"0"	=>	gtext("Non acquistabile"),
 		));
 		
-		
-// 		if (v("attiva_liste_regalo") && $this->viewArgs['id_page'] == "tutti")
-// 			$this->filters[] = array("id_lista_reg_filt",null,array(
-// 				"tutti"		=>	"Lista regalo",
-// 			) + ListeregaloModel::g()->filtroListe());
+		if (v("mantieni_listini_esteri_sincronizzati_se_non_modificati") && $this->viewArgs["listino"] != "tutti")
+			$this->filters[] = array("sincr",null,array(
+				"tutti"		=>	"Sincronizzazione",
+				"0"			=>	"Sincronizzato",
+				"1"			=>	"NON sincronizzato",
+			));
 		
 		$menuButtons = 'save_combinazioni,esporta';
 		
@@ -367,6 +387,17 @@ class CombinazioniController extends BaseController
 				));
 		}
 		
+		if (v("mantieni_listini_esteri_sincronizzati_se_non_modificati") && $this->viewArgs["listino"] != "tutti" && $this->viewArgs['sincr'] != "tutti")
+		{
+			$this->m[$this->modelName]->left("combinazioni_listini")->on(array(
+				"combinazioni_listini.id_c = combinazioni.id_c and combinazioni_listini.nazione = ?",
+				array($this->viewArgs["listino"])
+			))
+			->aWhere(array(
+				"combinazioni_listini.modificato"	=>	$this->viewArgs['sincr'],
+			));
+		}
+		
 		if ($this->viewArgs["cerca"] != "tutti")
 			$this->m[$this->modelName]->addWhereSearch($this->viewArgs["cerca"]);
 		
@@ -380,7 +411,7 @@ class CombinazioniController extends BaseController
 		
 		$indice = 0;
 		
-		if (isset($_GET["id_page"]) && $_GET["id_page"] != "tutti")
+		if (isset($_GET["id_page"]) && $_GET["id_page"] != "tutti" && $this->m("PagesModel")->recordExists((int)$_GET["id_page"]))
 		{
 			foreach ($this->arrayAttributi as $idA => $titoloA)
 			{
@@ -403,6 +434,14 @@ class CombinazioniController extends BaseController
 					
 					$indice++;
 				}
+			}
+			
+			// Sincronizza il listino
+			if (v("mantieni_listini_esteri_sincronizzati_se_non_modificati") && isset($_GET["sincronizza"]) && $this->viewArgs["listino"] != "tutti")
+			{
+				$this->m("CombinazionilistiniModel")->eliminaListinoProdotto($this->viewArgs["listino"], (int)$_GET["id_page"]);
+				
+				$this->redirect($this->applicationUrl.$this->controller."/main".$this->viewStatus);
 			}
 		}
 		
@@ -546,7 +585,7 @@ class CombinazioniController extends BaseController
 		foreach ($valori as $v)
 		{
 			if (v("usa_transactions"))
-				$record = $this->m[$this->modelName]->whereId((int)$v["id_c"])->forUpdate()->record();
+				$record = $this->m[$this->modelName]->clear()->whereId((int)$v["id_c"])->forUpdate()->record();
 			else
 				$record = $this->m[$this->modelName]->selectId((int)$v["id_c"]);
 			
@@ -644,5 +683,18 @@ class CombinazioniController extends BaseController
 			
 			$this->m[$this->modelName]->pUpdate((int)$idC);
 		}
+	}
+	
+	public function aggiungilistino()
+	{
+		if (!v("permetti_aggiunta_listino_estero"))
+			$this->responseCode(403);
+		
+		$this->shift();
+		
+		$data["listiniAttivabili"] = $this->m("CombinazionilistiniModel")->elencoListiniAttivabili();
+		
+		$this->append($data);
+		$this->load("aggiungi_listino");
 	}
 }

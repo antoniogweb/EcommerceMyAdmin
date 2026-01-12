@@ -80,7 +80,7 @@ class PagesstatsModel extends GenericModel {
 			return $_COOKIE["uid_stats"];
 		else
 		{
-			$token = md5(randString(9).microtime().uniqid(mt_rand(),true));
+			$token = randomToken();
 			$time = time() + v("durata_statistiche_cookie");
 			$_COOKIE["uid_stats"] = $token;
 			Cookie::set("uid_stats", $token, $time, "/");
@@ -146,6 +146,8 @@ class PagesstatsModel extends GenericModel {
 	// Mostra i prodotti visti da altri clienti che hanno visto il prodotto attuale
 	public function vistiDaAltriUtenti($idPages, $soglia = 3)
 	{
+		$idPages = forceIntDeep($idPages);
+		
 		$params = $idPages;
 		
 		$queryIp = "";

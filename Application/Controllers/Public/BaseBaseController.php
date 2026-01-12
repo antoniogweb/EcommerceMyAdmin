@@ -270,13 +270,24 @@ class BaseBaseController extends Controller
 			// Controlla quantità prodotti in base a lista (se hai prodotti in una lista regalo)
 			$this->m("CartModel")->controllaQuantitaProdottiListaInCarrello();
 			
+			if (v("ecommerce_attivo"))
+			{
+				if (v("imposta_la_nazione_dell_utente_a_quella_nell_url") && ($controller != "ordini" || $action == "totale"))
+				{
+					User::setUserCountryFromPostSpedizioneOrFromUrl();
+					
+					// Ricolcola prezzi come da listino se è cambiata la nazione
+					$this->m("CartModel")->checkERicalcolaPrezziListino();
+				}
+				
+				// Correggi decimali imponibili sulla base dell'IVA estera
+				$this->m("CartModel")->correggiPrezzi();
+			}
+			
 			$data["carrello"] = $this->m("CartModel")->getProdotti();
 			
 			// Recuperta dati da cliente loggato
 			$this->m("CartModel")->collegaDatiCliente($data["carrello"]);
-			
-			// Correggi decimali imponibili sulla base dell'IVA estera
-			$this->m("CartModel")->correggiPrezzi();
 			
 			$data["prodInCart"] = $this->m("CartModel")->numberOfItems();
 			$data["prodInWishlist"] = $this->m("WishlistModel")->numberOfItems();
@@ -656,7 +667,7 @@ class BaseBaseController extends Controller
 		}
 		else
 		{
-			User::$wishlist_uid = md5(randString(10).microtime().uniqid(mt_rand(),true));
+			User::$wishlist_uid = randomToken();
 			$time = time() + v("durata_carrello_wishlist_coupon");
 			setcookie("wishlist_uid",User::$wishlist_uid,$time,"/");
 		}
@@ -877,8 +888,8 @@ class BaseBaseController extends Controller
 			{
 				if ($this->m('RegusersModel')->checkConditions('insert'))
 				{
-					$tokenConferma = $this->m('RegusersModel')->values['confirmation_token'] = md5(randString(20).microtime().uniqid(mt_rand(),true));
-					$tokenReinvio = $this->m('RegusersModel')->values['token_reinvio'] = md5(randString(30).microtime().uniqid(mt_rand(),true));
+					$tokenConferma = $this->m('RegusersModel')->values['confirmation_token'] = randomToken();
+					$tokenReinvio = $this->m('RegusersModel')->values['token_reinvio'] = randomToken();
 					$codiceConfermaRegistrazione = generateString(v("conferma_registrazione_numero_cifre_codice_verifica"), "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 					
 					$this->m('RegusersModel')->values['codice_verifica'] = sanitizeAll(Aes::encrypt($codiceConfermaRegistrazione));
@@ -935,8 +946,6 @@ class BaseBaseController extends Controller
 						
 						if (!v("conferma_registrazione"))
 							$this->maindaMailNegozioNuovaRegistrazione($lId);
-						
-						F::checkPreparedStatement();
 						
 						$logSubmit->write(LogModel::LOG_REGISTRAZIONE, LogModel::REGISTRAZIONE_ESEGUITA);
 						
@@ -1541,7 +1550,7 @@ class BaseBaseController extends Controller
 			if (isset($_SESSION["ok_csrf"]))
 				unset($_SESSION["ok_csrf"]);
 			
-			$data["csrf_code"] = $_SESSION["csrf_code"] = md5(randString(15).uniqid(mt_rand(),true));
+			$data["csrf_code"] = $_SESSION["csrf_code"] = randomToken();
 			
 			$data["elencoAppLogin"] = IntegrazioniloginModel::g()->clear()->where(array(
 				"attivo"	=>	1,

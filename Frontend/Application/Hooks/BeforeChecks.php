@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 date_default_timezone_set('Europe/Rome');
 
-Params::$logFunctionBeforeRedirect = array("F","checkPreparedStatement");
+// Params::$logFunctionBeforeRedirect = array("F","checkPreparedStatement");
 
 Factory_Timer::getInstance(false);
 
@@ -223,14 +223,5 @@ Domain::setPath();
 
 require_once(LIBRARY."/Frontend/Application/Hooks/RouteInitialization.php");
 
-// Url::$routes = array(
-// 	"area-riservata"	=>	"area-riservata",
-// 	"modifica-account"	=>	"modifica-account",
-// 	"esci"				=>	"esci",
-// 	"rinnovo"			=>	"account-renewal",
-// );
-
 if (v("attiva_waf"))
 	Shield::waf();
-
-// User::$nazione = User::$nazioneNavigazione = "FR";

@@ -635,7 +635,7 @@ trait CommonModel {
 						
 						if (isset($params["clean_field"]) || isset($params["forza_randon_field_name"]))
 						{
-							$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
+							$fileName = randomToken();
 						}
 						else
 						{

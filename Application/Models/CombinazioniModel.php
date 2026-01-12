@@ -28,6 +28,8 @@ class CombinazioniModel extends GenericModel {
 	
 	private $arrayIdcRecuperati = array();
 	
+	public static $idsListiniModificati = null;
+	
 	public static $ricreaCombinazioneQuandoElimini = true;
 	
 	public static $permettiSempreEliminazione = false;
@@ -41,6 +43,13 @@ class CombinazioniModel extends GenericModel {
 	
 	public $campoValore = "id_c";
 	public $metodoPerTitolo = "titoloJson";
+
+	public static $relations = array(
+		'listini' => array("HAS_MANY", 'CombinazionilistiniModel', 'id_c', null, "CASCADE"),
+		'alias' => array("HAS_MANY", 'CombinazionialiasModel', 'id_c', null, "CASCADE"),
+// 			!! NO !! 'movimenti' => array("HAS_MANY", 'CombinazionimovimentiModel', 'id_c', null, "CASCADE"),
+		'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
+	);
 	
 	public function __construct() {
 		$this->_tables='combinazioni';
@@ -54,13 +63,9 @@ class CombinazioniModel extends GenericModel {
 		parent::__construct();
 	}
 	
-	public function relations() {
-        return array(
-			'listini' => array("HAS_MANY", 'CombinazionilistiniModel', 'id_c', null, "CASCADE"),
-			'alias' => array("HAS_MANY", 'CombinazionialiasModel', 'id_c', null, "CASCADE"),
-// 			!! NO !! 'movimenti' => array("HAS_MANY", 'CombinazionimovimentiModel', 'id_c', null, "CASCADE"),
-			'pagina' => array("BELONGS_TO", 'PagineModel', 'id_page',null,"CASCADE","Si prega di selezionare la pagina"),
-        );
+	public function relations()
+	{
+        return self::$relations;
     }
     
 	public function getStringa($id_c, $char = "<br />", $json = false, $backend = false)
@@ -271,6 +276,45 @@ class CombinazioniModel extends GenericModel {
 		}
 	}
 	
+	public function aggiornaPrezzoListini($idC = 0, $log = null)
+	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
+		$clModel = new CombinazionilistiniModel();
+		
+		$idClS = $clModel->clear()->select("combinazioni_listini.id_combinazione_listino,combinazioni.id_c")->inner(array("combinazione"))->where(array(
+			"combinazioni_listini.modificato"	=>	0
+		))
+		->sWhere("(combinazioni_listini.price != combinazioni.price OR combinazioni_listini.price_ivato != combinazioni.price_ivato OR combinazioni_listini.price_scontato != combinazioni.price_scontato OR combinazioni_listini.price_scontato_ivato != combinazioni.price_scontato_ivato)")
+		->toList("combinazioni_listini.id_combinazione_listino", "combinazioni.id_c");
+		
+		if ($idC)
+			$clModel->aWhere(array(
+				"combinazioni_listini.id_c"	=>	(int)$idC,
+			));
+		
+		$idClS = $clModel->send();
+		
+		if (count($idClS) > 0)
+		{
+			foreach ($idClS as $idCl => $idComb)
+			{
+				$record = $this->clear()->select("price,price_ivato,price_scontato,price_scontato_ivato")->whereId((int)$idComb)->record();
+			
+				if (!empty($record))
+				{
+					$clModel->sValues($record, "sanitizeDb");
+					$clModel->values["data_ora_modifica"] = date("Y-m-d H:i:s");
+					
+					$clModel->pUpdate((int)$idCl);
+					
+					if ($log)
+						$log->writeString("ID Combinazione: $idComb, ID Listino: $idCl");
+				}
+			}
+		}
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		$record = $this->selectId((int)$id);
@@ -288,6 +332,9 @@ class CombinazioniModel extends GenericModel {
 			
 			if (self::$aggiornaAliasAdInserimento)
 				$this->aggiornaAlias(0,$id);
+			
+			if (v("mantieni_listini_esteri_sincronizzati_se_non_modificati"))
+				$this->aggiornaPrezzoListini((int)$id);
 			
 			return true;
 		}
@@ -400,7 +447,11 @@ class CombinazioniModel extends GenericModel {
 		$this->arrayIdcRecuperati = array();
 		
 		Params::$setValuesConditionsFromDbTableStruct = false;
-
+		
+		unset(self::$relations['listini']);
+		$this->foreignKeys = array();
+		$this->setForeignKeys();
+		
 		$clean["id_page"] = (int)$id_page;
 		
 		$page = new PagesModel();
@@ -515,9 +566,26 @@ class CombinazioniModel extends GenericModel {
 			
 			// Recupero le combinazioni da ordini, liste regalo o movimentazioni
 			$this->recuperaCombinazioni($dettagliPagina["id_page"]);
+			
+			// Verifica che non siano presenti listini non associati a combinazioni
+			$this->controllaNoListiniSlegati($dettagliPagina["id_page"]);
 		}
 		
 		Params::$setValuesConditionsFromDbTableStruct = true;
+	}
+	
+	// Verifica che non siano presenti listini non associati a combinazioni
+	public function controllaNoListiniSlegati($id_page)
+	{
+		$clModel = new CombinazionilistiniModel();
+		
+		$clModel->clear()->del(null, array(
+			"id_page != 0 and id_page = ? and id_c not in (select id_c from combinazioni where id_page = ?)",
+			array(
+				(int)$id_page,
+				(int)$id_page
+			)
+		));
 	}
 	
 	public function recuperaCombinazioni($idPage)
@@ -730,6 +798,64 @@ class CombinazioniModel extends GenericModel {
 		return (int)$this->clear()->where(array(
 			"id_c"	=>	(int)$idC,
 		))->field("giacenza");
+	}
+	
+	public static function listinoModificato($nazione, $idPage = 0)
+	{
+		$clModel = new CombinazionilistiniModel();
+		
+		$clModel->clear()->where(array(
+			"modificato"	=>	1,
+			"nazione"		=>	sanitizeAll($nazione),
+		));
+		
+		if ($idPage)
+			$clModel->aWhere(array(
+				"id_page"	=>	(int)$idPage,
+			));
+		
+		return $clModel->rowNumber();
+	}
+	
+	public static function listinoCombinazioneModificato($idC, $nazione = "-")
+	{
+		if (!isset(self::$idsListiniModificati[$nazione]))
+		{
+			$clModel = new CombinazionilistiniModel();
+			
+			if ($nazione == "-")
+				self::$idsListiniModificati[$nazione] = $clModel->clear()->select("distinct id_c")->where(array(
+					"modificato"	=>	1
+				))->toList("id_c")->send();
+			else
+				self::$idsListiniModificati[$nazione] = $clModel->clear()->select("id_c")->where(array(
+					"modificato"	=>	1,
+					"nazione"		=>	sanitizeAll($nazione),
+				))->toList("id_c")->send();
+		}
+		
+		return in_array($idC, self::$idsListiniModificati[$nazione]) ? true : false;
+	}
+	
+	public function classeListinoModificato($record)
+	{
+		if (v("mantieni_listini_esteri_sincronizzati_se_non_modificati"))
+		{
+			if (isset($_GET["listino"]) && (string)$_GET["listino"] !== "tutti" && ((string)$_GET["listino"] === "W" || CombinazionilistiniModel::listinoPermesso($_GET["listino"])))
+				$nazione = (string)$_GET["listino"];
+			else
+				$nazione = "-";
+			
+			if (self::listinoCombinazioneModificato($record["combinazioni"]["id_c"], $nazione))
+			{
+				if ($nazione == "-")
+					return "classe_riga_listino_modificato_default";
+				else
+					return "classe_riga_listino_modificato";
+			}
+		}
+		
+		return "";
 	}
 	
 	public function del($id = null, $where = null)

@@ -1,21 +1,27 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if ($this->viewArgs["id_lista_regalo_ordine"] === "tutti") { ?>
+	<?php if (v("permetti_aggiunta_listino_estero") && !empty(CombinazionilistiniModel::g()->elencoListiniAttivabili())) { ?>
+	<a title="<?php echo gtext("Aggiungi listino");?>" style="margin-left:10px;" href="<?php echo $this->baseUrl."/combinazioni/aggiungilistino";?>" class="btn btn-success pull-right"><i class="fa fa-plus-circle"></i></a>
+	<?php } ?>
 	<?php $listini = CombinazionilistiniModel::elencoListini();?>
-	<?php foreach ($listini as $l) {
+	<?php
+	$idProdotto = $this->viewArgs["id_page"] != "tutti" ? (int)$this->viewArgs["id_page"] : 0;
+	foreach ($listini as $l) {
 		$temp = $this->viewArgs;
 		$temp["listino"] = $l;
 		$titoloListino = $l == "W" ? "Mondo" : findTitoloDaCodice($l);
+		$defaultLabel = (v("mantieni_listini_esteri_sincronizzati_se_non_modificati") && CombinazioniModel::listinoModificato($l, $idProdotto) && $l != v("nazione_default")) ? "warning" : "default";
 	?>
-	<a style="margin-left:10px;" href="<?php echo $this->baseUrl."/combinazioni/main".Url::createUrl($temp);?>" class="btn btn-<?php if ($this->viewArgs["listino"] == $l) { ?>info<?php } else { ?>default<?php } ?> pull-right">Listino <?php echo $titoloListino;?></a>
+	<a style="margin-left:10px;" href="<?php echo $this->baseUrl."/combinazioni/main".Url::createUrl($temp);?>" class="btn btn-<?php if ($this->viewArgs["listino"] == $l) { ?>info<?php } else { ?><?php echo $defaultLabel;?><?php } ?> pull-right"><?php echo gtext($titoloListino);?></a>
 	<?php } ?>
 
 	<?php
 	$temp = $this->viewArgs;
 	$temp["listino"] = "tutti";
 	?>
-	<?php if (count($listini) > 0) { ?>
-	<a href="<?php echo $this->baseUrl."/combinazioni/main".Url::createUrl($temp);?>" class="btn btn-<?php if ($this->viewArgs["listino"] == "tutti") { ?>info<?php } else { ?>default<?php } ?> pull-right">Listino Italia</a>
+	<?php if (count($listini) > 0 || v("permetti_aggiunta_listino_estero")) { ?>
+	<a href="<?php echo $this->baseUrl."/combinazioni/main".Url::createUrl($temp);?>" class="btn btn-<?php if ($this->viewArgs["listino"] == "tutti") { ?>info<?php } else { ?>default<?php } ?> pull-right"><?php echo findTitoloDaCodice(v("nazione_default"));?></a>
 	<?php } ?>
 <?php } ?>
 

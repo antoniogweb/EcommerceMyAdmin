@@ -60,6 +60,7 @@ class BaseController extends Controller
 	public $loginController = "users";
 	public $formQueryActions = "insert,update";
 	public $documentiInPagina = true;
+	public $contenutiTradottiFields = null; // se definito, forza i campi gestiti su contenuti tradotti
 	
 	public $baseArgsKeys = array(
 		'page:forceInt'=>1,
@@ -170,6 +171,10 @@ class BaseController extends Controller
 		}
 		
 		$this->generaPosizioni();
+		
+		UsersopzioniModel::$sApp = nullToBlank($application);
+		UsersopzioniModel::$sController = $controller;
+		UsersopzioniModel::$sAction = $action;
 		
 		// Controlla che tutti i prodotti abbiano la combinazione canonical
 		if (v("ecommerce_attivo") && VariabiliModel::combinazioniLinkVeri())

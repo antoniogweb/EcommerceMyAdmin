@@ -1218,7 +1218,7 @@ class SpedizioninegozioModel extends FormModel {
 				
 				createFolderFull("Logs/tmp",LIBRARY);
 				
-				$fileName = md5(randString(22).microtime().uniqid(mt_rand(),true));
+				$fileName = randomToken();
 				
 				if (!@is_dir(LIBRARY."/Logs/tmp/"))
 					return;

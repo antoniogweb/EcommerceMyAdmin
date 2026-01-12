@@ -305,7 +305,7 @@ class F
 	
 	public static function checkIpESubIp($ip)
 	{
-		if (preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip) || preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip))
+		if (filter_var($ip, FILTER_VALIDATE_IP) || preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip))
 			return sanitizeAll($ip);
 			
 		return '';

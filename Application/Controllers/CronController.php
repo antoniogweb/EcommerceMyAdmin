@@ -22,10 +22,14 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CronController extends BaseController {
-
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+class CronController extends BaseController
+{
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		if (v("attiva_cron_web") && VariabiliModel::checkToken("token_comandi_cron_web") && VariabiliModel::checkToken("token_migrazioni_no_admin"))
+			$this->loginController = "cron";
+		
+		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 // 		$this->clean();
 		
@@ -37,7 +41,7 @@ class CronController extends BaseController {
 	{
 // 		$this->clean();
 		
-		if (is_string($c) && v("codice_cron") && $c == v("codice_cron"))
+		if (is_string($c) && v("codice_cron") && (string)$c === (string)v("codice_cron"))
 		{
 			$data["esitoMigrazioni"] = Migrazioni::up($mostra);
 			$data["titoloPagina"] = gtext("Esito migrazioni");

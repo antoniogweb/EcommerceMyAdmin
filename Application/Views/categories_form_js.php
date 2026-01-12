@@ -1,8 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-
 <script type="text/javascript" src="<?php echo $this->baseUrl?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
-
 
 <script type="text/javascript">
 function ajaxfilemanager(field_name, url, type, win) {
@@ -24,7 +22,6 @@ function ajaxfilemanager(field_name, url, type, win) {
 	return false;
 }
 $().ready(function() {
-
 	$('textarea.dettagli').tinymce(tiny_editor_config);
 });
 </script>

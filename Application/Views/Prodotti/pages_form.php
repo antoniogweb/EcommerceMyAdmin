@@ -31,7 +31,9 @@
 								<?php if (!$flash) echo $notice;?>
 
 								<?php echo $avviso_combinazioni; ?>
-								
+								<?php if (v("mantieni_listini_esteri_sincronizzati_se_non_modificati") && ProdottiModel::g(false)->listinoModificato((int)$id_page))  { ?>
+									<div class='callout callout-warning'><?php echo gtext("Attenzione, il prodotto ha i listini esteri differenti da quello italiano. Verificare nella scheda Varianti");?></div>
+								<?php } ?>
 								<!-- show the table -->
 								<div class='scaffold_form'>
 

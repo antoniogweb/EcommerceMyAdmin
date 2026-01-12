@@ -322,6 +322,27 @@ function copyToClipboard(testo) {
 	$temp.remove();
 }
 
+function salvaOpzione(id_record, valore)
+{
+	$.ajaxQueue({
+		url: baseUrl + "/panel/salvaopzione",
+		cache:false,
+		async: true,
+		dataType: "html",
+		type: "POST",
+		data: {
+			app: applicationNameNoTrailingSlash,
+			controller: controllerName,
+			action: actionName,
+			id_record: id_record,
+			valore: valore
+		},
+		success: function(content) {
+			
+		}
+	});
+}
+
 $(document).ready(function(){
 	
 	if ($("[name='nazione_spedizione']").length > 0)
@@ -633,6 +654,10 @@ $(document).ready(function(){
 				
 				$(".class_combinazione").css("background-color", "#FFF").css("color", "#555");
 				
+				// Coloro la riga
+				if (that.hasClass("save_combinazioni_listino"))
+					$("table tr.listRow").addClass("classe_riga_listino_modificato");
+				
 				if (content.length > 0)
 				{
 					alert("ATTENZIONE: le righe evidenziate in rosso non sono state aggiornate perché i codici inseriti sono già stati usati da altri prodotti.");
@@ -640,6 +665,8 @@ $(document).ready(function(){
 					for (var i = 0; i < content.length; i++)
 					{
 						$(".class_combinazione_" + content[i]).css("background-color", "red").css("color", "#FFF");
+						
+						$(".class_combinazione_" + content[i]).closest("tr.listRow").removeClass("classe_riga_listino_modificato");
 					}
 				}
 			}

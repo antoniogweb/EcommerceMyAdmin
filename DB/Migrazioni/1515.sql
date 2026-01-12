@@ -1,0 +1,1 @@
+ALTER TABLE `log_account` CHANGE `ip` `ip` CHAR(50) NOT NULL default '';

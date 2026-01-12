@@ -1,0 +1,1 @@
+ALTER TABLE `combinazioni_listini` add modificato tinyint not null default 0;

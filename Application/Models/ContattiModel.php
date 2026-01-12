@@ -211,7 +211,7 @@ class ContattiModel extends GenericModel {
 		
 		if ($aggiornaUid)
 		{
-			self::$uidc = md5(randString(9).microtime().uniqid(mt_rand(),true));
+			self::$uidc = randomToken();
 			
 			$this->values["time_conferma"] = time();
 			$this->values["uid_contatto"] = sanitizeDb(self::$uidc);

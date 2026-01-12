@@ -555,7 +555,7 @@ class RegusersModel extends FormModel {
 			
 			$utenti = $this->query(array(
 				"select id_user,username,data_scadenza,lingua,numero_avvisi_scadenza,nazione_navigazione from regusers where has_confirmed = 0 and data_scadenza is not null and data_scadenza > ? and data_scadenza <= ? and numero_avvisi_scadenza = ?",
-				array(date("Y-m-d"), $dataScadenza, $indice),
+				array(date("Y-m-d"), $dataScadenza, (int)$indice),
 			));
 			
 			foreach ($utenti as $u)

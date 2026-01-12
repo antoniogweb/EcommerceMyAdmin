@@ -40,7 +40,7 @@ $().ready(function() {
 });
 </script>
 <div class='row'>
-	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
+	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 		<div class='col-md-8'>
 			<?php if (isset($form["title"])) { ?>
 			<?php echo $form["title"];?>
