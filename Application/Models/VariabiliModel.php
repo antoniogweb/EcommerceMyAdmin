@@ -922,6 +922,7 @@ class VariabiliModel extends GenericModel {
 		"cartella_backend"		=>	"admin", // la cartella con il backoffice e i file del CMS
 		"usa_sotto_query_in_elenco"	=>	0, // se fare un'unica query in join o tante piccole sotto query per i prodotti nella griglia
 		"ip_sito"				=>	'', // se impostato, l'IP del server del sito
+		"token_migrazioni_no_admin"	=>	'', // per poter lanciare le migrazioni via web senza senza essere loggato in admin (deve essere attivo attiva_cron_web e bisogna passare anche token_comandi_cron_web)
 	);
 	
 	public static $daInizializzare = array(
@@ -939,6 +940,7 @@ class VariabiliModel extends GenericModel {
 		"token_login_come_utente",
 		"token_lista_configurazioni_mancanti",
 		"token_cron_log_tecnici",
+		"token_migrazioni_no_admin",
 	);
 	
 	public static function inizializza($variabili = array())
