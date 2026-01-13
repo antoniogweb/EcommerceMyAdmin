@@ -7,7 +7,7 @@
 	var applicationNameNoTrailingSlash = "<?php echo getApplicationName();?>";
 	var controllerName = "<?php echo $this->controller;?>";
 	var actionName = "<?php echo $this->action;?>";
-	var viewStatus = "<?php echo $this->viewStatus;?>";
+	var viewStatus = <?php echo json_encode($this->viewStatus,JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);?>;
 	var partial = <?php echo partial() ? "true" : "false";?>;
 	var altezza_aggiuntiva_ricalcola_altezza_dialog = 0;
 	var nazioniConProvince = ['<?php echo implode("','",NazioniModel::nazioniConProvince())?>'];

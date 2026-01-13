@@ -48,7 +48,7 @@ class AlimentiController extends GenericsectionController {
 		
 		$this->orderBy = "pages.title";
 		
-		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Categoria,Pubblicato?';
+		$this->head = '[[bulkselect:checkbox_pages_id_page]],Thumb,Titolo,Pubblicato?';
 		
 		$this->queryFields = "title,alias,attivo,description,immagine,video,sottotitolo,id_c";
 	}
