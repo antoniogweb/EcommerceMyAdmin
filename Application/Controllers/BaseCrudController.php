@@ -386,6 +386,8 @@ trait BaseCrudController
 		$recordsElaborati = array();
 		$tableName = $this->scaffold->model->table();
 		
+		$ok = false;
+		
 		if (isset($_GET["formato_json"]))
 		{
 			$campoTitolo = $this->scaffold->model->campoTitolo;
@@ -413,6 +415,8 @@ trait BaseCrudController
 				}
 				
 				$recordsElaborati = $struct;
+				
+				$ok = true;
 			}
 		}
 		else if ($this->permettiEsportaJsonLibero)
@@ -428,6 +432,15 @@ trait BaseCrudController
 			}
 			
 			$recordsElaborati = $struct;
+			
+			$ok = true;
+		}
+		
+		if (!$ok)
+		{
+			$this->responseCode(403);
+			echo json_encode(["error" => "forbidden"]);
+			return;
 		}
 		
 		echo json_encode($recordsElaborati);
