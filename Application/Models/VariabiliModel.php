@@ -923,6 +923,7 @@ class VariabiliModel extends GenericModel {
 		"usa_sotto_query_in_elenco"	=>	0, // se fare un'unica query in join o tante piccole sotto query per i prodotti nella griglia
 		"ip_sito"				=>	'', // se impostato, l'IP del server del sito
 		"token_migrazioni_no_admin"	=>	'', // per poter lanciare le migrazioni via web senza senza essere loggato in admin (deve essere attivo attiva_cron_web e bisogna passare anche token_comandi_cron_web)
+		"limit_in_esporta"		=>	'500', // limit nelle operazioni di esportazione
 	);
 	
 	public static $daInizializzare = array(

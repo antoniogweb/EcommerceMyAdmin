@@ -28,6 +28,8 @@ class HtmlToXlsx
 {
 	public static function download($html, $titolo)
 	{
+		$html = preg_replace('/&(?!amp)/', '&amp;', $html);
+		
 		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Html();
 		$spreadsheet = $reader->loadFromString($html);
 		$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');

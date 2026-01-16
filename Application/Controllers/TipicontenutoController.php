@@ -49,6 +49,8 @@ class TipicontenutoController extends BaseController
 
 	public function main()
 	{
+		$this->permettiEsportaJsonLibero = true;
+		
 		$this->shift();
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>'add');

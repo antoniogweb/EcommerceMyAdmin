@@ -1606,6 +1606,8 @@ class PagesController extends BaseController
 	
 	public function contenuti($id = 0)
 	{
+		$this->permettiEsportaJsonLibero = true;
+		
 		$this->orderBy = "contenuti.id_order";
 		
 		$this->_posizioni['contenuti'] = 'class="active"';

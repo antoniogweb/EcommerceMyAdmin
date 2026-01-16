@@ -61,6 +61,8 @@ class BaseController extends Controller
 	public $formQueryActions = "insert,update";
 	public $documentiInPagina = true;
 	public $contenutiTradottiFields = null; // se definito, forza i campi gestiti su contenuti tradotti
+	public $limitInEsporta = null;
+	public $permettiEsportaJsonLibero = false;
 	
 	public $baseArgsKeys = array(
 		'page:forceInt'=>1,
@@ -171,6 +173,8 @@ class BaseController extends Controller
 		}
 		
 		$this->generaPosizioni();
+		
+		$this->limitInEsporta = v("limit_in_esporta");
 		
 		UsersopzioniModel::$sApp = nullToBlank($application);
 		UsersopzioniModel::$sController = $controller;

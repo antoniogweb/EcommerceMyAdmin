@@ -305,8 +305,8 @@ trait BaseCrudController
 			$this->scaffold->itemList->renderToCsv = true;
 			$this->scaffold->itemList->csvColumnsSeparator = ";";
 			
-			$this->scaffold->params["recordPerPage"] = 10000000000;
-			$this->scaffold->params['pageList'] = false;
+			$this->scaffold->params["recordPerPage"] = $this->limitInEsporta;
+			$this->scaffold->params['pageList'] = true;
 			
 			$data['scaffold'] = $this->scaffold->render();
 			
@@ -324,8 +324,8 @@ trait BaseCrudController
 		{
 			ini_set("memory_limit","256M");
 			
-			$this->scaffold->params["recordPerPage"] = 10000000000;
-			$this->scaffold->params['pageList'] = false;
+			$this->scaffold->params["recordPerPage"] = $this->limitInEsporta;
+			$this->scaffold->params['pageList'] = true;
 			
 			$data['scaffold'] = $this->scaffold->render();
 			
@@ -382,7 +382,8 @@ trait BaseCrudController
 		
 		$this->clean();
 		
-		$records = $this->scaffold->model->send();
+		$records = $this->scaffold->model->limit($this->limitInEsporta)->send();
+		$recordsElaborati = array();
 		$tableName = $this->scaffold->model->table();
 		
 		if (isset($_GET["formato_json"]))
@@ -411,10 +412,10 @@ trait BaseCrudController
 						);
 				}
 				
-				$records = $struct;
+				$recordsElaborati = $struct;
 			}
 		}
-		else
+		else if ($this->permettiEsportaJsonLibero)
 		{
 			$struct = array();
 			
@@ -426,10 +427,10 @@ trait BaseCrudController
 				$struct[] = $r;
 			}
 			
-			$records = $struct;
+			$recordsElaborati = $struct;
 		}
 		
-		echo json_encode($records);
+		echo json_encode($recordsElaborati);
 	}
 	
 	protected function aggiungiintegrazioni()
