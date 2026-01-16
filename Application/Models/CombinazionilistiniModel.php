@@ -97,10 +97,10 @@ class CombinazionilistiniModel extends GenericModel {
 			$valore = $p->getIva($idPage);
 			
 			if (isset($this->values["price_ivato"]))
-				$this->values["price"] = number_format(setPrice($this->values["price_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+				$this->values["price"] = number_format(number_format(setPrice($this->values["price_ivato"]),2,".","") / (1 + ($valore / 100)), v("cifre_decimali"),".","");
 			
 			if (isset($this->values["price_scontato_ivato"]))
-				$this->values["price_scontato"] = number_format(setPrice($this->values["price_scontato_ivato"]) / (1 + ($valore / 100)), v("cifre_decimali"),".","");
+				$this->values["price_scontato"] = number_format(number_format(setPrice($this->values["price_scontato_ivato"]),2,".","") / (1 + ($valore / 100)), v("cifre_decimali"),".","");
 		}
 	}
 	

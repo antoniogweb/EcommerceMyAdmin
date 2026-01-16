@@ -1289,9 +1289,10 @@ class PagesModel extends GenericModel {
 				{
 					$cModel->sValues(array(
 						"price_scontato"		=>	self::getPrezzoScontato($pagina, $c["price"]),
-						"price_scontato_ivato"	=>	self::getPrezzoScontato($pagina, $c["price_ivato"]),
+						"price_scontato_ivato"	=>	number_format(self::getPrezzoScontato($pagina, $c["price_ivato"]),2,".",""),
 					));
 					
+					$cModel->setPriceNonIvato((int)$pagina["id_page"]);
 					$cModel->pUpdate($c["id_c"]);
 				}
 				
@@ -1299,9 +1300,10 @@ class PagesModel extends GenericModel {
 				{
 					$clModel->sValues(array(
 						"price_scontato"		=>	self::getPrezzoScontato($pagina, $c["price"]),
-						"price_scontato_ivato"	=>	self::getPrezzoScontato($pagina, $c["price_ivato"]),
+						"price_scontato_ivato"	=>	number_format(self::getPrezzoScontato($pagina, $c["price_ivato"]),2,".",""),
 					));
 					
+					$clModel->setPriceNonIvato((int)$pagina["id_page"]);
 					$clModel->pUpdate($c["id_combinazione_listino"]);
 				}
 				
