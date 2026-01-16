@@ -131,7 +131,12 @@ class UsersModel extends GenericModel {
 		
 		return parent::del($clean['id']);
 	}
-
+	
+	public function gruppiCrud($record)
+	{
+		return $this->listaGruppi((int)$record["adminusers"]["id_user"]);
+	}
+	
 	public function listaGruppi($id)
 	{
 		$clean["id"] = (int)$id;

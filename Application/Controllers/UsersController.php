@@ -118,12 +118,6 @@ class UsersController extends BaseController {
 		$data['notice'] = null;
 		
 		$this->checkLogged();
-		// $this->s['admin']->checkStatus();
-		// if ($this->s['admin']->status['status']=='logged') { //check if already logged
-		// 	$this->s['admin']->redirect('logged');
-		// } else if ($this->s['admin']->status['status']=='two-factor') {
-		// 	$this->s['admin']->logout();
-		// }
 		
 		if (isset($_POST['username']) and isset($_POST['password']))
 		{
@@ -277,6 +271,12 @@ class UsersController extends BaseController {
 		{
 			$this->mainFields[] = "adminusers.email";
 			$this->mainHead .= ",Email";
+		}
+		
+		if (v("attiva_gruppi_admin"))
+		{
+			$this->mainFields[] = "gruppiCrud";
+			$this->mainHead .= ",Gruppi";
 		}
 		
 		$this->filters = array("username");

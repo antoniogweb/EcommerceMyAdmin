@@ -576,7 +576,7 @@ class SpedizioninegozioModel extends FormModel {
 			if ($checkAccesso && $full && !App::$isFrontend)
 				$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank" class="pull-right label label-primary text-bold">'.gtext("dettagli").' <i class="fa fa-arrow-right"></i></a>';
 			
-			if (!App::$isFrontend)
+			if ($checkAccesso && !App::$isFrontend)
 				$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank">';
 			
 			$idLabel = !App::$isFrontend ? $sp["spedizioni_negozio"]["id_spedizione_negozio"].' - ' : "";
