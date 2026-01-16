@@ -145,6 +145,35 @@ class CombinazionilistiniModel extends GenericModel {
 		return false;
 	}
 	
+	public function creaListino($nazione, $log = null)
+	{
+		if (self::listinoPermesso($nazione))
+		{
+			$cModel = new CombinazioniModel();
+			
+			$idCs = $cModel->clear()->select("combinazioni.id_c")
+				->inner(array("pagina"))
+				->addWhereAttivoPermettiTest()
+				->toList("combinazioni.id_c")
+				->send();
+			
+			if (v("usa_transactions"))
+				$this->db->beginTransaction();
+			
+			foreach ($idCs as $idC)
+			{
+				// echo $idC."\n";
+				list($idCl, $prezzo, $prezzoScontato) = $this->getPrezzoListino((int)$idC, $nazione);
+				
+				if (isset($log) && !$idCl)
+					$log->writeString("Errore nella creazione del listino FR per la combinazione $idC");
+			}
+			
+			if (v("usa_transactions"))
+				$this->db->commit();
+		}
+	}
+	
 	public function getPrezzoListino($idC, $nazione)
 	{
 		$listino = $this->clear()->where(array(
