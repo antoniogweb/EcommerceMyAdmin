@@ -669,7 +669,8 @@ class BaseBaseController extends Controller
 		{
 			User::$wishlist_uid = randomToken();
 			$time = time() + v("durata_carrello_wishlist_coupon");
-			setcookie("wishlist_uid",User::$wishlist_uid,$time,"/");
+			// setcookie("wishlist_uid",User::$wishlist_uid,$time,"/");
+			Cookie::set("wishlist_uid", User::$wishlist_uid, $time, "/", true, 'Lax');
 		}
 		
 		//setto il coupon se presente

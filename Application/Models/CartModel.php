@@ -1888,7 +1888,8 @@ class CartModel extends GenericModel {
 	{
 		User::$cart_uid = randomToken();
 		$time = time() + v("durata_carrello_wishlist_coupon");
-		setcookie("cart_uid",User::$cart_uid,$time,"/");
+		// setcookie("cart_uid",User::$cart_uid,$time,"/");
+		Cookie::set("cart_uid", User::$cart_uid, $time, "/", true, 'Lax');
 		
 		if (v("svuota_file_cookie_carrello_dopo_x_minuti") && !App::$operazioneSchedulata)
 		{
