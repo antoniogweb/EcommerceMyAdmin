@@ -655,8 +655,8 @@ $(document).ready(function(){
 				$(".class_combinazione").css("background-color", "#FFF").css("color", "#555");
 				
 				// Coloro la riga
-				if (that.hasClass("save_combinazioni_listino"))
-					$("table tr.listRow").addClass("classe_riga_listino_modificato");
+				// if (that.hasClass("save_combinazioni_listino"))
+				// 	$("table tr.listRow").addClass("classe_riga_listino_modificato");
 				
 				if (content.length > 0)
 				{
@@ -666,7 +666,7 @@ $(document).ready(function(){
 					{
 						$(".class_combinazione_" + content[i]).css("background-color", "red").css("color", "#FFF");
 						
-						$(".class_combinazione_" + content[i]).closest("tr.listRow").removeClass("classe_riga_listino_modificato");
+						// $(".class_combinazione_" + content[i]).closest("tr.listRow").removeClass("classe_riga_listino_modificato");
 					}
 				}
 			}

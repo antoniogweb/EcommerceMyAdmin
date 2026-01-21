@@ -321,6 +321,16 @@ class F
 		return date(v("default_date_format")." H:i", $time);
 	}
 	
+	public static function getFormatoPrezzoIvato($string)
+	{
+		return number_format(setPrice($string),2,".","");
+	}
+	
+	public static function getFormatoPrezzoNonIvato($string)
+	{
+		return number_format(setPrice($string),v("cifre_decimali"),".","");
+	}
+	
 	public static function checkPreparedStatement()
 	{
 		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && defined('CHECK_QUERIES')))

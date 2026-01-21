@@ -1,12 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if ($this->viewArgs["id_lista_regalo_ordine"] === "tutti") { ?>
-	<?php if (v("permetti_aggiunta_listino_estero") && !empty(CombinazionilistiniModel::g()->elencoListiniAttivabili())) { ?>
+	<?php $idProdotto = $this->viewArgs["id_page"] != "tutti" ? (int)$this->viewArgs["id_page"] : 0; ?>
+	<?php if (v("permetti_aggiunta_listino_estero") && !empty(CombinazionilistiniModel::g()->elencoListiniAttivabili()) && !$idProdotto) { ?>
 	<a title="<?php echo gtext("Aggiungi listino");?>" style="margin-left:10px;" href="<?php echo $this->baseUrl."/combinazioni/aggiungilistino";?>" class="btn btn-success pull-right"><i class="fa fa-plus-circle"></i></a>
 	<?php } ?>
 	<?php $listini = CombinazionilistiniModel::elencoListini();?>
 	<?php
-	$idProdotto = $this->viewArgs["id_page"] != "tutti" ? (int)$this->viewArgs["id_page"] : 0;
 	foreach ($listini as $l) {
 		$temp = $this->viewArgs;
 		$temp["listino"] = $l;

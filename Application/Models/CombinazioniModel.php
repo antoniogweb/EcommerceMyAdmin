@@ -1037,7 +1037,7 @@ class CombinazioniModel extends GenericModel {
 	{
 		$disabled = "";
 		
-		if (!isset($_GET["listino"]) || $_GET["listino"] == "tutti")
+		if (!isset($_GET["listino"]) || $_GET["listino"] == "tutti" || !CombinazionilistiniModel::listinoPermesso($_GET["listino"]))
 		{
 			if (v("prezzi_ivati_in_prodotti"))
 				$prezzo = $record["combinazioni"][$fieldName."_ivato"];

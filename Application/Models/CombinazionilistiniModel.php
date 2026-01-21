@@ -137,12 +137,33 @@ class CombinazionilistiniModel extends GenericModel {
 		$this->settaCifreDecimali();
 		
 		// Imposta come prezzo modificato rispetto al prezzo di default
-		$this->values["modificato"] = 1;
+		// $this->values["modificato"] = 1;
+		$this->setModificato($id);
 		
 		if (parent::update($id, $where))
 			return true;
 		
 		return false;
+	}
+	
+	public function setModificato($idCl = 0)
+	{
+		$record = $this->selectId((int)$idCl);
+		
+		if (!empty($record))
+		{
+			$priceModificato = (isset($this->values["price"]) && F::getFormatoPrezzoNonIvato($this->values["price"]) != F::getFormatoPrezzoNonIvato($record["price"])) ? true : false;
+			$priceIvatoModificato = (isset($this->values["price_ivato"]) && F::getFormatoPrezzoIvato($this->values["price_ivato"]) != F::getFormatoPrezzoIvato($record["price_ivato"])) ? true : false;
+			
+			$priceScontatoModificato = (isset($this->values["price_scontato"]) && F::getFormatoPrezzoNonIvato($this->values["price_scontato"]) != F::getFormatoPrezzoNonIvato($record["price_scontato"])) ? true : false;
+			$priceScontatoIvatoModificato = (isset($this->values["price_scontato_ivato"]) && F::getFormatoPrezzoIvato($this->values["price_scontato_ivato"]) != F::getFormatoPrezzoIvato($record["price_scontato_ivato"])) ? true : false;
+			
+			if ($priceModificato || $priceIvatoModificato || $priceScontatoModificato || $priceScontatoIvatoModificato)
+			{
+				$this->values["data_ora_modifica"] = date("Y-m-d H:i:s");
+				$this->values["modificato"] = 1;
+			}
+		}
 	}
 	
 	public function creaListino($nazione, $log = null)
