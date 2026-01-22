@@ -118,9 +118,24 @@ class User
 		}
 	}
 	
+	public static function setUserCountryFromListaRegalo($idLista = 0)
+	{
+		if (!$idLista)
+			$idLista = User::$idLista;
+		
+		User::$nazione = null;
+		
+		$nazioneLista = ListeregaloModel::nazioneListaRegalo(0, $idLista);
+		
+		if (isset($nazioneLista) && $nazioneLista != v("nazione_default") && CombinazionilistiniModel::listinoEsistente($nazioneLista))
+			User::$nazione = sanitizeAll($nazioneLista);
+	}
+	
 	public static function setUserCountryFromPostSpedizioneOrFromUrl()
 	{
-		if (isset($_POST["nazione_spedizione"]))
+		if (ListeregaloModel::hasIdLista())
+			User::setUserCountryFromListaRegalo();
+		else if (isset($_POST["nazione_spedizione"]))
 			User::setUserCountryFromPostSpedizione();
 		else
 			User::setUserCountryFromUrl();

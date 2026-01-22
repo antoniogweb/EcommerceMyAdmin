@@ -145,7 +145,15 @@ class BaseCartController extends BaseController
 			}
 			
 			if (!User::$idLista && $clean["id_lista"])
+			{
 				ListeregaloModel::setCookieIdLista($clean["id_lista"]);
+				
+				if (v("imposta_la_nazione_dell_utente_a_quella_nell_url"))
+				{
+					// Imposta il listino dalla lista regalo
+					User::setUserCountryFromListaRegalo($clean["id_lista"]);
+				}
+			}
 		}
 		
 		$c = new CombinazioniModel();

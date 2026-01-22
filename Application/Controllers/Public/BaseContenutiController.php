@@ -2513,6 +2513,12 @@ class BaseContenutiController extends BaseController
 		
 		if (count($lista) > 0)
 		{
+			if (v("imposta_la_nazione_dell_utente_a_quella_nell_url"))
+			{
+				// Imposta il listino dalla lista regalo
+				User::setUserCountryFromListaRegalo($lista["liste_regalo"]["id_lista_regalo"]);
+			}
+			
 			$data["title"] = Parametri::$nomeNegozio . " - ".gtext("lista")." ".$lista["liste_regalo"]["titolo"];
 			
 			$data["meta_description"] = $lista["liste_regalo"]["titolo"];
