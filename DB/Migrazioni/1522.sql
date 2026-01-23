@@ -1,0 +1,1 @@
+ALTER TABLE accesses ENGINE=InnoDB;
