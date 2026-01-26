@@ -768,12 +768,7 @@ class PagesController extends BaseController
 				
 				$this->m[$this->modelName]->setFields($this->queryFields,'sanitizeAll');
 				
-				Session::close();
-				try {
-					$this->m[$this->modelName]->updateTable('insert,update',$clean['id']);
-				} finally {
-					Session::restore();
-				}
+				$this->m[$this->modelName]->updateTable('insert,update',$clean['id']);
 				
 				if ($this->viewArgs["cl_on_sv"] == "Y" && $this->m[$this->modelName]->queryResult)
 					$data["closeModal"] = $this->closeModal = true;

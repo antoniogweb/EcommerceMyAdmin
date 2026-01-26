@@ -342,12 +342,7 @@ class BaseController extends Controller
 		
 			$data["queryType"] = $data["type"] = $queryType;
 			
-			Session::close();
-			try {
-				$this->m[$this->modelName]->updateTable($this->formQueryActions,$clean["id"]);
-			} finally {
-				Session::restore();
-			}
+			$this->m[$this->modelName]->updateTable($this->formQueryActions,$clean["id"]);
 			
 			$data["queryResult"] = $this->m[$this->modelName]->queryResult;
 			
