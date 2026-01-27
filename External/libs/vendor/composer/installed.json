@@ -201,17 +201,17 @@
                 },
                 {
                         "name": "aws/aws-sdk-php",
-                        "version": "3.369.9",
-                        "version_normalized": "3.369.9.0",
+                        "version": "3.369.20",
+                        "version_normalized": "3.369.20.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/aws/aws-sdk-php.git",
-                                "reference": "cb7c0a255a34d44f13f9276d720827d56a3b381b"
+                                "reference": "f53d8fc6cdbc1e64e7d14e72d1e315d05003b2b4"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/cb7c0a255a34d44f13f9276d720827d56a3b381b",
-                                "reference": "cb7c0a255a34d44f13f9276d720827d56a3b381b",
+                                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f53d8fc6cdbc1e64e7d14e72d1e315d05003b2b4",
+                                "reference": "f53d8fc6cdbc1e64e7d14e72d1e315d05003b2b4",
                                 "shasum": ""
                         },
                         "require": {
@@ -251,7 +251,7 @@
                                 "ext-pcntl": "To use client-side monitoring",
                                 "ext-sockets": "To use client-side monitoring"
                         },
-                        "time": "2026-01-07T19:06:56+00:00",
+                        "time": "2026-01-26T19:14:05+00:00",
                         "type": "library",
                         "extra": {
                                 "branch-alias": {
@@ -295,7 +295,7 @@
                         "support": {
                                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.9"
+                                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.20"
                         },
                         "install-path": "../aws/aws-sdk-php"
                 },
@@ -1789,17 +1789,17 @@
                 },
                 {
                         "name": "maxmind/web-service-common",
-                        "version": "v0.11.0",
-                        "version_normalized": "0.11.0.0",
+                        "version": "v0.11.1",
+                        "version_normalized": "0.11.1.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/maxmind/web-service-common-php.git",
-                                "reference": "5b9e3d3472213361eebdb3ab8879e91b8952091b"
+                                "reference": "c309236b5a5555b96cf560089ec3cead12d845d2"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/maxmind/web-service-common-php/zipball/5b9e3d3472213361eebdb3ab8879e91b8952091b",
-                                "reference": "5b9e3d3472213361eebdb3ab8879e91b8952091b",
+                                "url": "https://api.github.com/repos/maxmind/web-service-common-php/zipball/c309236b5a5555b96cf560089ec3cead12d845d2",
+                                "reference": "c309236b5a5555b96cf560089ec3cead12d845d2",
                                 "shasum": ""
                         },
                         "require": {
@@ -1811,10 +1811,10 @@
                         "require-dev": {
                                 "friendsofphp/php-cs-fixer": "3.*",
                                 "phpstan/phpstan": "*",
-                                "phpunit/phpunit": "^8.0 || ^9.0",
+                                "phpunit/phpunit": "^10.0",
                                 "squizlabs/php_codesniffer": "4.*"
                         },
-                        "time": "2025-11-20T18:33:17+00:00",
+                        "time": "2026-01-13T17:56:03+00:00",
                         "type": "library",
                         "installation-source": "dist",
                         "autoload": {
@@ -1837,7 +1837,7 @@
                         "homepage": "https://github.com/maxmind/web-service-common-php",
                         "support": {
                                 "issues": "https://github.com/maxmind/web-service-common-php/issues",
-                                "source": "https://github.com/maxmind/web-service-common-php/tree/v0.11.0"
+                                "source": "https://github.com/maxmind/web-service-common-php/tree/v0.11.1"
                         },
                         "install-path": "../maxmind/web-service-common"
                 },
@@ -2854,17 +2854,17 @@
                 },
                 {
                         "name": "phpoffice/phpspreadsheet",
-                        "version": "1.30.1",
-                        "version_normalized": "1.30.1.0",
+                        "version": "1.30.2",
+                        "version_normalized": "1.30.2.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                                "reference": "fa8257a579ec623473eabfe49731de5967306c4c"
+                                "reference": "09cdde5e2f078b9a3358dd217e2c8cb4dac84be2"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/fa8257a579ec623473eabfe49731de5967306c4c",
-                                "reference": "fa8257a579ec623473eabfe49731de5967306c4c",
+                                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/09cdde5e2f078b9a3358dd217e2c8cb4dac84be2",
+                                "reference": "09cdde5e2f078b9a3358dd217e2c8cb4dac84be2",
                                 "shasum": ""
                         },
                         "require": {
@@ -2887,12 +2887,11 @@
                                 "markbaker/complex": "^3.0",
                                 "markbaker/matrix": "^3.0",
                                 "php": ">=7.4.0 <8.5.0",
-                                "psr/http-client": "^1.0",
-                                "psr/http-factory": "^1.0",
                                 "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
                         },
                         "require-dev": {
                                 "dealerdirect/phpcodesniffer-composer-installer": "dev-main",
+                                "doctrine/instantiator": "^1.5",
                                 "dompdf/dompdf": "^1.0 || ^2.0 || ^3.0",
                                 "friendsofphp/php-cs-fixer": "^3.2",
                                 "mitoteam/jpgraph": "^10.3",
@@ -2911,7 +2910,7 @@
                                 "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
                                 "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
                         },
-                        "time": "2025-10-26T16:01:04+00:00",
+                        "time": "2026-01-11T05:58:24+00:00",
                         "type": "library",
                         "installation-source": "dist",
                         "autoload": {
@@ -2941,6 +2940,9 @@
                                 },
                                 {
                                         "name": "Adrien Crivelli"
+                                },
+                                {
+                                        "name": "Owen Leibman"
                                 }
                         ],
                         "description": "PHPSpreadsheet - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
@@ -2957,7 +2959,7 @@
                         ],
                         "support": {
                                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.30.1"
+                                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.30.2"
                         },
                         "install-path": "../phpoffice/phpspreadsheet"
                 },
@@ -3481,17 +3483,17 @@
                 },
                 {
                         "name": "phpunit/phpunit",
-                        "version": "9.6.31",
-                        "version_normalized": "9.6.31.0",
+                        "version": "9.6.34",
+                        "version_normalized": "9.6.34.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                                "reference": "945d0b7f346a084ce5549e95289962972c4272e5"
+                                "reference": "b36f02317466907a230d3aa1d34467041271ef4a"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/945d0b7f346a084ce5549e95289962972c4272e5",
-                                "reference": "945d0b7f346a084ce5549e95289962972c4272e5",
+                                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b36f02317466907a230d3aa1d34467041271ef4a",
+                                "reference": "b36f02317466907a230d3aa1d34467041271ef4a",
                                 "shasum": ""
                         },
                         "require": {
@@ -3513,7 +3515,7 @@
                                 "phpunit/php-timer": "^5.0.3",
                                 "sebastian/cli-parser": "^1.0.2",
                                 "sebastian/code-unit": "^1.0.8",
-                                "sebastian/comparator": "^4.0.9",
+                                "sebastian/comparator": "^4.0.10",
                                 "sebastian/diff": "^4.0.6",
                                 "sebastian/environment": "^5.1.5",
                                 "sebastian/exporter": "^4.0.8",
@@ -3527,7 +3529,7 @@
                                 "ext-soap": "To be able to generate mocks based on WSDL files",
                                 "ext-xdebug": "PHP extension that provides line coverage as well as branch and path coverage"
                         },
-                        "time": "2025-12-06T07:45:52+00:00",
+                        "time": "2026-01-27T05:45:00+00:00",
                         "bin": [
                                 "phpunit"
                         ],
@@ -3567,7 +3569,7 @@
                         "support": {
                                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.31"
+                                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.34"
                         },
                         "funding": [
                                 {
@@ -4125,17 +4127,17 @@
                 },
                 {
                         "name": "sebastian/comparator",
-                        "version": "4.0.9",
-                        "version_normalized": "4.0.9.0",
+                        "version": "4.0.10",
+                        "version_normalized": "4.0.10.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                                "reference": "67a2df3a62639eab2cc5906065e9805d4fd5dfc5"
+                                "reference": "e4df00b9b3571187db2831ae9aada2c6efbd715d"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/67a2df3a62639eab2cc5906065e9805d4fd5dfc5",
-                                "reference": "67a2df3a62639eab2cc5906065e9805d4fd5dfc5",
+                                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/e4df00b9b3571187db2831ae9aada2c6efbd715d",
+                                "reference": "e4df00b9b3571187db2831ae9aada2c6efbd715d",
                                 "shasum": ""
                         },
                         "require": {
@@ -4146,7 +4148,7 @@
                         "require-dev": {
                                 "phpunit/phpunit": "^9.3"
                         },
-                        "time": "2025-08-10T06:51:50+00:00",
+                        "time": "2026-01-24T09:22:56+00:00",
                         "type": "library",
                         "extra": {
                                 "branch-alias": {
@@ -4190,7 +4192,7 @@
                         ],
                         "support": {
                                 "issues": "https://github.com/sebastianbergmann/comparator/issues",
-                                "source": "https://github.com/sebastianbergmann/comparator/tree/4.0.9"
+                                "source": "https://github.com/sebastianbergmann/comparator/tree/4.0.10"
                         },
                         "funding": [
                                 {
