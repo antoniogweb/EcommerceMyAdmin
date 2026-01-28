@@ -154,7 +154,7 @@ class TraduzioniModel extends GenericModel {
 	
 	public function elimina($record)
 	{
-		return "<a href='".Url::getRoot()."traduzioni/elimina/".$record["traduzioni"]["id_t"]."' class='text text-danger text_16 elimina_traduzione'><i class='fa fa-trash'></i></a>";
+		return "<a href='".Url::getRoot()."traduzioni/elimina/".$record["traduzioni"]["id_t"]."?csrf=".User::$csrfToken."' class='text text-danger text_16 elimina_traduzione'><i class='fa fa-trash'></i></a>";
 	}
 	
 	public static function sLingua($lingua, $contesto = "front")

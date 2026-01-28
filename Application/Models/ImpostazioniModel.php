@@ -57,6 +57,14 @@ class ImpostazioniModel extends GenericModel {
 		}
 	}
 	
+	public function update($id = null, $where = null)
+	{
+		if (isset($this->values["smtp_psw"]) && !trim((string)$this->values["smtp_psw"]))
+			$this->delFields("smtp_psw");
+		
+		return parent::update($id, $where);
+	}
+	
 	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array
@@ -196,7 +204,7 @@ class ImpostazioniModel extends GenericModel {
 				),
 				'smtp_psw'		=>	array(
 					'type'		=>	"Password",
-					'fill'		=>	true,
+					// 'fill'		=>	true,
 					'labelString'=>	gtext("Password usata per il servizio esterno SMTP"),
 					'wrap'		=>	array(
 						null,

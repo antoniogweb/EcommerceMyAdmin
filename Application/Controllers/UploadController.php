@@ -24,8 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class UploadController extends BaseController {
 
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->session('admin');
 
@@ -48,7 +49,7 @@ class UploadController extends BaseController {
 		);
 		
 		$clean['dir'] = $this->request->get("directory",null,"sanitizeAll");
-		$data['base'] = $this->request->get("base",null,"sanitizeAll");
+		$data['base'] = "";
 		
 		if (strcmp($fileName,'') !== 0)
 		{
@@ -94,9 +95,9 @@ class UploadController extends BaseController {
 		$clean['dir'] = $this->request->get("directory",null,"sanitizeAll");
 		$clean['action'] = $this->request->get("action",null,"sanitizeAll");
 		$clean['file'] = $this->request->get("file",null,"sanitizeAll");
-		$data['base'] = $this->request->get("base",null,"sanitizeAll");
+		$data['base'] = "";
 		
-		$tree = new Files_Upload($this->parentRootFolder.'/'.Parametri::$cartellaImmaginiGeneriche.'/'.$data['base'],$params);
+		$tree = new Files_Upload($this->parentRootFolder.'/'.Parametri::$cartellaImmaginiGeneriche,$params);
 		
 		$tree->setDirectory($clean['dir']);
 		

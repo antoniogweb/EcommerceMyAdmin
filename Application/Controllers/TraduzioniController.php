@@ -34,8 +34,8 @@ class TraduzioniController extends BaseController {
 	
 	public $mainMenuMain = 'esporta,importa';
 	
-	function __construct($model, $controller, $queryString, $application, $action) {
-		
+	function __construct($model, $controller, $queryString, $application, $action)
+	{
 		$this->argKeys = array(
 			'valore:sanitizeAll'=>'tutti',
 			'id_t:sanitizeAll'=>'tutti',
@@ -232,6 +232,8 @@ class TraduzioniController extends BaseController {
 	
 	public function elimina($id_t)
 	{
+		$this->checkCsrf(true);
+
 		$this->clean();
 		
 		$record = $this->m[$this->modelName]->selectId((int)$id_t);

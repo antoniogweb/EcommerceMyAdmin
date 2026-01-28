@@ -99,6 +99,7 @@ class BaseController extends Controller
 			User::$name = $this->s['admin']->status['user'];
 			
 			User::$groups = $this->s['admin']->status['groups'];
+			User::$csrfToken = $this->s['admin']->status['token'];
 			
 			$token = User::$token = $this->s['admin']->status['token'];
 			$data['token'] = $token;
@@ -120,6 +121,9 @@ class BaseController extends Controller
 			if (v("hook_after_login_admin"))
 				callFunction(v("hook_after_login_admin"), $this, v("hook_after_login_admin"));
 		}
+		
+		// check CSRF
+		$this->checkCsrf();
 		
 		// Help wizard
 		$this->model("HelpModel");
@@ -854,6 +858,17 @@ class BaseController extends Controller
 		{
 			$this->mainFields[] = $this->m($this->modelName)->table().".codice_gestionale";
 			$this->mainHead .= ",Codice gestionale";
+		}
+	}
+	
+	protected function checkCsrf($force = false)
+	{
+		if (isset($_GET["delAction"]) || $force)
+		{
+			$csrf = $this->request->get("csrf","");
+			
+			if (!$this->s["admin"]->checkCSRF($csrf))
+				$this->responseCode(403);
 		}
 	}
 }

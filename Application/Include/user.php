@@ -44,6 +44,7 @@ class User
 	public static $idLista = 0;
 	public static $sorgente = "";
 	public static $isSuperAdmin = false;
+	public static $csrfToken = "";
 	
 	public static $adminLogged = false;
 	public static $asJson = false;
