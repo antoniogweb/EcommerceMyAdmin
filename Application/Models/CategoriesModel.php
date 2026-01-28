@@ -359,6 +359,8 @@ class CategoriesModel extends HierarchicalModel {
 		
 		if (!self::$uploadFile || $this->upload("update"))
 		{
+			$this->checkTemplateField();
+
 			parent::update($id, $where);
 			
 			if ($this->queryResult)
@@ -384,6 +386,8 @@ class CategoriesModel extends HierarchicalModel {
 		
 		if (!self::$uploadFile || $this->upload("insert"))
 		{
+			$this->checkTemplateField();
+			
 			parent::insert();
 			
 			if ($this->queryResult)

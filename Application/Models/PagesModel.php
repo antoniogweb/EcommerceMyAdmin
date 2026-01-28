@@ -1094,19 +1094,6 @@ class PagesModel extends GenericModel {
 		}
 	}
 	
-	public function checkTemplateField()
-	{
-		if (isset($this->values["template"]))
-		{
-			$template = (string)$this->values["template"];
-			
-			if (preg_match('/^[a-zAZ0-9_-]{1,40}$/',$template))
-				$this->values["template"] = basename((string)$template);
-			else
-				$this->values["template"] = "";
-		}
-	}
-	
 	public function update($id = null, $where = null)
 	{
 		$clean["id"] = (int)$id;

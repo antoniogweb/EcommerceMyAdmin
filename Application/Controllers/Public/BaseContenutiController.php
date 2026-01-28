@@ -856,7 +856,7 @@ class BaseContenutiController extends BaseController
 		if (v("estrai_categorie_figlie"))
 			$data["categorieFiglie"] = $this->m('CategoriesModel')->clear()->addJoinTraduzioneCategoria()->where(array("id_p"=>$clean['id']))->orderBy("categories.lft")->send();
 		
-		$template = strcmp($r[0]["categories"]["template"],"") === 0 ? null : $r[0]["categories"]["template"];
+		$template = strcmp($r[0]["categories"]["template"],"") === 0 ? null : basename($r[0]["categories"]["template"]);
 		
 		$metaDescriptionCategoria = $this->getMetaDescriptionCategoria($r[0]);
 		
@@ -1938,7 +1938,7 @@ class BaseContenutiController extends BaseController
 		
 		$this->append($data);
 		
-		$template = strcmp($data['pages'][0]["pages"]["template"],"") === 0 ? null : $data['pages'][0]["pages"]["template"];
+		$template = strcmp($data['pages'][0]["pages"]["template"],"") === 0 ? null : basename($data['pages'][0]["pages"]["template"]);
 		
 		$section = $this->m("PagesModel")->section($clean['id']);
 		

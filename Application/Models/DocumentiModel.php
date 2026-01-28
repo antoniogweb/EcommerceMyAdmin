@@ -383,10 +383,15 @@ class DocumentiModel extends GenericModel {
 			
 			$okElaborazione = array();
 			
+			$this->checkExtAndMimeTypeFull($extractPath);
+			
 			$items = scandir($extractPath);
 			foreach( $items as $this_file ) {
 				if( strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0) {
 					$this_file = basename($this_file);
+					
+					if (is_dir($extractPath.$this_file))
+						self::eliminaCartella($extractPath.$this_file);
 					
 					$okElaborazione[] = $this->scDocumento($extractPath, $this_file, 0, array(
 						"id_page"		=>	$idPage,
@@ -438,6 +443,31 @@ class DocumentiModel extends GenericModel {
 		}
 		
 		return v("lingua_default_documenti");
+	}
+	
+	public function checkExtAndMimeTypeFull($extractPath)
+	{
+		$AllowedExtensionsArray = explode(",", v("estensioni_accettate_documenti"));
+		$AllowedMimeTypesArray = v("mime_type_accettati_documenti") ? explode(",", v("mime_type_accettati_documenti")) : array();
+		
+		$files = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($extractPath, RecursiveDirectoryIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach ($files as $fileinfo)
+		{
+			if ($fileinfo->isFile())
+			{
+				$realPath = $fileinfo->getRealPath();
+				$ext = $fileinfo->getExtension();
+				$mimeType = $this->files->getContentType($realPath);
+				
+				// Check extension and MIME type
+				if (!in_array($ext,$AllowedExtensionsArray) || (count($AllowedMimeTypesArray) > 0 && !in_array($mimeType,$AllowedMimeTypesArray)))
+					@unlink($realPath);
+			}
+		}
 	}
 	
 	public function scDocumento($extractPath, $this_file, $copia = 0, $params = array())
