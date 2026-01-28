@@ -1867,7 +1867,7 @@ class GenericModel extends Model_Tree
 		{
 			$template = (string)$this->values["template"];
 			
-			if (preg_match('/^[a-zAZ0-9_-]{1,40}$/',$template))
+			if (preg_match('/^[a-zA-Z0-9_-]{1,40}$/',$template))
 				$this->values["template"] = (string)$template;
 			else
 				$this->values["template"] = "";
