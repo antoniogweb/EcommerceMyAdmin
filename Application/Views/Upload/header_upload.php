@@ -8,10 +8,6 @@
 
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc.'/Public/Css/filesystem.css';?>">
 
-<?php if ($this->viewArgs['use_flash']) { ?>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc?>/Public/Js/uploadify_3_2_1/uploadify.css" />
-<?php } ?>
-
 </head>
 
 <body>

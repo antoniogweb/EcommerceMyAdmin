@@ -924,6 +924,7 @@ class VariabiliModel extends GenericModel {
 		"ip_sito"				=>	'', // se impostato, l'IP del server del sito
 		"token_migrazioni_no_admin"	=>	'', // per poter lanciare le migrazioni via web senza senza essere loggato in admin (deve essere attivo attiva_cron_web e bisogna passare anche token_comandi_cron_web)
 		"limit_in_esporta"		=>	'500', // limit nelle operazioni di esportazione
+		"permetti_upload_generico"	=>	1, // se impostato su 1 attiva il controller UploadController
 	);
 	
 	public static $daInizializzare = array(

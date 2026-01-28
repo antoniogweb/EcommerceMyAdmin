@@ -13,4 +13,5 @@
 	var nazioniConProvince = ['<?php echo implode("','",NazioniModel::nazioniConProvince())?>'];
 	var fawe_folder_opened_class = "<?php echo v("fawe_folder_opened_class");?>";
 	var fawe_folder_closed_class = "<?php echo v("fawe_folder_closed_class");?>";
+	var permetti_upload_generico = "<?php echo v("permetti_upload_generico");?>";
 </script>

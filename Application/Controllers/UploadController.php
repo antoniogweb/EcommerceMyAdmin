@@ -28,6 +28,9 @@ class UploadController extends BaseController {
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 
+		if (!v("permetti_upload_generico"))
+			$this->responseCode(403);
+		
 		$this->session('admin');
 
 		$this->clean();
@@ -85,7 +88,8 @@ class UploadController extends BaseController {
 		$params = array(
 			'filesPermission'	=>	0777,
 			'language'			=>	'It',
-			'allowedExtensions'	=>	'png,jpg,jpeg,txt,odt,doc,pdf,zip,gif,bmp,svg',
+			'allowedExtensions'	=>	'png,jpg,jpeg,pdf,gif,svg',
+			'allowedMimeTypes'	=>	'image/png,image/jpeg,image/jpeg,application/pdf,image/gif,image/svg+xml',
 			'maxFileSize'		=>	v("dimensioni_upload_file_generici"),
 			'fileUploadKey'		=>	'userfile',
 			'fileUploadBehaviour'	=>	'add_token', //can be none or add_token
@@ -104,16 +108,18 @@ class UploadController extends BaseController {
 		switch($clean['action'])
 		{
 			case 'delfile':
+				$this->checkCsrf(true);
 				$tree->removeFile($clean['file']);
 				break;
 			case 'delfolder':
+				$this->checkCsrf(true);
 				$tree->removeFolder($clean['file']);
 				break;
 			case 'uploadfile':
 				$tree->uploadFile();
 				break;
 			case 'createfolder':
-				$folderName = $this->request->post("folderName",null,"sanitizeAll");
+				$folderName = encodeUrl($this->request->post("folderName",null,"sanitizeAll"));
 				$tree->createFolder($folderName);
 				break;
 		}

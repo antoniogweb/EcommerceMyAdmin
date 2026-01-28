@@ -72,22 +72,18 @@
 
 <?php if ($this->viewArgs['mostra_upload']) { ?>
 <div class='EGuploadFileBox'>
-	<?php if (!$this->viewArgs['use_flash']) { ?>
+	
 	<form class="EGuploadFileBox_form" action='<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=uploadfile";?>' method='POST' enctype="multipart/form-data">
 		
 		<b><?php echo gtext("Carica file");?>:</b>
 		
-	<?php } ?>
-	
 		<input id="userfile" name="userfile" type="file">
 	
-	<?php if (!$this->viewArgs['use_flash']) { ?>
 		<input class="file_submit" type="submit" name="uploadFileAction" value="<?php echo gtext("carica", false);?>">
 		<input type="hidden" name="MAX_FILE_SIZE" value="10000">
 		<span class="loading_gif"><img src="<?php echo $this->baseUrlSrc."/Public/Img/Icons/loading4.gif";?>" /></span>
-		
 	</form>
-	<?php } ?>
+
 </div>
 <?php } ?>
 
@@ -124,7 +120,7 @@
 			<td><?php echo gtext("Folder name");?>:<br /><b><?php echo $folder;?></b></td>
 			<?php if ($this->viewArgs['mostra_delete']) { ?>
 			<td width="8%">
-				<a href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=delfolder&file=$folder";?>"><img src="<?php echo $this->baseUrlSrc?>/Public/Img/Icons/delete.png" /></a>
+				<a href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=delfolder&file=$folder"."&csrf=".User::$csrfToken;?>"><img src="<?php echo $this->baseUrlSrc?>/Public/Img/Icons/delete.png" /></a>
 			</td>
 			<?php } ?>
 		</tr>
@@ -180,15 +176,11 @@
 				?>
 			</td>
 			<td class="EGfileBox_click">File name:<br /><b>
-				<?php if ($this->viewArgs['mostra_url_completo']) { ?>
-				<span class="file_url" rel="<?php echo $parentRoot."/".Parametri::$cartellaImmaginiGeneriche."$base/".$currentDir.$file;?>"><?php echo $parentRoot."/".Parametri::$cartellaImmaginiGeneriche."$base/".$currentDir.$file;?></span>
-				<?php } else { ?>
 				<span class="file_url" rel="<?php echo $parentRoot."/".Parametri::$cartellaImmaginiGeneriche."$base/".$currentDir.$file;?>"><pre><?php echo $file;?></pre></span>
-				<?php } ?>
 			</b></td>
 			<?php if ($this->viewArgs['mostra_delete']) { ?>
 			<td width="5%">
-				<a class="delete_file_class" href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=delfile&file=$file";?>"><img src="<?php echo $this->baseUrlSrc;?>/Public/Img/Icons/delete.png" /></a><span class="loading_gif_del"><img src="<?php echo $this->baseUrlSrc."/Public/Img/Icons/loading4.gif";?>" /></span>
+				<a class="delete_file_class" href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=delfile&file=$file"."&csrf=".User::$csrfToken;?>"><img src="<?php echo $this->baseUrlSrc;?>/Public/Img/Icons/delete.png" /></a><span class="loading_gif_del"><img src="<?php echo $this->baseUrlSrc."/Public/Img/Icons/loading4.gif";?>" /></span>
 			</td>
 			<?php } ?>
 		</tr>

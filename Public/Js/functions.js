@@ -18,7 +18,6 @@ var tiny_editor_config = {
 	theme_advanced_buttons1 : "bold,italic,underline,strikethrough,bullist,numlist,justifyleft,justifycenter,justifyright,justifyfull",
 	theme_advanced_buttons2 : "link,unlink,image,formatselect,forecolor,backcolor,sub,sup,code",
 	
-	file_browser_callback : "ajaxfilemanager",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
 	theme_advanced_statusbar_location : "bottom",
@@ -27,6 +26,9 @@ var tiny_editor_config = {
 	accessibility_focus : false,
 	oninit : aggAlteIfr
 };
+
+if (permetti_upload_generico == 1)
+	tiny_editor_config["file_browser_callback"] = "ajaxfilemanager";
 
 var form_modificato = false;
 var riga_modificata = false;
