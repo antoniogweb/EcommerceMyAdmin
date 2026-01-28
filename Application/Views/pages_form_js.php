@@ -212,7 +212,7 @@ function show_preview3()
 var allowed = [ "jpg","jpeg","png","gif" ];
 
 if (typeof url == "undefined")
-	var url = '<?php echo $this->baseUrl."/pages/move";?>';
+	var url = '<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/move";?>';
 
 $(function () {
     'use strict';

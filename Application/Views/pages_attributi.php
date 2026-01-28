@@ -31,7 +31,7 @@ $(document).ready(function(){
 			
 			$.ajax({
 				type: "POST",
-				url: "<?php echo $this->baseUrl."/pages/updatevalue";?>",
+				url: "<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/updatevalue";?>",
 				data: post_data,
 				async: true,
 				cache:false,

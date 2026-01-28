@@ -86,7 +86,7 @@ function import_thumb()
 	
 var allowed = [ "jpg","jpeg","png","gif" ];
 
-var url = '<?php echo $this->baseUrl."/pages/move";?>';
+var url = '<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/move";?>';
 
 $(function () {
 	'use strict';
@@ -166,7 +166,7 @@ $(document).ready(function(){
 
 						<div class="images_preview">
 							<div>
-								<form action='<?php echo $this->baseUrl?>/pages/form/immagini/<?php echo $id_page.$this->viewStatus;?>#form_images' method='POST' enctype="multipart/form-data">
+								<form action='' method='POST' enctype="multipart/form-data">
 									<span class="btn btn-success fileinput-button">
 										<i class="fa fa-plus-circle"></i>
 										<span><?php echo gtext("SELEZIONA LE IMMAGINI");?></span>
