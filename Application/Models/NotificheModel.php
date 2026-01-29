@@ -178,6 +178,30 @@ class NotificheModel extends GenericModel {
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
 				);
+			
+			$tree = new Files_Upload(LIBRARY."/Application/Controllers");
+			$tree->listFiles();
+			$files = $tree->getFiles();
+			
+			$cModel = new ControllersModel();
+			
+			foreach ($files as $file)
+			{
+				if (preg_match('/^([a-zA-Z0-9]{1,})Controller.php$/',$file,$matches))
+				{
+					$controller = strtolower($matches[1]);
+					
+					$numero = $cModel->clear()->where(array(
+						"OR"	=>	array(
+							"codice"	=>	sanitizeDb($controller),
+							"codice_padre"	=>	sanitizeDb($controller),
+						)
+					))->rowNumber();
+					
+					if (!$numero)
+						echo $controller."\n";
+				}
+			}
 		}
 		
 		return $notifiche;
