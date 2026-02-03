@@ -77,6 +77,9 @@ class RigheController extends BaseController
 					"ne" => array(
 						"orders.stato"	=>	"deleted"
 					),
+					" ne" => array(
+						"righe.id_page"	=>	0,
+					),
 				))
 				->groupBy("righe.id_page")
 				->orderBy("sum(quantity) desc")->convert();
