@@ -170,7 +170,7 @@ Helper_Menu::$htmlLinks = array(
 	"esporta_xls" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
-		"attributes" => 'role="button" class="btn btn-info"',
+		"attributes" => 'role="button" class="btn btn-default"',
 		"class"	=>	"btn btn-info",
 		'text'	=>	"Esporta XLS",
 		'url'	=>	'main',

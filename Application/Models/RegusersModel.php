@@ -38,6 +38,41 @@ class RegusersModel extends FormModel {
 	public $documentiModelAssociato = "DocumentiModel";
 	public $campoDataCreazione = "creation_date";
 	
+	public static $sefinizioneCampiAggiuntiviInCss = array(
+		"indirizzo"	=>	array(
+			"field"	=>	'regusers.indirizzo',
+			"head"	=>	"Indirizzo",
+		),
+		"cap"	=>	array(
+			"field"	=>	'regusers.cap',
+			"head"	=>	"Cap",
+		),
+		"nazione"	=>	array(
+			"field"	=>	'NazioniModel.findTitoloDaCodice|regusers.nazione',
+			"head"	=>	"Nazione",
+		),
+		"provincia"	=>	array(
+			"field"	=>	'ProvinceModel.findTitoloDaCodice|regusers.provincia',
+			"head"	=>	"Provincia",
+		),
+		"citta"	=>	array(
+			"field"	=>	'regusers.citta',
+			"head"	=>	"Città",
+		),
+		"telefono"	=>	array(
+			"field"	=>	'regusers.telefono',
+			"head"	=>	"Telefono",
+		),
+		"pec"	=>	array(
+			"field"	=>	'regusers.pec',
+			"head"	=>	"Pec",
+		),
+		"codice_destinatario"	=>	array(
+			"field"	=>	'regusers.codice_destinatario',
+			"head"	=>	"Codice destinatario",
+		),
+	);
+	
 	public function __construct() {
 		$this->_tables='regusers';
 		$this->_idFields='id_user';

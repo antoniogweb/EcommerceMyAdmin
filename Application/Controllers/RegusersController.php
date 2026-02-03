@@ -190,7 +190,26 @@ class RegusersController extends BaseController
 		$this->mainFields = $mainFields;
 		$this->mainHead = $headLabels;
 		
+		if (v("campi_aggiuntivi_esportazione_csv_utenti"))
+		{
+			$this->mainCsvFields = $this->mainFields;
+			$this->mainCsvHead = $this->mainHead;
+			
+			$chiavi = explode(",", v("campi_aggiuntivi_esportazione_csv_utenti"));
+			
+			foreach ($chiavi as $chiave)
+			{
+				if (isset(RegusersModel::$sefinizioneCampiAggiuntiviInCss[$chiave]))
+				{
+					$this->mainCsvFields[] = RegusersModel::$sefinizioneCampiAggiuntiviInCss[$chiave]["field"];
+					$this->mainCsvHead .= ",".RegusersModel::$sefinizioneCampiAggiuntiviInCss[$chiave]["head"];
+				}
+			}
+		}
+		
 		$this->filters = $filtri;
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'add,esporta_xls');
 		
 		$this->m[$this->modelName]->aWhere(array(
 			'has_confirmed'	=>	$this->viewArgs['has_confirmed'],

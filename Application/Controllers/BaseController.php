@@ -178,7 +178,7 @@ class BaseController extends Controller
 		
 		$this->generaPosizioni();
 		
-		$this->limitInEsporta = v("limit_in_esporta");
+		$this->setLimitInExport();
 		
 		UsersopzioniModel::$sApp = nullToBlank($application);
 		UsersopzioniModel::$sController = $controller;
@@ -869,6 +869,21 @@ class BaseController extends Controller
 			
 			if (!$this->s["admin"]->checkCSRF($csrf))
 				$this->responseCode(403);
+		}
+	}
+	
+	protected function setLimitInExport($buttons = "esporta,esporta_xls")
+	{
+		$this->limitInEsporta = v("limit_in_esporta");
+		
+		$buttonsArray = explode(",", $buttons);
+		
+		foreach ($buttonsArray as $button)
+		{
+			if (isset(Helper_Menu::$htmlLinks[$button]) && isset(Helper_Menu::$htmlLinks[$button]["text"]))
+			{
+				Helper_Menu::$htmlLinks[$button]["text"] .= " (max ".$this->limitInEsporta.")";
+			}
 		}
 	}
 }

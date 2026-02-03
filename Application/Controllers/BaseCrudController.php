@@ -326,6 +326,7 @@ trait BaseCrudController
 			
 			$this->scaffold->params["recordPerPage"] = $this->limitInEsporta;
 			$this->scaffold->params['pageList'] = true;
+			$this->scaffold->itemList->setEmptyChar("");
 			
 			$data['scaffold'] = $this->scaffold->render();
 			
