@@ -80,6 +80,7 @@ class RigheController extends BaseController
 					" ne" => array(
 						"righe.id_page"	=>	0,
 					),
+					"righe.prodotto_generico"	=>	0,
 				))
 				->groupBy("righe.id_page")
 				->orderBy("sum(quantity) desc")->convert();
