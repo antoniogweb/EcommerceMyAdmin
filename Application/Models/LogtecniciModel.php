@@ -73,7 +73,7 @@ class LogtecniciModel extends GenericModel {
 			"notificato"	=>	0,
 			"da_notificare_via_mail"	=>	1,
 			"check_ip"		=>	0,
-		))->sWhere("IS_IPV4(ip)")->groupBy("ip")->orderBy()->toList("ip")->send();
+		))->sWhere("(IS_IPV4(ip) or IS_IPV6(ip))")->groupBy("ip")->orderBy()->toList("ip")->send();
 		
 		foreach ($daControllare as $ip)
 		{
