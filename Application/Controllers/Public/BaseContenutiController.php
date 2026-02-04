@@ -393,22 +393,6 @@ class BaseContenutiController extends BaseController
 				$parents = $this->m("CategoriesModel")->parents($clean['id'],false,false, Params::$lang);
 				array_shift($parents); //remove the root parent
 				
-// 				if (isset($parents[count($parents)-1]["contenuti_tradotti"]["title"]) && $parents[count($parents)-1]["contenuti_tradotti"]["title"])
-// 					$data["title"] = Parametri::$nomeNegozio . " - " . strtolower($parents[count($parents)-1]["contenuti_tradotti"]["title"]);
-// 				else
-// 					$data["title"] = Parametri::$nomeNegozio . " - " . strtolower($parents[count($parents)-1]["categories"]["title"]);
-// 				
-// 				if ($this->titleTag && (int)$clean['id'] === (int)$this->idShop)
-// 					$data["title"] = Parametri::$nomeNegozio . " - " .$this->titleTag;
-// 				
-// 				if ($this->titleMarchio)
-// 				{
-// 					if ((int)$clean['id'] === (int)$this->idShop)
-// 						$data["title"] = Parametri::$nomeNegozio . " - " .$this->titleMarchio;
-// 					else
-// 						$data["title"] .= " - " .$this->titleMarchio;
-// 				}
-				
 				$data["title"] = $this->getTitleCategoria($parents[count($parents)-1], $clean['id']);
 				
 				$this->fullParents = $parents;
@@ -880,20 +864,6 @@ class BaseContenutiController extends BaseController
 		if (v("mostra_categorie_sorelle_in_griglia_prodotti") && isset($data["datiCategoria"]))
 			$data["piChildren"] = $this->getImmediateChildren($data["datiCategoria"]["categories"]["id_p"]);
 		
-//		if (v("mostra_categorie_figlie_in_griglia_prodotti"))
-// 		{
-// 			$iChildrenGross = $this->m("CategoriesModel")->immediateChildren($clean['id']);
-// 			
-// 			$data["iChildren"] = array();
-// 			foreach ($iChildrenGross as $row)
-// 			{
-// 				if ($this->m("CategoriesModel")->hasActivePages($row["categories"]["id_c"]))
-// 				{
-// 					$data["iChildren"][] = $row;
-// 				}
-// 			}
-// 		}
-		
 		// Estraggo gli id delle pagine trovate
 		if ($firstSection == "prodotti" && v("attiva_filtri_successivi"))
 		{
@@ -1340,7 +1310,8 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		$this->m("PagesModel")->addJoinTraduzionePagina();
+		// if ($firstSection != "prodotti" || !v("usa_sotto_query_in_elenco"))
+			$this->m("PagesModel")->addJoinTraduzionePagina();
 		
 		if (isset($data))
 			$this->append($data);
