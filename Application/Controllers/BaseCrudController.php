@@ -229,7 +229,7 @@ trait BaseCrudController
 		
 		$this->scaffold->setHead($this->mainHead);
 
-		if ($this->addBulkActions)
+		if ($this->addBulkActions && !isset($_GET["esporta_xls"]))
 		{
 			if (!isset($this->bulkActions) or !is_array($this->bulkActions))
 			{
