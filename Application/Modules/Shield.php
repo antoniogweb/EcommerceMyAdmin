@@ -178,6 +178,9 @@ class Shield
 						
 						foreach ($stringhe as $stringa)
 						{
+							if ($stringa == "==")
+								continue;
+							
 							if (stripos($value, $stringa) !== false)
 							{
 								$erroriBlocco[] = "Bloccato IP $ip: stringa pericolosa <b>$stringa</b> nel cookie <b>$value</b>";
