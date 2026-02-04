@@ -584,6 +584,8 @@ class CombinazioniController extends BaseController
 		
 		foreach ($valori as $v)
 		{
+			$v["codice"] = CombinazioniModel::normalizzaCodice($v["codice"]);
+			
 			if (v("usa_transactions"))
 				$record = $this->m[$this->modelName]->clear()->whereId((int)$v["id_c"])->forUpdate()->record();
 			else
@@ -612,10 +614,10 @@ class CombinazioniController extends BaseController
 				$this->m[$this->modelName]->setValue("acquistabile", $v["acquistabile"]);
 			
 			if (isset($v["gtin"]))
-				$this->m[$this->modelName]->setValue("gtin", $v["gtin"]);
+				$this->m[$this->modelName]->setValue("gtin", CombinazioniModel::normalizzaCodice($v["gtin"]));
 			
 			if (isset($v["mpn"]))
-				$this->m[$this->modelName]->setValue("mpn", $v["mpn"]);
+				$this->m[$this->modelName]->setValue("mpn", CombinazioniModel::normalizzaCodice($v["mpn"]));
 			
 			$idPage = isset($record["id_page"]) ? $record["id_page"] : 0;
 			

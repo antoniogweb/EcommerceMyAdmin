@@ -1094,6 +1094,18 @@ class PagesModel extends GenericModel {
 		}
 	}
 	
+	public function normalizzaCodice()
+	{
+		if (isset($this->values["codice"]) && trim($this->values["codice"]))
+			$this->values["codice"] = CombinazioniModel::normalizzaCodice($this->values["codice"]);
+		
+		if (isset($this->values["gtin"]) && trim($this->values["gtin"]))
+			$this->values["gtin"] = CombinazioniModel::normalizzaCodice($this->values["gtin"]);
+		
+		if (isset($this->values["mpn"]) && trim($this->values["mpn"]))
+			$this->values["mpn"] = CombinazioniModel::normalizzaCodice($this->values["mpn"]);
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		$clean["id"] = (int)$id;
@@ -1125,6 +1137,8 @@ class PagesModel extends GenericModel {
 				$this->setPriceNonIvato();
 				
 				$this->checkTemplateField();
+				
+				$this->normalizzaCodice();
 				
 				$r = parent::update($clean["id"]);
 				
@@ -1447,6 +1461,8 @@ class PagesModel extends GenericModel {
 			$this->setPriceNonIvato();
 			
 			$this->checkTemplateField();
+			
+			$this->normalizzaCodice();
 			
 			$r = parent::insert();
 			

@@ -315,6 +315,14 @@ class CombinazioniModel extends GenericModel {
 		}
 	}
 	
+	public static function normalizzaCodice($codice)
+	{
+		$codice = trim($codice);
+		$codice = str_replace(["\t","\r","\n","/"], "", $codice);
+		
+		return $codice;
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		$record = $this->selectId((int)$id);
