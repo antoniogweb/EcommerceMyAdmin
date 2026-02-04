@@ -371,7 +371,7 @@ class ConteggioqueryModel extends GenericModel
 			"attacco"	=>	1,
 		))
 		->sWhere($sWhereIp)
-		->groupBy("subip having numero_ip > ".(int)$numeroIpStessarete." && numero_attacchi > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_attacchi")->send();
+		->groupBy("subip having numero_ip >= ".(int)$numeroIpStessarete." && numero_attacchi > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_attacchi")->send();
 		
 		return $resIp + $resRange;
 	}
@@ -408,7 +408,7 @@ class ConteggioqueryModel extends GenericModel
 			),
 		))
 		->sWhere($sWhereIp)
-		->groupBy("subip having numero_ip > ".(int)$numeroIpStessarete." && numero_query > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_query")->send();
+		->groupBy("subip having numero_ip >= ".(int)$numeroIpStessarete." && numero_query > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_query")->send();
 		
 		return $resIp + $resRange;
 	}
