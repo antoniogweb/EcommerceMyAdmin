@@ -38,6 +38,8 @@ $options = getopt(null, array(
 	"limit::",
 	"nazioni::",
 	"numero::",
+	"ip_whitelist::",
+	"rete_whitelist::",
 ));
 
 $default = array(
@@ -282,4 +284,24 @@ if ($params["azione"] == "ottieni-ip-bot")
 	IpfilterModel::loadIpBot($log);
 	
 	$log->writeString("FINE GET IP BOT");
+}
+
+// Aggiungi in whitelist
+if ($params["azione"] == "aggiungi-in-whitelist" && isset($params["ip_whitelist"]) && isset($params["rete_whitelist"]))
+{
+	$log->writeString("INIZIO AGGIUNTA IN WHITELIST");
+	
+	IpfilterModel::aggiungiInWhitelist($params["ip_whitelist"], $params["rete_whitelist"], $log);
+	
+	$log->writeString("FINE AGGIUNTA IN WHITELIST");
+}
+
+// Rimuovi da whitelist
+if ($params["azione"] == "rimuovi-da-whitelist" && isset($params["ip_whitelist"]) && isset($params["rete_whitelist"]))
+{
+	$log->writeString("INIZIO RIMOZIONE DA WHITELIST");
+	
+	IpfilterModel::rimuoviDaWhitelist($params["ip_whitelist"], $params["rete_whitelist"], $log);
+	
+	$log->writeString("FINE RIMOZIONE DA WHITELIST");
 }

@@ -86,6 +86,96 @@ class IpfilterModel extends GenericModel
 		$this->insert();
 	}
 	
+	public static function getArrayIp($ip)
+	{
+		$pos = strpos($ip, "/");
+		
+		$arrayIp = [];
+		
+		if ($pos === false)
+		{
+			if (filter_var($ip, FILTER_VALIDATE_IP))
+				$arrayIp[] = $ip;
+		}
+		else
+		{
+			$ipList = self::getIpList($ip);
+			
+			foreach ($ipList as $ipInLista)
+			{
+				if (filter_var($ipInLista, FILTER_VALIDATE_IP))
+					$arrayIp[] = $ipInLista;
+			}
+		}
+		
+		return $arrayIp;
+	}
+	
+	public static function rimuoviDaWhitelist($ip, $rete, $log)
+	{
+		$arrayIp = self::getArrayIp($ip);
+		
+		if ((int)count($arrayIp) === 0)
+			return;
+		
+		$ifModel = new IpfilterModel();
+		
+		if (v("usa_transactions"))
+			$ifModel->db->beginTransaction();
+		
+		foreach ($arrayIp as $ipToAdd)
+		{
+			$ifModel->del(null, array(
+				"ip"	=>	sanitizeAll($ipToAdd),
+				"rete"	=>	sanitizeAll($rete),
+			));
+		}
+		
+		if ($log)
+			$log->writeString("Rimosso IP $ip in rete $rete da WHITELIST");
+		
+		if (v("usa_transactions"))
+			$ifModel->db->commit();
+	}
+	
+	public static function aggiungiInWhitelist($ip, $rete, $log)
+	{
+		$pos = strpos($ip, "/");
+		
+		$arrayIp = self::getArrayIp($ip);
+		
+		if ((int)count($arrayIp) === 0)
+			return;
+		
+		$ifModel = new IpfilterModel();
+		
+		if (v("usa_transactions"))
+			$ifModel->db->beginTransaction();
+		
+		foreach ($arrayIp as $ipToAdd)
+		{
+			$numero = $ifModel->clear()->where(array(
+				"ip"	=>	sanitizeAll($ipToAdd),
+				"rete"	=>	sanitizeAll($rete),
+			))->rowNumber();
+			
+			$ifModel->sValues(array(
+				"ip"		=>	$ipToAdd,
+				"whitelist"	=>	1,
+				"rete"		=>	$rete,
+			));
+			
+			if (!$numero)
+				$ifModel->insert();
+		}
+		
+		if ($log)
+			$log->writeString("Aggiunto IP $ip in rete $rete in WHITELIST");
+		
+		if (v("usa_transactions"))
+			$ifModel->db->commit();
+	}
+	
 	public static function loadIpBot($log = null)
 	{
 		$codici = OpzioniModel::codice("URL_IP_BOT");
