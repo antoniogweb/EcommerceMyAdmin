@@ -1,0 +1,1 @@
+ALTER TABLE `conteggio_query` ADD INDEX `conteggio_query_data_creazione_ip` (`data_creazione`, `ip`);

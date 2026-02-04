@@ -1,0 +1,1 @@
+ALTER TABLE `conteggio_query` ADD INDEX `conteggio_query_data_creazione` (`data_creazione`);
