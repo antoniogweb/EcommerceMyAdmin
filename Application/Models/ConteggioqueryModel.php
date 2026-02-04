@@ -376,7 +376,7 @@ class ConteggioqueryModel extends GenericModel
 		return $resIp + $resRange;
 	}
 	
-	public static function numeroQuery($soglia = 1000, $secondi = 60, $numeroIpStessarete = 30)
+	public static function numeroQuery($soglia = 1000, $secondi = 60, $numeroIpStessarete = 30, $forzaCheckSoloRete = false)
 	{
 		if (self::salvaSuFile())
 			return self::numeroDaFile($soglia, $secondi, $numeroIpStessarete);
@@ -397,6 +397,9 @@ class ConteggioqueryModel extends GenericModel
 		))
 		->sWhere($sWhereIp)
 		->groupBy("ip having numero_query > ".(int)$soglia)->toList("ip", "aggregate.numero_query")->send();
+		
+		if ($forzaCheckSoloRete)
+			$resIp = [];
 		
 		// Cerca range
 		$resRange = $cq->clear()->select("SUM(numero) as numero_query,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(

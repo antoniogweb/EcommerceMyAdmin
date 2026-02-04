@@ -34,6 +34,7 @@ $options = getopt(null, array(
 	"blocca::",
 	"giorni::",
 	"numero_ip_stessa_rete::",
+	"forza_solo_check_rete::",
 	"limit::",
 	"nazioni::",
 	"numero::",
@@ -69,8 +70,9 @@ if ($params["azione"] == "check-numero-query")
 	$mail = isset($params["email"]) ? true : false;
 	$blocca = isset($params["blocca"]) ? true : false;
 	$numero_ip_stessa_rete = $params["numero_ip_stessa_rete"] ?? 30;
+	$forza_solo_check_rete = isset($params["forza_solo_check_rete"]) ? true : false;
 	
-	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi, $numero_ip_stessa_rete);
+	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi, $numero_ip_stessa_rete, $forza_solo_check_rete);
 	
 	arsort($conteggio);
 	
