@@ -2894,7 +2894,7 @@ class PagesModel extends GenericModel {
 	{
 		$clean['id'] = (int)$id_page;
 		
-		$this->clear()->select("pages.*,prodotti_correlati.id_corr,prodotti_correlati.id_tipologia_correlato,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
+		$this->clear()->select("pages.*,prodotti_correlati.id_corr,prodotti_correlati.id_tipologia_correlato,categories.*,".self::getCampiJoinTraduzione())->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
 			->addJoinTraduzionePagina()
 			->where(array(
 				"prodotti_correlati.id_page"=>	$clean['id'],
@@ -3494,6 +3494,34 @@ class PagesModel extends GenericModel {
 		return v("attiva_multi_categoria") ? "distinct pages.codice_alfa".$finalChar : "distinct pages.id_page".$finalChar;
 	}
 	
+	public static function getCampiJoinTraduzione()
+	{
+		$arrayCT = array("title","alias","description","keywords","meta_description","id_page","id_c","url","sottotitolo","titolo","descrizione","testo_link","meta_title");
+		
+		if (v("attiva_descrizione_2_in_prodotti"))
+			$arrayCT[] = "descrizione_2";
+		
+		if (v("attiva_descrizione_3_in_prodotti"))
+			$arrayCT[] = "descrizione_3";
+		
+		if (v("attiva_descrizione_4_in_prodotti"))
+			$arrayCT[] = "descrizione_4";
+		
+		$tabelle = array("contenuti_tradotti", "contenuti_tradotti_categoria");
+		
+		$fieldsArray = [];
+		
+		foreach ($tabelle as $tabella)
+		{
+			foreach ($arrayCT as $field)
+			{
+				$fieldsArray[] = "$tabella.$field";
+			}
+		}
+		
+		return implode(",",$fieldsArray);
+	}
+	
 	public function addJoinTraduzionePagina($lingua = null, $usaDistinct = true)
 	{
 		if (!isset($lingua))
@@ -3509,7 +3537,8 @@ class PagesModel extends GenericModel {
 		{
 			$distinct = $usaDistinct ? PagesModel::getSelectDistinct() : "";
 			
-			$this->select($distinct."pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*");
+			// $this->select($distinct."pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*");
+			$this->select($distinct."pages.*,categories.*,".self::getCampiJoinTraduzione());
 		}
 		
 // 		if (!$this->select)
@@ -3588,7 +3617,7 @@ class PagesModel extends GenericModel {
 		
 		if (VariabiliModel::combinazioniLinkVeri())
 		{
-			$p->select("pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,combinazioni.codice,combinazioni.peso,combinazioni.gtin,combinazioni.mpn,combinazioni.id_c,combinazioni.price,immagini_combinazione.i_id_order");
+			$p->select("pages.*,categories.*,combinazioni.codice,combinazioni.peso,combinazioni.gtin,combinazioni.mpn,combinazioni.id_c,combinazioni.price,immagini_combinazione.i_id_order,".self::getCampiJoinTraduzione());
 			$p->inner("combinazioni")->on("combinazioni.id_page = pages.id_page and combinazioni.canonical=1");
 			$p->left("(select min(id_order) as i_id_order,id_c from immagini group by id_c) as immagini_combinazione")->on("immagini_combinazione.id_c = combinazioni.id_c");
 		}
