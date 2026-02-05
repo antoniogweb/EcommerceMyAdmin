@@ -2894,8 +2894,7 @@ class PagesModel extends GenericModel {
 	{
 		$clean['id'] = (int)$id_page;
 		
-		$this->clear()->select("pages.*,prodotti_correlati.id_corr,prodotti_correlati.id_tipologia_correlato,categories.*,".self::getCampiJoinTraduzione())->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
-			->addJoinTraduzionePagina()
+		$this->clear()->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page")->from("prodotti_correlati")->inner("pages")->on("pages.id_page=prodotti_correlati.id_corr")
 			->where(array(
 				"prodotti_correlati.id_page"=>	$clean['id'],
 				"attivo"	=>	"Y",
@@ -2910,11 +2909,11 @@ class PagesModel extends GenericModel {
 			
 			if ($idC)
 			{
-				$idsCorrelati = $this->getList($res, "pages.id_page");
+				$idsCorrelati = $res;
 				
 				$numero = $forzaStessaCategoria ? (int)$forzaStessaCategoria : v("numero_massimo_correlati_stessa_categoria");
 				
-				$this->clear()->addJoinTraduzionePagina()->addWhereAttivo()->addWhereCategoria($idC)->sWhere(array("pages.id_page != ?", array($clean['id'])))->orderBy("numero_acquisti_pagina desc,pages.id_page desc")->limit($numero);
+				$this->clear()->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page")->addWhereAttivo()->addWhereCategoria($idC)->sWhere(array("pages.id_page != ?", array($clean['id'])))->orderBy("numero_acquisti_pagina desc,pages.id_page desc")->limit($numero);
 				
 				if (count($idsCorrelati) > 0)
 					$this->sWhere(array("pages.id_page not in (".$this->placeholdersFromArray($idsCorrelati).")", forceIntDeep($idsCorrelati)));
@@ -2947,12 +2946,12 @@ class PagesModel extends GenericModel {
 					
 // 					if (count($resAltriUtenti) > 0)
 // 					{
-						$idsCorrelati = $ps->getList($res, "pages.id_page");
+						$idsCorrelati = $res;
 						$idsAltriUtenti = $ps->getList($resAltriUtenti, "p2.id_page");
 						
 						array_unshift($idsAltriUtenti, (int)$idPage);
 						
-						$this->clear()->addJoinTraduzionePagina()
+						$this->clear()->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page")
 							->addWhereAttivo()
 							->addWhereCategoria($idC)
 							->sWhere(array("pages.id_page != ?", array($clean['id'])))
@@ -2976,6 +2975,10 @@ class PagesModel extends GenericModel {
 				}
 			}
 		}
+		
+		PagesModel::$currentIdPages = $res;
+		
+		$res = PagesModel::getPageDetailsList($res);
 		
 		PagesModel::preloadPages($res);
 		
