@@ -881,7 +881,7 @@ class BaseContenutiController extends BaseController
 			
 			foreach ($arrayElementi as $elemento)
 			{
-				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento), false);
+				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento), false, false);
 				$ids = $this->m("PagesModel")->select("pages.id_page")->toList("pages.id_page")->send();
 				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = array_unique($ids);
 				
@@ -891,7 +891,7 @@ class BaseContenutiController extends BaseController
 			
 			if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
 			{
-				$this->queryElencoProdotti($clean['id'], $firstSection, array("prezzo"));
+				$this->queryElencoProdotti($clean['id'], $firstSection, array("prezzo"), true, false);
 				$data["prezzoMinimoElenco"] = (float)$this->m("PagesModel")
 					->select("combinazioni_minime.prezzo_minimo_ivato")
 					->orderBy("combinazioni_minime.prezzo_minimo_ivato")
@@ -1067,7 +1067,7 @@ class BaseContenutiController extends BaseController
 		);
 	}
 	
-	protected function queryElencoProdotti($id, $firstSection, $escludi = array(), $attivaOrderBy = true)
+	protected function queryElencoProdotti($id, $firstSection, $escludi = array(), $attivaOrderBy = true, $attivaJoin = true)
 	{
 		$clean['id'] = (int)$id;
 		
@@ -1311,6 +1311,7 @@ class BaseContenutiController extends BaseController
 		}
 		
 		// if ($firstSection != "prodotti" || !v("usa_sotto_query_in_elenco"))
+		if ($attivaJoin)
 			$this->m("PagesModel")->addJoinTraduzionePagina();
 		
 		if (isset($data))
