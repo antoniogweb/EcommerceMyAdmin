@@ -1636,7 +1636,7 @@ class PagesModel extends GenericModel {
 		$c->clear()->select("pages.id_page,combinazioni.id_c")->inner(array("pagina"))->where(array(
 			"pages.temp"		=>	0,
 			"pages.cestino"		=>	0,
-		))->sWhere(array("replace(combinazioni.codice,'/','') = ?",array(sanitizeAll($codice))))->limit(1);
+		))->sWhere(array("combinazioni.codice = ?",array(sanitizeAll($codice))))->limit(1);
 		
 		if (!User::$adminLogged && !$forzaTutti)
 			$c->aWhere(array(
