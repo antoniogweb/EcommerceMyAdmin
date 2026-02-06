@@ -1,0 +1,1 @@
+CREATE INDEX combinazioni_canon_acq_page ON combinazioni (canonical, acquistabile, id_page);
