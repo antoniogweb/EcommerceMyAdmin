@@ -1,0 +1,1 @@
+CREATE INDEX idx_car_filtro_idcar ON caratteristiche (filtro, id_car);

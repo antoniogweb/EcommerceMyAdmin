@@ -1,0 +1,1 @@
+CREATE INDEX idx_cv_idcar_alias ON caratteristiche_valori (id_car, alias);
