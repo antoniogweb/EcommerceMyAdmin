@@ -1,0 +1,1 @@
+ALTER TABLE `combinazioni` DROP INDEX `combinazioni_canon_acq_page`, ADD INDEX `combinazioni_canon_acq_page` (`id_page`, `canonical`, `acquistabile`) USING BTREE;
