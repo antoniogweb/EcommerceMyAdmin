@@ -3525,15 +3525,24 @@ class PagesModel extends GenericModel {
 		return implode(",",$fieldsArray);
 	}
 	
-	public function addJoinTraduzionePagina($lingua = null, $usaDistinct = true)
+	public function addJoinCategoria()
+	{
+		$this->inner("categories")->on("categories.id_c = pages.id_c");
+		
+		return $this;
+	}
+	
+	public function addJoinTraduzionePagina($lingua = null, $usaDistinct = true, $soloTraduzioni = false)
 	{
 		if (!isset($lingua))
 			$lingua = Params::$lang;
 		
-		$this->inner("categories")->on("categories.id_c = pages.id_c")
-			->left("contenuti_tradotti")->on(array("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = ?", array(sanitizeDb($lingua))))
-			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on(array("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = ?", array(sanitizeDb($lingua))));
+		if (!$soloTraduzioni)
+			$this->inner("categories")->on("categories.id_c = pages.id_c");
 		
+		$this->left("contenuti_tradotti")->on(array("contenuti_tradotti.id_page = pages.id_page and contenuti_tradotti.lingua = ?", array(sanitizeDb($lingua))))
+			->left("contenuti_tradotti as contenuti_tradotti_categoria")->on(array("contenuti_tradotti_categoria.id_c = categories.id_c and contenuti_tradotti_categoria.lingua = ?", array(sanitizeDb($lingua))));
+			
 // 		$fields = "distinct pages.codice_alfa,pages.id_page,pages.attivo,pages.title,pages.data_creazione,pages.description,pages.alias,pages.id_p,pages.id_c,pages.id_order,pages.price,pages.codice,pages.in_evidenza,pages.in_promozione,pages.tipo_sconto,pages.prezzo_promozione,pages.dal,pages.al,pages.peso,pages.codice_alfa,pages.principale,pages.keywords,pages.meta_description,pages.add_in_sitemap,pages.immagine,pages.alt_tag_immagine,pages.data_news,pages.id_iva,pages.id_marchio,pages.sottotitolo,pages.descrizione_breve,pages.immagine_2,pages.url,pages.video,categories.id_c,categories.data_creazione,categories.attivo,categories.title,categories.description,categories.alias,categories.id_p,categories.id_order,categories.section,categories.keywords,categories.meta_description,categories.immagine,categories.mostra_in_home,categories.immagine_2,categories.colore_testo_in_slide,categories.immagine_sfondo,categories.sottotitolo,categories.codice_categoria_prodotto_google,categories.id_corriere,contenuti_tradotti.id_ct,contenuti_tradotti.lingua,contenuti_tradotti.title,contenuti_tradotti.alias,contenuti_tradotti.description,contenuti_tradotti.keywords,contenuti_tradotti.meta_description,contenuti_tradotti.url,contenuti_tradotti.sottotitolo,contenuti_tradotti.testo_link,contenuti_tradotti_categoria.id_ct,contenuti_tradotti_categoria.lingua,contenuti_tradotti_categoria.title,contenuti_tradotti_categoria.alias,contenuti_tradotti_categoria.description,contenuti_tradotti_categoria.keywords,contenuti_tradotti_categoria.meta_description,contenuti_tradotti_categoria.url,contenuti_tradotti_categoria.sottotitolo,contenuti_tradotti_categoria.testo_link";
 		
 		if (!$this->select)

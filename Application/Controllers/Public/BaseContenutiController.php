@@ -1019,7 +1019,7 @@ class BaseContenutiController extends BaseController
 			$this->m("PagesModel")->sWhere(array("(contenuti_tradotti_documenti.titolo like ? or documenti.clean_filename like ?)", array("%".addBackSlashLike($this->viewArgs["searchdoc"])."%", "%".addBackSlashLike($this->viewArgs["searchdoc"])."%")));
 	}
 	
-	protected function getSearchWhere($argName = "s")
+	protected function getSearchWhere($argName = "s", $firstSection = "prodotti")
 	{
 		Cache_Db::$skipWritingCache = true;
 		
@@ -1046,7 +1046,7 @@ class BaseContenutiController extends BaseController
 		
 		if (Params::$lang == Params::$defaultFrontEndLanguage)
 		{
-			if (v("mostra_filtro_ricerca_libera_in_magazzino"))
+			if (v("mostra_filtro_ricerca_libera_in_magazzino") && $firstSection == Parametri::$nomeSezioneProdotti)
 			{
 				$search = RicerchesinonimiModel::g()->estraiTerminiDaStringaDiRicerca($this->viewArgs[$argName]);
 				
@@ -2101,16 +2101,16 @@ class BaseContenutiController extends BaseController
 			$this->m("RicercheModel")->aggiungiRicerca($this->viewArgs["s"]);
 			
 			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
-				$clean["idSection"] = $this->m("CategoriesModel")->getShopCategoryId();
+				$clean["idSection"] = (int)$this->m("CategoriesModel")->getShopCategoryId();
 			else if ($this->viewArgs["sec"] != "tutti")
-				$clean["idSection"] = $this->m('CategoriesModel')->clear()->where(array(
+				$clean["idSection"] = (int)$this->m('CategoriesModel')->clear()->where(array(
 					"section"	=>	$this->viewArgs["sec"],
 				))->field("id_c");
 			
 			if ($this->viewArgs["sec"] != "tutti")
 				$childrenProdotti = $this->m("CategoriesModel")->children($clean["idSection"], true);
 			
-			$where = $this->getSearchWhere("s");
+			$where = $this->getSearchWhere("s", $this->viewArgs["sec"]);
 			
 			$this->m('PagesModel')->clear()->where($where)->addWhereAttivo();
 			
@@ -2130,7 +2130,7 @@ class BaseContenutiController extends BaseController
 			if ($this->catSWhereCerca)
 				$this->m("PagesModel")->sWhere($this->catSWhereCerca);
 			
-			$rowNumber = $data["rowNumber"] = $this->m('PagesModel')->addJoinTraduzionePagina()->aWhere(array(
+			$rowNumber = $data["rowNumber"] = $this->m('PagesModel')->addJoinCategoria()->aWhere(array(
 				"pages.add_in_sitemap"=>	"Y",
 // 				"categories.add_in_sitemap_children"	=>	"Y",
 			))->addWhereClauseCerca()->rowNumber();
@@ -2147,9 +2147,17 @@ class BaseContenutiController extends BaseController
 				$data['pageList'] = $this->h['Pages']->render($page-5,11);
 			}
 			
+			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti && v("usa_sotto_query_in_elenco"))
+				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page");
+			else
+				$this->m('PagesModel')->addJoinTraduzionePagina(null, true, true);
+			
 			$data["pages"] = $this->m('PagesModel')->send();
 			
-// 			echo $this->m('PagesModel')->getQuery();die();
+			// echo $this->m('PagesModel')->getQuery();die();
+			
+			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti && v("usa_sotto_query_in_elenco"))
+				$data["pages"] = PagesModel::getPageDetailsList($data["pages"]);
 			
 			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti)
 				$data["pages"] = PagesModel::impostaDatiCombinazionePagine($data["pages"]);
