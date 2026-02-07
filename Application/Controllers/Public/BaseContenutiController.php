@@ -1153,7 +1153,7 @@ class BaseContenutiController extends BaseController
 		{
 			$combinazioniCaratteristiche = prodottoCartesiano($temp);
 			
-			$cercaMultiCaratteristiche = (count($combinazioniCaratteristiche) > 1) ? true : false;
+			$cercaMultiCaratteristiche = true; //(count($combinazioniCaratteristiche) > 1) ? true : false;
 			$linguaDefault = (Params::$lang == Params::$defaultFrontEndLanguage) ? true : false;
 			// $hastagChar = ($numeroCaratteristicheCercate > 1) ? "#" : "";
 			
