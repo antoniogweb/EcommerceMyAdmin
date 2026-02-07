@@ -1,0 +1,1 @@
+ALTER TABLE `pages` ADD INDEX `pages_dal_al_promo` (`dal`, `al`, `in_promozione`);
