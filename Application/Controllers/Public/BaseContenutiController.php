@@ -905,7 +905,10 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		$this->queryElencoProdotti($clean['id'], $firstSection);
+		$saltaJoinSubito = ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco")) ? true : false;
+		$attivaJoinSubito = !$saltaJoinSubito;
+		
+		$this->queryElencoProdotti($clean['id'], $firstSection, array(), true, $attivaJoinSubito);
 		
 		$rowNumber = $data["rowNumber"] = $this->m("PagesModel")->save()->rowNumber();
 		
@@ -931,7 +934,7 @@ class BaseContenutiController extends BaseController
 			
 			$data["numeroDiPagine"] = $this->h['Pages']->getNumbOfPages();
 			
-			if ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco"))
+			if ($saltaJoinSubito)
 				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page");
 			
 			$data["pages"] = $this->m('PagesModel')->send();
@@ -940,20 +943,20 @@ class BaseContenutiController extends BaseController
 		}
 		else
 		{
-			if ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco"))
+			if ($saltaJoinSubito)
 				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page");
 				
 			$data["pages"] = $this->m('PagesModel')->send();
 		}
 		
 		// Imposto le pagine trovate
-		if ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco"))
+		if ($saltaJoinSubito)
 			PagesModel::$currentIdPages = $data["pages"];
 		
 // 		echo $this->m("PagesModel")->getQuery();die();
 		
 		// Uso sottoquery
-		if ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco"))
+		if ($saltaJoinSubito)
 			$data["pages"] = PagesModel::getPageDetailsList($data["pages"]);
 		
 		if ($firstSection == "prodotti")
