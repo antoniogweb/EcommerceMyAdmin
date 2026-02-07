@@ -1153,22 +1153,48 @@ class BaseContenutiController extends BaseController
 		{
 			$combinazioniCaratteristiche = prodottoCartesiano($temp);
 			
-// 			$tabellaCaratterisitche = "(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',coalesce(caratteristiche_tradotte.alias,caratteristiche.alias),'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias),'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = 'Y' 
-// 			left join contenuti_tradotti as caratteristiche_tradotte on caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = '".sanitizeDb(Params::$lang)."' 
-// 			left join contenuti_tradotti as caratteristiche_valori_tradotte on caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = '".sanitizeDb(Params::$lang)."' 
-// 			group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche";
+			$cercaMultiCaratteristiche = (count($combinazioniCaratteristiche) > 1) ? true : false;
+			$linguaDefault = (Params::$lang == Params::$defaultFrontEndLanguage) ? true : false;
+			// $hastagChar = ($numeroCaratteristicheCercate > 1) ? "#" : "";
 			
-			$tabellaCaratterisitche = array(
-				"(select pages_caratteristiche_valori.id_page,group_concat(distinct(concat('#',coalesce(caratteristiche_tradotte.alias,caratteristiche.alias),'#')) order by caratteristiche.alias) as car_alias,group_concat(distinct(concat('#',coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias),'#')) order by caratteristiche_valori.alias) as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = ? 
-				left join contenuti_tradotti as caratteristiche_tradotte on caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = ? 
-				left join contenuti_tradotti as caratteristiche_valori_tradotte on caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = ? 
-				group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche",
-				array(
-					'Y',
-					sanitizeDb(Params::$lang),
-					sanitizeDb(Params::$lang)
-				),
-			);
+			// $tabellaCaratterisitche = array(
+			// 	"(select pages_caratteristiche_valori.id_page,$groupConcatCarVal as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = ? 
+			// 	left join contenuti_tradotti as caratteristiche_tradotte on caratteristiche_tradotte.id_car = caratteristiche.id_car and caratteristiche_tradotte.lingua = ? 
+			// 	left join contenuti_tradotti as caratteristiche_valori_tradotte on caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = ? 
+			// 	group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche",
+			// 	array(
+			// 		'Y',
+			// 		sanitizeDb(Params::$lang),
+			// 		sanitizeDb(Params::$lang)
+			// 	),
+			// );
+			
+			if ($linguaDefault)
+			{
+				$groupConcatCarVal = $cercaMultiCaratteristiche ? "group_concat(distinct(concat('#',caratteristiche_valori.alias,'#')) order by caratteristiche_valori.alias)" : "caratteristiche_valori.alias";
+				
+				$tabellaCaratterisitche = array(
+					"(select pages_caratteristiche_valori.id_page,$groupConcatCarVal as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = ? 
+					group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche",
+					array(
+						'Y'
+					),
+				);
+			}
+			else
+			{
+				$groupConcatCarVal = $cercaMultiCaratteristiche ? "group_concat(distinct(concat('#',coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias),'#')) order by caratteristiche_valori.alias)" : "coalesce(caratteristiche_valori_tradotte.alias,caratteristiche_valori.alias)";
+				
+				$tabellaCaratterisitche = array(
+					"(select pages_caratteristiche_valori.id_page,$groupConcatCarVal as car_val_alias from caratteristiche inner join caratteristiche_valori on caratteristiche_valori.id_car = caratteristiche.id_car inner join pages_caratteristiche_valori on pages_caratteristiche_valori.id_cv = caratteristiche_valori.id_cv and caratteristiche.filtro = ? 
+					left join contenuti_tradotti as caratteristiche_valori_tradotte on caratteristiche_valori_tradotte.id_cv = caratteristiche_valori.id_cv and caratteristiche_valori_tradotte.lingua = ? 
+					group by pages_caratteristiche_valori.id_page) as tabella_caratteristiche",
+					array(
+						'Y',
+						sanitizeDb(Params::$lang)
+					),
+				);
+			}
 			
 			$this->m("PagesModel")->inner($tabellaCaratterisitche)->on("pages.id_page = tabella_caratteristiche.id_page");
 			
@@ -1196,9 +1222,16 @@ class BaseContenutiController extends BaseController
 				
 				foreach ($sWhereValori as $sWhereValore)
 				{
-// 					$tempWhere[] = "car_val_alias like '%#".sanitizeDb($sWhereValore)."#%'";
-					$tempWhere[] = "car_val_alias like ?";
-					$bindedValues[] = "%#".addBackSlashLike(sanitizeDb($sWhereValore))."#%";
+					if ($cercaMultiCaratteristiche)
+					{
+						$tempWhere[] = "car_val_alias like ?";
+						$bindedValues[] = "%#".addBackSlashLike(sanitizeDb($sWhereValore))."#%";
+					}
+					else
+					{
+						$tempWhere[] = "car_val_alias = ?";
+						$bindedValues[] = sanitizeDb($sWhereValore);
+					}
 				}
 				
 				$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
