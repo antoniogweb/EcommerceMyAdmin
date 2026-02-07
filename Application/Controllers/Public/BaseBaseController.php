@@ -784,7 +784,7 @@ class BaseBaseController extends Controller
 			}
 			
 // 			if (v("attiva_filtri_successivi"))
-			$this->m("MarchiModel")->clear()->select("*,count(marchi.id_marchio) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->sWhereFiltriSuccessivi("[marchio]");
+			$this->m("MarchiModel")->clear()->select("marchi.*,count(*) as numero_prodotti")->inner(array("pagine"))->groupBy("marchi.id_marchio")->sWhereFiltriSuccessivi("[marchio]");
 			
 			if (!v("attiva_filtri_successivi"))
 				$this->m("MarchiModel")->addWhereAttivo();
