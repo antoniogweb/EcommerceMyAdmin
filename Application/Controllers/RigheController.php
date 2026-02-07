@@ -97,6 +97,8 @@ class RigheController extends BaseController
 		if (!v("mostra_sezione_righe_ordine"))
 			$this->responseCode(403);
 		
+		$this->tabella = "righe ordine";
+		
 		Helper_Menu::$htmlLinks["esporta"]["url"] = "elenco";
 		
 		$this->queryActions = $this->bulkQueryActions = "";
