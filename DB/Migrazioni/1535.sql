@@ -1,0 +1,1 @@
+ALTER TABLE `orders` ADD INDEX `orders_id_lista_regalo` (`id_lista_regalo`);
