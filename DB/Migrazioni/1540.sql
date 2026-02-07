@@ -1,0 +1,1 @@
+ALTER TABLE `pages_stats` ADD INDEX `pages_stats_id_page_cart_uid` (`id_page`, `cart_uid`);

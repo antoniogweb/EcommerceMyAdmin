@@ -1,0 +1,1 @@
+ALTER TABLE `pages_stats` ADD INDEX `pages_stats_ip` (`ip`);

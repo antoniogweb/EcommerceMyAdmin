@@ -1,0 +1,1 @@
+ALTER TABLE `pages_stats` DROP INDEX `pages_stats_cart_uid`, ADD INDEX `pages_stats_cart_uid` (`cart_uid`, `id_page`, `data_creazione`) USING BTREE;
