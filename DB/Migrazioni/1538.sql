@@ -1,0 +1,1 @@
+ALTER TABLE `caratteristiche` DROP INDEX `idx_car_filtro_idcar`, ADD INDEX `caratteristiche_id_car_filtro` (`id_car`, `filtro`) USING BTREE;

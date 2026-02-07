@@ -1,0 +1,1 @@
+ALTER TABLE `caratteristiche_valori` ADD INDEX `caratteristiche_valori_id_cv_alias` (`id_cv`, `alias`);
