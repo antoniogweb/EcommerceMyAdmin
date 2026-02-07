@@ -865,7 +865,7 @@ class BaseContenutiController extends BaseController
 			$data["piChildren"] = $this->getImmediateChildren($data["datiCategoria"]["categories"]["id_p"]);
 		
 		// Estraggo gli id delle pagine trovate
-		if ($firstSection == "prodotti" && v("attiva_filtri_successivi"))
+		if ($firstSection == Parametri::$nomeSezioneProdotti && v("attiva_filtri_successivi"))
 		{
 			$arrayElementi = array("[categoria]", "[nazione]", "[regione]", "[evidenza]", "[nuovo]", "[promozione]");
 			
@@ -889,7 +889,7 @@ class BaseContenutiController extends BaseController
 // 					CategoriesModel::$arrayIdsPagineFiltrate["[categoria][query]"] = $this->m("PagesModel")->select("pages.id_page")->queryStruct();
 			}
 			
-			if (v("filtro_prezzo_slider") && $firstSection == "prodotti")
+			if (v("filtro_prezzo_slider") && $firstSection == Parametri::$nomeSezioneProdotti)
 			{
 				$this->queryElencoProdotti($clean['id'], $firstSection, array("prezzo"), true, false);
 				$data["prezzoMinimoElenco"] = (float)$this->m("PagesModel")
@@ -905,7 +905,7 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		$saltaJoinSubito = ($firstSection == "prodotti" && v("usa_sotto_query_in_elenco")) ? true : false;
+		$saltaJoinSubito = ($firstSection == Parametri::$nomeSezioneProdotti && v("usa_sotto_query_in_elenco")) ? true : false;
 		$attivaJoinSubito = !$saltaJoinSubito;
 		
 		$this->queryElencoProdotti($clean['id'], $firstSection, array(), true, $attivaJoinSubito);
