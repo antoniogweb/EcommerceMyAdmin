@@ -1,1 +1,1 @@
-ALTER TABLE `orders` ADD INDEX `orders_id_lista_regalo` (`id_lista_regalo`);
+CREATE INDEX immagini_idorder_id_page ON immagini (id_order, id_page);
