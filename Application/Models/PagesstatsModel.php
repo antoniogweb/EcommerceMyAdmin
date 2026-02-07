@@ -148,30 +148,46 @@ class PagesstatsModel extends GenericModel {
 	{
 		$idPages = forceIntDeep($idPages);
 		
-		$params = $idPages;
+		$paramsP2 = $idPages;
+		$paramsP1 = $idPages;
 		
-		$queryIp = "";
+		$queryIpP2 = "";
+		$queryIpP1 = "";
 		
 		if (v("salva_ip_visualizzazione"))
 		{
-			$queryIp .= " AND pages_stats.ip != '' ";
+			$queryIpP2 .= " AND p2.ip != '' ";
+			$queryIpP1 .= " AND p1.ip != '' ";
 			
 			if (v("ip_sito"))
 			{
-				$queryIp .= " AND pages_stats.ip != ? ";
+				$queryIpP2 .= " AND p2.ip != ? ";
+				$queryIpP1 .= " AND p1.ip != ? ";
 				
-				$params[] = sanitizeAll(v("ip_sito"));
+				$paramsP2[] = sanitizeAll(v("ip_sito"));
+				$paramsP1[] = sanitizeAll(v("ip_sito"));
 			}
 		}
-		
-		$params = array_merge($params, $params);
 		
 		$now = new DateTime();
 		$now->modify("-30 days");
 		
-		$params[] = $now->format("Y-m-d");
+		$paramsDate = $now->format("Y-m-d");
 		
-		$sql = "select p2.id_page,count(p2.id_page) as NUMERO from (select distinct cart_uid from pages_stats where id_page in (".$this->placeholdersFromArray($idPages).") $queryIp) as p1 inner join (select pages_stats.id_page,pages_stats.cart_uid,pages_stats.data_stat from pages_stats where pages_stats.id_page not in (".$this->placeholdersFromArray($idPages).") $queryIp AND pages_stats.data_stat >= ? group by pages_stats.cart_uid,pages_stats.id_page) as p2 on p1.cart_uid = p2.cart_uid group by p2.id_page having NUMERO >= ".(int)$soglia." order by count(p2.id_page) desc,p2.id_page desc;";
+		$params = array_merge($paramsP2, array($paramsDate), $paramsP1, array((int)$soglia));
+		
+		$sql = "select p2.id_page,count(*) as NUMERO 
+			from pages_stats p2 
+			where p2.id_page not in (".$this->placeholdersFromArray($idPages).") $queryIpP2 
+				and p2.data_stat >= ? 
+				and exists (
+					select 1 from pages_stats p1 
+					where p1.cart_uid = p2.cart_uid 
+						and p1.id_page in (".$this->placeholdersFromArray($idPages).") $queryIpP1
+				)
+			group by p2.id_page 
+			having count(*) >= ? 
+			order by count(*) desc,p2.id_page desc;";
 		
 		return $this->clear()->query(array(
 			$sql,
