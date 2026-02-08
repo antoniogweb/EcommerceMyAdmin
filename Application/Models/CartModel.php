@@ -1346,8 +1346,16 @@ class CartModel extends GenericModel {
 				if ($this->update($idCart))
 					$this->set($idCart, $quantity);
 				
-				if (number_format($prezzoIntero, v("cifre_decimali"),".","") != number_format($riga["prezzo_intero"], v("cifre_decimali"),".","") || number_format($this->values["price"], v("cifre_decimali"),".","") != number_format($riga["price"], v("cifre_decimali"),".",""))
-					$prezziRicalcolati = true;
+				if (v("prezzi_ivati_in_carrello"))
+				{
+					$rigaRicalcolata = $this->selectId((int)$idCart);
+					
+					if (number_format($riga["prezzo_intero_ivato"], 2,".","") != number_format($rigaRicalcolata["prezzo_intero_ivato"], 2,".","") || number_format($riga["price_ivato"], 2,".","") != number_format($rigaRicalcolata["price_ivato"], 2,".",""))
+						$prezziRicalcolati = true;
+				}
+				else
+					if (number_format($prezzoIntero, v("cifre_decimali"),".","") != number_format($riga["prezzo_intero"], v("cifre_decimali"),".","") || number_format($this->values["price"], v("cifre_decimali"),".","") != number_format($riga["price"], v("cifre_decimali"),".",""))
+						$prezziRicalcolati = true;
 			}
 			
 			if ($prezziRicalcolati)
