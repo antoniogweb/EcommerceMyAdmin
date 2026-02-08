@@ -1,0 +1,1 @@
+ALTER TABLE `pages` ADD INDEX `pages_id_c_id_order` (`id_c`, `id_order`);

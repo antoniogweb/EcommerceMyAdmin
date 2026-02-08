@@ -100,7 +100,7 @@ class ThumbController extends BaseThumbController {
 				'vertAlign'		=>	'center',
 			);
 			
-			if (strcmp($fileName,'') !== 0)
+			if (accepted($fileName) && strcmp($fileName,'') !== 0)
 			{
 				$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 				$thumb->render($fileName,null,$this->percorsoCartellaCacheFisica($id_page));
@@ -123,7 +123,7 @@ class ThumbController extends BaseThumbController {
 			'defaultImage'	=>  null
 		);
 		
-		if (strcmp($fileName,'') !== 0)
+		if (accepted($fileName) && strcmp($fileName,'') !== 0)
 		{
 			$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/'.Parametri::$cartellaImmaginiNews,$params);
 			$thumb->render($fileName);

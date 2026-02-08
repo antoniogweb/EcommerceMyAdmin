@@ -1,0 +1,1 @@
+ALTER TABLE `categories` ADD INDEX `categories_lft_id_c` (`lft`, `id_c`);
