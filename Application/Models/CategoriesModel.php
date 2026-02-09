@@ -820,7 +820,8 @@ class CategoriesModel extends HierarchicalModel {
 			$bindedValues = $children;
 			$bindedValues[] = (int)$id_c;
 			
-			$p->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues));
+			// $p->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues));
+			$p->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR EXISTS ( select 1 from pages_categories where pages_categories.id_page = pages.id_page and pages_categories.id_c = ? ))",$bindedValues));
 		}
 		else
 			$p->aWhere(self::gCatWhere($id_c, $full));
