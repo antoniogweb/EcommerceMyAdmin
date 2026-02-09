@@ -174,7 +174,7 @@ class PagesstatsModel extends GenericModel {
 		
 		$paramsDate = $now->format("Y-m-d");
 		
-		$params = array_merge($paramsP2, array($paramsDate), $paramsP1, array((int)$soglia));
+		$params = array_merge($paramsP2, array($paramsDate), $paramsP1, array($paramsDate), array((int)$soglia));
 		
 		$sql = "select p2.id_page,count(*) as NUMERO 
 			from pages_stats p2 
@@ -183,7 +183,8 @@ class PagesstatsModel extends GenericModel {
 				and exists (
 					select 1 from pages_stats p1 
 					where p1.cart_uid = p2.cart_uid 
-						and p1.id_page in (".$this->placeholdersFromArray($idPages).") $queryIpP1
+						and p1.id_page in (".$this->placeholdersFromArray($idPages).") $queryIpP1 
+						and p1.data_stat >= ? 
 				)
 			group by p2.id_page 
 			having count(*) >= ? 
