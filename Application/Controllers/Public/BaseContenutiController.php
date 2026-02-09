@@ -1121,7 +1121,9 @@ class BaseContenutiController extends BaseController
 		{
 			$bindedValues = $children;
 			$bindedValues[] = (int)$clean['id'];
-			$this->m("PagesModel")->sWhere(array("(pages.id_c in(".$this->m("PagesModel")->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues));
+			// $this->m("PagesModel")->sWhere(array("(pages.id_c in(".$this->m("PagesModel")->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues));
+			
+			$this->m("PagesModel")->sWhere(array("(pages.id_c in(".$this->m("PagesModel")->placeholdersFromArray($children).") OR EXISTS ( select 1 from pages_categories where pages_categories.id_page = pages.id_page and pages_categories.id_c = ? ))",$bindedValues));
 		}
 		else
 			$this->m("PagesModel")->aWhere(array(
