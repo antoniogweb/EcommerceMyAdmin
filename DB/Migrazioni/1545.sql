@@ -1,0 +1,1 @@
+CREATE INDEX stati_elementi_tabella_rif_id_rif ON stati_elementi (tabella_rif, id_rif);
