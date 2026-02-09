@@ -1,0 +1,1 @@
+ALTER TABLE `combinazioni_listini` ADD INDEX `combinazioni_listini_id_c_nazione` (`id_c`, `nazione`);
