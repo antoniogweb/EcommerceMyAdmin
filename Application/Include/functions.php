@@ -674,6 +674,12 @@ function htmlentitydecodeDeep($value) {
 	return array_map('htmlentitydecode', $value);
 }
 
+function stripTagsDecode($value)
+{
+	$value = nullToBlank($value);
+	return strip_tags(htmlentitydecode($value));
+}
+
 //restituisci $numProdotti case random tra quelle presenti in $arrayProdotti
 function getRandom($arrayProdotti, $numProdotti = 20)
 {
