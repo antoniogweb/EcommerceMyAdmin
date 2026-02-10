@@ -99,8 +99,11 @@ class PromozioniController extends BaseController {
 			$this->mainHead .= ",Agente";
 		}
 		
-		$this->mainFields[] = "noteCrud";
-		$this->mainHead .= ",Note";
+		if (v("attiva_gift_card"))
+		{
+			$this->mainFields[] = "noteCrud";
+			$this->mainHead .= ",Note";
+		}
 		
 		$this->m[$this->modelName]->select("promozioni.*,orders.id_o")
 			->left(array("righe"))
