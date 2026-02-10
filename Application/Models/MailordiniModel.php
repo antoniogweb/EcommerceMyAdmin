@@ -338,7 +338,7 @@ class MailordiniModel extends GenericModel
 				}
 			}
 			
-// 			echo $testo;die();
+			// echo $testo;die();
 			// Recupero le traduzioni
 			Params::$lang = $bckLang;
 			Params::$country = $bckCountry;
@@ -436,5 +436,17 @@ class MailordiniModel extends GenericModel
 			"id_o"	=>	(int)$idOrdine,
 			"tipologia"	=>	sanitizeAll($tipologia),
 		))->orderBy("data_creazione desc")->send(false);
+	}
+	
+	public function estraiRigaTabellaIdRef($tabella, $idElemento)
+	{
+		$mo = new MailordiniModel();
+		
+		$mo->clear()->where(array(
+			"tabella"		=>	sanitizeAll($tabella),
+			"id_elemento"	=>	(int)$idElemento,
+		));
+		
+		return $mo->send(false);
 	}
 }

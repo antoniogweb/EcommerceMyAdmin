@@ -1,0 +1,1 @@
+alter table note add oggetto varchar(255) not null default '';

@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES ('Gestione note', 'note', 'promozioni', '1', 'attiva_menu_ecommerce=1&ecommerce_attivo=1', '135', '1', 'ecommerce', 'main')

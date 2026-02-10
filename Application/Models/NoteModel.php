@@ -25,8 +25,16 @@ if (!defined('EG')) die('Direct access not allowed!');
 class NoteModel extends GenericModel
 {
 	public static $elencoTabellePermesse = array(
-		"liste_regalo_pages",
-		"righe"
+		"liste_regalo_pages"	=>	array(
+			"model"	=>	"ListeregalopagesModel",
+		),
+		"righe" => array(
+			"model"	=>	"RigheModel",
+		),
+		"promozioni" => array(
+			"model"	=>	"PromozioniModel",
+			"email"	=>	true,
+		),
 	);
 	
 	public function __construct() {
@@ -44,11 +52,127 @@ class NoteModel extends GenericModel
         );
     }
     
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'testo'	=>	array(
+					"labelString"	=>	"Testo della nota",
+					'attributes'		=>	'rows = "8"',
+				),
+			),
+		);
+	}
+    
+    public function checkTabella($tabella, $idRif)
+	{
+		if (isset(self::$elencoTabellePermesse[$tabella]))
+		{
+			$model = $this->getModel($tabella);
+			
+			$numero = $model->clear()->whereId((int)$idRif)->rowNumber();
+			
+			if ($numero)
+				return true;
+		}
+		
+		return false;
+	}
+    
+    public function checkInsertTabella()
+	{
+		if (!isset($this->values["tabella_rif"]) || !isset($this->values["id_rif"]))
+			return false;
+		
+		if (!$this->checkTabella($this->values["tabella_rif"], $this->values["id_rif"]))
+			return false;
+		
+		return true;
+	}
+    
+    public function getModel($tabella)
+	{
+		if (self::$elencoTabellePermesse[$tabella]["model"])
+			return new self::$elencoTabellePermesse[$tabella]["model"];
+		
+		return null;
+	}
+    
+    public function withEmail($tabella)
+	{
+		if (isset(self::$elencoTabellePermesse[$tabella]["email"]) && self::$elencoTabellePermesse[$tabella]["email"])
+			return true;
+		
+		return false;
+	}
+	
+    public function hasEmail($tabella, $idRif)
+	{
+		$email = $this->getEmail($tabella, $idRif);
+		
+		return $email ? true : false;
+	}
+    
+    public function getEmail($tabella, $idRif)
+	{
+		$model = $this->getModel($tabella);
+		
+		if (isset($model) && $idRif)
+		{
+			$record = $model->selectId((int)$idRif);
+			
+			if (!empty($record) && isset($record["email"]) && checkMail(trim($record["email"])))
+				return trim($record["email"]);
+		}
+		
+		return "";
+	}
+    
+    public function getTestoDefault($tabella, $idRif, $campo = "testo")
+	{
+		$model = $this->getModel($tabella);
+		
+		if (isset($model) && method_exists($model, "getTestoDefaultNota"))
+		{
+			return $model->getTestoDefaultNota($idRif, $campo);
+		}
+		
+		return "";
+	}
+    
+    public function mandaEmail($id)
+	{
+		if ($this->withEmail($this->values["tabella_rif"]))
+		{
+			$record = $this->selectId((int)$id);
+			
+			if (!empty($record) && $record["email"] && checkMail(trim($record["email"])))
+			{
+				$res = MailordiniModel::inviaMail(array(
+					"emails"	=>	array(trim($record["email"])),
+					"oggetto"	=>	strip_tags(htmlentitydecode($record["oggetto"])),
+					"tipologia"	=>	"MAIL NOTA",
+					"tabella"	=>	$record["tabella_rif"],
+					"id_elemento"	=>	(int)$record["id_rif"],
+					"testo"	=>	nl2br(strip_tags(htmlentitydecode($record["testo"]))),
+				));
+			}
+		}
+	}
+    
     public function insert()
     {
 		$this->values["id_admin"] = (int)User::$id;
 		
-		return parent::insert();
+		if (!$this->checkInsertTabella())
+			return false;
+		
+		$res = parent::insert();
+		
+		$this->mandaEmail($this->lId);
+		
+		return $res;
     }
     
     public function manageable($id)
@@ -65,7 +189,7 @@ class NoteModel extends GenericModel
 		
 		return false;
     }
-    
+	
     public function noteCrudHtml($tabellaRif, $idRif)
     {
 		$html = "";
@@ -85,4 +209,20 @@ class NoteModel extends GenericModel
 		
 		return $html;
     }
+    
+    public function emailCrud($record)
+	{
+		$moModel = new MailordiniModel();
+		
+		$emailInviate = $moModel->estraiRigaTabellaIdRef("promozioni", (int)$record["note"]["id_rif"]);
+		
+		$htmlArray = array();
+		
+		foreach ($emailInviate as $email)
+		{
+			$htmlArray[] = gtext("Email inviata a")." ".$email["email"]." ".gtext("in data")." ".F::getDateAndTimeInCorrectFormat(strtotime($email["data_creazione"]));
+		}
+		
+		return implode("<br />", $htmlArray);
+	}
 }

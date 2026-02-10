@@ -1,0 +1,1 @@
+ALTER TABLE `mail_ordini` ADD INDEX `mail_ordini_tabella_id_elemento` (`tabella`, `id_elemento`);

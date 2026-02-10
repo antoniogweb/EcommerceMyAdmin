@@ -954,4 +954,35 @@ class PromozioniModel extends GenericModel {
 	{
 		return NazioniModel::g()->getNome($record["promozioni"]["nazione_validita"]);
 	}
+	
+	public function getTestoDefaultNota($idPromo, $campo = "testo")
+	{
+		$record = $this->selectId((int)$idPromo);
+		
+		if (empty($record))
+			return "";
+		
+		$tmpFile = $campo == "testo" ? "/Elementi/Mail/Note/promozioni.php" : "/Elementi/Mail/Note/promozioni_oggetto.php";
+		
+		TraduzioniModel::sLingua($record["lingua"], "front");
+		ob_start();
+		if (file_exists(tpf($tmpFile)))
+			include tpf($tmpFile);
+		$output = ob_get_clean();
+		TraduzioniModel::rLingua();
+		
+		$record = htmlentitydecodeDeep($record);
+		
+		$fields = array(
+			"nome"		=>	"NOME",
+			"codice"	=>	"CODICE",
+		);
+		
+		foreach ($fields as $k => $v)
+		{
+			$output = str_replace("[$v]", $record[$k], $output);
+		}
+		
+		return $output;
+	}
 }

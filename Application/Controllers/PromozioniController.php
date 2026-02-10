@@ -99,6 +99,9 @@ class PromozioniController extends BaseController {
 			$this->mainHead .= ",Agente";
 		}
 		
+		$this->mainFields[] = "noteCrud";
+		$this->mainHead .= ",Note";
+		
 		$this->m[$this->modelName]->select("promozioni.*,orders.id_o")
 			->left(array("righe"))
 			->left("orders")->on("righe.id_o = orders.id_o")

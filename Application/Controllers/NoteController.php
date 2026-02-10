@@ -35,6 +35,16 @@ class NoteController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
 	
+	public function __construct($model, $controller, $queryString, $application, $action)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		$this->shift();
+		
+		if (!$this->m[$this->modelName]->checkTabella($this->viewArgs["tabella"], $this->viewArgs["id_tabella"]))
+			$this->responseCode(403);
+	}
+	
 	public function main()
 	{
 		$this->shift();
@@ -48,12 +58,18 @@ class NoteController extends BaseController {
 		
 		$this->m[$this->modelName]->select("*")->inner(array("utente"))->orderBy($this->orderBy)->convert();
 		
-		if (in_array($this->viewArgs["tabella"], NoteModel::$elencoTabellePermesse) && $this->viewArgs["id_tabella"] != "tutti")
+		if ($this->m[$this->modelName]->checkTabella($this->viewArgs["tabella"], $this->viewArgs["id_tabella"]))
 		{
 			$this->m[$this->modelName]->aWhere(array(
 				"tabella_rif"	=>	$this->viewArgs["tabella"],
-				"id_rif"		=>	$this->viewArgs["id_tabella"],
+				"id_rif"		=>	(int)$this->viewArgs["id_tabella"],
 			));
+			
+			if ($this->m[$this->modelName]->withEmail($this->viewArgs["tabella"]))
+			{
+				$this->mainFields[] = "emailCrud";
+				$this->mainHead .= ",Email";
+			}
 		}
 		
 		$this->m[$this->modelName]->save();
@@ -67,16 +83,27 @@ class NoteController extends BaseController {
 		
 		$fields = 'testo';
 		
-		$this->m[$this->modelName]->setValuesFromPost($fields);
-		
 		if ($queryType == "insert")
 		{
-			if (in_array($this->viewArgs["tabella"], NoteModel::$elencoTabellePermesse) && $this->viewArgs["id_tabella"] != "tutti")
+			if ($this->m[$this->modelName]->checkTabella($this->viewArgs["tabella"], $this->viewArgs["id_tabella"]))
 			{
+				if ($this->m[$this->modelName]->withEmail($this->viewArgs["tabella"]))
+				{
+					$fields = "email,oggetto,testo";
+					
+					$this->formDefaultValues["email"] = $this->m[$this->modelName]->getEmail($this->viewArgs["tabella"], $this->viewArgs["id_tabella"]);
+				}
+				
+				$this->formDefaultValues["testo"] = $this->m[$this->modelName]->getTestoDefault($this->viewArgs["tabella"], $this->viewArgs["id_tabella"]);
+				$this->formDefaultValues["oggetto"] = $this->m[$this->modelName]->getTestoDefault($this->viewArgs["tabella"], $this->viewArgs["id_tabella"], "oggetto");
+				
+				$this->m[$this->modelName]->setValuesFromPost($fields);
 				$this->m[$this->modelName]->setValue("tabella_rif", $this->viewArgs["tabella"]);
 				$this->m[$this->modelName]->setValue("id_rif", (int)$this->viewArgs["id_tabella"]);
 			}
 		}
+		else
+			$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
 	}
