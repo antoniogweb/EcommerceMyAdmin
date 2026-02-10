@@ -32,6 +32,13 @@ class HtmlToXlsx
 		
 		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Html();
 		$spreadsheet = $reader->loadFromString($html);
+		
+		// Forzo tutte le colonne a stringa
+		$sheet = $spreadsheet->getActiveSheet();
+		$sheet->getStyle(
+			$sheet->calculateWorksheetDimension()
+		)->getNumberFormat()->setFormatCode(PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+		
 		$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 		
 		header('Content-disposition: attachment; filename='.$titolo);
