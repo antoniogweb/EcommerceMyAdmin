@@ -5,8 +5,12 @@ $widthPulsante = "uk-width-1-1 uk-width-2-3@s";
 <div class="uk-child-width-expand@s uk-text-left uk-grid-divider uk-grid uk-grid-column-large" uk-grid>
 	<div class="uk-width-1-2@m uk-text-left">
 		<div class="uk-margin-medium-top uk-margin-medium-bottom">
-			<h3><?php echo gtext("Accedi");?></h3>
-			<div class="uk-text-meta"><?php echo gtext("Inserisci Username e Password per continuare come utente loggato.");?></div>
+			<?php
+			include(tpf(ElementitemaModel::p("LOGIN_SX_TOP","", array(
+				"titolo"	=>	"Form login, avviso SX Top",
+				"percorso"	=>	"Elementi/Generali/LoginFormSxTop",
+			))));
+			?>
 			
 			<?php
 // 			$nascondiPlaceholder = true;
