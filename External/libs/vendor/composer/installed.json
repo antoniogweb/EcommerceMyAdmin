@@ -201,17 +201,17 @@
                 },
                 {
                         "name": "aws/aws-sdk-php",
-                        "version": "3.369.20",
-                        "version_normalized": "3.369.20.0",
+                        "version": "3.369.31",
+                        "version_normalized": "3.369.31.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/aws/aws-sdk-php.git",
-                                "reference": "f53d8fc6cdbc1e64e7d14e72d1e315d05003b2b4"
+                                "reference": "c7bf53dfb09bea3ebfd19b89213625aa134dcc71"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f53d8fc6cdbc1e64e7d14e72d1e315d05003b2b4",
-                                "reference": "f53d8fc6cdbc1e64e7d14e72d1e315d05003b2b4",
+                                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c7bf53dfb09bea3ebfd19b89213625aa134dcc71",
+                                "reference": "c7bf53dfb09bea3ebfd19b89213625aa134dcc71",
                                 "shasum": ""
                         },
                         "require": {
@@ -251,7 +251,7 @@
                                 "ext-pcntl": "To use client-side monitoring",
                                 "ext-sockets": "To use client-side monitoring"
                         },
-                        "time": "2026-01-26T19:14:05+00:00",
+                        "time": "2026-02-10T19:13:30+00:00",
                         "type": "library",
                         "extra": {
                                 "branch-alias": {
@@ -295,7 +295,7 @@
                         "support": {
                                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.20"
+                                "source": "https://github.com/aws/aws-sdk-php/tree/3.369.31"
                         },
                         "install-path": "../aws/aws-sdk-php"
                 },
@@ -3076,17 +3076,17 @@
                 },
                 {
                         "name": "phpseclib/phpseclib",
-                        "version": "2.0.50",
-                        "version_normalized": "2.0.50.0",
+                        "version": "2.0.51",
+                        "version_normalized": "2.0.51.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/phpseclib/phpseclib.git",
-                                "reference": "1815ddd00195487cc922577751c175f339f4e20f"
+                                "reference": "ed661e7cdaeb8c419e609e2f3203551a13c2ed48"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/1815ddd00195487cc922577751c175f339f4e20f",
-                                "reference": "1815ddd00195487cc922577751c175f339f4e20f",
+                                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/ed661e7cdaeb8c419e609e2f3203551a13c2ed48",
+                                "reference": "ed661e7cdaeb8c419e609e2f3203551a13c2ed48",
                                 "shasum": ""
                         },
                         "require": {
@@ -3104,7 +3104,7 @@
                                 "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations.",
                                 "ext-xml": "Install the XML extension to load XML formatted public keys."
                         },
-                        "time": "2025-12-15T11:48:50+00:00",
+                        "time": "2026-01-27T09:11:52+00:00",
                         "type": "library",
                         "installation-source": "dist",
                         "autoload": {
@@ -3169,7 +3169,7 @@
                         ],
                         "support": {
                                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                                "source": "https://github.com/phpseclib/phpseclib/tree/2.0.50"
+                                "source": "https://github.com/phpseclib/phpseclib/tree/2.0.51"
                         },
                         "funding": [
                                 {
