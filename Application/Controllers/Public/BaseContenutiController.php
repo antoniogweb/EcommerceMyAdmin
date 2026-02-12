@@ -905,7 +905,13 @@ class BaseContenutiController extends BaseController
 			}
 		}
 		
-		$saltaJoinSubito = ($firstSection == Parametri::$nomeSezioneProdotti && v("usa_sotto_query_in_elenco")) ? true : false;
+		$saltaJoinSubito = (
+			$firstSection == Parametri::$nomeSezioneProdotti && 
+			v("usa_sotto_query_in_elenco") && 
+			$this->viewArgs["o"] != "az" && 
+			$this->viewArgs["o"] != "za"
+		) ? true : false;
+		
 		$attivaJoinSubito = !$saltaJoinSubito;
 		
 		$this->queryElencoProdotti($clean['id'], $firstSection, array(), true, $attivaJoinSubito);
@@ -1358,7 +1364,7 @@ class BaseContenutiController extends BaseController
 		else
 			$data["url_ordinamento"] = $this->baseUrl."/".$urlOrdinamento;
 		
-		if ($firstSection == Parametri::$nomeSezioneProdotti)
+		if ($firstSection == Parametri::$nomeSezioneProdotti && $attivaOrderBy)
 		{
 			$campoPrezzoMinimoIvato = v("sconti_combinazioni_automatiche") ? "price_scontato_ivato" : "price_ivato";
 			
