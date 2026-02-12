@@ -272,7 +272,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_campo_test_in_pagine"	=>	0, // permette di avere dei prodotti di test non elencati (neanche nella sitemap)
 		"attiva_menu_db"			=>	0, // menù in admin da db
 		"url_redirect_dopo_login"	=>	"area-riservata", // url di redirect dopo il login nel frontend
-		"mostra_impostazioni_smtp"	=>	1, // Se mostra o nasconde le impostazioni della posta in impostazioni, in admin
+		"mostra_impostazioni_smtp"	=>	0, // Se mostra o nasconde le impostazioni della posta in impostazioni, in admin
 		"attiva_titolo_2_valori_caratteristiche"	=>	0, // descrizione aggiuntiva caratteristica
 		"manda_mail_avvenuto_pagamento_al_cliente"	=>	1, // se mandare la mail di avvenuto pagamento al cliente, dopo l'ordine
 		"attiva_elementi_tema"		=>	0, // se permettere in admin o frontend di cambiare lo stile dei vari elementi del tema
@@ -1332,5 +1332,21 @@ class VariabiliModel extends GenericModel {
 	public static function getNumeroCaratteriPassword()
 	{
 		return App::$isFrontend ? v("password_regular_expression_numero_caratteri") : v("password_regular_expression_numero_caratteri_admin");
+	}
+	
+	public static function rimuoviDaLista($lista, $listaDaRimuovere)
+	{
+		$listaArray = explode(",", $lista);
+		$listaDaRimuovereArray = explode(",", $listaDaRimuovere);
+		
+		$nuoveVariabili = [];
+		
+		foreach ($listaArray as $var)
+		{
+			if (!in_array($var, $listaDaRimuovereArray))
+				$nuoveVariabili[] = $var;
+		}
+		
+		return implode(",", $nuoveVariabili);
 	}
 }
