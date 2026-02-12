@@ -72,7 +72,7 @@ class ThumbController extends BaseThumbController {
 				'defaultImage'	=>  null,
 				'cropImage'		=>	'no',
 			);
-
+			
 			$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/'.Parametri::$cartellaImmaginiContenuti,$params);
 			$thumb->render($image);
 		}

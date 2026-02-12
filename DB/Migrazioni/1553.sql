@@ -1,0 +1,1 @@
+UPDATE `iva` SET `valore` = '23.00' WHERE `iva`.`nazione` = 'SK';

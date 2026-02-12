@@ -99,7 +99,7 @@ class PromozioniController extends BaseController {
 			$this->mainHead .= ",Agente";
 		}
 		
-		if (v("attiva_gift_card"))
+		if (v("attiva_gift_card") && v("attiva_note_su_promo"))
 		{
 			$this->mainFields[] = "noteCrud";
 			$this->mainHead .= ",Note";
