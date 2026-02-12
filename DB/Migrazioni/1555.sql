@@ -1,0 +1,1 @@
+ALTER TABLE `wishlist` ADD INDEX `wishlist_id_order` (`id_order`);
