@@ -1080,7 +1080,7 @@ class BaseContenutiController extends BaseController
 	{
 		$clean['id'] = (int)$id;
 		
-		$select = PagesModel::getSelectDistinct()."pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*";
+		$select = PagesModel::getSelectDistinct()."pages.*,categories.*,".PagesModel::getCampiJoinTraduzione();
 		
 		if (v("attiva_ricerca_documento") && v("estrai_documenti_in_ricerca_documento") && strcmp($this->viewArgs["searchdoc"],"") !== 0)
 			$select = "distinct documenti.id_doc,pages.*,categories.*,contenuti_tradotti.*,contenuti_tradotti_categoria.*,documenti.*,contenuti_tradotti_documenti.*";
