@@ -1364,7 +1364,7 @@ class BaseContenutiController extends BaseController
 		else
 			$data["url_ordinamento"] = $this->baseUrl."/".$urlOrdinamento;
 		
-		if ($firstSection == Parametri::$nomeSezioneProdotti && $attivaOrderBy)
+		if ($firstSection == Parametri::$nomeSezioneProdotti && $attivaOrderBy && ($this->viewArgs['o'] == "crescente" || $this->viewArgs['o'] == "decrescente"))
 		{
 			$campoPrezzoMinimoIvato = v("sconti_combinazioni_automatiche") ? "price_scontato_ivato" : "price_ivato";
 			
