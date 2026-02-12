@@ -35,6 +35,8 @@ class PagesController extends BaseController
 	
 	public $voceMenu = "prodotti";
 	
+	public $splitQueryInRenderView = false;
+	
 	public $tableFields;
 	public $head = '[[bulkselect:checkbox_pages_id_page]],THUMB,CODICE / TITOLO,CATEGORIE,PUBBL?,IN EVID?,ORDINAMENTO';
 	public $filters = array(null,null,'title');
@@ -499,7 +501,7 @@ class PagesController extends BaseController
 		}
 		else
 		{
-			$data['scaffold'] = $this->scaffold->render(null, null, null, null, true);
+			$data['scaffold'] = $this->scaffold->render(null, null, null, null, $this->splitQueryInRenderView);
 	// 		print_r ($this->scaffold->model->db->queries);
 			
 			if (v("usa_transactions"))
