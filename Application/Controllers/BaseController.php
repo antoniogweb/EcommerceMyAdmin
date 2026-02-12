@@ -30,6 +30,7 @@ class BaseController extends Controller
 	
 	protected $_topMenuClasses = array();
 	
+	public $splitQueryInRenderView = false;
 	public $id_name = "";
 	public $parentRoot = null;
 	public $disabledFields = null;

@@ -35,8 +35,6 @@ class PagesController extends BaseController
 	
 	public $voceMenu = "prodotti";
 	
-	public $splitQueryInRenderView = false;
-	
 	public $tableFields;
 	public $head = '[[bulkselect:checkbox_pages_id_page]],THUMB,CODICE / TITOLO,CATEGORIE,PUBBL?,IN EVID?,ORDINAMENTO';
 	public $filters = array(null,null,'title');
