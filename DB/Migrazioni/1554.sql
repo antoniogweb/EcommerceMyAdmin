@@ -1,0 +1,1 @@
+UPDATE `variabili` SET `valore` = 0 WHERE chiave='mostra_impostazioni_smtp';

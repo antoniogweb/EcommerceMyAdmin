@@ -1333,4 +1333,20 @@ class VariabiliModel extends GenericModel {
 	{
 		return App::$isFrontend ? v("password_regular_expression_numero_caratteri") : v("password_regular_expression_numero_caratteri_admin");
 	}
+	
+	public static function rimuoviDaLista($lista, $listaDaRimuovere)
+	{
+		$listaArray = explode(",", $lista);
+		$listaDaRimuovereArray = explode(",", $listaDaRimuovere);
+		
+		$nuoveVariabili = [];
+		
+		foreach ($listaArray as $var)
+		{
+			if (!in_array($var, $listaDaRimuovereArray))
+				$nuoveVariabili[] = $var;
+		}
+		
+		return implode(",", $nuoveVariabili);
+	}
 }
