@@ -342,6 +342,19 @@ class ConteggioqueryModel extends GenericModel
 // 		return $res;
 // 	}
 	
+	public static function rimuoviWhiteList($ipArray)
+	{
+		$resIp = [];
+		
+		foreach ($ipArray as $ip => $numero)
+		{
+			if (!CidrfilterModel::ipInWhiteList($ip))
+				$resIp[$ip] = $numero;
+		}
+		
+		return $resIp;
+	}
+	
 	public static function numeroAttacchi($soglia = 4, $secondi = 60, $numeroIpStessarete = 10)
 	{
 		if (self::salvaSuFile())
@@ -364,6 +377,8 @@ class ConteggioqueryModel extends GenericModel
 		))
 		->sWhere($sWhereIp)
 		->groupBy("ip having numero_attacchi > ".(int)$soglia)->toList("ip", "aggregate.numero_attacchi")->send();
+		
+		$resIp = self::rimuoviWhiteList($resIp);
 		
 		// Cerca range
 		$resRange = $cq->clear()->select("count(numero) as numero_attacchi,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
@@ -399,6 +414,8 @@ class ConteggioqueryModel extends GenericModel
 		))
 		->sWhere($sWhereIp)
 		->groupBy("ip having numero_query > ".(int)$soglia)->toList("ip", "aggregate.numero_query")->send();
+		
+		$resIp = self::rimuoviWhiteList($resIp);
 		
 		if ($forzaCheckSoloRete)
 			$resIp = [];
