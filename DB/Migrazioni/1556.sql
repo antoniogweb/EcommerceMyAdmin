@@ -1,0 +1,1 @@
+ALTER TABLE `conteggio_query` ADD user_agent varchar(255) not null default '';

@@ -239,6 +239,8 @@ class ConteggioqueryModel extends GenericModel
 			"url"		=>	isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : "",
 			"codice"	=>	self::$codice,
 			"attacco"	=>	self::$attacco,
+			"user_agent"	=>	isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "",
+			"bot_name"	=>	Device::getBotName(),
 		));
 		
 		$cq->insert();
