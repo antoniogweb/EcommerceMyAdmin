@@ -141,6 +141,27 @@ if ($params["azione"] == "check-numero-attacchi")
 	$log->writeString("FINE CHECK NUMERO ATTACCHI");
 }
 
+if ($params["azione"] == "check-numero-query-bot")
+{
+	$log->writeString("INIZIO CHECK NUMERO QUERY");
+	
+	$query = $params["query"] ?? 10000;
+	$secondi = $params["secondi"] ?? 60;
+	
+	$conteggio = ConteggioqueryModel::numeroQueryBot($query, $secondi);
+	
+	arsort($conteggio);
+	
+	if (!empty($conteggio))
+	{
+		$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+		
+		print_r($conteggio);
+	}
+	
+	$log->writeString("FINE CHECK NUMERO QUERY");
+}
+
 if ($params["azione"] == "check-numero-query-network")
 {
 	$log->writeString("INIZIO CHECK NUMERO QUERY NETWORK");

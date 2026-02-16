@@ -429,6 +429,26 @@ class ConteggioqueryModel extends GenericModel
 		return $resIp + $resRange;
 	}
 	
+	public static function numeroQueryBot($soglia = 1000, $secondi = 60)
+	{
+		$secondi = time() - $secondi;
+		
+		$cq = new ConteggioqueryModel();
+		
+		$sWhereIp = self::getSWhereIp();
+		
+		// Cerca singolo IP
+		$resIp = $cq->clear()->select("SUM(numero) as numero_query,bot_name")->aWhere(array(
+			"gte"	=>	array(
+				"time_creazione"	=>	(int)$secondi,
+			),
+		))
+		->sWhere($sWhereIp)
+		->groupBy("bot_name having numero_query > ".(int)$soglia)->toList("bot_name", "aggregate.numero_query")->send();
+		
+		return $resIp;
+	}
+	
 	public static function svuotaConteggioQueryPiuVecchioDiGiorni($giorni)
 	{
 		if (self::salvaSuFile())
