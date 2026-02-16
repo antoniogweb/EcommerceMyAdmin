@@ -235,6 +235,7 @@ class ConteggioqueryModel extends GenericModel
 		$cq->setValues(array(
 			"numero"	=>	$numero,
 			"data_creazione"	=>	date("Y-m-d H:i:s"),
+			"time_creazione"	=>	time(),
 			"ip"		=>	getIp(),
 			"url"		=>	isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : "",
 			"codice"	=>	self::$codice,
@@ -439,14 +440,13 @@ class ConteggioqueryModel extends GenericModel
 		
 		$giorni = (int)$giorni;
 		
-		$dataOra = new DateTime();
-		$dataOra->modify("-$giorni days");
+		$time = time() - ($giorni * 3600 * 24);
 		
 		$cq = new ConteggioqueryModel();
 		
 		$cq->del(null, array(
-			"date_format(data_creazione,'%Y-%m-%d') <= ?",
-			array($dataOra->format("Y-m-d"))
+			"time_creazione <= ?",
+			array((int)$time)
 		));
 	}
 	
@@ -457,14 +457,13 @@ class ConteggioqueryModel extends GenericModel
 		
 		$ore = (int)$ore;
 		
-		$dataOra = new DateTime();
-		$dataOra->modify("-$ore hours");
+		$time = time() - ($ore * 3600);
 		
 		$cq = new ConteggioqueryModel();
 		
 		$cq->del(null, array(
-			"date_format(data_creazione,'%Y-%m-%d %H:%i') <= ?",
-			array($dataOra->format("Y-m-d H:i"))
+			"time_creazione <= ?",
+			array((int)$time)
 		));
 	}
 	
