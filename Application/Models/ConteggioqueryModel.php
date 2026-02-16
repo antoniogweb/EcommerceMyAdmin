@@ -363,8 +363,6 @@ class ConteggioqueryModel extends GenericModel
 
 		$secondi = time() - $secondi;
 		
-		$dataOra = date("Y-m-d H:i:s", $secondi);
-		
 		$cq = new ConteggioqueryModel();
 		
 		$sWhereIp = self::getSWhereIp();
@@ -372,7 +370,7 @@ class ConteggioqueryModel extends GenericModel
 		// Cerca singolo IP
 		$resIp = $cq->clear()->select("count(numero) as numero_attacchi,ip")->aWhere(array(
 			"gte"	=>	array(
-				"data_creazione"	=>	sanitizeAll($dataOra),
+				"time_creazione"	=>	(int)$secondi,
 			),
 			"attacco"	=>	1,
 		))
@@ -384,7 +382,7 @@ class ConteggioqueryModel extends GenericModel
 		// Cerca range
 		$resRange = $cq->clear()->select("count(numero) as numero_attacchi,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
 			"gte"	=>	array(
-				"data_creazione"	=>	sanitizeAll($dataOra),
+				"time_creazione"	=>	(int)$secondi,
 			),
 			"attacco"	=>	1,
 		))
@@ -401,8 +399,6 @@ class ConteggioqueryModel extends GenericModel
 
 		$secondi = time() - $secondi;
 		
-		$dataOra = date("Y-m-d H:i:s", $secondi);
-		
 		$cq = new ConteggioqueryModel();
 		
 		$sWhereIp = self::getSWhereIp();
@@ -410,7 +406,7 @@ class ConteggioqueryModel extends GenericModel
 		// Cerca singolo IP
 		$resIp = $cq->clear()->select("SUM(numero) as numero_query,ip")->aWhere(array(
 			"gte"	=>	array(
-				"data_creazione"	=>	sanitizeAll($dataOra),
+				"time_creazione"	=>	(int)$secondi,
 			),
 		))
 		->sWhere($sWhereIp)
@@ -424,7 +420,7 @@ class ConteggioqueryModel extends GenericModel
 		// Cerca range
 		$resRange = $cq->clear()->select("SUM(numero) as numero_query,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
 			"gte"	=>	array(
-				"data_creazione"	=>	sanitizeAll($dataOra),
+				"time_creazione"	=>	(int)$secondi,
 			),
 		))
 		->sWhere($sWhereIp)
