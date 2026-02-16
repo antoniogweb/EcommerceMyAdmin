@@ -211,8 +211,11 @@
 						<?php foreach (App::$pannelli as $tipoPannello => $pannello) { ?>
 							<?php if (!isset($pannello["condizioni"]) || VariabiliModel::verificaCondizioni($pannello["condizioni"])) { ?>
 							<li class="<?php if (strcmp($sezionePannello,$tipoPannello) === 0) { ?>active<?php } ?> <?php echo $pannello["classe"];?>">
-								<?php $linkPannello = ($tipoPannello != "utenti") ? App::primoLinkPannello($tipoPannello, $pannello["link"]) : "panel/main/utenti";?>
-								<?php if ($linkPannello) { ?>
+								<?php $linkPannello = App::primoLinkPannello($tipoPannello, $pannello["link"]);?>
+								<?php if ($linkPannello) {
+									if ($tipoPannello == "utenti")
+										$linkPannello = "panel/main/utenti";
+									?>
 									<a <?php echo $pannello["attributi_link"] ?? "";?> href="<?php echo $this->baseUrl.'/'.$linkPannello;?>"><i class="fa <?php echo $pannello["icona"];?>"></i>
 										<?php if (!User::$isMobile) { ?>
 										<?php echo gtext($pannello["titolo"])?>
