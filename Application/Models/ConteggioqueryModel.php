@@ -368,7 +368,7 @@ class ConteggioqueryModel extends GenericModel
 		$sWhereIp = self::getSWhereIp();
 		
 		// Cerca singolo IP
-		$resIp = $cq->clear()->select("count(numero) as numero_attacchi,ip")->aWhere(array(
+		$resIp = $cq->clear()->select("count(*) as numero_attacchi,ip")->aWhere(array(
 			"gte"	=>	array(
 				"time_creazione"	=>	(int)$secondi,
 			),
@@ -380,7 +380,7 @@ class ConteggioqueryModel extends GenericModel
 		$resIp = self::rimuoviWhiteList($resIp);
 		
 		// Cerca range
-		$resRange = $cq->clear()->select("count(numero) as numero_attacchi,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
+		$resRange = $cq->clear()->select("count(*) as numero_attacchi,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
 			"gte"	=>	array(
 				"time_creazione"	=>	(int)$secondi,
 			),
