@@ -450,6 +450,24 @@ class ConteggioqueryModel extends GenericModel
 		));
 	}
 	
+	public static function svuotaConteggioQueryPiuVecchioDiOre($ore)
+	{
+		if (self::salvaSuFile())
+			self::cancellaFileVecchi();
+		
+		$ore = (int)$ore;
+		
+		$dataOra = new DateTime();
+		$dataOra->modify("-$ore hours");
+		
+		$cq = new ConteggioqueryModel();
+		
+		$cq->del(null, array(
+			"date_format(data_creazione,'%Y-%m-%d %H:%i') <= ?",
+			array($dataOra->format("Y-m-d H:i"))
+		));
+	}
+	
 	public static function geolocalizzaIp($secondi, $limit = 100)
 	{
 		$secondi = time() - $secondi;

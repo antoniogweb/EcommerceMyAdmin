@@ -40,6 +40,7 @@ $options = getopt(null, array(
 	"numero::",
 	"ip_whitelist::",
 	"rete_whitelist::",
+	"ore::",
 ));
 
 $default = array(
@@ -230,9 +231,10 @@ if ($params["azione"] == "svuota-query")
 {
 	$log->writeString("INIZIO ELIMINAZIONE CONTEGGIO VECCHIE QUERY");
 	
-	$giorni = $params["giorni"] ?? 10;
-	
-	ConteggioqueryModel::svuotaConteggioQueryPiuVecchioDiGiorni($giorni);
+	if (isset($params["giorni"]))
+		ConteggioqueryModel::svuotaConteggioQueryPiuVecchioDiGiorni((int)$params["giorni"]);
+	else if (isset($params["ore"]))
+		ConteggioqueryModel::svuotaConteggioQueryPiuVecchioDiOre((int)$params["ore"]);
 	
 	$log->writeString("FINE ELIMINAZIONE CONTEGGIO VECCHIE QUERY");
 }
