@@ -67,8 +67,6 @@ $log = Files_Log::getInstance("log_monitoring");
 
 if ($params["azione"] == "check-numero-query")
 {
-	$log->writeString("INIZIO CHECK NUMERO QUERY");
-	
 	$query = $params["query"] ?? 10000;
 	$secondi = $params["secondi"] ?? 60;
 	$mail = isset($params["email"]) ? true : false;
@@ -76,16 +74,16 @@ if ($params["azione"] == "check-numero-query")
 	$numero_ip_stessa_rete = $params["numero_ip_stessa_rete"] ?? 30;
 	$forza_solo_check_rete = isset($params["forza_solo_check_rete"]) ? true : false;
 	$throttle = isset($params["throttle"]) ? true : false;
+	$testoThrottle = $throttle ? "Throttle: " : "";
+	
+	$log->writeString($testoThrottle. "INIZIO CHECK NUMERO QUERY");
 	
 	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi, $numero_ip_stessa_rete, $forza_solo_check_rete);
 	
 	arsort($conteggio);
 	
 	if (!empty($conteggio) && $mail)
-	{
-		$testoThrottle = $throttle ? "Throttle: " : "";
 		MailordiniModel::inviaMailLog($testoThrottle. "Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
-	}
 	
 	if (!empty($conteggio))
 	{
@@ -115,7 +113,7 @@ if ($params["azione"] == "check-numero-query")
 	Shield::freeTempIps($log);
 	Shield::freeThrottleIps($log);
 	
-	$log->writeString("FINE CHECK NUMERO QUERY");
+	$log->writeString($testoThrottle. "FINE CHECK NUMERO QUERY");
 }
 
 if ($params["azione"] == "check-numero-attacchi")
