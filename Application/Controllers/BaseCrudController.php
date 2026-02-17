@@ -359,7 +359,7 @@ trait BaseCrudController
 		}
 		else
 		{
-			$data['scaffold'] = $this->scaffold->render();
+			$data['scaffold'] = $this->scaffold->render(null, null, null, null, $this->splitQueryInRenderView);
 
 			$data['numeroElementi'] = $this->scaffold->model->rowNumber();
 			

@@ -140,8 +140,6 @@ class IpfilterModel extends GenericModel
 	
 	public static function aggiungiInWhitelist($ip, $rete, $log)
 	{
-		$pos = strpos($ip, "/");
-		
 		$arrayIp = self::getArrayIp($ip);
 		
 		if ((int)count($arrayIp) === 0)
@@ -181,6 +179,7 @@ class IpfilterModel extends GenericModel
 		$codici = OpzioniModel::codice("URL_IP_BOT");
 		
 		$ifModel = new IpfilterModel();
+		$cidrModel = new CidrfilterModel();
 		
 		foreach ($codici as $url => $titolo)
 		{
@@ -188,6 +187,10 @@ class IpfilterModel extends GenericModel
 				$log->writeString("Sto caricando gli IP di $titolo");
 			
 			$ifModel->del(null, array(
+				"rete"	=>	sanitizeAll($titolo),
+			));
+			
+			$cidrModel->del(null, array(
 				"rete"	=>	sanitizeAll($titolo),
 			));
 			
@@ -202,6 +205,11 @@ class IpfilterModel extends GenericModel
 			{
 				foreach ($struttura["prefixes"] as $p)
 				{
+					$cidrValues = array(
+						"whitelist"		=>	1,
+						"rete"			=>	$titolo,
+					);
+					
 					if (isset($p["ipv4Prefix"]))
 					{
 						$ipList = self::getIpList($p["ipv4Prefix"]);
@@ -216,6 +224,20 @@ class IpfilterModel extends GenericModel
 							
 							$ifModel->insert();
 						}
+						
+						$cidrValues["cidr"] = $p["ipv4Prefix"];
+						$cidrValues["ip_version"] = 4;
+					}
+					else if (isset($p["ipv6Prefix"]))
+					{
+						$cidrValues["cidr"] = $p["ipv6Prefix"];
+						$cidrValues["ip_version"] = 6;
+					}
+					
+					if (isset($cidrValues["cidr"]))
+					{
+						$cidrModel->setValues($cidrValues);
+						$cidrModel->insert();
 					}
 				}
 			}

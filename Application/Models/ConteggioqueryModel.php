@@ -235,10 +235,13 @@ class ConteggioqueryModel extends GenericModel
 		$cq->setValues(array(
 			"numero"	=>	$numero,
 			"data_creazione"	=>	date("Y-m-d H:i:s"),
+			"time_creazione"	=>	time(),
 			"ip"		=>	getIp(),
 			"url"		=>	isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : "",
 			"codice"	=>	self::$codice,
 			"attacco"	=>	self::$attacco,
+			"user_agent"	=>	isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "",
+			"bot_name"	=>	Device::getBotName(),
 		));
 		
 		$cq->insert();
@@ -340,6 +343,19 @@ class ConteggioqueryModel extends GenericModel
 // 		return $res;
 // 	}
 	
+	public static function rimuoviWhiteList($ipArray)
+	{
+		$resIp = [];
+		
+		foreach ($ipArray as $ip => $numero)
+		{
+			if (!CidrfilterModel::ipInWhiteList($ip))
+				$resIp[$ip] = $numero;
+		}
+		
+		return $resIp;
+	}
+	
 	public static function numeroAttacchi($soglia = 4, $secondi = 60, $numeroIpStessarete = 10)
 	{
 		if (self::salvaSuFile())
@@ -347,26 +363,26 @@ class ConteggioqueryModel extends GenericModel
 
 		$secondi = time() - $secondi;
 		
-		$dataOra = date("Y-m-d H:i:s", $secondi);
-		
 		$cq = new ConteggioqueryModel();
 		
 		$sWhereIp = self::getSWhereIp();
 		
 		// Cerca singolo IP
-		$resIp = $cq->clear()->select("count(numero) as numero_attacchi,ip")->aWhere(array(
+		$resIp = $cq->clear()->select("count(*) as numero_attacchi,ip")->aWhere(array(
 			"gte"	=>	array(
-				"data_creazione"	=>	sanitizeAll($dataOra),
+				"time_creazione"	=>	(int)$secondi,
 			),
 			"attacco"	=>	1,
 		))
 		->sWhere($sWhereIp)
 		->groupBy("ip having numero_attacchi > ".(int)$soglia)->toList("ip", "aggregate.numero_attacchi")->send();
 		
+		$resIp = self::rimuoviWhiteList($resIp);
+		
 		// Cerca range
-		$resRange = $cq->clear()->select("count(numero) as numero_attacchi,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
+		$resRange = $cq->clear()->select("count(*) as numero_attacchi,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
 			"gte"	=>	array(
-				"data_creazione"	=>	sanitizeAll($dataOra),
+				"time_creazione"	=>	(int)$secondi,
 			),
 			"attacco"	=>	1,
 		))
@@ -381,9 +397,7 @@ class ConteggioqueryModel extends GenericModel
 		if (self::salvaSuFile())
 			return self::numeroDaFile($soglia, $secondi, $numeroIpStessarete);
 
-		$secondi = time() - $secondi;
-		
-		$dataOra = date("Y-m-d H:i:s", $secondi);
+		$time = time() - $secondi;
 		
 		$cq = new ConteggioqueryModel();
 		
@@ -392,11 +406,13 @@ class ConteggioqueryModel extends GenericModel
 		// Cerca singolo IP
 		$resIp = $cq->clear()->select("SUM(numero) as numero_query,ip")->aWhere(array(
 			"gte"	=>	array(
-				"data_creazione"	=>	sanitizeAll($dataOra),
+				"time_creazione"	=>	(int)$time,
 			),
 		))
 		->sWhere($sWhereIp)
 		->groupBy("ip having numero_query > ".(int)$soglia)->toList("ip", "aggregate.numero_query")->send();
+		
+		$resIp = self::rimuoviWhiteList($resIp);
 		
 		if ($forzaCheckSoloRete)
 			$resIp = [];
@@ -404,13 +420,38 @@ class ConteggioqueryModel extends GenericModel
 		// Cerca range
 		$resRange = $cq->clear()->select("SUM(numero) as numero_query,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
 			"gte"	=>	array(
-				"data_creazione"	=>	sanitizeAll($dataOra),
+				"time_creazione"	=>	(int)$time,
 			),
 		))
 		->sWhere($sWhereIp)
 		->groupBy("subip having numero_ip >= ".(int)$numeroIpStessarete." && numero_query > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_query")->send();
 		
-		return $resIp + $resRange;
+		$resBot = self::numeroQueryBot($soglia, $secondi);
+		
+		return $resIp + $resRange + $resBot;
+	}
+	
+	public static function numeroQueryBot($soglia = 1000, $secondi = 60)
+	{
+		$time = time() - $secondi;
+		
+		$cq = new ConteggioqueryModel();
+		
+		$sWhereIp = self::getSWhereIp();
+		
+		// Cerca singolo IP
+		$resIp = $cq->clear()->select("SUM(numero) as numero_query,bot_name")->aWhere(array(
+			"gte"	=>	array(
+				"time_creazione"	=>	(int)$time,
+			),
+			"ne"	=>	array(
+				"bot_name"	=>	"",
+			),
+		))
+		->sWhere($sWhereIp)
+		->groupBy("bot_name having numero_query > ".(int)$soglia)->toList("bot_name", "aggregate.numero_query")->send();
+		
+		return $resIp;
 	}
 	
 	public static function svuotaConteggioQueryPiuVecchioDiGiorni($giorni)
@@ -420,14 +461,30 @@ class ConteggioqueryModel extends GenericModel
 		
 		$giorni = (int)$giorni;
 		
-		$dataOra = new DateTime();
-		$dataOra->modify("-$giorni days");
+		$time = time() - ($giorni * 3600 * 24);
 		
 		$cq = new ConteggioqueryModel();
 		
 		$cq->del(null, array(
-			"date_format(data_creazione,'%Y-%m-%d') <= ?",
-			array($dataOra->format("Y-m-d"))
+			"time_creazione <= ?",
+			array((int)$time)
+		));
+	}
+	
+	public static function svuotaConteggioQueryPiuVecchioDiOre($ore)
+	{
+		if (self::salvaSuFile())
+			self::cancellaFileVecchi();
+		
+		$ore = (int)$ore;
+		
+		$time = time() - ($ore * 3600);
+		
+		$cq = new ConteggioqueryModel();
+		
+		$cq->del(null, array(
+			"time_creazione <= ?",
+			array((int)$time)
 		));
 	}
 	

@@ -1,0 +1,1 @@
+ALTER TABLE `conteggio_query` DROP INDEX `conteggio_query_data_creazione_ip`, ADD INDEX `conteggio_query_data_creazione_ip` (`time_creazione`, `ip`) USING BTREE;

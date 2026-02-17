@@ -28,6 +28,8 @@ class ProdottiController extends PagesController {
 	public $sezionePannello = "ecommerce";
 // 	public $mainActionFields = "distinct pages.codice_alfa,pages.id_order,pages.title,pages.alias,pages.id_page,marchi.titolo";
 	
+	public $splitQueryInRenderView = true;
+	
 	public static $sCampoPrice = "price";
 	public static $sCampoPriceFisso = "prezzo_fisso";
 	

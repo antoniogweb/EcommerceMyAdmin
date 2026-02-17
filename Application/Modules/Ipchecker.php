@@ -28,7 +28,7 @@ class Ipchecker
 	
 	public function getLogPath($ip = 0)
 	{
-		$ip = F::checkIpESubIp($ip);
+		$ip = F::checkIp($ip);
 		
 		if (!$ip)
 			return;

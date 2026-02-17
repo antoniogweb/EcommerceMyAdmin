@@ -303,9 +303,17 @@ class F
 		return implode(",", $fieldsArray);
 	}
 	
+	public static function checkIp($ip)
+	{
+		if (filter_var($ip, FILTER_VALIDATE_IP))
+			return sanitizeAll($ip);
+		
+		return '';
+	}
+	
 	public static function checkIpESubIp($ip)
 	{
-		if (filter_var($ip, FILTER_VALIDATE_IP) || preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip))
+		if (filter_var($ip, FILTER_VALIDATE_IP) || preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip) || in_array($ip, Device::$bots))
 			return sanitizeAll($ip);
 			
 		return '';

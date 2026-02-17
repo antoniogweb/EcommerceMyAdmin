@@ -40,6 +40,8 @@ $options = getopt(null, array(
 	"numero::",
 	"ip_whitelist::",
 	"rete_whitelist::",
+	"ore::",
+	"throttle::",
 ));
 
 $default = array(
@@ -65,21 +67,23 @@ $log = Files_Log::getInstance("log_monitoring");
 
 if ($params["azione"] == "check-numero-query")
 {
-	$log->writeString("INIZIO CHECK NUMERO QUERY");
-	
 	$query = $params["query"] ?? 10000;
 	$secondi = $params["secondi"] ?? 60;
 	$mail = isset($params["email"]) ? true : false;
 	$blocca = isset($params["blocca"]) ? true : false;
 	$numero_ip_stessa_rete = $params["numero_ip_stessa_rete"] ?? 30;
 	$forza_solo_check_rete = isset($params["forza_solo_check_rete"]) ? true : false;
+	$throttle = isset($params["throttle"]) ? true : false;
+	$testoThrottle = $throttle ? "Throttle: " : "";
+	
+	$log->writeString($testoThrottle. "INIZIO CHECK NUMERO QUERY");
 	
 	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi, $numero_ip_stessa_rete, $forza_solo_check_rete);
 	
 	arsort($conteggio);
 	
 	if (!empty($conteggio) && $mail)
-		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
+		MailordiniModel::inviaMailLog($testoThrottle. "Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
 	
 	if (!empty($conteggio))
 	{
@@ -97,9 +101,19 @@ if ($params["azione"] == "check-numero-query")
 		$log->writeString("Gli IP sono stati bloccati");
 	}
 	
-	Shield::freeTempIps($log);
+	if (!empty($conteggio) && $throttle)
+	{
+		Shield::throttleIps($conteggio, $secondi);
+		
+		LogtecniciModel::aggiungiMolti("THROTTLE QUERY", "Throttle: superato il limite di $query query negli ultimi $secondi secondi", $conteggio);
+		
+		$log->writeString("Gli IP sono stati messi in wait");
+	}
 	
-	$log->writeString("FINE CHECK NUMERO QUERY");
+	Shield::freeTempIps($log);
+	Shield::freeThrottleIps($log);
+	
+	$log->writeString($testoThrottle. "FINE CHECK NUMERO QUERY");
 }
 
 if ($params["azione"] == "check-numero-attacchi")
@@ -138,6 +152,27 @@ if ($params["azione"] == "check-numero-attacchi")
 	Shield::freeTempIps($log);
 	
 	$log->writeString("FINE CHECK NUMERO ATTACCHI");
+}
+
+if ($params["azione"] == "check-numero-query-bot")
+{
+	$log->writeString("INIZIO CHECK NUMERO QUERY");
+	
+	$query = $params["query"] ?? 10000;
+	$secondi = $params["secondi"] ?? 60;
+	
+	$conteggio = ConteggioqueryModel::numeroQueryBot($query, $secondi);
+	
+	arsort($conteggio);
+	
+	if (!empty($conteggio))
+	{
+		$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+		
+		print_r($conteggio);
+	}
+	
+	$log->writeString("FINE CHECK NUMERO QUERY");
 }
 
 if ($params["azione"] == "check-numero-query-network")
@@ -230,9 +265,10 @@ if ($params["azione"] == "svuota-query")
 {
 	$log->writeString("INIZIO ELIMINAZIONE CONTEGGIO VECCHIE QUERY");
 	
-	$giorni = $params["giorni"] ?? 10;
-	
-	ConteggioqueryModel::svuotaConteggioQueryPiuVecchioDiGiorni($giorni);
+	if (isset($params["giorni"]))
+		ConteggioqueryModel::svuotaConteggioQueryPiuVecchioDiGiorni((int)$params["giorni"]);
+	else if (isset($params["ore"]))
+		ConteggioqueryModel::svuotaConteggioQueryPiuVecchioDiOre((int)$params["ore"]);
 	
 	$log->writeString("FINE ELIMINAZIONE CONTEGGIO VECCHIE QUERY");
 }

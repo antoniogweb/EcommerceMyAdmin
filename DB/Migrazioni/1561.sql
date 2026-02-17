@@ -1,0 +1,1 @@
+ALTER TABLE `conteggio_query` ADD INDEX `conteggio_query_time_creazione_bot_name` (`time_creazione`, `bot_name`) USING BTREE;

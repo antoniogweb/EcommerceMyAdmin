@@ -1,0 +1,1 @@
+ALTER TABLE `conteggio_query` ADD bot_name varchar(50) not null default '';

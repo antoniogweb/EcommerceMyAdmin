@@ -499,7 +499,7 @@ class PagesController extends BaseController
 		}
 		else
 		{
-			$data['scaffold'] = $this->scaffold->render(null, null, null, null, true);
+			$data['scaffold'] = $this->scaffold->render(null, null, null, null, $this->splitQueryInRenderView);
 	// 		print_r ($this->scaffold->model->db->queries);
 			
 			if (v("usa_transactions"))

@@ -1,0 +1,1 @@
+alter table conteggio_query add time_creazione int not null default 0 after data_creazione;
