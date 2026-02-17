@@ -472,7 +472,7 @@
 					var that = this;
 					
 					$.ajaxQueue({
-						url: that.urlGetFasce+"&id_cont="+id+"&delAction=Y",
+						url: that.urlGetFasce+"&id_cont="+id+"&delAction=Y&csrf=<?php echo $this->s['admin']->status['token'];?>",
 						async: true,
 						cache:false,
 						dataType: "html",
@@ -609,7 +609,7 @@
 			$.ajaxQueue({
 				type: "POST",
 				data: post_data,
-				url: "<?php echo $this->baseUrlSrc.'/admin/pages/ordinacontenuti';?>",
+				url: "<?php echo $this->baseUrlSrc.'/admin/'.$this->controller.'/ordina';?>",
 				async: true,
 				cache:false,
 				success: function(html){
