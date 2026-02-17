@@ -23,6 +23,7 @@
 define('EG','allowed');
 
 include(LIBRARY . DS . 'Frontend' . DS . "/block_ip.php");
+include(LIBRARY . DS . 'Frontend' . DS . "/throttle.php");
 
 if (file_exists(ROOT . "/redirect_url.php"))
 	include(ROOT . "/redirect_url.php");

@@ -41,6 +41,7 @@ $options = getopt(null, array(
 	"ip_whitelist::",
 	"rete_whitelist::",
 	"ore::",
+	"throttle::",
 ));
 
 $default = array(
@@ -74,13 +75,17 @@ if ($params["azione"] == "check-numero-query")
 	$blocca = isset($params["blocca"]) ? true : false;
 	$numero_ip_stessa_rete = $params["numero_ip_stessa_rete"] ?? 30;
 	$forza_solo_check_rete = isset($params["forza_solo_check_rete"]) ? true : false;
+	$throttle = isset($params["throttle"]) ? true : false;
 	
 	$conteggio = ConteggioqueryModel::numeroQuery($query, $secondi, $numero_ip_stessa_rete, $forza_solo_check_rete);
 	
 	arsort($conteggio);
 	
 	if (!empty($conteggio) && $mail)
-		MailordiniModel::inviaMailLog("Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
+	{
+		$testoThrottle = $throttle ? "Throttle: " : "";
+		MailordiniModel::inviaMailLog($testoThrottle. "Superato il limite di $query query negli ultimi $secondi secondi", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
+	}
 	
 	if (!empty($conteggio))
 	{
@@ -98,7 +103,17 @@ if ($params["azione"] == "check-numero-query")
 		$log->writeString("Gli IP sono stati bloccati");
 	}
 	
+	if (!empty($conteggio) && $throttle)
+	{
+		Shield::throttleIps($conteggio, $secondi);
+		
+		LogtecniciModel::aggiungiMolti("THROTTLE QUERY", "Throttle: superato il limite di $query query negli ultimi $secondi secondi", $conteggio);
+		
+		$log->writeString("Gli IP sono stati messi in wait");
+	}
+	
 	Shield::freeTempIps($log);
+	Shield::freeThrottleIps($log);
 	
 	$log->writeString("FINE CHECK NUMERO QUERY");
 }

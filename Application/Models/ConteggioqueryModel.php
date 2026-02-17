@@ -397,7 +397,7 @@ class ConteggioqueryModel extends GenericModel
 		if (self::salvaSuFile())
 			return self::numeroDaFile($soglia, $secondi, $numeroIpStessarete);
 
-		$secondi = time() - $secondi;
+		$time = time() - $secondi;
 		
 		$cq = new ConteggioqueryModel();
 		
@@ -406,7 +406,7 @@ class ConteggioqueryModel extends GenericModel
 		// Cerca singolo IP
 		$resIp = $cq->clear()->select("SUM(numero) as numero_query,ip")->aWhere(array(
 			"gte"	=>	array(
-				"time_creazione"	=>	(int)$secondi,
+				"time_creazione"	=>	(int)$time,
 			),
 		))
 		->sWhere($sWhereIp)
@@ -420,18 +420,20 @@ class ConteggioqueryModel extends GenericModel
 		// Cerca range
 		$resRange = $cq->clear()->select("SUM(numero) as numero_query,count(distinct ip) as numero_ip,substring_index( ip, '.', 3 ) as subip")->aWhere(array(
 			"gte"	=>	array(
-				"time_creazione"	=>	(int)$secondi,
+				"time_creazione"	=>	(int)$time,
 			),
 		))
 		->sWhere($sWhereIp)
 		->groupBy("subip having numero_ip >= ".(int)$numeroIpStessarete." && numero_query > ".(int)$soglia)->toList("aggregate.subip", "aggregate.numero_query")->send();
 		
-		return $resIp + $resRange;
+		$resBot = self::numeroQueryBot($soglia, $secondi);
+		
+		return $resIp + $resRange + $resBot;
 	}
 	
 	public static function numeroQueryBot($soglia = 1000, $secondi = 60)
 	{
-		$secondi = time() - $secondi;
+		$time = time() - $secondi;
 		
 		$cq = new ConteggioqueryModel();
 		
@@ -440,7 +442,10 @@ class ConteggioqueryModel extends GenericModel
 		// Cerca singolo IP
 		$resIp = $cq->clear()->select("SUM(numero) as numero_query,bot_name")->aWhere(array(
 			"gte"	=>	array(
-				"time_creazione"	=>	(int)$secondi,
+				"time_creazione"	=>	(int)$time,
+			),
+			"ne"	=>	array(
+				"bot_name"	=>	"",
 			),
 		))
 		->sWhere($sWhereIp)

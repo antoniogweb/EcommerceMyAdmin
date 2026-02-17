@@ -25,6 +25,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 // function inspirated by reply found here: https://stackoverflow.com/questions/34231938/detect-bot-using-php
 class Device
 {
+	private static $botsSorted = false;
+	
 	public static $bots = array(
 		'Googlebot'
 		, 'Baiduspider'
@@ -219,7 +221,6 @@ class Device
 		, 'DuckDuckGo' 
 		, 'monitoring-plugins'
 		, 'Selfoss'
-		, 'Adsbot'
 		, 'acebookexternalhit'
 		, 'SpiderLing'
 		, 'Cocolyzebot'
@@ -892,7 +893,6 @@ class Device
 		, 'Storebot-Google'
 		, 'Google-InspectionTool'
 		, 'APIs-Google'
-		, 'AdsBot-Google'
 		, 'Google-Safety'
 		, 'WellKnownBot'
 		, 'ArchiveBot'
@@ -908,6 +908,8 @@ class Device
 		, 'AwarioBot'
 		, 'NetworkingExtension'
 		, 'ApacheBench'
+		, 'Adsbot'
+		, 'AdsBot-Google'
 		, 'AdsBot-Google-Mobile'
 		, 'FreshRSS'
 		, 'SmartReader'
@@ -931,12 +933,18 @@ class Device
 		if (!isset($_SERVER['HTTP_USER_AGENT']))
 			return "";
 		
+		if (!self::$botsSorted)
+		{
+			usort(self::$bots, fn($a,$b) => strlen($b) <=> strlen($a));
+			self::$botsSorted = true;
+		}
+		
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		
 		foreach (self::$bots as $bot)
 		{
 			if (stripos($userAgent, $bot) !== false)
-				return $bot;
+				return preg_replace('/[^A-Za-z0-9._-]/', '_', $bot);
 		}
 	}
 	

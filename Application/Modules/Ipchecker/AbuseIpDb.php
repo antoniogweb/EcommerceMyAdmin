@@ -46,7 +46,7 @@ class AbuseIpDb extends Ipchecker
 	
 	public function check($ip)
 	{
-		if (!F::checkIpESubIp($ip))
+		if (!F::checkIp($ip))
 			return null;
 		
 		require_once(LIBRARY . '/External/libs/vendor/autoload.php');

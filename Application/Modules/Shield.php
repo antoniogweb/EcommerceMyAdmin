@@ -25,6 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 class Shield
 {
 	public static $freedAfterSeconds = 3600;
+	public static $freedThrottleAfterSeconds = 120;
 	
 	public static function createLogFolders()
 	{
@@ -33,21 +34,38 @@ class Shield
 		createFolderFull("Logs/Jail/Perm", LIBRARY);
 		createFolderFull("Logs/Jail/Log", LIBRARY);
 		createFolderFull("Logs/Jail/Freed", LIBRARY);
+		createFolderFull("Logs/Jail/Throttle", LIBRARY);
+		createFolderFull("Logs/Jail/LogThrottle", LIBRARY);
 	}
 	
-	public static function writeIp($ip, $query = "--", $secondi = "--")
+	public static function writeIp($ip, $query = "--", $secondi = "--", $throttle = false)
 	{
 		$pathJail = LIBRARY."/Logs/Jail/";
 		
-		$content = date("Y-m-d H:i:s")."\nQuery:$query\nSecondi:$secondi";
-		
-		$temp = is_file($pathJail."/Freed/".$ip) ? "Perm" : "Temp";
-		
-		if (!is_file($pathJail."/$temp/".$ip))
-			FilePutContentsAtomic($pathJail."/$temp/".$ip, $content);
-		
-		if (!is_file($pathJail."/Log/".$ip))
-			FilePutContentsAtomic($pathJail."/Log/".$ip, $content);
+		if ($throttle)
+		{
+			$retryAfterSeconds = self::$freedThrottleAfterSeconds + 20;
+			$retryDate = gmdate('D, d M Y H:i:s', time() + $retryAfterSeconds) . ' GMT';
+			$content = $retryDate;
+			
+			if (!is_file($pathJail."/Throttle/".$ip))
+				FilePutContentsAtomic($pathJail."/Throttle/".$ip, $content);
+			
+			if (!is_file($pathJail."/LogThrottle/".$ip))
+				FilePutContentsAtomic($pathJail."/LogThrottle/".$ip, $content);
+		}
+		else
+		{
+			$content = date("Y-m-d H:i:s")."\nQuery:$query\nSecondi:$secondi";
+			
+			$temp = is_file($pathJail."/Freed/".$ip) ? "Perm" : "Temp";
+			
+			if (!is_file($pathJail."/$temp/".$ip))
+				FilePutContentsAtomic($pathJail."/$temp/".$ip, $content);
+			
+			if (!is_file($pathJail."/Log/".$ip))
+				FilePutContentsAtomic($pathJail."/Log/".$ip, $content);
+		}
 	}
 	
 	public static function blockIps($ips, $secondi = "--")
@@ -56,8 +74,6 @@ class Shield
 			return;
 		
 		self::createLogFolders();
-		
-		$pathJail = LIBRARY."/Logs/Jail/";
 		
 		foreach ($ips as $ip => $query)
 		{
@@ -73,7 +89,7 @@ class Shield
 	{
 		$pathJail = LIBRARY."/Logs/Jail/";
 		
-		if (@is_dir($pathJail))
+		if (@is_dir($pathJail) && @is_dir($pathJail."Temp"))
 		{
 			foreach (new DirectoryIterator($pathJail."Temp") as $fileInfo)
 			{
@@ -91,6 +107,50 @@ class Shield
 					
 					if ($log)
 						$log->writeString("Liberato IP $fileName dopo ".self::$freedAfterSeconds." secondi");
+				}
+			}
+		}
+	}
+	
+	public static function throttleIps($ips, $secondi = "--")
+	{
+		if (empty($ips))
+			return;
+		
+		self::createLogFolders();
+		
+		foreach ($ips as $ip => $query)
+		{
+			// $ip = sanitizeIp($ip);
+			$ip = F::checkIpESubIp($ip);
+			
+			if (trim($ip))
+				self::writeIp($ip, $query, $secondi, true);
+		}
+	}
+	
+	public static function freeThrottleIps($log = null)
+	{
+		$pathJail = LIBRARY."/Logs/Jail/";
+		
+		if (@is_dir($pathJail) && @is_dir($pathJail."Throttle"))
+		{
+			foreach (new DirectoryIterator($pathJail."Throttle") as $fileInfo)
+			{
+				$fileName = $fileInfo->getFilename();
+				
+				if ($fileInfo->isDot())
+					continue;
+				
+				if ($fileName == "index.html" || $fileName == ".htaccess")
+					continue;
+				
+				if ((time() - $fileInfo->getCTime()) >= self::$freedThrottleAfterSeconds)
+				{
+					unlink($pathJail."/Throttle/".$fileName);
+					
+					if ($log)
+						$log->writeString("Rimosso throttle IP $fileName dopo ".self::$freedThrottleAfterSeconds." secondi");
 				}
 			}
 		}

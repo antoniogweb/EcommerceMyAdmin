@@ -23,11 +23,7 @@
 if (!defined('EG')) die('Direct access not allowed!');
 
 include_once(LIBRARY."/config.php");
-
-// function sanitizeIpToCheck($ip)
-// {
-// 	return preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/',$ip) ? $ip : '';
-// }
+require_once (LIBRARY . DS . 'Application/Modules/' . DS . 'Device.php');
 
 function getIpToCheck()
 {
@@ -77,11 +73,34 @@ if (trim($ip))
     
     $subIp = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? $ipArray[0].".".$ipArray[1].".".$ipArray[2] : $ip;
     
-    if (@is_file(ROOT."/admin/Logs/Jail/Temp/$ip") || @is_file(ROOT."/admin/Logs/Jail/Perm/$ip") || @is_file(ROOT."/admin/Logs/Jail/Temp/$subIp") || @is_file(ROOT."/admin/Logs/Jail/Perm/$subIp"))
+    if (@is_file(ROOT."/admin/Logs/Jail/Perm/$ip") || @is_file(ROOT."/admin/Logs/Jail/Perm/$subIp"))
     {
         http_response_code(403);
         die();
     }
+    
+    if (@is_file(ROOT."/admin/Logs/Jail/Temp/$ip") || @is_file(ROOT."/admin/Logs/Jail/Temp/$subIp"))
+    {
+        http_response_code(403);
+        die();
+    }
+    
+    $botName = Device::getBotName();
+
+	if ($botName)
+	{
+		if (@is_file(ROOT."/admin/Logs/Jail/Perm/$botName"))
+		{
+			http_response_code(403);
+			die();
+		}
+		
+		if (@is_file(ROOT."/admin/Logs/Jail/Temp/$botName"))
+		{
+			http_response_code(403);
+			die();
+		}
+	}
 }
 else if (!defined('APP_CONSOLE'))
 {
