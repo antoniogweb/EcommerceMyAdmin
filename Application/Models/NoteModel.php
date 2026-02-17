@@ -34,6 +34,7 @@ class NoteModel extends GenericModel
 		"promozioni" => array(
 			"model"	=>	"PromozioniModel",
 			"email"	=>	true,
+			"valore"	=>	true,
 		),
 	);
 	
@@ -107,6 +108,14 @@ class NoteModel extends GenericModel
 		return false;
 	}
 	
+	public function withValore($tabella)
+	{
+		if (isset(self::$elencoTabellePermesse[$tabella]["valore"]) && self::$elencoTabellePermesse[$tabella]["valore"])
+			return true;
+		
+		return false;
+	}
+	
     public function hasEmail($tabella, $idRif)
 	{
 		$email = $this->getEmail($tabella, $idRif);
@@ -127,6 +136,55 @@ class NoteModel extends GenericModel
 		}
 		
 		return "";
+	}
+    
+    public function numeroEuroUsatiInNote($tabella, $idRif)
+	{
+		$res = $this->clear()->select("sum(valore) as SOMMA")->where(array(
+			"tabella_rif"	=>	sanitizeAll($tabella),
+			"id_rif"		=>	(int)$idRif,
+		))->send();
+		
+		if (count($res) > 0)
+			return (float)$res[0]["aggregate"]["SOMMA"];
+		
+		return 0;
+	}
+    
+    public function numeroEuroUsati($tabella, $idRif)
+	{
+		$model = $this->getModel($tabella);
+		
+		if (isset($model) && method_exists($model, "numeroEuroUsati"))
+		{
+			return $model->numeroEuroUsati($idRif);
+		}
+		
+		return 0;
+	}
+	
+	public function numeroEuroRimasti($tabella, $idRif)
+	{
+		$model = $this->getModel($tabella);
+		
+		if (isset($model) && method_exists($model, "numeroEuroRimasti"))
+		{
+			return $model->numeroEuroRimasti($idRif);
+		}
+		
+		return 0;
+	}
+    
+    public function getTotalePromoAssoluta($tabella, $idRif)
+	{
+		$model = $this->getModel($tabella);
+		
+		if (isset($model) && method_exists($model, "getTotalePromoAssoluta"))
+		{
+			return $model->getTotalePromoAssoluta($idRif);
+		}
+		
+		return 0;
 	}
     
     public function getTestoDefault($tabella, $idRif, $campo = "testo")

@@ -523,6 +523,13 @@ class PromozioniModel extends GenericModel {
 		return $o->groupBy("id_p")->toList("orders.id_p", "aggregate.SOMMA")->send();
 	}
 	
+	public static function gNumeroEuroUsatiInNote($id_p)
+	{
+		$noteModel = new NoteModel();
+		
+		return $noteModel->numeroEuroUsatiInNote("promozioni", $id_p);
+	}
+	
 	public static function gNumeroEuroUsati($id_p, $ido = null)
 	{
 		if (!isset($ido))
@@ -543,10 +550,15 @@ class PromozioniModel extends GenericModel {
 		
 		$res = $o->send();
 		
-		if (count($res) > 0)
-			return (float)$res[0]["aggregate"]["SOMMA"];
+		$totale = 0;
 		
-		return 0;
+		if (count($res) > 0)
+			$totale = (float)$res[0]["aggregate"]["SOMMA"];
+		
+		if (v("attiva_note_su_promo"))
+			$totale += self::gNumeroEuroUsatiInNote($id_p);
+		
+		return $totale;
 	}
 	
 	public static function gNumeroEuroRimasti($id_p, $ido = null)
@@ -572,6 +584,26 @@ class PromozioniModel extends GenericModel {
 		}
 		
 		return 0;
+	}
+	
+	public function numeroEuroUsati($id_p, $ido = null)
+	{
+		return self::gNumeroEuroUsati($id_p, $ido);
+	}
+	
+	public function numeroEuroRimasti($id_p, $ido = null)
+	{
+		return self::gNumeroEuroRimasti($id_p, $ido);
+	}
+	
+	// Restituisce il totale della promo se ASSOLUTA e ESAURIMENTO
+	public function getTotalePromoAssoluta($id_p)
+	{
+		return $this->clear()->select("sconto")->where(array(
+			"id_p"	=>	(int)$id_p,
+			"tipo_sconto"	=>	"ASSOLUTO",
+			"tipo_credito"	=>	"ESAURIMENTO"
+		))->field("sconto");
 	}
 	
 	// Restituisce l'elenco dei prodotti in $idsC (array di id_c) considerando l'inclusione o l'esclusione di marchi ($whereMarchi) e l'inclusione o l'esclusione di prodotti ($wherePagine)

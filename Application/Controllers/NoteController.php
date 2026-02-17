@@ -94,6 +94,9 @@ class NoteController extends BaseController {
 					$this->formDefaultValues["email"] = $this->m[$this->modelName]->getEmail($this->viewArgs["tabella"], $this->viewArgs["id_tabella"]);
 				}
 				
+				if ($this->m[$this->modelName]->withValore($this->viewArgs["tabella"]))
+					$fields .= ",valore";
+				
 				$this->formDefaultValues["testo"] = $this->m[$this->modelName]->getTestoDefault($this->viewArgs["tabella"], $this->viewArgs["id_tabella"]);
 				$this->formDefaultValues["oggetto"] = $this->m[$this->modelName]->getTestoDefault($this->viewArgs["tabella"], $this->viewArgs["id_tabella"], "oggetto");
 				
