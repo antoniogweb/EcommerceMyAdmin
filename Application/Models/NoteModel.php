@@ -62,6 +62,9 @@ class NoteModel extends GenericModel
 					"labelString"	=>	"Testo della nota",
 					'attributes'		=>	'rows = "8"',
 				),
+				'valore'	=>	array(
+					"labelString"	=>	"Valore usato",
+				),
 			),
 		);
 	}
@@ -199,13 +202,41 @@ class NoteModel extends GenericModel
 		return "";
 	}
     
+    public function aggiornaCampi($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($record["tabella_rif"]) && $record["tabella_rif"] && isset($record["id_rif"]) && $record["id_rif"] && isset($record["valore"]))
+		{
+			if ($this->withValore($record["tabella_rif"]))
+			{
+				$usati = number_format((float)setPrice($record["valore"]),2,",","");
+				$rimasti = number_format((float)$this->numeroEuroRimasti($record["tabella_rif"], $record["id_rif"]),2,",","");
+				
+				$campi = array("oggetto", "testo");
+				
+				$this->sValues(array());
+				
+				foreach ($campi as $campo)
+				{
+					$record[$campo] = str_replace("[VALORE_USATO]", $usati, $record[$campo]);
+					$record[$campo] = str_replace("[VALORE_RIMASTO]", $rimasti, $record[$campo]);
+					
+					$this->setValue($campo, $record[$campo], "sanitizeDb");
+				}
+				
+				$this->update((int)$record["id_nota"]);
+			}
+		}
+	}
+    
     public function mandaEmail($id)
 	{
-		if ($this->withEmail($this->values["tabella_rif"]))
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && $this->withEmail($record["tabella_rif"]))
 		{
-			$record = $this->selectId((int)$id);
-			
-			if (!empty($record) && $record["email"] && checkMail(trim($record["email"])))
+			if ( $record["email"] && checkMail(trim($record["email"])))
 			{
 				$res = MailordiniModel::inviaMail(array(
 					"emails"	=>	array(trim($record["email"])),
@@ -228,6 +259,7 @@ class NoteModel extends GenericModel
 		
 		$res = parent::insert();
 		
+		$this->aggiornaCampi($this->lId);
 		$this->mandaEmail($this->lId);
 		
 		return $res;
