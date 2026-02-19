@@ -236,32 +236,44 @@ class AirichiesteModel extends GenericModel
 		if (!empty($record))
 		{
 			$messaggio = $_POST["messaggio"] ?? "";
-
+			$messaggio = htmlentitydecode(strip_tags($messaggio));
+			
 			if (trim($messaggio))
 			{
 				$airmModel = new AirichiestemessaggiModel();
-
+				
 				$contesto = AirichiestecontestiModel::g(false)->getContesto((int)$id);
-
-				$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
-					"id_ai_richiesta"	=>	(int)$id,
-				))->orderBy("data_creazione")->process()->send(false);
-
+				$istruzioni = "";
+				
 				$messaggi = array();
-
-				foreach ($res as $r)
+				
+				if (trim($contesto) || !v("attiva_rag_in_richieste"))
 				{
-					$messaggi[] = array(
-						"role"		=>	$r["ruolo"],
-						"content"	=>	htmlentitydecode($r["messaggio"]),
-					);
+					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
+						"id_ai_richiesta"	=>	(int)$id,
+					))->orderBy("data_creazione")->process()->send(false);
+					
+					foreach ($res as $r)
+					{
+						$messaggi[] = array(
+							"role"		=>	$r["ruolo"],
+							"content"	=>	htmlentitydecode($r["messaggio"]),
+						);
+					}
+
+					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"])->setMessaggio($messaggio);
+					
+					$messaggi[] = $messaggioElaborato;
 				}
-
-				$messaggi[] = array(
-					"role"		=>	"user",
-					"content"	=>	$messaggio,
-				);
-
+				else
+				{
+					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, "Ecommerce");
+					
+					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"])->setMessaggio($messaggoRag);
+					
+					$messaggi[] = $messaggioElaborato;
+				}
+				
 				$airmModel->sValues(array(
 					"messaggio"			=>	$messaggio,
 					"id_ai_richiesta"	=>	(int)$id,
@@ -271,7 +283,7 @@ class AirichiesteModel extends GenericModel
 
 				if ($airmModel->insert())
 				{
-					list($ris, $messaggio) = AimodelliModel::getModulo((int)$record["id_ai_modello"])->chat($messaggi, $contesto);
+					list($ris, $messaggio) = AimodelliModel::getModulo((int)$record["id_ai_modello"])->chat($messaggi, $contesto, $istruzioni);
 
 					$airmModel->sValues(array(
 						"messaggio"			=>	F::sanitizeTesto($messaggio),
@@ -337,5 +349,108 @@ class AirichiesteModel extends GenericModel
 		}
 
 		return $idRichiesta;
+	}
+	
+	public function rag($messaggio, $ambito = "Ecommerce", $lingua = "it", $numeroRisultati = 10)
+	{
+		list($res, $routing) = $this->routing($messaggio, $ambito);
+		
+		if ($res)
+		{
+			$routingJson = json_decode($routing, true);
+			
+			$intent = $routingJson["intent"] ?? "";
+			$confidence = $routingJson["confidence"] ?? "";
+			$contents = array();
+			
+			// if ((float)$confidence > 0.6)
+			// {
+				switch($intent)
+				{
+					case "product_search":
+						$emb = EmbeddingsModel::g(false)->inner(array("pagina"))->addWhereAttivo()->sWhere("exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
+						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
+						
+						$idPages = $result["pages"];
+						
+						if (count($idPages) > 0)
+						{
+							$p = PagesModel::g(false)->where(array(
+								"   in"	=>	array(
+									"id_page"	=>	forceIntDeep($idPages),
+								)
+							));
+							
+							$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 1);
+						}
+						
+						break;
+				}
+			// }
+			
+			$tpf = tpf("Elementi/AI/Frontend/$ambito/Prompt/Richiesta/default.txt");
+			
+			if (is_file($tpf))
+			{
+				ob_start();
+				include $tpf;
+				$istruzioni = ob_get_clean();
+				
+				$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
+				
+				$contextItems = array();
+				
+				foreach ($contents as $c)
+				{
+					$contextItems[] = array(
+						"id"		=>	$c["id_page"],
+						"title"		=>	$c["titolo"],
+						"descrizione"		=>	stripTagsDecode($c["descrizione"]),
+						"price"		=>	$c["prezzo_pieno"],
+						"discounted_price"		=>	$c["prezzo_scontato"],
+						"brand"		=>	$c["marchio"],
+					);
+				}
+				
+				$messaggioArray = array(
+					"user_question"	=>	$messaggio,
+					"intent"		=>	"product_search",
+					"context_items"	=>	$contextItems
+				);
+				
+				$messaggio = json_encode($messaggioArray);
+				
+				// $messaggio = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito())->setMessaggio($messaggio);
+				
+				return array($intent, $messaggio, $istruzioni);
+			}
+			
+			return array("", "", "");
+		}
+	}
+	
+	public function routing($messaggio, $ambito = "Ecommerce")
+	{
+		$tpf = tpf("Elementi/AI/Frontend/$ambito/Prompt/Routing/default.txt");
+		
+		if (is_file($tpf))
+		{
+			ob_start();
+			include $tpf;
+			$istruzioni = ob_get_clean();
+			
+			$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
+			
+			$messaggio = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito())->setMessaggio($messaggio);
+			
+			return $this->richiesta(array($messaggio), "", $istruzioni);
+		}
+		
+		return array("", "");
+	}
+	
+	public function richiesta($messaggi, $contesto = "", $istruzioni = "")
+	{
+		return AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito())->chat($messaggi, $contesto, $istruzioni);
 	}
 }

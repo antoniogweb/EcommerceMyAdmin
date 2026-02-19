@@ -105,4 +105,14 @@ class AimodelliModel extends GenericModel
 			"predefinito"	=>	1,
 		))->field("id_ai_modello");
 	}
+	
+	public function getModelloPredefinito()
+	{
+		$idModelloPredefinito = (int)$this->getIdPredefinito();
+		
+		if (!self::getModulo($idModelloPredefinito)->isAttivo())
+			return 0;
+		
+		return $idModelloPredefinito;
+	}
 }

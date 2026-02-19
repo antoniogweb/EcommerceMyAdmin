@@ -41,22 +41,18 @@ class EmbeddingsModel extends GenericModel {
         );
     }
     
-    public function getModello()
+    public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null)
 	{
-		$idModelloPredefinito = (int)AimodelliModel::g(false)->getIdPredefinito();
+		$idModelloPredefinito = AimodelliModel::g(false)->getModelloPredefinito();
 		
-		if (!AimodelliModel::getModulo($idModelloPredefinito)->isAttivo())
-			return 0;
-		
-		return $idModelloPredefinito;
-	}
-    
-    public function ricercaSemantica($query, $lingua = null, $numeroMassimoRisultati = 10, $log = null)
-	{
-		$idModelloPredefinito = $this->getModello();
+		$idPages = array();
+		$idMarchi = array();
 		
 		if (!$idModelloPredefinito)
-			return array();
+			return array(
+				"pages"		=>	array(),
+				"marchi"	=>	array(),
+			);
 		
 		if (trim($query))
 		{
@@ -66,7 +62,13 @@ class EmbeddingsModel extends GenericModel {
 			{
 				$queryEmbedding = array_map('floatval',json_decode($response, true));
 				
-				$res = $this->clear()->where(array(
+				if (!isset($eModel))
+				{
+					$eModel = new EmbeddingsModel();
+					$eModel->clear();
+				}
+				
+				$res = $eModel->aWhere(array(
 					"lingua"	=>	sanitizeAll($lingua),
 				))->send(false);
 				
@@ -104,7 +106,10 @@ class EmbeddingsModel extends GenericModel {
 				}
 				
 				if ($maxScore < 0.4)
-					return array();
+					return array(
+						"pages"		=>	array(),
+						"marchi"	=>	array(),
+					);
 				
 				$idPages = $idMarchi = array();
 				
@@ -116,13 +121,13 @@ class EmbeddingsModel extends GenericModel {
 					if ($sc["id_marchio"])
 						$idMarchi[] = $sc["id_marchio"];
 				}
-				
-				return array(
-					"pages"		=>	$idPages,
-					"marchi"	=>	$idMarchi,
-				);
 			}
 		}
+		
+		return array(
+			"pages"		=>	$idPages,
+			"marchi"	=>	$idMarchi,
+		);
 	}
     
     public function getCategoryEmbeddings($idCategory = 0, $lingua = null, $log = null)

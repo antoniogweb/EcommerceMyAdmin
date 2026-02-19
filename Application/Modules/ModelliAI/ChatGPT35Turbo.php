@@ -96,6 +96,14 @@ class ChatGPT35Turbo extends ModelloAI
 		return "";
 	}
 	
+	public function setMessaggio($messaggio, $ruolo = "user")
+	{
+		return array(
+			"role"		=>	$ruolo,
+			"content"	=>	$messaggio,
+		);
+	}
+	
 	public function chat($messaggi, $contesto = "", $istruzioni = "")
 	{
 		$client = $this->getClient();
@@ -103,7 +111,7 @@ class ChatGPT35Turbo extends ModelloAI
 		if (isset($client))
 		{
 			$messaggi = $this->elaboraMessaggi($messaggi, $contesto, $istruzioni);
-
+			
 			try
 			{
 				// print_r($messaggi);die();
@@ -114,7 +122,7 @@ class ChatGPT35Turbo extends ModelloAI
 
 				$responseArray = $response->toArray();
 
-				// var_dump($responseArray);
+				// print_r($responseArray);
 
 				if (isset($responseArray["choices"]) && is_array($responseArray["choices"]) && count($responseArray["choices"]) > 0)
 					return array(1, $responseArray["choices"][0]["message"]["content"]);

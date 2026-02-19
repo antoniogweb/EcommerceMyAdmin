@@ -28,27 +28,17 @@ class ModelloAI
 
 	protected function creaStreamContesto($contesto = "", $istruzioni = "")
 	{
+		$returnArray = array();
+		
+		if (!$istruzioni)
+			$istruzioni = v("istruzioni_ruolo_system_richieste_ai");
+		
+		if ($istruzioni)
+			$returnArray[] = ['role' => 'system', 'content' => $istruzioni];
+		
 		if ($contesto)
-		{
-			if (!$istruzioni)
-				$istruzioni = v("istruzioni_ruolo_system_richieste_ai");
-			
-			$returnArray = array();
-			
-			if ($istruzioni)
-				$returnArray[] = ['role' => 'system', 'content' => $istruzioni];
-			
-			if ($contesto)
-				$returnArray[] = ['role' => 'system', 'content' => '"""'.$contesto.'"""'];
-			
-			return $returnArray;
-			
-			// return array(
-			// 	['role' => 'system', 'content' => $istruzioni],
-			// 	['role' => 'system', 'content' => '"""'.$contesto.'"""'],
-			// );
-		}
-
-		return array();
+			$returnArray[] = ['role' => 'system', 'content' => '"""'.$contesto.'"""'];
+		
+		return $returnArray;
 	}
 }

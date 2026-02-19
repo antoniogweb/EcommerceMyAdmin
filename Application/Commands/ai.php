@@ -30,6 +30,7 @@ $options = getopt(null, array(
 	"id_record::",
 	"query::",
 	"numero_risultati::",
+	"ambito",
 ));
 
 $default = array(
@@ -37,6 +38,7 @@ $default = array(
 	"id_record"	=>	0,
 	"query"		=>	"",
 	"numero_risultati"	=>	10,
+	"ambito"	=>	"Ecommerce",
 );
 
 $params = array_merge($default, $options);
@@ -86,20 +88,31 @@ if ($params["azione"] == "ricerca-semantica")
 {
 	$log->writeString("INIZIO RICERCA SEMANTICA");
 	
-	$risultati = EmbeddingsModel::g(false)->ricercaSemantica($params["query"], $params["lingua"], $params["numero_risultati"], $log);
+	$risultati = EmbeddingsModel::ricercaSemantica($params["query"], null, $params["lingua"], $params["numero_risultati"], $log);
 	
 	print_r($risultati);
 	
 	$log->writeString("FINE RICERCA SEMANTICA");
 }
 
-// if ($params["azione"] == "chat")
-// {
-// 	$log->writeString("INIZIO RICERCA SEMANTICA");
-// 	
-// 	$risultati = EmbeddingsModel::g(false)->ricercaSemantica($params["query"], $params["lingua"], $params["numero_risultati"], $log);
-// 	
-// 	print_r($risultati);
-// 	
-// 	$log->writeString("FINE RICERCA SEMANTICA");
-// }
+if ($params["azione"] == "routing")
+{
+	$log->writeString("INIZIO ROUTING");
+	
+	$risultati = AirichiesteModel::g(false)->routing($params["query"], $params["ambito"]);
+	
+	print_r($risultati);
+	
+	$log->writeString("FINE ROUTING");
+}
+
+if ($params["azione"] == "rag")
+{
+	$log->writeString("INIZIO RAG");
+	
+	list($intent, $risposta, $istruzioni) = AirichiesteModel::g(false)->rag($params["query"], $params["ambito"], $params["lingua"], $params["numero_risultati"]);
+	
+	echo $risposta;
+	
+	$log->writeString("FINE RAG");
+}
