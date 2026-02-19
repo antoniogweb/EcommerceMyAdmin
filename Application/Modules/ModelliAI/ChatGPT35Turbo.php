@@ -57,9 +57,9 @@ class ChatGPT35Turbo extends ModelloAI
 		return $this->client;
 	}
 
-	protected function elaboraMessaggi($messaggi, $contesto = "")
+	protected function elaboraMessaggi($messaggi, $contesto = "", $istruzioni = "")
 	{
-		$messaggiChat = $this->creaStreamContesto($contesto);
+		$messaggiChat = $this->creaStreamContesto($contesto, $istruzioni);
 
 		foreach ($messaggi as $m)
 		{
@@ -96,13 +96,13 @@ class ChatGPT35Turbo extends ModelloAI
 		return "";
 	}
 	
-	public function chat($messaggi, $contesto = "")
+	public function chat($messaggi, $contesto = "", $istruzioni = "")
 	{
 		$client = $this->getClient();
 
 		if (isset($client))
 		{
-			$messaggi = $this->elaboraMessaggi($messaggi, $contesto);
+			$messaggi = $this->elaboraMessaggi($messaggi, $contesto, $istruzioni);
 
 			try
 			{

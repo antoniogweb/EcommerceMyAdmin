@@ -92,3 +92,14 @@ if ($params["azione"] == "ricerca-semantica")
 	
 	$log->writeString("FINE RICERCA SEMANTICA");
 }
+
+// if ($params["azione"] == "chat")
+// {
+// 	$log->writeString("INIZIO RICERCA SEMANTICA");
+// 	
+// 	$risultati = EmbeddingsModel::g(false)->ricercaSemantica($params["query"], $params["lingua"], $params["numero_risultati"], $log);
+// 	
+// 	print_r($risultati);
+// 	
+// 	$log->writeString("FINE RICERCA SEMANTICA");
+// }

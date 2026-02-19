@@ -20,35 +20,9 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-if (!defined('EG')) die('Direct access not allowed!');
+require_once(LIBRARY."/Application/Modules/ModelliAI/ChatGPT35Turbo.php");
 
-class ModelloAI
+class ChatGPT5Mini extends ChatGPT35Turbo
 {
-	use Modulo;
 
-	protected function creaStreamContesto($contesto = "", $istruzioni = "")
-	{
-		if ($contesto)
-		{
-			if (!$istruzioni)
-				$istruzioni = v("istruzioni_ruolo_system_richieste_ai");
-			
-			$returnArray = array();
-			
-			if ($istruzioni)
-				$returnArray[] = ['role' => 'system', 'content' => $istruzioni];
-			
-			if ($contesto)
-				$returnArray[] = ['role' => 'system', 'content' => '"""'.$contesto.'"""'];
-			
-			return $returnArray;
-			
-			// return array(
-			// 	['role' => 'system', 'content' => $istruzioni],
-			// 	['role' => 'system', 'content' => '"""'.$contesto.'"""'],
-			// );
-		}
-
-		return array();
-	}
 }

@@ -1,0 +1,1 @@
+INSERT INTO `ai_modelli` (`titolo`, `attivo`, `codice`, `modulo`, `key_1`, `tipo`, `predefinito`, `id_order`, `nome_modello`, `numero_pagine`) VALUES ('GPT-5 Mini', '1', 'ChatGPT5Mini', 'ChatGPT5Mini', '', 'NLP', '0', '3', 'gpt-5-mini', '40');
