@@ -42,7 +42,7 @@ class UsersopzioniModel extends GenericModel
 		);
     }
     
-    public static function gOpz($id = 0, $default = "")
+    public static function gOpz($id = 0, $default = "", $acceptedValues = array())
 	{
 		$uoModel = new UsersopzioniModel();
 		
@@ -63,6 +63,11 @@ class UsersopzioniModel extends GenericModel
 			}
 		}
 		
-		return self::$opzioni[self::$sApp][self::$sController][self::$sAction][$id] ?? $default;
+		$valore =  self::$opzioni[self::$sApp][self::$sController][self::$sAction][$id] ?? $default;
+		
+		if (in_array($valore, $acceptedValues))
+			return $valore;
+		
+		return $default;
 	}
 }
