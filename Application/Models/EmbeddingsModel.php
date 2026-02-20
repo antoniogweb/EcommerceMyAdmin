@@ -150,7 +150,7 @@ class EmbeddingsModel extends GenericModel {
     
     public function getPageEmbeddings($idPage = 0, $lingua = null, $log = null)
 	{
-		$idModelloPredefinito = $this->getModello();
+		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
 		
 		if (!$idModelloPredefinito)
 			return;

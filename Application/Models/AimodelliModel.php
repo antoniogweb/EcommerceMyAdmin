@@ -106,6 +106,13 @@ class AimodelliModel extends GenericModel
 		))->field("id_ai_modello");
 	}
 	
+	public function getIdModelForEmbeddings()
+	{
+		return (int)$this->clear()->where(array(
+			"tipologia"	=>	"EMBEDDINGS",
+		))->field("id_ai_modello");
+	}
+	
 	public function getModelloPredefinito()
 	{
 		$idModelloPredefinito = (int)$this->getIdPredefinito();

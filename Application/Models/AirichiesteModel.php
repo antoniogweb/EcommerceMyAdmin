@@ -22,6 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+require_once(LIBRARY."/Application/Modules/AI/Context/QueryAwareContextBuilder.php");
+
 class AirichiesteModel extends GenericModel
 {
 	public function __construct() {
@@ -267,7 +269,7 @@ class AirichiesteModel extends GenericModel
 				}
 				else
 				{
-					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, "Backend");
+					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, "Backend", "Ecommerce", "it", 4);
 					
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"])->setMessaggio($messaggoRag);
 					
@@ -475,10 +477,13 @@ class AirichiesteModel extends GenericModel
 				
 				foreach ($contents as $c)
 				{
+					$lines = QueryAwareContextBuilder::extractRelevantSnippet($messaggio, stripTagsDecode($c["descrizione"]), 4);
+					$compactDesc = implode(' | ', $lines);
+					
 					$contextItems[] = array(
 						"id"		=>	$c["id_page"],
 						"title"		=>	$c["titolo"],
-						"descrizione"		=>	stripTagsDecode($c["descrizione"]),
+						"descrizione"		=>	$compactDesc,
 						"price"		=>	$c["prezzo_pieno"],
 						"discounted_price"		=>	$c["prezzo_scontato"],
 						"brand"		=>	$c["marchio"],
@@ -493,7 +498,8 @@ class AirichiesteModel extends GenericModel
 				
 				$messaggio = json_encode($messaggioArray);
 				
-				// $messaggio = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito())->setMessaggio($messaggio);
+				// echo $messaggio."\n";
+				// echo $istruzioni."\n";
 				
 				return array($intent, $messaggio, $istruzioni);
 			}

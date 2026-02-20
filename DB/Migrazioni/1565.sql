@@ -1,0 +1,1 @@
+alter table ai_modelli add tipologia char(20) not null default 'GENERICO';
