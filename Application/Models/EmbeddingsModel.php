@@ -97,7 +97,7 @@ class EmbeddingsModel extends GenericModel {
 					];
 				}
 				
-				// Ordina per score decrescente (stable quanto basta per questo caso)
+				// Ordina per score decrescente
 				usort($scores, static fn($a, $b) => $b['score'] <=> $a['score']);
 				
 				// Troncamento ai topK

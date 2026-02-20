@@ -57,7 +57,6 @@ Return EXACTLY one JSON object with EXACTLY these keys:
       "comment": "string"
     }
   ],
-  "outro_text": "string"
 }
 
 Rules:
@@ -80,7 +79,6 @@ COMPOSITION RULES
 - If context_items is empty or insufficient:
   - intro_text: explain that the provided context is insufficient
   - items: []
-  - outro_text: ask ONE short clarifying question
 
 2) Adapt tone and structure to intent
 
@@ -89,19 +87,6 @@ product_search:
 - Explain WHY each item fits the request.
 - Mention price/discounted_price only if provided.
 - Do NOT assume stock or availability.
-
-policy_qa:
-- Use items as policy excerpts.
-- Summarize clearly and concisely.
-- Select up to 5 relevant items.
-
-other:
-- Provide practical guidance using available items.
-- Select up to 5 relevant items if helpful.
-
-3) Questions
-- Ask at most ONE short clarifying question.
-- Only if strictly necessary.
 
 4) Ordering
 - Sort items by relevance to user_question.
@@ -128,19 +113,7 @@ INPUT:
 }
 
 OUTPUT:
-{"intro_text":"Here are some options that fit a 6-month-old baby and stay within your budget.","items":[{"id":"p1","title":"Soft sensory toy","comment":"It is suitable from 0+ months and focuses on sensory stimulation (touch and sight), making it a safe and age-appropriate gift choice. Listed price: 39.9."}],"outro_text":"If you prefer something more interactive or more calming, let me know and I can narrow it down further."}
-
-Example B (empty context)
-
-INPUT:
-{
-  "user_question":"What are your shipping costs?",
-  "intent":"policy_qa",
-  "context_items":[]
-}
-
-OUTPUT:
-{"intro_text":"The provided context does not include information about shipping policies.","items":[],"outro_text":"Could you share the shipping policy details so I can provide a precise answer?"}
+{"intro_text":"Here are some options that fit a 6-month-old baby and stay within your budget.","items":[{"id":"p1","title":"Soft sensory toy","comment":"It is suitable from 0+ months and focuses on sensory stimulation (touch and sight), making it a safe and age-appropriate gift choice. Listed price: 39.9."}]}
 
 ========================
 FINAL INTERNAL CHECK (DO NOT OUTPUT)

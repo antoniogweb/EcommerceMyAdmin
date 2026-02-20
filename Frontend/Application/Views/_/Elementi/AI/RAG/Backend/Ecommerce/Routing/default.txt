@@ -58,65 +58,6 @@ Choose "other" for everything else:
 
 # Examples
 
-User: Cerco un regalo per un bimbo di 6 mesi, massimo 40 euro.
-Output:
-{"intent":"product_search","confidence":0.95}
-
-User: Avete giochi Montessori per 2 anni?
-Output:
-{"intent":"product_search","confidence":0.95}
-
-User: Quanto costa la spedizione?
-Output:
-{"intent":"policy_qa","confidence":0.95}
-
-User: Entro quanti giorni posso fare il reso?
-Output:
-{"intent":"policy_qa","confidence":0.95}
-
-User: Il sito non mi fa completare l’ordine.
-Output:
-{"intent":"other","confidence":0.90}
-
-User: Posso pagare in contrassegno?
-Output:
-{"intent":"policy_qa","confidence":0.95}
-
-User: Mi consigli un passeggino leggero?
-Output:
-{"intent":"product_search","confidence":0.95}
-
-User: Il mio ordine 1234 non è ancora arrivato.
-Output:
-{"intent":"policy_qa","confidence":0.85}
-
-User: Ciao
-Output:
-{"intent":"other","confidence":0.30}
-
-User: Avete spedizione gratuita sopra una certa cifra?
-Output:
-{"intent":"policy_qa","confidence":0.95}
-
-User: Cerco body in cotone bio taglia 9 mesi.
-Output:
-{"intent":"product_search","confidence":0.98}
-
-User: Come funziona la garanzia?
-Output:
-{"intent":"policy_qa","confidence":0.95}
-
-User: Mi serve la fattura per l’ordine fatto ieri.
-Output:
-{"intent":"policy_qa","confidence":0.90}
-
-User: Che differenza c’è tra questi due modelli?
-Output:
-{"intent":"product_search","confidence":0.75}
-
-User: Voglio collaborare con voi come influencer.
-Output:
-{"intent":"other","confidence":0.95}
 
 # Hard constraints
 

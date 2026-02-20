@@ -1,0 +1,2 @@
+<p>[INTRO_TEXT]</p>
+<p>[ITEMS]</p>

@@ -30,6 +30,7 @@ $options = getopt(null, array(
 	"id_record::",
 	"query::",
 	"numero_risultati::",
+	"zona",
 	"ambito",
 ));
 
@@ -38,6 +39,7 @@ $default = array(
 	"id_record"	=>	0,
 	"query"		=>	"",
 	"numero_risultati"	=>	10,
+	"zona"		=>	"Backend",
 	"ambito"	=>	"Ecommerce",
 );
 
@@ -99,7 +101,7 @@ if ($params["azione"] == "routing")
 {
 	$log->writeString("INIZIO ROUTING");
 	
-	$risultati = AirichiesteModel::g(false)->routing($params["query"], $params["ambito"]);
+	$risultati = AirichiesteModel::g(false)->routing($params["query"], $params["zona"], $params["ambito"]);
 	
 	print_r($risultati);
 	
@@ -110,9 +112,20 @@ if ($params["azione"] == "rag")
 {
 	$log->writeString("INIZIO RAG");
 	
-	list($intent, $risposta, $istruzioni) = AirichiesteModel::g(false)->rag($params["query"], $params["ambito"], $params["lingua"], $params["numero_risultati"]);
+	list($intent, $risposta, $istruzioni) = AirichiesteModel::g(false)->rag($params["query"], $params["zona"], $params["ambito"], $params["lingua"], $params["numero_risultati"]);
 	
 	echo $risposta;
 	
 	$log->writeString("FINE RAG");
+}
+
+if ($params["azione"] == "chat")
+{
+	$log->writeString("INIZIO CHAT");
+	
+	$risposta = AirichiesteModel::g(false)->richiestaCompleta($params["query"], $params["zona"], $params["ambito"], $params["lingua"], $params["numero_risultati"]);
+	
+	echo $risposta;
+	
+	$log->writeString("FINE CHAT");
 }

@@ -236,7 +236,7 @@ class AirichiesteModel extends GenericModel
 		if (!empty($record))
 		{
 			$messaggio = $_POST["messaggio"] ?? "";
-			$messaggio = htmlentitydecode(strip_tags($messaggio));
+			$messaggio = htmlentitydecode(strip_tags(trim($messaggio)));
 			
 			if (trim($messaggio))
 			{
@@ -267,7 +267,7 @@ class AirichiesteModel extends GenericModel
 				}
 				else
 				{
-					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, "Ecommerce");
+					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, "Backend");
 					
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"])->setMessaggio($messaggoRag);
 					
@@ -283,8 +283,11 @@ class AirichiesteModel extends GenericModel
 
 				if ($airmModel->insert())
 				{
-					list($ris, $messaggio) = AimodelliModel::getModulo((int)$record["id_ai_modello"])->chat($messaggi, $contesto, $istruzioni);
-
+					list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"]);
+					
+					if (isset($intent))
+						$messaggio = $this->elaboraRisposta($intent, $messaggio, "Backend", "it");
+					
 					$airmModel->sValues(array(
 						"messaggio"			=>	F::sanitizeTesto($messaggio),
 						"id_ai_richiesta"	=>	(int)$id,
@@ -298,7 +301,75 @@ class AirichiesteModel extends GenericModel
 			}
 		}
 	}
-
+	
+	public function richiestaCompleta($messaggio, $zona = "Backend", $ambito = "Ecommerce", $lingua = "it", $numeroRisultati = 10)
+	{
+		list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $zona, $ambito, $lingua, $numeroRisultati);
+		
+		$messaggioElaborato = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito())->setMessaggio($messaggoRag);
+		
+		list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni);
+		
+		if (isset($intent))
+			return $this->elaboraRisposta($intent, $risposta, "Backend", "it");
+		
+		return "";
+	}
+	
+	public function elaboraRisposta($intent, $messaggio, $zona = "Backend", $lingua = "it")
+	{
+		$messaggioArray = json_decode($messaggio, true);
+		
+		$tpf = tpf("Elementi/AI/RAG/$zona/Intent/$intent/layout.txt");
+		
+		$layoutText = "";
+		
+		if (isset($tpf) && is_file($tpf))
+		{
+			$introText = $messaggioArray["intro_text"] ?? "";
+			$items = $messaggioArray["items"] ?? array();
+			
+			ob_start();
+			include $tpf;
+			$layoutText = ob_get_clean();
+			
+			$layoutText = str_replace("[INTRO_TEXT]", strip_tags($introText), $layoutText);
+			
+			$tpfItems = tpf("Elementi/AI/RAG/$zona/Intent/$intent/item.txt");
+			
+			if (isset($tpfItems) && is_file($tpfItems))
+			{
+				ob_start();
+				include $tpfItems;
+				$layoutItem = ob_get_clean();
+				
+				$itemsArray = array();
+				
+				foreach ($items as $item)
+				{
+					$id = isset($item["id"]) ? (int)$item["id"] : 0;
+					$title = isset($item["title"]) ? strip_tags($item["title"]) : "";
+					$comment = isset($item["comment"]) ? strip_tags($item["comment"]) : "";
+					
+					$tmp = $layoutItem;
+					
+					$tmp = str_replace("[TITLE]", $title, $tmp);
+					$tmp = str_replace("[LINK]", "[LPAG_$id]", $tmp);
+					$tmp = str_replace("[COMMENT]", $comment, $tmp);
+					
+					$itemsArray[] = $tmp;
+				}
+				
+				// print_r($itemsArray);
+				
+				if (count($itemsArray) > 0)
+					$layoutText = str_replace("[ITEMS]", implode("", $itemsArray), $layoutText);
+			}
+		}
+		
+		return $layoutText;
+	}
+	
 	public function deletable($id)
 	{
 		$airmModel = new AirichiestemessaggiModel();
@@ -351,9 +422,9 @@ class AirichiesteModel extends GenericModel
 		return $idRichiesta;
 	}
 	
-	public function rag($messaggio, $ambito = "Ecommerce", $lingua = "it", $numeroRisultati = 10)
+	public function rag($messaggio, $zona = "Backend", $ambito = "Ecommerce", $lingua = "it", $numeroRisultati = 5)
 	{
-		list($res, $routing) = $this->routing($messaggio, $ambito);
+		list($res, $routing) = $this->routing($messaggio, $zona, $ambito);
 		
 		if ($res)
 		{
@@ -371,6 +442,8 @@ class AirichiesteModel extends GenericModel
 						$emb = EmbeddingsModel::g(false)->inner(array("pagina"))->addWhereAttivo()->sWhere("exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
 						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
 						
+						// print_r($result);
+						
 						$idPages = $result["pages"];
 						
 						if (count($idPages) > 0)
@@ -384,13 +457,13 @@ class AirichiesteModel extends GenericModel
 							$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 1);
 						}
 						
+						$tpf = tpf("Elementi/AI/RAG/$zona/Intent/$intent/prompt.txt");
+						
 						break;
 				}
 			// }
 			
-			$tpf = tpf("Elementi/AI/Frontend/$ambito/Prompt/Richiesta/default.txt");
-			
-			if (is_file($tpf))
+			if (isset($tpf) && is_file($tpf))
 			{
 				ob_start();
 				include $tpf;
@@ -429,9 +502,9 @@ class AirichiesteModel extends GenericModel
 		}
 	}
 	
-	public function routing($messaggio, $ambito = "Ecommerce")
+	public function routing($messaggio, $zona = "Backend", $ambito = "Ecommerce")
 	{
-		$tpf = tpf("Elementi/AI/Frontend/$ambito/Prompt/Routing/default.txt");
+		$tpf = tpf("Elementi/AI/RAG/$zona/$ambito/Routing/default.txt");
 		
 		if (is_file($tpf))
 		{
@@ -449,8 +522,21 @@ class AirichiesteModel extends GenericModel
 		return array("", "");
 	}
 	
-	public function richiesta($messaggi, $contesto = "", $istruzioni = "")
+	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null)
 	{
-		return AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito())->chat($messaggi, $contesto, $istruzioni);
+		if (!isset($idModello))
+			$idModello = AimodelliModel::g(false)->getModelloPredefinito();
+		
+		$cache = AirichiestecacheModel::g()->get($messaggi, $contesto, $istruzioni, $idModello);
+		
+		if ($cache)
+			return array(1,$cache);
+		
+		list($res, $output) = AimodelliModel::getModulo($idModello)->chat($messaggi, $contesto, $istruzioni);
+		
+		if ($res)
+			AirichiestecacheModel::g()->set($messaggi, $contesto, $istruzioni, $idModello, $output);
+		
+		return array($res, $output);
 	}
 }
