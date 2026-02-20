@@ -25,7 +25,15 @@ if (!defined('EG')) die('Direct access not allowed!');
 class ModelloAI
 {
 	use Modulo;
-
+	
+	public function setMessaggio($messaggio, $ruolo = "user")
+	{
+		return array(
+			"role"		=>	$ruolo,
+			"content"	=>	$messaggio,
+		);
+	}
+	
 	protected function creaStreamContesto($contesto = "", $istruzioni = "")
 	{
 		$returnArray = array();
@@ -40,5 +48,17 @@ class ModelloAI
 			$returnArray[] = ['role' => 'system', 'content' => '"""'.$contesto.'"""'];
 		
 		return $returnArray;
+	}
+	
+	protected function elaboraMessaggi($messaggi, $contesto = "", $istruzioni = "")
+	{
+		$messaggiChat = $this->creaStreamContesto($contesto, $istruzioni);
+
+		foreach ($messaggi as $m)
+		{
+			$messaggiChat[] = $m;
+		}
+
+		return $messaggiChat;
 	}
 }

@@ -308,7 +308,7 @@ class AirichiesteModel extends GenericModel
 	{
 		list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $zona, $ambito, $lingua, $numeroRisultati);
 		
-		$messaggioElaborato = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito())->setMessaggio($messaggoRag);
+		$messaggioElaborato = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito(), true)->setMessaggio($messaggoRag);
 		
 		list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni);
 		
@@ -483,7 +483,7 @@ class AirichiesteModel extends GenericModel
 					$contextItems[] = array(
 						"id"		=>	$c["id_page"],
 						"title"		=>	$c["titolo"],
-						"descrizione"		=>	$compactDesc,
+						"description"	=>	$compactDesc,
 						"price"		=>	$c["prezzo_pieno"],
 						"discounted_price"		=>	$c["prezzo_scontato"],
 						"brand"		=>	$c["marchio"],

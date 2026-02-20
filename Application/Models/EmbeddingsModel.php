@@ -43,7 +43,7 @@ class EmbeddingsModel extends GenericModel {
     
     public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null)
 	{
-		$idModelloPredefinito = AimodelliModel::g(false)->getModelloPredefinito();
+		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
 		
 		$idPages = array();
 		$idMarchi = array();
@@ -56,7 +56,7 @@ class EmbeddingsModel extends GenericModel {
 		
 		if (trim($query))
 		{
-			$response = AimodelliModel::getModulo($idModelloPredefinito)->embeddings($query);
+			$response = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($query);
 			
 			if (trim($response))
 			{
@@ -199,7 +199,7 @@ class EmbeddingsModel extends GenericModel {
 					if (!trim($embeddingText))
 						return;
 					
-					$response = AimodelliModel::getModulo($idModelloPredefinito)->embeddings($embeddingText);
+					$response = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($embeddingText);
 					
 					if (trim($response))
 					{
