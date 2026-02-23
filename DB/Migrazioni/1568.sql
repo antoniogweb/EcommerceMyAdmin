@@ -1,0 +1,1 @@
+ALTER TABLE `ai_modelli` add endpoint varchar(255) not null default '';

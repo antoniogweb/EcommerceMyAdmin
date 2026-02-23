@@ -1,9 +1,0 @@
-You are an intent classifier.
-Output ONLY valid JSON. No markdown. No extra keys. No extra text.
-
-Allowed intents: product_search, policy_qa, other
-
-Return exactly:
-{"intent":"product_search|policy_qa|other","confidence":0.00-1.00}
-
-If unsure, use "other" with confidence <= 0.40.

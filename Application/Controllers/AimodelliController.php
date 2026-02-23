@@ -54,8 +54,8 @@ class AimodelliController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
-		$this->mainFields = array("edit","ai_modelli.codice","attivo","ai_modelli.tipo","ai_modelli.tipologia","predefinito");
-		$this->mainHead = "Titolo,Codice,Attivo,Tipo,Tipologia,Predefinito";
+		$this->mainFields = array("edit","ai_modelli.codice","attivo","ai_modelli.tipo","predefinito");
+		$this->mainHead = "Titolo,Codice,Attivo,Tipo,Predefinito";
 		
 		$this->m[$this->modelName]->clear()->orderBy("titolo")->convert()->save();
 		

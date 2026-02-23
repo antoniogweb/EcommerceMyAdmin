@@ -228,7 +228,7 @@ class AirichiesteModel extends GenericModel
 	{
 		$idModello = $this->clear()->select("id_ai_modello")->whereId((int)$idRichiesta)->field("id_ai_modello");
 
-		return (int)AimodelliModel::getModulo((int)$idModello)->getParam("numero_pagine");
+		return (int)AimodelliModel::getModulo((int)$idModello, true)->getParam("numero_pagine");
 	}
 
 	public function messaggio($id)
@@ -263,7 +263,7 @@ class AirichiesteModel extends GenericModel
 						);
 					}
 
-					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"])->setMessaggio($messaggio);
+					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggio);
 					
 					$messaggi[] = $messaggioElaborato;
 				}
@@ -271,7 +271,7 @@ class AirichiesteModel extends GenericModel
 				{
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, "Backend", "Ecommerce", "it", 4);
 					
-					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"])->setMessaggio($messaggoRag);
+					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggoRag);
 					
 					$messaggi[] = $messaggioElaborato;
 				}
@@ -285,9 +285,14 @@ class AirichiesteModel extends GenericModel
 
 				if ($airmModel->insert())
 				{
-					list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"]);
+					$okRouting = false;
 					
-					if (isset($intent))
+					if (isset($intent) && $intent)
+						$okRouting = true;
+					
+					list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting);
+					
+					if ($okRouting)
 						$messaggio = $this->elaboraRisposta($intent, $messaggio, "Backend", "it");
 					
 					$airmModel->sValues(array(
@@ -308,11 +313,15 @@ class AirichiesteModel extends GenericModel
 	{
 		list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $zona, $ambito, $lingua, $numeroRisultati);
 		
-		$messaggioElaborato = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito(), true)->setMessaggio($messaggoRag);
+		$okRouting = $intent ? true : false;
 		
-		list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni);
+		$idModelloPredefinito = AimodelliModel::g(false)->getModelloPredefinito();
 		
-		if (isset($intent))
+		$messaggioElaborato = AimodelliModel::getModulo($idModelloPredefinito, true)->setMessaggio($messaggoRag);
+		
+		list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni, $idModelloPredefinito, $okRouting);
+		
+		if (isset($intent) && $intent)
 			return $this->elaboraRisposta($intent, $risposta, "Backend", "it");
 		
 		return "";
@@ -506,11 +515,13 @@ class AirichiesteModel extends GenericModel
 			
 			return array("", "", "");
 		}
+		
+		return array("", $messaggio, "");
 	}
 	
 	public function routing($messaggio, $zona = "Backend", $ambito = "Ecommerce")
 	{
-		$tpf = tpf("Elementi/AI/RAG/$zona/$ambito/Routing/default.txt");
+		$tpf = tpf("Elementi/AI/RAG/$zona/Routing/$ambito/default.txt");
 		
 		if (is_file($tpf))
 		{
@@ -520,7 +531,7 @@ class AirichiesteModel extends GenericModel
 			
 			$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
 			
-			$messaggio = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito())->setMessaggio($messaggio);
+			$messaggio = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito(), true)->setMessaggio($messaggio);
 			
 			return $this->richiesta(array($messaggio), "", $istruzioni);
 		}
@@ -528,19 +539,35 @@ class AirichiesteModel extends GenericModel
 		return array("", "");
 	}
 	
-	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null)
+	public function checkRichiesta($messaggi)
+	{
+		$messaggio = $messaggi[count($messaggi) - 1]["content"];
+		
+		if (strlen($messaggio) <= (int)v("numero_massimo_caratteri_messaggio_ai"))
+			return true;
+		
+		return false;
+	}
+	
+	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false)
 	{
 		if (!isset($idModello))
 			$idModello = AimodelliModel::g(false)->getModelloPredefinito();
 		
-		$cache = AirichiestecacheModel::g()->get($messaggi, $contesto, $istruzioni, $idModello);
+		if (v("ai_attiva_cache"))
+		{
+			$cache = AirichiestecacheModel::g()->get($messaggi, $contesto, $istruzioni, $idModello);
+			
+			if ($cache)
+				return array(1,$cache);
+		}
 		
-		if ($cache)
-			return array(1,$cache);
+		if (!$forza && !$this->checkRichiesta($messaggi))
+			list($res, $output) = array(0, gtext("La richiesta è troppo lunga, riprovi con una domanda più corta"));
+		else
+			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni);
 		
-		list($res, $output) = AimodelliModel::getModulo($idModello)->chat($messaggi, $contesto, $istruzioni);
-		
-		if ($res)
+		if (v("ai_attiva_cache"))
 			AirichiestecacheModel::g()->set($messaggi, $contesto, $istruzioni, $idModello, $output);
 		
 		return array($res, $output);

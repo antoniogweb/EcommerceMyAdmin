@@ -90,7 +90,10 @@ class AimodelliModel extends GenericModel
 					array(sanitizeAll($record["tipo"]))
 				));
 		}
-
+		
+		if (isset($this->values["key_1"]) && !trim((string)$this->values["key_1"]))
+			$this->delFields("key_1");
+		
 		return parent::update($id, $where);
 	}
 
@@ -103,13 +106,15 @@ class AimodelliModel extends GenericModel
 	{
 		return (int)$this->clear()->where(array(
 			"predefinito"	=>	1,
+			"tipo"			=>	"NLP",
 		))->field("id_ai_modello");
 	}
 	
 	public function getIdModelForEmbeddings()
 	{
 		return (int)$this->clear()->where(array(
-			"tipologia"	=>	"EMBEDDINGS",
+			"predefinito"	=>	1,
+			"tipo"			=>	"EMBEDDINGS",
 		))->field("id_ai_modello");
 	}
 	

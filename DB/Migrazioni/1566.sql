@@ -1,1 +1,1 @@
-INSERT INTO `ai_modelli` (`titolo`, `attivo`, `codice`, `modulo`, `key_1`, `tipo`, `predefinito`, `id_order`, `nome_modello`, `numero_pagine`, tipologia) VALUES ('GPT Embeddings', '1', 'GPTEmbeddings', 'GPTEmbeddings', '', 'NLP', '0', '3', 'text-embedding-3-small', '0', 'EMBEDDINGS');
+INSERT INTO `ai_modelli` (`titolo`, `attivo`, `codice`, `modulo`, `key_1`, `tipo`, `predefinito`, `id_order`, `nome_modello`, `numero_pagine`) VALUES ('GPT Embeddings', '1', 'GPTEmbeddings', 'GPTEmbeddings', '', 'EMBEDDINGS', '0', '3', 'text-embedding-3-small', '0');

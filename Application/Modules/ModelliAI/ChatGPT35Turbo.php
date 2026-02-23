@@ -41,7 +41,7 @@ class ChatGPT35Turbo extends ModelloAI
 	{
 		$model->formStruct["entries"]["key_1"]["labelString"] = "Chiave segreta";
 		$model->formStruct["entries"]["key_1"]["type"] = "Password";
-		$model->formStruct["entries"]["key_1"]["fill"] = true;
+		$model->formStruct["entries"]["key_1"]["fill"] = false;
 	}
 
 	protected function getClient()
@@ -49,7 +49,7 @@ class ChatGPT35Turbo extends ModelloAI
 		if (!isset($this->client))
 		{
 			require_once(LIBRARY . '/External/libs/vendor/autoload.php');
-
+			
 			if (class_exists("OpenAI"))
 				$this->client = OpenAI::client($this->getParam("key_1"));
 		}
@@ -94,7 +94,8 @@ class ChatGPT35Turbo extends ModelloAI
 			
 			try
 			{
-				// print_r($messaggi);die();
+				// print_r($client);
+				// print_r($messaggi);
 				$response = $client->chat()->create([
 					'model' => $this->getParam("nome_modello"),
 					'messages' => $messaggi,
@@ -106,7 +107,10 @@ class ChatGPT35Turbo extends ModelloAI
 
 				if (isset($responseArray["choices"]) && is_array($responseArray["choices"]) && count($responseArray["choices"]) > 0)
 					return array(1, $responseArray["choices"][0]["message"]["content"]);
+				else
+					return array(0, gtext("Errore generico"));
 			} catch (Exception $e) {
+				// print_r($e);
 				return array(0, $e->getMessage());
 			}
 

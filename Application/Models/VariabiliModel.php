@@ -835,6 +835,8 @@ class VariabiliModel extends GenericModel {
 		"istruzioni_ruolo_system_richieste_ai"	=>	"Usa principalmente il testo delimitato da virgolette triple (contesto) oppure lo storico di questa chat per rispondere alle domande.", // testo per indirizzare le risposte dell'AI
 		"default_primo_messaggio_ai"=>	"", // se impostato, viene proposto come primo messaggio all'AI
 		"attiva_rag_in_richieste"	=>	0, // Attiva RAG in richieste ad AI
+		"numero_massimo_caratteri_messaggio_ai"	=>	"100",
+		"ai_attiva_cache"			=>	1, // Attiva o meno la chache sulle richieste AI
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)
