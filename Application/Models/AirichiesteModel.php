@@ -110,11 +110,9 @@ class AirichiesteModel extends GenericModel
 				"id_ai_modello"	=>	(int)$idModello,
 				"AND"	=>	array(
 					"attivo"	=>	1,
-				   "ne"	=>	array(
-						"key_1"	=>	"",
-					),
 				),
 			),
+			"tipo"	=>	"NLP",
 		))->orderBy("predefinito desc")->send(false);
 
 		$selectModelli = [];
