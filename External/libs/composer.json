@@ -15,7 +15,7 @@
         "hubspot/api-client": "^10.3",
         "getbrevo/brevo-php": "1.x.x",
         "aws/aws-sdk-php": "^3.309",
-        "openai-php/client": "^0.8.1",
+        "openai-php/client": "^0.19.0",
         "donatj/phpuseragentparser": "^1.10",
         "satispay/gbusiness-api-php-sdk": "^1.4",
         "geoip2/geoip2": "^3.2.0"

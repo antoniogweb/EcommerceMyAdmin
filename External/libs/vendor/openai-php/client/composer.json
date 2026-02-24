@@ -13,26 +13,25 @@
         }
     ],
     "require": {
-        "php": "^8.1.0",
-        "php-http/discovery": "^1.19.4",
-        "php-http/multipart-stream-builder": "^1.3.0",
+        "php": "^8.2.0",
+        "php-http/discovery": "^1.20.0",
+        "php-http/multipart-stream-builder": "^1.4.2",
         "psr/http-client": "^1.0.3",
         "psr/http-client-implementation": "^1.0.1",
         "psr/http-factory-implementation": "*",
         "psr/http-message": "^1.1.0|^2.0.0"
     },
     "require-dev": {
-        "guzzlehttp/guzzle": "^7.8.1",
-        "guzzlehttp/psr7": "^2.6.2",
-        "laravel/pint": "^1.15.0",
-        "mockery/mockery": "^1.6.11",
-        "nunomaduro/collision": "^7.10.0",
-        "pestphp/pest": "^2.34.6",
-        "pestphp/pest-plugin-arch": "^2.7",
-        "pestphp/pest-plugin-type-coverage": "^2.8.1",
-        "phpstan/phpstan": "^1.10.66",
-        "rector/rector": "^1.0.4",
-        "symfony/var-dumper": "^6.4.4"
+        "guzzlehttp/guzzle": "^7.10.0",
+        "guzzlehttp/psr7": "^2.8.0",
+        "laravel/pint": "^1.25.1",
+        "mockery/mockery": "^1.6.12",
+        "nunomaduro/collision": "^8.8.3",
+        "pestphp/pest": "^3.8.2|^4.1.4",
+        "pestphp/pest-plugin-arch": "^3.1.1|^4.0.0",
+        "pestphp/pest-plugin-type-coverage": "^3.5.1|^4.0.0",
+        "phpstan/phpstan": "^1.12.32",
+        "symfony/var-dumper": "^7.3.5"
     },
     "autoload": {
         "psr-4": {
@@ -58,16 +57,13 @@
         }
     },
     "scripts": {
-        "lint": "pint -v",
-        "refactor": "rector --debug",
-        "test:lint": "pint --test -v",
-        "test:refactor": "rector --dry-run",
+        "lint": "pint -v --parallel",
+        "test:lint": "pint --test -v --parallel",
         "test:types": "phpstan analyse --ansi",
         "test:type-coverage": "pest --type-coverage --min=100",
         "test:unit": "pest --colors=always",
         "test": [
             "@test:lint",
-            "@test:refactor",
             "@test:types",
             "@test:type-coverage",
             "@test:unit"

@@ -9,17 +9,16 @@ final class CreateStreamedResponseToolCallFunction
     private function __construct(
         public readonly ?string $name,
         public readonly string $arguments,
-    ) {
-    }
+    ) {}
 
     /**
-     * @param  array{name?: string, arguments: string}  $attributes
+     * @param  array{name?: string, arguments?: string}  $attributes
      */
     public static function from(array $attributes): self
     {
         return new self(
             $attributes['name'] ?? null,
-            $attributes['arguments'],
+            $attributes['arguments'] ?? '',
         );
     }
 

@@ -143,7 +143,7 @@ final class Payload
      */
     public function toRequest(BaseUri $baseUri, Headers $headers, QueryParams $queryParams): RequestInterface
     {
-        $psr17Factory = new Psr17Factory();
+        $psr17Factory = new Psr17Factory;
 
         $body = null;
 
@@ -187,7 +187,7 @@ final class Payload
 
                 $headers = $headers->withContentType($this->contentType, '; boundary='.$streamBuilder->getBoundary());
             } else {
-                $body = $psr17Factory->createStream(json_encode($this->parameters, JSON_THROW_ON_ERROR));
+                $body = $psr17Factory->createStream(json_encode($this->parameters, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE));
             }
         }
 

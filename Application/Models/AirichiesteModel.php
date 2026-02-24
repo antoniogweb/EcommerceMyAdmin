@@ -565,6 +565,8 @@ class AirichiesteModel extends GenericModel
 		else
 			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni);
 		
+		// echo $output."\n\n\n";
+		
 		if (v("ai_attiva_cache"))
 			AirichiestecacheModel::g()->set($messaggi, $contesto, $istruzioni, $idModello, $output);
 		

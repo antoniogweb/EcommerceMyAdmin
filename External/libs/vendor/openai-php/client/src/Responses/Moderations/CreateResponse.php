@@ -12,12 +12,12 @@ use OpenAI\Responses\Meta\MetaInformation;
 use OpenAI\Testing\Responses\Concerns\Fakeable;
 
 /**
- * @implements ResponseContract<array{id: string, model: string, results: array<int, array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool}>}>
+ * @implements ResponseContract<array{id: string, model: string, results: array<int, array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool, category_applied_input_types?: array<string, array<int, string>>}>}>
  */
 final class CreateResponse implements ResponseContract, ResponseHasMetaInformationContract
 {
     /**
-     * @use ArrayAccessible<array{id: string, model: string, results: array<int, array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool}>}>
+     * @use ArrayAccessible<array{id: string, model: string, results: array<int, array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool, category_applied_input_types?: array<string, array<int, string>>}>}>
      */
     use ArrayAccessible;
 
@@ -32,13 +32,12 @@ final class CreateResponse implements ResponseContract, ResponseHasMetaInformati
         public readonly string $model,
         public readonly array $results,
         private readonly MetaInformation $meta,
-    ) {
-    }
+    ) {}
 
     /**
      * Acts as static factory, and returns a new Response instance.
      *
-     * @param  array{id: string, model: string, results: array<int, array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool}>}  $attributes
+     * @param  array{id: string, model: string, results: array<int, array{categories: array<string, bool>, category_scores: array<string, float>, flagged: bool, category_applied_input_types?: array<string, array<int, string>>}>}  $attributes
      */
     public static function from(array $attributes, MetaInformation $meta): self
     {

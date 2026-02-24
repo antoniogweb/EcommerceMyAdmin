@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace OpenAI;
 
 use OpenAI\Contracts\ClientContract;
+use OpenAI\Contracts\Resources\RealtimeContract;
 use OpenAI\Contracts\Resources\ThreadsContract;
+use OpenAI\Contracts\Resources\VectorStoresContract;
 use OpenAI\Contracts\TransporterContract;
 use OpenAI\Resources\Assistants;
 use OpenAI\Resources\Audio;
+use OpenAI\Resources\Batches;
 use OpenAI\Resources\Chat;
 use OpenAI\Resources\Completions;
+use OpenAI\Resources\Containers;
+use OpenAI\Resources\Conversations;
 use OpenAI\Resources\Edits;
 use OpenAI\Resources\Embeddings;
 use OpenAI\Resources\Files;
@@ -19,7 +24,10 @@ use OpenAI\Resources\FineTuning;
 use OpenAI\Resources\Images;
 use OpenAI\Resources\Models;
 use OpenAI\Resources\Moderations;
+use OpenAI\Resources\Realtime;
+use OpenAI\Resources\Responses;
 use OpenAI\Resources\Threads;
+use OpenAI\Resources\VectorStores;
 
 final class Client implements ClientContract
 {
@@ -29,6 +37,26 @@ final class Client implements ClientContract
     public function __construct(private readonly TransporterContract $transporter)
     {
         // ..
+    }
+
+    /**
+     * Manage responses to assist models with tasks.
+     *
+     * @see https://platform.openai.com/docs/api-reference/responses
+     */
+    public function responses(): Responses
+    {
+        return new Responses($this->transporter);
+    }
+
+    /**
+     * Create and manage conversations to store and retrieve conversation state across Response API calls.
+     *
+     * @see https://platform.openai.com/docs/api-reference/conversations
+     */
+    public function conversations(): Conversations
+    {
+        return new Conversations($this->transporter);
     }
 
     /**
@@ -50,6 +78,16 @@ final class Client implements ClientContract
     public function chat(): Chat
     {
         return new Chat($this->transporter);
+    }
+
+    /**
+     * Create and manage containers for use with the Code Interpreter tool.
+     *
+     * @see https://platform.openai.com/docs/api-reference/containers
+     */
+    public function containers(): Containers
+    {
+        return new Containers($this->transporter);
     }
 
     /**
@@ -125,7 +163,7 @@ final class Client implements ClientContract
     }
 
     /**
-     * Given a input text, outputs if the model classifies it as violating OpenAI's content policy.
+     * Given an input text, outputs if the model classifies it as violating OpenAI's content policy.
      *
      * @see https://platform.openai.com/docs/api-reference/moderations
      */
@@ -155,6 +193,16 @@ final class Client implements ClientContract
     }
 
     /**
+     * Communicate with a model in real time using WebRTC or WebSockets.
+     *
+     * @see https://platform.openai.com/docs/api-reference/realtime
+     */
+    public function realtime(): RealtimeContract
+    {
+        return new Realtime($this->transporter);
+    }
+
+    /**
      * Create threads that assistants can interact with.
      *
      * @see https://platform.openai.com/docs/api-reference/threads
@@ -162,5 +210,25 @@ final class Client implements ClientContract
     public function threads(): ThreadsContract
     {
         return new Threads($this->transporter);
+    }
+
+    /**
+     * Create large batches of API requests for asynchronous processing. The Batch API returns completions within 24 hours.
+     *
+     * @see https://platform.openai.com/docs/api-reference/batch
+     */
+    public function batches(): Batches
+    {
+        return new Batches($this->transporter);
+    }
+
+    /**
+     * Create and update vector stores that assistants can interact with
+     *
+     * @see https://platform.openai.com/docs/api-reference/vector-stores
+     */
+    public function vectorStores(): VectorStoresContract
+    {
+        return new VectorStores($this->transporter);
     }
 }

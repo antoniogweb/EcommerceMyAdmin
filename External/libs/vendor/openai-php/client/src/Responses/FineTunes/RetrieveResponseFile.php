@@ -29,8 +29,7 @@ final class RetrieveResponseFile implements ResponseContract
         public readonly string $purpose,
         public readonly string $status,
         public readonly array|string|null $statusDetails,
-    ) {
-    }
+    ) {}
 
     /**
      * Acts as static factory, and returns a new Response instance.
@@ -47,7 +46,7 @@ final class RetrieveResponseFile implements ResponseContract
             $attributes['filename'],
             $attributes['purpose'],
             $attributes['status'],
-            $attributes['status_details'],
+            $attributes['status_details'] ?? null,
         );
     }
 

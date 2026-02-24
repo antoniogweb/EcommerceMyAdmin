@@ -67,14 +67,26 @@ class ChatGPT35Turbo extends ModelloAI
 			
 			try
 			{
-				$response = $client->chat()->create([
+				$response = $client->responses()->create([
 					'model' => $this->getParam("nome_modello"),
-					'messages' => $messaggi,
+					'input' => $messaggi,
+					'reasoning' => [
+						'effort' => 'minimal', // oppure 'minimal', 'low', 'medium', and 'high'
+					],
 				]);
+				
+				// $response = $client->chat()->create([
+				// 	'model' => $this->getParam("nome_modello"),
+				// 	'messages' => $messaggi,
+				// ]);
 
 				$responseArray = $response->toArray();
-
-				if (isset($responseArray["choices"]) && is_array($responseArray["choices"]) && count($responseArray["choices"]) > 0)
+				
+				// print_r($responseArray);
+				
+				if (isset($responseArray["output_text"]))
+					return array(1, $responseArray["output_text"]);
+				else if (isset($responseArray["choices"]) && is_array($responseArray["choices"]) && count($responseArray["choices"]) > 0)
 					return array(1, $responseArray["choices"][0]["message"]["content"]);
 				else
 					return array(0, gtext("Errore generico"));
