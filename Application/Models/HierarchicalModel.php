@@ -885,8 +885,8 @@ class HierarchicalModel extends GenericModel {
 	{
 		$lingua = isset($lingua) ? $lingua : Params::$lang;
 		
-		if (isset(self::$strutturaCategorieRid[$lingua][$idC]))
-			return self::$strutturaCategorieRid[$lingua][$idC];
+		if (isset(self::$strutturaCategorieRid[nullToBlank($lingua)][$idC]))
+			return self::$strutturaCategorieRid[nullToBlank($lingua)][$idC];
 		
 		$className = get_called_class();
 		
@@ -898,11 +898,11 @@ class HierarchicalModel extends GenericModel {
 		
 		foreach ($res as $cat)
 		{
-			self::$strutturaCategorieRid[$lingua][$cat[$tableName][$pkName]] = $cat;
+			self::$strutturaCategorieRid[nullToBlank($lingua)][$cat[$tableName][$pkName]] = $cat;
 		}
 		
-		if (isset(self::$strutturaCategorieRid[$lingua][$idC]))
-			return self::$strutturaCategorieRid[$lingua][$idC];
+		if (isset(self::$strutturaCategorieRid[nullToBlank($lingua)][$idC]))
+			return self::$strutturaCategorieRid[nullToBlank($lingua)][$idC];
 		
 		return array();
 	}
@@ -920,7 +920,7 @@ class HierarchicalModel extends GenericModel {
 			
 			$parents = [];
 			
-			foreach (self::$strutturaCategorieRid[$lingua] as $idC => $categoria)
+			foreach (self::$strutturaCategorieRid[nullToBlank($lingua)] as $idC => $categoria)
 			{
 				if ($categoria["categories"]["lft"] <= $lft && $categoria["categories"]["rgt"] >= $rgt)
 				{
