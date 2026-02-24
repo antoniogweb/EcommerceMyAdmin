@@ -336,6 +336,7 @@ class AirichiesteModel extends GenericModel
 		if (isset($tpf) && is_file($tpf))
 		{
 			$introText = $messaggioArray["intro_text"] ?? "";
+			$text = $messaggioArray["text"] ?? "";
 			$items = $messaggioArray["items"] ?? array();
 			
 			ob_start();
@@ -343,10 +344,11 @@ class AirichiesteModel extends GenericModel
 			$layoutText = ob_get_clean();
 			
 			$layoutText = str_replace("[INTRO_TEXT]", strip_tags($introText), $layoutText);
+			$layoutText = str_replace("[TEXT]", strip_tags($text), $layoutText);
 			
 			$tpfItems = tpf("Elementi/AI/RAG/$zona/Intent/$intent/item.txt");
 			
-			if (isset($tpfItems) && is_file($tpfItems))
+			if (is_file($tpfItems))
 			{
 				ob_start();
 				include $tpfItems;
@@ -373,6 +375,8 @@ class AirichiesteModel extends GenericModel
 				
 				if (count($itemsArray) > 0)
 					$layoutText = str_replace("[ITEMS]", implode("", $itemsArray), $layoutText);
+				else
+					$layoutText = str_replace("[ITEMS]", "", $layoutText);
 			}
 		}
 		
@@ -443,6 +447,8 @@ class AirichiesteModel extends GenericModel
 			$confidence = $routingJson["confidence"] ?? "";
 			$contents = array();
 			
+			$intentConosciuto = false;
+			
 			// if ((float)$confidence > 0.6)
 			// {
 				switch($intent)
@@ -463,14 +469,34 @@ class AirichiesteModel extends GenericModel
 								)
 							));
 							
-							$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 1);
+							TraduzioniModel::sLingua($lingua, "front");
+							$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 0);
+							TraduzioniModel::rLingua();
 						}
 						
-						$tpf = tpf("Elementi/AI/RAG/$zona/Intent/$intent/prompt.txt");
+						$intentConosciuto = true;
 						
+						break;
+					case "policy_qa":
+						$p = PagesModel::g(false)->where(array(
+								"policy_ai"	=>	1,
+							));
+							
+						TraduzioniModel::sLingua($lingua, "front");
+						$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 1, 0);
+						TraduzioniModel::rLingua();
+						
+						$intentConosciuto = true;
+						break;
+					case "other":
+						
+						$intentConosciuto = true;
 						break;
 				}
 			// }
+			
+			if ($intentConosciuto)
+				$tpf = tpf("Elementi/AI/RAG/$zona/Intent/$intent/prompt.txt");
 			
 			if (isset($tpf) && is_file($tpf))
 			{
@@ -490,7 +516,7 @@ class AirichiesteModel extends GenericModel
 					$contextItems[] = array(
 						"id"		=>	$c["id_page"],
 						"title"		=>	$c["titolo"],
-						"description"	=>	$compactDesc,
+						"description"	=>	$intent == "product_search" ? $compactDesc : stripTagsDecode($c["descrizione"]),
 						"price"		=>	$c["prezzo_pieno"],
 						"discounted_price"		=>	$c["prezzo_scontato"],
 						"brand"		=>	$c["marchio"],

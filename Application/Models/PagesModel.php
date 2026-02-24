@@ -766,6 +766,18 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Se settato su sì, al primo accesso verrà creato l'HTML della pagina che verrà riproposto ai successivi accessi.")."</div>"
 					),
 				),
+				'policy_ai'	=>	array(
+					'type'		=>	'Select',
+					'labelString'=>	'Pagina di policy per AI',
+					'entryClass'	=>	'form_input_text help_test',
+					'options'	=>	self::$attivoSiNo,
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se impostato su sì, l'assistente virtuale AI risponderà usando queste informazioni nel caso di richiesta generica")."</div>"
+					),
+				),
 			),
 		);
 		

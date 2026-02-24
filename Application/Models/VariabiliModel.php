@@ -837,6 +837,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_rag_in_richieste"	=>	0, // Attiva RAG in richieste ad AI
 		"numero_massimo_caratteri_messaggio_ai"	=>	"100",
 		"ai_attiva_cache"			=>	1, // Attiva o meno la chache sulle richieste AI
+		"attiva_assistente_frontend"		=>	0, // Se impostato ad 1, attiva la chat lato frontend
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)

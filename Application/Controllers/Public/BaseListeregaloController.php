@@ -29,7 +29,7 @@ class BaseListeregaloController extends BaseController
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		if (!v("attiva_liste_regalo"))
-			$this->redirect("");
+			$this->responseCode(403);
 		
 		$this->load('header');
 		$this->load('footer','last');

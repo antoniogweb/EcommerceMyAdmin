@@ -36,6 +36,8 @@
 									
 									<?php echo $form["tipo_pagina"];?>
 									
+									<?php echo $form["policy_ai"];?>
+									
 									<?php echo $form["use_editor"];?>
 									
 									<?php echo $form["description"];?>

@@ -71,7 +71,7 @@ class ChatGPT35Turbo extends ModelloAI
 					'model' => $this->getParam("nome_modello"),
 					'input' => $messaggi,
 					'reasoning' => [
-						'effort' => 'minimal', // oppure 'minimal', 'low', 'medium', and 'high'
+						'effort' => 'low', // oppure 'minimal', 'low', 'medium', and 'high'
 					],
 				]);
 				

@@ -22,10 +22,33 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-Url::$routes = array(
-	"area-riservata"	=>	"area-riservata",
-	"modifica-account"	=>	"modifica-account",
-	"esci"				=>	"esci",
-	"rinnovo"			=>	"account-renewal",
-	"virtual-assistant"	=>	"virtual-assistant",
-); 
+class BaseAssistentevirtualeController extends BaseController
+{
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		if (!v("attiva_assistente_frontend"))
+			$this->responseCode(403);
+		
+		$this->load('header');
+		$this->load('footer','last');
+		
+		$data["arrayLingue"] = array();
+		
+		$this->append($data);
+	}
+
+	public function index()
+	{
+		foreach (Params::$frontEndLanguages as $l)
+		{
+			$data["arrayLingue"][$l] = $l."/".Url::routeToUrl("virtual-assistant")."/";
+		}
+		
+		$this->append($data);
+		
+		$this->load('index');
+	}
+	
+}

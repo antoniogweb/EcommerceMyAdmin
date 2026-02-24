@@ -43,6 +43,9 @@ class PagineController extends PagesController {
 		if (v("immagine_2_in_pagine"))
 			$this->queryFields .= ",immagine_2";
 		
+		if (v("attiva_rag_in_richieste"))
+			$this->queryFields .= ",policy_ai";
+		
 		$this->orderBy = "pages.id_order";
 		
 		$this->tableFields = array(

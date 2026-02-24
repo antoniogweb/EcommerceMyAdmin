@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
@@ -22,10 +22,9 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-Url::$routes = array(
-	"area-riservata"	=>	"area-riservata",
-	"modifica-account"	=>	"modifica-account",
-	"esci"				=>	"esci",
-	"rinnovo"			=>	"account-renewal",
-	"virtual-assistant"	=>	"virtual-assistant",
-); 
+require_once(LIBRARY."/Application/Controllers/Public/BaseAssistentevirtualeController.php");
+
+class AssistentevirtualeController extends BaseAssistentevirtualeController
+{
+
+}

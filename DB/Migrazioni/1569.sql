@@ -1,0 +1,1 @@
+ALTER TABLE `pages` add policy_ai tinyint not null default 0;
