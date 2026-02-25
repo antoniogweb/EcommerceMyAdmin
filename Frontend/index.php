@@ -27,7 +27,6 @@ include(LIBRARY . DS . 'Frontend' . DS . "/throttle.php");
 
 if (file_exists(ROOT . "/redirect_url.php"))
 	include(ROOT . "/redirect_url.php");
-	
 
 define('FRONT', ROOT);
 define('APPLICATION_PATH','Application'); //name of the folder that contains the application files
@@ -36,8 +35,6 @@ define('APPLICATION_PATH','Application'); //name of the folder that contains the
 require_once (ROOT . DS . 'Config' . DS . 'Config.php');
 require_once (ROOT . DS . 'Config' . DS . 'Route.php');
 require_once (LIBRARY . DS . 'Library' . DS . 'Bootstrap.php');
-
-// echo 'It works!';
 
 function Custom_autoload($className)
 {
