@@ -2318,7 +2318,6 @@ class BaseContenutiController extends BaseController
 					$finfo = finfo_open(FILEINFO_MIME_TYPE);
 					$MIMEtype = finfo_file($finfo, $path);
 					$contentType = $MIMEtype;
-					finfo_close($finfo);
 					
 					header('Content-disposition: '.$contentDisposition.'; filename='.$documento['clean_filename']);
 					header('Content-Type: '.$contentType);

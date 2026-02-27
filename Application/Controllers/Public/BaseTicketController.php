@@ -488,7 +488,6 @@ class BaseTicketController extends BaseController
 		{
 			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$MIMEtype = finfo_file($finfo, $path);
-			finfo_close($finfo);
 			
 			$cd = "attachment";
 			

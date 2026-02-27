@@ -274,7 +274,6 @@ class BaseController extends Controller
 			{
 				$finfo = finfo_open(FILEINFO_MIME_TYPE);
 				$MIMEtype = finfo_file($finfo, $folder."/".$record[$field]);
-				finfo_close($finfo);
 				
 				$fileName = isset($params["clean_field"]) ? $record[$params["clean_field"]] : $record[$field];
 				
@@ -676,7 +675,6 @@ class BaseController extends Controller
 		{
 			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$MIMEtype = finfo_file($finfo, $filePath);
-			finfo_close($finfo);
 			
 // 			$cd = "attachment";
 			
