@@ -24,7 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ReggroupsController extends BaseController
 {
-// 	public $orderBy = "id_order";
+	public $orderBy = "id_order";
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
@@ -32,11 +32,14 @@ class ReggroupsController extends BaseController
 	
 	public $sezionePannello = "ecommerce";
 	
-	function __construct($model, $controller, $queryString, $application, $action) {
+	public function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		$this->s["admin"]->check();
+		
+		if (!v("attiva_gruppi"))
+			$this->responseCode(403);
 		
 		$this->tabella = gtext("gruppi",true);
 		
@@ -68,7 +71,7 @@ class ReggroupsController extends BaseController
 				->where(array(
 // 					"lk" => array('titolo' => $this->viewArgs['cerca']),
 				))
-				->orderBy("name")->convert()->save();
+				->orderBy("id_order")->convert()->save();
 		
 		parent::main();
 	}
@@ -90,6 +93,13 @@ class ReggroupsController extends BaseController
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function ordina()
+	{
+		$this->modelName = "ReggroupsModel";
+		
+		parent::ordina();
 	}
 	
 	public function tipi($id = 0)

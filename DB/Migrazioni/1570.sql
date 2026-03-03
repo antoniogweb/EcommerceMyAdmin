@@ -1,0 +1,1 @@
+ALTER TABLE `reggroups` add id_order int not null default 0;

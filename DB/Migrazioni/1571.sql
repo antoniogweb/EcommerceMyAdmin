@@ -1,0 +1,1 @@
+update `reggroups` set id_order = id_group where 1;

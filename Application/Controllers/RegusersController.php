@@ -607,11 +607,11 @@ class RegusersController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"gruppi/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->select("regusers_groups.*,reggroups.*")->inner("reggroups")->using("id_group")->orderBy("reggroups.name")->where(array("id_user"=>$clean['id']))->convert()->save();
+		$this->m[$this->modelName]->select("regusers_groups.*,reggroups.*")->inner("reggroups")->using("id_group")->orderBy("reggroups.id_order")->where(array("id_user"=>$clean['id']))->convert()->save();
 		
 		parent::main();
 		
-		$data["listaGruppi"] = $this->m[$this->modelName]->clear()->from("reggroups")->select("reggroups.name,reggroups.id_group")->orderBy("reggroups.name")->toList("reggroups.id_group","reggroups.name")->send();
+		$data["listaGruppi"] = $this->m[$this->modelName]->clear()->from("reggroups")->select("reggroups.name,reggroups.id_group")->orderBy("reggroups.id_order")->toList("reggroups.id_group","reggroups.name")->send();
 		
 		$data["titoloRecord"] = $this->m("RegusersModel")->where(array("id_user"=>$clean['id']))->field("username");
 		
