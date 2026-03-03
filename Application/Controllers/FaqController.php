@@ -32,8 +32,9 @@ class FaqController extends PagesController {
 			),
 		);
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString, $application, $action)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->tableFields = array(
 			'[[checkbox]];pages.id_page;',

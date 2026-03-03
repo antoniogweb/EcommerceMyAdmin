@@ -1,1 +1,1 @@
-ALTER TABLE `ai_richieste` add id_user int not null default 0;
+ALTER TABLE `reggroups` add id_order int not null default 0;

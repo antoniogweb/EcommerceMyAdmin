@@ -126,6 +126,7 @@ class Route
 		
 		'reggroups,main',
 		'reggroups,form',
+		'reggroups,ordina',
 		'reggroups,tipi',
 		
 		'regusersgroupstemp,main',

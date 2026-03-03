@@ -52,7 +52,7 @@ class OpzioniController extends BaseController
 	private function checkCodice()
 	{
 		if (!isset($this->viewArgs["codice"]) || !in_array($this->viewArgs["codice"], OpzioniModel::$codiciGestibili))
-			die("NON PERMESSO");
+			$this->responseCode(403);
 	}
 	
 	public function main()

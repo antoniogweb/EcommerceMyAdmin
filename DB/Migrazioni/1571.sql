@@ -1,1 +1,1 @@
-ALTER TABLE `ai_richieste` add ip char(50) not null default '';
+update `reggroups` set id_order = id_group where 1;

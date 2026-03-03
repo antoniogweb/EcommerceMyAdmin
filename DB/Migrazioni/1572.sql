@@ -1,1 +1,1 @@
-ALTER TABLE `ai_richieste` add user_agent char(255) not null default '';
+ALTER TABLE `ai_richieste` add id_user int not null default 0;
