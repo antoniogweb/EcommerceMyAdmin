@@ -210,7 +210,7 @@ class AirichiesteModel extends GenericModel
 		}
 	}
 	
-	public function getChat()
+	public function getChat($crea = false)
 	{
 		$idChat = 0;
 		
@@ -231,11 +231,14 @@ class AirichiesteModel extends GenericModel
 			
 			if (empty($record))
 			{
-				// La chat non esiste: la creo
-				$this->values = array();
-				$this->insert();
-				
-				$idChat = (int)$this->lId;
+				if ($crea)
+				{
+					// La chat non esiste: la creo
+					$this->values = array();
+					$this->insert();
+					
+					$idChat = (int)$this->lId;
+				}
 			}
 			else
 			{
@@ -263,10 +266,15 @@ class AirichiesteModel extends GenericModel
 			$this->values["id_user"] = User::$id;
 			$this->values["id_ai_modello"] = (int)AimodelliModel::g(false)->getModelloPredefinito();
 			$this->values["cart_uid"] = isset(User::$cart_uid) ? sanitizeAll(User::$cart_uid) : "";
+			$this->values["zona"] = "Frontend";
 		}
 		else
+		{
 			$this->values["id_admin"] = User::$id;
+			$this->values["zona"] = "Backend";
+		}
 		
+		$this->values["ambito"] = sanitizeAll(v("assistente_ambito_default"));
 		$this->values["ip"] = sanitizeAll(getIp());
 		$this->values["user_agent"] = isset($_SERVER['HTTP_USER_AGENT']) ? sanitizeAll($_SERVER['HTTP_USER_AGENT']) : "";
 		$this->values["user_agent_md5"] = isset($_SERVER['HTTP_USER_AGENT']) ? md5($_SERVER['HTTP_USER_AGENT']) : "";
@@ -325,7 +333,7 @@ class AirichiesteModel extends GenericModel
 				}
 				else
 				{
-					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, "Backend", "Ecommerce", "it", 4);
+					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], 4);
 					
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggoRag);
 					
@@ -335,7 +343,8 @@ class AirichiesteModel extends GenericModel
 				$airmModel->sValues(array(
 					"messaggio"			=>	$messaggio,
 					"id_ai_richiesta"	=>	(int)$id,
-					"id_admin"			=>	User::$id,
+					"id_admin"			=>	(!App::$isFrontend) ? User::$id : 0,
+					"id_user"			=>	App::$isFrontend ? User::$id : 0,
 					"ruolo"				=>	"user",
 				));
 
@@ -349,7 +358,7 @@ class AirichiesteModel extends GenericModel
 					list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting);
 					
 					if ($okRouting)
-						$messaggio = $this->elaboraRisposta($intent, $messaggio, "Backend", "it");
+						$messaggio = $this->elaboraRisposta($intent, $messaggio, $record["lingua"]);
 					
 					$airmModel->sValues(array(
 						"messaggio"			=>	F::sanitizeTesto($messaggio),
@@ -358,7 +367,7 @@ class AirichiesteModel extends GenericModel
 						"ruolo"				=>	"assistant",
 						"risultato_richiesta"	=>	(int)$ris,
 					));
-
+					
 					$airmModel->insert();
 				}
 			}
@@ -378,16 +387,16 @@ class AirichiesteModel extends GenericModel
 		list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni, $idModelloPredefinito, $okRouting);
 		
 		if (isset($intent) && $intent)
-			return $this->elaboraRisposta($intent, $risposta, "Backend", "it");
+			return $this->elaboraRisposta($intent, $risposta, $lingua);
 		
 		return "";
 	}
 	
-	public function elaboraRisposta($intent, $messaggio, $zona = "Backend", $lingua = "it")
+	public function elaboraRisposta($intent, $messaggio, $lingua = "it")
 	{
 		$messaggioArray = json_decode($messaggio, true);
 		
-		$tpf = tpf("Elementi/AI/RAG/$zona/Intent/$intent/layout.txt");
+		$tpf = tpf("Elementi/AI/RAG/Intent/$intent/layout.txt");
 		
 		$layoutText = "";
 		
@@ -404,7 +413,7 @@ class AirichiesteModel extends GenericModel
 			$layoutText = str_replace("[INTRO_TEXT]", strip_tags($introText), $layoutText);
 			$layoutText = str_replace("[TEXT]", strip_tags($text), $layoutText);
 			
-			$tpfItems = tpf("Elementi/AI/RAG/$zona/Intent/$intent/item.txt");
+			$tpfItems = tpf("Elementi/AI/RAG/Intent/$intent/item.txt");
 			
 			if (is_file($tpfItems))
 			{
@@ -554,7 +563,7 @@ class AirichiesteModel extends GenericModel
 			// }
 			
 			if ($intentConosciuto)
-				$tpf = tpf("Elementi/AI/RAG/$zona/Intent/$intent/prompt.txt");
+				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
 			
 			if (isset($tpf) && is_file($tpf))
 			{
@@ -603,7 +612,7 @@ class AirichiesteModel extends GenericModel
 	
 	public function routing($messaggio, $zona = "Backend", $ambito = "Ecommerce")
 	{
-		$tpf = tpf("Elementi/AI/RAG/$zona/Routing/$ambito/default.txt");
+		$tpf = tpf("Elementi/AI/RAG/Routing/$zona/$ambito/prompt.txt");
 		
 		if (is_file($tpf))
 		{

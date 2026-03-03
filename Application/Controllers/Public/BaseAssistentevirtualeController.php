@@ -46,6 +46,9 @@ class BaseAssistentevirtualeController extends BaseController
 			$data["arrayLingue"][$l] = $l."/".Url::routeToUrl("virtual-assistant")."/";
 		}
 		
+		$idChat = $this->m("AirichiesteModel")->getChat();
+		$data["messaggi"] = $this->m("AirichiestemessaggiModel")->getMessaggi((int)$idChat);
+		
 		$this->append($data);
 		
 		$this->load('index');
@@ -58,13 +61,13 @@ class BaseAssistentevirtualeController extends BaseController
 		Session::open();
 		
 		$messaggio = $this->request->post("messaggio","");
-		$messaggio = htmlentitydecode(strip_tags(trim($messaggio)));
+		$messaggio = strip_tags(trim($messaggio));
 		
-		$idChat = $this->m("AirichiesteModel")->getChat();
+		$idChat = $this->m("AirichiesteModel")->getChat(true);
 		
 		if ($idChat)
 		{
-			$this->m[$this->modelName]->messaggio((int)$idChat, $messaggio);
+			$this->m("AirichiesteModel")->messaggio((int)$idChat, $messaggio);
 		}
 		
 		Session::restore();

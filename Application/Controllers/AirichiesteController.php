@@ -191,7 +191,7 @@ class AirichiesteController extends BaseController
 		$this->clean();
 		
 		$messaggio = $this->request->post("messaggio","");
-		$messaggio = htmlentitydecode(strip_tags(trim($messaggio)));
+		$messaggio = strip_tags(trim($messaggio));
 		
 		$this->m[$this->modelName]->messaggio((int)$id, $messaggio);
 	}

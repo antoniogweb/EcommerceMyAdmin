@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` add ambito char(20) not null default 'Ecommerce';

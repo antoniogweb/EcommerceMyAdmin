@@ -5,12 +5,12 @@ $(document).ready(function(){
 		
 		e.preventDefault();
 		
-		var messaggio = $(this).find(".request_message").val();
+		var messaggio = $(".request_message").val();
 		
 		$.ajaxQueue({
 			url: baseUrl + "/virtual-assistant/request/",
 			async: true,
-			cache:false,
+			cache: false,
 			type: "POST",
 			data: {
 				messaggio: messaggio

@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` add lingua char(10) not null default 'it';
