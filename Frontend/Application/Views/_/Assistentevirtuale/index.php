@@ -9,10 +9,10 @@
 	<div class="uk-card uk-card-default uk-card-body uk-padding-small uk-margin-remove-top">
 		<div class="uk-flex uk-flex-middle uk-grid-small" uk-grid>
 			<div class="uk-width-expand">
-				<input class="uk-input" type="text" placeholder="Scrivi un messaggio...">
+				<input class="request_message uk-input" type="text" placeholder="<?php echo gtext("Scrivi un messaggio...");?>">
 			</div>
 			<div class="uk-width-auto">
-				<button class="uk-button uk-button-primary" type="button"><?php echo gtext("Invia");?></button>
+				<button class="send_request_to_va uk-button uk-button-primary" type="button"><?php echo gtext("Invia");?></button>
 			</div>
 		</div>
 	</div>

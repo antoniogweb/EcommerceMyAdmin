@@ -217,6 +217,7 @@ class Route
 		'cron,prodotti',
 		'cron,logtecnici',
 		'assistentevirtuale,index',
+		'assistentevirtuale,request',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -415,6 +416,7 @@ class Route
 		'captcha/index/([1-2]{1})'	=>	'captcha/index/${1}',
 		'paypal/createorder/([0-9a-fA-F]{32})/([0-9a-fA-F]{32})'	=>	'paypal/createorder/${1}/${2}',
 		'paypal/captureorder/([0-9a-fA-F]{32})/([0-9a-fA-F]{32})'	=>	'paypal/captureorder/${1}/${2}',
+		'virtual-assistant/request/?'	=>	'assistentevirtuale/request',
 		'virtual-assistant/?'		=>	'assistentevirtuale/index',
 		
 // 		'(.*)/(.*)/(.*)/(.*)/(.*)' 	=>	'contenuti/index/${1}/${2}/${3}/${4}/${5}',

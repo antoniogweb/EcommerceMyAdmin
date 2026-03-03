@@ -189,8 +189,11 @@ class AirichiesteController extends BaseController
 	public function messaggio($id)
 	{
 		$this->clean();
-
-		$this->m[$this->modelName]->messaggio((int)$id);
+		
+		$messaggio = $this->request->post("messaggio","");
+		$messaggio = htmlentitydecode(strip_tags(trim($messaggio)));
+		
+		$this->m[$this->modelName]->messaggio((int)$id, $messaggio);
 	}
 
 	public function listamessaggi($id)

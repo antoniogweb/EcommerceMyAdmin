@@ -51,4 +51,22 @@ class BaseAssistentevirtualeController extends BaseController
 		$this->load('index');
 	}
 	
+	public function request()
+	{
+		$this->clean();
+		
+		Session::open();
+		
+		$messaggio = $this->request->post("messaggio","");
+		$messaggio = htmlentitydecode(strip_tags(trim($messaggio)));
+		
+		$idChat = $this->m("AirichiesteModel")->getChat();
+		
+		if ($idChat)
+		{
+			$this->m[$this->modelName]->messaggio((int)$idChat, $messaggio);
+		}
+		
+		Session::restore();
+	}
 }

@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` add user_agent_md5 char(32) not null default '' after user_agent;

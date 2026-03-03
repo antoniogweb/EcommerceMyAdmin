@@ -209,14 +209,72 @@ class AirichiesteModel extends GenericModel
 			$aircModel->insert();
 		}
 	}
-
+	
+	public function getChat()
+	{
+		$idChat = 0;
+		
+		if (App::$isFrontend)
+		{
+			// Cerco la chat per id_user o cart_uid
+			$record = $this->clear()->where(array(
+				"OR"	=>	array(
+					"AND"	=>	array(
+						"id_user"	=>	(int)User::$id,
+						"ne"		=>	array(
+							"id_user"	=>	0,
+						),
+					),
+					"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+				),
+			))->record();
+			
+			if (empty($record))
+			{
+				// La chat non esiste: la creo
+				$this->values = array();
+				$this->insert();
+				
+				$idChat = (int)$this->lId;
+			}
+			else
+			{
+				$idChat = (int)$record["id_ai_richiesta"];
+				
+				// Controllo e in caso aggiungo id_user
+				if (User::$id && !$record["id_user"])
+				{
+					$this->sValues(array(
+						"id_user"	=>	(int)User::$id,
+					));
+					
+					$this->update((int)$idChat);
+				}
+			}
+		}
+		
+		return $idChat;
+	}
+	
 	public function insert()
 	{
-		$this->values["id_admin"] = User::$id;
-
+		if (App::$isFrontend)
+		{
+			$this->values["id_user"] = User::$id;
+			$this->values["id_ai_modello"] = (int)AimodelliModel::g(false)->getModelloPredefinito();
+			$this->values["cart_uid"] = isset(User::$cart_uid) ? sanitizeAll(User::$cart_uid) : "";
+		}
+		else
+			$this->values["id_admin"] = User::$id;
+		
+		$this->values["ip"] = sanitizeAll(getIp());
+		$this->values["user_agent"] = isset($_SERVER['HTTP_USER_AGENT']) ? sanitizeAll($_SERVER['HTTP_USER_AGENT']) : "";
+		$this->values["user_agent_md5"] = isset($_SERVER['HTTP_USER_AGENT']) ? md5($_SERVER['HTTP_USER_AGENT']) : "";
+		$this->values["session_id"] = sanitizeAll(session_id());
+		
 		$res = parent::insert();
 
-		if ($res)
+		if ($res && !App::$isFrontend)
 			$this->inserisciContesti($this->lId);
 
 		return $res;
@@ -229,14 +287,14 @@ class AirichiesteModel extends GenericModel
 		return (int)AimodelliModel::getModulo((int)$idModello, true)->getParam("numero_pagine");
 	}
 
-	public function messaggio($id)
+	public function messaggio($id, $messaggio = "")
 	{
 		$record = $this->selectId((int)$id);
 
 		if (!empty($record))
 		{
-			$messaggio = $_POST["messaggio"] ?? "";
-			$messaggio = htmlentitydecode(strip_tags(trim($messaggio)));
+			// $messaggio = $_POST["messaggio"] ?? "";
+			// $messaggio = htmlentitydecode(strip_tags(trim($messaggio)));
 			
 			if (trim($messaggio))
 			{
@@ -247,7 +305,7 @@ class AirichiesteModel extends GenericModel
 				
 				$messaggi = array();
 				
-				if (trim($contesto) || !v("attiva_rag_in_richieste"))
+				if (!App::$isFrontend && (trim($contesto) || !v("attiva_rag_in_richieste")))
 				{
 					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
 						"id_ai_richiesta"	=>	(int)$id,
