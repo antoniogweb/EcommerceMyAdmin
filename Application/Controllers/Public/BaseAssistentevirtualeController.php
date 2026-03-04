@@ -54,6 +54,17 @@ class BaseAssistentevirtualeController extends BaseController
 		$this->load('index');
 	}
 	
+	public function messaggi()
+	{
+		$this->clean();
+		
+		$idChat = $this->m("AirichiesteModel")->getChat();
+		$data["messaggi"] = $this->m("AirichiestemessaggiModel")->getMessaggi((int)$idChat);
+		
+		$this->append($data);
+		$this->load('messaggi');
+	}
+	
 	public function request()
 	{
 		$this->clean();

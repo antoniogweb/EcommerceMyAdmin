@@ -1,3 +1,17 @@
+function aggiornaChat()
+{
+	$.ajaxQueue({
+		url: baseUrl + "/virtual-assistant/messages/",
+		cache:false,
+		async: true,
+		dataType: "html",
+		success: function(content){
+
+			$(".chat_messages").html(content);
+
+		}
+	});
+}
 
 $(document).ready(function(){
 	
@@ -15,10 +29,11 @@ $(document).ready(function(){
 			data: {
 				messaggio: messaggio
 			},
-			dataType: "json",
+			dataType: "html",
 			success: function(content){
 				
-				console.log(content);
+				aggiornaChat();
+				
 			}
 		});
 	});
