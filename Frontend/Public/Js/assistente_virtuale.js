@@ -3,7 +3,6 @@ function scorriChatInBasso()
 	$('html, body').animate({
 		scrollTop: $(document).height()
 	}, 500);
-	// $("html, body").scrollTop($(document).height());
 }
 
 function aggiornaChat()
