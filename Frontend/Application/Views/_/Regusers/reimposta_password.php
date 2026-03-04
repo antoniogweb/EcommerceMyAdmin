@@ -3,7 +3,7 @@
 $breadcrumb = array(
 	gtext("Home") 		=> $this->baseUrl,
 	gtext("Accedi")	=>	$this->baseUrl."/regusers/login",
-	gtext("Richiesta nuova password")	=>	$this->baseUrl."/password-dimenticata",
+	gtext("Richiesta nuova password")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
 	gtext("Imposta la password") => "",
 );
 

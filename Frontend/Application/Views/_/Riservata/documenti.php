@@ -2,7 +2,7 @@
 <?php
 $breadcrumb = array(
 	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
+	gtext("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
 	gtext("Biblioteca documenti") => "",
 );
 
