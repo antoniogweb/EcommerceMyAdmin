@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` add session_id char(255) not null default '';

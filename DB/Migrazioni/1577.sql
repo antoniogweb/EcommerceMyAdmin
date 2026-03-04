@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` add ip char(50) not null default '';

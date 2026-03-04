@@ -43,6 +43,7 @@ class Minify
 						"promozioni.js",
 						"ticket.js",
 						"password.js",
+						"assistente_virtuale.js",
 					),
 				),
 		),

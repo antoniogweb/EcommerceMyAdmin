@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste_messaggi` add id_user int not null default 0;

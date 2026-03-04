@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` add zona char(20) not null default 'Backend';

@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` add id_user int not null default 0;

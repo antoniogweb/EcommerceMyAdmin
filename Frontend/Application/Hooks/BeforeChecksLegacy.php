@@ -31,4 +31,5 @@ require_once(LIBRARY."/Application/Modules/Device.php");
 require_once(LIBRARY."/Application/Modules/GDPR.php");
 require_once(LIBRARY."/Application/Modules/Shield.php");
 require_once(LIBRARY."/Application/Modules/Aes.php");
+require_once(LIBRARY."/Application/Modules/Vector.php");
 App::$isFrontend = true;
