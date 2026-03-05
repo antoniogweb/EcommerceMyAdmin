@@ -1111,7 +1111,7 @@ function getLinkPagina($matches)
 
 	if (!empty($record))
 	{
-		$target = App::$isFrontend ? "" : "target='_blank'";
+		$target = "target='_blank'";
 
 		$urlAlias = getUrlAlias((int)$idP);
 

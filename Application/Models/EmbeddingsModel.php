@@ -71,7 +71,7 @@ class EmbeddingsModel extends GenericModel {
 				$res = $eModel->aWhere(array(
 					"lingua"	=>	sanitizeAll($lingua),
 				))->send(false);
-				
+				// echo $eModel->getQuery();
 				$scores = [];
 				
 				$maxScore = 0.0;
@@ -105,7 +105,7 @@ class EmbeddingsModel extends GenericModel {
 					$scores = array_slice($scores, 0, $numeroMassimoRisultati);
 				}
 				
-				if ($maxScore < 0.4)
+				if ($maxScore < 0.5)
 					return array(
 						"pages"		=>	array(),
 						"marchi"	=>	array(),

@@ -357,11 +357,13 @@ class AirichiesteModel extends GenericModel
 					
 					list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting);
 					
+					$messaggio = strip_tags($messaggio);
+					
 					if ($okRouting)
 						$messaggio = $this->elaboraRisposta($intent, $messaggio, $record["lingua"]);
 					
 					$airmModel->sValues(array(
-						"messaggio"			=>	F::sanitizeTesto($messaggio),
+						"messaggio"			=>	$messaggio,
 						"id_ai_richiesta"	=>	(int)$id,
 						"id_admin"			=>	User::$id,
 						"ruolo"				=>	"assistant",
@@ -510,8 +512,10 @@ class AirichiesteModel extends GenericModel
 		if ($res)
 		{
 			$routingJson = json_decode($routing, true);
+			// print_r($routingJson);
 			// echo $routing."\n";
 			$intent = $routingJson["intent"] ?? "";
+			$productTitle = $routingJson["entities"]["product_title"]["value"] ?? "";
 			$confidence = $routingJson["confidence"] ?? "";
 			$contents = array();
 			$linguaRouting = $routingJson["language"] ?? "";
@@ -559,6 +563,14 @@ class AirichiesteModel extends GenericModel
 									"marchi.titolo"	=> sanitizeAll(nullToBlank($brand)),
 								),
 							));
+						}
+						
+						if ($productTitle)
+						{
+							$orWhere = array();
+							$emb->aWhere($emb->getWhereSearch(sanitizeAll($productTitle), 50, "description"));
+							// $orWhere[v("ricerca_termini_and_or")] = $emb->getWhereSearch($productTitle);
+							// print_r($orWhere);
 						}
 						
 						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);

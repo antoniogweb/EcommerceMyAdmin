@@ -5,8 +5,8 @@ Rules:
 - Reply in the following language "[LINGUA]"
 - Use ONLY context_items. Copy id and title exactly.
 - Choose up to 3 items.
-- comment MUST be <= 30 words.
+- comment MUST be <= 50 words.
 - intro_text MUST be <= 12 words.
-- If no match: intro_text="Non ho abbastanza prodotti pertinenti." and items=[]
+- If no match: intro_text="Non ho trovato alcun prodotto pertinente." and items=[]
 - Write the product price and the product brand in the comment, with some other useful information
 No extra text.

@@ -1247,11 +1247,8 @@ class BaseThumbController extends Controller {
 	public function assistant($fileName)
 	{
 		$params = array(
-			'imgWidth'		=>	300,
-			'imgHeight'		=>	300,
-			'cropImage'		=>	'yes',
-			'horizAlign'	=>	'center',
-			'vertAlign'		=>	'center',
+			'imgWidth'		=>	200,
+			'imgHeight'		=>	200,
 		);
 
 		$this->genericthumb($fileName, $params, Parametri::$cartellaImmaginiContenuti);

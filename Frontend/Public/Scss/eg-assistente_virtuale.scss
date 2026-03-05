@@ -1,9 +1,78 @@
+$chat-user-bg: #1e87f0 !default;
+$chat-user-color: #fff !default;
+$chat-assistant-bg: #f2f3f5 !default;
+$chat-assistant-color: #1f2328 !default;
+$chat-bubble-radius: 14px !default;
+$chat-bubble-max-width: 80% !default;
+
 .assistente_virtuale_layout {
 	min-height: 100vh;
 }
 
 .assistente_virtuale_messages {
 	padding-bottom: 120px;
+}
+
+.chat_messages {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.chat_message_row {
+	display: flex;
+	width: 100%;
+}
+
+.chat_message_row_assistant {
+	justify-content: flex-start;
+}
+
+.chat_message_row_user {
+	justify-content: flex-end;
+}
+
+.chat_message_bubble {
+	position: relative;
+	max-width: $chat-bubble-max-width;
+	padding: 10px 12px;
+	border-radius: $chat-bubble-radius;
+	line-height: 1.45;
+	word-break: break-word;
+}
+
+.chat_message_bubble_assistant {
+	background: $chat-assistant-bg;
+	color: $chat-assistant-color;
+	border-bottom-left-radius: 4px;
+}
+
+.chat_message_bubble_user {
+	background: $chat-user-bg;
+	color: $chat-user-color;
+	border-bottom-right-radius: 4px;
+}
+
+.chat_message_bubble_assistant::after,
+.chat_message_bubble_user::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	width: 0;
+	height: 0;
+	border-style: solid;
+}
+
+.chat_message_bubble_assistant::after {
+	left: -8px;
+	border-width: 0 8px 10px 0;
+	border-color: transparent $chat-assistant-bg transparent transparent;
+}
+
+.chat_message_bubble_user::after {
+	right: -8px;
+	border-width: 10px 8px 0 0;
+	border-color: $chat-user-bg transparent transparent transparent;
 }
 
 .assistente_virtuale_composer {
@@ -14,6 +83,8 @@
 	z-index: 20;
 	margin: 0;
 	border-radius: 0;
+	background: #fff;
+	border-top: 1px solid #e5e5e5;
 }
 
 .send_request_to_va {

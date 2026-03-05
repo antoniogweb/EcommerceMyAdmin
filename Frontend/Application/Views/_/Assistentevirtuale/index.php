@@ -1,12 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="assistente_virtuale_layout uk-padding-small uk-flex uk-flex-column uk-height-viewport uk-background-default uk-card uk-card-default uk-card-body uk-padding-small@s uk-padding">
+<div class="assistente_virtuale_layout uk-padding-small uk-flex uk-flex-column uk-height-viewport uk-background-default uk-padding-small@s uk-padding">
 	<div class="assistente_virtuale_messages uk-flex-1 uk-overflow-auto uk-margin-small-bottom">
-		<div class="uk-grid-small chat_messages" uk-grid>
-			<?php echo include(tpf("Assistentevirtuale/messaggi.php"));?>
+		<div class="chat_messages">
+			<?php include(tpf("Assistentevirtuale/messaggi.php"));?>
 		</div>
 	</div>
 	
-	<div class="assistente_virtuale_composer uk-card uk-card-default uk-card-body uk-padding-small uk-margin-remove-top">
+	<div class="assistente_virtuale_composer uk-padding-small uk-margin-remove-top">
 		<div class="uk-flex uk-flex-middle uk-grid-small" uk-grid>
 			<div class="uk-width-expand">
 				<input class="request_message uk-input" type="text" placeholder="<?php echo gtext("Scrivi un messaggio...");?>">
