@@ -312,6 +312,7 @@ class AirichiesteModel extends GenericModel
 				$istruzioni = "";
 				
 				$messaggi = array();
+				$isRag = false;
 				
 				if (!App::$isFrontend && (trim($contesto) || !v("attiva_rag_in_richieste")))
 				{
@@ -333,7 +334,9 @@ class AirichiesteModel extends GenericModel
 				}
 				else
 				{
-					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], 4);
+					$isRag = true;
+					
+					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], 5);
 					
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggoRag);
 					
@@ -355,11 +358,14 @@ class AirichiesteModel extends GenericModel
 					if (isset($intent) && $intent)
 						$okRouting = true;
 					
-					list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting);
+					if (!$isRag || $okRouting)
+						list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting);
+					else
+						list($ris, $messaggio) = array(0, gtext("Errore connessione"));
 					
 					$messaggio = strip_tags($messaggio);
 					
-					if ($okRouting)
+					if (!$isRag || $okRouting)
 						$messaggio = $this->elaboraRisposta($intent, $messaggio, $record["lingua"]);
 					
 					$airmModel->sValues(array(
@@ -567,8 +573,7 @@ class AirichiesteModel extends GenericModel
 						
 						if ($productTitle)
 						{
-							$orWhere = array();
-							$emb->aWhere($emb->getWhereSearch(sanitizeAll($productTitle), 50, "description"));
+							// $emb->aWhere($emb->getWhereSearch(sanitizeAll($productTitle), 50, "description"));
 							
 							$queryArray = explode(" ", $productTitle);
 							

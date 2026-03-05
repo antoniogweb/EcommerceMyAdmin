@@ -71,7 +71,7 @@ class ChatGPT35Turbo extends ModelloAI
 					'model' => $this->getParam("nome_modello"),
 					'input' => $messaggi,
 					'reasoning' => [
-						'effort' => 'minimal', // oppure 'minimal', 'low', 'medium', and 'high'
+						'effort' => 'low', // oppure 'minimal', 'low', 'medium', and 'high'
 					],
 				]);
 				
@@ -92,7 +92,7 @@ class ChatGPT35Turbo extends ModelloAI
 					return array(0, gtext("Errore generico"));
 			} catch (Exception $e) {
 				// print_r($e);
-				return array(0, $e->getMessage());
+				return array(0, "Errore connessione");
 			}
 
 			return array("","");

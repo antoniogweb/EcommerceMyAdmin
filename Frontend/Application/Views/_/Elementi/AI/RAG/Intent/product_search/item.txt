@@ -5,7 +5,7 @@
 				[IMAGE]
 			</div>
 			<div class="uk-width-2-3">
-				<h3 class="uk-text-primary uk-card-title uk-margin-remove-bottom">[TITLE]</h3>
+				<h4 class="uk-text-primary uk-margin-remove-bottom">[TITLE]</h4>
 				<p class="uk-text-small uk-margin-small-top">[COMMENT]</p>
 				<div class="uk-margin-small-top">
 					[LINK]

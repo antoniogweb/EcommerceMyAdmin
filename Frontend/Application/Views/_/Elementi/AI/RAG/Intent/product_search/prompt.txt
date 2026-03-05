@@ -4,7 +4,7 @@ Return ONLY JSON:
 Rules:
 - Reply in the following language "[LINGUA]"
 - Use ONLY context_items. Copy id and title exactly.
-- Choose up to 3 items.
+- Choose up to 5 items.
 - comment MUST be <= 50 words.
 - intro_text MUST be <= 12 words.
 - If no match: intro_text="Non ho trovato alcun prodotto pertinente." and items=[]
