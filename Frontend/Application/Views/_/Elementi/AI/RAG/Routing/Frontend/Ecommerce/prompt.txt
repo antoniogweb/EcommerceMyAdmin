@@ -12,7 +12,15 @@ Allowed intents:
 - other: Anything not related to buying products or store policies.
 
 Return exactly:
-{"intent":"product_search|policy_qa|other","confidence":0.00-1.00,"language":"it|en|fr|de|es|other","entities":{"product_title":{"value":null,"confidence":0.00},"brand":{"value":null,"confidence":0.00},"price_range":{"min":null,"max":null,"currency":"EUR","confidence":0.00},"attributes":[{"key":"","value":"","confidence":0.00}]}}
+{"intent":"product_search|policy_qa|other","confidence":0.00-1.00,"language":"it|en|fr|de|es|other","entities":{"product_title":{"value":null},"SKU":{"value":null,"confidence":0.00},"brand":{"value":null},"price_range":{"min":null,"max":null,"currency":"EUR"},"attributes":[{"value":""}]}}
+
+- Attributes MUST be in the same language of the user query
+- For attributes do NOT output key:value pairs or technical formats.
+
+Price information must ONLY be placed in the "price_range" field.
+
+If the user mentions a price constraint, extract it only into "price_range".
+Do not include it in the "attributes" array.
 
 Set value fields to null if not present.
 If unsure, use "other" with confidence <= 0.40.

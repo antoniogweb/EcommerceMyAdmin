@@ -515,7 +515,6 @@ class AirichiesteModel extends GenericModel
 			// print_r($routingJson);
 			// echo $routing."\n";
 			$intent = $routingJson["intent"] ?? "";
-			$productTitle = $routingJson["entities"]["product_title"]["value"] ?? "";
 			$confidence = $routingJson["confidence"] ?? "";
 			$contents = array();
 			$linguaRouting = $routingJson["language"] ?? "";
@@ -534,6 +533,7 @@ class AirichiesteModel extends GenericModel
 						// ->sWhere("exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
 						
 						// var_dump($routingJson);
+						$productTitle = $routingJson["entities"]["product_title"]["value"] ?? "";
 						$prezzoMinimo =  $routingJson["entities"]["price_range"]["min"] ?? null;
 						$prezzoMassimo =  $routingJson["entities"]["price_range"]["max"] ?? null;
 						$brand =  $routingJson["entities"]["brand"]["value"] ?? null;
@@ -569,10 +569,32 @@ class AirichiesteModel extends GenericModel
 						{
 							$orWhere = array();
 							$emb->aWhere($emb->getWhereSearch(sanitizeAll($productTitle), 50, "description"));
-							// $orWhere[v("ricerca_termini_and_or")] = $emb->getWhereSearch($productTitle);
-							// print_r($orWhere);
+							
+							$queryArray = explode(" ", $productTitle);
+							
+							if ($brand)
+								$queryArray[] = (string)$brand;
+							
+							if (isset($routingJson["entities"]["attributes"]) && is_array($routingJson["entities"]["attributes"]))
+							{
+								foreach ($routingJson["entities"]["attributes"] as $attr)
+								{
+									if (isset($attr["value"]))
+									{
+										$words = explode(" ", $attr["value"]);
+										
+										foreach ($words as $word)
+										{
+											$queryArray[] = $word;
+										}
+									}
+								}
+							}
+							
+							$queryArray = array_unique($queryArray);
+							$messaggio = implode(" ", $queryArray);
 						}
-						
+						// echo $messaggio."\n";
 						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
 						
 						// print_r($result);
