@@ -21,6 +21,8 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
+ini_set("memory_limit","-1");
+
 define('APP_CONSOLE', true);
 define('EG','allowed');
 

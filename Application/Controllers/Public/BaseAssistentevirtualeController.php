@@ -31,8 +31,13 @@ class BaseAssistentevirtualeController extends BaseController
 		if (!v("attiva_assistente_frontend"))
 			$this->responseCode(403);
 		
-		if (!VariabiliModel::checkToken("token_assistente_virtuale"))
-			$this->responseCode(403);
+		if (v("assistente_virtuale_ip_permessi"))
+		{
+			$ipPermessi = explode(",", v("assistente_virtuale_ip_permessi"));
+			
+			if (!in_array(getIp(), $ipPermessi))
+				$this->responseCode(403);
+		}
 		
 		$_GET["partial"] = "Y";
 		

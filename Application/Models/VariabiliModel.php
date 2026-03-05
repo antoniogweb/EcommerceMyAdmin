@@ -839,7 +839,7 @@ class VariabiliModel extends GenericModel {
 		"ai_attiva_cache"			=>	1, // Attiva o meno la chache sulle richieste AI
 		"attiva_assistente_frontend"		=>	0, // Se impostato ad 1, attiva la chat lato frontend
 		"assistente_ambito_default"	=>	"Ecommerce", // Ambito di default per l'assistente virtuale
-		"token_assistente_virtuale"	=>	"",
+		"assistente_virtuale_ip_permessi"	=>	"", // Elenco di IP divisi da virgola. Se vuoto, tutti gli IP sono permessi
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)
@@ -951,7 +951,6 @@ class VariabiliModel extends GenericModel {
 		"token_lista_configurazioni_mancanti",
 		"token_cron_log_tecnici",
 		"token_migrazioni_no_admin",
-		"token_assistente_virtuale",
 	);
 	
 	public static function inizializza($variabili = array())

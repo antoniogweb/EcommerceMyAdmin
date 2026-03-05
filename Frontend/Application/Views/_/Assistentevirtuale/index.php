@@ -11,7 +11,7 @@
 			<div class="uk-width-expand">
 				<input class="request_message uk-input" type="text" placeholder="<?php echo gtext("Scrivi un messaggio...");?>">
 			</div>
-			<div class="uk-width-auto">
+			<div class="uk-width-auto" style="margin-top:0px !important;">
 				<button class="send_request_to_va uk-button uk-button-primary uk-flex uk-flex-center uk-flex-middle" type="button">
 					<span class="send_request_to_va_text"><?php echo gtext("Invia");?></span>
 					<span class="send_request_to_va_loader uk-hidden" aria-hidden="true">
