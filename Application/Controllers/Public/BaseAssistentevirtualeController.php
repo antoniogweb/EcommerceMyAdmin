@@ -31,6 +31,8 @@ class BaseAssistentevirtualeController extends BaseController
 		if (!v("attiva_assistente_frontend"))
 			$this->responseCode(403);
 		
+		$_GET["partial"] = "Y";
+		
 		$this->load('header');
 		$this->load('footer','last');
 		

@@ -2,6 +2,6 @@ Return ONLY JSON:
 {"text":"string"}
 
 Rules:
-- Same language as user_question.
+- Reply in the following language "[LINGUA]"
 - text MUST be <= 24 words.
 - texx MUST be "Non ho capito la domanda" translated into the user's language.

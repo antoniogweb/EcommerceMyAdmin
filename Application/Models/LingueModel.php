@@ -42,10 +42,10 @@ class LingueModel extends GenericModel
 	
 	public static function getValoriAttivi()
 	{
-		$l = new LingueModel();
-		
 		if (!isset(self::$valoriAttivi))
 		{
+			$l = new LingueModel();
+			
 			$l->clear()->orderBy("id_order")->toList("codice","descrizione");
 			
 			$l->where(array(

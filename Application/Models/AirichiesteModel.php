@@ -434,6 +434,7 @@ class AirichiesteModel extends GenericModel
 					$tmp = str_replace("[TITLE]", $title, $tmp);
 					$tmp = str_replace("[LINK]", "[LPAG_$id]", $tmp);
 					$tmp = str_replace("[COMMENT]", $comment, $tmp);
+					$tmp = str_replace("[IMAGE]", "[IPAG_$id]", $tmp);
 					
 					$itemsArray[] = $tmp;
 				}
@@ -509,19 +510,57 @@ class AirichiesteModel extends GenericModel
 		if ($res)
 		{
 			$routingJson = json_decode($routing, true);
-			
+			// echo $routing."\n";
 			$intent = $routingJson["intent"] ?? "";
 			$confidence = $routingJson["confidence"] ?? "";
 			$contents = array();
-			
+			$linguaRouting = $routingJson["language"] ?? "";
 			$intentConosciuto = false;
+			
+			if ($linguaRouting && LingueModel::checkLinguaAttiva((string)$linguaRouting))
+				$lingua = (string)$linguaRouting;
 			
 			// if ((float)$confidence > 0.6)
 			// {
 				switch($intent)
 				{
 					case "product_search":
-						$emb = EmbeddingsModel::g(false)->inner(array("pagina"))->addWhereAttivo()->sWhere("exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
+						$emb = new EmbeddingsModel();
+						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.*")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
+						// ->sWhere("exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
+						
+						// var_dump($routingJson);
+						$prezzoMinimo =  $routingJson["entities"]["price_range"]["min"] ?? null;
+						$prezzoMassimo =  $routingJson["entities"]["price_range"]["max"] ?? null;
+						$brand =  $routingJson["entities"]["brand"]["value"] ?? null;
+						
+						if ($prezzoMassimo)
+						{
+							$emb->aWhere(array(
+								"lte"	=>	array(
+									"combinazioni.price_scontato_ivato"	=> (int)$prezzoMassimo,
+								),
+							));
+						}
+						
+						if ($prezzoMinimo)
+						{
+							$emb->aWhere(array(
+								"gte"	=>	array(
+									"combinazioni.price_scontato_ivato"	=> (int)$prezzoMinimo,
+								),
+							));
+						}
+						
+						if ($brand)
+						{
+							$emb->inner("marchi")->on("pages.id_marchio = marchi.id_marchio")->aWhere(array(
+								"lk"	=>	array(
+									"marchi.titolo"	=> sanitizeAll(nullToBlank($brand)),
+								),
+							));
+						}
+						
 						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
 						
 						// print_r($result);
@@ -556,7 +595,10 @@ class AirichiesteModel extends GenericModel
 						$intentConosciuto = true;
 						break;
 					case "other":
-						
+						$intentConosciuto = true;
+						break;
+					default:
+						$intent = "other";
 						$intentConosciuto = true;
 						break;
 				}
@@ -572,6 +614,7 @@ class AirichiesteModel extends GenericModel
 				$istruzioni = ob_get_clean();
 				
 				$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
+				$istruzioni = str_replace("[LINGUA]", $lingua, $istruzioni);
 				
 				$contextItems = array();
 				

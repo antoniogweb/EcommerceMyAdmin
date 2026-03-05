@@ -24,6 +24,14 @@ function aggiornaChat()
 $(document).ready(function(){
 	scorriChatInBasso();
 	
+	$("body").on("keypress",".request_message", function(e){
+		if (e.which == 13) {
+			e.preventDefault();
+			
+			$(".send_request_to_va").trigger("click");
+		}
+	});
+	
 	$( "body" ).on( "click", ".send_request_to_va", function(e) {
 		
 		e.preventDefault();

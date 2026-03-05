@@ -949,6 +949,7 @@ function attivaModuli($string, $obj = null)
 	
 	$string = preg_replace_callback('/\[LCAT_([0-9]{1,})_([0-9]{1,})(_(.*?))?\]/', 'getLinkCategoria' ,$string);
 	$string = preg_replace_callback('/\[LPAG_([0-9]{1,})?\]/', 'getLinkPagina' ,$string);
+	$string = preg_replace_callback('/\[IPAG_([0-9]{1,})?\]/', 'getImagePagina' ,$string);
 	
 	$string = preg_replace_callback('/\[ELENCO_COOKIE\]/', array("CookiearchivioModel", "elencoCookie") ,$string);
 	
@@ -1115,6 +1116,30 @@ function getLinkPagina($matches)
 		$urlAlias = getUrlAlias((int)$idP);
 
 		return "<a $target href='".F::getUrlPubblico().$urlAlias."'>".field($record, "title")."</a>";
+	}
+
+	return "";
+}
+
+function getImagePagina($matches)
+{
+	$idP = (int)$matches[1];
+
+	$pModel = new PagesModel();
+
+	$record = $pModel->clear()
+		->select("pages.immagine")
+		->where(array(
+			"pages.id_page"	=>	(int)$idP,
+		))->record();
+
+	if (!empty($record) && $record["immagine"] && is_file(Domain::$parentRoot."/images/contents/".$record["immagine"]))
+	{
+		$target = App::$isFrontend ? "" : "target='_blank'";
+		
+		$urlAlias = getUrlAlias((int)$idP);
+
+		return "<img src='".Domain::$publicUrl."/thumb/assistant/".$record["immagine"]."'/>";
 	}
 
 	return "";

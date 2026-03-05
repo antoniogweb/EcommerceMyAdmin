@@ -30,8 +30,8 @@ $options = getopt(null, array(
 	"id_record::",
 	"query::",
 	"numero_risultati::",
-	"zona",
-	"ambito",
+	"zona::",
+	"ambito::",
 ));
 
 $default = array(

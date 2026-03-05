@@ -2,7 +2,7 @@ Return ONLY JSON:
 {"text":"string"}
 
 Rules:
-- the text MUST be in the same language as user_question.
+- Reply in the following language "[LINGUA]"
 - Use ONLY context_items.
 - text MUST be <= 24 words.
 - If no match: text="Non ho abbastanza informazioni per rispondere." in the same language as user_question
