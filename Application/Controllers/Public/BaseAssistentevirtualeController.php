@@ -22,6 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+ini_set("memory_limit","256M");
+
 class BaseAssistentevirtualeController extends BaseController
 {
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
