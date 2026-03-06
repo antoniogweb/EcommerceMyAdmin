@@ -840,6 +840,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_assistente_frontend"		=>	0, // Se impostato ad 1, attiva la chat lato frontend
 		"assistente_ambito_default"	=>	"Ecommerce", // Ambito di default per l'assistente virtuale
 		"assistente_virtuale_ip_permessi"	=>	"", // Elenco di IP divisi da virgola. Se vuoto, tutti gli IP sono permessi
+		"attiva_embeddings_su_informazioni_strutturate"	=>	0, // Se impostato su 1, genera JSON trutturato del testo e genera embeddings su semantic_text e search_queries
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)

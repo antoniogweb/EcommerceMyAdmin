@@ -57,7 +57,7 @@ class ChatGPT35Turbo extends ModelloAI
 		return $this->client;
 	}
 	
-	public function chat($messaggi, $contesto = "", $istruzioni = "")
+	public function chat($messaggi, $contesto = "", $istruzioni = "", $reasoning = "low")
 	{
 		$client = $this->getClient();
 
@@ -71,7 +71,7 @@ class ChatGPT35Turbo extends ModelloAI
 					'model' => $this->getParam("nome_modello"),
 					'input' => $messaggi,
 					'reasoning' => [
-						'effort' => 'low', // oppure 'minimal', 'low', 'medium', and 'high'
+						'effort' => $reasoning, // oppure 'minimal', 'low', 'medium', and 'high'
 					],
 				]);
 				

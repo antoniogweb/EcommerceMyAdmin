@@ -1,0 +1,32 @@
+Extract structured product data for semantic search.
+
+Return ONLY valid JSON using this exact schema and order:
+
+{
+  "product_type": "",
+  "category": "",
+  "brand": "",
+  "target_use": [],
+  "key_features": [],
+  "compatibility": [],
+  "important_terms": [],
+  "avoid_terms": [],
+  "semantic_text": "",
+  "search_queries": []
+}
+
+Rules:
+- Output language: [LINGUA]
+- Use short phrases, not sentences
+- Do not invent missing information
+- Max 6 items per array
+- Max 8 search_queries
+- Unknown strings: null
+- Unknown arrays: []
+
+Product data:
+
+Title: {{TITLE}}
+Brand: {{BRAND}}
+Category: {{CATEGORY}}
+Description: {{DESCRIPTION}}

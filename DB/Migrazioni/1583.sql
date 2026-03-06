@@ -1,0 +1,1 @@
+ALTER TABLE `embeddings` add dati_strutturati text not null;

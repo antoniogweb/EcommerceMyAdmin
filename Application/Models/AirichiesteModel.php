@@ -564,11 +564,18 @@ class AirichiesteModel extends GenericModel
 						
 						if ($brand)
 						{
-							$emb->inner("marchi")->on("pages.id_marchio = marchi.id_marchio")->aWhere(array(
+							$numero = MarchiModel::g(false)->clear()->where(array(
 								"lk"	=>	array(
-									"marchi.titolo"	=> sanitizeAll(nullToBlank($brand)),
-								),
-							));
+									"titolo"	=>	sanitizeAll($brand),
+								)
+							))->rowNumber();
+							
+							if ($numero)
+								$emb->inner("marchi")->on("pages.id_marchio = marchi.id_marchio")->aWhere(array(
+									"lk"	=>	array(
+										"marchi.titolo"	=> sanitizeAll(nullToBlank($brand)),
+									),
+								));
 						}
 						
 						if ($productTitle)
@@ -594,7 +601,7 @@ class AirichiesteModel extends GenericModel
 							);
 							
 							$emb->save();
-							$emb->aWhere($titleWhere);
+							$emb->aWhere($descWhere);
 							
 							$queryArray = explode(" ", $productTitle);
 							

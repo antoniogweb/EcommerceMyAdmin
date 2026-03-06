@@ -1,0 +1,1 @@
+ALTER TABLE `embeddings` add embeddings_search_queries text not null;

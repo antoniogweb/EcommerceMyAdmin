@@ -71,7 +71,7 @@ class EmbeddingsModel extends GenericModel {
 				$res = $eModel->aWhere(array(
 					"lingua"	=>	sanitizeAll($lingua),
 				))->send(false);
-				// echo $eModel->getQuery();
+				// echo $eModel->getQuery()."\n";
 				$scores = [];
 				
 				$maxScore = 0.0;
@@ -80,10 +80,22 @@ class EmbeddingsModel extends GenericModel {
 				{
 					$emb = json_decode($r["embeddings"], true);
 					
-					// Assicurati che l'embedding sia numerico (in caso arrivi da JSON con stringhe)
 					$emb = array_map('floatval', $emb);
 					
 					$score = Vector::cosineSimilarity($emb, $queryEmbedding);
+					
+					// Cerco nelle search queries
+					if (v("attiva_embeddings_su_informazioni_strutturate") && trim($r["embeddings_search_queries"]))
+					{
+						$embSq = json_decode($r["embeddings_search_queries"], true);
+					
+						$embSq = array_map('floatval', $embSq);
+						
+						$scoreSq = Vector::cosineSimilarity($embSq, $queryEmbedding);
+						
+						if ($scoreSq > $score)
+							$score = $scoreSq;
+					}
 					
 					if ($score > $maxScore)
 						$maxScore = $score;
@@ -150,9 +162,9 @@ class EmbeddingsModel extends GenericModel {
     
     public function getPageEmbeddings($idPage = 0, $lingua = null, $log = null)
 	{
-		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
+		$idModelloPredefinitoEmbeddings = AimodelliModel::g(false)->getIdModelForEmbeddings();
 		
-		if (!$idModelloPredefinito)
+		if (!$idModelloPredefinitoEmbeddings)
 			return;
 		
 		$pModel = new PagesModel();
@@ -183,25 +195,71 @@ class EmbeddingsModel extends GenericModel {
 				{
 					$o = $strutturaProdotti[0];
 					
-					$embeddingArray = array();
+					$embeddingArray = $testoPerElaborazioneArray = array();
 					
 					if (trim($o["titolo"]))
+					{
 						$embeddingArray[] = strip_tags(htmlentitydecode($o["titolo"]));
+						$testoPerElaborazioneArray[] = "Title: ".strip_tags(htmlentitydecode($o["titolo"]));
+					}
+					
+					if (trim($o["marchio"]))
+						$testoPerElaborazioneArray[] = "Brand: ".strip_tags(htmlentitydecode($o["marchio"]));
+					
+					if (isset($o["categorie"][0]) && count($o["categorie"][0]) > 0)
+						$testoPerElaborazioneArray[] = "Categories: ".strip_tags(implode(" > ",htmlentitydecodeDeep($o["categorie"][0])));
 					
 					if (trim($o["sottotitolo"]))
 						$embeddingArray[] = trim(strip_tags(htmlentitydecode($o["sottotitolo"])));
 					
 					if (trim($o["descrizione"]))
+					{
 						$embeddingArray[] = trim(strip_tags(htmlentitydecode($o["descrizione"])));
+						$testoPerElaborazioneArray[] = "Description: ".strip_tags(htmlentitydecode($o["descrizione"]));
+					}
 					
 					$embeddingText = implode(" ", $embeddingArray);
+					$searchQueryEmbeddingText = $datiStrutturati = "";
+					
+					$testoPerElaborazione = implode("\n", $testoPerElaborazioneArray);
+					$tpf = tpf("Elementi/AI/RAG/Embeddings/prompt.txt");
+					
+					if (v("attiva_embeddings_su_informazioni_strutturate") && trim($testoPerElaborazione) && is_file($tpf))
+					{
+						$idModelloPredefinito = AimodelliModel::g(false)->getIdPredefinito();
+						
+						if ($idModelloPredefinito)
+						{
+							ob_start();
+							include $tpf;
+							$istruzioni = ob_get_clean();
+							$istruzioni = str_replace("[LINGUA]", $codice, $istruzioni);
+							
+							$messaggio = AimodelliModel::getModulo($idModelloPredefinito, true)->setMessaggio($testoPerElaborazione);
+							
+							list($res, $datiStrutturati) = AimodelliModel::getModulo($idModelloPredefinito, true)->chat(array($messaggio), "", $istruzioni, "low");
+							
+							$outputArray = json_decode($datiStrutturati, true);
+							
+							if (isset($outputArray["semantic_text"]) && trim($outputArray["semantic_text"]))
+								$embeddingText = $outputArray["semantic_text"];
+							
+							if (isset($outputArray["search_queries"]) && is_array($outputArray["search_queries"]) && count($outputArray["search_queries"]) > 0)
+								$searchQueryEmbeddingText = implode(" ", $outputArray["search_queries"]);
+						}
+					}
 					
 					if (!trim($embeddingText))
 						return;
+
+					$response = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($embeddingText);
 					
-					$response = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($embeddingText);
+					$responseSearchQuery = "";
 					
-					if (trim($response))
+					if (trim($searchQueryEmbeddingText))
+						$responseSearchQuery = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($searchQueryEmbeddingText);
+					
+					if (trim($response) || trim($responseSearchQuery))
 					{
 						if ($log)
 						{
@@ -222,7 +280,9 @@ class EmbeddingsModel extends GenericModel {
 							"lingua"	=>	$codice,
 							"id_c"		=>	(int)$record["id_c"],
 							"embeddings"	=>	$response,
-						));
+							"embeddings_search_queries"	=>	$responseSearchQuery,
+							"dati_strutturati"	=>	$datiStrutturati,
+						), "sanitizeDb");
 						
 						$this->insert();
 					}
