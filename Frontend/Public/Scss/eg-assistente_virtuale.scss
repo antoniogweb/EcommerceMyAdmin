@@ -19,6 +19,14 @@ $chat-bubble-max-width: 80% !default;
 	gap: 10px;
 }
 
+.chat_welcome_message {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	background: #fff;
+	padding-bottom: 10px;
+}
+
 .chat_message_row {
 	display: flex;
 	width: 100%;

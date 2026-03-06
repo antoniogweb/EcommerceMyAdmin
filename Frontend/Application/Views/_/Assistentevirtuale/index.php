@@ -1,6 +1,13 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="assistente_virtuale_layout uk-padding-small uk-flex uk-flex-column uk-height-viewport uk-background-default uk-padding-small@s uk-padding">
 	<div class="assistente_virtuale_messages uk-flex-1 uk-overflow-auto uk-margin-small-bottom">
+		<div class="chat_welcome_message">
+			<div class="chat_message_row chat_message_row_assistant">
+				<div class="chat_message_bubble chat_message_bubble_assistant">
+					<?php echo gtext("Sono il tuo assistente virtuale: puoi  cercare un prodotto, chiedere informazioni sulle spedizioni, sugli orari, contatti, liste nascita, resi e altro supporto in qualsiasi momento.");?>
+				</div>
+			</div>
+		</div>
 		<div class="chat_messages">
 			<?php include(tpf("Assistentevirtuale/messaggi.php"));?>
 		</div>

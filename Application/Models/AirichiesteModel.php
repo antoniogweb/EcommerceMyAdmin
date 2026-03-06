@@ -573,7 +573,28 @@ class AirichiesteModel extends GenericModel
 						
 						if ($productTitle)
 						{
-							// $emb->aWhere($emb->getWhereSearch(sanitizeAll($productTitle), 50, "description"));
+							if ($lingua == Params::$defaultFrontEndLanguage)
+							{
+								$titleWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "title");
+								$descWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "description");
+							}
+							else
+							{
+								$emb->addJoinTraduzione($lingua, "contenuti_tradotti", false, new PagesModel());
+								
+								$titleWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "title", "contenuti_tradotti");
+								$descWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "description", "contenuti_tradotti");
+							}
+							
+							$orWhere = array(
+								"  OR"	=>	array(
+									"AND"	=> $titleWhere,
+									" AND"	=>	$descWhere,
+								)
+							);
+							
+							$emb->save();
+							$emb->aWhere($titleWhere);
 							
 							$queryArray = explode(" ", $productTitle);
 							
@@ -599,12 +620,19 @@ class AirichiesteModel extends GenericModel
 							$queryArray = array_unique($queryArray);
 							$messaggio = implode(" ", $queryArray);
 						}
-						// echo $messaggio."\n";
+						
 						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
 						
-						// print_r($result);
-						
 						$idPages = $result["pages"];
+						
+						if (count($idPages) <= 0)
+						{
+							$emb->clear()->restore();
+							$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
+							$idPages = $result["pages"];
+						}
+						
+						// print_r($result);
 						
 						if (count($idPages) > 0)
 						{
