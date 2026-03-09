@@ -34,6 +34,7 @@ $options = getopt(null, array(
 	"numero_risultati::",
 	"zona::",
 	"ambito::",
+	"chunks::",
 ));
 
 $default = array(
@@ -43,6 +44,7 @@ $default = array(
 	"numero_risultati"	=>	10,
 	"zona"		=>	"Backend",
 	"ambito"	=>	"Ecommerce",
+	"chunks"	=>	0,
 );
 
 $params = array_merge($default, $options);
@@ -74,7 +76,7 @@ if ($params["azione"] == "crea-embeddings-pagina")
 {
 	$log->writeString("INIZIO CREAZIONE EMBEDDINGS PAGINA");
 	
-	EmbeddingsModel::g(false)->getPageEmbeddings($params["id_record"], $params["lingua"], $log);
+	EmbeddingsModel::g(false)->getPageEmbeddings($params["id_record"], $params["lingua"], $params["chunks"], $log);
 	
 	$log->writeString("FINE CREAZIONE EMBEDDINGS PAGINA");
 }
@@ -83,7 +85,7 @@ if ($params["azione"] == "crea-embeddings-categoria")
 {
 	$log->writeString("INIZIO CREAZIONE EMBEDDINGS CATEGORIA");
 	
-	EmbeddingsModel::g(false)->getCategoryEmbeddings($params["id_record"], $params["lingua"], $log);
+	EmbeddingsModel::g(false)->getCategoryEmbeddings($params["id_record"], $params["lingua"], $params["chunks"], $log);
 	
 	$log->writeString("FINE CREAZIONE EMBEDDINGS CATEGORIA");
 }
