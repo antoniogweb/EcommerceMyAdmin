@@ -193,6 +193,7 @@ class AirichiesteController extends BaseController
 		$messaggio = $this->request->post("messaggio","");
 		$messaggio = strip_tags(trim($messaggio));
 		
+		Airichiesteresponse::$idRichiesta = (int)$id;
 		$this->m[$this->modelName]->messaggio((int)$id, $messaggio);
 	}
 

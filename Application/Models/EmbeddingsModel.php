@@ -207,7 +207,7 @@ class EmbeddingsModel extends GenericModel
 						$testoPerChunksArray[] = "<h1>".htmlentitydecode($o["titolo"])."</h1>";
 					}
 					
-					if (trim($o["marchio"]))
+					if (trim(nullToBlank($o["marchio"])))
 						$testoPerElaborazioneArray[] = "Brand: ".strip_tags(htmlentitydecode($o["marchio"]));
 					
 					if (isset($o["categorie"][0]) && count($o["categorie"][0]) > 0)

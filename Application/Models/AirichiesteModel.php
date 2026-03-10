@@ -2,7 +2,7 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
 // See COPYRIGHT.txt and LICENSE.txt.
 //
 // This file is part of EcommerceMyAdmin
@@ -356,7 +356,13 @@ class AirichiesteModel extends GenericModel
 					$okRouting = false;
 					
 					if (isset($intent) && $intent)
+					{
 						$okRouting = true;
+						
+						Airichiesteresponse::$tipo = strtoupper($intent);
+					}
+					else
+						Airichiesteresponse::$tipo = "GENERICA";
 					
 					if (!$isRag || $okRouting)
 						list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting);
@@ -740,6 +746,8 @@ class AirichiesteModel extends GenericModel
 			$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
 			
 			$messaggio = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito(), true)->setMessaggio($messaggio);
+			
+			Airichiesteresponse::$tipo = "ROUTING";
 			
 			return $this->richiesta(array($messaggio), "", $istruzioni);
 		}
