@@ -1,7 +1,9 @@
 function scorriChatInBasso()
 {
+	var position = $(".chat_message_bubble_user").last().position();
+	
 	$('html, body').animate({
-		scrollTop: $(document).height()
+		scrollTop: position.top
 	}, 500);
 }
 
@@ -13,10 +15,11 @@ function aggiornaChat()
 		async: true,
 		dataType: "html",
 		success: function(content){
-
 			$(".chat_messages").html(content);
-			scorriChatInBasso();
-
+			
+			setTimeout(function() {
+				scorriChatInBasso();
+			}, 100);
 		}
 	});
 }

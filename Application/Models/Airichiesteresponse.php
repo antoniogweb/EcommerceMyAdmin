@@ -24,6 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Airichiesteresponse extends GenericModel
 {
+	public static $deletedExpired = false;
 	public static $idRichiesta = 0;
 	public static $tipo = "";
 	
@@ -32,6 +33,47 @@ class Airichiesteresponse extends GenericModel
 		$this->_idFields='id_ai_richieste_response';
 		
 		parent::__construct();
+		
+		$this->deleteExpired();
+	}
+	
+	public function deleteExpired()
+	{
+		if (!self::$deletedExpired)
+		{
+			$limit = time() - 600;
+			
+			$this->del(null, array(
+				'time_creazione < ?',
+				array(
+					$limit,
+				)
+			));
+			
+			self::$deletedExpired = true;
+		}
+	}
+	
+	public static function limiteSuperato($secondi = 60, $max = 10, $tipo = "ROUTING")
+	{
+		// Nessun limite da Backend
+		if (!App::$isFrontend)
+			return false;
+		
+		$model = new Airichiesteresponse();
+
+		$fromTime = time() - (int)$secondi;
+
+		$count = $model->clear()->sWhere(array(
+			"ip = ? AND tipo = ? AND time_creazione >= ?",
+			array(
+				sanitizeAll(getIp()),
+				"ROUTING",
+				$fromTime
+			)
+		))->rowNumber();
+
+		return ($count >= $max) ? true : false;
 	}
 	
 	public static function aggiungi($request, $response)
@@ -47,6 +89,7 @@ class Airichiesteresponse extends GenericModel
 			"response"	=>	$response,
 			"user_agent"	=>	$_SERVER['HTTP_USER_AGENT'] ?? "",
 			"tipo"		=>	self::$tipo,
+			"time_creazione"	=>	time(),
 		), "sanitizeDb");
 		
 		$model->insert();

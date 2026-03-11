@@ -78,7 +78,7 @@ $chat-bubble-max-width: 80% !default;
 }
 
 .chat_message_bubble_user::after {
-	right: -8px;
+	// right: -8px;
 	border-width: 10px 8px 0 0;
 	border-color: $chat-user-bg transparent transparent transparent;
 }

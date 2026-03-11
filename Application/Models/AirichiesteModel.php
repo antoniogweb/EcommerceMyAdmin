@@ -26,7 +26,10 @@ require_once(LIBRARY."/Application/Modules/AI/Context/QueryAwareContextBuilder.p
 
 class AirichiesteModel extends GenericModel
 {
-	public function __construct() {
+	public static $fraseTroppeRichieste = "Il sistema sta ricevendo molte richieste in questo momento. Riprova tra un minuto.";
+	
+	public function __construct()
+	{
 		$this->_tables = 'ai_richieste';
 		$this->_idFields = 'id_ai_richiesta';
 		
@@ -226,6 +229,7 @@ class AirichiesteModel extends GenericModel
 						),
 					),
 					"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+					"ip"		=>	sanitizeAll(getIp()),
 				),
 			))->record();
 			
@@ -312,29 +316,29 @@ class AirichiesteModel extends GenericModel
 				$istruzioni = "";
 				
 				$messaggi = array();
-				$isRag = false;
+				// $isRag = false;
 				
 				// if (!App::$isFrontend && (trim($contesto) || !v("attiva_rag_in_richieste")))
-				if (false)
-				{
-					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
-						"id_ai_richiesta"	=>	(int)$id,
-					))->orderBy("data_creazione")->process()->send(false);
-					
-					foreach ($res as $r)
-					{
-						$messaggi[] = array(
-							"role"		=>	$r["ruolo"],
-							"content"	=>	htmlentitydecode($r["messaggio"]),
-						);
-					}
-
-					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggio);
-					
-					$messaggi[] = $messaggioElaborato;
-				}
-				else
-				{
+// 				if (false)
+// 				{
+// 					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
+// 						"id_ai_richiesta"	=>	(int)$id,
+// 					))->orderBy("data_creazione")->process()->send(false);
+// 					
+// 					foreach ($res as $r)
+// 					{
+// 						$messaggi[] = array(
+// 							"role"		=>	$r["ruolo"],
+// 							"content"	=>	htmlentitydecode($r["messaggio"]),
+// 						);
+// 					}
+// 
+// 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggio);
+// 					
+// 					$messaggi[] = $messaggioElaborato;
+// 				}
+// 				else
+// 				{
 					$isRag = true;
 					
 					$numeroProdotti = v("attiva_seconda_richiesta_in_product_search") ? 6 : 10;
@@ -344,7 +348,7 @@ class AirichiesteModel extends GenericModel
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggoRag);
 					
 					$messaggi[] = $messaggioElaborato;
-				}
+				// }
 				
 				$airmModel->sValues(array(
 					"messaggio"			=>	$messaggio,
@@ -399,16 +403,22 @@ class AirichiesteModel extends GenericModel
 						else
 							Airichiesteresponse::$tipo = "GENERICA";
 						
-						if (!$isRag || $okRouting)
-							list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "minimal");
+						if ($okRouting)
+						{
+							if ($intent == "threshold_exceeded")
+								list($ris, $messaggio) = array(1, gtext(self::$fraseTroppeRichieste));
+							else
+							{
+								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "minimal");
+								
+								$messaggio = strip_tags($messaggio);
+								
+								$messaggio = $this->elaboraRisposta($intent, $messaggio, $record["lingua"]);
+							}
+						}
 						else
 							list($ris, $messaggio) = array(0, gtext("Errore connessione"));
-						
-						$messaggio = strip_tags($messaggio);
 					}
-					
-					if (!$isRag || $okRouting)
-						$messaggio = $this->elaboraRisposta($intent, $messaggio, $record["lingua"]);
 					
 					$airmModel->sValues(array(
 						"messaggio"			=>	$messaggio,
@@ -434,10 +444,15 @@ class AirichiesteModel extends GenericModel
 		
 		$messaggioElaborato = AimodelliModel::getModulo($idModelloPredefinito, true)->setMessaggio($messaggoRag);
 		
-		list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni, $idModelloPredefinito, $okRouting);
-		
-		if (isset($intent) && $intent)
-			return $this->elaboraRisposta($intent, $risposta, $lingua);
+		if ($intent == "threshold_exceeded")
+			return gtext(self::$fraseTroppeRichieste);
+		else
+		{
+			list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni, $idModelloPredefinito, $okRouting);
+			
+			if (isset($intent) && $intent)
+				return $this->elaboraRisposta($intent, $risposta, $lingua);
+		}
 		
 		return "";
 	}
@@ -696,8 +711,6 @@ class AirichiesteModel extends GenericModel
 							TraduzioniModel::rLingua();
 						}
 						
-						$intentConosciuto = true;
-						
 						break;
 					case "policy_qa":
 						$p = PagesModel::g(false)->where(array(
@@ -708,20 +721,18 @@ class AirichiesteModel extends GenericModel
 						$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 1, 0);
 						TraduzioniModel::rLingua();
 						
-						$intentConosciuto = true;
 						break;
 					case "other":
-						$intentConosciuto = true;
+						break;
+					case "threshold_exceeded":
 						break;
 					default:
 						$intent = "other";
-						$intentConosciuto = true;
 						break;
 				}
 			// }
 			
-			if ($intentConosciuto)
-				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
+			$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
 			
 			if (isset($tpf) && is_file($tpf))
 			{
@@ -751,7 +762,7 @@ class AirichiesteModel extends GenericModel
 				
 				$messaggioArray = array(
 					"user_question"	=>	$messaggio,
-					"intent"		=>	"product_search",
+					"intent"		=>	$intent,
 					"context_items"	=>	$contextItems
 				);
 				
@@ -785,7 +796,22 @@ class AirichiesteModel extends GenericModel
 			
 			Airichiesteresponse::$tipo = "ROUTING";
 			
-			return $this->richiesta(array($messaggio), "", $istruzioni);
+			if (!Airichiesteresponse::limiteSuperato(60,v("numero_richieste_routing_al_minuto")))
+				return $this->richiesta(array($messaggio), "", $istruzioni);
+			else
+			{
+				if (isset(Params::$lang))
+					$lingua = Params::$lang;
+				else
+				{
+					if (App::$isFrontend)
+						$lingua = v("lingua_default_frontend");
+					else
+						$lingua = v("default_backend_language");
+				}
+				
+				return array(1, '{"intent":"threshold_exceeded","confidence":1,"language":"'.$lingua.'"}');
+			}
 		}
 		
 		return array("", "");

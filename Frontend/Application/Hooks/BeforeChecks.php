@@ -112,12 +112,6 @@ Params::$translatorFunction = "gtext";
 require(LIBRARY."/Application/Include/language.php");
 require(LIBRARY."/Application/Include/functions.php");
 
-// // Lingua frontend principale
-// if (v("lingua_default_frontend"))
-// 	Params::$defaultFrontEndLanguage = v("lingua_default_frontend");
-// else
-// 	Params::$defaultFrontEndLanguage = LingueModel::getPrincipaleFrontend();
-
 Params::$defaultFrontEndLanguage = LingueModel::getFrontendLanguage();
 
 // Se abilita tutte le lingue a DB o solo quelle da variabile di sistema
