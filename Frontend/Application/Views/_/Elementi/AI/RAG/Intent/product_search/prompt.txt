@@ -4,7 +4,7 @@ Return ONLY JSON:
 Rules:
 - Reply in the following language "[LINGUA]"
 - Use ONLY context_items. Copy id and title exactly.
-- Choose up to 4 items.
+- Choose up to 6 items.
 - comment MUST be <= 50 words.
 - write in comment the text relevant to the user question 
 - intro_text MUST be <= 12 words.
