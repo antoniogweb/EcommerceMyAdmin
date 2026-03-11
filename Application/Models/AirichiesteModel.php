@@ -314,7 +314,8 @@ class AirichiesteModel extends GenericModel
 				$messaggi = array();
 				$isRag = false;
 				
-				if (!App::$isFrontend && (trim($contesto) || !v("attiva_rag_in_richieste")))
+				// if (!App::$isFrontend && (trim($contesto) || !v("attiva_rag_in_richieste")))
+				if (false)
 				{
 					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
 						"id_ai_richiesta"	=>	(int)$id,
@@ -336,7 +337,9 @@ class AirichiesteModel extends GenericModel
 				{
 					$isRag = true;
 					
-					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], 5);
+					$numeroProdotti = v("attiva_seconda_richiesta_in_product_search") ? 6 : 10;
+					
+					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
 					
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggoRag);
 					
@@ -353,23 +356,56 @@ class AirichiesteModel extends GenericModel
 
 				if ($airmModel->insert())
 				{
-					$okRouting = false;
-					
-					if (isset($intent) && $intent)
+					if (App::$isFrontend && !v("attiva_seconda_richiesta_in_product_search") && $intent == "product_search")
 					{
+						$ris = 1;
 						$okRouting = true;
 						
-						Airichiesteresponse::$tipo = strtoupper($intent);
+						$jsonMessaggio = json_decode($messaggoRag, true);
+						
+						if (isset($jsonMessaggio["context_items"]) && is_array($jsonMessaggio["context_items"]) && count($jsonMessaggio["context_items"]) > 0)
+						{
+							$messaggioArray = array(
+								"intro_text"	=>	gtext("Ecco alcuni prodotti trovati"),
+								"items"			=>	array(),
+							);
+							
+							$idPages = array();
+							
+							foreach ($jsonMessaggio["context_items"] as $item)
+							{
+								$temp = array();
+								$temp["id"] = $item["id"];
+								$temp["title"] = $item["title"];
+								$temp["comment"] = "";
+								$messaggioArray["items"][] = $temp;
+							}
+							
+							$messaggio = json_encode($messaggioArray);
+						}
+						else
+							$messaggio = gtext("Non ho trovato alcun prodotto pertinente.");
 					}
 					else
-						Airichiesteresponse::$tipo = "GENERICA";
-					
-					if (!$isRag || $okRouting)
-						list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting);
-					else
-						list($ris, $messaggio) = array(0, gtext("Errore connessione"));
-					
-					$messaggio = strip_tags($messaggio);
+					{
+						$okRouting = false;
+						
+						if (isset($intent) && $intent)
+						{
+							$okRouting = true;
+							
+							Airichiesteresponse::$tipo = strtoupper($intent);
+						}
+						else
+							Airichiesteresponse::$tipo = "GENERICA";
+						
+						if (!$isRag || $okRouting)
+							list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "minimal");
+						else
+							list($ris, $messaggio) = array(0, gtext("Errore connessione"));
+						
+						$messaggio = strip_tags($messaggio);
+					}
 					
 					if (!$isRag || $okRouting)
 						$messaggio = $this->elaboraRisposta($intent, $messaggio, $record["lingua"]);
@@ -541,7 +577,7 @@ class AirichiesteModel extends GenericModel
 				{
 					case "product_search":
 						$emb = new EmbeddingsModel();
-						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.*")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
+						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.embeddings, embeddings.id_embedding, embeddings.id_page")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
 						// ->sWhere("exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
 						
 						// var_dump($routingJson);
@@ -706,7 +742,7 @@ class AirichiesteModel extends GenericModel
 					$contextItems[] = array(
 						"id"		=>	$c["id_page"],
 						"title"		=>	$c["titolo"],
-						"description"	=>	$intent == "product_search" ? $compactDesc : stripTagsDecode($c["descrizione"]),
+						"description"	=>	(App::$isFrontend && v("attiva_seconda_richiesta_in_product_search") && $intent == "product_search") ? $compactDesc : stripTagsDecode($c["descrizione"]),
 						"price"		=>	$c["prezzo_pieno"],
 						"discounted_price"		=>	$c["prezzo_scontato"],
 						"brand"		=>	$c["marchio"],
@@ -765,7 +801,7 @@ class AirichiesteModel extends GenericModel
 		return false;
 	}
 	
-	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false)
+	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false, $reasoning = "low")
 	{
 		if (!isset($idModello))
 			$idModello = AimodelliModel::g(false)->getModelloPredefinito();
@@ -781,7 +817,7 @@ class AirichiesteModel extends GenericModel
 		if (!$forza && !$this->checkRichiesta($messaggi))
 			list($res, $output) = array(0, gtext("La richiesta è troppo lunga, riprovi con una domanda più corta"));
 		else
-			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni);
+			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni, $reasoning);
 		
 		// echo $output."\n\n\n";
 		

@@ -87,17 +87,17 @@ class EmbeddingsModel extends GenericModel
 					$score = Vector::cosineSimilarity($emb, $queryEmbedding);
 					
 					// Cerco nelle search queries
-					if (v("attiva_embeddings_su_informazioni_strutturate") && trim($r["embeddings_search_queries"]))
-					{
-						$embSq = json_decode($r["embeddings_search_queries"], true);
-					
-						$embSq = array_map('floatval', $embSq);
-						
-						$scoreSq = Vector::cosineSimilarity($embSq, $queryEmbedding);
-						
-						if ($scoreSq > $score)
-							$score = $scoreSq;
-					}
+// 					if (v("attiva_embeddings_su_informazioni_strutturate") && trim($r["embeddings_search_queries"]))
+// 					{
+// 						$embSq = json_decode($r["embeddings_search_queries"], true);
+// 					
+// 						$embSq = array_map('floatval', $embSq);
+// 						
+// 						$scoreSq = Vector::cosineSimilarity($embSq, $queryEmbedding);
+// 						
+// 						if ($scoreSq > $score)
+// 							$score = $scoreSq;
+// 					}
 					
 					if ($score > $maxScore)
 						$maxScore = $score;
@@ -106,8 +106,8 @@ class EmbeddingsModel extends GenericModel
 						'id'    => $r["id_embedding"],
 						'score' => $score,
 						'id_page'	=>	$r["id_page"],
-						'id_marchio'	=>	$r["id_marchio"],
-						'lingua'	=>	$r["lingua"],
+						// 'id_marchio'	=>	$r["id_marchio"],
+						// 'lingua'	=>	$r["lingua"],
 					];
 				}
 				
@@ -132,15 +132,15 @@ class EmbeddingsModel extends GenericModel
 					if ($sc["id_page"])
 						$idPages[] = $sc["id_page"];
 					
-					if ($sc["id_marchio"])
-						$idMarchi[] = $sc["id_marchio"];
+					// if ($sc["id_marchio"])
+					// 	$idMarchi[] = $sc["id_marchio"];
 				}
 			}
 		}
 		
 		return array(
 			"pages"		=>	$idPages,
-			"marchi"	=>	$idMarchi,
+			// "marchi"	=>	$idMarchi,
 		);
 	}
     
@@ -307,6 +307,7 @@ class EmbeddingsModel extends GenericModel
 								"embeddings"	=>	$response,
 								"embeddings_search_queries"	=>	$responseSearchQuery,
 								"dati_strutturati"	=>	$datiStrutturati,
+								"testo"		=>	$embeddingText,
 							), "sanitizeDb");
 							
 							$this->insert();

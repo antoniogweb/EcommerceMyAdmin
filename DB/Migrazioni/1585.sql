@@ -1,0 +1,1 @@
+alter table embeddings add testo text not null;
