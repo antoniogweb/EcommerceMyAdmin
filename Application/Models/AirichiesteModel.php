@@ -341,7 +341,7 @@ class AirichiesteModel extends GenericModel
 // 				{
 					$isRag = true;
 					
-					$numeroProdotti = v("attiva_seconda_richiesta_in_product_search") ? 6 : 10;
+					$numeroProdotti = 6;
 					
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
 					
@@ -360,38 +360,38 @@ class AirichiesteModel extends GenericModel
 
 				if ($airmModel->insert())
 				{
-					if (App::$isFrontend && !v("attiva_seconda_richiesta_in_product_search") && $intent == "product_search")
-					{
-						$ris = 1;
-						$okRouting = true;
-						
-						$jsonMessaggio = json_decode($messaggoRag, true);
-						
-						if (isset($jsonMessaggio["context_items"]) && is_array($jsonMessaggio["context_items"]) && count($jsonMessaggio["context_items"]) > 0)
-						{
-							$messaggioArray = array(
-								"intro_text"	=>	gtext("Ecco alcuni prodotti trovati"),
-								"items"			=>	array(),
-							);
-							
-							$idPages = array();
-							
-							foreach ($jsonMessaggio["context_items"] as $item)
-							{
-								$temp = array();
-								$temp["id"] = $item["id"];
-								$temp["title"] = $item["title"];
-								$temp["comment"] = "";
-								$messaggioArray["items"][] = $temp;
-							}
-							
-							$messaggio = json_encode($messaggioArray);
-						}
-						else
-							$messaggio = gtext("Non ho trovato alcun prodotto pertinente.");
-					}
-					else
-					{
+// 					if (App::$isFrontend && !v("attiva_seconda_richiesta_in_product_search") && $intent == "product_search")
+// 					{
+// 						$ris = 1;
+// 						$okRouting = true;
+// 						
+// 						$jsonMessaggio = json_decode($messaggoRag, true);
+// 						
+// 						if (isset($jsonMessaggio["context_items"]) && is_array($jsonMessaggio["context_items"]) && count($jsonMessaggio["context_items"]) > 0)
+// 						{
+// 							$messaggioArray = array(
+// 								"intro_text"	=>	gtext("Ecco alcuni prodotti trovati"),
+// 								"items"			=>	array(),
+// 							);
+// 							
+// 							$idPages = array();
+// 							
+// 							foreach ($jsonMessaggio["context_items"] as $item)
+// 							{
+// 								$temp = array();
+// 								$temp["id"] = $item["id"];
+// 								$temp["title"] = $item["title"];
+// 								$temp["comment"] = "";
+// 								$messaggioArray["items"][] = $temp;
+// 							}
+// 							
+// 							$messaggio = json_encode($messaggioArray);
+// 						}
+// 						else
+// 							$messaggio = gtext("Non ho trovato alcun prodotto pertinente.");
+// 					}
+// 					else
+// 					{
 						$okRouting = false;
 						
 						if (isset($intent) && $intent)
@@ -418,7 +418,7 @@ class AirichiesteModel extends GenericModel
 						}
 						else
 							list($ris, $messaggio) = array(0, gtext("Errore connessione"));
-					}
+					// }
 					
 					$airmModel->sValues(array(
 						"messaggio"			=>	$messaggio,
@@ -592,8 +592,7 @@ class AirichiesteModel extends GenericModel
 				{
 					case "product_search":
 						$emb = new EmbeddingsModel();
-						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.embeddings, embeddings.id_embedding, embeddings.id_page")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
-						// ->sWhere("exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
+						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.embeddings, embeddings.id_page")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
 						
 						// var_dump($routingJson);
 						$productTitle = $routingJson["entities"]["product_title"]["value"] ?? "";
@@ -712,6 +711,33 @@ class AirichiesteModel extends GenericModel
 						}
 						
 						break;
+					case "informational":
+						$emb = new EmbeddingsModel();
+						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.embeddings, embeddings.id_page")
+							->inner(array("pagina"))
+							->addWhereAttivo()
+							->sWhere("not exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
+						
+						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
+						
+						$idPages = $result["pages"];
+						
+						// print_r($idPages);
+						
+						if (count($idPages) > 0)
+						{
+							$p = PagesModel::g(false)->where(array(
+								"   in"	=>	array(
+									"id_page"	=>	forceIntDeep($idPages),
+								)
+							));
+							
+							TraduzioniModel::sLingua($lingua, "front");
+							$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 1);
+							TraduzioniModel::rLingua();
+						}
+						
+						break;
 					case "policy_qa":
 						$p = PagesModel::g(false)->where(array(
 								"policy_ai"	=>	1,
@@ -753,7 +779,7 @@ class AirichiesteModel extends GenericModel
 					$contextItems[] = array(
 						"id"		=>	$c["id_page"],
 						"title"		=>	$c["titolo"],
-						"description"	=>	(App::$isFrontend && v("attiva_seconda_richiesta_in_product_search") && $intent == "product_search") ? $compactDesc : stripTagsDecode($c["descrizione"]),
+						"description"	=>	$intent == "product_search" ? $compactDesc : stripTagsDecode($c["descrizione"]),
 						"price"		=>	$c["prezzo_pieno"],
 						"discounted_price"		=>	$c["prezzo_scontato"],
 						"brand"		=>	$c["marchio"],

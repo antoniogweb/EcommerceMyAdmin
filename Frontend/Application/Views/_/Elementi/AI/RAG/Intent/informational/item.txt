@@ -1,0 +1,4 @@
+<b>[TITLE]</b><br />
+<i>[COMMENT]</i>
+<br />[LINK]
+<hr />

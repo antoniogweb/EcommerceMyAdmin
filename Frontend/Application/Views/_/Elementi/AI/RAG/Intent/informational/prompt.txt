@@ -1,0 +1,25 @@
+Return ONLY JSON:
+{"intro_text":"string","items":[{"id":"string","title":"string","comment":"string"}]}
+
+Rules:
+- Reply in the following language "[LINGUA]"
+- Use ONLY context_items. Copy id and title exactly.
+- Choose up to 3 items.
+
+- comment MUST be <= 300 words.
+
+- Write the comment as direct informative text that answers the user question.
+- DO NOT explain or describe the text (avoid phrases like "il testo spiega", "l'articolo dice", "questo contenuto evidenzia").
+- Write as if you were writing a short guide or answer for the user.
+- If the text contains brand names, product names, or product links, include them in the comment.
+- Preserve product names exactly as written in the source text.
+- If product links are present, keep them unchanged and place them naturally in the comment.
+- When relevant, highlight brand names and product names using **bold**.
+
+- intro_text MUST be <= 12 words.
+
+- If no match:
+intro_text="Non ho trovato alcuna informazione pertinente."
+items=[]
+
+No extra text.

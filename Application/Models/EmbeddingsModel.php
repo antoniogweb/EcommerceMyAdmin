@@ -86,6 +86,9 @@ class EmbeddingsModel extends GenericModel
 					
 					$score = Vector::cosineSimilarity($emb, $queryEmbedding);
 					
+					if ($score < 0.5)
+						continue;
+					
 					// Cerco nelle search queries
 // 					if (v("attiva_embeddings_su_informazioni_strutturate") && trim($r["embeddings_search_queries"]))
 // 					{
