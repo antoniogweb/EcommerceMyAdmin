@@ -493,13 +493,41 @@ class AirichiesteModel extends GenericModel
 					$id = isset($item["id"]) ? (int)$item["id"] : 0;
 					$title = isset($item["title"]) ? strip_tags($item["title"]) : "";
 					$comment = isset($item["comment"]) ? strip_tags($item["comment"]) : "";
+					$links = (isset($item["in_depth"]) && is_array($item["in_depth"]) && count($item["in_depth"]) > 0)? $item["in_depth"] : array();
 					
 					$tmp = $layoutItem;
 					
-					$tmp = str_replace("[TITLE]", $title, $tmp);
-					$tmp = str_replace("[LINK]", "[LPAG_$id]", $tmp);
-					$tmp = str_replace("[COMMENT]", $comment, $tmp);
-					$tmp = str_replace("[IMAGE]", "[IPAG_$id]", $tmp);
+					$tmp = str_replace("[TITLE]", strip_tags($title), $tmp);
+					$tmp = str_replace("[LINK]", "[LPAG_".(int)$id."]", $tmp);
+					$tmp = str_replace("[COMMENT]", strip_tags($comment), $tmp);
+					$tmp = str_replace("[IMAGE]", "[IPAG_".(int)$id."]", $tmp);
+					
+					$inDepthHtml = "";
+					
+					if (count($links) > 0)
+					{
+						$linksArray = array();
+						
+						foreach ($links as $link)
+						{
+							if (isset($link["text"]) && isset($link["url"]) && trim($link["text"]) && trim($link["url"]))
+							{
+								$li = "<a target='_blank' href='".strip_tags($link["url"])."'>".strip_tags($link["text"])."</a>";
+								
+								if (isset($link["comment"]) && trim($link["comment"]))
+									$li .= " ".strip_tags($link["comment"]);
+								
+								$linksArray[] = "<li>".$li."</li>";
+							}
+						}
+						
+						if (count($linksArray) > 0)
+						{
+							$inDepthHtml = "<p><b>".gtext("Per approfondire:")."</b></p><ul class='uk-list'>".implode("\n", $linksArray)."</ul>";
+						}
+					}
+					
+					$tmp = str_replace("[APPROFONDIMENTO]", $inDepthHtml, $tmp);
 					
 					$itemsArray[] = $tmp;
 				}
@@ -776,7 +804,9 @@ class AirichiesteModel extends GenericModel
 					$lines = QueryAwareContextBuilder::extractRelevantSnippet($messaggio, stripTagsDecode($c["descrizione"]), 4);
 					$compactDesc = implode(' | ', $lines);
 					
-					$contextItems[] = array(
+					$links = F::estraiLink(htmlentitydecode($c["descrizione"]));
+					
+					$temp = array(
 						"id"		=>	$c["id_page"],
 						"title"		=>	$c["titolo"],
 						"description"	=>	$intent == "product_search" ? $compactDesc : stripTagsDecode($c["descrizione"]),
@@ -784,6 +814,11 @@ class AirichiesteModel extends GenericModel
 						"discounted_price"		=>	$c["prezzo_scontato"],
 						"brand"		=>	$c["marchio"],
 					);
+					
+					if (count($links) > 0 && $intent == "informational")
+						$temp["links"] = $links;
+					
+					$contextItems[] = $temp;
 				}
 				
 				$messaggioArray = array(
