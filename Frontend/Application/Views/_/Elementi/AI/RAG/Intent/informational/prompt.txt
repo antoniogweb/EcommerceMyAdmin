@@ -44,13 +44,14 @@ Each object MUST be:
 
 in_depth comment rules:
 - Provide a short explanation of what the link refers to.
-- MUST be between 5 and 15 words.
+- MUST be between 5 and 20 words.
+- Write in the comment of the link a direct informative text that describe what is linked
 - Do NOT repeat the link text.
 - Write simple informative phrases.
 
 in_depth rules:
 - Include only links clearly relevant to the comment.
-- 8-10 links per item if present in the text.
+- If possibile up to 8-10 links per item.
 - If no relevant links exist, return an empty array [].
 
 intro_text:
