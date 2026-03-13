@@ -488,6 +488,7 @@ class AirichiesteModel extends GenericModel
 				
 				$itemsArray = array();
 				
+				$indice = 0;
 				foreach ($items as $item)
 				{
 					$id = isset($item["id"]) ? (int)$item["id"] : 0;
@@ -529,7 +530,12 @@ class AirichiesteModel extends GenericModel
 					
 					$tmp = str_replace("[APPROFONDIMENTO]", $inDepthHtml, $tmp);
 					
+					if ($indice < (count($items)-1))
+						$tmp[] = '<hr class="uk-divider-icon">';
+					
 					$itemsArray[] = $tmp;
+					
+					$indice++;
 				}
 				
 				// print_r($itemsArray);
