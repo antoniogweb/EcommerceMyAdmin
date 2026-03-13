@@ -497,9 +497,9 @@ class AirichiesteModel extends GenericModel
 					
 					$tmp = $layoutItem;
 					
-					$tmp = str_replace("[TITLE]", strip_tags($title), $tmp);
+					$tmp = str_replace("[TITLE]", $title, $tmp);
 					$tmp = str_replace("[LINK]", "[LPAG_".(int)$id."]", $tmp);
-					$tmp = str_replace("[COMMENT]", strip_tags($comment), $tmp);
+					$tmp = str_replace("[COMMENT]", F::vitalizeTesto($comment), $tmp);
 					$tmp = str_replace("[IMAGE]", "[IPAG_".(int)$id."]", $tmp);
 					
 					$inDepthHtml = "";

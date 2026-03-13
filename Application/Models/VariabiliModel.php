@@ -843,6 +843,7 @@ class VariabiliModel extends GenericModel {
 		"assistente_virtuale_ip_permessi"	=>	"", // Elenco di IP divisi da virgola. Se vuoto, tutti gli IP sono permessi
 		"attiva_embeddings_su_informazioni_strutturate"	=>	0, // Se impostato su 1, genera JSON trutturato del testo e genera embeddings su semantic_text e search_queries
 		"numero_richieste_routing_al_minuto"	=>	10, // Numero massimo di richieste di ROUTING al minuto
+		"score_minimo_ricerca_semantica"	=> 60, // Score minimo di cosine_similarity (x 100)
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)

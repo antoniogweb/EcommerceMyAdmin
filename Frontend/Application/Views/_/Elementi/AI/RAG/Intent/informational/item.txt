@@ -1,5 +1,4 @@
-<b>[LINK]</b><br />
-<i>[COMMENT]</i><br />
+<b>[TITLE]</b><br />
+<span>[COMMENT]</span><br />
 [APPROFONDIMENTO]
-<br />
-<hr />
+[LINK]

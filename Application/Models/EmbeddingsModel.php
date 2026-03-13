@@ -78,6 +78,8 @@ class EmbeddingsModel extends GenericModel
 				
 				$maxScore = 0.0;
 				
+				$scoreMinimo = number_format(v("score_minimo_ricerca_semantica") / 100,1,".","");
+				
 				foreach ($res as $r)
 				{
 					$emb = json_decode($r["embeddings"], true);
@@ -86,7 +88,7 @@ class EmbeddingsModel extends GenericModel
 					
 					$score = Vector::cosineSimilarity($emb, $queryEmbedding);
 					
-					if ($score < 0.5)
+					if ($score < $scoreMinimo)
 						continue;
 					
 					// Cerco nelle search queries
@@ -122,7 +124,7 @@ class EmbeddingsModel extends GenericModel
 					$scores = array_slice($scores, 0, $numeroMassimoRisultati);
 				}
 				
-				if ($maxScore < 0.5)
+				if ($maxScore < $scoreMinimo)
 					return array(
 						"pages"		=>	array(),
 						"marchi"	=>	array(),

@@ -284,6 +284,8 @@ class F
 
 		$string = preg_replace('/(\[br\])/s', '<br />',$string);
 
+		$string = preg_replace('/(\*\*)(.*?)(\*\*)/s', '<b>${2}</b>',$string);
+		
 		return $string;
 	}
 
