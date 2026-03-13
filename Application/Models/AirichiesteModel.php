@@ -530,7 +530,7 @@ class AirichiesteModel extends GenericModel
 					
 					$tmp = str_replace("[APPROFONDIMENTO]", $inDepthHtml, $tmp);
 					
-					if ($indice < (count($items)-1))
+					if ($intent == "informational" && $indice < (count($items)-1))
 						$tmp .= '<hr class="uk-divider-icon">';
 					
 					$itemsArray[] = $tmp;
