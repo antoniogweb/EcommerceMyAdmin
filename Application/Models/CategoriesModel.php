@@ -344,10 +344,13 @@ class CategoriesModel extends HierarchicalModel {
 	
 	public function checkPagesAlias($id = 0)
 	{
-		if (strcmp($this->values[$this->aliaseFieldName],"") === 0)
-			$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
-		
-		$this->checkAliasAll($id);
+		if (isset($this->values[$this->aliaseFieldName]))
+		{
+			if (strcmp($this->values[$this->aliaseFieldName],"") === 0)
+				$this->values[$this->aliaseFieldName] = sanitizeDb(encodeUrl($this->values[$this->titleFieldName]));
+			
+			$this->checkAliasAll($id);
+		}
 	}
 	
 	public function update($id = null, $where = null)
