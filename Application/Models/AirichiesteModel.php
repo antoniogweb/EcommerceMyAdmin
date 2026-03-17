@@ -715,7 +715,7 @@ class AirichiesteModel extends GenericModel
 							}
 							
 							$queryArray = array_unique($queryArray);
-							// $messaggio = implode(" ", $queryArray);
+							$messaggio = implode(" ", $queryArray);
 						}
 						
 						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
