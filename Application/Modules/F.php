@@ -284,9 +284,27 @@ class F
 
 		$string = preg_replace('/(\[br\])/s', '<br />',$string);
 
+		$string = preg_replace('/(\*\*)(.*?)(\*\*)/s', '<b>${2}</b>',$string);
+		
 		return $string;
 	}
 
+	public static function estraiLink($html)
+	{
+		$links = [];
+
+		preg_match_all('/<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/is', $html, $matches, PREG_SET_ORDER);
+
+		foreach ($matches as $m) {
+			$links[] = [
+				"url" => htmlentitydecode($m[1]),
+				"text" => trim(strip_tags($m[2]))
+			];
+		}
+
+		return $links;
+	}
+	
 	// Aggiunge :sanitizeAll
 	public static function addSanitizeFunction($fields)
 	{

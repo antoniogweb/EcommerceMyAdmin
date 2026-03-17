@@ -1,0 +1,64 @@
+Return ONLY JSON:
+{
+"intro_text":"string",
+"items":[
+{
+"id":"string",
+"title":"string",
+"comment":"string",
+"in_depth":[{"text":"string","url":"string","comment":"string"}]
+}
+]
+}
+
+Rules:
+- Reply in the following language "[LINGUA]"
+- Use ONLY context_items. Copy id and title exactly.
+- Choose up to 3 items.
+
+comment:
+- MUST be <= 150 words.
+- Write the comment as direct informative text that answers the user question.
+- DO NOT explain or describe the text (avoid phrases like "il testo spiega", "l'articolo dice", "questo contenuto evidenzia").
+- Write as if you were writing a short guide or answer for the user.
+
+Products and brands:
+- If the text contains brand names or product names, include them in the comment.
+- Preserve product names exactly as written in the source text.
+- Highlight brand names and product names using **bold**.
+- If a specific product name is present in the source text, prefer that exact product name over generic terms.
+
+Links handling:
+- A LINKS_JSON section may be provided containing objects with "text" and "url".
+- Add links to "in_depth" ONLY for products, brands, or items explicitly mentioned in the source text and relevant to the comment.
+- When multiple possible links exist, ALWAYS prefer the most specific match.
+- Prefer an exact product name match over a generic category match.
+- Use the original link text exactly as provided in LINKS_JSON.
+- Do NOT shorten, simplify, or rewrite link text.
+- Do NOT invent or modify URLs.
+
+in_depth structure:
+Each object MUST be:
+
+{"text":"exact link text","url":"exact url","comment":"short explanation"}
+
+in_depth comment rules:
+- Provide a short explanation of what the link refers to.
+- MUST be between 5 and 20 words.
+- Write in the comment of the link a direct informative text that describe what is linked
+- Do NOT repeat the link text.
+- Write simple informative phrases.
+
+in_depth rules:
+- Include only links clearly relevant to the comment.
+- If possibile up to 8-10 links per item.
+- If no relevant links exist, return an empty array [].
+
+intro_text:
+- MUST be <= 12 words.
+
+If no match:
+intro_text="Non ho trovato alcuna informazione pertinente."
+items=[]
+
+No extra text.

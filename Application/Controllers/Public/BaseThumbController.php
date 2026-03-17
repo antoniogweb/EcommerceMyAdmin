@@ -1244,6 +1244,16 @@ class BaseThumbController extends Controller {
 		$this->genericthumb($fileName, self::$genericParams, Parametri::$cartellaImmaginiContenuti);
 	}
 	
+	public function assistant($fileName)
+	{
+		$params = array(
+			'imgWidth'		=>	200,
+			'imgHeight'		=>	200,
+		);
+
+		$this->genericthumb($fileName, $params, Parametri::$cartellaImmaginiContenuti);
+	}
+	
 	public function immagineticket($fileName)
 	{
 		$params = array(

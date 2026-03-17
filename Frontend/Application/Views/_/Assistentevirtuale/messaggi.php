@@ -1,23 +1,15 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php foreach ($messaggi as $m) {
-	$ruolo = $m["ruolo"] == "user" ? UsersModel::getName($m["id_admin"]) : "Assistente";
+	$isUser = $m["ruolo"] == "user";
 ?>
-	<?php if ($m["ruolo"] == "user") { ?>
-	<div class="uk-width-1-1">
-		<div class="uk-flex uk-flex-right">
-			<div class="uk-card uk-card-primary uk-card-body uk-padding-small uk-border-rounded uk-width-4-5@s uk-width-1-1">
+	<div class="chat_message_row <?php echo $isUser ? "chat_message_row_user" : "chat_message_row_assistant";?>">
+		<div class="chat_message_bubble <?php echo $isUser ? "chat_message_bubble_user" : "chat_message_bubble_assistant";?>">
+			<?php if ($isUser) { ?>
 				<?php echo nl2br($m["messaggio"]);?>
-			</div>
+			<?php } else { ?>
+				<?php echo htmlentitydecode(attivaModuli($m["messaggio"]));?>
+			<?php } ?>
 		</div>
 	</div>
-	<?php } else { ?>
-	<div class="uk-width-1-1">
-		<div class="uk-flex uk-flex-left">
-			<div class="uk-card uk-card-default uk-card-body uk-padding-small uk-border-rounded uk-width-4-5@s uk-width-1-1">
-				<?php echo htmlentitydecode(nl2br(attivaModuli($m["messaggio"])));?>
-			</div>
-		</div>
-	</div>
-	<?php } ?>
 <?php } ?>

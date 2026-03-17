@@ -2,7 +2,7 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
 // See COPYRIGHT.txt and LICENSE.txt.
 //
 // This file is part of EcommerceMyAdmin
@@ -26,7 +26,10 @@ require_once(LIBRARY."/Application/Modules/AI/Context/QueryAwareContextBuilder.p
 
 class AirichiesteModel extends GenericModel
 {
-	public function __construct() {
+	public static $fraseTroppeRichieste = "Il sistema sta ricevendo molte richieste in questo momento. Riprova tra un minuto.";
+	
+	public function __construct()
+	{
 		$this->_tables = 'ai_richieste';
 		$this->_idFields = 'id_ai_richiesta';
 		
@@ -226,6 +229,7 @@ class AirichiesteModel extends GenericModel
 						),
 					),
 					"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+					"ip"		=>	sanitizeAll(getIp()),
 				),
 			))->record();
 			
@@ -312,33 +316,39 @@ class AirichiesteModel extends GenericModel
 				$istruzioni = "";
 				
 				$messaggi = array();
+				// $isRag = false;
 				
-				if (!App::$isFrontend && (trim($contesto) || !v("attiva_rag_in_richieste")))
-				{
-					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
-						"id_ai_richiesta"	=>	(int)$id,
-					))->orderBy("data_creazione")->process()->send(false);
+				// if (!App::$isFrontend && (trim($contesto) || !v("attiva_rag_in_richieste")))
+// 				if (false)
+// 				{
+// 					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
+// 						"id_ai_richiesta"	=>	(int)$id,
+// 					))->orderBy("data_creazione")->process()->send(false);
+// 					
+// 					foreach ($res as $r)
+// 					{
+// 						$messaggi[] = array(
+// 							"role"		=>	$r["ruolo"],
+// 							"content"	=>	htmlentitydecode($r["messaggio"]),
+// 						);
+// 					}
+// 
+// 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggio);
+// 					
+// 					$messaggi[] = $messaggioElaborato;
+// 				}
+// 				else
+// 				{
+					$isRag = true;
 					
-					foreach ($res as $r)
-					{
-						$messaggi[] = array(
-							"role"		=>	$r["ruolo"],
-							"content"	=>	htmlentitydecode($r["messaggio"]),
-						);
-					}
-
-					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggio);
+					$numeroProdotti = 6;
 					
-					$messaggi[] = $messaggioElaborato;
-				}
-				else
-				{
-					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], 4);
+					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
 					
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggoRag);
 					
 					$messaggi[] = $messaggioElaborato;
-				}
+				// }
 				
 				$airmModel->sValues(array(
 					"messaggio"			=>	$messaggio,
@@ -350,18 +360,68 @@ class AirichiesteModel extends GenericModel
 
 				if ($airmModel->insert())
 				{
-					$okRouting = false;
-					
-					if (isset($intent) && $intent)
-						$okRouting = true;
-					
-					list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting);
-					
-					if ($okRouting)
-						$messaggio = $this->elaboraRisposta($intent, $messaggio, $record["lingua"]);
+// 					if (App::$isFrontend && !v("attiva_seconda_richiesta_in_product_search") && $intent == "product_search")
+// 					{
+// 						$ris = 1;
+// 						$okRouting = true;
+// 						
+// 						$jsonMessaggio = json_decode($messaggoRag, true);
+// 						
+// 						if (isset($jsonMessaggio["context_items"]) && is_array($jsonMessaggio["context_items"]) && count($jsonMessaggio["context_items"]) > 0)
+// 						{
+// 							$messaggioArray = array(
+// 								"intro_text"	=>	gtext("Ecco alcuni prodotti trovati"),
+// 								"items"			=>	array(),
+// 							);
+// 							
+// 							$idPages = array();
+// 							
+// 							foreach ($jsonMessaggio["context_items"] as $item)
+// 							{
+// 								$temp = array();
+// 								$temp["id"] = $item["id"];
+// 								$temp["title"] = $item["title"];
+// 								$temp["comment"] = "";
+// 								$messaggioArray["items"][] = $temp;
+// 							}
+// 							
+// 							$messaggio = json_encode($messaggioArray);
+// 						}
+// 						else
+// 							$messaggio = gtext("Non ho trovato alcun prodotto pertinente.");
+// 					}
+// 					else
+// 					{
+						$okRouting = false;
+						
+						if (isset($intent) && $intent)
+						{
+							$okRouting = true;
+							
+							Airichiesteresponse::$tipo = strtoupper($intent);
+						}
+						else
+							Airichiesteresponse::$tipo = "GENERICA";
+						
+						if ($okRouting)
+						{
+							if ($intent == "threshold_exceeded")
+								list($ris, $messaggio) = array(1, gtext(self::$fraseTroppeRichieste));
+							else
+							{
+								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "minimal");
+								
+								$messaggio = strip_tags($messaggio);
+								
+								$messaggio = $this->elaboraRisposta($intent, $messaggio, $record["lingua"]);
+							}
+						}
+						else
+							list($ris, $messaggio) = array(0, gtext("Errore connessione"));
+					// }
 					
 					$airmModel->sValues(array(
-						"messaggio"			=>	F::sanitizeTesto($messaggio),
+						"messaggio"			=>	$messaggio,
 						"id_ai_richiesta"	=>	(int)$id,
 						"id_admin"			=>	User::$id,
 						"ruolo"				=>	"assistant",
@@ -384,10 +444,15 @@ class AirichiesteModel extends GenericModel
 		
 		$messaggioElaborato = AimodelliModel::getModulo($idModelloPredefinito, true)->setMessaggio($messaggoRag);
 		
-		list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni, $idModelloPredefinito, $okRouting);
-		
-		if (isset($intent) && $intent)
-			return $this->elaboraRisposta($intent, $risposta, $lingua);
+		if ($intent == "threshold_exceeded")
+			return gtext(self::$fraseTroppeRichieste);
+		else
+		{
+			list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni, $idModelloPredefinito, $okRouting);
+			
+			if (isset($intent) && $intent)
+				return $this->elaboraRisposta($intent, $risposta, $lingua);
+		}
 		
 		return "";
 	}
@@ -423,19 +488,54 @@ class AirichiesteModel extends GenericModel
 				
 				$itemsArray = array();
 				
+				$indice = 0;
 				foreach ($items as $item)
 				{
 					$id = isset($item["id"]) ? (int)$item["id"] : 0;
 					$title = isset($item["title"]) ? strip_tags($item["title"]) : "";
 					$comment = isset($item["comment"]) ? strip_tags($item["comment"]) : "";
+					$links = (isset($item["in_depth"]) && is_array($item["in_depth"]) && count($item["in_depth"]) > 0)? $item["in_depth"] : array();
 					
 					$tmp = $layoutItem;
 					
 					$tmp = str_replace("[TITLE]", $title, $tmp);
-					$tmp = str_replace("[LINK]", "[LPAG_$id]", $tmp);
-					$tmp = str_replace("[COMMENT]", $comment, $tmp);
+					$tmp = str_replace("[LINK]", "[LPAG_".(int)$id."]", $tmp);
+					$tmp = str_replace("[COMMENT]", F::vitalizeTesto($comment), $tmp);
+					$tmp = str_replace("[IMAGE]", "[IPAG_".(int)$id."]", $tmp);
+					
+					$inDepthHtml = "";
+					
+					if (count($links) > 0)
+					{
+						$linksArray = array();
+						
+						foreach ($links as $link)
+						{
+							if (isset($link["text"]) && isset($link["url"]) && trim($link["text"]) && trim($link["url"]))
+							{
+								$li = "<a target='_blank' href='".strip_tags($link["url"])."'>".strip_tags($link["text"])."</a>";
+								
+								if (isset($link["comment"]) && trim($link["comment"]))
+									$li .= " ".strip_tags($link["comment"]);
+								
+								$linksArray[] = "<li>".$li."</li>";
+							}
+						}
+						
+						if (count($linksArray) > 0)
+						{
+							$inDepthHtml = "<p><b>".gtext("Per approfondire:")."</b></p><ul class='uk-list'>".implode("\n", $linksArray)."</ul>";
+						}
+					}
+					
+					$tmp = str_replace("[APPROFONDIMENTO]", $inDepthHtml, $tmp);
+					
+					if ($intent == "informational" && $indice < (count($items)-1))
+						$tmp .= '<hr class="uk-divider-icon">';
 					
 					$itemsArray[] = $tmp;
+					
+					$indice++;
 				}
 				
 				// print_r($itemsArray);
@@ -509,24 +609,127 @@ class AirichiesteModel extends GenericModel
 		if ($res)
 		{
 			$routingJson = json_decode($routing, true);
-			
+			// print_r($routingJson);
+			// echo $routing."\n";
 			$intent = $routingJson["intent"] ?? "";
 			$confidence = $routingJson["confidence"] ?? "";
 			$contents = array();
-			
+			$linguaRouting = $routingJson["language"] ?? "";
 			$intentConosciuto = false;
+			
+			if ($linguaRouting && LingueModel::checkLinguaAttiva((string)$linguaRouting))
+				$lingua = (string)$linguaRouting;
 			
 			// if ((float)$confidence > 0.6)
 			// {
 				switch($intent)
 				{
 					case "product_search":
-						$emb = EmbeddingsModel::g(false)->inner(array("pagina"))->addWhereAttivo()->sWhere("exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
+						$emb = new EmbeddingsModel();
+						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.embeddings, embeddings.id_page")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
+						
+						// var_dump($routingJson);
+						$productTitle = $routingJson["entities"]["product_title"]["value"] ?? "";
+						$prezzoMinimo =  $routingJson["entities"]["price_range"]["min"] ?? null;
+						$prezzoMassimo =  $routingJson["entities"]["price_range"]["max"] ?? null;
+						$brand =  $routingJson["entities"]["brand"]["value"] ?? null;
+						
+						if ($prezzoMassimo)
+						{
+							$emb->aWhere(array(
+								"lte"	=>	array(
+									"combinazioni.price_scontato_ivato"	=> (int)$prezzoMassimo,
+								),
+							));
+						}
+						
+						if ($prezzoMinimo)
+						{
+							$emb->aWhere(array(
+								"gte"	=>	array(
+									"combinazioni.price_scontato_ivato"	=> (int)$prezzoMinimo,
+								),
+							));
+						}
+						
+						if ($brand)
+						{
+							$numero = MarchiModel::g(false)->clear()->where(array(
+								"lk"	=>	array(
+									"titolo"	=>	sanitizeAll($brand),
+								)
+							))->rowNumber();
+							
+							if ($numero)
+								$emb->inner("marchi")->on("pages.id_marchio = marchi.id_marchio")->aWhere(array(
+									"lk"	=>	array(
+										"marchi.titolo"	=> sanitizeAll(nullToBlank($brand)),
+									),
+								));
+						}
+						
+						if ($productTitle)
+						{
+							if ($lingua == Params::$defaultFrontEndLanguage)
+							{
+								$titleWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "title");
+								$descWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "description");
+							}
+							else
+							{
+								$emb->addJoinTraduzione($lingua, "contenuti_tradotti", false, new PagesModel());
+								
+								$titleWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "title", "contenuti_tradotti");
+								$descWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "description", "contenuti_tradotti");
+							}
+							
+							$orWhere = array(
+								"  OR"	=>	array(
+									"AND"	=> $titleWhere,
+									" AND"	=>	$descWhere,
+								)
+							);
+							
+							$emb->save();
+							$emb->aWhere($descWhere);
+							
+							$queryArray = explode(" ", $productTitle);
+							
+							if ($brand)
+								$queryArray[] = (string)$brand;
+							
+							if (isset($routingJson["entities"]["attributes"]) && is_array($routingJson["entities"]["attributes"]))
+							{
+								foreach ($routingJson["entities"]["attributes"] as $attr)
+								{
+									if (isset($attr["value"]))
+									{
+										$words = explode(" ", $attr["value"]);
+										
+										foreach ($words as $word)
+										{
+											$queryArray[] = $word;
+										}
+									}
+								}
+							}
+							
+							$queryArray = array_unique($queryArray);
+							// $messaggio = implode(" ", $queryArray);
+						}
+						
 						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
 						
-						// print_r($result);
-						
 						$idPages = $result["pages"];
+						
+						if (count($idPages) <= 0)
+						{
+							$emb->clear()->restore();
+							$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
+							$idPages = $result["pages"];
+						}
+						
+						// print_r($result);
 						
 						if (count($idPages) > 0)
 						{
@@ -541,7 +744,32 @@ class AirichiesteModel extends GenericModel
 							TraduzioniModel::rLingua();
 						}
 						
-						$intentConosciuto = true;
+						break;
+					case "informational":
+						$emb = new EmbeddingsModel();
+						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.embeddings, embeddings.id_page")
+							->inner(array("pagina"))
+							->addWhereAttivo()
+							->sWhere("not exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
+						
+						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
+						
+						$idPages = $result["pages"];
+						
+						// print_r($idPages);
+						
+						if (count($idPages) > 0)
+						{
+							$p = PagesModel::g(false)->where(array(
+								"   in"	=>	array(
+									"id_page"	=>	forceIntDeep($idPages),
+								)
+							));
+							
+							TraduzioniModel::sLingua($lingua, "front");
+							$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 1);
+							TraduzioniModel::rLingua();
+						}
 						
 						break;
 					case "policy_qa":
@@ -553,17 +781,18 @@ class AirichiesteModel extends GenericModel
 						$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 1, 0);
 						TraduzioniModel::rLingua();
 						
-						$intentConosciuto = true;
 						break;
 					case "other":
-						
-						$intentConosciuto = true;
+						break;
+					case "threshold_exceeded":
+						break;
+					default:
+						$intent = "other";
 						break;
 				}
 			// }
 			
-			if ($intentConosciuto)
-				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
+			$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
 			
 			if (isset($tpf) && is_file($tpf))
 			{
@@ -572,6 +801,7 @@ class AirichiesteModel extends GenericModel
 				$istruzioni = ob_get_clean();
 				
 				$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
+				$istruzioni = str_replace("[LINGUA]", $lingua, $istruzioni);
 				
 				$contextItems = array();
 				
@@ -580,7 +810,9 @@ class AirichiesteModel extends GenericModel
 					$lines = QueryAwareContextBuilder::extractRelevantSnippet($messaggio, stripTagsDecode($c["descrizione"]), 4);
 					$compactDesc = implode(' | ', $lines);
 					
-					$contextItems[] = array(
+					$links = F::estraiLink(htmlentitydecode($c["descrizione"]));
+					
+					$temp = array(
 						"id"		=>	$c["id_page"],
 						"title"		=>	$c["titolo"],
 						"description"	=>	$intent == "product_search" ? $compactDesc : stripTagsDecode($c["descrizione"]),
@@ -588,11 +820,16 @@ class AirichiesteModel extends GenericModel
 						"discounted_price"		=>	$c["prezzo_scontato"],
 						"brand"		=>	$c["marchio"],
 					);
+					
+					if (count($links) > 0 && $intent == "informational")
+						$temp["links"] = $links;
+					
+					$contextItems[] = $temp;
 				}
 				
 				$messaggioArray = array(
 					"user_question"	=>	$messaggio,
-					"intent"		=>	"product_search",
+					"intent"		=>	$intent,
 					"context_items"	=>	$contextItems
 				);
 				
@@ -624,7 +861,24 @@ class AirichiesteModel extends GenericModel
 			
 			$messaggio = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito(), true)->setMessaggio($messaggio);
 			
-			return $this->richiesta(array($messaggio), "", $istruzioni);
+			Airichiesteresponse::$tipo = "ROUTING";
+			
+			if (!Airichiesteresponse::limiteSuperato(60,v("numero_richieste_routing_al_minuto")))
+				return $this->richiesta(array($messaggio), "", $istruzioni);
+			else
+			{
+				if (isset(Params::$lang))
+					$lingua = Params::$lang;
+				else
+				{
+					if (App::$isFrontend)
+						$lingua = v("lingua_default_frontend");
+					else
+						$lingua = v("default_backend_language");
+				}
+				
+				return array(1, '{"intent":"threshold_exceeded","confidence":1,"language":"'.$lingua.'"}');
+			}
 		}
 		
 		return array("", "");
@@ -640,7 +894,7 @@ class AirichiesteModel extends GenericModel
 		return false;
 	}
 	
-	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false)
+	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false, $reasoning = "low")
 	{
 		if (!isset($idModello))
 			$idModello = AimodelliModel::g(false)->getModelloPredefinito();
@@ -656,7 +910,7 @@ class AirichiesteModel extends GenericModel
 		if (!$forza && !$this->checkRichiesta($messaggi))
 			list($res, $output) = array(0, gtext("La richiesta è troppo lunga, riprovi con una domanda più corta"));
 		else
-			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni);
+			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni, $reasoning);
 		
 		// echo $output."\n\n\n";
 		

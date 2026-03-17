@@ -1,8 +1,13 @@
 function scorriChatInBasso()
 {
-	$('html, body').animate({
-		scrollTop: $(document).height()
-	}, 500);
+	if ($(".chat_message_bubble_user").length > 0)
+	{
+		var position = $(".chat_message_bubble_user").last().position();
+		
+		$('html, body').animate({
+			scrollTop: position.top
+		}, 500);
+	}
 }
 
 function aggiornaChat()
@@ -13,16 +18,25 @@ function aggiornaChat()
 		async: true,
 		dataType: "html",
 		success: function(content){
-
 			$(".chat_messages").html(content);
-			scorriChatInBasso();
-
+			
+			setTimeout(function() {
+				scorriChatInBasso();
+			}, 100);
 		}
 	});
 }
 
 $(document).ready(function(){
 	scorriChatInBasso();
+	
+	$("body").on("keypress",".request_message", function(e){
+		if (e.which == 13) {
+			e.preventDefault();
+			
+			$(".send_request_to_va").trigger("click");
+		}
+	});
 	
 	$( "body" ).on( "click", ".send_request_to_va", function(e) {
 		

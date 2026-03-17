@@ -761,7 +761,7 @@ class VariabiliModel extends GenericModel {
 		"campo_form_newsletter_obbligatori"		=>	"", // campi obbligatori del form newsletter
 		"permetti_di_collegare_gruppi_utenti_a_newsletter"	=>	0, // Se impostato ad 1, permette la gestione del campo "Sincronizza con la newsletter" nella gestione dei gruppi clienti
 		### TICKET ##
-		"attiva_gestiobe_ticket"	=>	0, // se impostato a 1, attiva la gestione dei ticket di aassistenza
+		"attiva_gestiobe_ticket"	=>	0, // se impostato a 1, attiva la gestione dei ticket di assistenza
 		"numero_massimo_prodotti_ticket"	=>	2, // numero massimo di prodotti nel ticket
 		"email_ticket_negozio"		=>	"", // la mail a cui viene inviata la notifica di nuovo ticket
 		"numero_massimo_ticket_aperti"	=>	2, // numero massimo di ticket allo stato diverso da chiuso
@@ -835,10 +835,15 @@ class VariabiliModel extends GenericModel {
 		"istruzioni_ruolo_system_richieste_ai"	=>	"Usa principalmente il testo delimitato da virgolette triple (contesto) oppure lo storico di questa chat per rispondere alle domande.", // testo per indirizzare le risposte dell'AI
 		"default_primo_messaggio_ai"=>	"", // se impostato, viene proposto come primo messaggio all'AI
 		"attiva_rag_in_richieste"	=>	0, // Attiva RAG in richieste ad AI
-		"numero_massimo_caratteri_messaggio_ai"	=>	"100",
+		// "attiva_seconda_richiesta_in_product_search"	=>	1, // se impostato su 1, fa seconda richiesta per elaborazione prodotti dopo routing
+		"numero_massimo_caratteri_messaggio_ai"	=>	"200",
 		"ai_attiva_cache"			=>	1, // Attiva o meno la chache sulle richieste AI
 		"attiva_assistente_frontend"		=>	0, // Se impostato ad 1, attiva la chat lato frontend
 		"assistente_ambito_default"	=>	"Ecommerce", // Ambito di default per l'assistente virtuale
+		"assistente_virtuale_ip_permessi"	=>	"", // Elenco di IP divisi da virgola. Se vuoto, tutti gli IP sono permessi
+		"attiva_embeddings_su_informazioni_strutturate"	=>	0, // Se impostato su 1, genera JSON trutturato del testo e genera embeddings su semantic_text e search_queries
+		"numero_richieste_routing_al_minuto"	=>	10, // Numero massimo di richieste di ROUTING al minuto
+		"score_minimo_ricerca_semantica"	=> 60, // Score minimo di cosine_similarity (x 100)
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)

@@ -57,7 +57,7 @@ class ChatGPT35Turbo extends ModelloAI
 		return $this->client;
 	}
 	
-	public function chat($messaggi, $contesto = "", $istruzioni = "")
+	public function chat($messaggi, $contesto = "", $istruzioni = "", $reasoning = "low")
 	{
 		$client = $this->getClient();
 
@@ -67,22 +67,21 @@ class ChatGPT35Turbo extends ModelloAI
 			
 			try
 			{
-				$response = $client->responses()->create([
+				$request = [
 					'model' => $this->getParam("nome_modello"),
 					'input' => $messaggi,
 					'reasoning' => [
-						'effort' => 'low', // oppure 'minimal', 'low', 'medium', and 'high'
+						'effort' => $reasoning, // oppure 'minimal', 'low', 'medium', and 'high'
 					],
-				]);
+				];
 				
-				// $response = $client->chat()->create([
-				// 	'model' => $this->getParam("nome_modello"),
-				// 	'messages' => $messaggi,
-				// ]);
-
+				$response = $client->responses()->create($request);
+				
 				$responseArray = $response->toArray();
 				
 				// print_r($responseArray);
+				
+				Airichiesteresponse::aggiungi(json_encode($request), json_encode($responseArray));
 				
 				if (isset($responseArray["output_text"]))
 					return array(1, $responseArray["output_text"]);
@@ -91,11 +90,47 @@ class ChatGPT35Turbo extends ModelloAI
 				else
 					return array(0, gtext("Errore generico"));
 			} catch (Exception $e) {
+				Airichiesteresponse::aggiungi(json_encode($request), json_encode($e));
+				
 				// print_r($e);
-				return array(0, $e->getMessage());
+				return array(0, "Errore connessione");
 			}
 
 			return array("","");
 		}
+	}
+	
+	public function embeddings($text)
+	{
+		$client = $this->getClient();
+
+		if (isset($client))
+		{
+			try
+			{
+				$request = [
+					'model' => 'text-embedding-3-small',
+					'input' => $text,
+				];
+				
+				$response = $client->embeddings()->create($request);
+				
+				$responseArray = $response->toArray();
+				
+				Airichiesteresponse::$tipo = "EMBEDDINGS";
+				Airichiesteresponse::aggiungi(json_encode($request), json_encode($responseArray));
+				
+				if (isset($responseArray["data"][0]["embedding"]) && is_array($responseArray["data"][0]["embedding"]) && count($responseArray["data"][0]["embedding"]) > 0)
+					return json_encode($responseArray["data"][0]["embedding"]);
+				else
+					return "";
+			} catch (Exception $e) {
+				Airichiesteresponse::aggiungi(json_encode($request), json_encode($e));
+				
+				return "";
+			}
+		}
+		
+		return "";
 	}
 }

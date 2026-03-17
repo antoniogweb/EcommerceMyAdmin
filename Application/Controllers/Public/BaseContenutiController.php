@@ -1364,7 +1364,7 @@ class BaseContenutiController extends BaseController
 		else
 			$data["url_ordinamento"] = $this->baseUrl."/".$urlOrdinamento;
 		
-		if ($firstSection == Parametri::$nomeSezioneProdotti && $attivaOrderBy && ($this->viewArgs['o'] == "crescente" || $this->viewArgs['o'] == "decrescente"))
+		if ($firstSection == Parametri::$nomeSezioneProdotti && $attivaOrderBy)
 		{
 			$campoPrezzoMinimoIvato = v("sconti_combinazioni_automatiche") ? "price_scontato_ivato" : "price_ivato";
 			
@@ -2156,7 +2156,8 @@ class BaseContenutiController extends BaseController
 			
 			if ($this->viewArgs["sec"] == Parametri::$nomeSezioneProdotti && v("usa_sotto_query_in_elenco"))
 				$this->m('PagesModel')->select(PagesModel::getSelectDistinct(""))->toList("pages.id_page");
-			else
+
+			// if (Params::$lang != Params::$defaultFrontEndLanguage)
 				$this->m('PagesModel')->addJoinTraduzionePagina(null, true, true);
 			
 			$data["pages"] = $this->m('PagesModel')->send();

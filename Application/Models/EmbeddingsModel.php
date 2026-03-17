@@ -2,7 +2,7 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
 // See COPYRIGHT.txt and LICENSE.txt.
 //
 // This file is part of EcommerceMyAdmin
@@ -22,8 +22,10 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class EmbeddingsModel extends GenericModel {
-	
+require_once(LIBRARY."/Application/Modules/AI/Retrieval/ArticleChunker.php");
+
+class EmbeddingsModel extends GenericModel
+{
 	public function __construct() {
 		$this->_tables='embeddings';
 		$this->_idFields='id_embedding';
@@ -71,19 +73,36 @@ class EmbeddingsModel extends GenericModel {
 				$res = $eModel->aWhere(array(
 					"lingua"	=>	sanitizeAll($lingua),
 				))->send(false);
-				
+				// echo $eModel->getQuery()."\n";
 				$scores = [];
 				
 				$maxScore = 0.0;
+				
+				$scoreMinimo = number_format(v("score_minimo_ricerca_semantica") / 100,1,".","");
 				
 				foreach ($res as $r)
 				{
 					$emb = json_decode($r["embeddings"], true);
 					
-					// Assicurati che l'embedding sia numerico (in caso arrivi da JSON con stringhe)
 					$emb = array_map('floatval', $emb);
 					
 					$score = Vector::cosineSimilarity($emb, $queryEmbedding);
+					
+					if ($score < $scoreMinimo)
+						continue;
+					
+					// Cerco nelle search queries
+// 					if (v("attiva_embeddings_su_informazioni_strutturate") && trim($r["embeddings_search_queries"]))
+// 					{
+// 						$embSq = json_decode($r["embeddings_search_queries"], true);
+// 					
+// 						$embSq = array_map('floatval', $embSq);
+// 						
+// 						$scoreSq = Vector::cosineSimilarity($embSq, $queryEmbedding);
+// 						
+// 						if ($scoreSq > $score)
+// 							$score = $scoreSq;
+// 					}
 					
 					if ($score > $maxScore)
 						$maxScore = $score;
@@ -92,8 +111,8 @@ class EmbeddingsModel extends GenericModel {
 						'id'    => $r["id_embedding"],
 						'score' => $score,
 						'id_page'	=>	$r["id_page"],
-						'id_marchio'	=>	$r["id_marchio"],
-						'lingua'	=>	$r["lingua"],
+						// 'id_marchio'	=>	$r["id_marchio"],
+						// 'lingua'	=>	$r["lingua"],
 					];
 				}
 				
@@ -105,7 +124,7 @@ class EmbeddingsModel extends GenericModel {
 					$scores = array_slice($scores, 0, $numeroMassimoRisultati);
 				}
 				
-				if ($maxScore < 0.4)
+				if ($maxScore < $scoreMinimo)
 					return array(
 						"pages"		=>	array(),
 						"marchi"	=>	array(),
@@ -118,19 +137,19 @@ class EmbeddingsModel extends GenericModel {
 					if ($sc["id_page"])
 						$idPages[] = $sc["id_page"];
 					
-					if ($sc["id_marchio"])
-						$idMarchi[] = $sc["id_marchio"];
+					// if ($sc["id_marchio"])
+					// 	$idMarchi[] = $sc["id_marchio"];
 				}
 			}
 		}
 		
 		return array(
 			"pages"		=>	$idPages,
-			"marchi"	=>	$idMarchi,
+			// "marchi"	=>	$idMarchi,
 		);
 	}
     
-    public function getCategoryEmbeddings($idCategory = 0, $lingua = null, $log = null)
+    public function getCategoryEmbeddings($idCategory = 0, $lingua = null, $withChunks = false, $log = null)
 	{
 		$cModel = new CategoriesModel();
 		
@@ -144,15 +163,15 @@ class EmbeddingsModel extends GenericModel {
 		
 		foreach ($idPages as $idPage)
 		{
-			$this->getPageEmbeddings((int)$idPage, $lingua, $log);
+			$this->getPageEmbeddings((int)$idPage, $lingua, $withChunks, $log);
 		}
 	}
     
-    public function getPageEmbeddings($idPage = 0, $lingua = null, $log = null)
+    public function getPageEmbeddings($idPage = 0, $lingua = null, $withChunks = false, $log = null)
 	{
-		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
+		$idModelloPredefinitoEmbeddings = AimodelliModel::g(false)->getIdModelForEmbeddings();
 		
-		if (!$idModelloPredefinito)
+		if (!$idModelloPredefinitoEmbeddings)
 			return;
 		
 		$pModel = new PagesModel();
@@ -183,48 +202,121 @@ class EmbeddingsModel extends GenericModel {
 				{
 					$o = $strutturaProdotti[0];
 					
-					$embeddingArray = array();
+					$embeddingArray = $testoPerElaborazioneArray = $testoPerChunksArray = array();
+					$categoria = $responseSearchQuery = "";
 					
 					if (trim($o["titolo"]))
+					{
 						$embeddingArray[] = strip_tags(htmlentitydecode($o["titolo"]));
+						$testoPerElaborazioneArray[] = "Title: ".strip_tags(htmlentitydecode($o["titolo"]));
+						$testoPerChunksArray[] = "<h1>".htmlentitydecode($o["titolo"])."</h1>";
+					}
+					
+					if (trim(nullToBlank($o["marchio"])))
+						$testoPerElaborazioneArray[] = "Brand: ".strip_tags(htmlentitydecode($o["marchio"]));
+					
+					if (isset($o["categorie"][0]) && count($o["categorie"][0]) > 0)
+					{
+						$categoria = strip_tags(implode(" > ",htmlentitydecodeDeep($o["categorie"][0])));
+						
+						$testoPerElaborazioneArray[] = "Categories: ".$categoria;
+					}
 					
 					if (trim($o["sottotitolo"]))
 						$embeddingArray[] = trim(strip_tags(htmlentitydecode($o["sottotitolo"])));
 					
 					if (trim($o["descrizione"]))
+					{
 						$embeddingArray[] = trim(strip_tags(htmlentitydecode($o["descrizione"])));
+						$testoPerElaborazioneArray[] = "Description: ".strip_tags(htmlentitydecode($o["descrizione"]));
+						$testoPerChunksArray[] = htmlentitydecode($o["descrizione"]);
+					}
+					
+					if (trim($o["descrizione_2"]))
+						$testoPerChunksArray[] = htmlentitydecode($o["descrizione_2"]);
+					
+					if (trim($o["descrizione_3"]))
+						$testoPerChunksArray[] = htmlentitydecode($o["descrizione_3"]);
+					
+					if (trim($o["descrizione_4"]))
+						$testoPerChunksArray[] = htmlentitydecode($o["descrizione_4"]);
 					
 					$embeddingText = implode(" ", $embeddingArray);
+					$searchQueryEmbeddingText = $datiStrutturati = "";
 					
-					if (!trim($embeddingText))
-						return;
+					$testoPerElaborazione = implode("\n", $testoPerElaborazioneArray);
+					$testoPerChunks = implode("\n\n", $testoPerChunksArray);
 					
-					$response = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($embeddingText);
+					if ($withChunks)
+						$chunks = ArticleChunker::getChunksTextsForEmbeddings($testoPerChunks,600,100,$categoria);
+					else
+						$chunks = array($embeddingText);
 					
-					if (trim($response))
+					$tpf = tpf("Elementi/AI/RAG/Embeddings/prompt.txt");
+					
+// 					if (v("attiva_embeddings_su_informazioni_strutturate") && trim($testoPerElaborazione) && is_file($tpf))
+// 					{
+// 						$idModelloPredefinito = AimodelliModel::g(false)->getIdPredefinito();
+// 						
+// 						if ($idModelloPredefinito)
+// 						{
+// 							ob_start();
+// 							include $tpf;
+// 							$istruzioni = ob_get_clean();
+// 							$istruzioni = str_replace("[LINGUA]", $codice, $istruzioni);
+// 							
+// 							$messaggio = AimodelliModel::getModulo($idModelloPredefinito, true)->setMessaggio($testoPerElaborazione);
+// 							
+// 							list($res, $datiStrutturati) = AimodelliModel::getModulo($idModelloPredefinito, true)->chat(array($messaggio), "", $istruzioni, "low");
+// 							
+// 							$outputArray = json_decode($datiStrutturati, true);
+// 							
+// 							if (isset($outputArray["semantic_text"]) && trim($outputArray["semantic_text"]))
+// 								$embeddingText = $outputArray["semantic_text"];
+// 							
+// 							if (isset($outputArray["search_queries"]) && is_array($outputArray["search_queries"]) && count($outputArray["search_queries"]) > 0)
+// 								$searchQueryEmbeddingText = implode(" ", $outputArray["search_queries"]);
+// 						}
+// 					}
+					
+					$this->del(null, array(
+						"id_page"	=>	(int)$idPage,
+						"lingua"	=>	$codice,
+					));
+					
+					foreach ($chunks as $embeddingText)
 					{
-						if ($log)
+						if (!trim($embeddingText))
+							continue;
+
+						$response = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($embeddingText);
+						
+						// if (trim($searchQueryEmbeddingText))
+						// 	$responseSearchQuery = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($searchQueryEmbeddingText);
+						
+						if (trim($response) || trim($responseSearchQuery))
 						{
-							$logText = "EMBEDDINGS ID PAGE: ".(int)$idPage." - LINGUA: ".$codice;
+							if ($log)
+							{
+								$logText = "EMBEDDINGS ID PAGE: ".(int)$idPage." - LINGUA: ".$codice;
+								
+								$log->writeString($logText);
+								
+								echo $logText."\n";
+							}
 							
-							$log->writeString($logText);
+							$this->sValues(array(
+								"id_page"	=>	(int)$idPage,
+								"lingua"	=>	$codice,
+								"id_c"		=>	(int)$record["id_c"],
+								"embeddings"	=>	$response,
+								"embeddings_search_queries"	=>	$responseSearchQuery,
+								"dati_strutturati"	=>	$datiStrutturati,
+								"testo"		=>	$embeddingText,
+							), "sanitizeDb");
 							
-							echo $logText."\n";
+							$this->insert();
 						}
-						
-						$this->del(null, array(
-							"id_page"	=>	(int)$idPage,
-							"lingua"	=>	$codice,
-						));
-						
-						$this->sValues(array(
-							"id_page"	=>	(int)$idPage,
-							"lingua"	=>	$codice,
-							"id_c"		=>	(int)$record["id_c"],
-							"embeddings"	=>	$response,
-						));
-						
-						$this->insert();
 					}
 				}
 			}

@@ -1,0 +1,1 @@
+alter table ai_richieste_response add time_creazione int UNSIGNED not null default 0 after data_creazione;

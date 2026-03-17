@@ -198,6 +198,15 @@ trait Modulo
 		
 		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.dal,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere,pages.campo_cerca,pages.id_marchio,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,pages.priorita_sitemap,pages.codice,pages.gtin,pages.mpn,pages.identifier_exists,pages.stampa_gtin_nel_feed";
 		
+		if (v("attiva_descrizione_2_in_prodotti"))
+			$select .= ",descrizione_2";
+		
+		if (v("attiva_descrizione_3_in_prodotti"))
+			$select .= ",descrizione_3";
+		
+		if (v("attiva_descrizione_4_in_prodotti"))
+			$select .= ",descrizione_4";
+		
 		if ($combinazioniLinkVeri || $idC)
 		{
 			$select .= ",combinazioni.*";
@@ -323,6 +332,9 @@ trait Modulo
 				"codice"	=>	isset($r["combinazioni"]["codice"]) ? $r["combinazioni"]["codice"] : $r["pages"]["codice"],
 				"sottotitolo"	=>	trim(field($r, "sottotitolo")),
 				"descrizione"	=>	trim(field($r, "description")),
+				"descrizione_2"	=>	isset($r["pages"]["descrizione_2"]) ? trim(field($r, "descrizione_2")) : "",
+				"descrizione_3"	=>	isset($r["pages"]["descrizione_3"]) ? trim(field($r, "descrizione_3")) : "",
+				"descrizione_4"	=>	isset($r["pages"]["descrizione_4"]) ? trim(field($r, "descrizione_4")) : "",
 				"campo_cerca"	=>	$r["pages"]["campo_cerca"],
 				"categorie"	=>	$structCategory,
 				"immagine_principale"	=>	$r["pages"]["immagine"],

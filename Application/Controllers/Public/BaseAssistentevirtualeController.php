@@ -22,6 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+ini_set("memory_limit","512M");
+
 class BaseAssistentevirtualeController extends BaseController
 {
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -30,6 +32,16 @@ class BaseAssistentevirtualeController extends BaseController
 		
 		if (!v("attiva_assistente_frontend"))
 			$this->responseCode(403);
+		
+		if (v("assistente_virtuale_ip_permessi"))
+		{
+			$ipPermessi = explode(",", v("assistente_virtuale_ip_permessi"));
+			
+			if (!in_array(getIp(), $ipPermessi))
+				$this->responseCode(403);
+		}
+		
+		$_GET["partial"] = "Y";
 		
 		$this->load('header');
 		$this->load('footer','last');
@@ -78,6 +90,8 @@ class BaseAssistentevirtualeController extends BaseController
 		
 		if ($idChat)
 		{
+			Airichiesteresponse::$idRichiesta = (int)$idChat;
+			
 			$this->m("AirichiesteModel")->messaggio((int)$idChat, $messaggio);
 		}
 		

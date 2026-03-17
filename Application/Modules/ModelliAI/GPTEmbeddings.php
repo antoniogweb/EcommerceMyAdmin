@@ -24,30 +24,5 @@ require_once(LIBRARY."/Application/Modules/ModelliAI/ChatGPT35Turbo.php");
 
 class GPTEmbeddings extends ChatGPT35Turbo
 {
-	public function embeddings($text)
-	{
-		$client = $this->getClient();
-
-		if (isset($client))
-		{
-			try
-			{
-				$response = $client->embeddings()->create([
-					'model' => 'text-embedding-3-small',
-					'input' => $text,
-				]);
-				
-				$responseArray = $response->toArray();
-				
-				if (isset($responseArray["data"][0]["embedding"]) && is_array($responseArray["data"][0]["embedding"]) && count($responseArray["data"][0]["embedding"]) > 0)
-					return json_encode($responseArray["data"][0]["embedding"]);
-				else
-					return "";
-			} catch (Exception $e) {
-				return "";
-			}
-		}
-		
-		return "";
-	}
+	
 }

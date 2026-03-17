@@ -47,7 +47,13 @@ class AirichiesteController extends BaseController
 		$this->mainFields = array("cleanDateTime", "titoloCrud", "ai_modelli.titolo", "numeroMessaggiCrud");
 		$this->mainHead = "Data ora,Titolo,Modello,N° messaggi";
 		
-		$this->m[$this->modelName]->clear()->select("*")->inner(array("modello"))->orderBy("ai_richieste.data_creazione desc")->save();
+		$this->m[$this->modelName]->clear()->select("*")
+			->where(array(
+				"ne"	=>	array(
+					"id_admin"	=>	0,
+				),
+			))
+			->inner(array("modello"))->orderBy("ai_richieste.data_creazione desc")->save();
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'add', 'modifyAction'=>'messaggi');
 
@@ -193,6 +199,7 @@ class AirichiesteController extends BaseController
 		$messaggio = $this->request->post("messaggio","");
 		$messaggio = strip_tags(trim($messaggio));
 		
+		Airichiesteresponse::$idRichiesta = (int)$id;
 		$this->m[$this->modelName]->messaggio((int)$id, $messaggio);
 	}
 
