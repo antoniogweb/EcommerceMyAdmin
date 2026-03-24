@@ -342,7 +342,7 @@ trait BaseCrudController
 				echo $data['main'];
 				$html = ob_get_clean();
 				
-				HtmlToXlsx::download($html, date("Y-m-d_H_i_s")."_esportazione_".encodeUrl($data["tabella"]).".xls");
+				HtmlToXlsx::download($html, date("Y-m-d_H_i_s")."_esportazione_".encodeUrl($data["tabella"]).".xlsx");
 			}
 			else
 			{
