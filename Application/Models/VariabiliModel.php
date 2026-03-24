@@ -844,6 +844,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_embeddings_su_informazioni_strutturate"	=>	0, // Se impostato su 1, genera JSON trutturato del testo e genera embeddings su semantic_text e search_queries
 		"numero_richieste_routing_al_minuto"	=>	10, // Numero massimo di richieste di ROUTING al minuto
 		"score_minimo_ricerca_semantica"	=> 60, // Score minimo di cosine_similarity (x 100)
+		"attiva_ricerca_semantica"	=>	0, // se impostato su 1, aggiunge la ricerca semantica al motore di ricerca Interno. Deve essere impostato a 1 anche "attiva_richieste_ai" e inoltre deve essere attivo e predefinito un modello LLM per gli embedding
+		// "salva_ricerche_semantiche"	=>	0, // se impostato a 0, salva le ricerche semantiche
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)

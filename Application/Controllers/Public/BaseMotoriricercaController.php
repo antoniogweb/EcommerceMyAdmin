@@ -25,17 +25,12 @@ if (!defined('EG')) die('Direct access not allowed!');
 class BaseMotoriricercaController extends BaseController
 {
 	protected $estratiDatiGenerali = false;
-	
-	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
-	{
-		parent::__construct($model, $controller, $queryString, $application, $action);
-
-		if (!v("attiva_gestione_motori_ricerca"))
-			$this->responseCode(403);
-	}
 
 	public function cerca($modulo = "")
 	{
+		if (!v("attiva_gestione_motori_ricerca"))
+			$this->responseCode(403);
+		
 		$modulo = strtoupper((string)$modulo);
 		
 		$search = $this->request->get("term","","strip_tags");
@@ -69,6 +64,64 @@ class BaseMotoriricercaController extends BaseController
 			}
 			else
 				$this->responseCode(403);
+		}
+		else
+			$this->responseCode(403);
+	}
+	
+	public function ricercasemantica()
+	{
+		if (!v("attiva_ricerca_semantica"))
+			$this->responseCode(403);
+		
+		$search = $this->request->get("term","","strip_tags");
+		
+		if (trim((string)$search))
+		{
+			IpcheckModel::check("CERCA SEMANTICO");
+			
+			$result = EmbeddingsModel::ricercaSemantica($search, null, Params::$lang);
+			
+			$idPages = $result["pages"];
+			
+			$jsonArray = array();
+			
+			// Salva la ricerca
+// 			if (v("salva_ricerche_semantiche"))
+// 			{
+// 				$this->m("RicercheModel")->sValues(array(
+// 					"termini"	=>	(string)$search,
+// 					"cart_uid"	=>	User::$cart_uid,
+// 				));
+// 				
+// 				$this->m("RicercheModel")->insert();
+// 			}
+			
+			if (count($idPages) > 0)
+			{
+				$p = PagesModel::g(false)->where(array(
+					"   in"	=>	array(
+						"id_page"	=>	forceIntDeep($idPages),
+					)
+				));
+				
+				TraduzioniModel::sLingua(Params::$lang, "front");
+				$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 0);
+				TraduzioniModel::rLingua();
+				
+				foreach ($contents as $c)
+				{
+					$jsonArray[] = array(
+						"label"	=>	$c["titolo"],
+						"value"	=>	$c["titolo"],
+						"numero_parole"	=>	1,
+					);
+				}
+			}
+			
+			header('Content-type: application/json; charset=utf-8');
+			
+			echo json_encode($jsonArray);
 		}
 		else
 			$this->responseCode(403);

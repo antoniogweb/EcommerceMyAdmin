@@ -100,7 +100,7 @@ class Interno extends MotoreRicerca
 		}
 
 		$oggettiRicerca = $pRicerca->getStructFromIdsOfPages($ids, $lingua);
-
+		
 		$risultatiRicerca = array(
 			"hits"	=>	array(),
 		);
