@@ -1013,6 +1013,13 @@ class BaseBaseController extends Controller
 		$this->append($data);
 	}
 	
+	protected function emailACuiMandareMailNuovaRegistrazione()
+	{
+		$emailCMS = (ImpostazioniModel::$valori["mail_registrazione_utenti"] && checkMail(ImpostazioniModel::$valori["mail_registrazione_utenti"])) ? ImpostazioniModel::$valori["mail_registrazione_utenti"] : Parametri::$mailInvioOrdine;
+		
+		return array($emailCMS);
+	}
+	
 	protected function maindaMailNegozioNuovaRegistrazione($idUser)
 	{
 		$datiCliente = $this->m('RegusersModel')->selectId((int)$idUser);
@@ -1029,10 +1036,12 @@ class BaseBaseController extends Controller
 		include tpf("Regusers/mail_al_negozio_registr_nuovo_cliente.php");
 		$output = ob_get_clean();
 		
-		$emailCMS = (ImpostazioniModel::$valori["mail_registrazione_utenti"] && checkMail(ImpostazioniModel::$valori["mail_registrazione_utenti"])) ? ImpostazioniModel::$valori["mail_registrazione_utenti"] : Parametri::$mailInvioOrdine;
+		// $emailCMS = (ImpostazioniModel::$valori["mail_registrazione_utenti"] && checkMail(ImpostazioniModel::$valori["mail_registrazione_utenti"])) ? ImpostazioniModel::$valori["mail_registrazione_utenti"] : Parametri::$mailInvioOrdine;
+		
+		$emailCMS = $this->emailACuiMandareMailNuovaRegistrazione();
 		
 		$res = MailordiniModel::inviaMail(array(
-			"emails"	=>	array($emailCMS),
+			"emails"	=>	$emailCMS,
 			"oggetto"	=>	$datiCliente["agente"] ? "invio dati nuovo agente" : "invio dati nuovo utente",
 			"testo"		=>	$output,
 			"tipologia"	=>	"ISCRIZIONE AL NEGOZIO",

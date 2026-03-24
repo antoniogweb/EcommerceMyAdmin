@@ -42,7 +42,7 @@ class HtmlToXlsx
 		$writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 		
 		header('Content-disposition: attachment; filename='.$titolo);
-		header('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Cache-Control: max-age=0');
 		ob_end_clean();
 		$writer->save('php://output');

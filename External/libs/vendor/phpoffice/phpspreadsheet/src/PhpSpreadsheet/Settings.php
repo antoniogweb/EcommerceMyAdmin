@@ -14,35 +14,23 @@ class Settings
      * Class name of the chart renderer used for rendering charts
      * eg: PhpOffice\PhpSpreadsheet\Chart\Renderer\JpGraph.
      *
-     * @var ?string
+     * @var null|class-string<IRenderer>
      */
-    private static $chartRenderer;
+    private static ?string $chartRenderer = null;
 
     /**
      * Default options for libxml loader.
-     *
-     * @var ?int
      */
-    private static $libXmlLoaderOptions;
+    private static ?int $libXmlLoaderOptions = null;
 
     /**
      * The cache implementation to be used for cell collection.
-     *
-     * @var ?CacheInterface
      */
-    private static $cache;
+    private static ?CacheInterface $cache = null;
 
-    /**
-     * The HTTP client implementation to be used for network request.
-     *
-     * @var mixed
-     */
-    private static $httpClient;
+    private static mixed $httpClient = null;
 
-    /**
-     * @var mixed
-     */
-    private static $requestFactory;
+    private static mixed $requestFactory = null;
 
     /**
      * Set the locale code to use for formula translations and any special formatting.
@@ -51,7 +39,7 @@ class Settings
      *
      * @return bool Success or failure
      */
-    public static function setLocale(string $locale)
+    public static function setLocale(string $locale): bool
     {
         return Calculation::getInstance()->setLocale($locale);
     }
@@ -64,7 +52,7 @@ class Settings
     /**
      * Identify to PhpSpreadsheet the external library to use for rendering charts.
      *
-     * @param string $rendererClassName Class name of the chart renderer
+     * @param class-string<IRenderer> $rendererClassName Class name of the chart renderer
      *    eg: PhpOffice\PhpSpreadsheet\Chart\Renderer\JpGraph
      */
     public static function setChartRenderer(string $rendererClassName): void
@@ -76,10 +64,15 @@ class Settings
         self::$chartRenderer = $rendererClassName;
     }
 
+    public static function unsetChartRenderer(): void
+    {
+        self::$chartRenderer = null;
+    }
+
     /**
      * Return the Chart Rendering Library that PhpSpreadsheet is currently configured to use.
      *
-     * @return null|string Class name of the chart renderer
+     * @return null|class-string<IRenderer> Class name of the chart renderer
      *    eg: PhpOffice\PhpSpreadsheet\Chart\Renderer\JpGraph
      */
     public static function getChartRenderer(): ?string
@@ -89,7 +82,7 @@ class Settings
 
     public static function htmlEntityFlags(): int
     {
-        return \ENT_COMPAT;
+        return ENT_COMPAT;
     }
 
     /**
@@ -99,7 +92,7 @@ class Settings
      *
      * @deprecated 3.5.0 no longer needed
      */
-    public static function setLibXmlLoaderOptions($options): int
+    public static function setLibXmlLoaderOptions(?int $options): int
     {
         if ($options === null) {
             $options = defined('LIBXML_DTDLOAD') ? (LIBXML_DTDLOAD | LIBXML_DTDATTR) : 0;
@@ -120,34 +113,6 @@ class Settings
     public static function getLibXmlLoaderOptions(): int
     {
         return self::$libXmlLoaderOptions ?? (defined('LIBXML_DTDLOAD') ? (LIBXML_DTDLOAD | LIBXML_DTDATTR) : 0);
-    }
-
-    /**
-     * Deprecated, has no effect.
-     *
-     * @param bool $state
-     *
-     * @deprecated will be removed without replacement as it is no longer necessary on PHP 7.3.0+
-     *
-     * @codeCoverageIgnore
-     */
-    public static function setLibXmlDisableEntityLoader(/** @scrutinizer ignore-unused */ $state): void
-    {
-        // noop
-    }
-
-    /**
-     * Deprecated, has no effect.
-     *
-     * @return bool $state
-     *
-     * @deprecated will be removed without replacement as it is no longer necessary on PHP 7.3.0+
-     *
-     * @codeCoverageIgnore
-     */
-    public static function getLibXmlDisableEntityLoader(): bool
-    {
-        return true;
     }
 
     /**
@@ -172,29 +137,24 @@ class Settings
 
     public static function useSimpleCacheVersion3(): bool
     {
-        return
-            PHP_MAJOR_VERSION === 8 &&
-            (new ReflectionClass(CacheInterface::class))->getMethod('get')->getReturnType() !== null;
+        return (new ReflectionClass(CacheInterface::class))->getMethod('get')->getReturnType() !== null;
     }
 
     /**
-     * Set the HTTP client implementation to be used for network request.
+     * @deprecated 2.4.3 No replacement.
      *
-     * @param mixed $httpClient
-     * @param mixed $requestFactory
-     *
-     * @deprecated 1.30.2 No replacement.
+     * @codeCoverageIgnore
      */
-    public static function setHttpClient($httpClient, $requestFactory): void
+    public static function setHttpClient(mixed $httpClient, mixed $requestFactory): void
     {
         self::$httpClient = $httpClient;
         self::$requestFactory = $requestFactory;
     }
 
     /**
-     * Unset the HTTP client configuration.
+     * @deprecated 2.4.3 No replacement.
      *
-     * @deprecated 1.30.2 No replacement.
+     * @codeCoverageIgnore
      */
     public static function unsetHttpClient(): void
     {
@@ -203,25 +163,21 @@ class Settings
     }
 
     /**
-     * Get the HTTP client implementation to be used for network request.
+     * @deprecated 2.4.3 No replacement.
      *
-     * @return mixed
-     *
-     * @deprecated 1.30.2 No replacement.
+     * @codeCoverageIgnore
      */
-    public static function getHttpClient()
+    public static function getHttpClient(): mixed
     {
         return self::$httpClient;
     }
 
     /**
-     * Get the HTTP request factory.
+     * @deprecated 2.4.3 No replacement.
      *
-     * @return mixed
-     *
-     * @deprecated 1.30.2 No replacement.
+     * @codeCoverageIgnore
      */
-    public static function getRequestFactory()
+    public static function getRequestFactory(): mixed
     {
         return self::$requestFactory;
     }

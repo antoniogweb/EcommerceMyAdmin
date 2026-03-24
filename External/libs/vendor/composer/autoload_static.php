@@ -13,7 +13,6 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '979dffec6fa5205cabd2c2cd1e9e6b3a' => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src/Http/Psr7/functions.php',
@@ -340,16 +339,6 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Algolia\\AlgoliaSearch\\' => 
         array (
             0 => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src',
-        ),
-    );
-
-    public static $prefixesPsr0 = array (
-        'H' => 
-        array (
-            'HTMLPurifier' => 
-            array (
-                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
-            ),
         ),
     );
 
@@ -1050,7 +1039,6 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$classMap;
 
         }, null, ClassLoader::class);

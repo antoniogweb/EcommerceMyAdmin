@@ -69,7 +69,8 @@ class CartModel extends GenericModel {
 	{
 		if (!self::$deletedExpired)
 		{
-			$limit = time() - Parametri::$durataCarrello;
+			// $limit = time() - Parametri::$durataCarrello;
+			$limit = time() - (int)v("durata_carrello_wishlist_coupon");
 			
 			$this->del(null, array(
 				'creation_time < ?',

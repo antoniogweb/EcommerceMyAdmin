@@ -199,13 +199,13 @@ trait Modulo
 		$select = "distinct pages.codice_alfa,pages.title,pages.description,categories.title,categories.description,pages.id_page,pages.id_c,pages.immagine,contenuti_tradotti.title,contenuti_tradotti_categoria.title,contenuti_tradotti.description,contenuti_tradotti_categoria.description,pages.gift_card,pages.peso,marchi.id_marchio,marchi.titolo,pages.dal,pages.al,pages.sottotitolo,contenuti_tradotti.sottotitolo,categories.id_corriere,pages.campo_cerca,pages.id_marchio,coalesce(pages.data_ultima_modifica,pages.data_creazione) as ultima_modifica,pages.priorita_sitemap,pages.codice,pages.gtin,pages.mpn,pages.identifier_exists,pages.stampa_gtin_nel_feed";
 		
 		if (v("attiva_descrizione_2_in_prodotti"))
-			$select .= ",descrizione_2";
+			$select .= ",pages.descrizione_2,contenuti_tradotti.descrizione_2";
 		
 		if (v("attiva_descrizione_3_in_prodotti"))
-			$select .= ",descrizione_3";
+			$select .= ",pages.descrizione_3,contenuti_tradotti.descrizione_3";
 		
 		if (v("attiva_descrizione_4_in_prodotti"))
-			$select .= ",descrizione_4";
+			$select .= ",pages.descrizione_4,contenuti_tradotti.descrizione_4";
 		
 		if ($combinazioniLinkVeri || $idC)
 		{

@@ -140,7 +140,7 @@ class TraduzioniController extends BaseController {
 			{
 				$indiceCsv = 0;
 				
-				while (($data = fgetcsv($handle, 1000, ";")) !== FALSE)
+				while (($data = fgetcsv($handle, 1000, ";",escape: "")) !== FALSE)
 				{
 					if ($indiceCsv == 0)
 					{

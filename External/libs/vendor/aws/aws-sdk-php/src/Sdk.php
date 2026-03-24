@@ -214,6 +214,8 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionConnectCases(array $args = [])
  * @method \Aws\ConnectContactLens\ConnectContactLensClient createConnectContactLens(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionConnectContactLens(array $args = [])
+ * @method \Aws\ConnectHealth\ConnectHealthClient createConnectHealth(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionConnectHealth(array $args = [])
  * @method \Aws\ConnectParticipant\ConnectParticipantClient createConnectParticipant(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionConnectParticipant(array $args = [])
  * @method \Aws\ConnectWisdomService\ConnectWisdomServiceClient createConnectWisdomService(array $args = [])
@@ -300,6 +302,8 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionElasticLoadBalancingV2(array $args = [])
  * @method \Aws\ElasticsearchService\ElasticsearchServiceClient createElasticsearchService(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionElasticsearchService(array $args = [])
+ * @method \Aws\ElementalInference\ElementalInferenceClient createElementalInference(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionElementalInference(array $args = [])
  * @method \Aws\Emr\EmrClient createEmr(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionEmr(array $args = [])
  * @method \Aws\EntityResolution\EntityResolutionClient createEntityResolution(array $args = [])
@@ -736,6 +740,8 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionSignin(array $args = [])
  * @method \Aws\SimSpaceWeaver\SimSpaceWeaverClient createSimSpaceWeaver(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionSimSpaceWeaver(array $args = [])
+ * @method \Aws\SimpleDBv2\SimpleDBv2Client createSimpleDBv2(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionSimpleDBv2(array $args = [])
  * @method \Aws\SnowBall\SnowBallClient createSnowBall(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionSnowBall(array $args = [])
  * @method \Aws\SnowDeviceManagement\SnowDeviceManagementClient createSnowDeviceManagement(array $args = [])
@@ -833,7 +839,7 @@ namespace Aws;
  */
 class Sdk
 {
-    const VERSION = '3.370.1';
+    const VERSION = '3.373.6';
 
     /** @var array Arguments for creating clients */
     private $args;
