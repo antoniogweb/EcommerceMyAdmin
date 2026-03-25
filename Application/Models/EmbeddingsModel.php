@@ -48,12 +48,12 @@ class EmbeddingsModel extends GenericModel
 		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
 		
 		$idPages = array();
-		$idMarchi = array();
+		$estratti = array();
 		
 		if (!$idModelloPredefinito)
 			return array(
 				"pages"		=>	array(),
-				"marchi"	=>	array(),
+				"estratti"	=>	array(),
 			);
 		
 		if (trim($query))
@@ -111,6 +111,7 @@ class EmbeddingsModel extends GenericModel
 						'id'    => $r["id_embedding"],
 						'score' => $score,
 						'id_page'	=>	$r["id_page"],
+						'estratto'	=>	$r["testo"] ?? '',
 						// 'id_marchio'	=>	$r["id_marchio"],
 						// 'lingua'	=>	$r["lingua"],
 					];
@@ -127,15 +128,17 @@ class EmbeddingsModel extends GenericModel
 				if ($maxScore < $scoreMinimo)
 					return array(
 						"pages"		=>	array(),
-						"marchi"	=>	array(),
+						"estratti"	=>	array(),
 					);
-				
-				$idPages = $idMarchi = array();
 				
 				foreach ($scores as $sc)
 				{
 					if ($sc["id_page"])
+					{
 						$idPages[] = $sc["id_page"];
+						
+						$estratti[$sc["id_page"]] = $sc["estratto"];
+					}
 					
 					// if ($sc["id_marchio"])
 					// 	$idMarchi[] = $sc["id_marchio"];
@@ -145,11 +148,11 @@ class EmbeddingsModel extends GenericModel
 		
 		return array(
 			"pages"		=>	$idPages,
-			// "marchi"	=>	$idMarchi,
+			"estratti"	=>	$estratti,
 		);
 	}
     
-    public function getCategoryEmbeddings($idCategory = 0, $lingua = null, $withChunks = false, $log = null)
+    public function getCategoryEmbeddings($idCategory = 0, $lingua = null, $withChunks = false, $log = null, $maxLen = 600, int $overlap = 100)
 	{
 		$cModel = new CategoriesModel();
 		
@@ -163,11 +166,11 @@ class EmbeddingsModel extends GenericModel
 		
 		foreach ($idPages as $idPage)
 		{
-			$this->getPageEmbeddings((int)$idPage, $lingua, $withChunks, $log);
+			$this->getPageEmbeddings((int)$idPage, $lingua, $withChunks, $log, $maxLen, $overlap);
 		}
 	}
     
-    public function getPageEmbeddings($idPage = 0, $lingua = null, $withChunks = false, $log = null)
+    public function getPageEmbeddings($idPage = 0, $lingua = null, $withChunks = false, $log = null, int $maxLen = 600, int $overlap = 100)
 	{
 		$idModelloPredefinitoEmbeddings = AimodelliModel::g(false)->getIdModelForEmbeddings();
 		
@@ -248,9 +251,12 @@ class EmbeddingsModel extends GenericModel
 					$testoPerChunks = implode("\n\n", $testoPerChunksArray);
 					
 					if ($withChunks)
-						$chunks = ArticleChunker::getChunksTextsForEmbeddings($testoPerChunks,600,100,$categoria);
+						$chunks = ArticleChunker::getChunksTextsForEmbeddings($testoPerChunks,$maxLen,$overlap,$categoria);
 					else
-						$chunks = array($embeddingText);
+						$chunks = array(
+							"full"	=>	$embeddingText,
+							"text"	=>	$embeddingText
+						);
 					
 					$tpf = tpf("Elementi/AI/RAG/Embeddings/prompt.txt");
 					
@@ -284,8 +290,12 @@ class EmbeddingsModel extends GenericModel
 						"lingua"	=>	$codice,
 					));
 					
-					foreach ($chunks as $embeddingText)
+					foreach ($chunks as $chunk)
 					{
+						// print_r($chunk);
+						$embeddingText = $chunk["full"];
+						$estratto = $chunk["text"];
+						
 						if (!trim($embeddingText))
 							continue;
 
@@ -312,7 +322,7 @@ class EmbeddingsModel extends GenericModel
 								"embeddings"	=>	$response,
 								"embeddings_search_queries"	=>	$responseSearchQuery,
 								"dati_strutturati"	=>	$datiStrutturati,
-								"testo"		=>	$embeddingText,
+								"testo"		=>	trim($estratto),
 							), "sanitizeDb");
 							
 							$this->insert();

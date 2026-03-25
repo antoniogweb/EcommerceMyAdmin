@@ -846,6 +846,7 @@ class VariabiliModel extends GenericModel {
 		"score_minimo_ricerca_semantica"	=> 60, // Score minimo di cosine_similarity (x 100)
 		"attiva_ricerca_semantica"	=>	0, // se impostato su 1, aggiunge la ricerca semantica al motore di ricerca Interno. Deve essere impostato a 1 anche "attiva_richieste_ai" e inoltre deve essere attivo e predefinito un modello LLM per gli embedding
 		// "salva_ricerche_semantiche"	=>	0, // se impostato a 0, salva le ricerche semantiche
+		"ricerca_semantica_memory_limit"=>	'256M', // memory limit per la ricerca semantica tramite embeddings
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)

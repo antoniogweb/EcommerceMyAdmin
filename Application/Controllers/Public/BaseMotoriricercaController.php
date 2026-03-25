@@ -71,6 +71,8 @@ class BaseMotoriricercaController extends BaseController
 	
 	public function ricercasemantica()
 	{
+		ini_set("memory_limit",v("ricerca_semantica_memory_limit"));
+		
 		if (!v("attiva_ricerca_semantica"))
 			$this->responseCode(403);
 		
@@ -78,11 +80,23 @@ class BaseMotoriricercaController extends BaseController
 		
 		if (trim((string)$search))
 		{
+			$searchArray = explode(" ", preg_quote($search, "/"));
+			
+			$searchArrayFinale = array();
+			
+			foreach ($searchArray as $sa)
+			{
+				if (strlen($sa) >= 3 || is_numeric($sa))
+					$searchArrayFinale[] = $sa;
+			}
+			$pattern = implode("|", $searchArrayFinale);
+		
 			IpcheckModel::check("CERCA SEMANTICO");
 			
 			$result = EmbeddingsModel::ricercaSemantica($search, null, Params::$lang);
 			
 			$idPages = $result["pages"];
+			$estratti = $result["estratti"];
 			
 			$jsonArray = array();
 			
@@ -111,8 +125,15 @@ class BaseMotoriricercaController extends BaseController
 				
 				foreach ($contents as $c)
 				{
+					$idPage = $c["id_page"];
+					
+					$estratto = (isset($estratti[$idPage]) && $estratti[$idPage]) ? sanitizeHtmlLight(stripTagsDecode($estratti[$idPage])) : "";
+					
+					$titolo = preg_replace("/($pattern)/i","<b>$1</b>",$c["titolo"], 10);
+					$estratto = preg_replace("/($pattern)/i","<b>$1</b>",$estratto, 10);
+					
 					$jsonArray[] = array(
-						"label"	=>	$c["titolo"],
+						"label"	=>	$titolo."<br /><div style='font-style:italic;font-size:12px;line-height:1em !important;'>...".$estratto."...</div>",
 						"value"	=>	$c["titolo"],
 						"numero_parole"	=>	1,
 					);

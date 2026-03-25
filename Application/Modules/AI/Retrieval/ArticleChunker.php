@@ -260,7 +260,10 @@ class ArticleChunker
 			if ($chunk["text"])
 				$text .= "\n".$chunk["text"];
 			
-			$textArray[] = $text;
+			$textArray[] = array(
+				"full"	=>	$text,
+				"text"	=>	$chunk["text"]
+			);
 		}
 		
 		return $textArray;
