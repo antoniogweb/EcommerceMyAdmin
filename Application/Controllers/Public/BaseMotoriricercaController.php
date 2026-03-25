@@ -82,14 +82,19 @@ class BaseMotoriricercaController extends BaseController
 		{
 			$searchArray = explode(" ", preg_quote($search, "/"));
 			
-			$searchArrayFinale = array();
+			// Ordino in ordine decrescente
+			usort($searchArray, function($a, $b) {
+				return strlen($b) - strlen($a); // Decrescente: $b - $a
+			});
 			
-			foreach ($searchArray as $sa)
-			{
-				if (strlen($sa) >= 3 || is_numeric($sa))
-					$searchArrayFinale[] = $sa;
-			}
-			$pattern = implode("|", $searchArrayFinale);
+// 			$searchArrayFinale = array();
+// 			
+// 			foreach ($searchArray as $sa)
+// 			{
+// 				if (strlen($sa) >= 3 || is_numeric($sa))
+// 					$searchArrayFinale[] = $sa;
+// 			}
+			$pattern = implode("|", $searchArray);
 		
 			IpcheckModel::check("CERCA SEMANTICO");
 			
@@ -133,9 +138,11 @@ class BaseMotoriricercaController extends BaseController
 					$estratto = preg_replace("/($pattern)/i","<b>$1</b>",$estratto, 10);
 					
 					$jsonArray[] = array(
-						"label"	=>	$titolo."<br /><div style='font-style:italic;font-size:12px;line-height:1em !important;'>...".$estratto."...</div>",
-						"value"	=>	$c["titolo"],
+						"label"	=>	$titolo,
+						"value"	=>	Url::getRoot().getUrlAlias($idPage),
+						"estratto"	=>	$estratto,
 						"numero_parole"	=>	1,
+						"immagine"	=>	$c["immagine_principale"],
 					);
 				}
 			}
