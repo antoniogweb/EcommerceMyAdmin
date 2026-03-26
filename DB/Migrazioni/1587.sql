@@ -1,0 +1,1 @@
+alter table embeddings add embeddings_title text not null;

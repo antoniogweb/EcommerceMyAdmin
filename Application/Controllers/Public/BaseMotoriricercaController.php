@@ -98,7 +98,7 @@ class BaseMotoriricercaController extends BaseController
 		
 			IpcheckModel::check("CERCA SEMANTICO");
 			
-			$result = EmbeddingsModel::ricercaSemantica($search, null, Params::$lang);
+			$result = EmbeddingsModel::ricercaSemantica($search, null, Params::$lang, 8);
 			
 			$idPages = $result["pages"];
 			$estratti = $result["estratti"];

@@ -67,55 +67,88 @@ class EmbeddingsModel extends GenericModel
 				if (!isset($eModel))
 				{
 					$eModel = new EmbeddingsModel();
-					$eModel->clear();
+					$eModel->clear()->select("id_embedding,id_page,embeddings,testo");
 				}
 				
-				$res = $eModel->aWhere(array(
-					"lingua"	=>	sanitizeAll($lingua),
-				))->send(false);
-				// echo $eModel->getQuery()."\n";
 				$scores = [];
 				
 				$maxScore = 0.0;
 				
 				$scoreMinimo = number_format(v("score_minimo_ricerca_semantica") / 100,1,".","");
+
+				$limitStart = 0;
+				$limit = 500;
 				
-				foreach ($res as $r)
+				$indiceScore = 0;
+				$arrayIdPageIndice = array();
+				
+				while ($res = $eModel->aWhere(array(
+					"lingua"	=>	sanitizeAll($lingua),
+				))->limit("$limitStart, $limit")->send(false))
 				{
-					$emb = json_decode($r["embeddings"], true);
+					// echo $eModel->getQuery();
+					$limitStart += $limit;
 					
-					$emb = array_map('floatval', $emb);
-					
-					$score = Vector::cosineSimilarity($emb, $queryEmbedding);
-					
-					if ($score < $scoreMinimo)
-						continue;
-					
-					// Cerco nelle search queries
-// 					if (v("attiva_embeddings_su_informazioni_strutturate") && trim($r["embeddings_search_queries"]))
-// 					{
-// 						$embSq = json_decode($r["embeddings_search_queries"], true);
-// 					
-// 						$embSq = array_map('floatval', $embSq);
-// 						
-// 						$scoreSq = Vector::cosineSimilarity($embSq, $queryEmbedding);
-// 						
-// 						if ($scoreSq > $score)
-// 							$score = $scoreSq;
-// 					}
-					
-					if ($score > $maxScore)
-						$maxScore = $score;
-					
-					$scores[] = [
-						'id'    => $r["id_embedding"],
-						'score' => $score,
-						'id_page'	=>	$r["id_page"],
-						'estratto'	=>	$r["testo"] ?? '',
-						// 'id_marchio'	=>	$r["id_marchio"],
-						// 'lingua'	=>	$r["lingua"],
-					];
+					foreach ($res as $r)
+					{
+						$emb = json_decode($r["embeddings"], true);
+						
+						$emb = array_map('floatval', $emb);
+						
+						$score = Vector::cosineSimilarity($emb, $queryEmbedding);
+						
+						if ($score < $scoreMinimo)
+							continue;
+						
+						// Cerco nelle search queries
+	// 					if (v("attiva_embeddings_su_informazioni_strutturate") && trim($r["embeddings_search_queries"]))
+	// 					{
+	// 						$embSq = json_decode($r["embeddings_search_queries"], true);
+	// 					
+	// 						$embSq = array_map('floatval', $embSq);
+	// 						
+	// 						$scoreSq = Vector::cosineSimilarity($embSq, $queryEmbedding);
+	// 						
+	// 						if ($scoreSq > $score)
+	// 							$score = $scoreSq;
+	// 					}
+						
+						if ($score > $maxScore)
+							$maxScore = $score;
+						
+// 						if (isset($arrayIdPageIndice[$r["id_page"]]))
+// 						{
+// 							$indice = $arrayIdPageIndice[$r["id_page"]];
+// 							
+// 							if ($scores[$indice]["numero"] <= 1)
+// 							{
+// 								if ($score > $scores[$indice]["score"])
+// 									$scores[$indice]["score"] = $score;
+// 								
+// 								$scores[$indice]["estratto"] .= " ...".($r["testo"] ?? '');
+// 								$scores[$indice]["numero"]++;
+// 								
+// 								continue;
+// 							}
+// 						}
+						
+						$arrayIdPageIndice[$r["id_page"]] = $indiceScore;
+						
+						$scores[$indiceScore] = [
+							'id'    => $r["id_embedding"],
+							'score' => $score,
+							'id_page'	=>	$r["id_page"],
+							'estratto'	=>	$r["testo"] ?? '',
+							'numero'	=>	1,
+							// 'id_marchio'	=>	$r["id_marchio"],
+							// 'lingua'	=>	$r["lingua"],
+						];
+						
+						$indiceScore++;
+					}
 				}
+				
+				// print_r($scores);
 				
 				// Ordina per score decrescente
 				usort($scores, static fn($a, $b) => $b['score'] <=> $a['score']);
@@ -254,6 +287,7 @@ class EmbeddingsModel extends GenericModel
 						$chunks = ArticleChunker::getChunksTextsForEmbeddings($testoPerChunks,$maxLen,$overlap,$categoria);
 					else
 						$chunks = array(
+							"title"	=>	strip_tags(htmlentitydecode($o["titolo"])),
 							"full"	=>	$embeddingText,
 							"text"	=>	$embeddingText
 						);
@@ -290,21 +324,36 @@ class EmbeddingsModel extends GenericModel
 						"lingua"	=>	$codice,
 					));
 					
+					$backupEmbeddings = array();
+					
 					foreach ($chunks as $chunk)
 					{
-						// print_r($chunk);
 						$embeddingText = $chunk["full"];
 						$estratto = $chunk["text"];
+						$title = $chunk["title"];
 						
 						if (!trim($embeddingText))
 							continue;
 
 						$response = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($embeddingText);
 						
+						$responseBody = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($estratto);
+						
+						if (isset($backupEmbeddings[$title]))
+						{
+							$responseTitle = $backupEmbeddings[$title];
+						}
+						else
+						{
+							$responseTitle = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($title);
+							$backupEmbeddings[$title] = $responseTitle;
+						}
+						
+						// echo $title."\n\n\n".$estratto."\n\n\n";continue;
 						// if (trim($searchQueryEmbeddingText))
 						// 	$responseSearchQuery = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($searchQueryEmbeddingText);
 						
-						if (trim($response) || trim($responseSearchQuery))
+						if (trim($response) || trim($responseTitle) || trim($responseBody))
 						{
 							if ($log)
 							{
@@ -323,6 +372,8 @@ class EmbeddingsModel extends GenericModel
 								"embeddings_search_queries"	=>	$responseSearchQuery,
 								"dati_strutturati"	=>	$datiStrutturati,
 								"testo"		=>	trim($estratto),
+								"embeddings_title"	=>	$responseTitle,
+								"embeddings_body"	=>	$responseBody,
 							), "sanitizeDb");
 							
 							$this->insert();
