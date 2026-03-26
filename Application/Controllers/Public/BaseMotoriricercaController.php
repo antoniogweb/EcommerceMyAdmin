@@ -87,18 +87,19 @@ class BaseMotoriricercaController extends BaseController
 				return strlen($b) - strlen($a); // Decrescente: $b - $a
 			});
 			
-// 			$searchArrayFinale = array();
-// 			
-// 			foreach ($searchArray as $sa)
-// 			{
-// 				if (strlen($sa) >= 3 || is_numeric($sa))
-// 					$searchArrayFinale[] = $sa;
-// 			}
-			$pattern = implode("|", $searchArray);
+			$searchArrayFinale = array();
+			
+			foreach ($searchArray as $sa)
+			{
+				if (strlen($sa) >= 4)
+					$searchArrayFinale[] = $sa;
+			}
+			
+			$pattern = implode("|", $searchArrayFinale);
 		
 			IpcheckModel::check("CERCA SEMANTICO");
 			
-			$result = EmbeddingsModel::ricercaSemantica($search, null, Params::$lang, 8);
+			$result = EmbeddingsModel::ricercaSemantica($search, null, Params::$lang, 12);
 			
 			$idPages = $result["pages"];
 			$estratti = $result["estratti"];

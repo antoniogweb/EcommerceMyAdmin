@@ -43,6 +43,38 @@ class EmbeddingsModel extends GenericModel
         );
     }
     
+    public static function queryEscluseParoleTitolo($query, $lingua)
+	{
+		$paroleArray = explode(" ", $query);
+		$paroleArrayNoTitle = array();
+		
+		if ($lingua == v("lingua_default_frontend"))
+			$model = new PagesModel();
+		else
+			$model = new ContenutitradottiModel();
+		
+		foreach ($paroleArray as $parola)
+		{
+			$model->clear()->where(array(
+				"lk"	=>	array(
+					"title"	=>	sanitizeAll($parola),
+				)
+			));
+			
+			if ($lingua != v("lingua_default_frontend"))
+				$model->aWhere(array(
+					"lingua"	=>	sanitizeAll($lingua),
+				));
+				
+			$numero = $model->rowNumber();
+			
+			if (strlen($parola) <= 4 || $numero <= 10)
+				$paroleArrayNoTitle[] = $parola;
+		}
+		
+		return implode(" ", $paroleArrayNoTitle);
+	}
+    
     public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null)
 	{
 		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
@@ -58,26 +90,34 @@ class EmbeddingsModel extends GenericModel
 		
 		if (trim($query))
 		{
-			$response = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($query);
+			$response = $responseBody = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($query);
+			
+// 			$queryBody = self::queryEscluseParoleTitolo($query, $lingua);
+// 			
+// 			if (trim($queryBody) != trim($query))
+// 				$responseBody = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($queryBody);
 			
 			if (trim($response))
 			{
 				$queryEmbedding = array_map('floatval',json_decode($response, true));
+				$queryEmbeddingBody = array_map('floatval',json_decode($responseBody, true));
 				
 				if (!isset($eModel))
 				{
 					$eModel = new EmbeddingsModel();
-					$eModel->clear()->select("id_embedding,id_page,embeddings,testo");
+					$eModel->clear()->select("id_embedding,id_page,embeddings,embeddings_title,embeddings_body,testo");
 				}
 				
 				$scores = [];
 				
 				$maxScore = 0.0;
 				
-				$scoreMinimo = number_format(v("score_minimo_ricerca_semantica") / 100,1,".","");
-
+				$scoreMinimo = number_format(v("score_minimo_ricerca_semantica") / 100,2,".","");
+				$percScoreTitolo = number_format(v("perc_score_title_ricerca_semantica") / 100,2,".","");
+				$percScoreBody = 1 - $percScoreTitolo;
+				
 				$limitStart = 0;
-				$limit = 500;
+				$limit = 200;
 				
 				$indiceScore = 0;
 				$arrayIdPageIndice = array();
@@ -91,11 +131,22 @@ class EmbeddingsModel extends GenericModel
 					
 					foreach ($res as $r)
 					{
-						$emb = json_decode($r["embeddings"], true);
+// 						$emb = json_decode($r["embeddings"], true);
+// 						$emb = array_map('floatval', $emb);
+// 						
+// 						$score = Vector::cosineSimilarity($emb, $queryEmbedding);
 						
-						$emb = array_map('floatval', $emb);
+						$embTitle = json_decode($r["embeddings_title"], true);
+						$embTitle = array_map('floatval', $embTitle);
 						
-						$score = Vector::cosineSimilarity($emb, $queryEmbedding);
+						$scoreTitle = Vector::cosineSimilarity($embTitle, $queryEmbedding);
+						
+						$embBody = json_decode($r["embeddings_body"], true);
+						$embBody = array_map('floatval', $embBody);
+						
+						$scoreBody = Vector::cosineSimilarity($embBody, $queryEmbeddingBody);
+						
+						$score = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
 						
 						if ($score < $scoreMinimo)
 							continue;
@@ -116,21 +167,29 @@ class EmbeddingsModel extends GenericModel
 						if ($score > $maxScore)
 							$maxScore = $score;
 						
-// 						if (isset($arrayIdPageIndice[$r["id_page"]]))
-// 						{
-// 							$indice = $arrayIdPageIndice[$r["id_page"]];
-// 							
-// 							if ($scores[$indice]["numero"] <= 1)
-// 							{
-// 								if ($score > $scores[$indice]["score"])
-// 									$scores[$indice]["score"] = $score;
-// 								
-// 								$scores[$indice]["estratto"] .= " ...".($r["testo"] ?? '');
-// 								$scores[$indice]["numero"]++;
-// 								
-// 								continue;
-// 							}
-// 						}
+						if (isset($arrayIdPageIndice[$r["id_page"]]))
+						{
+							$indice = $arrayIdPageIndice[$r["id_page"]];
+							
+							if ($score > $scores[$indice]["score"])
+							{
+								if ($scores[$indice]["numero"] < 3)
+								{
+									$scores[$indice]["score"] = $score;
+									$scores[$indice]["estratto"] .= " ...".($r["testo"] ?? '');
+									$scores[$indice]["numero"]++;
+									
+									continue;
+								}
+								else
+									unset($arrayIdPageIndice[$r["id_page"]]);
+							}
+							else
+							{
+								continue;
+							}
+							
+						}
 						
 						$arrayIdPageIndice[$r["id_page"]] = $indiceScore;
 						
@@ -140,7 +199,6 @@ class EmbeddingsModel extends GenericModel
 							'id_page'	=>	$r["id_page"],
 							'estratto'	=>	$r["testo"] ?? '',
 							'numero'	=>	1,
-							// 'id_marchio'	=>	$r["id_marchio"],
 							// 'lingua'	=>	$r["lingua"],
 						];
 						
@@ -148,10 +206,10 @@ class EmbeddingsModel extends GenericModel
 					}
 				}
 				
-				// print_r($scores);
-				
 				// Ordina per score decrescente
 				usort($scores, static fn($a, $b) => $b['score'] <=> $a['score']);
+				
+				// print_r($scores);
 				
 				// Troncamento ai topK
 				if ($numeroMassimoRisultati > 0 && count($scores) > $numeroMassimoRisultati) {
@@ -172,9 +230,6 @@ class EmbeddingsModel extends GenericModel
 						
 						$estratti[$sc["id_page"]] = $sc["estratto"];
 					}
-					
-					// if ($sc["id_marchio"])
-					// 	$idMarchi[] = $sc["id_marchio"];
 				}
 			}
 		}
@@ -185,7 +240,7 @@ class EmbeddingsModel extends GenericModel
 		);
 	}
     
-    public function getCategoryEmbeddings($idCategory = 0, $lingua = null, $withChunks = false, $log = null, $maxLen = 600, int $overlap = 100)
+    public function getCategoryEmbeddings($idCategory = 0, $lingua = null, $withChunks = false, $log = null, $maxLen = 600, int $overlap = 100, $rigenera = 0)
 	{
 		$cModel = new CategoriesModel();
 		
@@ -193,9 +248,17 @@ class EmbeddingsModel extends GenericModel
 		$children = forceIntDeep($children);
 		
 		$pModel = new PagesModel();
-		$idPages = $pModel->clear()->select("id_page")->addWhereAttivo()->aWhere(array(
-			"in" => array("-id_c" => $children),
-		))->toList("id_page")->send();
+		$idPages = $pModel->clear()->select("pages.id_page")
+			->addWhereAttivo()
+			->aWhere(array(
+				"in" => array("-id_c" => $children),
+			))
+			->toList("pages.id_page");
+		
+		if (!$rigenera)
+			$pModel->left("embeddings")->on("embeddings.id_page = pages.id_page")->sWhere("embeddings.id_page IS NULL");
+		
+		$idPages = $pModel->send();
 		
 		foreach ($idPages as $idPage)
 		{

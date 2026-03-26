@@ -37,6 +37,7 @@ $options = getopt(null, array(
 	"chunks::",
 	"max_length::",
 	"overlap::",
+	"rigenera::",
 ));
 
 $default = array(
@@ -49,6 +50,7 @@ $default = array(
 	"chunks"	=>	0,
 	"max_length"	=>	600,
 	"overlap"	=>	1000,
+	"rigenera"	=>	0,
 );
 
 $params = array_merge($default, $options);
@@ -89,7 +91,7 @@ if ($params["azione"] == "crea-embeddings-categoria")
 {
 	$log->writeString("INIZIO CREAZIONE EMBEDDINGS CATEGORIA");
 	
-	EmbeddingsModel::g(false)->getCategoryEmbeddings($params["id_record"], $params["lingua"], $params["chunks"], $log, $params["max_length"], $params["overlap"]);
+	EmbeddingsModel::g(false)->getCategoryEmbeddings($params["id_record"], $params["lingua"], $params["chunks"], $log, $params["max_length"], $params["overlap"], $params["rigenera"]);
 	
 	$log->writeString("FINE CREAZIONE EMBEDDINGS CATEGORIA");
 }
