@@ -96,6 +96,54 @@ class EmbeddingsModel extends GenericModel
 		return $arrayIdMarchi;
 	}
 	
+	public static function normalizeEmbeddingJson($json)
+	{
+		if (!is_string($json) || !trim($json))
+			return "";
+		
+		$decoded = json_decode($json, true);
+		
+		if (!is_array($decoded) || count($decoded) === 0)
+			return "";
+		
+		$normalized = Vector::normalize(array_map('floatval', $decoded));
+		
+		foreach ($normalized as $i => $value)
+			$normalized[$i] = round($value, 6);
+		
+		return json_encode($normalized);
+	}
+	
+	public static function normalizzaVettori()
+	{
+		$model = new self();
+		$limitStart = 0;
+		$limit = 200;
+		
+		while ($res = $model->clear()->select("id_embedding,embeddings,embeddings_title,embeddings_body,embeddings_search_queries")->aWhere(array(
+			"gt"	=>	array(
+				"id_embedding"	=>	(int)$limitStart,
+			),
+		))->limit($limit)->orderBy("id_embedding")->send(false))
+		{
+			foreach ($res as $r)
+			{
+				$limitStart = (int)$r["id_embedding"];
+				
+				$model->clear();
+				$model->sValues(array(
+					"embeddings"	=>	self::normalizeEmbeddingJson($r["embeddings"]),
+					"embeddings_title"	=>	self::normalizeEmbeddingJson($r["embeddings_title"]),
+					"embeddings_body"	=>	self::normalizeEmbeddingJson($r["embeddings_body"]),
+					"embeddings_search_queries"	=>	self::normalizeEmbeddingJson($r["embeddings_search_queries"]),
+				), "sanitizeDb");
+				$model->update((int)$r["id_embedding"]);
+				
+				echo "Normalizzato ID EMBEDDING ".(int)$r["id_embedding"]."\n";
+			}
+		}
+	}
+	
     public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null)
 	{
 		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
@@ -120,10 +168,8 @@ class EmbeddingsModel extends GenericModel
 			
 			if (trim($response))
 			{
-				$queryEmbedding = array_map('floatval',json_decode($response, true));
-				$queryEmbeddingBody = array_map('floatval',json_decode($responseBody, true));
-				$queryEmbeddingNorm = Vector::l2Norm($queryEmbedding);
-				$queryEmbeddingBodyNorm = Vector::l2Norm($queryEmbeddingBody);
+				$queryEmbedding = Vector::normalize(array_map('floatval',json_decode($response, true)));
+				$queryEmbeddingBody = Vector::normalize(array_map('floatval',json_decode($responseBody, true)));
 				
 				if (!isset($eModel))
 				{
@@ -163,7 +209,6 @@ class EmbeddingsModel extends GenericModel
 					"lingua"	=>	sanitizeAll($lingua),
 				))->limit($limit)->orderBy("embeddings.id_embedding")->send(false))
 				{
-					// $a = microtime(true);
 					// echo $eModel->getQuery();
 					
 					foreach ($res as $r)
@@ -175,14 +220,12 @@ class EmbeddingsModel extends GenericModel
 // 						$score = Vector::cosineSimilarity($emb, $queryEmbedding);
 						
 						$embTitle = json_decode($r["embeddings_title"], true);
-						// $embTitle = array_map('floatval', $embTitle);
 						
-						$scoreTitle = Vector::cosineSimilarityWithKnownNorm($embTitle, $queryEmbedding, $queryEmbeddingNorm);
+						$scoreTitle = Vector::dotProduct($embTitle, $queryEmbedding);
 						
 						$embBody = json_decode($r["embeddings_body"], true);
-						// $embBody = array_map('floatval', $embBody);
 						
-						$scoreBody = Vector::cosineSimilarityWithKnownNorm($embBody, $queryEmbeddingBody, $queryEmbeddingBodyNorm);
+						$scoreBody = Vector::dotProduct($embBody, $queryEmbeddingBody);
 						
 						$score = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
 						
@@ -242,7 +285,6 @@ class EmbeddingsModel extends GenericModel
 						
 						$indiceScore++;
 					}
-					// echo "COS:".(microtime(true) - $a)."<br />";
 				}
 				
 				// Ordina per score decrescente
@@ -437,9 +479,9 @@ class EmbeddingsModel extends GenericModel
 						if (!trim($embeddingText))
 							continue;
 
-						$response = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($embeddingText);
+						$response = self::normalizeEmbeddingJson(AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($embeddingText));
 						
-						$responseBody = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($estratto);
+						$responseBody = self::normalizeEmbeddingJson(AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($estratto));
 						
 						if (isset($backupEmbeddings[$title]))
 						{
@@ -447,7 +489,7 @@ class EmbeddingsModel extends GenericModel
 						}
 						else
 						{
-							$responseTitle = AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($title);
+							$responseTitle = self::normalizeEmbeddingJson(AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($title));
 							$backupEmbeddings[$title] = $responseTitle;
 						}
 						

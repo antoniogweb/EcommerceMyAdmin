@@ -33,7 +33,7 @@ class Vector
 		$len = min(count($a), count($b)); // sicurezza: in caso di lunghezze diverse
 		for ($i = 0; $i < $len; $i++)
 		{
-			$sum += (float)$a[$i] * (float)$b[$i];
+			$sum += $a[$i] * $b[$i];
 		}
 		
 		return $sum;
@@ -53,6 +53,29 @@ class Vector
 		}
 		
 		return sqrt($sum);
+	}
+
+	/**
+	* Restituisce il vettore normalizzato rispetto alla norma L2.
+	* In caso di vettore vuoto o norma zero ritorna un array di zeri.
+	*/
+	public static function normalize(array $v): array
+	{
+		$norm = self::l2Norm($v);
+		$n = count($v);
+		
+		if ($n === 0)
+			return [];
+		
+		if ($norm <= 0.0)
+			return array_fill(0, $n, 0.0);
+		
+		$normalized = [];
+		
+		for ($i = 0; $i < $n; $i++)
+			$normalized[$i] = (float)$v[$i] / $norm;
+		
+		return $normalized;
 	}
 
 	/**

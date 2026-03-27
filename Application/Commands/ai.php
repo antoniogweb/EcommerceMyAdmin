@@ -107,6 +107,15 @@ if ($params["azione"] == "ricerca-semantica")
 	$log->writeString("FINE RICERCA SEMANTICA");
 }
 
+if ($params["azione"] == "normalizza-vettori-embeddings")
+{
+	$log->writeString("INIZIO NORMALIZZAZIONE VETTORI EMBEDDINGS");
+	
+	EmbeddingsModel::normalizzaVettori();
+	
+	$log->writeString("FINE NORMALIZZAZIONE VETTORI EMBEDDINGS");
+}
+
 if ($params["azione"] == "routing")
 {
 	$log->writeString("INIZIO ROUTING");
