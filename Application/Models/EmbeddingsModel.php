@@ -75,6 +75,27 @@ class EmbeddingsModel extends GenericModel
 		return implode(" ", $paroleArrayNoTitle);
 	}
     
+    public static function estraiIdMarchiDaQuery($query)
+    {
+		$paroleArray = explode(" ", $query);
+		
+		$mModel = new MarchiModel();
+		
+		$arrayIdMarchi = array();
+		
+		foreach ($paroleArray as $parola)
+		{
+			$idMarchio = (int)$mModel->clear()->select("id_marchio")->where(array(
+				"titolo"	=>	sanitizeAll($parola),
+			))->field("id_marchio");
+			
+			if ($idMarchio)
+				$arrayIdMarchi[] = $idMarchio;
+		}
+		
+		return $arrayIdMarchi;
+	}
+	
     public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null)
 	{
 		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
@@ -92,10 +113,10 @@ class EmbeddingsModel extends GenericModel
 		{
 			$response = $responseBody = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($query);
 			
-// 			$queryBody = self::queryEscluseParoleTitolo($query, $lingua);
-// 			
-// 			if (trim($queryBody) != trim($query))
-// 				$responseBody = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($queryBody);
+			$queryBody = self::queryEscluseParoleTitolo($query, $lingua);
+			
+			if (trim($queryBody) != trim($query))
+				$responseBody = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($queryBody);
 			
 			if (trim($response))
 			{
@@ -105,7 +126,18 @@ class EmbeddingsModel extends GenericModel
 				if (!isset($eModel))
 				{
 					$eModel = new EmbeddingsModel();
-					$eModel->clear()->select("id_embedding,id_page,embeddings,embeddings_title,embeddings_body,testo");
+					$eModel->clear()->select("id_embedding,id_page,embeddings_title,embeddings_body,testo");
+					
+					// Cerco i marchi dalla query
+					$arrayIdMarchi = self::estraiIdMarchiDaQuery($query);
+					
+					if (count($arrayIdMarchi) > 0)
+					{
+						$eModel->sWhere(array(
+							"EXISTS ( select 1 from pages where pages.id_page = embeddings.id_page and pages.id_marchio in (".$eModel->placeholdersFromArray($arrayIdMarchi)."))",
+							forceIntDeep($arrayIdMarchi)
+						));
+					}
 				}
 				
 				$scores = [];
@@ -123,26 +155,30 @@ class EmbeddingsModel extends GenericModel
 				$arrayIdPageIndice = array();
 				
 				while ($res = $eModel->aWhere(array(
+					"gt"	=>	array(
+						"embeddings.id_embedding"	=>	(int)$limitStart,
+					),
 					"lingua"	=>	sanitizeAll($lingua),
-				))->limit("$limitStart, $limit")->send(false))
+				))->limit($limit)->orderBy("embeddings.id_embedding")->send(false))
 				{
+					// $a = microtime(true);
 					// echo $eModel->getQuery();
-					$limitStart += $limit;
 					
 					foreach ($res as $r)
 					{
+						$limitStart = $r["id_embedding"];
 // 						$emb = json_decode($r["embeddings"], true);
 // 						$emb = array_map('floatval', $emb);
 // 						
 // 						$score = Vector::cosineSimilarity($emb, $queryEmbedding);
 						
 						$embTitle = json_decode($r["embeddings_title"], true);
-						$embTitle = array_map('floatval', $embTitle);
+						// $embTitle = array_map('floatval', $embTitle);
 						
 						$scoreTitle = Vector::cosineSimilarity($embTitle, $queryEmbedding);
 						
 						$embBody = json_decode($r["embeddings_body"], true);
-						$embBody = array_map('floatval', $embBody);
+						// $embBody = array_map('floatval', $embBody);
 						
 						$scoreBody = Vector::cosineSimilarity($embBody, $queryEmbeddingBody);
 						
@@ -204,6 +240,7 @@ class EmbeddingsModel extends GenericModel
 						
 						$indiceScore++;
 					}
+					// echo "COS:".(microtime(true) - $a)."<br />";
 				}
 				
 				// Ordina per score decrescente
