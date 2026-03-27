@@ -347,8 +347,8 @@ class EmbeddingsModel extends GenericModel
 									
 									usort($scores[$indice]["estratti_match"], array(__CLASS__, 'compareEstrattiMatch'));
 									
-									if (count($scores[$indice]["estratti_match"]) > 3)
-										$scores[$indice]["estratti_match"] = array_slice($scores[$indice]["estratti_match"], 0, 3);
+									if (count($scores[$indice]["estratti_match"]) > 2)
+										$scores[$indice]["estratti_match"] = array_slice($scores[$indice]["estratti_match"], 0, 2);
 								}
 								
 								$scores[$indice]["numero"] = count($scores[$indice]["estratti_match"]);
