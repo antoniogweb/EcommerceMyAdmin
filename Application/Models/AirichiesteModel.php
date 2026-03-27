@@ -341,7 +341,7 @@ class AirichiesteModel extends GenericModel
 // 				{
 					$isRag = true;
 					
-					$numeroProdotti = 6;
+					$numeroProdotti = 10;
 					
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
 					
@@ -626,7 +626,7 @@ class AirichiesteModel extends GenericModel
 				{
 					case "product_search":
 						$emb = new EmbeddingsModel();
-						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.embeddings, embeddings.id_page")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
+						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.embeddings_title, embeddings.embeddings_body, embeddings.id_page")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
 						
 						// var_dump($routingJson);
 						$productTitle = $routingJson["entities"]["product_title"]["value"] ?? "";
