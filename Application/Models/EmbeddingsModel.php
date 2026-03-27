@@ -143,6 +143,52 @@ class EmbeddingsModel extends GenericModel
 			}
 		}
 	}
+
+	protected static function normalizeSearchText($text)
+	{
+		$text = strip_tags((string)$text);
+		$text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+		$text = mb_strtolower($text, 'UTF-8');
+		$text = preg_replace('/[^\p{L}\p{N}]+/u', ' ', $text);
+		
+		return trim(preg_replace('/\s+/u', ' ', $text));
+	}
+
+	protected static function getQueryTokens($query)
+	{
+		$normalized = self::normalizeSearchText($query);
+		
+		if ($normalized === '')
+			return array();
+		
+		$tokens = preg_split('/\s+/u', $normalized);
+		$tokens = array_filter($tokens, function ($token) {
+			return mb_strlen($token, 'UTF-8') >= 3;
+		});
+		
+		return array_values(array_unique($tokens));
+	}
+
+	protected static function lexicalMatchScore($text, array $queryTokens, $normalizedQuery)
+	{
+		$normalizedText = self::normalizeSearchText($text);
+		
+		if ($normalizedText === '' || empty($queryTokens))
+			return 0.0;
+		
+		$matches = 0;
+		
+		foreach ($queryTokens as $token)
+		{
+			if (preg_match('/(^|\s)'.preg_quote($token, '/').'($|\s)/u', $normalizedText))
+				$matches++;
+		}
+		
+		$coverage = $matches / count($queryTokens);
+		$phraseBonus = ($normalizedQuery !== '' && mb_strpos($normalizedText, $normalizedQuery, 0, 'UTF-8') !== false) ? 1.0 : 0.0;
+		
+		return min(1.0, ($coverage * 0.7) + ($phraseBonus * 0.3));
+	}
 	
     public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null)
 	{
@@ -159,6 +205,9 @@ class EmbeddingsModel extends GenericModel
 		
 		if (trim($query))
 		{
+			$queryTokens = self::getQueryTokens($query);
+			$normalizedQueryText = self::normalizeSearchText($query);
+			
 			$response = $responseBody = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($query);
 			
 			$queryBody = self::queryEscluseParoleTitolo($query, $lingua);
@@ -227,7 +276,10 @@ class EmbeddingsModel extends GenericModel
 						
 						$scoreBody = Vector::dotProduct($embBody, $queryEmbeddingBody);
 						
-						$score = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
+						$semanticScore = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
+						$lexicalScore = self::lexicalMatchScore($r["testo"] ?? '', $queryTokens, $normalizedQueryText);
+						
+						$score = $semanticScore + ((1 - $semanticScore) * 0.15 * $lexicalScore);
 						
 						if ($score < $scoreMinimo)
 							continue;
