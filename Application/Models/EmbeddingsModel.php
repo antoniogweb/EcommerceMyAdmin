@@ -189,6 +189,21 @@ class EmbeddingsModel extends GenericModel
 		
 		return min(1.0, ($coverage * 0.7) + ($phraseBonus * 0.3));
 	}
+
+	protected static function compareEstrattiMatch(array $a, array $b)
+	{
+		$lexicalComparison = $b["lexical_score"] <=> $a["lexical_score"];
+		
+		if ($lexicalComparison !== 0)
+			return $lexicalComparison;
+		
+		$scoreComparison = $b["score"] <=> $a["score"];
+		
+		if ($scoreComparison !== 0)
+			return $scoreComparison;
+		
+		return mb_strlen($b["text"], 'UTF-8') <=> mb_strlen($a["text"], 'UTF-8');
+	}
 	
     public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null)
 	{
@@ -277,7 +292,7 @@ class EmbeddingsModel extends GenericModel
 						$scoreBody = Vector::dotProduct($embBody, $queryEmbeddingBody);
 						
 						$semanticScore = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
-						$lexicalScore = self::lexicalMatchScore($r["testo"] ?? '', $queryTokens, $normalizedQueryText);
+							$lexicalScore = self::lexicalMatchScore($r["testo"] ?? '', $queryTokens, $normalizedQueryText);
 						
 						$score = $semanticScore + ((1 - $semanticScore) * 0.15 * $lexicalScore);
 						
@@ -300,38 +315,69 @@ class EmbeddingsModel extends GenericModel
 						if ($score > $maxScore)
 							$maxScore = $score;
 						
+						$testoEstratto = trim($r["testo"] ?? '');
+						
 						if (isset($arrayIdPageIndice[$r["id_page"]]))
 						{
 							$indice = $arrayIdPageIndice[$r["id_page"]];
 							
 							if ($score > $scores[$indice]["score"])
+								$scores[$indice]["score"] = $score;
+							
+							if ($testoEstratto !== "")
 							{
-								if ($scores[$indice]["numero"] < 3)
+								$giaPresente = false;
+								
+								foreach ($scores[$indice]["estratti_match"] as $estrattoMatch)
 								{
-									$scores[$indice]["score"] = $score;
-									$scores[$indice]["estratto"] .= " ...".($r["testo"] ?? '');
-									$scores[$indice]["numero"]++;
-									
-									continue;
+									if ($estrattoMatch["text"] === $testoEstratto)
+									{
+										$giaPresente = true;
+										break;
+									}
 								}
-								else
-									unset($arrayIdPageIndice[$r["id_page"]]);
-							}
-							else
-							{
-								continue;
+								
+								if (!$giaPresente)
+								{
+									$scores[$indice]["estratti_match"][] = array(
+										"score"	=>	$score,
+										"lexical_score"	=>	$lexicalScore,
+										"text"	=>	$testoEstratto,
+									);
+									
+									usort($scores[$indice]["estratti_match"], array(__CLASS__, 'compareEstrattiMatch'));
+									
+									if (count($scores[$indice]["estratti_match"]) > 3)
+										$scores[$indice]["estratti_match"] = array_slice($scores[$indice]["estratti_match"], 0, 3);
+								}
+								
+								$scores[$indice]["numero"] = count($scores[$indice]["estratti_match"]);
+								$scores[$indice]["estratto"] = implode(" ...", array_column($scores[$indice]["estratti_match"], "text"));
 							}
 							
+							continue;
 						}
 						
 						$arrayIdPageIndice[$r["id_page"]] = $indiceScore;
+						
+						$estrattiMatch = array();
+						
+							if ($testoEstratto !== "")
+							{
+								$estrattiMatch[] = array(
+									"score"	=>	$score,
+									"lexical_score"	=>	$lexicalScore,
+									"text"	=>	$testoEstratto,
+								);
+							}
 						
 						$scores[$indiceScore] = [
 							'id'    => $r["id_embedding"],
 							'score' => $score,
 							'id_page'	=>	$r["id_page"],
-							'estratto'	=>	$r["testo"] ?? '',
-							'numero'	=>	1,
+							'estratto'	=>	$testoEstratto,
+							'numero'	=>	count($estrattiMatch),
+							'estratti_match'	=>	$estrattiMatch,
 							// 'lingua'	=>	$r["lingua"],
 						];
 						
