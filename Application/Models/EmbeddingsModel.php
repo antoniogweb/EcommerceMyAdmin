@@ -315,6 +315,7 @@ class EmbeddingsModel extends GenericModel
 				$scoreMinimo = number_format(v("score_minimo_ricerca_semantica") / 100,2,".","");
 				$percScoreTitolo = number_format(v("perc_score_title_ricerca_semantica") / 100,2,".","");
 				$percScoreBody = 1 - $percScoreTitolo;
+				$percScoreLexical = number_format(v("perc_score_lexical") / 100,2,".","");
 				
 				$limitStart = 0;
 				$limit = 200;
@@ -359,7 +360,7 @@ class EmbeddingsModel extends GenericModel
 						
 						$lexicalScore = ($percScoreTitolo * $titleLexicalScore) + ($percScoreBody * $textLexicalScore);
 						
-						$score = $semanticScore + ((1 - $semanticScore) * 0.25 * $lexicalScore);
+						$score = $semanticScore + ((1 - $semanticScore) * $percScoreLexical * $lexicalScore);
 						
 						if ($score < $scoreMinimo)
 							continue;
