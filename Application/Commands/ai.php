@@ -116,6 +116,15 @@ if ($params["azione"] == "normalizza-vettori-embeddings")
 	$log->writeString("FINE NORMALIZZAZIONE VETTORI EMBEDDINGS");
 }
 
+if ($params["azione"] == "converti-vettori-binari-embeddings")
+{
+	$log->writeString("INIZIO CONVERSIONE VETTORI BINARI EMBEDDINGS");
+	
+	EmbeddingsModel::convertiVettoriBinari();
+	
+	$log->writeString("FINE CONVERSIONE VETTORI BINARI EMBEDDINGS");
+}
+
 if ($params["azione"] == "routing")
 {
 	$log->writeString("INIZIO ROUTING");

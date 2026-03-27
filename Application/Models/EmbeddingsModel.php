@@ -113,6 +113,34 @@ class EmbeddingsModel extends GenericModel
 		
 		return json_encode($normalized);
 	}
+
+	public static function embeddingJsonToBinary($json)
+	{
+		if (!is_string($json) || !trim($json))
+			return "";
+		
+		$decoded = json_decode($json, true);
+		
+		if (!is_array($decoded) || count($decoded) === 0)
+			return "";
+		
+		$vector = array_map('floatval', array_values($decoded));
+		
+		return pack('g*', ...$vector);
+	}
+
+	public static function embeddingBinaryToArray($binary)
+	{
+		if (!is_string($binary) || $binary === "")
+			return array();
+		
+		$decoded = unpack('g*', $binary);
+		
+		if (!is_array($decoded) || count($decoded) === 0)
+			return array();
+		
+		return array_values($decoded);
+	}
 	
 	public static function normalizzaVettori()
 	{
@@ -144,6 +172,34 @@ class EmbeddingsModel extends GenericModel
 		}
 	}
 
+	public static function convertiVettoriBinari()
+	{
+		$model = new self();
+		$limitStart = 0;
+		$limit = 200;
+		
+		while ($res = $model->clear()->select("id_embedding,embeddings_title,embeddings_body")->aWhere(array(
+			"gt"	=>	array(
+				"id_embedding"	=>	(int)$limitStart,
+			),
+		))->limit($limit)->orderBy("id_embedding")->send(false))
+		{
+			foreach ($res as $r)
+			{
+				$limitStart = (int)$r["id_embedding"];
+				
+				$model->clear();
+				$model->sValues(array(
+					"embeddings_title_bin"	=>	self::embeddingJsonToBinary($r["embeddings_title"]),
+					"embeddings_body_bin"	=>	self::embeddingJsonToBinary($r["embeddings_body"]),
+				), "sanitizeDb");
+				$model->update((int)$r["id_embedding"]);
+				
+				echo "Convertito in binario ID EMBEDDING ".(int)$r["id_embedding"]."\n";
+			}
+		}
+	}
+
 	protected static function normalizeSearchText($text)
 	{
 		$text = strip_tags((string)$text);
@@ -169,9 +225,9 @@ class EmbeddingsModel extends GenericModel
 		return array_values(array_unique($tokens));
 	}
 
-	protected static function lexicalMatchScore($text, array $queryTokens, $normalizedQuery)
+	protected static function lexicalMatchScore($text, $title, array $queryTokens, $normalizedQuery)
 	{
-		$normalizedText = self::normalizeSearchText($text);
+		$normalizedText = self::normalizeSearchText(trim((string)$title.' '.(string)$text));
 		
 		if ($normalizedText === '' || empty($queryTokens))
 			return 0.0;
@@ -238,7 +294,7 @@ class EmbeddingsModel extends GenericModel
 				if (!isset($eModel))
 				{
 					$eModel = new EmbeddingsModel();
-					$eModel->clear()->select("id_embedding,id_page,embeddings_title,embeddings_body,testo");
+					$eModel->clear()->select("id_embedding,id_page,embeddings_title,embeddings_body,embeddings_title_bin,embeddings_body_bin,testo,embeddings.title");
 					
 					// Cerco i marchi dalla query
 					$arrayIdMarchi = self::estraiIdMarchiDaQuery($query);
@@ -283,16 +339,22 @@ class EmbeddingsModel extends GenericModel
 // 						
 // 						$score = Vector::cosineSimilarity($emb, $queryEmbedding);
 						
-						$embTitle = json_decode($r["embeddings_title"], true);
+						$embTitle = self::embeddingBinaryToArray($r["embeddings_title_bin"] ?? '');
+						
+						// if (empty($embTitle))
+						// 	$embTitle = json_decode($r["embeddings_title"], true);
 						
 						$scoreTitle = Vector::dotProduct($embTitle, $queryEmbedding);
 						
-						$embBody = json_decode($r["embeddings_body"], true);
+						$embBody = self::embeddingBinaryToArray($r["embeddings_body_bin"] ?? '');
+						
+						// if (empty($embBody))
+						// 	$embBody = json_decode($r["embeddings_body"], true);
 						
 						$scoreBody = Vector::dotProduct($embBody, $queryEmbeddingBody);
 						
 						$semanticScore = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
-							$lexicalScore = self::lexicalMatchScore($r["testo"] ?? '', $queryTokens, $normalizedQueryText);
+						$lexicalScore = self::lexicalMatchScore($r["testo"] ?? '', $r["title"] ?? '', $queryTokens, $normalizedQueryText);
 						
 						$score = $semanticScore + ((1 - $semanticScore) * 0.15 * $lexicalScore);
 						
@@ -613,9 +675,12 @@ class EmbeddingsModel extends GenericModel
 								"embeddings"	=>	$response,
 								"embeddings_search_queries"	=>	$responseSearchQuery,
 								"dati_strutturati"	=>	$datiStrutturati,
+								"title"		=>	$title,
 								"testo"		=>	trim($estratto),
 								"embeddings_title"	=>	$responseTitle,
+								"embeddings_title_bin"	=>	self::embeddingJsonToBinary($responseTitle),
 								"embeddings_body"	=>	$responseBody,
+								"embeddings_body_bin"	=>	self::embeddingJsonToBinary($responseBody),
 							), "sanitizeDb");
 							
 							$this->insert();

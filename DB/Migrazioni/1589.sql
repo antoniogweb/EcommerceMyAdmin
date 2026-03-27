@@ -1,0 +1,1 @@
+alter table embeddings add title varchar(255) not null default '';
