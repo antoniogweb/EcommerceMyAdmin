@@ -27,42 +27,69 @@ class Vector
 	/**
 	* Calcola il prodotto scalare tra due vettori numerici.
 	*/
-	public static function dotProduct(array $a, array $b): float {
+	public static function dotProduct(array $a, array $b): float
+	{
 		$sum = 0.0;
 		$len = min(count($a), count($b)); // sicurezza: in caso di lunghezze diverse
-		for ($i = 0; $i < $len; $i++) {
+		for ($i = 0; $i < $len; $i++)
+		{
 			$sum += (float)$a[$i] * (float)$b[$i];
 		}
+		
 		return $sum;
 	}
 	
 	/**
 	* Norma L2 di un vettore.
 	*/
-	public static function l2Norm(array $v): float {
+	public static function l2Norm(array $v): float
+	{
 		$sum = 0.0;
 		$n = count($v);
-		for ($i = 0; $i < $n; $i++) {
+		for ($i = 0; $i < $n; $i++)
+		{
 			$x = (float)$v[$i];
 			$sum += $x * $x;
 		}
+		
 		return sqrt($sum);
+	}
+
+	/**
+	* Cosine similarity tra un vettore e un secondo vettore di cui si conosce gia' la norma.
+	* Esegue un'unica passata sul primo vettore per calcolare insieme prodotto scalare e norma.
+	*/
+	public static function cosineSimilarityWithKnownNorm(array $a, array $b, float $normB): float
+	{
+		$len = count($a);
+		
+		if ($len === 0 || $len !== count($b) || $normB <= 0.0)
+			return 0.0;
+		
+		$dot = 0.0;
+		$sumSquaresA = 0.0;
+		
+		for ($i = 0; $i < $len; $i++)
+		{
+			$av = (float)$a[$i];
+			$bv = (float)$b[$i];
+			
+			$dot += $av * $bv;
+			$sumSquaresA += $av * $av;
+		}
+		
+		if ($sumSquaresA <= 0.0)
+			return 0.0;
+		
+		return $dot / (sqrt($sumSquaresA) * $normB);
 	}
 	
 	/**
 	* Cosine similarity tra due vettori.
 	* Ritorna 0.0 se una norma è zero o le dimensioni non corrispondono.
 	*/
-	public static function cosineSimilarity(array $a, array $b): float {
-		if (count($a) === 0 || count($b) === 0 || count($a) !== count($b)) {
-			return 0.0;
-		}
-		
-		$dot = self::dotProduct($a, $b);
-		$na  = self::l2Norm($a);
-		$nb  = self::l2Norm($b);
-		$den = $na * $nb;
-		
-		return $den > 0.0 ? $dot / $den : 0.0;
+	public static function cosineSimilarity(array $a, array $b): float
+	{
+		return self::cosineSimilarityWithKnownNorm($a, $b, self::l2Norm($b));
 	}
 }

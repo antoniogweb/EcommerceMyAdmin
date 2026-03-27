@@ -122,6 +122,8 @@ class EmbeddingsModel extends GenericModel
 			{
 				$queryEmbedding = array_map('floatval',json_decode($response, true));
 				$queryEmbeddingBody = array_map('floatval',json_decode($responseBody, true));
+				$queryEmbeddingNorm = Vector::l2Norm($queryEmbedding);
+				$queryEmbeddingBodyNorm = Vector::l2Norm($queryEmbeddingBody);
 				
 				if (!isset($eModel))
 				{
@@ -175,12 +177,12 @@ class EmbeddingsModel extends GenericModel
 						$embTitle = json_decode($r["embeddings_title"], true);
 						// $embTitle = array_map('floatval', $embTitle);
 						
-						$scoreTitle = Vector::cosineSimilarity($embTitle, $queryEmbedding);
+						$scoreTitle = Vector::cosineSimilarityWithKnownNorm($embTitle, $queryEmbedding, $queryEmbeddingNorm);
 						
 						$embBody = json_decode($r["embeddings_body"], true);
 						// $embBody = array_map('floatval', $embBody);
 						
-						$scoreBody = Vector::cosineSimilarity($embBody, $queryEmbeddingBody);
+						$scoreBody = Vector::cosineSimilarityWithKnownNorm($embBody, $queryEmbeddingBody, $queryEmbeddingBodyNorm);
 						
 						$score = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
 						
