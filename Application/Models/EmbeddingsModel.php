@@ -158,13 +158,13 @@ class EmbeddingsModel extends GenericModel
 			{
 				$limitStart = (int)$r["id_embedding"];
 				
-				$model->clear();
 				$model->sValues(array(
 					"embeddings"	=>	self::normalizeEmbeddingJson($r["embeddings"]),
 					"embeddings_title"	=>	self::normalizeEmbeddingJson($r["embeddings_title"]),
 					"embeddings_body"	=>	self::normalizeEmbeddingJson($r["embeddings_body"]),
 					"embeddings_search_queries"	=>	self::normalizeEmbeddingJson($r["embeddings_search_queries"]),
 				), "sanitizeDb");
+				
 				$model->update((int)$r["id_embedding"]);
 				
 				echo "Normalizzato ID EMBEDDING ".(int)$r["id_embedding"]."\n";
@@ -188,11 +188,11 @@ class EmbeddingsModel extends GenericModel
 			{
 				$limitStart = (int)$r["id_embedding"];
 				
-				$model->clear();
 				$model->sValues(array(
 					"embeddings_title_bin"	=>	self::embeddingJsonToBinary($r["embeddings_title"]),
 					"embeddings_body_bin"	=>	self::embeddingJsonToBinary($r["embeddings_body"]),
 				), "sanitizeDb");
+				
 				$model->update((int)$r["id_embedding"]);
 				
 				echo "Convertito in binario ID EMBEDDING ".(int)$r["id_embedding"]."\n";
@@ -225,9 +225,9 @@ class EmbeddingsModel extends GenericModel
 		return array_values(array_unique($tokens));
 	}
 
-	protected static function lexicalMatchScore($text, $title, array $queryTokens, $normalizedQuery)
+	protected static function lexicalMatchScore($text, array $queryTokens, $normalizedQuery)
 	{
-		$normalizedText = self::normalizeSearchText(trim((string)$title.' '.(string)$text));
+		$normalizedText = self::normalizeSearchText(trim((string)$text));
 		
 		if ($normalizedText === '' || empty($queryTokens))
 			return 0.0;
@@ -354,9 +354,12 @@ class EmbeddingsModel extends GenericModel
 						$scoreBody = Vector::dotProduct($embBody, $queryEmbeddingBody);
 						
 						$semanticScore = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
-						$lexicalScore = self::lexicalMatchScore($r["testo"] ?? '', $r["title"] ?? '', $queryTokens, $normalizedQueryText);
+						$titleLexicalScore = self::lexicalMatchScore($r["title"] ?? '', $queryTokens, $normalizedQueryText);
+						$textLexicalScore = self::lexicalMatchScore($r["testo"] ?? '', $queryTokens, $normalizedQueryText);
 						
-						$score = $semanticScore + ((1 - $semanticScore) * 0.15 * $lexicalScore);
+						$lexicalScore = ($percScoreTitolo * $titleLexicalScore) + ($percScoreBody * $textLexicalScore);
+						
+						$score = $semanticScore + ((1 - $semanticScore) * 0.25 * $lexicalScore);
 						
 						if ($score < $scoreMinimo)
 							continue;
