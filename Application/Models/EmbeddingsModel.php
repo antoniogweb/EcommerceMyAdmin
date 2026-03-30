@@ -229,14 +229,27 @@ class EmbeddingsModel extends GenericModel
 	{
 		$normalizedText = self::normalizeSearchText(trim((string)$text));
 		
+		return self::lexicalMatchScoreFromNormalizedText($normalizedText, $queryTokens, $normalizedQuery);
+	}
+	
+	protected static function lexicalMatchScoreFromNormalizedText($normalizedText, array $queryTokens, $normalizedQuery)
+	{
+		$normalizedText = trim((string)$normalizedText);
+		
 		if ($normalizedText === '' || empty($queryTokens))
 			return 0.0;
 		
+		$tokensInText = preg_split('/\s+/u', $normalizedText);
+		
+		if (!is_array($tokensInText) || empty($tokensInText))
+			return 0.0;
+		
+		$tokenLookup = array_fill_keys($tokensInText, true);
 		$matches = 0;
 		
 		foreach ($queryTokens as $token)
 		{
-			if (preg_match('/(^|\s)'.preg_quote($token, '/').'($|\s)/u', $normalizedText))
+			if (isset($tokenLookup[$token]))
 				$matches++;
 		}
 		
@@ -259,6 +272,45 @@ class EmbeddingsModel extends GenericModel
 			return $scoreComparison;
 		
 		return mb_strlen($b["text"], 'UTF-8') <=> mb_strlen($a["text"], 'UTF-8');
+	}
+	
+	protected static function dotProductBinary($binary, array $queryVector): float
+	{
+		if (!is_string($binary) || $binary === '' || empty($queryVector))
+			return 0.0;
+		
+		$decoded = unpack('g*', $binary);
+		
+		if (!is_array($decoded) || empty($decoded))
+			return 0.0;
+		
+		$sum = 0.0;
+		$len = count($queryVector);
+		
+		for ($i = 1; $i <= $len; $i++)
+		{
+			if (!isset($decoded[$i]))
+				break;
+			
+			$sum += $decoded[$i] * $queryVector[$i - 1];
+		}
+		
+		return $sum;
+	}
+	
+	protected static function getCachedNormalizedSearchText($text, array &$cache)
+	{
+		$text = trim((string)$text);
+		
+		if ($text === '')
+			return '';
+		
+		if (isset($cache[$text]))
+			return $cache[$text];
+		
+		$cache[$text] = self::normalizeSearchText($text);
+		
+		return $cache[$text];
 	}
 	
     public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null)
@@ -312,10 +364,12 @@ class EmbeddingsModel extends GenericModel
 				
 				$maxScore = 0.0;
 				
-				$scoreMinimo = number_format(v("score_minimo_ricerca_semantica") / 100,2,".","");
-				$percScoreTitolo = number_format(v("perc_score_title_ricerca_semantica") / 100,2,".","");
+				$scoreMinimo = (float) number_format(v("score_minimo_ricerca_semantica") / 100,2,".","");
+				$percScoreTitolo = (float) number_format(v("perc_score_title_ricerca_semantica") / 100,2,".","");
 				$percScoreBody = 1 - $percScoreTitolo;
-				$percScoreLexical = number_format(v("perc_score_lexical") / 100,2,".","");
+				$percScoreLexical = (float) number_format(v("perc_score_lexical") / 100,2,".","");
+				$titleNormalizationCache = array();
+				$textNormalizationCache = array();
 				
 				$limitStart = 0;
 				$limit = 200;
@@ -340,23 +394,27 @@ class EmbeddingsModel extends GenericModel
 // 						
 // 						$score = Vector::cosineSimilarity($emb, $queryEmbedding);
 						
-						$embTitle = self::embeddingBinaryToArray($r["embeddings_title_bin"] ?? '');
-						
-						// if (empty($embTitle))
-						// 	$embTitle = json_decode($r["embeddings_title"], true);
-						
-						$scoreTitle = Vector::dotProduct($embTitle, $queryEmbedding);
-						
-						$embBody = self::embeddingBinaryToArray($r["embeddings_body_bin"] ?? '');
-						
-						// if (empty($embBody))
-						// 	$embBody = json_decode($r["embeddings_body"], true);
-						
-						$scoreBody = Vector::dotProduct($embBody, $queryEmbeddingBody);
+						$scoreTitle = self::dotProductBinary($r["embeddings_title_bin"] ?? '', $queryEmbedding);
+						$scoreBody = self::dotProductBinary($r["embeddings_body_bin"] ?? '', $queryEmbeddingBody);
 						
 						$semanticScore = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
-						$titleLexicalScore = self::lexicalMatchScore($r["title"] ?? '', $queryTokens, $normalizedQueryText);
-						$textLexicalScore = self::lexicalMatchScore($r["testo"] ?? '', $queryTokens, $normalizedQueryText);
+						
+						$maxScoreWithLexicalBoost = $semanticScore + ((1 - $semanticScore) * $percScoreLexical);
+						
+						if ($maxScoreWithLexicalBoost < $scoreMinimo)
+							continue;
+						
+						$titleLexicalScore = 0.0;
+						$textLexicalScore = 0.0;
+						
+						if ($percScoreLexical > 0.0)
+						{
+							$normalizedTitle = self::getCachedNormalizedSearchText($r["title"] ?? '', $titleNormalizationCache);
+							$normalizedText = self::getCachedNormalizedSearchText($r["testo"] ?? '', $textNormalizationCache);
+							
+							$titleLexicalScore = self::lexicalMatchScoreFromNormalizedText($normalizedTitle, $queryTokens, $normalizedQueryText);
+							$textLexicalScore = self::lexicalMatchScoreFromNormalizedText($normalizedText, $queryTokens, $normalizedQueryText);
+						}
 						
 						$lexicalScore = ($percScoreTitolo * $titleLexicalScore) + ($percScoreBody * $textLexicalScore);
 						
