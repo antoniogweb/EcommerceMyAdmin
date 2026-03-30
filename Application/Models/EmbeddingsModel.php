@@ -294,7 +294,7 @@ class EmbeddingsModel extends GenericModel
 				if (!isset($eModel))
 				{
 					$eModel = new EmbeddingsModel();
-					$eModel->clear()->select("id_embedding,id_page,embeddings_title,embeddings_body,embeddings_title_bin,embeddings_body_bin,testo,embeddings.title");
+					$eModel->clear()->select("id_embedding,id_page,embeddings_title_bin,embeddings_body_bin,testo,embeddings.title");
 					
 					// Cerco i marchi dalla query
 					$arrayIdMarchi = self::estraiIdMarchiDaQuery($query);
