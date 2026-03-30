@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class Airichiesteresponse extends GenericModel
+class AirichiesteresponseModel extends GenericModel
 {
 	public static $deletedExpired = false;
 	public static $idRichiesta = 0;
@@ -60,7 +60,7 @@ class Airichiesteresponse extends GenericModel
 		if (!App::$isFrontend)
 			return false;
 		
-		$model = new Airichiesteresponse();
+		$model = new AirichiesteresponseModel();
 
 		$fromTime = time() - (int)$secondi;
 
@@ -68,7 +68,7 @@ class Airichiesteresponse extends GenericModel
 			"ip = ? AND tipo = ? AND time_creazione >= ?",
 			array(
 				sanitizeAll(getIp()),
-				"ROUTING",
+				sanitizeAll($tipo),
 				$fromTime
 			)
 		))->rowNumber();
@@ -80,7 +80,7 @@ class Airichiesteresponse extends GenericModel
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		
-		$model = new Airichiesteresponse();
+		$model = new AirichiesteresponseModel();
 		
 		$model->sValues(array(
 			"id_ai_richiesta"	=>	(int)self::$idRichiesta,

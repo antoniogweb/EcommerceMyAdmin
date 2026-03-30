@@ -398,10 +398,10 @@ class AirichiesteModel extends GenericModel
 						{
 							$okRouting = true;
 							
-							Airichiesteresponse::$tipo = strtoupper($intent);
+							AirichiesteresponseModel::$tipo = strtoupper($intent);
 						}
 						else
-							Airichiesteresponse::$tipo = "GENERICA";
+							AirichiesteresponseModel::$tipo = "GENERICA";
 						
 						if ($okRouting)
 						{
@@ -861,9 +861,9 @@ class AirichiesteModel extends GenericModel
 			
 			$messaggio = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito(), true)->setMessaggio($messaggio);
 			
-			Airichiesteresponse::$tipo = "ROUTING";
+			AirichiesteresponseModel::$tipo = "ROUTING";
 			
-			if (!Airichiesteresponse::limiteSuperato(60,v("numero_richieste_routing_al_minuto")))
+			if (!AirichiesteresponseModel::limiteSuperato(60,v("numero_richieste_routing_al_minuto")))
 				return $this->richiesta(array($messaggio), "", $istruzioni);
 			else
 			{

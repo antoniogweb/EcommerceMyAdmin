@@ -81,7 +81,7 @@ class ChatGPT35Turbo extends ModelloAI
 				
 				// print_r($responseArray);
 				
-				Airichiesteresponse::aggiungi(json_encode($request), json_encode($responseArray));
+				AirichiesteresponseModel::aggiungi(json_encode($request), json_encode($responseArray));
 				
 				if (isset($responseArray["output_text"]))
 					return array(1, $responseArray["output_text"]);
@@ -90,7 +90,7 @@ class ChatGPT35Turbo extends ModelloAI
 				else
 					return array(0, gtext("Errore generico"));
 			} catch (Exception $e) {
-				Airichiesteresponse::aggiungi(json_encode($request), json_encode($e));
+				AirichiesteresponseModel::aggiungi(json_encode($request), json_encode($e));
 				
 				// print_r($e);
 				return array(0, "Errore connessione");
@@ -117,15 +117,15 @@ class ChatGPT35Turbo extends ModelloAI
 				
 				$responseArray = $response->toArray();
 				
-				Airichiesteresponse::$tipo = "EMBEDDINGS";
-				Airichiesteresponse::aggiungi(json_encode($request), json_encode($responseArray));
+				AirichiesteresponseModel::$tipo = "EMBEDDINGS";
+				AirichiesteresponseModel::aggiungi(json_encode($request), json_encode($responseArray));
 				
 				if (isset($responseArray["data"][0]["embedding"]) && is_array($responseArray["data"][0]["embedding"]) && count($responseArray["data"][0]["embedding"]) > 0)
 					return json_encode($responseArray["data"][0]["embedding"]);
 				else
 					return "";
 			} catch (Exception $e) {
-				Airichiesteresponse::aggiungi(json_encode($request), json_encode($e));
+				AirichiesteresponseModel::aggiungi(json_encode($request), json_encode($e));
 				
 				return "";
 			}

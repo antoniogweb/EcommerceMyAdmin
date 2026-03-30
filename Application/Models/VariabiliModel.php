@@ -847,6 +847,7 @@ class VariabiliModel extends GenericModel {
 		"perc_score_title_ricerca_semantica"	=> 20, // Perc score sul titolo. Lo score sul body sarà di 1-score_title_ricerca_semantica/100
 		"perc_score_lexical"	=>	65, // Perc score lessicale
 		"attiva_ricerca_semantica"	=>	0, // se impostato su 1, aggiunge la ricerca semantica al motore di ricerca Interno. Deve essere impostato a 1 anche "attiva_richieste_ai" e inoltre deve essere attivo e predefinito un modello LLM per gli embedding
+		"numero_richieste_embeddings_al_minuto"	=>	30, // Numero massimo di richieste di EMBEDDINGS al minuto
 		// "salva_ricerche_semantiche"	=>	0, // se impostato a 0, salva le ricerche semantiche
 		"ricerca_semantica_memory_limit"=>	'128M', // memory limit per la ricerca semantica tramite embeddings
 		### CRON ##

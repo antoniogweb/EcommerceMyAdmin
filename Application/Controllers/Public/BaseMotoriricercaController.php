@@ -76,6 +76,21 @@ class BaseMotoriricercaController extends BaseController
 		if (!v("attiva_ricerca_semantica"))
 			$this->responseCode(403);
 		
+		header('Content-type: application/json; charset=utf-8');
+		
+		// Controlla il limite di richieste di embeddings al minuto per ricerca semantica
+		if (AirichiesteresponseModel::limiteSuperato(60, v("numero_richieste_embeddings_al_minuto"), "EMBEDDINGS"))
+		{
+			echo json_encode(array(
+				array(
+					"label"	=>	gtext(AirichiesteModel::$fraseTroppeRichieste),
+					"value"	=>	"--",
+				)
+			));
+			
+			die();
+		}
+		
 		$search = $this->request->get("term","","strip_tags");
 		
 		if (trim((string)$search))
@@ -148,11 +163,9 @@ class BaseMotoriricercaController extends BaseController
 				}
 			}
 			
-			header('Content-type: application/json; charset=utf-8');
-			
 			echo json_encode($jsonArray);
 		}
 		else
-			$this->responseCode(403);
+			echo json_encode(array());
 	}
 }

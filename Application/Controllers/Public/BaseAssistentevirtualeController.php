@@ -90,7 +90,7 @@ class BaseAssistentevirtualeController extends BaseController
 		
 		if ($idChat)
 		{
-			Airichiesteresponse::$idRichiesta = (int)$idChat;
+			AirichiesteresponseModel::$idRichiesta = (int)$idChat;
 			
 			$this->m("AirichiesteModel")->messaggio((int)$idChat, $messaggio);
 		}
