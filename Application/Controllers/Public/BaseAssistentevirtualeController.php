@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-ini_set("memory_limit","512M");
+ini_set("memory_limit",v("ricerca_semantica_memory_limit"));
 
 class BaseAssistentevirtualeController extends BaseController
 {
