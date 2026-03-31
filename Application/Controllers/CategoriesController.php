@@ -312,6 +312,8 @@ class CategoriesController extends BaseController {
 		$data["titoloPagina"] = $this->m["CategoriesModel"]->where(array("id_c"=>$clean['id']))->field("title");
 		$data['numeroGruppi'] = $this->m["ReggroupscategoriesModel"]->where(array("id_c"=>$clean['id']))->rowNumber();
 		
+		$data["tabella"] = gtext("categoria");
+		
 		$this->append($data);
 		$this->load('categories_meta');
 	}
@@ -425,7 +427,7 @@ class CategoriesController extends BaseController {
 		parent::main();
 		
 		$data["titoloRecord"] = $this->m["CategoriesModel"]->where(array("id_c"=>$clean['id']))->field("title");
-		$data["tabella"] = "categoria";
+		$data["tabella"] = gtext("categoria");
 		
 		$data["listaClassi"] = $this->m['ClassiscontoModel']->clear()->toList("id_classe","titolo")->send();
 		
@@ -461,7 +463,7 @@ class CategoriesController extends BaseController {
 		parent::main();
 		
 		$data["titoloRecord"] = $this->m["CategoriesModel"]->where(array("id_c"=>$clean['id']))->field("title");
-		$data["tabella"] = "categoria";
+		$data["tabella"] = gtext("categoria");
 		
 		$data["stepsAssociato"] = "categories_steps";
 		
@@ -602,7 +604,9 @@ class CategoriesController extends BaseController {
 				if (v("attiva_gestione_fasce_frontend"))
 					$data["urlPaginaEditFrontend"] = $data["urlPagina"]."?".v("token_edit_frontend")."&em_edit_frontend";
 			}
-		
+			
+			$data["tabella"] = gtext("categoria");
+			
 			$this->append($data);
 			$this->load('categories_form');
 		}
@@ -672,7 +676,7 @@ class CategoriesController extends BaseController {
 		
 		$this->m[$this->modelName]->save();
 		
-		$this->tabella = "categoria";
+		$this->tabella = gtext("categoria");
 		
 		parent::main();
 		

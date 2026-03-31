@@ -96,7 +96,7 @@ class ImpostazioniController extends BaseController
 		
 		parent::variabili($id);
 		
-		$data["titoloRecord"] = "Impostazioni pubblicazione";
+		$data["titoloRecord"] = gtext("Impostazioni pubblicazione");
 		
 		$this->append($data);
 	}

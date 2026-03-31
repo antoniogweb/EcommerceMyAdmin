@@ -32,11 +32,15 @@ function updateForm()
 	var tipo_cliente = $(".radio_cliente option:selected").attr("value");
 	
 	var generePresente = $(".genere").length > 0 ? true : false;
+	var pIvaPresente = $(".p_iva").length > 0 ? true : false;
 	
 	if (tipo_cliente == "privato")
 	{
 		$(".ragione_sociale").css("display","none");
-		$(".p_iva").css("display","none");
+		
+		if (pIvaPresente)
+			$(".p_iva").css("display","none");
+		
 		$(".nome").css("display","block");
 		$(".cognome").css("display","block");
 		
@@ -46,7 +50,10 @@ function updateForm()
 	else if (tipo_cliente == "libero_professionista")
 	{
 		$(".ragione_sociale").css("display","none");
-		$(".p_iva").css("display","block");
+		
+		if (pIvaPresente)
+			$(".p_iva").css("display","block");
+		
 		$(".nome").css("display","block");
 		$(".cognome").css("display","block");
 		
@@ -56,7 +63,10 @@ function updateForm()
 	else
 	{
 		$(".ragione_sociale").css("display","block");
-		$(".p_iva").css("display","block");
+		
+		if (pIvaPresente)
+			$(".p_iva").css("display","block");
+		
 		<?php if (!v("nome_cognome_anche_azienda")) { ?>
 		$(".nome").css("display","none");
 		$(".cognome").css("display","none");

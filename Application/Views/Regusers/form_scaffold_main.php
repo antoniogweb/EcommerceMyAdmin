@@ -51,9 +51,11 @@
 					<?php echo $form["fattura"];?>
 				</div>
 				<?php } ?>
+				<?php if (isset($form["p_iva"])) { ?>
 				<div class='col-md-3 p_iva'>
 					<?php echo $form["p_iva"];?>
 				</div>
+				<?php } ?>
 				<div class='col-md-3'>
 					<?php echo $form["codice_fiscale"];?>
 				</div>

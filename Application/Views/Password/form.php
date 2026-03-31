@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <section class="content-header">
-	<h1>Gestione password</h1>
+	<h1><?php echo gtext("Gestione");?> password</h1>
 </section>
 
 <!-- Main content -->

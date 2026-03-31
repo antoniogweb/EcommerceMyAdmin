@@ -165,7 +165,7 @@ class BaseController extends Controller
 		
 		$data["sezionePannello"] = $this->sezionePannello;
 		
-		$data["title"] = "Pannello di controllo";
+		$data["title"] = gtext("Pannello di controllo");
 		
 		$data["tabella"] = isset($this->tabella) ? $this->tabella : "";
 		
@@ -556,8 +556,8 @@ class BaseController extends Controller
 			$data['main'] = $mainContent = $this->scaffold->html['main'];
 			$data['notice'] = $this->scaffold->model->notice;
 			
-			$stringaTitolo = (!showreport()) ? "Gestione" : "Visualizzazione";
-			$data["title"] = $stringaTitolo . " " . $data["tabella"] . ": " . $data["titoloRecord"];
+			$stringaTitolo = (!showreport()) ? gtext("Gestione") : gtext("Visualizzazione");
+			$data["title"] = $stringaTitolo . " " . gtext($data["tabella"]) . ": " . $data["titoloRecord"];
 			
 			if (isset($_GET["pdf"]) && v("permetti_generazione_pdf_pagine_backend"))
 			{
