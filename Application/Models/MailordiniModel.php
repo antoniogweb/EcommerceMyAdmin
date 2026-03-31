@@ -143,6 +143,7 @@ class MailordiniModel extends GenericModel
 				"testo"		=>	$testo,
 				"tipologia"	=>	$tipologia,
 				"usa_template"	=>	false,
+				"traduci_oggetto"	=>	false,
 			));
 		}
 	}
