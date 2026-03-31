@@ -245,6 +245,7 @@ class NoteModel extends GenericModel
 					"tabella"	=>	$record["tabella_rif"],
 					"id_elemento"	=>	(int)$record["id_rif"],
 					"testo"	=>	nl2br(strip_tags(htmlentitydecode($record["testo"]))),
+					"traduci_oggetto"	=>	false,
 				));
 			}
 		}
