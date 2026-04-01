@@ -881,7 +881,7 @@ class BaseContenutiController extends BaseController
 			
 			foreach ($arrayElementi as $elemento)
 			{
-				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento), false, false);
+				$this->queryElencoProdotti($clean['id'], $firstSection, array($elemento));
 				$ids = $this->m("PagesModel")->select("pages.id_page")->toList("pages.id_page")->send();
 				CategoriesModel::$arrayIdsPagineFiltrate[$elemento] = array_unique($ids);
 				
@@ -1282,7 +1282,7 @@ class BaseContenutiController extends BaseController
 					
 					if (v("mostra_fasce_prezzo") && !v("filtro_prezzo_slider"))
 						$fasciaPrezzo = $data["fasciaPrezzo"] = $this->m("FasceprezzoModel")->clear()->addJoinTraduzione()->sWhere(array("coalesce(contenuti_tradotti.alias,fasce_prezzo.alias) = ?",array(sanitizeDb($valoreFiltro))))->first();
-					else if (v("filtro_prezzo_slider") && preg_match('/^[a-zA-Z]{1,7}\-([0-9]{1,5})\-[a-zA-Z]{1,7}\-([0-9]{1,5})$/',$valoreFiltro, $matchesPrezzo))
+					else if (v("filtro_prezzo_slider") && preg_match('/^[a-zA-Z\_]{1,7}\-([0-9]{1,5})\-[a-zA-Z\_]{1,7}\-([0-9]{1,5})$/',$valoreFiltro, $matchesPrezzo))
 					{
 						Cache_Db::$skipWritingCache = true;
 						
