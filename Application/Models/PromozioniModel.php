@@ -651,6 +651,9 @@ class PromozioniModel extends GenericModel {
 		
 		$promozione = $this->clear()->where(array("codice"=>$clean["codice"]))->record();
 		
+		if (empty($promozione))
+			return array();
+		
 		$pc = new PromozionicategorieModel();
 		$pp = new PromozionipagineModel();
 		$p = new PagesModel();
