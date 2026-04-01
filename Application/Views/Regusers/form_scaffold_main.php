@@ -51,9 +51,11 @@
 					<?php echo $form["fattura"];?>
 				</div>
 				<?php } ?>
+				<?php if (isset($form["p_iva"])) { ?>
 				<div class='col-md-3 p_iva'>
 					<?php echo $form["p_iva"];?>
 				</div>
+				<?php } ?>
 				<div class='col-md-3'>
 					<?php echo $form["codice_fiscale"];?>
 				</div>
@@ -87,12 +89,16 @@
 				<div class='col-md-3'>
 					<?php echo $form["telefono_2"];?>
 				</div>
+				<?php if (isset($form["pec"])) { ?>
 				<div class='col-md-3'>
 					<?php echo $form["pec"];?>
 				</div>
+				<?php } ?>
+				<?php if (isset($form["codice_destinatario"])) { ?>
 				<div class='col-md-3'>
 					<?php echo $form["codice_destinatario"];?>
 				</div>
+				<?php } ?>
 				<?php if (isset($form["codice_gestionale"])) { ?>
 				<div class='col-md-3'>
 					<?php echo $form["codice_gestionale"];?>

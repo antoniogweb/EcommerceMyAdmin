@@ -179,7 +179,7 @@ trait BaseCrudController
 		
 		$data['type'] = $data['queryType'] = "main";
 
-		$data["title"] = "Gestione " . $data["tabella"];
+		$data["title"] = gtext("Gestione") . " " . gtext($data["tabella"]);
 		
 		$this->m[$this->modelName]->updateTable($this->queryActions);
 		

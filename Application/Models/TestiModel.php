@@ -127,7 +127,10 @@ class TestiModel extends GenericModel
 				'editor_visuale'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Usa editor visuale",
-					"options"	=>	self::$attivoSiNo,
+					"options"	=>	array(
+						"0"	=>	gtext("No"),
+						"1"	=>	gtext("Sì"),
+					),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
