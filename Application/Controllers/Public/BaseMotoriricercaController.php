@@ -95,19 +95,19 @@ class BaseMotoriricercaController extends BaseController
 		
 		if (trim((string)$search))
 		{
-			$searchArray = explode(" ", preg_quote($search, "/"));
+			$searchArray = explode(" ", $search);
 			
 			// Ordino in ordine decrescente
 			usort($searchArray, function($a, $b) {
-				return strlen($b) - strlen($a); // Decrescente: $b - $a
+				return mb_strlen($b) - mb_strlen($a); // Decrescente: $b - $a
 			});
 			
 			$searchArrayFinale = array();
 			
 			foreach ($searchArray as $sa)
 			{
-				if (strlen($sa) >= 4)
-					$searchArrayFinale[] = $sa;
+				if (mb_strlen($sa) >= 4)
+					$searchArrayFinale[] = preg_quote($sa, "/");
 			}
 			
 			$pattern = implode("|", $searchArrayFinale);
@@ -150,8 +150,8 @@ class BaseMotoriricercaController extends BaseController
 					
 					$estratto = (isset($estratti[$idPage]) && $estratti[$idPage]) ? sanitizeHtmlLight(stripTagsDecode($estratti[$idPage])) : "";
 					
-					$titolo = preg_replace("/($pattern)/i","<b>$1</b>",$c["titolo"], 10);
-					$estratto = preg_replace("/($pattern)/i","<b>$1</b>",$estratto, 10);
+					$titolo = preg_replace("/($pattern)/iu","<b>$1</b>",$c["titolo"], 10);
+					$estratto = preg_replace("/($pattern)/iu","<b>$1</b>",$estratto, 10);
 					
 					$jsonArray[] = array(
 						"label"	=>	$titolo,
