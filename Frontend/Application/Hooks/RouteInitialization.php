@@ -28,4 +28,5 @@ Url::$routes = array(
 	"esci"				=>	"esci",
 	"rinnovo"			=>	"account-renewal",
 	"virtual-assistant"	=>	"virtual-assistant",
+	"crea-account"		=>	"crea-account",
 ); 

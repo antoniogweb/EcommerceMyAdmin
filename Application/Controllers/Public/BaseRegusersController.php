@@ -27,7 +27,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class BaseRegusersController extends BaseController
 {
-	private $permalinkPaginaRegistrazione = "crea-account";
+	protected $permalinkPaginaRegistrazione = "crea-account";
 	private $creaAccountViewFile = "form";
 	
 	public $redirectUrlErroreTwoFactor = ""; // url di atterraggio quando c'è un errore nell'autenticazione a due fattori
