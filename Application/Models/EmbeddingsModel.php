@@ -313,7 +313,39 @@ class EmbeddingsModel extends GenericModel
 		return $cache[$text];
 	}
 	
-    public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null)
+	public function addFiltroToken($queryTokens, $lingua)
+	{
+		VariabiliModel::$valori["ricerca_termini_and_or"] = "AND";
+		
+		$ricerca = implode(" ", $queryTokens);
+		
+		if ($lingua && $lingua == Params::$defaultFrontEndLanguage)
+		{
+			$titleWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "title");
+			$descWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "description");
+		}
+		else
+		{
+			$emb->addJoinTraduzione($lingua, "contenuti_tradotti", false, new PagesModel());
+			
+			$titleWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "title", "contenuti_tradotti");
+			$descWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "description", "contenuti_tradotti");
+		}
+		
+		$orWhere = array(
+			"  OR"	=>	array(
+				"OR"	=> $titleWhere,
+				" OR"	=>	$descWhere,
+			)
+		);
+		
+		$this->save();
+		$this->aWhere($orWhere);
+		
+		return $this;
+	}
+	
+    public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null, $filtraPerTokens = false)
 	{
 		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
 		
@@ -346,7 +378,7 @@ class EmbeddingsModel extends GenericModel
 				if (!isset($eModel))
 				{
 					$eModel = new EmbeddingsModel();
-					$eModel->clear()->select("id_embedding,id_page,embeddings_title_bin,embeddings_body_bin,testo,embeddings.title");
+					$eModel->clear()->select("embeddings.id_embedding,embeddings.id_page,embeddings.embeddings_title_bin,embeddings.embeddings_body_bin,embeddings.testo,embeddings.title");
 					
 					// Cerco i marchi dalla query
 					$arrayIdMarchi = self::estraiIdMarchiDaQuery($query);
@@ -358,6 +390,9 @@ class EmbeddingsModel extends GenericModel
 							forceIntDeep($arrayIdMarchi)
 						));
 					}
+					
+					if ($filtraPerTokens)
+						$eModel->inner(array("pagina"))->addFiltroToken($queryTokens, $lingua);
 				}
 				
 				$scores = [];
