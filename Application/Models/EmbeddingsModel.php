@@ -315,7 +315,7 @@ class EmbeddingsModel extends GenericModel
 	
 	public function addFiltroToken($queryTokens, $lingua)
 	{
-		VariabiliModel::$valori["ricerca_termini_and_or"] = "AND";
+		VariabiliModel::$valori["ricerca_termini_and_or"] = "OR";
 		
 		$ricerca = implode(" ", $queryTokens);
 		
