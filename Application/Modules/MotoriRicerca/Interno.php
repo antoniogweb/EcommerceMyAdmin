@@ -79,8 +79,13 @@ class Interno extends MotoreRicerca
 		
 // 		echo $search;
 		
-		$searchArray = explode(" ", preg_quote($search, "/"));
-		$pattern = implode("|", $searchArray);
+		$searchArray = explode(' ', $search);
+
+		$searchArray = array_map(function($v) {
+			return preg_quote($v, '/');
+		}, $searchArray);
+
+		$pattern = implode('|', $searchArray);
 		
 		$tabellaCerca = ($lingua == LingueModel::getPrincipaleFrontend()) ? "pages" : "contenuti_tradotti";
 
@@ -129,7 +134,7 @@ class Interno extends MotoreRicerca
 				$paroleTrovate = array_unique($paroleTrovate);
 				$numero = count($paroleTrovate);
 				
-				$label = preg_replace("/($pattern)/i","<b>$0</b>",$valore, 6);
+				$label = preg_replace("/($pattern)/iu","<b>$0</b>",$valore, 6);
 				
 // 				echo $label."<br />\n";
 // 				echo $numero."<br />\n";
