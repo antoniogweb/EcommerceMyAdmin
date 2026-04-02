@@ -1,0 +1,1 @@
+ALTER TABLE ai_richieste_response add tempo decimal(16,4) not null default 0.0000;

@@ -333,10 +333,10 @@ class EmbeddingsModel extends GenericModel
 			
 			$response = $responseBody = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($query);
 			
-			$queryBody = self::queryEscluseParoleTitolo($query, $lingua);
-			
-			if (trim($queryBody) != trim($query))
-				$responseBody = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($queryBody);
+// 			$queryBody = self::queryEscluseParoleTitolo($query, $lingua);
+// 			
+// 			if (trim($queryBody) != trim($query))
+// 				$responseBody = AimodelliModel::getModulo($idModelloPredefinito, true)->embeddings($queryBody);
 			
 			if (trim($response))
 			{

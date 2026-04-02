@@ -27,6 +27,7 @@ class AirichiesteresponseModel extends GenericModel
 	public static $deletedExpired = false;
 	public static $idRichiesta = 0;
 	public static $tipo = "";
+	public static $microtime = 0;
 	
 	public function __construct() {
 		$this->_tables='ai_richieste_response';
@@ -76,6 +77,11 @@ class AirichiesteresponseModel extends GenericModel
 		return ($count >= $max) ? true : false;
 	}
 	
+	public static function startTime()
+	{
+		self::$microtime = microtime(true);
+	}
+	
 	public static function aggiungi($request, $response)
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
@@ -90,6 +96,7 @@ class AirichiesteresponseModel extends GenericModel
 			"user_agent"	=>	$_SERVER['HTTP_USER_AGENT'] ?? "",
 			"tipo"		=>	self::$tipo,
 			"time_creazione"	=>	time(),
+			"tempo"		=>	(microtime(true) - self::$microtime),
 		), "sanitizeDb");
 		
 		$model->insert();

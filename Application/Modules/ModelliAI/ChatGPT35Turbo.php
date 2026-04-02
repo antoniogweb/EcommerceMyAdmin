@@ -67,6 +67,8 @@ class ChatGPT35Turbo extends ModelloAI
 			
 			try
 			{
+				AirichiesteresponseModel::startTime();
+				
 				$request = [
 					'model' => $this->getParam("nome_modello"),
 					'input' => $messaggi,
@@ -108,6 +110,8 @@ class ChatGPT35Turbo extends ModelloAI
 		{
 			try
 			{
+				AirichiesteresponseModel::startTime();
+				
 				$request = [
 					'model' => 'text-embedding-3-small',
 					'input' => $text,
