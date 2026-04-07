@@ -521,14 +521,14 @@ class EmbeddingsModel extends GenericModel
 						
 						$estrattiMatch = array();
 						
-							if ($testoEstratto !== "")
-							{
-								$estrattiMatch[] = array(
-									"score"	=>	$score,
-									"lexical_score"	=>	$lexicalScore,
-									"text"	=>	$testoEstratto,
-								);
-							}
+						if ($testoEstratto !== "")
+						{
+							$estrattiMatch[] = array(
+								"score"	=>	$score,
+								"lexical_score"	=>	$lexicalScore,
+								"text"	=>	$testoEstratto,
+							);
+						}
 						
 						$scores[$indiceScore] = [
 							'id'    => $r["id_embedding"],
