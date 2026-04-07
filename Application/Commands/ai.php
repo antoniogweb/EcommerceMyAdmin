@@ -49,7 +49,7 @@ $default = array(
 	"ambito"	=>	"Ecommerce",
 	"chunks"	=>	0,
 	"max_length"	=>	600,
-	"overlap"	=>	1000,
+	"overlap"	=>	30,
 	"rigenera"	=>	0,
 );
 

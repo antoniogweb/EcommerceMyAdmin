@@ -850,6 +850,7 @@ class VariabiliModel extends GenericModel {
 		"numero_richieste_embeddings_al_minuto"	=>	30, // Numero massimo di richieste di EMBEDDINGS al minuto
 		// "salva_ricerche_semantiche"	=>	0, // se impostato a 0, salva le ricerche semantiche
 		"ricerca_semantica_memory_limit"=>	'128M', // memory limit per la ricerca semantica tramite embeddings
+		"numero_massimo_estratti_ricerca"	=>	1, // Numero massimo di estratti dalla ricerca per embeddings da mostrare nel risultato della ricerca semantica
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)
