@@ -407,7 +407,7 @@ class EmbeddingsModel extends GenericModel
 				$textNormalizationCache = array();
 				
 				$limitStart = 0;
-				$limit = 200;
+				$limit = (int)v("numero_elementi_batch_ricerca_semantica");
 				
 				$indiceScore = 0;
 				$arrayIdPageIndice = array();

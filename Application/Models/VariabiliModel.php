@@ -849,7 +849,8 @@ class VariabiliModel extends GenericModel {
 		"attiva_ricerca_semantica"	=>	0, // se impostato su 1, aggiunge la ricerca semantica al motore di ricerca Interno. Deve essere impostato a 1 anche "attiva_richieste_ai" e inoltre deve essere attivo e predefinito un modello LLM per gli embedding
 		"numero_richieste_embeddings_al_minuto"	=>	30, // Numero massimo di richieste di EMBEDDINGS al minuto
 		// "salva_ricerche_semantiche"	=>	0, // se impostato a 0, salva le ricerche semantiche
-		"ricerca_semantica_memory_limit"=>	'128M', // memory limit per la ricerca semantica tramite embeddings
+		"ricerca_semantica_memory_limit"	=>	'128M', // memory limit per la ricerca semantica tramite embeddings
+		"numero_elementi_batch_ricerca_semantica"	=>	200, // numero elementi batch ricerca semantica (diventa il limit della query nella tabella embeddings)
 		"numero_massimo_estratti_ricerca"	=>	1, // Numero massimo di estratti dalla ricerca per embeddings da mostrare nel risultato della ricerca semantica
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL

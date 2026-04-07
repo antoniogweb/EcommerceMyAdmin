@@ -1,1 +1,1 @@
-ALTER TABLE `embeddings` ADD INDEX `embeddings_id_page_lingua` (`id_page`, lingua);
+ALTER TABLE `embeddings` ADD INDEX `embeddings_id_page_lingua_id_embedding` (`id_page`, lingua, id_embedding);
