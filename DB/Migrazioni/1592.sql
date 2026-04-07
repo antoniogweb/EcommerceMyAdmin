@@ -1,0 +1,1 @@
+ALTER TABLE `embeddings` ADD INDEX `embeddings.id_page` (`id_page`);
