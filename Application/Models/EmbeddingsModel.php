@@ -313,6 +313,31 @@ class EmbeddingsModel extends GenericModel
 		return $cache[$text];
 	}
 	
+	public static function preparaQueryPerMatch($search, $condizione = '+')
+	{
+		$search = mb_strtolower($search, 'UTF-8');
+
+		// tieni solo lettere e numeri
+		$search = preg_replace('/[^\p{L}\p{N}\s]+/u', ' ', $search);
+
+		// rimuovi spazi multipli
+		$search = preg_replace('/\s+/', ' ', $search);
+
+		$words = explode(' ', trim($search));
+		
+		$words = array_filter($words, function($w) {
+			return mb_strlen($w) >= 3;
+		});
+		
+		$words = array_values(array_unique($words));
+		
+		$booleanQuery = implode(' ', array_map(function($w) use ($condizione) {
+			return $condizione . $w;
+		}, $words));
+		
+		return $booleanQuery;
+	}
+	
 	public function addFiltroToken($queryTokens, $lingua)
 	{
 		VariabiliModel::$valori["ricerca_termini_and_or"] = "OR";
@@ -321,8 +346,14 @@ class EmbeddingsModel extends GenericModel
 		
 		if ($lingua && $lingua == Params::$defaultFrontEndLanguage)
 		{
-			$titleWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "title");
-			$descWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "description");
+			// $titleWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "title");
+			// $descWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "description");
+			
+			$this->save();
+			$this->sWhere(array(
+				"MATCH(pages.title, pages.description) AGAINST(? IN BOOLEAN MODE)",
+				array(sanitizeAll(self::preparaQueryPerMatch($ricerca, '')))
+			));
 		}
 		else
 		{
@@ -330,17 +361,17 @@ class EmbeddingsModel extends GenericModel
 			
 			$titleWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "title", "contenuti_tradotti");
 			$descWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "description", "contenuti_tradotti");
+			
+			$orWhere = array(
+				"  OR"	=>	array(
+					"OR"	=> $titleWhere,
+					" OR"	=>	$descWhere,
+				)
+			);
+			
+			$this->save();
+			$this->aWhere($orWhere);
 		}
-		
-		$orWhere = array(
-			"  OR"	=>	array(
-				"OR"	=> $titleWhere,
-				" OR"	=>	$descWhere,
-			)
-		);
-		
-		$this->save();
-		$this->aWhere($orWhere);
 		
 		return $this;
 	}
