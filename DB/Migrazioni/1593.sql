@@ -1,0 +1,1 @@
+ALTER TABLE embeddings ADD COLUMN embeddings_bin BLOB NULL AFTER embeddings;

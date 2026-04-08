@@ -178,7 +178,7 @@ class EmbeddingsModel extends GenericModel
 		$limitStart = 0;
 		$limit = 200;
 		
-		while ($res = $model->clear()->select("id_embedding,embeddings_title,embeddings_body")->aWhere(array(
+		while ($res = $model->clear()->select("id_embedding,embeddings,embeddings_title,embeddings_body")->aWhere(array(
 			"gt"	=>	array(
 				"id_embedding"	=>	(int)$limitStart,
 			),
@@ -189,6 +189,7 @@ class EmbeddingsModel extends GenericModel
 				$limitStart = (int)$r["id_embedding"];
 				
 				$model->sValues(array(
+					"embeddings_bin"		=>	self::embeddingJsonToBinary($r["embeddings"]),
 					"embeddings_title_bin"	=>	self::embeddingJsonToBinary($r["embeddings_title"]),
 					"embeddings_body_bin"	=>	self::embeddingJsonToBinary($r["embeddings_body"]),
 				), "sanitizeDb");
@@ -375,10 +376,17 @@ class EmbeddingsModel extends GenericModel
 				$queryEmbedding = Vector::normalize(array_map('floatval',json_decode($response, true)));
 				$queryEmbeddingBody = Vector::normalize(array_map('floatval',json_decode($responseBody, true)));
 				
+				$scoreMinimo = (float) number_format(v("score_minimo_ricerca_semantica") / 100,2,".","");
+				$percScoreTitolo = (float) number_format(v("perc_score_title_ricerca_semantica") / 100,2,".","");
+				$percScoreBody = 1 - $percScoreTitolo;
+				$percScoreLexical = (float) number_format(v("perc_score_lexical") / 100,2,".","");
+				
 				if (!isset($eModel))
 				{
+					$embeddingsFields = (v("perc_score_title_ricerca_semantica") > 0) ? "embeddings.embeddings_title_bin,embeddings.embeddings_body_bin" : "embeddings.embeddings_bin";
+					
 					$eModel = new EmbeddingsModel();
-					$eModel->clear()->select("embeddings.id_embedding,embeddings.id_page,embeddings.embeddings_title_bin,embeddings.embeddings_body_bin,embeddings.testo,embeddings.title");
+					$eModel->clear()->select("embeddings.id_embedding,embeddings.id_page,$embeddingsFields,embeddings.testo,embeddings.title");
 					
 					// Cerco i marchi dalla query
 					$arrayIdMarchi = self::estraiIdMarchiDaQuery($query);
@@ -399,10 +407,6 @@ class EmbeddingsModel extends GenericModel
 				
 				$maxScore = 0.0;
 				
-				$scoreMinimo = (float) number_format(v("score_minimo_ricerca_semantica") / 100,2,".","");
-				$percScoreTitolo = (float) number_format(v("perc_score_title_ricerca_semantica") / 100,2,".","");
-				$percScoreBody = 1 - $percScoreTitolo;
-				$percScoreLexical = (float) number_format(v("perc_score_lexical") / 100,2,".","");
 				$titleNormalizationCache = array();
 				$textNormalizationCache = array();
 				
@@ -428,11 +432,15 @@ class EmbeddingsModel extends GenericModel
 // 						$emb = array_map('floatval', $emb);
 // 						
 // 						$score = Vector::cosineSimilarity($emb, $queryEmbedding);
-						
-						$scoreTitle = self::dotProductBinary($r["embeddings_title_bin"] ?? '', $queryEmbedding);
-						$scoreBody = self::dotProductBinary($r["embeddings_body_bin"] ?? '', $queryEmbeddingBody);
-						
-						$semanticScore = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
+						if (v("perc_score_title_ricerca_semantica") > 0)
+						{
+							$scoreTitle = self::dotProductBinary($r["embeddings_title_bin"] ?? '', $queryEmbedding);
+							$scoreBody = self::dotProductBinary($r["embeddings_body_bin"] ?? '', $queryEmbeddingBody);
+							
+							$semanticScore = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
+						}
+						else
+							$semanticScore = self::dotProductBinary($r["embeddings_bin"] ?? '', $queryEmbedding);
 						
 						$maxScoreWithLexicalBoost = $semanticScore + ((1 - $semanticScore) * $percScoreLexical);
 						
@@ -770,6 +778,7 @@ class EmbeddingsModel extends GenericModel
 								"lingua"	=>	$codice,
 								"id_c"		=>	(int)$record["id_c"],
 								"embeddings"	=>	$response,
+								"embeddings_bin"	=>	self::embeddingJsonToBinary($response),
 								"embeddings_search_queries"	=>	$responseSearchQuery,
 								"dati_strutturati"	=>	$datiStrutturati,
 								"title"		=>	$title,
