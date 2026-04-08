@@ -1,1 +1,0 @@
-ALTER TABLE pages ADD FULLTEXT idx_ft_title_desc (title, description);
