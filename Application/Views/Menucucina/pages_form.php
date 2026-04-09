@@ -48,7 +48,7 @@
 							</div>
 						</div>
 						
-						<?php if (v("attiva_richieste_ai")) { ?>
+						<?php if (VariabiliModel::assistenteTestiBackendAttivo()) { ?>
 							<?php
 							$labelIdEl = "id_page";
 							include($this->viewPath("box_assistente_ai"));?>

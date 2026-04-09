@@ -29,6 +29,7 @@
 	<?php } ?>
 </li>
 <?php } ?>
+<?php if (!AirichiesteModel::g()->isRag($id) && VariabiliModel::assistenteTestiBackendAttivo()) { ?>
 <li>
 	<i class="fa fa-user bg-aqua"></i>
 	<div class="timeline-item">
@@ -42,4 +43,5 @@
 		</div>
 	</div>
 </li>
+<?php } ?>
 </ul>

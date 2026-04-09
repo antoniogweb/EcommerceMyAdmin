@@ -1,0 +1,1 @@
+update ai_richieste set rag = 1 where id_admin = 0;

@@ -835,10 +835,10 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestione_modelli_ai"		=>	0, // se impostato su 1, permette la gestione dei modelli AI dal pannello admin
 		"istruzioni_ruolo_system_richieste_ai"	=>	"Usa principalmente il testo delimitato da virgolette triple (contesto) oppure lo storico di questa chat per rispondere alle domande.", // testo per indirizzare le risposte dell'AI
 		"default_primo_messaggio_ai"=>	"", // se impostato, viene proposto come primo messaggio all'AI
-		"attiva_rag_in_richieste"	=>	0, // Attiva RAG in richieste ad AI
 		// "attiva_seconda_richiesta_in_product_search"	=>	1, // se impostato su 1, fa seconda richiesta per elaborazione prodotti dopo routing
 		"numero_massimo_caratteri_messaggio_ai"	=>	"200",
 		"ai_attiva_cache"			=>	1, // Attiva o meno la chache sulle richieste AI
+		"attiva_assistente_testo_backend"	=>	0, // Se impostato ad 1, attiva la chat lato backend per la creazione di testo strutturato
 		"attiva_assistente_frontend"		=>	0, // Se impostato ad 1, attiva la chat lato frontend
 		"assistente_ambito_default"	=>	"Ecommerce", // Ambito di default per l'assistente virtuale
 		"assistente_virtuale_ip_permessi"	=>	"", // Elenco di IP divisi da virgola. Se vuoto, tutti gli IP sono permessi
@@ -1367,5 +1367,10 @@ class VariabiliModel extends GenericModel {
 		}
 		
 		return implode(",", $nuoveVariabili);
+	}
+	
+	public static function assistenteTestiBackendAttivo()
+	{
+		return (v("attiva_richieste_ai") && v("attiva_assistente_testo_backend")) ? true : false;
 	}
 }

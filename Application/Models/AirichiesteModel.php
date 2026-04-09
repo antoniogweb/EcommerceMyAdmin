@@ -266,6 +266,18 @@ class AirichiesteModel extends GenericModel
 		return $idChat;
 	}
 	
+	protected function checkIfRag()
+	{
+		if ($this->values["id_admin"] && 
+			(isset($this->values["id_c"]) && $this->values["id_c"] || 
+			isset($this->values["id_marchio"]) && $this->values["id_marchio"] || 
+			isset($this->values["id_page"]) && $this->values["id_page"])
+		)
+			return 0;
+		else
+			return 1;
+	}
+	
 	public function insert()
 	{
 		if (App::$isFrontend)
@@ -287,6 +299,15 @@ class AirichiesteModel extends GenericModel
 		$this->values["user_agent_md5"] = isset($_SERVER['HTTP_USER_AGENT']) ? md5($_SERVER['HTTP_USER_AGENT']) : "";
 		$this->values["session_id"] = sanitizeAll(session_id());
 		
+		$this->values["rag"] = $this->checkIfRag();
+		
+		if (!App::$isFrontend && $this->values["rag"])
+		{
+			$this->result = false;
+			$this->notice = '<div class="alert alert-danger">'.gtext("Si prega di selezionare una categoria, un marchio o una pagina").'</div>';
+			return false;
+		}
+		
 		$res = parent::insert();
 
 		if ($res && !App::$isFrontend)
@@ -301,7 +322,12 @@ class AirichiesteModel extends GenericModel
 
 		return (int)AimodelliModel::getModulo((int)$idModello, true)->getParam("numero_pagine");
 	}
-
+	
+	public function isRag($id)
+	{
+		return $this->clear()->whereId((int)$id)->field("rag");
+	}
+	
 	public function messaggio($id, $messaggio = "")
 	{
 		$record = $this->selectId((int)$id);
@@ -319,31 +345,29 @@ class AirichiesteModel extends GenericModel
 				$istruzioni = "";
 				
 				$messaggi = array();
-				// $isRag = false;
 				
-				// if (!App::$isFrontend && (trim($contesto) || !v("attiva_rag_in_richieste")))
-// 				if (false)
-// 				{
-// 					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
-// 						"id_ai_richiesta"	=>	(int)$id,
-// 					))->orderBy("data_creazione")->process()->send(false);
-// 					
-// 					foreach ($res as $r)
-// 					{
-// 						$messaggi[] = array(
-// 							"role"		=>	$r["ruolo"],
-// 							"content"	=>	htmlentitydecode($r["messaggio"]),
-// 						);
-// 					}
-// 
-// 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggio);
-// 					
-// 					$messaggi[] = $messaggioElaborato;
-// 				}
-// 				else
-// 				{
-					$isRag = true;
+				$isRag = $this->isRag($id);
+				
+				if (!$isRag)
+				{
+					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
+						"id_ai_richiesta"	=>	(int)$id,
+					))->orderBy("data_creazione")->process()->send(false);
 					
+					foreach ($res as $r)
+					{
+						$messaggi[] = array(
+							"role"		=>	$r["ruolo"],
+							"content"	=>	htmlentitydecode($r["messaggio"]),
+						);
+					}
+
+					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggio);
+					
+					$messaggi[] = $messaggioElaborato;
+				}
+				else
+				{
 					$numeroProdotti = 10;
 					
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
@@ -351,7 +375,7 @@ class AirichiesteModel extends GenericModel
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggoRag);
 					
 					$messaggi[] = $messaggioElaborato;
-				// }
+				}
 				
 				$airmModel->sValues(array(
 					"messaggio"			=>	$messaggio,
@@ -363,48 +387,18 @@ class AirichiesteModel extends GenericModel
 
 				if ($airmModel->insert())
 				{
-// 					if (App::$isFrontend && !v("attiva_seconda_richiesta_in_product_search") && $intent == "product_search")
-// 					{
-// 						$ris = 1;
-// 						$okRouting = true;
-// 						
-// 						$jsonMessaggio = json_decode($messaggoRag, true);
-// 						
-// 						if (isset($jsonMessaggio["context_items"]) && is_array($jsonMessaggio["context_items"]) && count($jsonMessaggio["context_items"]) > 0)
-// 						{
-// 							$messaggioArray = array(
-// 								"intro_text"	=>	gtext("Ecco alcuni prodotti trovati"),
-// 								"items"			=>	array(),
-// 							);
-// 							
-// 							$idPages = array();
-// 							
-// 							foreach ($jsonMessaggio["context_items"] as $item)
-// 							{
-// 								$temp = array();
-// 								$temp["id"] = $item["id"];
-// 								$temp["title"] = $item["title"];
-// 								$temp["comment"] = "";
-// 								$messaggioArray["items"][] = $temp;
-// 							}
-// 							
-// 							$messaggio = json_encode($messaggioArray);
-// 						}
-// 						else
-// 							$messaggio = gtext("Non ho trovato alcun prodotto pertinente.");
-// 					}
-// 					else
-// 					{
-						$okRouting = false;
-						
+					$okRouting = false;
+					
+					AirichiesteresponseModel::$tipo = "GENERICA";
+					
+					if ($isRag)
+					{
 						if (isset($intent) && $intent)
 						{
 							$okRouting = true;
 							
 							AirichiesteresponseModel::$tipo = strtoupper($intent);
 						}
-						else
-							AirichiesteresponseModel::$tipo = "GENERICA";
 						
 						if ($okRouting)
 						{
@@ -421,7 +415,9 @@ class AirichiesteModel extends GenericModel
 						}
 						else
 							list($ris, $messaggio) = array(0, gtext("Errore connessione"));
-					// }
+					}
+					else
+						list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, null, true, "high");
 					
 					$airmModel->sValues(array(
 						"messaggio"			=>	$messaggio,

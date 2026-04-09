@@ -27,9 +27,13 @@ class AirichiesteController extends BaseController
 	public $sezionePannello = "utenti";
 	
 	public $tabella = "richieste IA";
-
-	function __construct($model, $controller, $queryString, $application, $action) {
-		
+	
+	public $argKeys = array(
+		'rag:forceInt'	=>	0,
+	);
+	
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		$this->s["admin"]->check();
@@ -47,21 +51,26 @@ class AirichiesteController extends BaseController
 		$this->mainFields = array("cleanDateTime", "titoloCrud", "ai_modelli.titolo", "numeroMessaggiCrud");
 		$this->mainHead = "Data ora,Titolo,Modello,N° messaggi";
 		
+		$rag = (int)$this->viewArgs["rag"];
+		
 		$this->m[$this->modelName]->clear()->select("*")
 			->where(array(
-				"ne"	=>	array(
-					"id_admin"	=>	0,
-				),
+				"rag"	=>	$rag,
 			))
 			->inner(array("modello"))->orderBy("ai_richieste.data_creazione desc")->save();
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'add', 'modifyAction'=>'messaggi');
+		$mainMenu = VariabiliModel::assistenteTestiBackendAttivo() ? 'add' : '';
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>$mainMenu, 'modifyAction'=>'messaggi');
 
 		parent::main();
 	}
 
 	public function form($queryType = 'insert', $id = 0)
 	{
+		if (!VariabiliModel::assistenteTestiBackendAttivo())
+			$this->responseCode(403);
+		
 		if ($queryType == "insert" && (isset($_GET["id_c"]) || isset($_GET["id_marchio"])))
 		{
 			$idC = $this->request->get("id_c", 0, "forceInt");
@@ -130,6 +139,9 @@ class AirichiesteController extends BaseController
 
 	public function contesti($id = 0)
 	{
+		if (!VariabiliModel::assistenteTestiBackendAttivo())
+			$this->responseCode(403);
+		
 		$this->checkRecordEsistente($id);
 		
 		$this->_posizioni['contesti'] = 'class="active"';
@@ -198,6 +210,9 @@ class AirichiesteController extends BaseController
 
 	public function messaggio($id)
 	{
+		if ($this->m[$this->modelName]->isRag((int)$id) || !VariabiliModel::assistenteTestiBackendAttivo())
+			$this->responseCode(403);
+		
 		$this->clean();
 		
 		$messaggio = $this->request->post("messaggio","");

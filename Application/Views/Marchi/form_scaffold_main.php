@@ -57,7 +57,7 @@ $().ready(function() {
 			</div>
 			<?php } ?>
 
-			<?php if (v("attiva_richieste_ai")) { ?>
+			<?php if (VariabiliModel::assistenteTestiBackendAttivo()) { ?>
 				<?php
 				$labelIdEl = "id_marchio";
 				include($this->viewPath("box_assistente_ai"));?>

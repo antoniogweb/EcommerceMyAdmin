@@ -26,8 +26,9 @@ class PagineController extends PagesController {
 
 	public $voceMenu = "pagine";
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 
 		$this->clean();
 		
@@ -43,7 +44,7 @@ class PagineController extends PagesController {
 		if (v("immagine_2_in_pagine"))
 			$this->queryFields .= ",immagine_2";
 		
-		if (v("attiva_rag_in_richieste"))
+		if (v("attiva_assistente_frontend"))
 			$this->queryFields .= ",policy_ai";
 		
 		$this->orderBy = "pages.id_order";

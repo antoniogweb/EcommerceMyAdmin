@@ -1,0 +1,1 @@
+ALTER TABLE ai_richieste add rag tinyint not null default 0;

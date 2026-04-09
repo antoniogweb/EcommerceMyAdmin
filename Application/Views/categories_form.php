@@ -57,7 +57,7 @@
 		</div>
 		<?php } ?>
 
-		<?php if (v("attiva_richieste_ai")) { ?>
+		<?php if (VariabiliModel::assistenteTestiBackendAttivo()) { ?>
 		<div class='col-md-4'>
 			<?php include($this->viewPath("box_assistente_ai"));?>
 		</div>
