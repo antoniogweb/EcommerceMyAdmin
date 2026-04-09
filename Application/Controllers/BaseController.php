@@ -304,6 +304,14 @@ class BaseController extends Controller
 	
 	protected function azioneDopoInsertOUpdate($id = 0) {}
 	
+	protected function checkRecordEsistente($id)
+	{
+		$recordDaModificare = $this->m[$this->modelName]->selectId((int)$id);
+		
+		if (empty($recordDaModificare))
+			$this->responseCode(403);
+	}
+	
 	protected function baseForm($queryType = 'insert', $id = 0)
 	{
 		if (isset($this->formValuesToDb))
@@ -334,10 +342,11 @@ class BaseController extends Controller
 			// controllo che il record esista
 			if ($queryType == "update")
 			{
-				$recordDaModificare = $this->m[$this->modelName]->selectId($clean["id"]);
-				
-				if (empty($recordDaModificare))
-					$this->responseCode(403);
+				$this->checkRecordEsistente($clean["id"]);
+// 				$recordDaModificare = $this->m[$this->modelName]->selectId($clean["id"]);
+// 				
+// 				if (empty($recordDaModificare))
+// 					$this->responseCode(403);
 			}
 			
 			$table = $this->m[$this->modelName]->table();

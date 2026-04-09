@@ -38,7 +38,7 @@ class AimodelliController extends BaseController
 		
 		$this->s["admin"]->check();
 		
-		if (!v("attiva_richieste_ai"))
+		if (!v("attiva_richieste_ai") || !v("attiva_gestione_modelli_ai"))
 			$this->responseCode(403);
 	}
 

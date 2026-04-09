@@ -21,7 +21,7 @@
 		<i class="fa fa-user bg-aqua"></i>
 		<div class="timeline-item">
 			<span class="time"><i class="fa fa-clock-o"></i> <?php echo date("d-m-Y H:i", strtotime($m["data_creazione"]));?></span>
-			<h3 class="timeline-header bg-aqua"><b><?php echo $ruolo;?></b></h3>
+			<h3 class="timeline-header bg-aqua"><b><?php echo $ruolo ?: "User";?></b></h3>
 			<div class="timeline-body">
 				<?php echo nl2br($m["messaggio"]);?>
 			</div>

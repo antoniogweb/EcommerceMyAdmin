@@ -133,7 +133,10 @@ class AirichiesteModel extends GenericModel
 		$clean["id"] = (int)$id;
 
 		$record = $this->selectId($clean["id"]);
-
+		
+		if (empty($record))
+			return "";
+		
 		$titolo = [];
 
 		if ($record["id_c"])

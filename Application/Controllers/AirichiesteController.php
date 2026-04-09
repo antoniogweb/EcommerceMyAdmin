@@ -100,6 +100,8 @@ class AirichiesteController extends BaseController
 
 	public function messaggi($id)
 	{
+		$this->checkRecordEsistente($id);
+		
 		$this->_posizioni['messaggi'] = 'class="active"';
 
 		$this->shift(1);
@@ -128,6 +130,8 @@ class AirichiesteController extends BaseController
 
 	public function contesti($id = 0)
 	{
+		$this->checkRecordEsistente($id);
+		
 		$this->_posizioni['contesti'] = 'class="active"';
 
 		$this->shift(1);
@@ -205,6 +209,8 @@ class AirichiesteController extends BaseController
 
 	public function listamessaggi($id)
 	{
+		$this->checkRecordEsistente($id);
+		
 		$this->clean();
 
 		$data["id"] = (int)$id;

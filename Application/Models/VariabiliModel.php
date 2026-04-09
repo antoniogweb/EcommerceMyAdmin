@@ -832,6 +832,7 @@ class VariabiliModel extends GenericModel {
 		"nome_negozio_dashboard"	=>	"", // nome del negozio in alto a sinistra nella dashboard. Se lasciato vuoto prende il nome usato per il tag <title> del sito
 		### AI ##
 		"attiva_richieste_ai"		=>	0, // se impostato su 1, attiva l'integrazione con l'AI generativa
+		"attiva_gestione_modelli_ai"		=>	0, // se impostato su 1, permette la gestione dei modelli AI dal pannello admin
 		"istruzioni_ruolo_system_richieste_ai"	=>	"Usa principalmente il testo delimitato da virgolette triple (contesto) oppure lo storico di questa chat per rispondere alle domande.", // testo per indirizzare le risposte dell'AI
 		"default_primo_messaggio_ai"=>	"", // se impostato, viene proposto come primo messaggio all'AI
 		"attiva_rag_in_richieste"	=>	0, // Attiva RAG in richieste ad AI
