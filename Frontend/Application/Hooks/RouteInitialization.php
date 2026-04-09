@@ -29,4 +29,5 @@ Url::$routes = array(
 	"rinnovo"			=>	"account-renewal",
 	"virtual-assistant"	=>	"virtual-assistant",
 	"crea-account"		=>	"crea-account",
+	"password-dimenticata"	=>	"password-dimenticata",
 ); 

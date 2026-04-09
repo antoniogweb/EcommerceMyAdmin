@@ -5,6 +5,9 @@ if (!isset($ukdropdown))
 
 if (!isset($divStyle))
 	$divStyle = "min-width: 250px;";
+
+if (!isset($creaAccountLink))
+	$creaAccountLink = Url::routeToUrl("crea-account");
 ?>
 <div class="form_login_dropdown uk-padding-small uk-margin-remove uk-dropdown" uk-dropdown="<?php echo $ukdropdown;?>" style="<?php echo $divStyle;?>">
 	<?php if ($islogged) { ?>
@@ -18,30 +21,18 @@ if (!isset($divStyle))
 	<div class="uk-dropdown-nav">
 		<div class="uk-text-small uk-text-right header_login_popup">
 			<?php if (v("permetti_registrazione")) { ?>
-				<a class="uk-text-secondary uk-text-bold" href="<?php echo $this->baseUrl."/crea-account";?>"><?php echo gtext("Crea un account")?></a>
+				<a class="uk-text-secondary uk-text-bold" href="<?php echo $this->baseUrl."/".$creaAccountLink;?>"><?php echo gtext("Crea un account")?></a>
 			<?php } else { ?>
 				<span class="uk-text-secondary uk-text-bold"><?php echo gtext("Esegui il login")?></span>
 			<?php } ?>
 			<hr />
 		</div>
-		<form autocomplete="new-password" action="<?php echo $this->baseUrl."/regusers/login";?>" data-toggle="validator" method="POST">
-			<fieldset class="uk-fieldset">
-				<div class="uk-margin">
-					<label class="uk-form-label"><?php echo gtext("e-mail")?> *</label>
-					<div class="uk-form-controls">
-						<input class="uk-input " autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtext("Indirizzo e-mail", false)?>" />
-					</div>
-				</div>
-				<div class="uk-margin">
-					<label class="uk-form-label"><?php echo gtext("password")?> *</label>
-					<div class="uk-form-controls">
-						<input class="uk-input " autocomplete="new-password" name="password" type="password" placeholder="<?php echo gtext("Password", false)?>" />
-					</div>
-				</div>
-				
-				<input autocomplete="new-password" class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1" type="submit" name="" value="<?php echo gtext("Accedi");?>" />
-			</fieldset>
-		</form>
+		<?php
+		include(tpf(ElementitemaModel::p("HEADER_USER_BOX_FORM","", array(
+			"titolo"	=>	"Form login nell'header",
+			"percorso"	=>	"Elementi/Generali/HeaderUserBoxForm",
+		))));
+		?>
 		<br />
 		<a class="uk-text-small uk-text-secondary" href="<?php echo $this->baseUrl."/password-dimenticata";?>"><?php echo gtext("Hai dimenticato la password?");?></a>
 	</div>

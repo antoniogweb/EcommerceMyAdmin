@@ -660,7 +660,7 @@ class BaseRegusersController extends BaseController
 		
 		foreach (Params::$frontEndLanguages as $l)
 		{
-			$data["arrayLingue"][$l] = $l."/password-dimenticata";
+			$data["arrayLingue"][$l] = $l."/".Url::routeToUrl("password-dimenticata");
 		}
 		
 		if ($this->s['registered']->status['status'] === 'logged')
