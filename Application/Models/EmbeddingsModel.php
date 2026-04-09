@@ -346,6 +346,11 @@ class EmbeddingsModel extends GenericModel
 		return $this;
 	}
 	
+	public static function getEmbeddingsSelectFields()
+	{
+		return (v("perc_score_title_ricerca_semantica") > 0) ? "embeddings.embeddings_title_bin,embeddings.embeddings_body_bin" : "embeddings.embeddings_bin";
+	}
+	
     public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null, $filtraPerTokens = false)
 	{
 		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
@@ -383,7 +388,7 @@ class EmbeddingsModel extends GenericModel
 				
 				if (!isset($eModel))
 				{
-					$embeddingsFields = (v("perc_score_title_ricerca_semantica") > 0) ? "embeddings.embeddings_title_bin,embeddings.embeddings_body_bin" : "embeddings.embeddings_bin";
+					$embeddingsFields = self::getEmbeddingsSelectFields();
 					
 					$eModel = new EmbeddingsModel();
 					$eModel->clear()->select("embeddings.id_embedding,embeddings.id_page,$embeddingsFields,embeddings.testo,embeddings.title");

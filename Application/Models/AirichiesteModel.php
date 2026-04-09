@@ -623,13 +623,15 @@ class AirichiesteModel extends GenericModel
 			if ($linguaRouting && LingueModel::checkLinguaAttiva((string)$linguaRouting))
 				$lingua = (string)$linguaRouting;
 			
+			
+			
 			// if ((float)$confidence > 0.6)
 			// {
 				switch($intent)
 				{
 					case "product_search":
 						$emb = new EmbeddingsModel();
-						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.embeddings_title_bin, embeddings.embeddings_body_bin, embeddings.id_page,testo,embeddings.title")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
+						$emb = $emb->select("distinct embeddings.id_embedding,".EmbeddingsModel::getEmbeddingsSelectFields().",embeddings.id_page,testo,embeddings.title")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
 						
 						// var_dump($routingJson);
 						$productTitle = $routingJson["entities"]["product_title"]["value"] ?? "";
@@ -750,7 +752,7 @@ class AirichiesteModel extends GenericModel
 						break;
 					case "informational":
 						$emb = new EmbeddingsModel();
-						$emb = $emb->select("distinct embeddings.id_embedding, embeddings.embeddings, embeddings.id_page")
+						$emb = $emb->select("distinct embeddings.id_embedding,".EmbeddingsModel::getEmbeddingsSelectFields().", embeddings.id_page")
 							->inner(array("pagina"))
 							->addWhereAttivo()
 							->sWhere("not exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
