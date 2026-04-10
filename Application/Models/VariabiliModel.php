@@ -840,6 +840,7 @@ class VariabiliModel extends GenericModel {
 		"ai_attiva_cache"			=>	1, // Attiva o meno la chache sulle richieste AI
 		"attiva_assistente_testo_backend"	=>	0, // Se impostato ad 1, attiva la chat lato backend per la creazione di testo strutturato
 		"attiva_assistente_frontend"		=>	0, // Se impostato ad 1, attiva la chat lato frontend
+		"mostra_assistente_frontend"		=>	0, // Se impostato ad 1, mostra la chat lato frontend
 		"assistente_ambito_default"	=>	"Ecommerce", // Ambito di default per l'assistente virtuale
 		"assistente_virtuale_ip_permessi"	=>	"", // Elenco di IP divisi da virgola. Se vuoto, tutti gli IP sono permessi
 		"attiva_embeddings_su_informazioni_strutturate"	=>	0, // Se impostato su 1, genera JSON trutturato del testo e genera embeddings su semantic_text e search_queries
@@ -1377,5 +1378,10 @@ class VariabiliModel extends GenericModel {
 	public static function assistenteFrontendAttivo()
 	{
 		return (v("attiva_richieste_ai") && v("attiva_assistente_frontend")) ? true : false;
+	}
+	
+	public static function mostraAssistenteFrontend()
+	{
+		return (v("attiva_richieste_ai") && v("attiva_assistente_frontend") && v("mostra_assistente_frontend")) ? true : false;
 	}
 }

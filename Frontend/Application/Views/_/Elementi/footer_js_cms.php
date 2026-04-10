@@ -32,7 +32,7 @@
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>promozioni.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
 <?php } ?>
 
-<?php if ($this->controller == "assistentevirtuale") { ?>
+<?php if ($this->controller == "assistentevirtuale" || VariabiliModel::mostraAssistenteFrontend()) { ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>assistente_virtuale.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
 <?php } ?>
 
