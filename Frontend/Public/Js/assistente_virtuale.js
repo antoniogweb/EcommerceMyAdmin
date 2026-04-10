@@ -27,8 +27,59 @@ function aggiornaChat()
 	});
 }
 
+function initAssistenteVirtualeWidget()
+{
+	var widget = $(".assistente_virtuale_widget");
+
+	if (!widget.length)
+		return;
+
+	var body = $("body");
+	var toggle = widget.find(".assistente_virtuale_widget_toggle");
+	var close = widget.find(".assistente_virtuale_widget_close");
+	var overlay = widget.find(".assistente_virtuale_widget_overlay");
+	var panel = widget.find(".assistente_virtuale_widget_panel");
+	var iframe = widget.find(".assistente_virtuale_widget_iframe");
+	var chatUrl = widget.data("chat-url");
+
+	function caricaIframe()
+	{
+		if (!iframe.attr("src") && chatUrl)
+			iframe.attr("src", chatUrl);
+	}
+
+	function impostaStato(aperto)
+	{
+		widget.toggleClass("assistente_virtuale_widget_open", aperto);
+		body.toggleClass("assistente_virtuale_widget_opened", aperto);
+		toggle.attr("aria-expanded", aperto ? "true" : "false");
+		panel.attr("aria-hidden", aperto ? "false" : "true");
+
+		if (aperto)
+			caricaIframe();
+	}
+
+	toggle.on("click", function() {
+		impostaStato(!widget.hasClass("assistente_virtuale_widget_open"));
+	});
+
+	close.on("click", function() {
+		impostaStato(false);
+	});
+
+	overlay.on("click", function() {
+		impostaStato(false);
+	});
+
+	$(document).on("keydown", function(e) {
+		if (e.key === "Escape" && widget.hasClass("assistente_virtuale_widget_open"))
+			impostaStato(false);
+	});
+}
+
 $(document).ready(function(){
 	scorriChatInBasso();
+	initAssistenteVirtualeWidget();
 	
 	$("body").on("keypress",".request_message", function(e){
 		if (e.which == 13) {
