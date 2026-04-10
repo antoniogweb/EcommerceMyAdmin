@@ -30,7 +30,7 @@ class BaseAssistentevirtualeController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
-		if (!v("attiva_assistente_frontend"))
+		if (!VariabiliModel::assistenteFrontendAttivo())
 			$this->responseCode(403);
 		
 		if (v("assistente_virtuale_ip_permessi"))
