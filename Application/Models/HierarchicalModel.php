@@ -1004,7 +1004,7 @@ class HierarchicalModel extends GenericModel {
 				{
 					$urlLang = isset(Params::$lang) ? "/".Params::$lang : null;
 					
-					$menuHtml .= "<li class='li_parent_".$node["node"]["id_p"]." li_menu_level li_menu_level_".$depth." ".$node["node"]["alias"]."'>";
+					$menuHtml .= "<li class='li_parent_".$node["node"]["id_p"]." li_menu_level li_menu_level_".$depth."'>";
 					
 					$menuHtml .= "<div><table style='width:100%;'><tr>".$htmlData[$count]."</tr></table></div>";
 					
