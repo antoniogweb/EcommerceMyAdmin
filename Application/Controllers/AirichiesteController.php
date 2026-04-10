@@ -53,6 +53,9 @@ class AirichiesteController extends BaseController
 		
 		$rag = (int)$this->viewArgs["rag"];
 		
+		if (($rag === 1 && !VariabiliModel::assistenteFrontendAttivo()) || ($rag === 0 && !VariabiliModel::assistenteTestiBackendAttivo()))
+			$this->responseCode(403);
+		
 		$this->m[$this->modelName]->clear()->select("*")
 			->where(array(
 				"rag"	=>	$rag,

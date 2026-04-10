@@ -1373,4 +1373,9 @@ class VariabiliModel extends GenericModel {
 	{
 		return (v("attiva_richieste_ai") && v("attiva_assistente_testo_backend")) ? true : false;
 	}
+	
+	public static function assistenteFrontendAttivo()
+	{
+		return (v("attiva_richieste_ai") && v("attiva_assistente_frontend")) ? true : false;
+	}
 }
