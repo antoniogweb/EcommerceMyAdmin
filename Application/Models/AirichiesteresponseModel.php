@@ -28,6 +28,7 @@ class AirichiesteresponseModel extends GenericModel
 	public static $idRichiesta = 0;
 	public static $tipo = "";
 	public static $microtime = 0;
+	public static $idLastInsert = 0;
 	
 	public function __construct() {
 		$this->_tables='ai_richieste_response';
@@ -64,7 +65,7 @@ class AirichiesteresponseModel extends GenericModel
 		$model = new AirichiesteresponseModel();
 
 		$fromTime = time() - (int)$secondi;
-
+		
 		$model->clear()->select("id_ai_richieste_response")->sWhere(array(
 			"tipo = ? AND time_creazione >= ?",
 			array(
@@ -79,9 +80,6 @@ class AirichiesteresponseModel extends GenericModel
 			));
 		
 		$count = (int)count($model->send(false));
-		
-		if ($checkIp)
-			echo $model->getQuery();
 		
 		return ($count >= $max) ? true : false;
 	}
@@ -108,6 +106,14 @@ class AirichiesteresponseModel extends GenericModel
 			"tempo"		=>	(microtime(true) - self::$microtime),
 		), "sanitizeDb");
 		
-		$model->insert();
+		if (self::$idLastInsert)
+		{
+			$model->update(self::$idLastInsert);
+			self::$idLastInsert = 0;
+		}
+		else
+			$model->insert();
+		
+		return $model->lId;
 	}
 }

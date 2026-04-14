@@ -79,6 +79,8 @@ class BaseAssistentevirtualeController extends BaseController
 	
 	public function request()
 	{
+		IpcheckModel::check("ASSISTENTE VIRTUALE");
+		
 		$this->clean();
 		
 		Session::open();

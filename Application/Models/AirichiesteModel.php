@@ -871,13 +871,23 @@ class AirichiesteModel extends GenericModel
 			
 			AirichiesteresponseModel::$tipo = "ROUTING";
 			
+			$airrModel = new AirichiesteresponseModel();
+			$airrModel->db->beginTransaction();
+			
 			$superatoNumeroTotaleMinuto = AirichiesteresponseModel::limiteSuperato(60, v("numero_richieste_routing_al_minuto"));
 			$superatoNumeroTotaleIpOra = AirichiesteresponseModel::limiteSuperato(3600, v("numero_richieste_per_ip_ogni_ora"), "ROUTING", true);
 			
 			if (!$superatoNumeroTotaleMinuto && !$superatoNumeroTotaleIpOra)
+			{
+				AirichiesteresponseModel::$idLastInsert = $airrModel->aggiungi("", "");
+				$airrModel->db->commit();
+				
 				return $this->richiesta(array($messaggio), "", $istruzioni);
+			}
 			else
 			{
+				$airrModel->db->commit();
+				
 				if (isset(Params::$lang))
 					$lingua = Params::$lang;
 				else
