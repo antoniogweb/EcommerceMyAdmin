@@ -27,6 +27,7 @@ require_once(LIBRARY."/Application/Modules/AI/Context/QueryAwareContextBuilder.p
 class AirichiesteModel extends GenericModel
 {
 	public static $fraseTroppeRichieste = "Il sistema sta ricevendo molte richieste in questo momento. Riprova tra un minuto.";
+	public static $fraseTroppeRichiesteIp = "Hai superato il limite di richieste per ora. Riprova tra un'ora.";
 	
 	public function __construct()
 	{
@@ -404,6 +405,8 @@ class AirichiesteModel extends GenericModel
 						{
 							if ($intent == "threshold_exceeded")
 								list($ris, $messaggio) = array(1, gtext(self::$fraseTroppeRichieste));
+							else if ($intent == "threshold_exceeded_ip")
+								list($ris, $messaggio) = array(1, gtext(self::$fraseTroppeRichiesteIp));
 							else
 							{
 								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "minimal");
@@ -445,6 +448,8 @@ class AirichiesteModel extends GenericModel
 		
 		if ($intent == "threshold_exceeded")
 			return gtext(self::$fraseTroppeRichieste);
+		else if ($intent == "threshold_exceeded_ip")
+			return gtext(self::$fraseTroppeRichiesteIp);
 		else
 		{
 			list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni, $idModelloPredefinito, $okRouting);
@@ -787,6 +792,8 @@ class AirichiesteModel extends GenericModel
 						break;
 					case "threshold_exceeded":
 						break;
+					case "threshold_exceeded_ip":
+						break;
 					default:
 						$intent = "other";
 						break;
@@ -864,7 +871,10 @@ class AirichiesteModel extends GenericModel
 			
 			AirichiesteresponseModel::$tipo = "ROUTING";
 			
-			if (!AirichiesteresponseModel::limiteSuperato(60,v("numero_richieste_routing_al_minuto")))
+			$superatoNumeroTotaleMinuto = AirichiesteresponseModel::limiteSuperato(60, v("numero_richieste_routing_al_minuto"));
+			$superatoNumeroTotaleIpOra = AirichiesteresponseModel::limiteSuperato(3600, v("numero_richieste_per_ip_ogni_ora"), "ROUTING", true);
+			
+			if (!$superatoNumeroTotaleMinuto && !$superatoNumeroTotaleIpOra)
 				return $this->richiesta(array($messaggio), "", $istruzioni);
 			else
 			{
@@ -878,7 +888,10 @@ class AirichiesteModel extends GenericModel
 						$lingua = v("default_backend_language");
 				}
 				
-				return array(1, '{"intent":"threshold_exceeded","confidence":1,"language":"'.$lingua.'"}');
+				if ($superatoNumeroTotaleMinuto)
+					return array(1, '{"intent":"threshold_exceeded","confidence":1,"language":"'.$lingua.'"}');
+				else if ($superatoNumeroTotaleIpOra)
+					return array(1, '{"intent":"threshold_exceeded_ip","confidence":1,"language":"'.$lingua.'"}');
 			}
 		}
 		

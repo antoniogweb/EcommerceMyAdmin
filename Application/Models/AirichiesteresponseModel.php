@@ -42,7 +42,7 @@ class AirichiesteresponseModel extends GenericModel
 	{
 		if (!self::$deletedExpired)
 		{
-			$limit = time() - 600;
+			$limit = time() - 3900; // limite minuto e limite ora
 			
 			$this->del(null, array(
 				'time_creazione < ?',
@@ -55,7 +55,7 @@ class AirichiesteresponseModel extends GenericModel
 		}
 	}
 	
-	public static function limiteSuperato($secondi = 60, $max = 10, $tipo = "ROUTING")
+	public static function limiteSuperato($secondi = 60, $max = 10, $tipo = "ROUTING", $checkIp = false)
 	{
 		// Nessun limite da Backend
 		if (!App::$isFrontend)
@@ -65,15 +65,24 @@ class AirichiesteresponseModel extends GenericModel
 
 		$fromTime = time() - (int)$secondi;
 
-		$count = $model->clear()->sWhere(array(
-			"ip = ? AND tipo = ? AND time_creazione >= ?",
+		$model->clear()->select("id_ai_richieste_response")->sWhere(array(
+			"tipo = ? AND time_creazione >= ?",
 			array(
-				sanitizeAll(getIp()),
 				sanitizeAll($tipo),
 				$fromTime
 			)
-		))->rowNumber();
-
+		))->forUpdate();
+		
+		if ($checkIp)
+			$model->aWhere(array(
+				"ip"	=>	sanitizeAll(getIp()),
+			));
+		
+		$count = (int)count($model->send(false));
+		
+		if ($checkIp)
+			echo $model->getQuery();
+		
 		return ($count >= $max) ? true : false;
 	}
 	

@@ -845,6 +845,7 @@ class VariabiliModel extends GenericModel {
 		"assistente_virtuale_ip_permessi"	=>	"", // Elenco di IP divisi da virgola. Se vuoto, tutti gli IP sono permessi
 		"attiva_embeddings_su_informazioni_strutturate"	=>	0, // Se impostato su 1, genera JSON trutturato del testo e genera embeddings su semantic_text e search_queries
 		"numero_richieste_routing_al_minuto"	=>	10, // Numero massimo di richieste di ROUTING al minuto
+		"numero_richieste_per_ip_ogni_ora"	=>	10, // Numero massimo di richieste di ROUTING che un IP può fare ogni ora
 		"score_minimo_ricerca_semantica"	=> 60, // Score minimo di cosine_similarity (x 100)
 		"perc_score_title_ricerca_semantica"	=> 20, // Perc score sul titolo. Lo score sul body sarà di 1-score_title_ricerca_semantica/100
 		"perc_score_lexical"	=>	65, // Perc score lessicale
