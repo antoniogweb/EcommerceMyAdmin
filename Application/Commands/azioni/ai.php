@@ -1,0 +1,136 @@
+<?php
+
+// EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
+//
+// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.txt.
+//
+// This file is part of EcommerceMyAdmin
+//
+// EcommerceMyAdmin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// EcommerceMyAdmin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
+
+if (!defined('EG')) die('Direct access not allowed!');
+
+$default = array(
+	"lingua"	=>	null,
+	"id_record"	=>	0,
+	"query"		=>	"",
+	"numero_risultati"	=>	10,
+	"zona"		=>	"Backend",
+	"ambito"	=>	"Ecommerce",
+	"chunks"	=>	0,
+	"max_length"	=>	600,
+	"overlap"	=>	30,
+	"rigenera"	=>	0,
+	"limit"		=>	50,
+);
+
+$params = array_merge($default, $options);
+
+ImpostazioniModel::init();
+VariabiliModel::ottieniVariabili();
+Domain::$parentRoot = ROOT."/..";
+Domain::$publicUrl = rtrim(Url::getFileRoot(), "/");
+TraduzioniModel::$contestoStatic = "front";
+TraduzioniModel::getInstance()->ottieniTraduzioni();
+
+Files_Log::$logFolder = LIBRARY."/Logs";
+
+if (!isset($params["azione"]))
+{
+	echo "si prega di selezionare un'azione con l'istruzione --azione=\"<azione>\" \n";
+	die();
+}
+
+$log = Files_Log::getInstance("log_ai");
+
+if ($params["azione"] == "crea-embeddings-pagina")
+{
+	$log->writeString("INIZIO CREAZIONE EMBEDDINGS PAGINA");
+	
+	EmbeddingsModel::g(false)->getPageEmbeddings($params["id_record"], $params["lingua"], $params["chunks"], $log, $params["max_length"], $params["overlap"]);
+	
+	$log->writeString("FINE CREAZIONE EMBEDDINGS PAGINA");
+}
+
+if ($params["azione"] == "crea-embeddings-categoria")
+{
+	$log->writeString("INIZIO CREAZIONE EMBEDDINGS CATEGORIA");
+	
+	EmbeddingsModel::g(false)->getCategoryEmbeddings($params["id_record"], $params["lingua"], $params["chunks"], $log, $params["max_length"], $params["overlap"], $params["rigenera"], $params["limit"]);
+	
+	$log->writeString("FINE CREAZIONE EMBEDDINGS CATEGORIA");
+}
+
+if ($params["azione"] == "ricerca-semantica")
+{
+	$log->writeString("INIZIO RICERCA SEMANTICA");
+	
+	$risultati = EmbeddingsModel::ricercaSemantica($params["query"], null, $params["lingua"], $params["numero_risultati"], $log);
+	
+	print_r($risultati);
+	
+	$log->writeString("FINE RICERCA SEMANTICA");
+}
+
+if ($params["azione"] == "normalizza-vettori-embeddings")
+{
+	$log->writeString("INIZIO NORMALIZZAZIONE VETTORI EMBEDDINGS");
+	
+	EmbeddingsModel::normalizzaVettori();
+	
+	$log->writeString("FINE NORMALIZZAZIONE VETTORI EMBEDDINGS");
+}
+
+if ($params["azione"] == "converti-vettori-binari-embeddings")
+{
+	$log->writeString("INIZIO CONVERSIONE VETTORI BINARI EMBEDDINGS");
+	
+	EmbeddingsModel::convertiVettoriBinari();
+	
+	$log->writeString("FINE CONVERSIONE VETTORI BINARI EMBEDDINGS");
+}
+
+if ($params["azione"] == "routing")
+{
+	$log->writeString("INIZIO ROUTING");
+	
+	$risultati = AirichiesteModel::g(false)->routing($params["query"], $params["zona"], $params["ambito"]);
+	
+	print_r($risultati);
+	
+	$log->writeString("FINE ROUTING");
+}
+
+if ($params["azione"] == "rag")
+{
+	$log->writeString("INIZIO RAG");
+	
+	list($intent, $risposta, $istruzioni) = AirichiesteModel::g(false)->rag($params["query"], $params["zona"], $params["ambito"], $params["lingua"], $params["numero_risultati"]);
+	
+	echo $risposta;
+	
+	$log->writeString("FINE RAG");
+}
+
+if ($params["azione"] == "chat")
+{
+	$log->writeString("INIZIO CHAT");
+	
+	$risposta = AirichiesteModel::g(false)->richiestaCompleta($params["query"], $params["zona"], $params["ambito"], $params["lingua"], $params["numero_risultati"]);
+	
+	echo $risposta;
+	
+	$log->writeString("FINE CHAT");
+}

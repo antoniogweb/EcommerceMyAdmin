@@ -38,22 +38,8 @@ $options = getopt(null, array(
 	"max_length::",
 	"overlap::",
 	"rigenera::",
+	"limit::",
 ));
-
-$default = array(
-	"lingua"	=>	null,
-	"id_record"	=>	0,
-	"query"		=>	"",
-	"numero_risultati"	=>	10,
-	"zona"		=>	"Backend",
-	"ambito"	=>	"Ecommerce",
-	"chunks"	=>	0,
-	"max_length"	=>	600,
-	"overlap"	=>	30,
-	"rigenera"	=>	0,
-);
-
-$params = array_merge($default, $options);
 
 include_once(dirname(__FILE__)."/../../config.php");
 
@@ -61,99 +47,4 @@ define('DOMAIN_NAME',$website_domain_name);
 
 require_once(dirname(__FILE__) . "/../../index.php");
 
-ImpostazioniModel::init();
-VariabiliModel::ottieniVariabili();
-Domain::$parentRoot = ROOT."/..";
-Domain::$publicUrl = rtrim(Url::getFileRoot(), "/");
-TraduzioniModel::$contestoStatic = "front";
-TraduzioniModel::getInstance()->ottieniTraduzioni();
-
-Files_Log::$logFolder = LIBRARY."/Logs";
-
-if (!isset($params["azione"]))
-{
-	echo "si prega di selezionare un'azione con l'istruzione --azione=\"<azione>\" \n";
-	die();
-}
-
-$log = Files_Log::getInstance("log_ai");
-
-if ($params["azione"] == "crea-embeddings-pagina")
-{
-	$log->writeString("INIZIO CREAZIONE EMBEDDINGS PAGINA");
-	
-	EmbeddingsModel::g(false)->getPageEmbeddings($params["id_record"], $params["lingua"], $params["chunks"], $log, $params["max_length"], $params["overlap"]);
-	
-	$log->writeString("FINE CREAZIONE EMBEDDINGS PAGINA");
-}
-
-if ($params["azione"] == "crea-embeddings-categoria")
-{
-	$log->writeString("INIZIO CREAZIONE EMBEDDINGS CATEGORIA");
-	
-	EmbeddingsModel::g(false)->getCategoryEmbeddings($params["id_record"], $params["lingua"], $params["chunks"], $log, $params["max_length"], $params["overlap"], $params["rigenera"]);
-	
-	$log->writeString("FINE CREAZIONE EMBEDDINGS CATEGORIA");
-}
-
-if ($params["azione"] == "ricerca-semantica")
-{
-	$log->writeString("INIZIO RICERCA SEMANTICA");
-	
-	$risultati = EmbeddingsModel::ricercaSemantica($params["query"], null, $params["lingua"], $params["numero_risultati"], $log);
-	
-	print_r($risultati);
-	
-	$log->writeString("FINE RICERCA SEMANTICA");
-}
-
-if ($params["azione"] == "normalizza-vettori-embeddings")
-{
-	$log->writeString("INIZIO NORMALIZZAZIONE VETTORI EMBEDDINGS");
-	
-	EmbeddingsModel::normalizzaVettori();
-	
-	$log->writeString("FINE NORMALIZZAZIONE VETTORI EMBEDDINGS");
-}
-
-if ($params["azione"] == "converti-vettori-binari-embeddings")
-{
-	$log->writeString("INIZIO CONVERSIONE VETTORI BINARI EMBEDDINGS");
-	
-	EmbeddingsModel::convertiVettoriBinari();
-	
-	$log->writeString("FINE CONVERSIONE VETTORI BINARI EMBEDDINGS");
-}
-
-if ($params["azione"] == "routing")
-{
-	$log->writeString("INIZIO ROUTING");
-	
-	$risultati = AirichiesteModel::g(false)->routing($params["query"], $params["zona"], $params["ambito"]);
-	
-	print_r($risultati);
-	
-	$log->writeString("FINE ROUTING");
-}
-
-if ($params["azione"] == "rag")
-{
-	$log->writeString("INIZIO RAG");
-	
-	list($intent, $risposta, $istruzioni) = AirichiesteModel::g(false)->rag($params["query"], $params["zona"], $params["ambito"], $params["lingua"], $params["numero_risultati"]);
-	
-	echo $risposta;
-	
-	$log->writeString("FINE RAG");
-}
-
-if ($params["azione"] == "chat")
-{
-	$log->writeString("INIZIO CHAT");
-	
-	$risposta = AirichiesteModel::g(false)->richiestaCompleta($params["query"], $params["zona"], $params["ambito"], $params["lingua"], $params["numero_risultati"]);
-	
-	echo $risposta;
-	
-	$log->writeString("FINE CHAT");
-}
+require_once(dirname(__FILE__) . "/azioni/ai.php");

@@ -96,4 +96,22 @@ class BaseCronController extends Controller
 		require_once(ROOT . "/admin/Application/Commands/azioni/log.php");
 		echo "</pre>";
 	}
+	
+	public function ai()
+	{
+		if (!VariabiliModel::checkToken("token_cron_ai"))
+			$this->responseCode(403);
+		
+		$this->clean();
+		
+		$options = array(
+			"azione" => isset($_GET["azione"]) ? (string)$_GET["azione"] : "",
+		);
+		
+		$options = $this->getOpzioni($options, array("lingua", "id_record", "query", "numero_risultati", "zona", "ambito", "chunks", "max_length", "overlap", "rigenera", "limit"));
+		
+		echo "<pre>";
+		require_once(ROOT . "/admin/Application/Commands/azioni/ai.php");
+		echo "</pre>";
+	}
 }

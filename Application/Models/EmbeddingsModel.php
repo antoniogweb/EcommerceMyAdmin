@@ -591,7 +591,7 @@ class EmbeddingsModel extends GenericModel
 		);
 	}
     
-    public function getCategoryEmbeddings($idCategory = 0, $lingua = null, $withChunks = false, $log = null, $maxLen = 600, int $overlap = 100, $rigenera = 0)
+    public function getCategoryEmbeddings($idCategory = 0, $lingua = null, $withChunks = false, $log = null, $maxLen = 600, int $overlap = 100, $rigenera = 0, $limit = 50)
 	{
 		$cModel = new CategoriesModel();
 		
@@ -604,6 +604,7 @@ class EmbeddingsModel extends GenericModel
 			->aWhere(array(
 				"in" => array("-id_c" => $children),
 			))
+			->limit((int)$limit)
 			->toList("pages.id_page");
 		
 		if (!$rigenera)

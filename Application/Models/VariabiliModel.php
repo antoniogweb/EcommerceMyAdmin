@@ -858,6 +858,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)
 		"token_cron_log_tecnici"	=>	"", // token di sicurezza per chiamare il comando CRON "log" tramite call a URL (viene inizializzato in automatico se vuoto). Serve comunque token_comandi_cron_web
+		"token_cron_ai"				=>	"", // // token di sicurezza per chiamare il comando CRON "ai" tramite call a URL (viene inizializzato in automatico se vuoto). Serve comunque token_comandi_cron_web
 		### AUTENTICAZIONE DUE FATTORI ##
 		### ---- BACKEND
 		"autenticazione_due_fattori_usa_id_user"	=>	1, // se 1, usa id_user per il nome del token
@@ -965,6 +966,7 @@ class VariabiliModel extends GenericModel {
 		"token_lista_configurazioni_mancanti",
 		"token_cron_log_tecnici",
 		"token_migrazioni_no_admin",
+		"token_cron_ai",
 	);
 	
 	public static function inizializza($variabili = array())
