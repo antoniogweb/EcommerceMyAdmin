@@ -65,7 +65,7 @@ class PagineController extends PagesController {
 			$this->head .= ",Cache attivabile";
 		}
 		
-		$this->filters = array(null,'title',null,array("attivo",null,SlideModel::$YN));
+		$this->filters = array(null,'title',null,array("attivo",null,gtextDeep(SlideModel::$YN)));
 		
 		$this->colProperties = array(
 			array(
