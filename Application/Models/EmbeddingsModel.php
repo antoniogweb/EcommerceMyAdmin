@@ -593,6 +593,8 @@ class EmbeddingsModel extends GenericModel
     
     public function getCategoryEmbeddings($idCategory = 0, $lingua = null, $withChunks = false, $log = null, $maxLen = 600, int $overlap = 100, $rigenera = 0, $limit = 50)
 	{
+		AirichiesteresponseModel::$isConsole = 1;
+		
 		$cModel = new CategoriesModel();
 		
 		if (!isset($lingua))

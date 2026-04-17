@@ -29,6 +29,7 @@ class AirichiesteresponseModel extends GenericModel
 	public static $tipo = "";
 	public static $microtime = 0;
 	public static $idLastInsert = 0;
+	public static $isConsole = 0;
 	
 	public function __construct() {
 		$this->_tables='ai_richieste_response';
@@ -67,7 +68,7 @@ class AirichiesteresponseModel extends GenericModel
 		$fromTime = time() - (int)$secondi;
 		
 		$model->clear()->select("id_ai_richieste_response")->sWhere(array(
-			"tipo = ? AND time_creazione >= ?",
+			"tipo = ? AND time_creazione >= ? and console = 0",
 			array(
 				sanitizeAll($tipo),
 				$fromTime
@@ -104,6 +105,7 @@ class AirichiesteresponseModel extends GenericModel
 			"tipo"		=>	self::$tipo,
 			"time_creazione"	=>	time(),
 			"tempo"		=>	(microtime(true) - self::$microtime),
+			"console"	=>	(int)self::$isConsole,
 		), "sanitizeDb");
 		
 		if (self::$idLastInsert)

@@ -1,0 +1,1 @@
+ALTER TABLE ai_richieste_response add console tinyint not null default 0;
