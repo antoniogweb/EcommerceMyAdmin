@@ -327,7 +327,7 @@ class EmbeddingsModel extends GenericModel
 		}
 		else
 		{
-			$emb->addJoinTraduzione($lingua, "contenuti_tradotti", false, new PagesModel());
+			$this->addJoinTraduzione($lingua, "contenuti_tradotti", false, new PagesModel());
 			
 			$titleWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "title", "contenuti_tradotti");
 			$descWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "description", "contenuti_tradotti");
