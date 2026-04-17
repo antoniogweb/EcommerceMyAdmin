@@ -595,6 +595,9 @@ class EmbeddingsModel extends GenericModel
 	{
 		$cModel = new CategoriesModel();
 		
+		if (!isset($lingua))
+			$lingua = v("lingua_default_frontend");
+		
 		$children = $cModel->children((int)$idCategory, true);
 		$children = forceIntDeep($children);
 		
@@ -608,7 +611,10 @@ class EmbeddingsModel extends GenericModel
 			->toList("pages.id_page");
 		
 		if (!$rigenera)
-			$pModel->left("embeddings")->on("embeddings.id_page = pages.id_page")->sWhere("embeddings.id_page IS NULL");
+			$pModel->left("embeddings")->on(array(
+				"embeddings.id_page = pages.id_page and embeddings.lingua = ?",
+				array(sanitizeAll($lingua))
+			))->sWhere("embeddings.id_page IS NULL");
 		
 		$idPages = $pModel->send();
 		
