@@ -298,6 +298,69 @@ class EmbeddingsModel extends GenericModel
 		
 		return $sum;
 	}
+
+	protected static function unpackBinaryRowMajor(array $rows, $field): array
+	{
+		$combinedBinary = '';
+		$offsets = array();
+		$lengths = array();
+		$currentOffset = 1;
+		
+		foreach ($rows as $index => $row)
+		{
+			$binary = $row[$field] ?? '';
+			
+			if (!is_string($binary) || $binary === '')
+			{
+				$offsets[$index] = 0;
+				$lengths[$index] = 0;
+				continue;
+			}
+			
+			$vectorLength = (int)(strlen($binary) / 4);
+			
+			if ($vectorLength <= 0)
+			{
+				$offsets[$index] = 0;
+				$lengths[$index] = 0;
+				continue;
+			}
+			
+			$offsets[$index] = $currentOffset;
+			$lengths[$index] = $vectorLength;
+			$combinedBinary .= $binary;
+			$currentOffset += $vectorLength;
+		}
+		
+		if ($combinedBinary === '')
+			return array(array(), $offsets, $lengths);
+		
+		$decoded = unpack('g*', $combinedBinary);
+		
+		if (!is_array($decoded) || empty($decoded))
+			return array(array(), $offsets, $lengths);
+		
+		return array($decoded, $offsets, $lengths);
+	}
+
+	protected static function dotProductRowMajor(array $decoded, $offset, $availableLength, array $queryVector): float
+	{
+		if ($offset <= 0 || $availableLength <= 0 || empty($queryVector))
+			return 0.0;
+		
+		$sum = 0.0;
+		$len = min(count($queryVector), (int)$availableLength);
+		
+		for ($i = 0; $i < $len; $i++)
+		{
+			if (!isset($decoded[$offset + $i]))
+				break;
+			
+			$sum += $decoded[$offset + $i] * $queryVector[$i];
+		}
+		
+		return $sum;
+	}
 	
 	protected static function getCachedNormalizedSearchText($text, array &$cache)
 	{
@@ -395,6 +458,7 @@ class EmbeddingsModel extends GenericModel
 				$percScoreTitolo = (float) number_format(v("perc_score_title_ricerca_semantica") / 100,2,".","");
 				$percScoreBody = 1 - $percScoreTitolo;
 				$percScoreLexical = (float) number_format(v("perc_score_lexical") / 100,2,".","");
+				$useTitleBodyScore = ($percScoreTitolo > 0);
 				
 				$embeddingsFields = self::getEmbeddingsSelectFields();
 				
@@ -465,7 +529,14 @@ class EmbeddingsModel extends GenericModel
 					$p = 0;
 					// echo $eModel->getQuery();
 					
-					foreach ($res as $r)
+					$rowMajorDecoded = array();
+					$rowMajorOffsets = array();
+					$rowMajorLengths = array();
+					
+					if (!$useTitleBodyScore)
+						list($rowMajorDecoded, $rowMajorOffsets, $rowMajorLengths) = self::unpackBinaryRowMajor($res, "embeddings_bin");
+					
+					foreach ($res as $rowIndex => $r)
 					{
 						$d = microtime(true);
 						$limitStart = $r["id_embedding"];
@@ -473,7 +544,7 @@ class EmbeddingsModel extends GenericModel
 // 						$emb = array_map('floatval', $emb);
 // 						
 // 						$score = Vector::cosineSimilarity($emb, $queryEmbedding);
-						if (v("perc_score_title_ricerca_semantica") > 0)
+						if ($useTitleBodyScore)
 						{
 							$scoreTitle = self::dotProductBinary($r["embeddings_title_bin"] ?? '', $queryEmbedding);
 							$scoreBody = self::dotProductBinary($r["embeddings_body_bin"] ?? '', $queryEmbeddingBody);
@@ -481,7 +552,12 @@ class EmbeddingsModel extends GenericModel
 							$semanticScore = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
 						}
 						else
-							$semanticScore = self::dotProductBinary($r["embeddings_bin"] ?? '', $queryEmbedding);
+							$semanticScore = self::dotProductRowMajor(
+								$rowMajorDecoded,
+								$rowMajorOffsets[$rowIndex] ?? 0,
+								$rowMajorLengths[$rowIndex] ?? 0,
+								$queryEmbedding
+							);
 						
 						$maxScoreWithLexicalBoost = $semanticScore + ((1 - $semanticScore) * $percScoreLexical);
 						
