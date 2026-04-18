@@ -1,0 +1,1 @@
+CREATE INDEX idx_embeddings_lingua_page ON embeddings (lingua, id_page);
