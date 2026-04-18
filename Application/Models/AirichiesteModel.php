@@ -632,7 +632,7 @@ class AirichiesteModel extends GenericModel
 				{
 					case "product_search":
 						$emb = new EmbeddingsModel();
-						$emb = $emb->select("distinct embeddings.id_embedding,".EmbeddingsModel::getEmbeddingsSelectFields().",embeddings.id_page,testo,embeddings.title")->inner(array("pagina"))->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
+						$emb = $emb->innerPages($lingua)->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
 						
 						// var_dump($routingJson);
 						$productTitle = $routingJson["entities"]["product_title"]["value"] ?? "";
@@ -753,10 +753,9 @@ class AirichiesteModel extends GenericModel
 						break;
 					case "informational":
 						$emb = new EmbeddingsModel();
-						$emb = $emb->select("distinct embeddings.id_embedding,".EmbeddingsModel::getEmbeddingsSelectFields().", embeddings.id_page")
-							->inner(array("pagina"))
-							->addWhereAttivo()
-							->sWhere("not exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)");
+						$emb = $emb->sWhere("not exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)")->innerPages($lingua)->aWhere(array(
+							"pages.attivo"	=>	"Y",
+						));
 						
 						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
 						

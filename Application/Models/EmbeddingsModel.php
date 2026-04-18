@@ -351,6 +351,16 @@ class EmbeddingsModel extends GenericModel
 		return (v("perc_score_title_ricerca_semantica") > 0) ? "embeddings.embeddings_title_bin,embeddings.embeddings_body_bin" : "embeddings.embeddings_bin";
 	}
 	
+	public function innerPages($lingua)
+	{
+		$this->inner("pages")->on(array(
+			"pages.id_page = embeddings.id_page AND embeddings.lingua = ?",
+			array(sanitizeAll($lingua))
+		));
+		
+		return $this;
+	}
+	
     public static function ricercaSemantica($query, $eModel = null, $lingua = null, $numeroMassimoRisultati = 10, $log = null, $filtraPerTokens = false)
 	{
 		$idModelloPredefinito = AimodelliModel::g(false)->getIdModelForEmbeddings();
@@ -386,12 +396,12 @@ class EmbeddingsModel extends GenericModel
 				$percScoreBody = 1 - $percScoreTitolo;
 				$percScoreLexical = (float) number_format(v("perc_score_lexical") / 100,2,".","");
 				
+				$embeddingsFields = self::getEmbeddingsSelectFields();
+				
 				if (!isset($eModel))
 				{
-					$embeddingsFields = self::getEmbeddingsSelectFields();
-					
 					$eModel = new EmbeddingsModel();
-					$eModel->clear()->select("embeddings.id_embedding,embeddings.id_page,$embeddingsFields,embeddings.testo,embeddings.title");
+					$eModel->clear();
 					
 					// Cerco i marchi dalla query
 					$arrayIdMarchi = self::estraiIdMarchiDaQuery($query);
@@ -404,10 +414,13 @@ class EmbeddingsModel extends GenericModel
 						));
 					}
 					
+					$eModel->innerPages($lingua)->addWhereAttivo();
+					
 					if ($filtraPerTokens)
-						$eModel->inner(array("pagina"))->addFiltroToken($queryTokens, $lingua);
+						$eModel->addFiltroToken($queryTokens, $lingua);
 				}
 				
+				$select = "distinct embeddings.id_embedding,embeddings.id_page,$embeddingsFields,embeddings.testo,embeddings.title";
 				$scores = [];
 				
 				$maxScore = 0.0;
@@ -421,17 +434,40 @@ class EmbeddingsModel extends GenericModel
 				$indiceScore = 0;
 				$arrayIdPageIndice = array();
 				
-				while ($res = $eModel->aWhere(array(
-					"gt"	=>	array(
-						"embeddings.id_embedding"	=>	(int)$limitStart,
-					),
+				$a = microtime(true);
+				$idEs = $eModel->select("embeddings.id_embedding")->aWhere(array(
 					"lingua"	=>	sanitizeAll($lingua),
-				))->limit($limit)->orderBy("embeddings.id_embedding")->send(false))
+				))->toList("embeddings.id_embedding")->send();
+				// echo "PRIMA QUERY:".(microtime(true)-$a)."\n";
+				// echo $eModel->getQuery()."\n";
+				
+				$chunks = array_chunk($idEs, $limit);
+				
+				// print_r($chunks);
+				// die();
+				$a = microtime(true);
+				
+				// while ($res = $eModel->aWhere(array(
+				// 	"gt"	=>	array(
+				// 		"embeddings.id_embedding"	=>	(int)$limitStart,
+				// 	),
+				// 	"lingua"	=>	sanitizeAll($lingua),
+				// ))->limit($limit)->orderBy("embeddings.id_embedding")->send(false))
+				foreach ($chunks as $chunk)
 				{
+					$res = $eModel->clear()->select($select)->where(array(
+						"in"	=>	array(
+							"id_embedding"	=>	forceIntDeep($chunk),
+						)
+					))->send(false);
+					$q = microtime(true) - $a;
+					$b = microtime(true);
+					$p = 0;
 					// echo $eModel->getQuery();
 					
 					foreach ($res as $r)
 					{
+						$d = microtime(true);
 						$limitStart = $r["id_embedding"];
 // 						$emb = json_decode($r["embeddings"], true);
 // 						$emb = array_map('floatval', $emb);
@@ -467,6 +503,8 @@ class EmbeddingsModel extends GenericModel
 						$lexicalScore = ($percScoreTitolo * $titleLexicalScore) + ($percScoreBody * $textLexicalScore);
 						
 						$score = $semanticScore + ((1 - $semanticScore) * $percScoreLexical * $lexicalScore);
+						
+						$p += (microtime(true) - $d);
 						
 						if ($score < $scoreMinimo)
 							continue;
@@ -555,6 +593,12 @@ class EmbeddingsModel extends GenericModel
 						
 						$indiceScore++;
 					}
+					
+					// $c = microtime(true);
+					// $a = microtime(true);
+					// echo "QUERY:".($q)."\n";
+					// echo "EMB:".$p."\n";
+					// echo "AMB + ALTRO:".$c-$b."\n";
 				}
 				
 				// Ordina per score decrescente
