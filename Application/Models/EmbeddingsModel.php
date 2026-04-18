@@ -26,6 +26,8 @@ require_once(LIBRARY."/Application/Modules/AI/Retrieval/ArticleChunker.php");
 
 class EmbeddingsModel extends GenericModel
 {
+	protected static $useRowMajorBinaryDotProduct = true;
+
 	public function __construct() {
 		$this->_tables='embeddings';
 		$this->_idFields='id_embedding';
@@ -361,6 +363,11 @@ class EmbeddingsModel extends GenericModel
 		
 		return $sum;
 	}
+
+	protected static function useRowMajorBinaryDotProduct(): bool
+	{
+		return self::$useRowMajorBinaryDotProduct;
+	}
 	
 	protected static function getCachedNormalizedSearchText($text, array &$cache)
 	{
@@ -459,6 +466,7 @@ class EmbeddingsModel extends GenericModel
 				$percScoreBody = 1 - $percScoreTitolo;
 				$percScoreLexical = (float) number_format(v("perc_score_lexical") / 100,2,".","");
 				$useTitleBodyScore = ($percScoreTitolo > 0);
+				$useRowMajorBinaryDotProduct = (!$useTitleBodyScore && self::useRowMajorBinaryDotProduct());
 				
 				$embeddingsFields = self::getEmbeddingsSelectFields();
 				
@@ -527,14 +535,20 @@ class EmbeddingsModel extends GenericModel
 					$q = microtime(true) - $a;
 					$b = microtime(true);
 					$p = 0;
+					$u = 0;
+					$o = 0;
 					// echo $eModel->getQuery();
 					
 					$rowMajorDecoded = array();
 					$rowMajorOffsets = array();
 					$rowMajorLengths = array();
 					
-					if (!$useTitleBodyScore)
+					if ($useRowMajorBinaryDotProduct)
+					{
+						$uStart = microtime(true);
 						list($rowMajorDecoded, $rowMajorOffsets, $rowMajorLengths) = self::unpackBinaryRowMajor($res, "embeddings_bin");
+						$u += (microtime(true) - $uStart);
+					}
 					
 					foreach ($res as $rowIndex => $r)
 					{
@@ -551,13 +565,17 @@ class EmbeddingsModel extends GenericModel
 							
 							$semanticScore = $percScoreTitolo * $scoreTitle + $percScoreBody * $scoreBody;
 						}
-						else
+						else if ($useRowMajorBinaryDotProduct)
+						{
 							$semanticScore = self::dotProductRowMajor(
 								$rowMajorDecoded,
 								$rowMajorOffsets[$rowIndex] ?? 0,
 								$rowMajorLengths[$rowIndex] ?? 0,
 								$queryEmbedding
 							);
+						}
+						else
+							$semanticScore = self::dotProductBinary($r["embeddings_bin"] ?? '', $queryEmbedding);
 						
 						$maxScoreWithLexicalBoost = $semanticScore + ((1 - $semanticScore) * $percScoreLexical);
 						
@@ -601,6 +619,8 @@ class EmbeddingsModel extends GenericModel
 						if ($score > $maxScore)
 							$maxScore = $score;
 						
+						$otherStart = microtime(true);
+						
 						$testoEstratto = trim($r["testo"] ?? '');
 						
 						if (isset($arrayIdPageIndice[$r["id_page"]]))
@@ -641,6 +661,7 @@ class EmbeddingsModel extends GenericModel
 								$scores[$indice]["estratto"] = implode(" ...", array_column($scores[$indice]["estratti_match"], "text"));
 							}
 							
+							$o += (microtime(true) - $otherStart);
 							continue;
 						}
 						
@@ -668,13 +689,16 @@ class EmbeddingsModel extends GenericModel
 						];
 						
 						$indiceScore++;
+						$o += (microtime(true) - $otherStart);
 					}
 					
-					// $c = microtime(true);
-					// $a = microtime(true);
+					$c = microtime(true);
+					$a = microtime(true);
 					// echo "QUERY:".($q)."\n";
+					// echo "UNPACK:".$u."\n";
 					// echo "EMB:".$p."\n";
-					// echo "AMB + ALTRO:".$c-$b."\n";
+					// echo "POST:".$o."\n";
+					// echo "ALTRO:".$c-$b-$p."\n";
 				}
 				
 				// Ordina per score decrescente
