@@ -10,15 +10,11 @@ function scorriChatInBasso()
 		var ultimoMessaggioUtente = $(".chat_message_bubble_user").last();
 		var offsetMessaggio = ultimoMessaggioUtente.offset();
 		var offsetContenitore = contenitoreMessaggi.offset();
-		// var altezzaContenitore = contenitoreMessaggi.innerHeight();
 
 		if (!offsetMessaggio || !offsetContenitore)
 			return;
 
 		var scrollDestinazione = contenitoreMessaggi.scrollTop() + (offsetMessaggio.top - offsetContenitore.top) - 16;
-		// var topRelativoMessaggio = contenitoreMessaggi.scrollTop() + (offsetMessaggio.top - offsetContenitore.top);
-		// var bottomRelativoMessaggio = topRelativoMessaggio + ultimoMessaggioUtente.outerHeight(true);
-		// var scrollDestinazione = bottomRelativoMessaggio - altezzaContenitore + 16;
 
 		contenitoreMessaggi.stop(true).animate({
 			scrollTop: Math.max(scrollDestinazione, 0)
