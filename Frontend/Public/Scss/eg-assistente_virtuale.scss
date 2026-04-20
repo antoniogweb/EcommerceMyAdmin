@@ -6,6 +6,8 @@ $chat-bubble-radius: 14px !default;
 $chat-bubble-max-width: 80% !default;
 $assistente-widget-accent: #1e87f0 !default;
 $assistente-widget-panel-width: 420px !default;
+$assistente-widget-toggle-shadow: 0 18px 40px rgba(30, 135, 240, 0.28) !default;
+$assistente-widget-toggle-shadow-hover: 0 22px 45px rgba(30, 135, 240, 0.34) !default;
 
 .assistente_virtuale_widget {
 	position: fixed;
@@ -23,14 +25,14 @@ $assistente-widget-panel-width: 420px !default;
 	border-radius: 999px;
 	background: linear-gradient(135deg, $assistente-widget-accent 0%, darken($assistente-widget-accent, 10%) 100%);
 	color: #fff;
-	box-shadow: 0 18px 40px rgba(30, 135, 240, 0.28);
+	box-shadow: $assistente-widget-toggle-shadow;
 	cursor: pointer;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .assistente_virtuale_widget_toggle:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 22px 45px rgba(30, 135, 240, 0.34);
+	box-shadow: $assistente-widget-toggle-shadow-hover;
 }
 
 .assistente_virtuale_widget_toggle_icon {
