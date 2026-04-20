@@ -1762,7 +1762,7 @@ class GenericModel extends Model_Tree
 		return $output;
 	}
 	
-	public function getWhereSearch($cerca, $maxNumber = 50, $campoCerca = "campo_cerca", $tabellaCerca = "pages")
+	public function getWhereSearch($cerca, $maxNumber = 50, $campoCerca = "campo_cerca", $tabellaCerca = "pages", $lunghezzaMinima = 2)
 	{
 		$cercaArray = explode(" ",(string)trim($cerca));
 		
@@ -1777,7 +1777,7 @@ class GenericModel extends Model_Tree
 		
 		foreach ($cercaArray as $cercaTermine)
 		{
-			if (strpos(v("ricerca_termini_and_or"), "OR") === false || strlen($cercaTermine) > 2)
+			if (strpos(v("ricerca_termini_and_or"), "OR") === false || strlen($cercaTermine) > $lunghezzaMinima)
 			{
 				$andArray[str_repeat(" ", $iCerca)."lk"] = array(
 					$tabellaCerca.".".$campoCerca	=>	sanitizeAll(htmlentitydecode($cercaTermine)),

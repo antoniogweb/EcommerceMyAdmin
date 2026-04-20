@@ -26,7 +26,7 @@ require_once(LIBRARY."/Application/Modules/AI/Retrieval/ArticleChunker.php");
 
 class EmbeddingsModel extends GenericModel
 {
-	protected static $useRowMajorBinaryDotProduct = true;
+	protected static $useRowMajorBinaryDotProduct = false;
 
 	public function __construct() {
 		$this->_tables='embeddings';
@@ -392,15 +392,15 @@ class EmbeddingsModel extends GenericModel
 		
 		if ($lingua && $lingua == Params::$defaultFrontEndLanguage)
 		{
-			$titleWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "title");
-			$descWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "description");
+			$titleWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "title", "pages", 3);
+			$descWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "description", "pages", 3);
 		}
 		else
 		{
 			$this->addJoinTraduzione($lingua, "contenuti_tradotti", false, new PagesModel());
 			
-			$titleWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "title", "contenuti_tradotti");
-			$descWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "description", "contenuti_tradotti");
+			$titleWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "title", "contenuti_tradotti", 3);
+			$descWhere = $this->getWhereSearch(sanitizeAll($ricerca), 50, "description", "contenuti_tradotti", 3);
 		}
 		
 		$orWhere = array(
@@ -512,6 +512,8 @@ class EmbeddingsModel extends GenericModel
 				))->toList("embeddings.id_embedding")->send();
 				// echo "PRIMA QUERY:".(microtime(true)-$a)."\n";
 				// echo $eModel->getQuery()."\n";
+				
+				$idEs = array_unique($idEs);
 				
 				$chunks = array_chunk($idEs, $limit);
 				
