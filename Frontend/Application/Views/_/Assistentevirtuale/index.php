@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<div class="assistente_virtuale_layout uk-padding-small uk-flex uk-flex-column uk-height-viewport uk-background-default uk-padding-small@s uk-padding">
-	<div class="assistente_virtuale_messages uk-flex-1 uk-overflow-auto uk-margin-small-bottom">
+<div class="assistente_virtuale_layout uk-flex uk-flex-column uk-height-viewport uk-background-default">
+	<div class="assistente_virtuale_messages uk-flex-1 uk-overflow-auto">
 		<div class="chat_welcome_message">
 			<div class="chat_message_row chat_message_row_assistant">
 				<div class="chat_message_bubble chat_message_bubble_assistant">
@@ -13,7 +13,7 @@
 		</div>
 	</div>
 	
-	<div class="assistente_virtuale_composer uk-padding-small uk-margin-remove-top">
+	<div class="assistente_virtuale_composer uk-margin-remove-top">
 		<div class="uk-flex uk-flex-middle uk-grid-small" uk-grid>
 			<div class="uk-width-expand">
 				<input class="request_message uk-input" type="text" placeholder="<?php echo gtext("Scrivi un messaggio...");?>">

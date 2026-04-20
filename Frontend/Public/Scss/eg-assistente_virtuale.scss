@@ -151,24 +151,31 @@ $assistente-widget-panel-width: 420px !default;
 }
 
 .assistente_virtuale_layout {
+	height: 100vh;
+	height: 100dvh;
 	min-height: 100vh;
+	min-height: 100dvh;
+	overflow: hidden;
 }
 
 .assistente_virtuale_messages {
-	padding-bottom: 120px;
+	flex: 1 1 auto;
+	min-height: 0;
+	padding: 12px 15px;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	scroll-padding-top: 96px;
+	scroll-padding-bottom: 104px;
 }
 
 .chat_messages {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	padding-top: 10px;
 }
 
 .chat_welcome_message {
-	position: sticky;
-	top: 0;
-	z-index: 2;
-	background: #fff;
 	padding-bottom: 10px;
 }
 
@@ -229,15 +236,17 @@ $assistente-widget-panel-width: 420px !default;
 }
 
 .assistente_virtuale_composer {
-	position: fixed;
-	left: 0;
-	right: 0;
+	position: sticky;
 	bottom: 0;
 	z-index: 20;
 	margin: 0;
 	border-radius: 0;
 	background: #fff;
 	border-top: 1px solid #e5e5e5;
+	padding-top: 12px;
+	padding-right: 15px;
+	padding-left: 15px;
+	padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
 }
 
 .send_request_to_va {
@@ -305,6 +314,7 @@ $assistente-widget-panel-width: 420px !default;
 		inset: 0;
 		width: 100vw;
 		height: 100vh;
+		height: 100dvh;
 		border-radius: 0;
 		bottom: 0;
 		right: 0;
