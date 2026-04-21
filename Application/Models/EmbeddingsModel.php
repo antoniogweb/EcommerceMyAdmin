@@ -743,32 +743,42 @@ class EmbeddingsModel extends GenericModel
 		
 		$cModel = new CategoriesModel();
 		
-		if (!isset($lingua))
-			$lingua = v("lingua_default_frontend");
+		// if (!isset($lingua))
+		// 	$lingua = v("lingua_default_frontend");
 		
-		$children = $cModel->children((int)$idCategory, true);
-		$children = forceIntDeep($children);
+		// Estraggo le lingue attive
+		LingueModel::getValoriAttivi();
 		
-		$pModel = new PagesModel();
-		$idPages = $pModel->clear()->select("pages.id_page")
-			->addWhereAttivo()
-			->aWhere(array(
-				"in" => array("-id_c" => $children),
-			))
-			->limit((int)$limit)
-			->toList("pages.id_page");
-		
-		if (!$rigenera)
-			$pModel->left("embeddings")->on(array(
-				"embeddings.id_page = pages.id_page and embeddings.lingua = ?",
-				array(sanitizeAll($lingua))
-			))->sWhere("embeddings.id_page IS NULL");
-		
-		$idPages = $pModel->send();
-		
-		foreach ($idPages as $idPage)
+		foreach (LingueModel::$valoriAttivi as $codice => $descrizione)
 		{
-			$this->getPageEmbeddings((int)$idPage, $lingua, $withChunks, $log, $maxLen, $overlap);
+			// Se è impostata la lingua e non è la lingua corrente, continua
+			if ($lingua && $lingua != $codice)
+				continue;
+		
+			$children = $cModel->children((int)$idCategory, true);
+			$children = forceIntDeep($children);
+			
+			$pModel = new PagesModel();
+			$idPages = $pModel->clear()->select("pages.id_page")
+				->addWhereAttivo()
+				->aWhere(array(
+					"in" => array("-id_c" => $children),
+				))
+				->limit((int)$limit)
+				->toList("pages.id_page");
+			
+			if (!$rigenera)
+				$pModel->left("embeddings")->on(array(
+					"embeddings.id_page = pages.id_page and embeddings.lingua = ?",
+					array(sanitizeAll($lingua))
+				))->sWhere("embeddings.id_page IS NULL");
+			
+			$idPages = $pModel->send();
+			
+			foreach ($idPages as $idPage)
+			{
+				$this->getPageEmbeddings((int)$idPage, $codice, $withChunks, $log, $maxLen, $overlap);
+			}
 		}
 	}
     
