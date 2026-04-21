@@ -119,8 +119,18 @@ class UsersController extends BaseController {
 		
 		$this->checkLogged();
 		
-		if (isset($_POST['username']) and isset($_POST['password']))
+		if (isset($_POST['username']) && isset($_POST['password']))
 		{
+			$username = trim($_POST['username']);
+			
+			if (
+				$username === '' || 
+				strlen($username) > 50 || // scegli tu il limite 
+				!ctype_alnum($username)
+			) {
+				$this->responseCode(400);
+			}
+			
 			if (trim($_POST['username']))
 				$this->logAccountCheck("LOGIN", $_POST['username']);
 			
