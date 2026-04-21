@@ -770,7 +770,7 @@ class EmbeddingsModel extends GenericModel
 			if (!$rigenera)
 				$pModel->left("embeddings")->on(array(
 					"embeddings.id_page = pages.id_page and embeddings.lingua = ?",
-					array(sanitizeAll($lingua))
+					array(sanitizeAll($codice))
 				))->sWhere("embeddings.id_page IS NULL");
 			
 			$idPages = $pModel->send();
