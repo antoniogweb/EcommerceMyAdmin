@@ -115,7 +115,7 @@ class BaseRegusersController extends BaseController
 		
 		if (isset($_POST['username']) and isset($_POST['password']))
 		{
-			if (!checkMail($_POST['username']))
+			if (!checkMail($_POST['username']) || $_POST['username'] == '')
 				$this->responseCode(400);
 			
 			$username = checkMail($_POST['username']) ? sanitizeAll($_POST['username']) : '';
