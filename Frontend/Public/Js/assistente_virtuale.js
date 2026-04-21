@@ -1,13 +1,30 @@
 function scorriChatInBasso()
 {
+	var contenitoreMessaggi = $(".assistente_virtuale_messages");
+
+	if (!contenitoreMessaggi.length)
+		return;
+
 	if ($(".chat_message_bubble_user").length > 0)
 	{
-		var position = $(".chat_message_bubble_user").last().position();
-		
-		$('html, body').animate({
-			scrollTop: position.top
+		var ultimoMessaggioUtente = $(".chat_message_bubble_user").last();
+		var offsetMessaggio = ultimoMessaggioUtente.offset();
+		var offsetContenitore = contenitoreMessaggi.offset();
+
+		if (!offsetMessaggio || !offsetContenitore)
+			return;
+
+		var scrollDestinazione = contenitoreMessaggi.scrollTop() + (offsetMessaggio.top - offsetContenitore.top) - 16;
+
+		contenitoreMessaggi.stop(true).animate({
+			scrollTop: Math.max(scrollDestinazione, 0)
 		}, 500);
+		return;
 	}
+
+	contenitoreMessaggi.stop(true).animate({
+		scrollTop: contenitoreMessaggi.get(0).scrollHeight
+	}, 500);
 }
 
 function aggiornaChat()
