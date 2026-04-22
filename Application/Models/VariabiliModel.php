@@ -650,6 +650,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_campo_redirect"		=>	0, // se impostato ad 1, attiva un campo redirect per le categorie. La categoria sarà un link all'URL specificato nel campo redirect
 		"fawe_folder_opened_class"	=>	"fa-folder-open-o", // classe dell'icona usata per folder opened
 		"fawe_folder_closed_class"	=>	"fa-folder", // classe dell'icona usata per folder closed
+		"fawe_folder_default_class"	=>	"fa-folder-open-o", // classe di default dell'icona usata nel tree
 		## PAGINE ##
 		"attiva_campo_redirect_pagine"		=>	0, // se impostato ad 1, attiva un campo redirect per le pagine. La pagina sarà un link all'URL specificato nel campo redirect
 		"attiva_campo_css"			=>	0, // se impostato ad 1 e se previsto dal tema, permette di integrare un CSS personalizzato per ogni pagina
