@@ -47,11 +47,19 @@ class AirichiesteController extends BaseController
 	public function main()
 	{
 		$this->shift();
-
-		$this->mainFields = array("cleanDateTime", "titoloCrud", "ai_modelli.titolo", "numeroMessaggiCrud");
-		$this->mainHead = "Data ora,Titolo,Modello,N° messaggi";
 		
 		$rag = (int)$this->viewArgs["rag"];
+		
+		if (!$rag)
+		{
+			$this->mainFields = array("cleanDateTime", "titoloCrud", "ai_modelli.titolo", "numeroMessaggiCrud");
+			$this->mainHead = "Data ora,Titolo,Modello,N° messaggi";
+		}
+		else
+		{
+			$this->mainFields = array("cleanDateTime", "ultimaRichiestaCrud", "utenteCrud", "numeroMessaggiCrud");
+			$this->mainHead = "Data ora,Ultima richiesta,Utente,N° messaggi";
+		}
 		
 		if (($rag === 1 && !VariabiliModel::assistenteFrontendAttivo()) || ($rag === 0 && !VariabiliModel::assistenteTestiBackendAttivo()))
 			$this->responseCode(403);
@@ -62,7 +70,7 @@ class AirichiesteController extends BaseController
 			))
 			->inner(array("modello"))->orderBy("ai_richieste.data_creazione desc")->save();
 		
-		$mainMenu = VariabiliModel::assistenteTestiBackendAttivo() ? 'add' : '';
+		$mainMenu = (VariabiliModel::assistenteTestiBackendAttivo() && !$rag) ? 'add' : '';
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>$mainMenu, 'modifyAction'=>'messaggi');
 

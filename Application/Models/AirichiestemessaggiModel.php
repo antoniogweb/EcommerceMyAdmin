@@ -71,7 +71,7 @@ class AirichiestemessaggiModel extends GenericModel
 
 			$nomeCategoria = CategoriesModel::g(false)->select("title")->whereId((int)$richiesta["id_c"])->field("title");
 			$nomeMarchio = MarchiModel::g(false)->select("titolo")->whereId((int)$richiesta["id_marchio"])->field("titolo");
-			$nomePagina =PagesModel::g(false)->select("title")->whereId((int)$richiesta["id_page"])->field("title");
+			$nomePagina = PagesModel::g(false)->select("title")->whereId((int)$richiesta["id_page"])->field("title");
 
 			$contesto = "su ...";
 

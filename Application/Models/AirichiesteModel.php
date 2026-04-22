@@ -570,7 +570,43 @@ class AirichiesteModel extends GenericModel
 
 		return $airmModel->getMessaggi($record["ai_richieste"]["id_ai_richiesta"], true);
 	}
-
+	
+	public function ultimaRichiestaCrud($record)
+	{
+		$airmModel = new AirichiestemessaggiModel();
+		
+		$messaggio = $airmModel->clear()->select("messaggio")->where(array(
+			"id_ai_richiesta"	=>	(int)$record["ai_richieste"]["id_ai_richiesta"],
+			"ruolo"				=>	"user",
+		))->orderBy("id_ai_richiesta_messaggio desc")->limit(1)->field("messaggio");
+		
+		return $messaggio ?? "";
+	}
+	
+	public function utenteCrud($record)
+	{
+		$idUser = (int)$record["ai_richieste"]["id_user"];
+		
+		if (!$idUser)
+			return "--";
+		
+		$ruModel = new RegusersModel();
+		
+		$user = $ruModel->selectId($idUser);
+		
+		if (!empty($user))
+		{
+			$html = RegusersModel::getNominativo($user)." (".$user["username"].")";
+			
+			if (ControllersModel::checkAccessoAlController(array("regusers")))
+				$html .= " <a class='text text-primary iframe' href='".Url::getRoot()."regusers/form/update/".$idUser."?partial=Y&nobuttons=Y'><i class='fa fa-eye'></i></a>";
+			
+			return $html;
+		}
+		
+		return "";
+	}
+	
 	public function cercaOCrea($idC, $idMarchio, $idPage)
 	{
 		$where = array(
