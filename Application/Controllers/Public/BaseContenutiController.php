@@ -2284,7 +2284,7 @@ class BaseContenutiController extends BaseController
 	{
 		$this->clean();
 		
-		$this->m("DocumentiModel")->clear()->select("distinct documenti.id_doc,documenti.*")->where(array(
+		$this->m("DocumentiModel")->clear()->restore(true)->select("distinct documenti.id_doc,documenti.*")->aWhere(array(
 			"id_doc"	=>	(int)$id,
 		));
 		
