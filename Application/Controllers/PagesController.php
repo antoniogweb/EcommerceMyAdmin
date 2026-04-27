@@ -2580,77 +2580,101 @@ class PagesController extends BaseController
 						
 						// Validate the file type
 // 						$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
-						$fileTypes = $this->m[$this->modelName]->fileTypeAllowed;
+						$fileTypes = array_map('strtolower', $this->m[$this->modelName]->fileTypeAllowed);
+						$AllowedMimeTypes = '';
 						
-						if (in_array($ext,$fileTypes)) {
-							if (!file_exists($targetFile))
+						if (extension_loaded('fileinfo'))
+						{
+							$fileTypesString = implode(",", $fileTypes);
+							$AllowedMimeTypes = Files_Upload::getMimeTypesFromExtensions($fileTypesString);
+							
+							if ($AllowedMimeTypes != '')
 							{
-								if (@move_uploaded_file($tempFile,$targetFile))
+								//get the MIME type of the file
+								$finfo = finfo_open(FILEINFO_MIME_TYPE);
+								$MIMEtype = finfo_file($finfo, $tempFile);
+								$AllowedMimeTypesArray = explode(",", $AllowedMimeTypes);
+							}
+						}
+						
+						if (in_array($ext,$fileTypes))
+						{
+							if ($AllowedMimeTypes == '' || in_array($MIMEtype, $AllowedMimeTypesArray))
+							{
+								if (!file_exists($targetFile))
 								{
-									if ($this->m[$this->modelName]->rielaboraImmagine && Files_Upload::isJpeg($ext))
+									if (@move_uploaded_file($tempFile,$targetFile))
 									{
-										$params = array(
-											'imgWidth'		=>	v("rielabora_width"),
-											'imgHeight'		=>	v("rielabora_height"),
-											'defaultImage'	=>  null,
-										);
-										
-										$convertitaInJpeg = false;
-										$newTargetFile = str_replace(".$ext", ".jpeg", $targetFile);
-										
-										if (v("converti_immagini_in_jpeg") && !Files_Upload::isJpeg($ext) && !file_exists($newTargetFile))
+										if ($this->m[$this->modelName]->rielaboraImmagine && Files_Upload::isJpeg($ext))
 										{
-											$params["forceToFormat"] = 'jpeg';
-											$targetFile = $newTargetFile;
-											$convertitaInJpeg = true;
+											$params = array(
+												'imgWidth'		=>	v("rielabora_width"),
+												'imgHeight'		=>	v("rielabora_height"),
+												'defaultImage'	=>  null,
+											);
+											
+											$convertitaInJpeg = false;
+											$newTargetFile = str_replace(".$ext", ".jpeg", $targetFile);
+											
+											if (v("converti_immagini_in_jpeg") && !Files_Upload::isJpeg($ext) && !file_exists($newTargetFile))
+											{
+												$params["forceToFormat"] = 'jpeg';
+												$targetFile = $newTargetFile;
+												$convertitaInJpeg = true;
+											}
+											
+											Image_Gd_Thumbnail::$defaultJpegImgQuality = 100;
+											
+											$thumb = new Image_Gd_Thumbnail($targetPath,$params);
+											$thumb->render($clean['fileName'],$targetFile);
+											
+											if ($convertitaInJpeg)
+											{
+												$clean['fileName'] = str_replace(".$ext", ".jpeg", $clean['fileName']);
+												$clean['fileName_clean'] = str_replace(".$ext", ".jpeg", $clean['fileName_clean']);
+											}
 										}
 										
-										Image_Gd_Thumbnail::$defaultJpegImgQuality = 100;
-										
-										$thumb = new Image_Gd_Thumbnail($targetPath,$params);
-										$thumb->render($clean['fileName'],$targetFile);
-										
-										if ($convertitaInJpeg)
+										if ($clean['is_main'] === 0)
 										{
-											$clean['fileName'] = str_replace(".$ext", ".jpeg", $clean['fileName']);
-											$clean['fileName_clean'] = str_replace(".$ext", ".jpeg", $clean['fileName_clean']);
+											$this->m['ImmaginiModel']->values = array(
+												'immagine'	=>	sanitizeDb($clean['fileName']),
+												'id_page'	=>	$clean['id_page'],
+												'alt_tag'	=>	sanitizeDb(str_replace("_"," ",$tempNameSenzaEstensione)),
+												'id_c'		=>	$clean['id_cmb'],
+											);
+											$this->m['ImmaginiModel']->insert();
 										}
+										
+										$result = "OK";
+										$immagine = $clean['fileName'];
+										$immagine_clean = $clean['fileName_clean'];
+	// 									echo json_encode(array(
+	// 										"result"	=>	$result,
+	// 										"immagine"	=>	$clean['fileName'],
+	// 										"immagine_clean"	=>	$clean['fileName_clean'],
+	// 									));
 									}
-									
-									if ($clean['is_main'] === 0)
+									else
 									{
-										$this->m['ImmaginiModel']->values = array(
-											'immagine'	=>	sanitizeDb($clean['fileName']),
-											'id_page'	=>	$clean['id_page'],
-											'alt_tag'	=>	sanitizeDb(str_replace("_"," ",$tempNameSenzaEstensione)),
-											'id_c'		=>	$clean['id_cmb'],
-										);
-										$this->m['ImmaginiModel']->insert();
+										$result = "KO";
+										$errorString = gtext("Errore nel caricamento del file");
 									}
-									
-									$result = "OK";
-									$immagine = $clean['fileName'];
-									$immagine_clean = $clean['fileName_clean'];
-// 									echo json_encode(array(
-// 										"result"	=>	$result,
-// 										"immagine"	=>	$clean['fileName'],
-// 										"immagine_clean"	=>	$clean['fileName_clean'],
-// 									));
 								}
 								else
 								{
 									$result = "KO";
-									$errorString = gtext("Errore nel caricamento del file");
+									$errorString = gtext("File non esistente");
 								}
 							}
 							else
 							{
 								$result = "KO";
-								$errorString = gtext("File non esistente");
+								$errorString = gtext("Il MIME TYPE del file")."<i> ".sanitizeHtml($_FILES['Filedata']['name'])."</i> ".gtext("non è permesso");
 							}
 						} else {
 							$result = "KO";
-							$errorString = gtext("L'estensione del file <i>".sanitizeHtml($_FILES['Filedata']['name'])."</i> non è permessa");
+							$errorString = gtext("L'estensione del file")."<i> ".sanitizeHtml($_FILES['Filedata']['name'])."</i> ".gtext("non è permessa");
 						}
 					}
 					else
