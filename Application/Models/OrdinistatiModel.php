@@ -60,8 +60,10 @@ class OrdinistatiModel extends GenericModel
 	
 	public function lastStatoInserito($idO)
 	{
-		return $this->clear()->select("stato")->where(array(
+		$stato = $this->clear()->select("stato")->where(array(
 			"id_o"	=>	(int)$idO,
 		))->orderBy("id_o_stato desc")->limit(1)->field("stato");
+		
+		return $stato;
 	}
 }
