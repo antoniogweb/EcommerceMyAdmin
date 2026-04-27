@@ -557,6 +557,7 @@ class VariabiliModel extends GenericModel {
 		"url_elenco_ordini"			=>	"ordini/main", // controller/action della sezione ordini
 		"permetti_modifica_cliente_in_ordine"	=>	0, // se impostato ad 1, permette di modificare il cliente nell'ordine
 		"attiva_gestione_stati_ordine"	=>	0, // se impostato a 1 si attiva la possibilità di gestire gli stati dell'ordine
+		"attiva_log_cambio_stato"	=>	0, // se impostato a 1, attiva il log del cambio stato 
 		"salva_ip"					=>	0, // se impostato su 1, salva l'IP dell'utente
 		"numero_massimo_ordini_giornalieri_stesso_ip"		=>	0, // se impostato su 0, non esiste limite
 		"attiva_righe_generiche_in_ordine_offline"	=>	0, // se impostato ad 1 permette di aggiungere le righe generiche prese dalla tabella righe_tipologie (deve essere anche impostato un prodotto genrico)

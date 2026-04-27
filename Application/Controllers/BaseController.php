@@ -95,7 +95,7 @@ class BaseController extends Controller
 		$this->s['admin']->checkStatus();
 		if ( strcmp($this->s['admin']->status['status'],'logged') === 0 ) { //check if already logged
 			User::$logged = true;
-			User::$id = (int)$this->s['admin']->status['id_user'];
+			User::$id = User::$idAdmin = (int)$this->s['admin']->status['id_user'];
 			
 			User::$name = $this->s['admin']->status['user'];
 			
