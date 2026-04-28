@@ -12,9 +12,13 @@
 				<div class="box-header with-border main help_storico">
 					<table class="table">
 						<tr>
-							<th colspan="3">
+							<th>
 								<?php echo gtext("Data ora");?>
+							</th>
+							<th>
 								<?php echo gtext("Stato");?>
+							</th>
+							<th>
 								<?php echo gtext("Utente admin");?>
 							</th>
 						</tr>
