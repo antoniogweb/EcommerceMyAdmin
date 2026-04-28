@@ -2,7 +2,7 @@
 
 <?php if (!empty($record_evento)) { ?>
 <section class="content-header">
-	<h1><?php echo gtext("Script del Pixel")?> <?php echo $record_evento["pixel"]["titolo"];?></h1>
+	<h1><?php echo gtext("Script del Pixel");?> <?php echo $record_evento["pixel"]["titolo"];?></h1>
 </section>
 
 <!-- Main content -->
