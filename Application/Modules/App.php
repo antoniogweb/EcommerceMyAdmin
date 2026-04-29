@@ -150,7 +150,7 @@ class App
 					"Fornitore"	=>	Parametri::$nomeNegozio,
 					gtext("Tipologia")	=>	gtext("Tecnici"),
 					gtext("Necessario")	=>	gtext("Sì"),
-					"Descrizione"=>	gtext("Utilizzato per il mantenimento degli articoli nel carrello"),
+					"Descrizione"=>	gtext("Utilizzato per il mantenimento degli articoli nel carrello e per la gestione tecnica del processo d’acquisto e assistenza"),
 					"Durata"		=>	v("durata_carrello_wishlist_coupon"),
 					"usato"				=>	v("ecommerce_attivo"),
 				),
