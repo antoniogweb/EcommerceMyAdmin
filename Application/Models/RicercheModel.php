@@ -37,7 +37,7 @@ class RicercheModel extends GenericModel
 		
 		$this->sValues(array(
 			"ricerca"	=>	(string)$ricerca,
-			"cart_uid"	=>	User::$cart_uid,
+			"cart_uid"	=>	"",
 		));
 		
 		$this->insert();

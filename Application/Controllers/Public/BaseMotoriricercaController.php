@@ -50,7 +50,7 @@ class BaseMotoriricercaController extends BaseController
 				{
 					$this->m("RicercheModel")->sValues(array(
 						"termini"	=>	(string)$search,
-						"cart_uid"	=>	User::$cart_uid,
+						"cart_uid"	=>	"",
 					));
 					
 					$this->m("RicercheModel")->insert();
