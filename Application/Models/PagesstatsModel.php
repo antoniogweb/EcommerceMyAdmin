@@ -204,6 +204,9 @@ class PagesstatsModel extends GenericModel {
 		if (App::$operazioneSchedulata)
 			return;
 		
+		if (!User::$tracking_uid)
+			return;
+		
 		createFolderFull("Logs/".self::$folder);
 		
 		$token = randomToken();
