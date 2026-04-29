@@ -121,6 +121,18 @@ class App
 		return false;
 	}
 	
+	public static function getCookieProfilazione()
+	{
+		return array(
+				"tracking_uid"	=>	array(
+					"Fornitore"	=>	Parametri::$nomeNegozio,
+					"Descrizione"=>	gtext("Utilizzato per suggerire al cliente prodotti visti da altri clienti"),
+					"Durata"		=>	v("durata_statistiche_cookie"),
+					"usato"			=>	VariabiliModel::attivaTrackingUid(),
+				)
+			);
+	}
+	
 	public static function getCookieTecnici()
 	{
 		if (empty(self::$elencoCookieTecnici))
