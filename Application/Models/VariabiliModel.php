@@ -1389,4 +1389,9 @@ class VariabiliModel extends GenericModel {
 	{
 		return (v("attiva_richieste_ai") && v("attiva_assistente_frontend") && v("mostra_assistente_frontend")) ? true : false;
 	}
+	
+	public static function attivaTrackingUid()
+	{
+		return v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori") > 0 ? true : false;
+	}
 }
