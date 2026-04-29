@@ -126,7 +126,7 @@ class App
 		return array(
 				"tracking_uid"	=>	array(
 					"Fornitore"	=>	Parametri::$nomeNegozio,
-					"Descrizione"=>	gtext("Utilizzato per suggerire al cliente prodotti visti da altri clienti"),
+					"Descrizione"=>	gtext("Utilizzato, previo consenso, per collegare le pagine prodotto visualizzate e suggerire prodotti visti anche da altri utenti con interessi simili."),
 					"Durata"		=>	v("durata_statistiche_cookie"),
 					"usato"			=>	VariabiliModel::attivaTrackingUid(),
 				)
