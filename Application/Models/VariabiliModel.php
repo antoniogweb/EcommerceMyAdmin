@@ -46,6 +46,7 @@ class VariabiliModel extends GenericModel {
 		"codice_fbk" => "",
 		"codice_fbk_noscript" => "",
 		"codice_js_ok_cookie" => "",
+		"salva_satistiche_visualizzazione_pagina"	=>	"",
 		"salva_satistiche_visualizzazione_pagina_su_file" => "",
 	);
 	
