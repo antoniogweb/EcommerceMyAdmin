@@ -66,4 +66,13 @@ class OrdinistatiModel extends GenericModel
 		
 		return $stato;
 	}
+	
+	public static function numero($idO)
+	{
+		$model = new OrdinistatiModel();
+		
+		return $model->clear()->where(array(
+			"id_o"	=>	(int)$idO,
+		))->rowNumber();
+	}
 }
