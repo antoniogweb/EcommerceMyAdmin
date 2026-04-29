@@ -1392,6 +1392,6 @@ class VariabiliModel extends GenericModel {
 	
 	public static function attivaTrackingUid()
 	{
-		return v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori") > 0 ? true : false;
+		return (v("salva_satistiche_visualizzazione_pagina_su_file") || v("salva_satistiche_visualizzazione_pagina")) ? true : false;
 	}
 }
