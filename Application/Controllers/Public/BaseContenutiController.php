@@ -2354,7 +2354,7 @@ class BaseContenutiController extends BaseController
 				))->rowNumber())
 				{
 					$time = time() + v("durata_carrello_wishlist_coupon");
-					setcookie("cart_uid",$clean["cart_uid"],$time,"/");
+					Cookie::set("cart_uid", $clean["cart_uid"], $time, "/", true, 'Lax');
 				
 					$this->redirect("checkout");
 				}
