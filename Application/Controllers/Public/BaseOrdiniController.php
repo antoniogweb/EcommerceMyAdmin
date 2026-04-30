@@ -611,7 +611,7 @@ class BaseOrdiniController extends BaseController
 				}
 				
 				$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?cart_uid=".$clean["cart_uid"]);
-				$p->add_field('cancel_return', $this->baseUrl."/ordini/annullapagamento/paypal/".$clean["cart_uid"]);
+				$p->add_field('cancel_return', $this->baseUrl."/ordini/annullapagamento/paypal/".$data["ordine"]["banca_token"]);
 				$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento");
 				$p->add_field('item_name', "Ordine #".$data["ordine"]["id_o"]);
 				$p->add_field('item_number', $data["ordine"]["cart_uid"]);
@@ -802,7 +802,7 @@ class BaseOrdiniController extends BaseController
 		App::createLogFolder();
 	}
 	
-	public function annullapagamento($tipo = "", $cartuUid = "")
+	public function annullapagamento($tipo = "", $bancaToken = "")
 	{
 		$this->clean();
 		
@@ -819,9 +819,9 @@ class BaseOrdiniController extends BaseController
 // 			fclose($fp);
 // 		}
 		
-		$clean['cart_uid'] = sanitizeAll($cartuUid);
+		$clean['banca_token'] = sanitizeAll($bancaToken);
 		
-		$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+		$res = $this->m("OrdiniModel")->clear()->where(array("banca_token" => $clean['banca_token']))->send();
 		
 		if (count($res) > 0 && OrdiniModel::isStatoPending($res[0]["orders"]["stato"]))
 		{

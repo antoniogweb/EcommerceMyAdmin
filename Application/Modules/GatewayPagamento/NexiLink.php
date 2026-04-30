@@ -44,7 +44,7 @@ class NexiLink extends Nexi
 		{
 			$this->okUrl = "grazie-per-l-acquisto-carta?cart_uid=".$ordine["cart_uid"];
 			$this->notifyUrl = Url::getRoot()."notifica-pagamento-carta?cart_uid=".$ordine["cart_uid"];
-			$this->errorUrl = "ordini/annullapagamento/nexi/".$ordine["cart_uid"];
+			$this->errorUrl = "ordini/annullapagamento/nexi/".$ordine["banca_token"];
 			$this->ordine = $ordine;
 		}
 		
