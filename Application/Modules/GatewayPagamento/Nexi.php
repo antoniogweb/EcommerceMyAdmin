@@ -60,10 +60,10 @@ class Nexi
 		
 		$this->merchantServerUrl = Domain::$name;
 		
-		if (!empty($ordine) && isset($ordine["cart_uid"]))
+		if (!empty($ordine) && isset($ordine["banca_token"]))
 		{
-			$this->okUrl = "grazie-per-l-acquisto-carta?cart_uid=".$ordine["cart_uid"];
-			$this->notifyUrl = Url::getRoot()."notifica-pagamento-carta?cart_uid=".$ordine["cart_uid"];
+			$this->okUrl = "grazie-per-l-acquisto-carta?banca_token=".$ordine["banca_token"];
+			$this->notifyUrl = Url::getRoot()."notifica-pagamento-carta?banca_token=".$ordine["banca_token"];
 			$this->errorUrl = "ordini/annullapagamento/nexi/".$ordine["banca_token"];
 			$this->ordine = $ordine;
 		}
