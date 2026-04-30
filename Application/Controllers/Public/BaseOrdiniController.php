@@ -619,9 +619,9 @@ class BaseOrdiniController extends BaseController
 					$p->paypal_mail = Parametri::$paypalSeller;
 				}
 				
-				$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?banca_token=".$clean["banca_token"]);
+				$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?banca_token=".$data["ordine"]["banca_token"]);
 				$p->add_field('cancel_return', $this->baseUrl."/ordini/annullapagamento/paypal/".$data["ordine"]["banca_token"]);
-				$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento?banca_token=".$clean["banca_token"]);
+				$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento?banca_token=".$data["ordine"]["banca_token"]);
 				$p->add_field('item_name', "Ordine #".$data["ordine"]["id_o"]);
 				$p->add_field('item_number', $data["ordine"]["banca_token"]);
 				$p->add_field('amount', $data["ordine"]["total"]);
