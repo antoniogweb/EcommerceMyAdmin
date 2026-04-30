@@ -391,7 +391,7 @@ class MailordiniModel extends GenericModel
 							"inviata"	=>	1,
 						));
 						
-						if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO" || $tipologia == "ORDINE" || $tipologia == "ORDINE NEGOZIO" || $tipologia == "FORGOT" || $tipologia == "LINK_CONFERMA" || $tipologia == "INVIO_CODICE_TWO" || $tipologia == "RETARGETING")
+						if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO" || $tipologia == "ORDINE" || $tipologia == "ORDINE NEGOZIO" || $tipologia == "FORGOT" || $tipologia == "LINK_CONFERMA" || $tipologia == "INVIO_CODICE_TWO")
 							$mo->setValue("testo", "");
 						
 						$mo->update($mo->lId);
