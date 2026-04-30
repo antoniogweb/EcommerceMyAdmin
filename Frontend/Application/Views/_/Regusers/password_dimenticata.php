@@ -13,10 +13,9 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 <div class="form_reset_password">
 	<p class="uk-text-muted"><?php echo gtext("Inserisci l'indirizzo e-mail con il quale ti sei registrato al sito,<br />ti invieremo una mail attraverso la quale potrai ottenere una nuova password");?></p>
 
-	<?php echo $notice;?>
-
 	<div class="uk-child-width-1-3@m uk-text-center uk-flex uk-flex-center">
 		<form class="form_richiedi_nuova_password" action="<?php echo $this->baseUrl."/password-dimenticata";?>" method="POST">
+			<?php echo $notice;?>
 			<div class="uk-margin">
 				<label class="uk-form-label uk-text-bold"><?php echo gtext("Indirizzo e-mail");?> *</label>
 				<div class="uk-form-controls">
