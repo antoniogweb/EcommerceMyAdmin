@@ -72,9 +72,9 @@ class LogaccountModel extends GenericModel
 			"azione"	=>	sanitizeAll($azione)
 		);
 		
-		// if ((int)User::$id)
-		// 	$where["id_user"] = (int)User::$id;
-		// else
+		if ((int)User::$id)
+			$where["id_user"] = (int)User::$id;
+		else
 			$where["email"] = sanitizeAll($email);
 			
 		$numeroInPausa = self::$instance->clear()->where($where)->aWhere(array(
@@ -97,9 +97,9 @@ class LogaccountModel extends GenericModel
 			"azione"	=>	sanitizeAll($azione)
 		);
 		
-		// if ((int)User::$id)
-		// 	$where["id_user"] = (int)User::$id;
-		// else
+		if ((int)User::$id)
+			$where["id_user"] = (int)User::$id;
+		else
 			$where["email"] = sanitizeAll($email);
 		
 		$idUltimoSuccesso = self::$instance->clear()->where($where)->orderBy("id_log_account desc")->forUpdate()->field("id_log_account");

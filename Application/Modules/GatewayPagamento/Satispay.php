@@ -71,8 +71,8 @@ class Satispay
 		
 		if (!empty($ordine) && isset($ordine["cart_uid"]))
 		{
-			$this->okUrl = Url::getRoot()."grazie-per-l-acquisto-satispay?cart_uid=".$ordine["cart_uid"]."&banca_token=".$ordine["banca_token"];
-			$this->notifyUrl = Url::getRoot()."notifica-pagamento-satispay?cart_uid=".$ordine["cart_uid"]."&banca_token=".$ordine["banca_token"]."&payment_id={uuid}";
+			$this->okUrl = Url::getRoot()."grazie-per-l-acquisto-satispay?banca_token=".$ordine["banca_token"];
+			$this->notifyUrl = Url::getRoot()."notifica-pagamento-satispay?banca_token=".$ordine["banca_token"]."&payment_id={uuid}";
 			$this->errorUrl = Url::getRoot()."ordini/errorepagamento/".$ordine["banca_token"];
 			$this->ordine = $ordine;
 		}

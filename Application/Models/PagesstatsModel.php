@@ -68,8 +68,8 @@ class PagesstatsModel extends GenericModel {
 		$this->values["data_stat"] = date("Y-m-d");
 		$this->values["uid_stats"] = sanitizeAll($this->getStatsUid());
 		
-		if (v("ecommerce_attivo") && isset(User::$cart_uid) && User::$cart_uid)
-			$this->values["cart_uid"] = sanitizeAll(User::$cart_uid);
+		if (v("ecommerce_attivo") && isset(User::$tracking_uid) && User::$tracking_uid)
+			$this->values["cart_uid"] = sanitizeAll(User::$tracking_uid);
 		
 		$this->insert();
     }
@@ -117,8 +117,11 @@ class PagesstatsModel extends GenericModel {
 		if( !session_id() )
 			session_start();
 		
+		if (!User::$tracking_uid)
+			return array();
+		
 		$idPages = $this->clear()->select("distinct id_page")->where(array(
-			"cart_uid"	=>	sanitizeAll(User::$cart_uid),
+			"cart_uid"	=>	sanitizeAll(User::$tracking_uid),
 		))->orderBy("id_page_stat desc")->limit(5)->toList("id_page")->send();
 		
 		if (isset($_SESSION["idPages"]) && is_array($_SESSION["idPages"]))
@@ -201,6 +204,9 @@ class PagesstatsModel extends GenericModel {
 		if (App::$operazioneSchedulata)
 			return;
 		
+		if (!User::$tracking_uid)
+			return;
+		
 		createFolderFull("Logs/".self::$folder);
 		
 		$token = randomToken();
@@ -208,7 +214,7 @@ class PagesstatsModel extends GenericModel {
 		$fullPath = ROOT."/Logs/".self::$folder."/".$token.".log";
 		
 		$json = json_encode(array(
-			"cart_uid"	=>	User::$cart_uid,
+			"cart_uid"	=>	User::$tracking_uid,
 			"id_page"	=>	$idPage,
 			"id_c"		=>	$idC,
 			"idM"		=>	$idM,

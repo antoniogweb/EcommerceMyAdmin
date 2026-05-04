@@ -2987,4 +2987,16 @@ class OrdiniModel extends FormModel {
 		
 		return $this;
 	}
+	
+	public static function getCartUidFromBancaToken()
+	{
+		if (isset($_GET["banca_token"]))
+		{
+			$clean['banca_token'] = sanitizeAll($_GET["banca_token"]);
+			
+			$oModel = new OrdiniModel();
+			
+			$_GET["cart_uid"] = $oModel->clear()->select("cart_uid")->where(array("banca_token" => $clean['banca_token']))->field("cart_uid");
+		}
+	}
 }

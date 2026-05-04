@@ -46,6 +46,7 @@ class VariabiliModel extends GenericModel {
 		"codice_fbk" => "",
 		"codice_fbk_noscript" => "",
 		"codice_js_ok_cookie" => "",
+		"salva_satistiche_visualizzazione_pagina"	=>	"",
 		"salva_satistiche_visualizzazione_pagina_su_file" => "",
 	);
 	
@@ -567,7 +568,7 @@ class VariabiliModel extends GenericModel {
 		"imposta_allo_stato_se_tutte_righe_sono_evase"	=> "", // se impostato al codice di uno stato (ex completed), imposta a quello stato se tutte le righe sono state segnate come evase
 		"imposta_allo_stato_se_non_tutte_righe_sono_evase"	=>	"", // se impostato al codice di uno stato (ex pending), imposta a quello stato se non tutte le righe sono state segnate come evase
 		"attiva_da_consegna_in_ordine"	=>	0, // se impostato su 1, solo in admin attiva il campo data_consegna e il rispettivo filtro
-		"check_accesso_admin_token_ordine_frontend_da"	=>	0, // per tutti gli ordini maggiorni di check_accesso_admin_token_ordine_frontend_da, controlla anche admin_token
+		"check_accesso_admin_token_ordine_frontend_da"	=>	1, // per tutti gli ordini maggiorni o uguali di check_accesso_admin_token_ordine_frontend_da, controlla anche admin_token
 		"attiva_gestione_commessi"		=>	0, // se impostato su 1, attiva la gestione dei commessi nell'ordine
 		"function_pdf_ordine"			=>	"", // funzione per generare il PDF dell'ordine. Se lasciato vuoto, utilizza le funzioni standard dell'ecommerce
 		"oggetto_ordine_ricevuto"	=>	"Ordine N° [ID_ORDINE]",
@@ -908,8 +909,8 @@ class VariabiliModel extends GenericModel {
 		"email_log_pagamento_da_analizzare"	=>	"", // Indirizzi email (divisi da virgola) a cui inviare un avviso via mail se l'ecommerce riceve un pagamento su un ordine che non si trova in uno stato pending (ex un pagamento su un ordine annullato)
 		### LOG ##
 		"tempo_log_ore"				=>	240, // numero ORE!! dopo il quale vengono eliminati i log temporanei dalla tabella log_piattaforma
-		"tempo_log_permanenti_giorni"	=>	0, // numero GIORNI dopo il quale vengono eliminati i log permanenti dalla tabella log_piattaforma. Se impostato a 0, i log permanenti non vengono mai eliminati
-		"tempo_log_gateway_response"	=>	0, // numero GIORNI dopo il quale vengono eliminati i log contententi gli esiti dei pagamenti (inviati dal gateway di pagamento dopo il pagamento con carta). Se impostato a 0, i log contententi gli esiti dei pagamenti non vengono mai eliminati
+		"tempo_log_permanenti_giorni"	=>	180, // numero GIORNI dopo il quale vengono eliminati i log permanenti dalla tabella log_piattaforma. Se impostato a 0, i log permanenti non vengono mai eliminati
+		"tempo_log_gateway_response"	=>	180, // numero GIORNI dopo il quale vengono eliminati i log contententi gli esiti dei pagamenti (inviati dal gateway di pagamento dopo il pagamento con carta). Se impostato a 0, i log contententi gli esiti dei pagamenti non vengono mai eliminati
 		### CALENDARIO CHIUSURE ##
 		"attiva_calendario_chiusure"	=>	0, // se impostato, attiva il calendario delle chiusure
 		### FASCE ##
@@ -1388,5 +1389,10 @@ class VariabiliModel extends GenericModel {
 	public static function mostraAssistenteFrontend()
 	{
 		return (v("attiva_richieste_ai") && v("attiva_assistente_frontend") && v("mostra_assistente_frontend")) ? true : false;
+	}
+	
+	public static function attivaTrackingUid()
+	{
+		return (v("salva_satistiche_visualizzazione_pagina_su_file") || v("salva_satistiche_visualizzazione_pagina")) ? true : false;
 	}
 }
