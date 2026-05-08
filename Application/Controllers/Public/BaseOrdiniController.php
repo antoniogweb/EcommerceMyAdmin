@@ -323,7 +323,9 @@ class BaseOrdiniController extends BaseController
 		
 		$logSubmit = new LogModel();
 		$logSubmit->setSvuota(0);
-
+		$logSubmit->setCartUid($this->request->get('cart_uid','','sanitizeAll'));
+		$logSubmit->write("LOG_IPN_CARTA", "OK",true);
+		
 		if (PagamentiModel::gateway()->validate())
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
@@ -392,9 +394,6 @@ class BaseOrdiniController extends BaseController
 		{
 			MailordiniModel::inviaMailLog("ERRORE IPN", "<pre>".PagamentiModel::gateway()->scriviLog(false, false)."</pre>", "IPN CARTA");
 		}
-
-		$logSubmit->setCartUid($this->request->get('cart_uid','','sanitizeAll'));
-		$logSubmit->write("LOG_IPN_CARTA", "OK",true);
 	}
 	
 	public function modifica($id_o = 0, $cart_uid = 0, $admin_token = "token")
