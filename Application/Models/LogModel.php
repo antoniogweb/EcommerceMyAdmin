@@ -119,7 +119,7 @@ class LogModel extends GenericModel
 	
 	public function getLog($tipo, $cardUid)
 	{
-		return $this->clear()->select("full_log")->where(array(
+		return $this->clear()->restore(true)->select("full_log")->aWhere(array(
 			"tipo"		=>	sanitizeAll($tipo),
 			"cart_uid"	=>	sanitizeAll($cardUid),
 		))->orderBy("id_log desc")->limit(1)->first();

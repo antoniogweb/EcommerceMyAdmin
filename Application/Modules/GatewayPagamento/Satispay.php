@@ -192,6 +192,14 @@ class Satispay
 	{
 		$log = new LogModel();
 		
+		if (!isset($_GET["payment_id"]))
+			return false;
+		
+		$log->sWhere(array(
+			"full_log like ?",
+			array(sanitizeAll((string)$_GET["payment_id"]))
+		))->save();
+		
 		$ultimoLog = $log->getLog("SATISPAY_CREA_PAGAMENTO", $this->ordine["cart_uid"]);
 		
 		if (!empty($ultimoLog))
