@@ -197,7 +197,7 @@ class Satispay
 		
 		$log->sWhere(array(
 			"full_log like ?",
-			array(sanitizeAll((string)$_GET["payment_id"]))
+			array("%".addBackSlashLike(sanitizeAll((string)$_GET["payment_id"]))."%")
 		))->save();
 		
 		$ultimoLog = $log->getLog("SATISPAY_CREA_PAGAMENTO", $this->ordine["cart_uid"]);
