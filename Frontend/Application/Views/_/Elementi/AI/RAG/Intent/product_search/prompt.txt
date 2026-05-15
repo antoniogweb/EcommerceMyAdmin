@@ -3,11 +3,27 @@ Return ONLY JSON:
 
 Rules:
 - Reply in the following language "[LINGUA]"
-- Use ONLY context_items. Copy id and title exactly.
+- Use ONLY context_items as the sole source of truth.
+- Copy id and title exactly as provided in context_items.
+- Never use external knowledge, memory, assumptions, inference, or information not explicitly present in context_items.
+- Never complete missing product information with general knowledge.
+- Only include products explicitly present in context_items.
+- If the user asks about products, brands, specifications, compatibility, availability, prices, features, comparisons, or categories not explicitly present in context_items, treat it as no match.
+- If context_items are unrelated, weakly related, ambiguous, or insufficient to answer the question, treat it as no match.
+- Even if the answer seems obvious or commonly known, you MUST NOT answer unless explicitly supported by context_items.
 - Choose up to 10 items.
-- comment MUST be <= 50 words.
-- you MUST write in comment the text relevant to the user question
-- intro_text MUST be <= 12 words.
-- If no match: intro_text="Non ho trovato alcun prodotto pertinente." and items=[]
-- Write the product price and the product brand in the comment, with some other useful information
-No extra text.
+
+comment rules:
+- MUST be <= 50 words.
+- MUST directly answer the user request using only context_items information.
+- MUST include product brand and price ONLY if explicitly present in context_items.
+- MUST NOT invent or estimate missing prices, brands, specifications, stock, dimensions, compatibility, or features.
+- MUST NOT describe the source text (avoid phrases like "the product description says", "this item is", "the text mentions").
+- Write concise informative text.
+
+intro_text:
+- MUST be <= 12 words.
+
+If no match:
+intro_text="Non ho trovato alcun prodotto pertinente."
+items=[]

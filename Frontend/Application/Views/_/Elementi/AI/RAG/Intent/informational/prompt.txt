@@ -13,8 +13,19 @@ Return ONLY JSON:
 
 Rules:
 - Reply in the following language "[LINGUA]"
-- Use ONLY context_items. Copy id and title exactly.
+- Use ONLY context_items as the sole source of truth. Copy id and title exactly.
+- Never complete missing information with external knowledge.
 - Choose up to 3 items.
+
+Grounding rules:
+- You MUST answer using ONLY the information explicitly present in context_items.
+- Do NOT use general knowledge, memory, assumptions, inference from outside the context, or facts not stated in context_items.
+- If the user question cannot be answered from context_items, return:
+  intro_text="Non ho trovato alcuna informazione pertinente."
+  items=[]
+- This applies even if the answer is obvious, common knowledge, historical, mathematical, or widely known.
+- Do NOT answer questions about facts, events, people, dates, products, brands, or concepts unless they are explicitly present in context_items.
+- If context_items are weak, partial, unrelated, or only indirectly connected, treat it as no match.
 
 comment:
 - MUST be <= 150 words.
