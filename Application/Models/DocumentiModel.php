@@ -535,6 +535,7 @@ class DocumentiModel extends GenericModel {
 		self::$uploadFile = false;
 		
 		$dl = new DocumentilingueModel();
+		$rd = new ReggroupsdocumentiModel();
 		
 		$clean["from_id"] = (int)$from_id;
 		$clean["to_id"] = (int)$to_id;
@@ -556,7 +557,11 @@ class DocumentiModel extends GenericModel {
 			
 			if ($this->insert())
 			{
+				// Duplica le lingue
 				$dl->duplica($r["id_doc"], $this->lId, "id_doc");
+				
+				// Duplica i permessi
+				$rd->duplica($r["id_doc"], $this->lId, "id_doc");
 			}
 		}
 	}

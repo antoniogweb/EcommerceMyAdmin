@@ -95,6 +95,8 @@ class BaseOrdiniController extends BaseController
 	//ritorno da paypal
 	public function ipn()
 	{
+		OrdiniModel::getCartUidFromBancaToken();
+		
 		$this->createLogFolder();
 		
 		// $fp = fopen(ROOT.'/Logs/ipn.txt', 'a+');
@@ -105,7 +107,7 @@ class BaseOrdiniController extends BaseController
 		
 		$logSubmit = new LogModel();
 		$logSubmit->setSvuota(0);
-		$logSubmit->setCartUid($this->request->post('item_number','','sanitizeAll'));
+		$logSubmit->setCartUid($this->request->get('cart_uid','','sanitizeAll'));
 		$logSubmit->write("LOG_IPN_PAYPAL", "OK",true);
 
 		$this->clean();
@@ -128,7 +130,8 @@ class BaseOrdiniController extends BaseController
 		if ($p->validate_ipn())
 		{
 			$clean['payment_status'] = $this->request->post('payment_status','','sanitizeAll');
-			$clean['cart_uid'] = $this->request->post('item_number','','sanitizeAll');
+			// $clean['cart_uid'] = $this->request->post('item_number','','sanitizeAll');
+			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
 			$clean['codiceTransazione'] = $this->request->post('txn_id','','sanitizeAll');
 			$clean['amount'] = $this->request->post('mc_gross','0','none');
 			
@@ -254,6 +257,8 @@ class BaseOrdiniController extends BaseController
 	
 	public function ipnklarna()
 	{
+		OrdiniModel::getCartUidFromBancaToken();
+		
 		if (OrdiniModel::ordineNonEsistenteONonPending())
 			die("");
 		
@@ -264,6 +269,8 @@ class BaseOrdiniController extends BaseController
 	
 	public function ipnsatispay()
 	{
+		OrdiniModel::getCartUidFromBancaToken();
+		
 		if (OrdiniModel::ordineNonEsistenteONonPending())
 			die("");
 		
@@ -302,6 +309,8 @@ class BaseOrdiniController extends BaseController
 	//IPN carta
 	public function ipncarta()
 	{
+		OrdiniModel::getCartUidFromBancaToken();
+		
 		$this->createLogFolder();
 		
 		// $fp = fopen(ROOT.'/Logs/.ipncarta.txt', 'a+');
@@ -314,7 +323,9 @@ class BaseOrdiniController extends BaseController
 		
 		$logSubmit = new LogModel();
 		$logSubmit->setSvuota(0);
-
+		$logSubmit->setCartUid($this->request->get('cart_uid','','sanitizeAll'));
+		$logSubmit->write("LOG_IPN_CARTA", "OK",true);
+		
 		if (PagamentiModel::gateway()->validate())
 		{
 			$clean['cart_uid'] = $this->request->get('cart_uid','','sanitizeAll');
@@ -383,9 +394,6 @@ class BaseOrdiniController extends BaseController
 		{
 			MailordiniModel::inviaMailLog("ERRORE IPN", "<pre>".PagamentiModel::gateway()->scriviLog(false, false)."</pre>", "IPN CARTA");
 		}
-
-		$logSubmit->setCartUid($this->request->get('cart_uid','','sanitizeAll'));
-		$logSubmit->write("LOG_IPN_CARTA", "OK",true);
 	}
 	
 	public function modifica($id_o = 0, $cart_uid = 0, $admin_token = "token")
@@ -610,11 +618,11 @@ class BaseOrdiniController extends BaseController
 					$p->paypal_mail = Parametri::$paypalSeller;
 				}
 				
-				$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?cart_uid=".$clean["cart_uid"]);
-				$p->add_field('cancel_return', $this->baseUrl."/ordini/annullapagamento/paypal/".$clean["cart_uid"]);
-				$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento");
+				$p->add_field('return', $this->baseUrl."/grazie-per-l-acquisto?banca_token=".$data["ordine"]["banca_token"]);
+				$p->add_field('cancel_return', $this->baseUrl."/ordini/annullapagamento/paypal/".$data["ordine"]["banca_token"]);
+				$p->add_field('notify_url', $this->baseUrl."/notifica-pagamento?banca_token=".$data["ordine"]["banca_token"]);
 				$p->add_field('item_name', "Ordine #".$data["ordine"]["id_o"]);
-				$p->add_field('item_number', $data["ordine"]["cart_uid"]);
+				$p->add_field('item_number', $data["ordine"]["banca_token"]);
 				$p->add_field('amount', $data["ordine"]["total"]);
 				$p->add_field('currency_code', 'EUR');
 
@@ -802,7 +810,7 @@ class BaseOrdiniController extends BaseController
 		App::createLogFolder();
 	}
 	
-	public function annullapagamento($tipo = "", $cartuUid = "")
+	public function annullapagamento($tipo = "", $bancaToken = "")
 	{
 		$this->clean();
 		
@@ -819,9 +827,9 @@ class BaseOrdiniController extends BaseController
 // 			fclose($fp);
 // 		}
 		
-		$clean['cart_uid'] = sanitizeAll($cartuUid);
+		$clean['banca_token'] = sanitizeAll($bancaToken);
 		
-		$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+		$res = $this->m("OrdiniModel")->clear()->where(array("banca_token" => $clean['banca_token']))->send();
 		
 		if (count($res) > 0 && OrdiniModel::isStatoPending($res[0]["orders"]["stato"]))
 		{
@@ -883,6 +891,8 @@ class BaseOrdiniController extends BaseController
 	
 	public function ritornodapaypal()
 	{
+		OrdiniModel::getCartUidFromBancaToken();
+		
 		$this->createLogFolder();
 		
 // 		$fp = fopen(ROOT.'/Logs/back_paypal.txt', 'a+');
@@ -902,7 +912,7 @@ class BaseOrdiniController extends BaseController
 		
 		if (isset($_GET["item_number"]) || isset($_GET["tx"]))
 		{
-			$clean['cart_uid'] = $this->request->get('item_number','','sanitizeAll');
+			// $clean['cart_uid'] = $this->request->get('item_number','','sanitizeAll');
 			$clean['txn_id'] = $this->request->get('tx','','sanitizeAll');
 			$clean['st'] = $this->request->get('st','','sanitizeAll');
 			
@@ -914,7 +924,7 @@ class BaseOrdiniController extends BaseController
 		}
 		else
 		{
-			$clean['cart_uid'] = $this->request->post('item_number','','sanitizeAll');
+			// $clean['cart_uid'] = $this->request->post('item_number','','sanitizeAll');
 			$clean['txn_id'] = $this->request->post('tx','','sanitizeAll');
 			$clean['st'] = $this->request->post('st','','sanitizeAll');
 			
@@ -925,10 +935,12 @@ class BaseOrdiniController extends BaseController
 				$clean['st'] = $this->request->post('payment_status','','sanitizeAll');
 		}
 		
+		$res = array();
+		
 		if (isset($_GET['cart_uid']))
 			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => sanitizeAll($_GET['cart_uid'])))->send();
-		else
-			$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
+		// else
+		// 	$res = $this->m("OrdiniModel")->clear()->where(array("cart_uid" => $clean['cart_uid']))->send();
 		
 // 		$data["conclusa"] = false;
 		
@@ -957,6 +969,8 @@ class BaseOrdiniController extends BaseController
 	
 	public function ritornodacarta()
 	{
+		OrdiniModel::getCartUidFromBancaToken();
+		
 		$this->createLogFolder();
 		
 		// $fp = fopen(ROOT.'/Logs/back_carta.txt', 'a+');
@@ -1034,6 +1048,8 @@ class BaseOrdiniController extends BaseController
 	
 	protected function ritornoda($tipo)
 	{
+		OrdiniModel::getCartUidFromBancaToken();
+		
 		$this->createLogFolder();
 		
 		$logSubmit = new LogModel();

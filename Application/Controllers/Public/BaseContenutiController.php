@@ -2284,7 +2284,7 @@ class BaseContenutiController extends BaseController
 	{
 		$this->clean();
 		
-		$this->m("DocumentiModel")->clear()->select("distinct documenti.id_doc,documenti.*")->where(array(
+		$this->m("DocumentiModel")->clear()->restore(true)->select("distinct documenti.id_doc,documenti.*")->aWhere(array(
 			"id_doc"	=>	(int)$id,
 		));
 		
@@ -2354,7 +2354,7 @@ class BaseContenutiController extends BaseController
 				))->rowNumber())
 				{
 					$time = time() + v("durata_carrello_wishlist_coupon");
-					setcookie("cart_uid",$clean["cart_uid"],$time,"/");
+					Cookie::set("cart_uid", $clean["cart_uid"], $time, "/", true, 'Lax');
 				
 					$this->redirect("checkout");
 				}
@@ -2415,16 +2415,13 @@ class BaseContenutiController extends BaseController
 			
 			if (!$allCookies)
 			{
-// 				$cookieTecnici = App::getCookieTecnici();
-// 				
-// 				foreach ($_COOKIE as $name => $value)
-// 				{
-// 					if (!isset($cookieTecnici[$name]))
-// 					{
-// 						setcookie($name,"OK",(time()-3600),"/",ltrim(DOMAIN_NAME,"www"));
-// 						unset($_COOKIE[$name]);
-// 					}
-// 				}
+				$cookieProfilazione = App::getCookieProfilazione();
+				
+				foreach ($cookieProfilazione as $name => $struct)
+				{
+					setcookie($name,"OK",(time()-3600),"/");
+					unset($_COOKIE[$name]);
+				}
 			}
 			
 			App::settaCookiesGdpr($allCookies);

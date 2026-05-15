@@ -617,6 +617,10 @@ class OrdiniModel extends FormModel {
 					$this->creaSincronizzaClienteSeAssente($this->lId);
 			}
 			
+			// Log del cambio stato
+			if ($res && v("attiva_log_cambio_stato"))
+				OrdinistatiModel::g()->aggiungi($this->lId, $this->values["stato"] ?? 'pending');
+			
 			if (v("usa_transactions"))
 				$this->db->commit();
 			
@@ -708,6 +712,16 @@ class OrdiniModel extends FormModel {
 		}
 	}
 	
+	public function pUpdate($id = null, $where = null)
+	{
+		$res = parent::pUpdate($id, $where);
+		
+		if ($res && isset($id) && v("attiva_log_cambio_stato") && isset($this->values["stato"]))
+			OrdinistatiModel::g()->aggiungi($id, $this->values["stato"]);
+		
+		return $res;
+	}
+	
 	public function update($id = null, $where = null)
 	{
 		$clean["id"] = (int)$id;
@@ -743,6 +757,10 @@ class OrdiniModel extends FormModel {
 					
 					self::$isDeletable = null;
 				}
+				
+				// Log del cambio stato
+				if (v("attiva_log_cambio_stato") && isset($this->values["stato"]))
+					OrdinistatiModel::g()->aggiungi($id, $this->values["stato"]);
 				
 				if (!OrdiniModel::$ordineImportato)
 				{
@@ -2968,5 +2986,17 @@ class OrdiniModel extends FormModel {
 		}
 		
 		return $this;
+	}
+	
+	public static function getCartUidFromBancaToken()
+	{
+		if (isset($_GET["banca_token"]))
+		{
+			$clean['banca_token'] = sanitizeAll($_GET["banca_token"]);
+			
+			$oModel = new OrdiniModel();
+			
+			$_GET["cart_uid"] = $oModel->clear()->select("cart_uid")->where(array("banca_token" => $clean['banca_token']))->field("cart_uid");
+		}
 	}
 }

@@ -816,6 +816,27 @@ class OrdiniController extends BaseController {
 		$this->load("vedi_script_pixel");
 	}
 	
+	public function storicostati($idO)
+	{
+		if (!v("attiva_log_cambio_stato"))
+			$this->responseCode(403);
+		
+		$this->model("OrdinistatiModel");
+		
+		$data["stati"] = $this->m["OrdinistatiModel"]->clear()
+			->select("orders_stati.data_creazione,stati_ordine.titolo,adminusers.username,stati_ordine.codice")
+			->left("stati_ordine")->on("stati_ordine.codice = orders_stati.stato")
+			->left("adminusers")->on("orders_stati.id_admin = adminusers.id_user")
+			->where(array(
+				"orders_stati.id_o"	=>	(int)$idO,
+			))->orderBy("orders_stati.id_o_stato")->send();
+		
+		// echo $this->m["OrdinistatiModel"]->getQuery();die();
+		
+		$this->append($data);
+		$this->load("vedi_storico");
+	}
+	
 	public function settanonpagato($id_o)
 	{
 		if (!v("permetti_annullare_data_pagamento_e_annullamento"))

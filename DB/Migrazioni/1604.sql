@@ -1,0 +1,1 @@
+UPDATE `opzioni` SET `valore` = 'https://developers.google.com/static/crawling/ipranges/special-crawlers.json' WHERE codice = 'URL_IP_BOT' and titolo = 'GoogleSpecialCrawlers';

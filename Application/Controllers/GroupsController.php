@@ -36,6 +36,9 @@ class GroupsController extends BaseController
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		if (!v("attiva_gruppi_admin"))
+			$this->responseCode(403);
+		
 		$this->tabella = gtext("gruppi amministratori",true);
 	}
 
