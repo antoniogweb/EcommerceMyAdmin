@@ -22,6 +22,18 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+// cookie di sessione
+if (session_status() === PHP_SESSION_NONE)
+{
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+}
+
 date_default_timezone_set('Europe/Rome');
 
 // Params::$logFunctionBeforeRedirect = array("F","checkPreparedStatement");
