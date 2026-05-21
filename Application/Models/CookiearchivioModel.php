@@ -66,7 +66,9 @@ class CookiearchivioModel extends GenericModel
 			"attivo"	=>	1,
 		))->orderBy("dominio,titolo")->send(false);
 		
-		if (count($cookies) > 0)
+		$cookieProfilazione = App::getCookieProfilazione();
+		
+		if (count($cookies) > 0 || count($cookieProfilazione) > 0)
 		{
 			ob_start();
 			include tpf("Elementi/Cookie/elenco_cookie.php");

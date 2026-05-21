@@ -121,6 +121,18 @@ class App
 		return false;
 	}
 	
+	public static function getCookieProfilazione()
+	{
+		return array(
+				"tracking_uid"	=>	array(
+					"Fornitore"	=>	Parametri::$nomeNegozio,
+					"Descrizione"=>	gtext("Utilizzato, previo consenso, per collegare le pagine prodotto visualizzate e suggerire prodotti visti anche da altri utenti con interessi simili."),
+					"Durata"		=>	v("durata_statistiche_cookie"),
+					"usato"			=>	VariabiliModel::attivaTrackingUid(),
+				)
+			);
+	}
+	
 	public static function getCookieTecnici()
 	{
 		if (empty(self::$elencoCookieTecnici))
@@ -138,7 +150,7 @@ class App
 					"Fornitore"	=>	Parametri::$nomeNegozio,
 					gtext("Tipologia")	=>	gtext("Tecnici"),
 					gtext("Necessario")	=>	gtext("Sì"),
-					"Descrizione"=>	gtext("Utilizzato per il mantenimento degli articoli nel carrello"),
+					"Descrizione"=>	gtext("Utilizzato per il mantenimento degli articoli nel carrello e per la gestione tecnica del processo d’acquisto"),
 					"Durata"		=>	v("durata_carrello_wishlist_coupon"),
 					"usato"				=>	v("ecommerce_attivo"),
 				),

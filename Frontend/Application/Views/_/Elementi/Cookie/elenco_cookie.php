@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<?php $cookieTecnici = App::getCookieTecnici();?>
+<?php $cookieTecnici = App::getCookieTecnici(); ?>
 
 <h3><?php echo gtext("Elenco dei cookie tecnici (necessari)");?></h3>
 
@@ -43,6 +43,14 @@
 			</tr>
 		</thead>
 		<tbody>
+			<?php foreach ($cookieProfilazione as $c => $struct) { ?>
+			<tr>
+				<td><?php echo $c;?></td>
+				<td><?php echo CookiearchivioModel::durata(time() + $struct["Durata"]);?></td>
+				<td><?php echo $struct["Fornitore"];?></td>
+				<td><?php echo $struct["Descrizione"];?></td>
+			</tr>
+			<?php } ?>
 			<?php foreach ($cookies as $c) { ?>
 			<tr>
 				<td><?php echo $c["titolo"];?></td>

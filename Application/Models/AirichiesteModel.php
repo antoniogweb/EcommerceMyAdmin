@@ -786,6 +786,9 @@ class AirichiesteModel extends GenericModel
 							TraduzioniModel::rLingua();
 						}
 						
+						if (count($contents) <= 0)
+							$intent = "other";
+						
 						break;
 					case "informational":
 						$emb = new EmbeddingsModel();
@@ -812,6 +815,9 @@ class AirichiesteModel extends GenericModel
 							TraduzioniModel::rLingua();
 						}
 						
+						if (count($contents) <= 0)
+							$intent = "other";
+						
 						break;
 					case "policy_qa":
 						$p = PagesModel::g(false)->where(array(
@@ -821,6 +827,9 @@ class AirichiesteModel extends GenericModel
 						TraduzioniModel::sLingua($lingua, "front");
 						$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 1, 0);
 						TraduzioniModel::rLingua();
+						
+						if (count($contents) <= 0)
+							$intent = "other";
 						
 						break;
 					case "other":

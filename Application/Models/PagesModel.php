@@ -2937,7 +2937,7 @@ class PagesModel extends GenericModel {
 		}
 		
 		// Aggiungi i prodotti visti dagli altri utenti
-		if (!$accessorio && (v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori") || $forzaVistiAltriClienti))
+		if (!$accessorio && (v("numero_massimo_prodotti_correlati_visti_da_altri_visitatori") || $forzaVistiAltriClienti) && App::cookieTerziApprovati())
 		{
 			$idC = (int)CategoriesModel::getIdCategoriaDaSezione("prodotti");
 			

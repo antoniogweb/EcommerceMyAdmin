@@ -24,11 +24,13 @@ if (!defined('EG')) die('Direct access not allowed!');
 class User
 {
 	public static $id = 0;
+	public static $idAdmin = 0;
 	public static $email = 0;
 	public static $logged = false;
 	public static $token = '';
 	public static $name = '';
 	public static $cart_uid;
+	public static $tracking_uid = '';
 	public static $wishlist_uid;
 	public static $coupon;
 	public static $groups = array();
@@ -285,5 +287,19 @@ class User
 			$twoFactorModel = SessioniregtwoModel::getInstance("uidtr", v("autenticazione_due_fattori_front_durata_cookie"), "/", v("autenticazione_due_fattori_durata_verifica_front"), v("autenticazione_due_fattori_numero_cifre_front"), new RegusersModel());
 		
 		return $twoFactorModel;
+	}
+	
+	public static function setTrackingUid()
+	{
+		if (isset($_COOKIE["tracking_uid"]) && $_COOKIE["tracking_uid"] && (int)strlen($_COOKIE["tracking_uid"]) === 32 && ctype_alnum((string)$_COOKIE["tracking_uid"]))
+		{
+			User::$tracking_uid = sanitizeAll((string)$_COOKIE["tracking_uid"]);
+		}
+		else
+		{
+			User::$tracking_uid = randomToken();
+			$time = time() + v("durata_statistiche_cookie");
+			Cookie::set("tracking_uid", User::$tracking_uid, $time, "/", true, 'Lax');
+		}
 	}
 }

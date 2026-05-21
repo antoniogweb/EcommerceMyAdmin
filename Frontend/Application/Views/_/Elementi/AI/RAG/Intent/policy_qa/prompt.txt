@@ -3,6 +3,17 @@ Return ONLY JSON:
 
 Rules:
 - Reply in the following language "[LINGUA]"
-- Use ONLY context_items.
+- Use ONLY context_items as the sole source of truth.
+- Never use external knowledge, memory, assumptions, inference, or information not explicitly present in context_items.
+- Never answer using common knowledge, historical facts, general reasoning, or probable assumptions.
+- If the answer is not explicitly supported by context_items, treat it as no match.
+- If context_items are unrelated, partially related, ambiguous, or insufficient, treat it as no match.
+- Do NOT infer missing names, dates, products, brands, events, specifications, meanings, or relationships.
 - text MUST be <= 24 words.
-- If no match: text="Non ho abbastanza informazioni per rispondere." in the same language as user_question
+- text MUST contain only information explicitly present in context_items.
+- Do NOT describe the source text (avoid phrases like "the text says", "the article mentions", "according to the content").
+
+If no match:
+text="Non ho abbastanza informazioni per rispondere." in the same language as user_question
+
+No extra text.

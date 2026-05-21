@@ -98,6 +98,7 @@ class Route
 		'ordini,setstato',
 		'ordini,vediresponse',
 		'ordini,vediscriptpixel',
+		'ordini,storicostati',
 		'ordini,stampapdf',
 		'ordini,inviapdf',
 		'ordini,inviipdf',

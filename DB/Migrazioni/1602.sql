@@ -1,0 +1,1 @@
+ALTER TABLE orders_stati ADD INDEX idx_id_o_id_o_stato_stato (id_o, id_o_stato, stato);
