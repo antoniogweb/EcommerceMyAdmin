@@ -2299,7 +2299,7 @@ class BaseContenutiController extends BaseController
 			{
 				$path = $this->m("DocumentiModel")->getFolderBasePath("filename")."/images/documenti/".trim($documento['filename']);
 				
-				if (trim($documento['filename']) && file_exists($path))
+				if (trim($documento['filename']) && @is_file($path))
 				{
 					// Salva il download
 					$idDownload = $this->m("DocumentidownloadModel")->salvaDownload((int)$id);
