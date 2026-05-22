@@ -178,6 +178,22 @@ class NotificheModel extends GenericModel {
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
 				);
+			
+			if (!v("carica_header_security"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare gli header di sicurezza X-Content-Type-Options, X-Frame-Options e Strict-Transport-Security. Variabile carica_header_security"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+			
+			if (!v("carica_header_csp") || v("carica_header_csp_report_only"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare l' header di sicurezza CSP e in modalità non Report Only. Variabile carica_header_csp e carica_header_csp_report_only"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
 		}
 		
 		return $notifiche;

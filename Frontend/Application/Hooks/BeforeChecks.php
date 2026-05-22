@@ -141,6 +141,20 @@ require(LIBRARY."/Application/Include/output.php");
 require(LIBRARY."/Application/Include/tema.php");
 require_once(LIBRARY."/Frontend/Application/Hooks/BeforeChecksLegacy.php");
 
+// Headers
+if (v("carica_header_security") || v("carica_header_csp"))
+{
+	Domain::setPath();
+	
+	// X-Content-Type-Options, X-Frame-Options e Strict-Transport-Security
+	if (v("carica_header_security"))
+		include(tpf("Elementi/Headers/security.php"));
+	
+	// CSP
+	if (v("carica_header_csp"))
+		include(tpf("Elementi/Headers/csp.php"));
+}
+
 if (!v("traduzione_frontend"))
 	Lang::$edit = false;
 

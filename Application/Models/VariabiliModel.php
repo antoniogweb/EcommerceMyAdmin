@@ -940,6 +940,10 @@ class VariabiliModel extends GenericModel {
 		"elimina_file_conteggio_query_ogni_minuti"	=>	10, // elimina i file delle query ogni X minuti (solo se salva_conteggio_query_su_file = 1)
 		### UTILITY ##
 		"esporta_xls_PhpOffice"	=>	0, // se impostato ad 1, quando esporti un file excel esporta un file XLS vero con PhpOffice
+		### HEADERS ##
+		"carica_header_security"=>	0, // se impostato su 1, imposta gli header X-Content-Type-Options, X-Frame-Options e Strict-Transport-Security
+		"carica_header_csp"		=>	0, // se impostato su 1, imposta l'header CSP
+		"carica_header_csp_report_only"		=>	1, // se impostato su 1, imposta l'header CSP con "Content-Security-Policy-Report-Only"
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
