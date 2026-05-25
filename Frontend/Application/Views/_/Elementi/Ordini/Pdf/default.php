@@ -298,7 +298,7 @@
 			<?php echo OrdinipdfModel::getNominativo($ordine);?>
 		</div>
 		<div class="testata_item testata_item_linea testata_item_left">
-			<?php echo htmlentitydecode($ordine["indirizzo"]);?>
+			<?php echo $ordine["indirizzo"] ? htmlentitydecode($ordine["indirizzo"]) : "&nbsp;";?>
 		</div>
 		<div class="testata_item testata_item_linea testata_item_right">
 			<b><?php echo gtext("Tel");?>:</b> <?php echo $ordine["telefono"];?>
@@ -321,12 +321,13 @@
 				<?php if ($ordine["nazione_spedizione"]) { ?>
 				<span class="uk-text-emphasis"><?php echo nomeNazione($ordine["nazione_spedizione"]);?>
 				<?php } ?>
-				<?php } ?>
+				
 				<?php if (trim($ordine["telefono_spedizione"])) { ?>
-			<span class="uk-text-emphasis"><?php echo gtext("Tel");?>:</span> <?php echo $ordine["telefono_spedizione"];?><br />
-			<?php } ?>
-			<?php if (trim($ordine["destinatario_spedizione"])) { ?>
-				<span class="uk-text-emphasis"><b><?php echo gtext("Destinatario");?>:</b></span> <?php echo $ordine["destinatario_spedizione"];?><br />
+					<span class="uk-text-emphasis"><?php echo gtext("Tel");?>:</span> <?php echo $ordine["telefono_spedizione"];?><br />
+				<?php } ?>
+				<?php if (trim($ordine["destinatario_spedizione"])) { ?>
+					<span class="uk-text-emphasis"><b><?php echo gtext("Destinatario");?>:</b></span> <?php echo $ordine["destinatario_spedizione"];?><br />
+				<?php } ?>
 			<?php } ?>
 		</div>
 	</div>
