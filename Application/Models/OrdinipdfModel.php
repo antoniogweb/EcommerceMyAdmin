@@ -132,7 +132,7 @@ class OrdinipdfModel extends GenericModel
 			
 			$folder = LIBRARY . "/media/Pdf";
 			
-			if (is_array($values) && !empty($values) && isset($values["id_o_pdf"]) && $values["id_o_pdf"] && file_exists($folder."/".$values["filename"]))
+			if (is_array($values) && !empty($values) && isset($values["id_o_pdf"]) && $values["id_o_pdf"] && is_file($folder."/".$values["filename"]))
 			{
 				$email = htmlentitydecode($ordine["email"]);
 				

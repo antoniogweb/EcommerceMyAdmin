@@ -1045,13 +1045,14 @@ class OrdiniModel extends FormModel {
 				$mail->Subject  = Parametri::$nomeNegozio." - $oggetto";
 				$mail->IsHTML(true);
 				
-				$mail->SMTPOptions = array(
-					'ssl' => array(
-						'verify_peer' => false,
-						'verify_peer_name' => false,
-						'allow_self_signed' => true
-					)
-				);
+				if (!ImpostazioniModel::$valori["smtp_verify_tls"])
+					$mail->SMTPOptions = array(
+						'ssl' => array(
+							'verify_peer' => false,
+							'verify_peer_name' => false,
+							'allow_self_signed' => true
+						)
+					);
 				
 				// Svuoto tutte le mail BCC
 				$mail->ClearBCCs();
@@ -1112,7 +1113,7 @@ class OrdiniModel extends FormModel {
 						"id_o"	=>	(int)$ordine["id_o"]
 					))->record();
 					
-					if (!empty($fattura) && file_exists(LIBRARY."/media/Fatture/".$fattura["filename"]))
+					if (!empty($fattura) && is_file(LIBRARY."/media/Fatture/".$fattura["filename"]))
 					{
 						$mail->AddAttachment(LIBRARY."/media/Fatture/".$fattura["filename"]);
 					}
