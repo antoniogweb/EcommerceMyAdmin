@@ -194,6 +194,14 @@ class NotificheModel extends GenericModel {
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
 				);
+			
+			if (!v("attiva_csrf_form"))
+				$notifiche[] = array(
+					"testo"	=>	gtext("Attivare controllo CSRF nei form. Variabile attiva_csrf_form"),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
 		}
 		
 		return $notifiche;

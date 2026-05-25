@@ -252,7 +252,6 @@ class VariabiliModel extends GenericModel {
 		"carrello_monoprodotto"		=>	0,
 		"abilita_log_piattaforma"	=>	0,
 		"attiva_modali"				=>	0,
-		"mostra_gestione_antispam"	=>	0,
 		"estensioni_upload_immagini_testi"	=>	'png,jpg,jpeg,gif,svg', // estensioni ammesse nell'upload di immagini nella tabella testi
 		"dimensioni_upload_contenuti"	=>	6000000, // dimensione massima degli upload nei contenuti
 		"dimensioni_upload_file_generici"	=>	10000000, // dimensione massima degli upload nei file generici (nell'area di testo)
@@ -743,6 +742,9 @@ class VariabiliModel extends GenericModel {
 		## CAPTCHA ##
 		"campo_captcha_form"		=>	"cognome",
 		"disattiva_antispam_checkout"	=>	0, // se impostato su 1,non ci sarà l'antispam al checkout
+		"mostra_gestione_antispam"	=>	0,
+		## CSRF ##
+		"attiva_csrf_form"	=>	0, // se impostato su 1, attiva il check CSRF sui form
 		## AGENTI ##
 		"attiva_agenti"	=>	0, // se impostato ad 1, attiva la gestione degli agenti
 		"manda_mail_ordine_ad_agenti"	=>	1, // se impostato su 1, manda una mail di resoconto anche all'agente

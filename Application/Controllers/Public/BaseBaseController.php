@@ -829,6 +829,9 @@ class BaseBaseController extends Controller
 		if( !session_id() )
 			session_start();
 		
+		// Genera il CSRF
+		$this->getCsrfToken();
+		
 		// Sistema maiuscole
 		$this->correggiValoriPostFormRegistrazioneEOrdine();
 		
@@ -887,6 +890,9 @@ class BaseBaseController extends Controller
 		
 		if (isset($_POST['updateAction']))
 		{
+			// Controlla CSRF
+			$this->checkCsrf();
+			
 			if (CaptchaModel::getModulo()->checkRegistrazione())
 			{
 				if ($this->m('RegusersModel')->checkConditions('insert'))
@@ -1060,6 +1066,9 @@ class BaseBaseController extends Controller
 		if( !session_id() )
 			session_start();
 		
+		// Genera il CSRF
+		$this->getCsrfToken();
+		
 		FeedbackModel::gIdProdotto();
 		
 		if ($this->m('PagesModel')->checkTipoPagina($id, "FORM_FEEDBACK"))
@@ -1112,6 +1121,9 @@ class BaseBaseController extends Controller
 					Output::setJson();
 					$this->clean();
 				}
+				
+				// Controlla CSRF
+				$this->checkCsrf();
 				
 				if (CaptchaModel::getModulo()->check())
 				{
@@ -1342,10 +1354,36 @@ class BaseBaseController extends Controller
 		
 	}
 	
+	// Genera il CSRF
+	protected function getCsrfToken()
+	{
+		if (v("attiva_csrf_form") && empty($_SESSION['csrf_token']))
+			$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+	}
+	
+	// Controlla CSRF
+	protected function checkCsrf()
+	{
+		if (v("attiva_csrf_form"))
+		{
+			if (
+				empty($_POST['csrf_token']) ||
+				empty($_SESSION['csrf_token']) ||
+				!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
+			)
+			{
+				$this->responseCode(403);
+			}
+		}
+	}
+	
 	protected function inviaMailFormContatti($id)
 	{
 		if( !session_id() )
 			session_start();
+		
+		// Genera il CSRF
+		$this->getCsrfToken();
 		
 		Domain::$currentUrl =  $this->getCurrentUrl();
 		
@@ -1401,6 +1439,9 @@ class BaseBaseController extends Controller
 				Output::setJson();
 				$this->clean();
 			}
+			
+			// Controlla CSRF
+			$this->checkCsrf();
 			
 			if (CaptchaModel::getModulo()->check())
 			{

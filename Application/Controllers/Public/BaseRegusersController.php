@@ -659,6 +659,9 @@ class BaseRegusersController extends BaseController
 	
 	public function forgot()
 	{
+		// Genera il CSRF
+		$this->getCsrfToken();
+		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("richiedi una nuova password"));
 		
 		foreach (Params::$frontEndLanguages as $l)
@@ -677,6 +680,9 @@ class BaseRegusersController extends BaseController
 			
 			if (isset($_POST['invia']))
 			{
+				// Controlla CSRF
+				$this->checkCsrf();
+				
 				if (CaptchaModel::getModulo()->checkRegistrazione())
 				{
 					if (isset($_POST['username']))
