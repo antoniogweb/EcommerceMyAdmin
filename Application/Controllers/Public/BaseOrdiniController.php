@@ -1017,7 +1017,7 @@ class BaseOrdiniController extends BaseController
 					VariabiliModel::ottieniVariabili();
 				}
 				
-				if (v("check_ipn_al_ritorno_carta") && OrdiniModel::isStatoPending($res[0]["orders"]["stato"]) && !OrdiniresponseModel::responsoPresente($clean['cart_uid']))
+				if (v("check_ipn_al_ritorno_carta") && OrdiniModel::isStatoPending($res[0]["orders"]["stato"]) && OrdiniresponseModel::responsoPresente($clean['cart_uid']) <= 2)
 				{
 					sleep(3);
 					
