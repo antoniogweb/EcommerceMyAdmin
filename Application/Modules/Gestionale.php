@@ -204,7 +204,7 @@ class Gestionale
 			
 			$ordine["valore_iva"] = IvaModel::g(false)->getValore($idIva);
 			
-			$campiRighe = "id_r,righe.data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte,gtin,mpn,id_page,righe.acconto,righe.acconto,righe.id_riga_tipologia,prodotto_generico,sconto,um,note";
+			$campiRighe = "id_r,righe.data_creazione,title as titolo,attributi,codice,immagine,peso,quantity,price as prezzo,price_ivato as prezzo_ivato,prezzo_intero,prezzo_intero_ivato,prezzo_finale,prezzo_finale_ivato,gift_card,id_iva,iva,fonte,gtin,mpn,id_page,righe.acconto,righe.acconto,righe.id_riga_tipologia,prodotto_generico,sconto,um,note,title_lingua,righe.id_o";
 			
 			if ($campiAggiuntiviRighe)
 				$campiRighe .= ",$campiAggiuntiviRighe";
@@ -230,6 +230,8 @@ class Gestionale
 			{
 				$temp = $r;
 				$temp["codice_iva"] = $this->codiceGestionale(new IvaModel, $r["id_iva"]);
+				$temp["titolo_pdf"] = OrdiniModel::tipoOrdine($r["id_o"]) != "W" ? PagesModel::getTitleRigaBackend($r) : PagesModel::getTitleRigaFrontend($r);
+				unset($temp["title_lingua"]);
 				
 				$arrayRighe[] = $temp;
 			}
@@ -389,7 +391,7 @@ class Gestionale
 				"importo"	=>	$ordine["total"],
 			));
 			
-// 			print_r($ordine);die();
+			// print_r($ordine);die();
 			
 			return $ordine;
 		}

@@ -401,13 +401,13 @@
 			<?php echo $riga["codice"];?>
 		</div>
 		<div class="corpo_descrizione corpo_riga_dinamica">
-			<?php echo $riga["titolo"];?>
+			<?php echo $riga["titolo_pdf"] ?? $riga["titolo"];?>
 			<?php if ($riga["attributi"]) { ?>
 			<br /><?php echo $riga["attributi"];?>
 			<?php } ?>
 		</div>
 		<div class="corpo_um" corpo_riga_dinamica>
-			PZ
+			<?php echo gtext("PZ");?>
 		</div>
 		<div class="corpo_qta corpo_riga_dinamica">
 			<?php echo $riga["quantity"];?>
