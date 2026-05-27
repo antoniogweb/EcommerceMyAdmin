@@ -14,6 +14,8 @@
 			</div>
 		</div>
 		
+		<?php include(tpf("Elementi/Pagine/campo-csrf.php")); ?>
+		
 		<input autocomplete="new-password" class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1" type="submit" name="" value="<?php echo gtext("Accedi");?>" />
 	</fieldset>
-</form> 
+</form>

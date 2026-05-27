@@ -73,7 +73,10 @@ class BaseBaseController extends Controller
 		Domain::setPath();
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
-			
+		
+		// Genera il CSRF
+		$this->getCsrfToken();
+		
 		if (!$this->isNotFoundAndCached($action))
 		{
 			$this->setTabelleCacheAggiuntive($model, $controller, $queryString, $application, $action);
@@ -829,9 +832,6 @@ class BaseBaseController extends Controller
 		if( !session_id() )
 			session_start();
 		
-		// Genera il CSRF
-		$this->getCsrfToken();
-		
 		// Sistema maiuscole
 		$this->correggiValoriPostFormRegistrazioneEOrdine();
 		
@@ -1065,9 +1065,6 @@ class BaseBaseController extends Controller
 		
 		if( !session_id() )
 			session_start();
-		
-		// Genera il CSRF
-		$this->getCsrfToken();
 		
 		FeedbackModel::gIdProdotto();
 		
@@ -1357,6 +1354,9 @@ class BaseBaseController extends Controller
 	// Genera il CSRF
 	protected function getCsrfToken()
 	{
+		if( !session_id() )
+			session_start();
+		
 		if (v("attiva_csrf_form") && empty($_SESSION['csrf_token']))
 			$_SESSION['csrf_token'] = randomToken();
 	}
@@ -1381,9 +1381,6 @@ class BaseBaseController extends Controller
 	{
 		if( !session_id() )
 			session_start();
-		
-		// Genera il CSRF
-		$this->getCsrfToken();
 		
 		Domain::$currentUrl =  $this->getCurrentUrl();
 		

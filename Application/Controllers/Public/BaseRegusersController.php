@@ -93,9 +93,6 @@ class BaseRegusersController extends BaseController
 	
 	public function login()
 	{
-		// Genera il CSRF
-		$this->getCsrfToken();
-		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Login'));
 		
 		$data['headerClass'] = "";
@@ -575,9 +572,6 @@ class BaseRegusersController extends BaseController
 		if (!v("conferma_registrazione"))
 			$this->redirect("");
 		
-		// Genera il CSRF
-		$this->getCsrfToken();
-		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("richiedi l'invio del link di conferma dell'account");
 		
 		foreach (Params::$frontEndLanguages as $l)
@@ -671,9 +665,6 @@ class BaseRegusersController extends BaseController
 	
 	public function forgot()
 	{
-		// Genera il CSRF
-		$this->getCsrfToken();
-		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("richiedi una nuova password"));
 		
 		foreach (Params::$frontEndLanguages as $l)
