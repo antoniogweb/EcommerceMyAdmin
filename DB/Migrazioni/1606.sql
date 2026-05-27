@@ -1,0 +1,1 @@
+INSERT INTO `segnaposto` (`titolo`, `codice`, `metodo`, `variabile`, `attivo`, `id_order`, `hook`, `visibile`, `argomenti`, `ordine`) VALUES ("Link al PDF dell'ordine in area riservata del cliente (variabile utilizzabile solo in caso di email su Ordine)", 'URL_PDF_ORDINE', 'gLinkPDFOrdine', '', '1', '21', '', '1', '', '1');

@@ -2542,6 +2542,16 @@ class OrdiniModel extends FormModel {
 		return Domain::$publicUrl.$linguaUrl."resoconto-acquisto/".$record["id_o"]."/".$record["cart_uid"]."/".$record["admin_token"]."?n=y";
 	}
 	
+	public function gLinkPDFOrdine($lingua, $record)
+	{
+		if (!isset($record["id_o"]))
+			return "";
+		
+		$linguaUrl = $lingua ? "/$lingua/" : "/";
+		
+		return Domain::$publicUrl.$linguaUrl."pdf-ordine/".$record["id_o"]."/".$record["cart_uid"]."/".$record["admin_token"];
+	}
+	
 	public static function analizzaErroriCheckout($strutturaErrori)
 	{
 		$mostraCampiFatturazione = $mostraCampiSpedizione = $mostraCampiIndirizzoFatturazione = false;
