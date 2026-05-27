@@ -926,6 +926,8 @@ class Device
 		, 'SkyWatch'
 		, 'Instapaper'
 		, 'ClaudeBot'
+		, 'GeedoShopProductFinder'
+		, 'SleepBot'
 	);
 	
 	public static function getBotName()
