@@ -1681,7 +1681,7 @@ function syncMailchimpKeys($data, $apiKey, $listId)
     $result = curl_exec($ch);
     
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    // curl_close($ch);
 	
     return $httpCode;
 }
