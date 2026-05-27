@@ -569,6 +569,9 @@ class BaseRegusersController extends BaseController
 		if (!v("conferma_registrazione"))
 			$this->redirect("");
 		
+		// Genera il CSRF
+		$this->getCsrfToken();
+		
 		$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("richiedi l'invio del link di conferma dell'account");
 		
 		foreach (Params::$frontEndLanguages as $l)
@@ -587,6 +590,9 @@ class BaseRegusersController extends BaseController
 			
 			if (isset($_POST['invia']))
 			{
+				// Controlla CSRF
+				$this->checkCsrf();
+				
 				if (CaptchaModel::getModulo()->checkRegistrazione())
 				{
 					if (isset($_POST['username']))
