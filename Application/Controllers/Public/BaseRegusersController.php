@@ -93,6 +93,9 @@ class BaseRegusersController extends BaseController
 	
 	public function login()
 	{
+		// Genera il CSRF
+		$this->getCsrfToken();
+		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Login'));
 		
 		$data['headerClass'] = "";
@@ -115,6 +118,9 @@ class BaseRegusersController extends BaseController
 		
 		if (isset($_POST['username']) and isset($_POST['password']))
 		{
+			// Controlla CSRF
+			$this->checkCsrf();
+			
 			if (!checkMail($_POST['username']) || trim($_POST['username']) == '')
 				$this->responseCode(400);
 			

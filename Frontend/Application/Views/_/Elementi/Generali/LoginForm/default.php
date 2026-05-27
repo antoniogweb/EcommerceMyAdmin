@@ -24,6 +24,8 @@ if (!isset($classePulsanteLogin))
 			</div>
 		</div>
 		
+		<?php include(tpf("Elementi/Pagine/campo-csrf.php")); ?>
+		
 		<div>
 			<div class="<?php echo $classePulsanteLogin;?> spinner uk-hidden" uk-spinner="ratio: .70"></div>
 			<input autocomplete="new-password" class="<?php echo $classePulsanteLogin;?> btn_submit_form" type="submit" name="login" value="<?php echo gtext("Accedi");?>" />
