@@ -42,6 +42,16 @@ class CidrfilterModel extends GenericModel
 		return parent::insert();
 	}
 	
+	public static function getIpBotFolder()
+	{
+		return Cidrfilter::getIpBotFolder();
+	}
+	
+	public static function checkIpBotFolder()
+	{
+		return Cidrfilter::checkIpBotFolder();
+	}
+	
 	public static function ipInWhiteList($ip)
 	{
 		if (!isset(self::$whiteListCidrs))
@@ -60,37 +70,39 @@ class CidrfilterModel extends GenericModel
 	
 	public static function ipInCidr($ip, $cidr)
 	{
-		if (strpos($cidr, '/') === false) return false;
+		return Cidrfilter::ipInCidr($ip, $cidr);
 		
-		[$net, $prefixStr] = explode('/', $cidr, 2);
-		$prefix = (int)$prefixStr;
-
-		$ipBin  = @inet_pton($ip);
-		$netBin = @inet_pton($net);
-		if ($ipBin === false || $netBin === false) return false;
-
-		$len = strlen($ipBin);
-		if ($len !== strlen($netBin)) return false; // mix v4/v6
-
-		$maxPrefix = $len * 8;
-		if ($prefix < 0 || $prefix > $maxPrefix) return false;
-
-		$fullBytes = intdiv($prefix, 8);
-		$remBits   = $prefix % 8;
-
-		if ($fullBytes > 0)
-		{
-			if (substr($ipBin, 0, $fullBytes) !== substr($netBin, 0, $fullBytes))
-				return false;
-		}
-		
-		if ($remBits === 0) return true;
-
-		$mask = (0xFF << (8 - $remBits)) & 0xFF;
-
-		$ipByte  = ord($ipBin[$fullBytes]);
-		$netByte = ord($netBin[$fullBytes]);
-
-		return (($ipByte & $mask) === ($netByte & $mask));
+// 		if (strpos($cidr, '/') === false) return false;
+// 		
+// 		[$net, $prefixStr] = explode('/', $cidr, 2);
+// 		$prefix = (int)$prefixStr;
+// 
+// 		$ipBin  = @inet_pton($ip);
+// 		$netBin = @inet_pton($net);
+// 		if ($ipBin === false || $netBin === false) return false;
+// 
+// 		$len = strlen($ipBin);
+// 		if ($len !== strlen($netBin)) return false; // mix v4/v6
+// 
+// 		$maxPrefix = $len * 8;
+// 		if ($prefix < 0 || $prefix > $maxPrefix) return false;
+// 
+// 		$fullBytes = intdiv($prefix, 8);
+// 		$remBits   = $prefix % 8;
+// 
+// 		if ($fullBytes > 0)
+// 		{
+// 			if (substr($ipBin, 0, $fullBytes) !== substr($netBin, 0, $fullBytes))
+// 				return false;
+// 		}
+// 		
+// 		if ($remBits === 0) return true;
+// 
+// 		$mask = (0xFF << (8 - $remBits)) & 0xFF;
+// 
+// 		$ipByte  = ord($ipBin[$fullBytes]);
+// 		$netByte = ord($netBin[$fullBytes]);
+// 
+// 		return (($ipByte & $mask) === ($netByte & $mask));
 	}
 }

@@ -181,6 +181,14 @@ class IpfilterModel extends GenericModel
 		$ifModel = new IpfilterModel();
 		$cidrModel = new CidrfilterModel();
 		
+		// Cartella di LOG
+		$pathLogs = CidrfilterModel::getIpBotFolder();
+		
+		if (is_dir($pathLogs))
+			self::eliminaCartella($pathLogs);
+		
+		createFolderFull("Logs/IpBot", LIBRARY);
+		
 		foreach ($codici as $url => $titolo)
 		{
 			if ($log)
@@ -238,6 +246,12 @@ class IpfilterModel extends GenericModel
 					{
 						$cidrModel->setValues($cidrValues);
 						$cidrModel->insert();
+						
+						// Salvo in un file di LOG
+						$fileName = randomToken();
+						$path = $pathLogs."/$fileName.txt";
+						
+						FilePutContentsAtomic($path, json_encode($cidrModel->values));
 					}
 				}
 			}

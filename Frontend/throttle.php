@@ -57,8 +57,18 @@ if (!isset($retryDate) && isset($botName) && trim($botName))
 	
 	if (@is_file($f))
 	{
-		$retryDate = trim((string)file_get_contents($f));
-		$throttleFile = $f;
+		require_once (LIBRARY . DS . 'Application/Models/Cidrfilter.php');
+		
+		$ipInWhiteList = false;
+		
+		if (isset($ip) && trim($ip))
+			$ipInWhiteList = Cidrfilter::ipInWhiteList(trim($ip));
+		
+		if (!$ipInWhiteList)
+		{
+			$retryDate = trim((string)file_get_contents($f));
+			$throttleFile = $f;
+		}
 	}
 }
 
