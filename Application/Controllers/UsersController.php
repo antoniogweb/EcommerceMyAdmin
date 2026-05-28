@@ -60,6 +60,9 @@ class UsersController extends BaseController {
 			
 			if (!ControllersModel::checkAccessoAlController(array($controller)))
 				$this->responseCode(403);
+			
+			// Hook dopo login
+			$this->hookAfterLoginAdmin();
 		}
 		
 		$this->helper('Menu','users','panel/main');

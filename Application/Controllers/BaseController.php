@@ -119,8 +119,7 @@ class BaseController extends Controller
 				$this->responseCode(403);
 			
 			// Hook dopo login
-			if (v("hook_after_login_admin"))
-				callFunction(v("hook_after_login_admin"), $this, v("hook_after_login_admin"));
+			$this->hookAfterLoginAdmin();
 		}
 		
 		// check CSRF
@@ -188,6 +187,13 @@ class BaseController extends Controller
 		// Controlla che tutti i prodotti abbiano la combinazione canonical
 		if (v("ecommerce_attivo") && VariabiliModel::combinazioniLinkVeri())
 			CombinazioniModel::g(false)->checkCanonicalAll();
+	}
+	
+	protected function hookAfterLoginAdmin()
+	{
+		// Hook dopo login
+		if (v("hook_after_login_admin"))
+			callFunction(v("hook_after_login_admin"), $this, v("hook_after_login_admin"));
 	}
 	
 	// Genera il CSRF
