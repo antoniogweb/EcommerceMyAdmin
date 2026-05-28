@@ -48,15 +48,12 @@ class Cidrfilter
 			
 			self::$whiteListCidrs = array();
 			
-			$files = glob(self::getIpBotFolder() . "/*.txt");
+			$cachePath = self::getIpBotFolder() . "/cacheIpBot.json";
 			
-			foreach ($files as $file)
+			if (is_file($cachePath))
 			{
-				$contenuto = @file_get_contents($file);
-				$dati = json_decode($contenuto, true);
-				
-				if (isset($dati["cidr"]))
-					self::$whiteListCidrs[] = $dati["cidr"];
+				$contenuto = @file_get_contents($cachePath);
+				self::$whiteListCidrs = json_decode($contenuto, true);
 			}
 		}
 		

@@ -189,6 +189,8 @@ class IpfilterModel extends GenericModel
 		
 		createFolderFull("Logs/IpBot", LIBRARY);
 		
+		$cidrsArray = array();
+		
 		foreach ($codici as $url => $titolo)
 		{
 			if ($log)
@@ -247,6 +249,8 @@ class IpfilterModel extends GenericModel
 						$cidrModel->setValues($cidrValues);
 						$cidrModel->insert();
 						
+						$cidrsArray[] = $cidrModel->values["cidr"];
+						
 						// Salvo in un file di LOG
 						$fileName = randomToken();
 						$path = $pathLogs."/$fileName.txt";
@@ -255,6 +259,8 @@ class IpfilterModel extends GenericModel
 					}
 				}
 			}
+			
+			FilePutContentsAtomic($pathLogs."/cacheIpBot.json", json_encode($cidrsArray));
 			
 			if (v("usa_transactions"))
 				$ifModel->db->commit();
