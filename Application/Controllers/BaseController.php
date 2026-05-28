@@ -190,6 +190,32 @@ class BaseController extends Controller
 			CombinazioniModel::g(false)->checkCanonicalAll();
 	}
 	
+	// Genera il CSRF
+	protected function getCsrfTokenForm()
+	{
+		if( !session_id() )
+			session_start();
+		
+		if (v("attiva_csrf_form") && empty($_SESSION['csrf_token']))
+			$_SESSION['csrf_token'] = randomToken();
+	}
+	
+	// Controlla CSRF
+	protected function checkCsrfForm()
+	{
+		if (v("attiva_csrf_form"))
+		{
+			if (
+				empty($_POST['csrf_token']) ||
+				empty($_SESSION['csrf_token']) ||
+				!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
+			)
+			{
+				$this->responseCode(403);
+			}
+		}
+	}
+	
 	protected function creaSessioneAdmin()
 	{
 		if (!isset($this->s["admin"]))

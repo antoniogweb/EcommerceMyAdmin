@@ -8,6 +8,8 @@
 		<input class="form-control" name='username' type="text" autofocus="" placeholder="Username">
 		<input class="form-control" name='password' type="password" placeholder="Password">
 		
+		<?php include(tpf("Elementi/Pagine/campo-csrf.php")); ?>
+		
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 	</form>
 </div>

@@ -114,6 +114,9 @@ class UsersController extends BaseController {
 		if (!empty($_POST))
 			IpcheckModel::check("POST_ADMIN");
 		
+		// Genera il CSRF
+		$this->getCsrfTokenForm();
+		
 		$data['action'] = $this->baseUrl."/".$this->loginFormAction;
 		$data['notice'] = null;
 		
@@ -121,6 +124,9 @@ class UsersController extends BaseController {
 		
 		if (isset($_POST['username']) && isset($_POST['password']))
 		{
+			// Controlla CSRF
+			$this->checkCsrfForm();
+			
 			$username = trim($_POST['username']);
 			
 			if (
