@@ -448,7 +448,13 @@ class DocumentiModel extends GenericModel {
 	public function checkExtAndMimeTypeFull($extractPath)
 	{
 		$AllowedExtensionsArray = explode(",", v("estensioni_accettate_documenti"));
-		$AllowedMimeTypesArray = v("mime_type_accettati_documenti") ? explode(",", v("mime_type_accettati_documenti")) : array();
+		
+		$mimeTypeAccettati = v("mime_type_accettati_documenti");
+		
+		if (!$mimeTypeAccettati && v("estensioni_accettate_documenti"))
+			$mimeTypeAccettati = Files_Upload::getMimeTypesFromExtensions(v("estensioni_accettate_documenti"));
+			
+		$AllowedMimeTypesArray = $mimeTypeAccettati ? explode(",", $mimeTypeAccettati) : array();
 		
 		$files = new RecursiveIteratorIterator(
 			new RecursiveDirectoryIterator($extractPath, RecursiveDirectoryIterator::SKIP_DOTS),
