@@ -85,6 +85,17 @@ if (defined("APPS"))
 
 VariabiliModel::ottieniVariabili();
 
+// Importa routes modulo acqusti
+if (v("mostra_modulo_acquisti"))
+{
+	require_once(LIBRARY."/Config/RouteAcquisti.php");
+	
+	foreach (RouteAcquisti::$allowed as $routeAcquisti)
+	{
+		Route::$allowed[] = $routeAcquisti;
+	}
+}
+
 if (v("hash_function_tokens_in_db"))
 	Params::$functionToHashAccessTokens = v("hash_function_tokens_in_db");
 
@@ -916,6 +927,12 @@ Helper_List::$filtersFormLayout = array(
 			"type"	=>	"select",
 			"attributes"	=>	array(
 				"class"	=>	"form-control",
+			),
+		),
+		"ragione_sociale"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+				"placeholder"	=>	"Cerca..",
 			),
 		),
 	),

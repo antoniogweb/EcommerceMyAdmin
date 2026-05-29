@@ -1,0 +1,1 @@
+alter TABLE `fornitori` add telefono_referente varchar(255) not null default '', add cellulare_referente varchar(255) not null default '', add `email_referente` VARCHAR(255) NOT NULL DEFAULT '';

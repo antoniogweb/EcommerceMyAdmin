@@ -63,6 +63,17 @@ class App
 				"classe"	=>	"help_ecommerce",
 				"ordine"	=>	20,
 			),
+			"acquisti"	=>	array(
+				"titolo"	=>	"Acquisti",
+				"link"		=>	'panel/main/acquisti',
+				"icona"		=>	"fa-industry",
+				"condizioni"	=>	array(
+					"attiva_modulo_acquisti"	=>	1,
+					"mostra_modulo_acquisti"	=>	1,
+				),
+				"classe"	=>	"help_acquisti",
+				"ordine"	=>	25,
+			),
 			"marketing"	=>	array(
 				"titolo"	=>	"Marketing",
 				"link"		=>	'panel/main/marketing',

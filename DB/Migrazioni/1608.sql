@@ -1,0 +1,1 @@
+alter TABLE `fornitori` add codice_fiscale varchar(255) not null default '';

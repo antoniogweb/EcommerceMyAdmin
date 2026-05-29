@@ -32,7 +32,7 @@ class MarchiController extends BaseController
 	
 	public $sezionePannello = "ecommerce";
 	
-	function __construct($model, $controller, $queryString, $application, $action) {
+	public function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
