@@ -791,12 +791,15 @@ class AirichiesteModel extends GenericModel
 						
 						break;
 					case "informational":
+						
+						$embeddingQuery = trim($routingJson["embeddings_query"] ?? $messaggio);
+						
 						$emb = new EmbeddingsModel();
 						$emb = $emb->sWhere("not exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)")->innerPages($lingua)->aWhere(array(
 							"pages.attivo"	=>	"Y",
 						));
 						
-						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
+						$result = EmbeddingsModel::ricercaSemantica($embeddingQuery, $emb, $lingua, $numeroRisultati);
 						
 						$idPages = $result["pages"];
 						

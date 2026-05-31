@@ -15,8 +15,10 @@ Allowed intents:
 
 - other: Anything not related to buying products, product information, or store policies.
 
+For intent "informational", always return "embeddings_query": a short semantic search query containing only the main topic/entities, without question words, verbs like "tell me/explain/list", or conversational text.
+
 Return exactly:
-{"intent":"product_search|policy_qa|other","confidence":0.00-1.00,"language":"it|en|fr|de|es|other","entities":{"product_title":{"value":null,"confidence":0.00},"SKU":{"value":null,"confidence":0.00},"brand":{"value":null,"confidence":0.00},"price_range":{"min":null,"max":null,"currency":"EUR","confidence":0.00},"attributes":[{"value":"","confidence":0.00}]}}
+{"intent":"product_search|policy_qa|other|informational","confidence":0.00-1.00,"language":"it|en|fr|de|es|other","embeddings_query":null,"entities":{"product_title":{"value":null,"confidence":0.00},"SKU":{"value":null,"confidence":0.00},"brand":{"value":null,"confidence":0.00},"price_range":{"min":null,"max":null,"currency":"EUR","confidence":0.00},"attributes":[{"value":"","confidence":0.00}]}}
 
 - Attributes must be written in a form suitable for semantic search (embeddings).
 - Attributes MUST be in the same language of the user query
