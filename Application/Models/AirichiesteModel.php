@@ -791,7 +791,6 @@ class AirichiesteModel extends GenericModel
 						
 						break;
 					case "informational":
-						
 						$embeddingQuery = trim($routingJson["embeddings_query"] ?? $messaggio);
 						
 						$emb = new EmbeddingsModel();
