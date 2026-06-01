@@ -48,7 +48,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		))));
 		?>
 		<?php
-		$noCampoCsrf
+		$noCampoCsrf = true;
 		include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));
 		?>
 		
