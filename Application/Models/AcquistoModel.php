@@ -22,32 +22,44 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class FornitoriModel extends GenericModel
+trait AcquistoModel
 {
-	use AcquistoModel;
-	
-	public $campoTitolo = "ragione_sociale";
-
-	public function __construct() {
-		$this->_tables = 'fornitori';
-		$this->_idFields = 'id_fornitore';
-		
-		$this->_idOrder='id_order';
-		
-		$this->addStrongCondition("both",'checkNotEmpty',"ragione_sociale");
-		$this->addSoftCondition("both",'checkMail',"email,email_amministrativa,pec,email_referente");
-		
-		parent::__construct();
+	public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'numero_civico'	=>	array(
+					'labelString'	=>	'N°',
+				),
+				'p_iva'	=>	array(
+					'labelString'	=>	'P. IVA',
+				),
+				'nazione'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->selectNazione(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+			),
+		);
 	}
 	
-	public function relations() {
-		return array(
-			'ordini' => array("HAS_MANY", 'OrdiniacquistoModel', 'id_fornitore', null, "RESTRICT", "L'elemento ha degli ordini di acquisto collegati e non può essere eliminato"),
-		);
-    }
-    
-    public function filtroFornitore()
+	public static function getWhereClauseRicercaLibera($search, $table = "")
 	{
-		return $this->select("id_fornitore,ragione_sociale")->orderBy("ragione_sociale")->toList("id_fornitore", "ragione_sociale")->send();
+		$tokens = explode(" ", $search);
+		$andArray = array();
+		$iCerca = 8;
+		
+		foreach ($tokens as $token)
+		{
+			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+				"n!concat(".$table."ragione_sociale,' ',".$table."email,' ',".$table."p_iva,' ',".$table."telefono,' ',".$table."referente)"	=>	sanitizeAll(htmlentitydecode($token)),
+			);
+			
+			$iCerca++;
+		}
+		
+		return $andArray;
 	}
 }

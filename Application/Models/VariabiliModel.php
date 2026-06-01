@@ -1404,4 +1404,9 @@ class VariabiliModel extends GenericModel {
 	{
 		return (v("salva_satistiche_visualizzazione_pagina_su_file") || v("salva_satistiche_visualizzazione_pagina")) ? true : false;
 	}
+	
+	public static function acquistiAttivi()
+	{
+		return (v("attiva_modulo_acquisti") && v("mostra_modulo_acquisti")) ? true : false;
+	}
 }

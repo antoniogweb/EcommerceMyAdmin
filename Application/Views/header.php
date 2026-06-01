@@ -60,6 +60,9 @@
 	
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/functions.js?v=<?php echo rand(1,100000);?>"></script>
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/crud.js?v=<?php echo rand(1,100000);?>"></script>
+	<?php if (VariabiliModel::acquistiAttivi()) { ?>
+	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/acquisti.js?v=<?php echo rand(1,100000);?>"></script>
+	<?php } ?>
 	
 	<?php if ($this->controller == "airichieste") { ?>
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/airichieste.js?v=<?php echo rand(1,100000);?>"></script>

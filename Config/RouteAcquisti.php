@@ -27,5 +27,7 @@ class RouteAcquisti
 	public static $allowed = array(
 		'fornitori,main',
 		'fornitori,form',
+		'ordiniacquisto,main',
+		'ordiniacquisto,form',
 	);
 }
