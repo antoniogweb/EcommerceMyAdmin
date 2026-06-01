@@ -83,14 +83,23 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$fields = 'id_fornitore,data_ordine,numero_ordine,ragione_sociale,email,email_amministrativa,pec,codice_fiscale,p_iva,telefono,telefono_2,indirizzo,numero_civico,nazione,provincia,comune,cap,localita,referente,telefono_referente,cellulare_referente,email_referente';
+		$formFields = $fields =  'id_fornitore,data_ordine,numero_ordine,ragione_sociale,email,email_amministrativa,pec,codice_fiscale,p_iva,telefono,telefono_2,indirizzo,numero_civico,nazione,provincia,comune,cap,localita,referente,telefono_referente,cellulare_referente,email_referente';
 		
+		if ($queryType == "update")
+			$fields = str_replace("id_fornitore,", "", $fields);
+			
 		$this->m[$this->modelName]->setValuesFromPost($fields);
+		$this->m[$this->modelName]->fields = $formFields;
 		
 		if ($this->viewArgs["id_form_fornitore"] != "tutti")
 			$this->formDefaultValues = htmlentitydecodeDeep($this->m("FornitoriModel")->selectId((int)$this->viewArgs["id_form_fornitore"]));
 		
 		$this->formDefaultValues["numero_ordine"] = $this->m($this->modelName)->getNumero();
+		
+		if ($queryType == "update")
+		{
+			$this->disabledFields .= ",id_fornitore";
+		}
 		
 		parent::form($queryType, $id);
 	}
