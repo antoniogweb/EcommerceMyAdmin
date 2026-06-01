@@ -1104,7 +1104,12 @@ class BaseRegusersController extends BaseController
 		$this->m('RegusersModel')->setPasswordCondition();
 		
 		$id = (int)$this->s['registered']->status['id_user'];
-		if (isset($_POST['updateAction'])) {
+		if (isset($_POST['updateAction']))
+		{
+			// Controlla CSRF
+			if (!empty($_POST))
+				$this->checkCsrf();
+			
 			$pass = $this->s['registered']->getPassword();
 			if (passwordverify($_POST['old'], $pass))
 			{
@@ -1260,12 +1265,14 @@ class BaseRegusersController extends BaseController
 		
 // 		$this->m('RegusersModel')->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente";
 		
-		// Controlla CSRF
-		if (!empty($_POST))
-			$this->checkCsrf();
-		
 		if (v("permetti_modifica_account"))
+		{
+			// Controlla CSRF
+			if (!empty($_POST))
+				$this->checkCsrf();
+			
 			$this->m('RegusersModel')->updateTable('update',$this->iduser);
+		}
 		else
 			Html_Form::$forceStaticAttribute = "disabled";
 		
@@ -1423,7 +1430,13 @@ class BaseRegusersController extends BaseController
 		$this->m('SpedizioniModel')->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
 		
 		if (v("permetti_modifica_account"))
+		{
+			// Controlla CSRF
+			if (!empty($_POST))
+				$this->checkCsrf();
+			
 			$this->m('SpedizioniModel')->updateTable('insert,update',$clean["id"]);
+		}
 		else
 			Html_Form::$forceStaticAttribute = "disabled";
 		
