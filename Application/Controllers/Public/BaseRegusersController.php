@@ -1260,6 +1260,10 @@ class BaseRegusersController extends BaseController
 		
 // 		$this->m('RegusersModel')->fields = "nome,cognome,ragione_sociale,p_iva,codice_fiscale,indirizzo,cap,provincia,citta,telefono,username,tipo_cliente";
 		
+		// Controlla CSRF
+		if (!empty($_POST))
+			$this->checkCsrf();
+		
 		if (v("permetti_modifica_account"))
 			$this->m('RegusersModel')->updateTable('update',$this->iduser);
 		else

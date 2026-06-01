@@ -47,10 +47,15 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			"percorso"	=>	"Elementi/Ordini/IscrizioneNewsletter",
 		))));
 		?>
-		<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
+		<?php
+		$noCampoCsrf
+		include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));
+		?>
 		
 		<?php include(tpf("Regusers/form_accetto.php"));?>
 	<?php } ?>
+	
+	<?php include(tpf("Elementi/Pagine/campo-csrf.php")); ?>
 	
 	<div class="<?php echo $classeBoxPulsanteRegistrazione;?>">
 		<div class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-auto@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
