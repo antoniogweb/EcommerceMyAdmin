@@ -935,12 +935,6 @@ Helper_List::$filtersFormLayout = array(
 				"placeholder"	=>	"Cerca..",
 			),
 		),
-		"id_ordine_acquisto"	=>	array(
-			"attributes"	=>	array(
-				"class"	=>	"form-control",
-				"placeholder"	=>	"N° Ordine",
-			),
-		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(

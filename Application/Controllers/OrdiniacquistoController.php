@@ -22,12 +22,19 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["id_ordine_acquisto_filtro"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"N° Ordine",
+	),
+);
+
 class OrdiniacquistoController extends BaseController
 {
 	public $orderBy = "ragione_sociale";
 	
 	public $argKeys = array(
-		'id_ordine_acquisto:sanitizeAll'=>'tutti',
+		'id_ordine_acquisto_filtro:sanitizeAll'=>'tutti',
 		'id_form_fornitore:sanitizeAll'=>'tutti',
 		'ragione_sociale:sanitizeAll'=>'tutti',
 		'dal:sanitizeAll'=>'tutti',
@@ -59,7 +66,7 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->m[$this->modelName]->select("ordini_acquisto.*,DATE_FORMAT(data_ordine, '%Y') as anno_ordine")
 			->aWhere(array(
-				"id_ordine_acquisto"	=>	$this->viewArgs["id_ordine_acquisto"],
+				"id_ordine_acquisto"	=>	$this->viewArgs["id_ordine_acquisto_filtro"],
 			))
 			->orderBy("anno_ordine desc,numero_ordine desc")->convert();
 		
@@ -70,7 +77,7 @@ class OrdiniacquistoController extends BaseController
 			));
 		}
 		
-		$this->filters = array("id_ordine_acquisto","ragione_sociale","dal","al");
+		$this->filters = array("id_ordine_acquisto_filtro","ragione_sociale","dal","al");
 		
 		$this->m[$this->modelName]->save();
 		
