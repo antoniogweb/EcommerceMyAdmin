@@ -286,8 +286,8 @@ class BaseListeregaloController extends BaseController
 		$this->checkLista($id);
 		
 		// Controlla CSRF
-		if (!empty($_POST))
-			$this->checkCsrf();
+		// if (!empty($_POST))
+		// 	$this->checkCsrf();
 		
 		$title = $id ? gtext("Modifica la tua lista") : gtext("Crea la tua lista");
 		$data['title'] = $this->aggiungiNomeNegozioATitle($title);
