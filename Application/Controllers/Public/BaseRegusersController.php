@@ -743,7 +743,7 @@ class BaseRegusersController extends BaseController
 							}
 							else
 							{
-								sleep(3);
+								sleep(1);
 								$_SESSION['result'] = 'send_mail_to_change_password';
 								$this->redirect("avvisi");
 								
