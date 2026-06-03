@@ -115,7 +115,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			<?php } ?>
 		</div>
 	</div>
-
+	
+	<?php include(tpf("Elementi/Pagine/campo-csrf.php")); ?>
+	
 	<div class="uk-margin">
 		<div class="<?php echo v("classe_pulsanti_submit");?> spinner uk-hidden" uk-spinner="ratio: .70"></div>
 		<?php if ($id === 0) { ?>

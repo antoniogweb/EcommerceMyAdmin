@@ -143,7 +143,12 @@ class BaseRiservataController extends BaseController
 		$clean["id_spedizione"] = $this->request->get("del",0,"forceInt");
 		
 		if ($clean["id_spedizione"] > 0 && v("permetti_modifica_account"))
+		{
+			// Controlla CSRF
+			$this->checkCsrf("GET");
+			
 			$this->m("SpedizioniModel")->del(null, array("id_spedizione = ? AND id_user = ?",array($clean["id_spedizione"], User::$id)));
+		}
 		
 		$data['indirizzi'] = $this->m("SpedizioniModel")->clear()->where(array("id_user"=>$this->iduser))->orderBy("indirizzo_spedizione desc")->send();
 		

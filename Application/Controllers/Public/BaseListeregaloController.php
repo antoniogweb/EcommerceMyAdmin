@@ -44,6 +44,8 @@ class BaseListeregaloController extends BaseController
 		
 		$data["isAreaRiservata"] = true;
 		
+		VariabiliModel::$valori["usa_versione_random"] = 1;
+		
 		$this->append($data);
 	}
 
@@ -61,6 +63,9 @@ class BaseListeregaloController extends BaseController
 		
 		if ($clean["id_lista"] > 0 && ListeregaloModel::numeroListeUtente(User::$id, $clean["id_lista"]) && in_array($clean["valore"], array("Y","N")))
 		{
+			// Controlla CSRF
+			$this->checkCsrf("GET");
+			
 			$valoreAttivo = (string)$clean["valore"] === "Y" ? "Y" : "N";
 			
 			$this->m("ListeregaloModel")->sValues(array(
@@ -152,7 +157,11 @@ class BaseListeregaloController extends BaseController
 	{
 		$this->clean();
 		
-		$clean["id"] = $data["id"] = (int)$id;
+		// $clean["id"] = $data["id"] = (int)$id;
+		$clean["id"] = $data["id"] = (int)$this->request->post("id",0,"forceInt");
+		
+		// Controlla CSRF
+		$this->checkCsrf();
 		
 		$result = "KO";
 		
@@ -275,6 +284,10 @@ class BaseListeregaloController extends BaseController
 		$clean["id"] = $data["id"] = (int)$id;
 		
 		$this->checkLista($id);
+		
+		// Controlla CSRF
+		if (!empty($_POST))
+			$this->checkCsrf();
 		
 		$title = $id ? gtext("Modifica la tua lista") : gtext("Crea la tua lista");
 		$data['title'] = $this->aggiungiNomeNegozioATitle($title);

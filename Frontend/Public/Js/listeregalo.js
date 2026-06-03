@@ -141,6 +141,7 @@ $(document).ready(function(){
 		var idRiga = $(this).parents(".lista-riga").attr("id-lista-riga");
 		
 		var url = baseUrl + "/listeregalo/elimina/" + idRiga;
+		var csrfToken = $(this).attr("csrf_token");
 		
 		redirectCombinazioneAttivo = true;
 		mostraTendinaCaricamento();
@@ -150,6 +151,11 @@ $(document).ready(function(){
 			async: true,
 			cache:false,
 			dataType: "html",
+			type: "POST",
+			data: {
+				id: idRiga,
+				csrf_token: csrfToken
+			},
 			success: function(content){
 				
 				aggiornaListaProdotti();

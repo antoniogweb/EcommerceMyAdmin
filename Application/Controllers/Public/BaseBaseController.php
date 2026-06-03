@@ -77,6 +77,10 @@ class BaseBaseController extends Controller
 		// Genera il CSRF
 		$this->getCsrfToken();
 		
+		// Passa il token CSRF ai file di view
+		$data["csrf_token"] = (v("attiva_csrf_form") && !empty($_SESSION['csrf_token'])) ? sanitizeHtml($_SESSION['csrf_token']) : "";
+		$data["csrf_token_query_string"] = (v("attiva_csrf_form") && !empty($_SESSION['csrf_token'])) ? "&csrf_token=".sanitizeHtml($_SESSION['csrf_token']) : "";
+		
 		if (!$this->isNotFoundAndCached($action))
 		{
 			$this->setTabelleCacheAggiuntive($model, $controller, $queryString, $application, $action);
@@ -1362,14 +1366,16 @@ class BaseBaseController extends Controller
 	}
 	
 	// Controlla CSRF
-	protected function checkCsrf()
+	protected function checkCsrf($tipo = "POST")
 	{
+		$arrayToCheck = ($tipo == "POST") ? $_POST : $_GET;
+		
 		if (v("attiva_csrf_form"))
 		{
 			if (
-				empty($_POST['csrf_token']) ||
+				empty($arrayToCheck['csrf_token']) ||
 				empty($_SESSION['csrf_token']) ||
-				!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
+				!hash_equals($_SESSION['csrf_token'], $arrayToCheck['csrf_token'])
 			)
 			{
 				$this->responseCode(403);
