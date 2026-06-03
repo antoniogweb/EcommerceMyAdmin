@@ -71,8 +71,6 @@ class Route
 		'menu,main',
 		'menu,form',
 		'menu,ordina',
-// 		'menusec,main',
-// 		'menusec,form',
 		'upload,main',
 		'upload,thumb',
 		'thumb,contenuto',
@@ -437,11 +435,6 @@ class Route
 		'documenti,upload',
 		
 		'pageslink,form',
-		
-// 		'import,prodotti',
-// 		'import,utenti',
-// 		'import,news',
-// 		'import,contenuti',
 		
 		'ruoli,main',
 		'ruoli,form',

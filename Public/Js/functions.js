@@ -1004,47 +1004,6 @@ $(document).ready(function(){
 	
 	applicaSelect2();
 	
-// 	if ($("[select2]").length > 0)
-// 	{
-// 		$("[select2]").each(function(){
-// 			
-// 			var url = $(this).attr("select2");
-// 			
-// 			if (url != "")
-// 			{
-// 				$(this).find("select").select2({
-// 					ajax: {
-// 						url: baseUrl + url,
-// 						processResults: function (data) {
-// 							// Transforms the top-level key of the response object from 'items' to 'results'
-// 							return {
-// 								results: data.results
-// 							};
-// 						},
-// 						delay: 500
-// 					},
-// 					minimumInputLength: 2,
-// 					language: {
-// 						inputTooShort: function(args) {
-// 							return "Digitare 2 o più caratteri";
-// 						},
-// 						searching: function() {
-// 							return "In attesa..";
-// 						},
-// 						noResults: function() {
-// 							return "Non ci sono risultati";
-// 						},
-// 						errorLoading: function() {
-// 							return "In attesa..";
-// 						}
-// 					}
-// 				});
-// 			}
-// 			else
-// 				$(this).find("select").select2();
-// 		});
-// 	}
-	
 	/* --- GESTIONE ORDINI OFFLINE --- */
 	$("body").on("change", ".gestione_righe_ordine input:not(.checkbox_righe_id_r,.bulk_select_checkbox)", function(e){
 		riga_modificata = true;
