@@ -348,6 +348,14 @@ class BaseBaseController extends Controller
 		}
 	}
 	
+	protected function checkSubmit()
+	{
+		if (isset($_POST["insertAction"]) || isset($_POST["updateAction"]))
+			return true;
+		
+		return false;
+	}
+	
 	protected function correggiValoriPostFormRegistrazioneEOrdine()
 	{
 		if (v("sistema_maiuscole_clienti"))

@@ -1107,8 +1107,7 @@ class BaseRegusersController extends BaseController
 		if (isset($_POST['updateAction']))
 		{
 			// Controlla CSRF
-			if (!empty($_POST))
-				$this->checkCsrf();
+			$this->checkCsrf();
 			
 			$pass = $this->s['registered']->getPassword();
 			if (passwordverify($_POST['old'], $pass))
@@ -1268,7 +1267,7 @@ class BaseRegusersController extends BaseController
 		if (v("permetti_modifica_account"))
 		{
 			// Controlla CSRF
-			if (!empty($_POST))
+			if ($this->checkSubmit())
 				$this->checkCsrf();
 			
 			$this->m('RegusersModel')->updateTable('update',$this->iduser);
@@ -1432,7 +1431,7 @@ class BaseRegusersController extends BaseController
 		if (v("permetti_modifica_account"))
 		{
 			// Controlla CSRF
-			if (!empty($_POST))
+			if ($this->checkSubmit())
 				$this->checkCsrf();
 			
 			$this->m('SpedizioniModel')->updateTable('insert,update',$clean["id"]);
