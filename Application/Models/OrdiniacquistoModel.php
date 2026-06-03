@@ -43,6 +43,7 @@ class OrdiniacquistoModel extends GenericModel
 	public function relations() {
 		return array(
 			'fornitore' => array("BELONGS_TO", 'FornitoriModel', 'id_fornitore',null,"RESTRICT","Si prega di selezionare un fornitore".'<div style="display:none;" rel="hidden_alert_notice">id_fornitore</div>'),
+			'stato' => array("BELONGS_TO", 'OrdiniacquistostatiModel', 'id_ordine_acquisto_stato',null,"RESTRICT","Si prega di selezionare uno stato".'<div style="display:none;" rel="hidden_alert_notice">id_ordine_acquisto_stato</div>'),
 		);
     }
     
@@ -54,6 +55,14 @@ class OrdiniacquistoModel extends GenericModel
 			"labelString"	=>	'Fornitore',
 			"type"	=>	"Select",
 			"options"	=>	array(0	=>	gtext("Seleziona")) + FornitoriModel::g()->filtroFornitore(),
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+		);
+		
+		$this->formStruct["entries"]["id_ordine_acquisto_stato"] = array(
+			"labelString"	=>	'Stato ordine',
+			"type"	=>	"Select",
+			"options"	=>	OrdiniacquistostatiModel::g()->selectStati(),
 			"reverse"	=>	"yes",
 			"className"	=>	"form-control",
 		);
@@ -118,5 +127,10 @@ class OrdiniacquistoModel extends GenericModel
 			return false;
 		
 		return true;
+	}
+	
+	public function statoordinelabel($record)
+	{
+		return "<span class='text-bold label label-".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "classe")."'>".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "titolo")."<span>";
 	}
 }

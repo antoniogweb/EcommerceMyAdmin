@@ -29,5 +29,8 @@ class RouteAcquisti
 		'fornitori,form',
 		'ordiniacquisto,main',
 		'ordiniacquisto,form',
+		'ordiniacquistostati,main',
+		'ordiniacquistostati,form',
+		'ordiniacquistostati,ordina',
 	);
 }

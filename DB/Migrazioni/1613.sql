@@ -1,0 +1,1 @@
+alter table ordini_acquisto add `id_ordine_acquisto_stato` int UNSIGNED NOT NULL DEFAULT '0';

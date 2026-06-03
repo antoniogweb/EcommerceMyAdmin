@@ -61,8 +61,8 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("[[ledit]];ordini_acquisto.id_ordine_acquisto;","ordini_acquisto.ragione_sociale","aggregate.anno_ordine","ordini_acquisto.data_ordine","ordini_acquisto.telefono","ordini_acquisto.email");
-		$this->mainHead = "N° Ordine,Ragione sociale,Anno,Data,Telefono,Email";
+		$this->mainFields = array("[[ledit]];ordini_acquisto.id_ordine_acquisto;","ordini_acquisto.ragione_sociale","aggregate.anno_ordine","ordini_acquisto.data_ordine","ordini_acquisto.telefono","ordini_acquisto.email","statoordinelabel");
+		$this->mainHead = "N° Ordine,Ragione sociale,Anno,Data,Telefono,Email,Stato";
 		
 		$this->m[$this->modelName]->select("ordini_acquisto.*,DATE_FORMAT(data_ordine, '%Y') as anno_ordine")
 			->aWhere(array(
@@ -90,7 +90,7 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$formFields = $fields =  'id_fornitore,data_ordine,numero_ordine,ragione_sociale,email,email_amministrativa,pec,codice_fiscale,p_iva,telefono,telefono_2,indirizzo,numero_civico,nazione,provincia,comune,cap,localita,referente,telefono_referente,cellulare_referente,email_referente';
+		$formFields = $fields =  'id_fornitore,data_ordine,numero_ordine,ragione_sociale,email,email_amministrativa,pec,codice_fiscale,p_iva,telefono,telefono_2,indirizzo,numero_civico,nazione,provincia,comune,cap,localita,referente,telefono_referente,cellulare_referente,email_referente,id_ordine_acquisto_stato';
 		
 		if ($queryType == "update")
 			$fields = str_replace("id_fornitore,", "", $fields);
