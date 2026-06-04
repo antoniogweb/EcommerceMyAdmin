@@ -72,8 +72,8 @@ class MagazzinoarticoliController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","magazzino_articoli.titolo","marchi.titolo","prodottoCrud","attivoCrud","acquistabileCrud","magazzino_articoli.codice","magazzino_articoli.prezzo","magazzino_articoli.aliquota_iva");
-		$this->mainHead = "Immagine,Categoria ecommerce,Articolo magazzino,Marchio,Prod. Ecomm.,Vis. online,Acq. online,Codice,Prezzo,Iva";
+		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","magazzino_articoli.titolo","<b>;magazzino_articoli.codice;</b>","combinazioni.codice","marchi.titolo","prodottoCrud","attivoCrud","acquistabileCrud","magazzino_articoli.prezzo","magazzino_articoli.aliquota_iva");
+		$this->mainHead = "Immagine,Categoria ecommerce,Articolo magazzino,Codice,Codice Web,Marchio,Prod. Web,Vis. Web,Acq. Web,Prezzo,Iva";
 		
 		$this->filters = array();
 		$this->filters[] = "cerca";
@@ -99,7 +99,7 @@ class MagazzinoarticoliController extends BaseController
 			"0"	=>	gtext("Non acquistabile"),
 		));
 		
-		$this->m[$this->modelName]->select("magazzino_articoli.*,categories.title,marchi.titolo,pages.id_page,pages.attivo,combinazioni.acquistabile,combinazioni.id_c")
+		$this->m[$this->modelName]->select("magazzino_articoli.*,categories.title,marchi.titolo,pages.id_page,pages.attivo,combinazioni.acquistabile,combinazioni.id_c,combinazioni.codice")
 			->left(array("combinazioni"))
 			->left("combinazioni")->on("combinazioni.id_c = magazzino_articoli_combinazioni.id_c")
 			->left("pages")->on("pages.id_page = combinazioni.id_page")
