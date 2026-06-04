@@ -77,9 +77,11 @@ class OrdiniacquistoController extends BaseController
 			));
 		}
 		
-		$this->filters = array("id_ordine_acquisto_filtro","ragione_sociale","dal","al");
+		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], 'data_ordine');
 		
 		$this->m[$this->modelName]->save();
+		
+		$this->filters = array("id_ordine_acquisto_filtro","ragione_sociale","dal","al");
 		
 		parent::main();
 	}

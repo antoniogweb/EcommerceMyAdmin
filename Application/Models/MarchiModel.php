@@ -86,7 +86,8 @@ class MarchiModel extends GenericModel
 	
 	public function relations() {
         return array(
-			'pagine' => array("HAS_MANY", 'PagesModel', 'id_marchio', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'pagine' => array("HAS_MANY", 'PagesModel', 'id_marchio', null, "RESTRICT", "L'elemento ha delle pagine collegate non può essere eliminato"),
+			'magazzino' => array("HAS_MANY", 'MagazzinoarticoliModel', 'id_marchio', null, "RESTRICT", "L'elemento ha degli articoli di magazzino collegati e non può essere eliminato"),
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_marchio', null, "CASCADE"),
         );
     }

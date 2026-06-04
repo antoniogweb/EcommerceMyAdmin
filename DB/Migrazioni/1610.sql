@@ -23,5 +23,5 @@ CREATE TABLE `ordini_acquisto` (
   `email_referente` VARCHAR(255) NOT NULL DEFAULT '',
    data_ordine date null default null,
    `numero_ordine` INT UNSIGNED not null default 0,
-  `id_order` int UNSIGNED NOT NULL DEFAULT '0'
+  `id_order` int UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB;
