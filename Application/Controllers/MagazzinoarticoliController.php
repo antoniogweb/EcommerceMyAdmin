@@ -22,23 +22,39 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["cerca"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Cerca ..",
+	),
+);
+
+Helper_List::$filtersFormLayout["filters"]["acquistabile"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class MagazzinoarticoliController extends BaseController
 {
 	public $argKeys = array(
-		// 'id_ordine_acquisto_filtro:sanitizeAll'=>'tutti',
-		// 'id_form_fornitore:sanitizeAll'=>'tutti',
-		// 'ragione_sociale:sanitizeAll'=>'tutti',
-		// 'dal:sanitizeAll'=>'tutti',
-		// 'al:sanitizeAll'=>'tutti',
+		'prodotto:sanitizeAll'=>'tutti',
+		'categoria:sanitizeAll'=>'tutti',
+		'codice:sanitizeAll'=>'tutti',
+		'cerca:sanitizeAll'=>'tutti',
+		'attivo:sanitizeAll'=>'tutti',
+		'id_marchio:sanitizeAll'=>'tutti',
+		'acquistabile:sanitizeAll'=>'tutti',
 	);
 	
-	public $mainButtons = 'ldel';
+	// public $mainButtons = 'ldel';
 	
 	public $useEditor = true;
 	
 	public $sezionePannello = "acquisti";
 	
-	public $tabella = "ordini di acquisto";
+	public $tabella = "articoli di magazzino";
 	
 	public function __construct($model, $controller, $queryString, $application, $action) {
 		
@@ -52,23 +68,59 @@ class MagazzinoarticoliController extends BaseController
 	{
 		$_GET["id_form_fornitore"] = "tutti";
 		
+		$this->addBulkActions = false;
+		
 		$this->shift();
 		
-		$this->mainFields = array("magazzino_articoli.titolo","magazzino_articoli.codice");
-		$this->mainHead = "Articolo,Codice";
+		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","magazzino_articoli.titolo","marchi.titolo","prodottoCrud","attivoCrud","acquistabileCrud","magazzino_articoli.codice","magazzino_articoli.prezzo","magazzino_articoli.aliquota_iva");
+		$this->mainHead = "Immagine,Categoria ecommerce,Articolo magazzino,Marchio,Prod. Ecomm.,Vis. online,Acq. online,Codice,Prezzo,Iva";
 		
-		$this->m[$this->modelName]->select("magazzino_articoli.*")
-			// ->aWhere(array(
-			// 	"id_ordine_acquisto"	=>	$this->viewArgs["id_ordine_acquisto_filtro"],
-			// ))
-			->orderBy("titolo")->convert();
+		$this->filters = array();
+		$this->filters[] = "cerca";
+		$this->filters[] = "categoria";
+		$this->filters[] = "prodotto";
+		$this->filters[] = "codice";
 		
-		// if ($this->viewArgs["ragione_sociale"] != "tutti")
-		// {
-		// 	$this->m[$this->modelName]->aWhere(array(
-		// 		"  AND"	=>	FornitoriModel::getWhereClauseRicercaLibera($this->viewArgs['ragione_sociale']),
-		// 	));
-		// }
+		$filtroMarchiSelect = $this->m("MarchiModel")->select("id_marchio,titolo")->orderBy("titolo")->toList("id_marchio", "titolo")->send();
+		
+		$this->filters[] = array("id_marchio",null,array(
+			"tutti"		=>	gtext("Marchio"),
+		) + $filtroMarchiSelect);
+		
+		$this->filters[] = array("attivo",null,array(
+				"tutti"		=>	gtext("Attivo / Non attivo"),
+				"Y"	=>	gtext("Attivo"),
+				"N"	=>	gtext("Non attivo"),
+			));
+		
+		$this->filters[] = array("acquistabile",null,array(
+			"tutti"		=>	gtext("Acquistabile / Non acquistabile"),
+			"1"	=>	gtext("Acquistabile"),
+			"0"	=>	gtext("Non acquistabile"),
+		));
+		
+		$this->m[$this->modelName]->select("magazzino_articoli.*,categories.title,marchi.titolo,pages.id_page,pages.attivo,combinazioni.acquistabile,combinazioni.id_c")
+			->left(array("combinazioni"))
+			->left("combinazioni")->on("combinazioni.id_c = magazzino_articoli_combinazioni.id_c")
+			->left("pages")->on("pages.id_page = combinazioni.id_page")
+			->left("categories")->on("pages.id_c = categories.id_c")
+			->left("marchi")->on("pages.id_marchio = marchi.id_marchio")
+			->where(array(
+					"lk" => array('magazzino_articoli.titolo' => $this->viewArgs['prodotto']),
+					" lk" => array('categories.title' => $this->viewArgs['categoria']),
+					"  lk" => array('magazzino_articoli.codice' => $this->viewArgs['codice']),
+					"pages.attivo"	=>	$this->viewArgs['attivo'],
+					"pages.id_marchio"	=>	$this->viewArgs['id_marchio'],
+					"combinazioni.acquistabile"	=>	$this->viewArgs['acquistabile'],
+				))
+			->orderBy("categories.title,magazzino_articoli.titolo")->convert();
+		
+		if ($this->viewArgs["cerca"] != "tutti")
+		{
+			$this->m[$this->modelName]->aWhere(array(
+				"  AND"	=>	MagazzinoarticoliModel::getWhereClauseRicercaLibera($this->viewArgs['cerca']),
+			));
+		}
 		
 		$this->m[$this->modelName]->save();
 		
@@ -77,30 +129,16 @@ class MagazzinoarticoliController extends BaseController
 		parent::main();
 	}
 	
-// 	public function form($queryType = 'insert', $id = 0)
-// 	{
-// 		$this->shift(2);
-// 		
-// 		$this->_posizioni['main'] = 'class="active"';
-// 		
-// 		$formFields = $fields =  'id_fornitore,data_ordine,numero_ordine,ragione_sociale,email,email_amministrativa,pec,codice_fiscale,p_iva,telefono,telefono_2,indirizzo,numero_civico,nazione,provincia,comune,cap,localita,referente,telefono_referente,cellulare_referente,email_referente,id_ordine_acquisto_stato';
-// 		
-// 		if ($queryType == "update")
-// 			$fields = str_replace("id_fornitore,", "", $fields);
-// 			
-// 		$this->m[$this->modelName]->setValuesFromPost($fields);
-// 		$this->m[$this->modelName]->fields = $formFields;
-// 		
-// 		if ($this->viewArgs["id_form_fornitore"] != "tutti")
-// 			$this->formDefaultValues = htmlentitydecodeDeep($this->m("FornitoriModel")->selectId((int)$this->viewArgs["id_form_fornitore"]));
-// 		
-// 		$this->formDefaultValues["numero_ordine"] = $this->m($this->modelName)->getNumero();
-// 		
-// 		if ($queryType == "update")
-// 		{
-// 			$this->disabledFields .= ",id_fornitore";
-// 		}
-// 		
-// 		parent::form($queryType, $id);
-// 	}
+	public function form($queryType = 'insert', $id = 0)
+	{
+		$this->shift(2);
+		
+		$this->_posizioni['main'] = 'class="active"';
+		
+		$fields =  'titolo,prezzo,id_iva';
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
+		
+		parent::form($queryType, $id);
+	}
 }

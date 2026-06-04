@@ -28,7 +28,9 @@ class MagazzinoarticoliModel extends GenericModel
 	{
 		$this->_tables = 'magazzino_articoli';
 		$this->_idFields = 'id_articolo';
-
+		
+		$this->addStrongCondition("both",'checkNotEmpty',"titolo");
+		
 		parent::__construct();
 	}
 	
@@ -38,6 +40,43 @@ class MagazzinoarticoliModel extends GenericModel
 			'marchio' => array("BELONGS_TO", 'MarchiModel', 'id_marchio',null,"CASCADE"),
 		);
     }
+    
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'id_iva'		=>	array(
+					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_iva',
+					'labelString'=>	'Aliquota Iva',
+					'options'	=>	$this->selectIva(),
+					'reverse' => 'yes',
+					
+				),
+			),
+		);
+	}
+    
+    public function setAliquotaIva()
+	{
+		if (isset($this->values["id_iva"]) && !isset($this->values["aliquota_iva"]))
+			$this->values["aliquota_iva"] = sanitizeAll(IvaModel::g()->getValore((int)$this->values["id_iva"]));
+	}
+    
+    public function insert()
+	{
+		$this->setAliquotaIva();
+		
+		return parent::insert();
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->setAliquotaIva();
+		
+		return parent::update($id, $where);
+	}
     
     public function importaArticoliDaEcommerce($log = null)
 	{
@@ -67,8 +106,6 @@ class MagazzinoarticoliModel extends GenericModel
 			
 			if ($stringa)
 				$titolo .= " ".trim($stringa);
-			
-			// echo $titolo."\n";
 			
 			$this->sValues(array(
 				"titolo"	=>	$titolo,
@@ -102,5 +139,68 @@ class MagazzinoarticoliModel extends GenericModel
 		
 		if (v("usa_transactions"))
 			$this->db->commit();
+	}
+	
+	public function attivoCrud($record)
+	{
+		if (!$record["pages"]["id_page"])
+			return "";
+		
+		return CombinazioniModel::g()->attivoCrud($record);
+	}
+	
+	public function prodottoCrud($record)
+	{
+		if ($record["pages"]["id_page"])
+			return "<a target='_blank' href='".Url::getRoot()."prodotti/form/update/".$record["pages"]["id_page"]."'>".gtext("Vedi")." <i class='fa fa-angle-right'></i></a>";
+		
+		return $record["magazzino_articoli"]["titolo"];
+	}
+	
+	public function acquistabileCrud($record)
+	{
+		if (!$record["pages"]["id_page"])
+			return "";
+		
+		if (!isset($_GET["esporta"]))
+		{
+			if ($record["combinazioni"]["acquistabile"] && $record["pages"]["attivo"] == "Y")
+				return "<i class='fa fa-check text text-success'></i>";
+			else
+				return "<i class='fa fa-ban text text-danger'></i>";
+		}
+		else
+			return ($record["combinazioni"]["acquistabile"] && $record["pages"]["attivo"] == "Y") ? gtext("Sì") : gtext("No");
+	}
+	
+	public function primaImmagineCarrelloCrud($record)
+    {
+		if (!$record["pages"]["id_page"])
+			return "";
+		
+		$immagine = ProdottiModel::immagineCarrello($record["pages"]["id_page"], $record["combinazioni"]["id_c"]);
+		
+		if ($immagine)
+			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagine."' />";
+		
+		return "";
+    }
+    
+    public static function getWhereClauseRicercaLibera($search)
+	{
+		$tokens = explode(" ", $search);
+		$andArray = array();
+		$iCerca = 8;
+		
+		foreach ($tokens as $token)
+		{
+			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+				"n!concat(magazzino_articoli.titolo,' ',marchi.titolo,' ',categories.title,' ',magazzino_articoli.codice)"	=>	sanitizeAll(htmlentitydecode($token)),
+			);
+			
+			$iCerca++;
+		}
+		
+		return $andArray;
 	}
 }
