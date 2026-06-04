@@ -96,8 +96,6 @@ class OrdiniacquistostatiModel extends GenericModel {
 	
 	public function insert()
 	{
-		$this->values["tipo"] == "U";
-		
 		$this->impostaStatoInviato();
 		
 		return parent::insert();

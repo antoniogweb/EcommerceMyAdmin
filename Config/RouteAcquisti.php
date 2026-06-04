@@ -32,5 +32,6 @@ class RouteAcquisti
 		'ordiniacquistostati,main',
 		'ordiniacquistostati,form',
 		'ordiniacquistostati,ordina',
+		'magazzinoarticoli,main',
 	);
 }
