@@ -74,7 +74,7 @@ class OrdiniacquistoModel extends GenericModel
 			return parent::insert();
 		else
 		{
-			$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione il numero dell'ordine è già esistente.")."</div>".'<div style="display:none;" rel="hidden_alert_notice">numero_ordine</div>';
+			$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione il numero dell'ordine è già esistente nell'anno impostato.")."</div>".'<div style="display:none;" rel="hidden_alert_notice">numero_ordine</div>';
 			$this->result = false;
 			return false;
 		}
@@ -86,7 +86,7 @@ class OrdiniacquistoModel extends GenericModel
 			return parent::update($id, $where);
 		else
 		{
-			$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione il numero dell'ordine è già esistente.")."</div>".'<div style="display:none;" rel="hidden_alert_notice">numero_ordine</div>';
+			$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione il numero dell'ordine è già esistente nell'anno impostato.")."</div>".'<div style="display:none;" rel="hidden_alert_notice">numero_ordine</div>';
 			$this->result = false;
 			return false;
 		}
@@ -107,11 +107,13 @@ class OrdiniacquistoModel extends GenericModel
 	
 	public function checkNumero($numero, $idOrdine = 0)
 	{
+		$dataModel = (isset($this->values["data_ordine"]) && checkIsoDate(getIsoDate($this->values["data_ordine"]))) ? new DateTime(getIsoDate($this->values["data_ordine"])) : new DateTime();
+		
 		$this->clear()->where(array(
 			"numero_ordine"	=>	(int)$numero,
 		))->sWhere(array(
 			"DATE_FORMAT(data_ordine, '%Y') = ?",
-			array(date("Y"))
+			array($dataModel->format("Y"))
 		));
 		
 		if ($idOrdine)
