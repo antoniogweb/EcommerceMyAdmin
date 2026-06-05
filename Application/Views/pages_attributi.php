@@ -120,7 +120,7 @@ $(document).ready(function(){
 						<a style="margin-bottom:10px;" class="pull-right iframe btn btn-primary help_modifica_combinazioni" href="<?php echo $this->baseUrl."/combinazioni/main/1?partial=Y&id_page=$id_page";?>"><i class="fa fa-edit"></i> <?php echo gtext("Gestisci combinazioni");?></a>
 						
 						<?php if ($numeroAttributi > 0) { ?>
-						<a style="margin-bottom:10px;margin-right:10px;" class="pull-right link_aggiorna_combinazioni btn btn-warning make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna"><i class="fa fa-refresh"></i> <?php echo gtext("Aggiorna combinazioni");?></a>
+						<a style="margin-bottom:10px;margin-right:10px;" class="pull-right link_aggiorna_combinazioni btn btn-warning make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$this->viewStatus;?>&action=aggiorna&csrf=<?php echo User::$csrfToken;?>"><i class="fa fa-refresh"></i> <?php echo gtext("Aggiorna combinazioni");?></a>
 						<?php } ?>
 						
 						<a style="margin-bottom:10px;margin-right:10px;display:none;" class="pull-right btn btn-success btn_modifica_attributi help_salva_combinazioni" href="#"><i class="fa fa-save"></i> <?php echo gtext("Salva combinazioni");?></a>

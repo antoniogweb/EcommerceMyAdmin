@@ -1404,13 +1404,8 @@ class PagesController extends BaseController
 		{
 			if (strcmp($_GET["action"],"aggiorna") === 0)
 			{
+				$this->checkCsrf(true);
 				$this->m["CombinazioniModel"]->creaCombinazioni($clean['id']);
-				$this->redirect($this->applicationUrl.$this->controller."/attributi/".$clean['id'].$this->viewStatus."&refresh=y");
-			}
-			else if (strcmp($_GET["action"],"del_comb") === 0)
-			{
-				$clean["id_c"] = $this->request->get("id",0,"forceInt");
-				$this->m["CombinazioniModel"]->del($clean["id_c"]);
 				$this->redirect($this->applicationUrl.$this->controller."/attributi/".$clean['id'].$this->viewStatus."&refresh=y");
 			}
 		}
@@ -1518,7 +1513,6 @@ class PagesController extends BaseController
 		
 		$this->h['List']->addItem("text","<span class='valore_attributo'>;setPriceReverse|combinazioni.peso;</span>");
 		$filtriArray[] = null;
-// 		$this->h['List']->addItem("text","<a class='del_row' href='".$this->baseUrl."/".$this->controller."/attributi/".$clean['id'].$this->viewStatus."&action=del_comb&id=;combinazioni.id_c;#refresh_link'><img src='".$this->baseUrl."/Public/Img/Icons/elementary_2_5/delete.png' /></a>");
 		
 		$colonne = $this->m["PagesattributiModel"]->getNomiColonne($clean["id"]);
 		
