@@ -1,0 +1,1 @@
+INSERT INTO `ordini_acquisto_righe_tipologie` (`id_ordine_acquisto_riga_tipologia`, `data_creazione`, `titolo`, `id_order`) VALUES (1, CURRENT_TIMESTAMP, 'Sconto', '1');

@@ -114,4 +114,70 @@ class OrdiniacquistoController extends BaseController
 		
 		parent::form($queryType, $id);
 	}
+	
+	public function righe($id = 0)
+	{
+		$this->mainShift = 1;
+		
+		$this->_posizioni['righe'] = 'class="active"';
+		
+// 		$data["orderBy"] = $this->orderBy = "id_order";
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_ordine_acquisto";
+		
+		$this->mainButtons = "ldel";
+		
+		$mainModelName = $this->modelName;
+		
+		$this->modelName = "OrdiniacquistorigheModel";
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+			array(
+				'width'	=>	'80px',
+			),
+		);
+		
+		if (!OrdiniacquistoModel::g()->isBozza((int)$id))
+		{
+			$this->addBulkActions = false;
+			$this->colProperties = array();
+		}
+		
+		$this->mainFields = array("primaImmagineCarrelloCrud", "ordini_acquisto_righe.titolo");
+		$this->mainHead = "Immagine,Articolo";
+		
+		$pulsantiMenu = "back";
+		
+		// if (OrdiniacquistoModel::g()->isDeletable((int)$id))
+		// 	$pulsantiMenu .= ",save_righe_ordini";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m($this->modelName)->clear()->select("ordini_acquisto_righe.*")
+			->left(array("articolo"))
+			->left("ordini_acquisto_righe_tipologie")->on("ordini_acquisto_righe_tipologie.id_ordine_acquisto_riga_tipologia = ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia")
+			->where(array(
+				"ordini_acquisto_righe.id_ordine_acquisto"	=>	$clean['id']
+			))
+			->orderBy("ordini_acquisto_righe.id_order,ordini_acquisto_righe.id_order")
+			->convert()->save();
+		
+		$this->getTabViewFields("righe");
+		
+		// Helper_Menu::$htmlLinks["save_righe_ordini"]["attributes"] .= " id-ordine='".(int)$id."'";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m($mainModelName)->titolo($clean['id']);
+		$data["tipoSteps"] = "modifica";
+		$data["ordine"] = $this->m("OrdiniModel")->selectId($clean['id']);
+		
+		$this->append($data);
+	}
 }

@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
 // See COPYRIGHT.txt and LICENSE.txt.
 //
 // This file is part of EcommerceMyAdmin
@@ -22,18 +22,22 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class RouteAcquisti
+class OrdiniacquistorighetipologieModel extends GenericModel
 {
-	public static $allowed = array(
-		'fornitori,main',
-		'fornitori,form',
-		'ordiniacquisto,main',
-		'ordiniacquisto,form',
-		'ordiniacquisto,righe',
-		'ordiniacquistostati,main',
-		'ordiniacquistostati,form',
-		'ordiniacquistostati,ordina',
-		'magazzinoarticoli,main',
-		'magazzinoarticoli,form',
-	);
+	public $campoTitolo = "titolo";
+
+	public function __construct() {
+		$this->_tables = 'ordini_acquisto_righe_tipologie';
+		$this->_idFields = 'id_ordine_acquisto_riga_tipologia';
+		
+		$this->_idOrder='id_order';
+		
+		parent::__construct();
+	}
+	
+	public function relations() {
+		return array(
+			'righe' => array("HAS_MANY", 'OrdiniacquistorigheModel', 'id_ordine_acquisto_riga_tipologia', null, "RESTRICT", "L'elemento ha delle righe collegate e non può essere eliminato"),
+		);
+    }
 }

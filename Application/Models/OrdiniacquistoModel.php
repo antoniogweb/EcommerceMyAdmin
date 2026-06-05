@@ -135,4 +135,14 @@ class OrdiniacquistoModel extends GenericModel
 	{
 		return "<span class='text-bold label label-".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "classe")."'>".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "titolo")."<span>";
 	}
+	
+	public function isBozza($idOrdineAcquisto)
+	{
+		$record = $this->clear()->select("id_ordine_acquisto,id_ordine_acquisto_stato")->whereId((int)$idOrdineAcquisto)->record();
+		
+		if (!empty($record) && OrdiniacquistostatiModel::g()->bozza((int)$record["id_ordine_acquisto_stato"]))
+			return true;
+		
+		return false;
+	}
 }

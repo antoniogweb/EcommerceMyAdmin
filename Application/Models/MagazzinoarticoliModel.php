@@ -203,4 +203,37 @@ class MagazzinoarticoliModel extends GenericModel
 		
 		return $andArray;
 	}
+	
+	public function bulkaggiungiaordine($record)
+    {
+		return "<i data-azione='aggiungiaordine' title='".gtext("Aggiungi all'ordine")."' class='bulk_trigger help_trigger_aggiungi_ad_ordine_acquisto fa fa-plus-circle text text-primary'></i>";
+    }
+    
+    public function aggiungiaordine($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_ordine_acquisto"]))
+		{
+			if (OrdiniacquistoModel::g(false)->isBozza((int)$_GET["id_ordine_acquisto"]))
+			{
+				$oarModel = new OrdiniacquistorigheModel();
+				
+				$oarModel->sValues(array(
+					"id_articolo"	=>	(int)$id,
+					"id_ordine_acquisto"	=>	(int)$_GET["id_ordine_acquisto"],
+					"titolo"	=>	$record["titolo"],
+					"codice"		=>	$record["codice"],
+					"prezzo"		=>	$record["prezzo"],
+					"quantita"		=>	1,
+					"id_iva"		=>	$record["id_iva"],
+					"aliquota_iva"	=>	$record["aliquota_iva"],
+					"id_marchio"	=>	$record["id_marchio"],
+					"id_marchio"	=>	$record["id_marchio"],
+				), "sanitizeDb");
+				
+				$oarModel->insert();
+			}
+		}
+    }
 }

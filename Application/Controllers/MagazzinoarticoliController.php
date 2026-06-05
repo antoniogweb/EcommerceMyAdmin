@@ -46,6 +46,7 @@ class MagazzinoarticoliController extends BaseController
 		'attivo:sanitizeAll'=>'tutti',
 		'id_marchio:sanitizeAll'=>'tutti',
 		'acquistabile:sanitizeAll'=>'tutti',
+		'id_ordine_acquisto:sanitizeAll'=>'tutti',
 	);
 	
 	// public $mainButtons = 'ldel';
@@ -68,12 +69,16 @@ class MagazzinoarticoliController extends BaseController
 	{
 		$_GET["id_form_fornitore"] = "tutti";
 		
-		$this->addBulkActions = false;
-		
 		$this->shift();
 		
 		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","magazzino_articoli.titolo","<b>;magazzino_articoli.codice;</b>","combinazioni.codice","marchi.titolo","prodottoCrud","attivoCrud","acquistabileCrud","magazzino_articoli.prezzo","magazzino_articoli.aliquota_iva");
 		$this->mainHead = "Immagine,Categoria ecommerce,Articolo magazzino,Codice,Codice Web,Marchio,Prod. Web,Vis. Web,Acq. Web,Prezzo,Iva";
+		
+		if ($this->viewArgs["id_ordine_acquisto"] != "tutti")
+		{
+			$this->mainFields[] = "bulkaggiungiaordine";
+			$this->mainHead .= ",Aggiungi";
+		}
 		
 		$this->filters = array();
 		$this->filters[] = "cerca";
@@ -121,6 +126,19 @@ class MagazzinoarticoliController extends BaseController
 				"  AND"	=>	MagazzinoarticoliModel::getWhereClauseRicercaLibera($this->viewArgs['cerca']),
 			));
 		}
+		
+		if ($this->viewArgs["id_ordine_acquisto"] != "tutti")
+		{
+			$this->bulkActions = array(
+				"++checkbox_magazzino_articoli_id_articolo"	=>	array("aggiungiaordine","Aggiungi all'ordine"),
+			);
+			
+			$this->mainButtons = '';
+			$this->queryActions = '';
+			$this->bulkQueryActions = "aggiungiaordine";
+		}
+		else
+			$this->addBulkActions = false;
 		
 		$this->m[$this->modelName]->save();
 		
