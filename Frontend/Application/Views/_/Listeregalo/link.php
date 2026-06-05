@@ -14,6 +14,7 @@
 				<button class="invia_link_lista uk-button uk-button-primary btn_submit_form"><?php echo gtext("Invia");?></button>
 			</div>
 			<?php echo Html_Form::hidden("insertAction","1");?>
+			<?php include(tpf("Elementi/Pagine/campo-csrf.php")); ?>
 		</div>
 	</form>
 </div>

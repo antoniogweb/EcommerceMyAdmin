@@ -21,7 +21,7 @@
 						<div class="uk-margin-remove-top">
 							<?php if ($link["liste_regalo_link"]["numero_tentativi"] < v("numero_massimo_tentativi_invio_link")) { ?>
 							<span class="spinner uk-hidden" uk-spinner="ratio: .70"></span>
-							<a class="invia_nuovamente_link btn_submit_form" href="<?php echo $this->baseUrl."/listeregalo/invianuovamentelink/".$link["liste_regalo_link"]["id_lista_regalo_link"];?>"><span title="<?php echo gtext("Invia nuovamente il link");?>" class="uk-margin-small-left" uk-icon="mail"></span></a>
+							<a class="invia_nuovamente_link btn_submit_form" href="<?php echo $this->baseUrl."/listeregalo/invianuovamentelink/".$link["liste_regalo_link"]["id_lista_regalo_link"]."?csrf_token=".$csrf_token;?>"><span title="<?php echo gtext("Invia nuovamente il link");?>" class="uk-margin-small-left" uk-icon="mail"></span></a>
 							<?php } ?>
 						</div>
 					</div>

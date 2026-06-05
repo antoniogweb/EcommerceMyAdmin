@@ -222,6 +222,9 @@ class BaseListeregaloController extends BaseController
 		
 		if ($this->m('ListeregalolinkModel')->checkAccesso($clean["id"]))
 		{
+			// Controlla CSRF
+			$this->checkCsrf("GET");
+			
 			if ($this->m('ListeregalolinkModel')->inviaMail($clean["id"]))
 			{
 				$result = "OK";
@@ -246,6 +249,9 @@ class BaseListeregaloController extends BaseController
 		
 		if (ListeregaloModel::numeroListeUtente(User::$id, $clean["id"]))
 		{
+			// Controlla CSRF
+			$this->checkCsrf();
+			
 			$campi = "nome,cognome,email";
 			
 			$this->m('ListeregalolinkModel')->setFields($campi,'sanitizeAll');
