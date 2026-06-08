@@ -24,6 +24,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class MagazzinoarticoliModel extends GenericModel
 {
+	public $metodoPerTitolo = "titoloJson";
+	public $campoValore = "id_articolo";
+	
 	public function __construct()
 	{
 		$this->_tables = 'magazzino_articoli';
@@ -220,7 +223,7 @@ class MagazzinoarticoliModel extends GenericModel
 		foreach ($tokens as $token)
 		{
 			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-				"n!concat(magazzino_articoli.titolo,' ',marchi.titolo,' ',categories.title,' ',magazzino_articoli.codice)"	=>	sanitizeAll(htmlentitydecode($token)),
+				"n!concat(magazzino_articoli.titolo,' ',marchi.titolo,' ',categories.title,' ',magazzino_articoli.codice,' ',pages.title,' ',magazzino_articoli.codice)"	=>	sanitizeAll(htmlentitydecode($token)),
 			);
 			
 			$iCerca++;
@@ -242,19 +245,35 @@ class MagazzinoarticoliModel extends GenericModel
 		{
 			if (OrdiniacquistoModel::g(false)->isBozza((int)$_GET["id_ordine_acquisto"]))
 			{
+				$recordWeb = MagazzinoarticolicombinazioniModel::getDatiWeb((int)$id);
+				$titoloWeb = null;
+				
+				$combModel = new CombinazioniModel();
+				
+				if (!empty($recordWeb))
+				{
+					$pagesModel = new PagesModel();
+					$titoloWeb = $pagesModel->clear()->select("title")->whereId((int)$recordWeb["id_page"])->field("title");
+				}
+				
 				$oarModel = new OrdiniacquistorigheModel();
 				
 				$oarModel->sValues(array(
 					"id_articolo"	=>	(int)$id,
 					"id_ordine_acquisto"	=>	(int)$_GET["id_ordine_acquisto"],
-					"titolo"	=>	$record["titolo"],
+					"titolo"		=>	$titoloWeb ?? $record["titolo"],
 					"codice"		=>	$record["codice"],
+					"gtin"			=>	$record["gtin"],
 					"prezzo"		=>	$record["prezzo"],
+					"sconto_1"		=>	$record["sconto_1"],
+					"sconto_2"		=>	$record["sconto_2"],
 					"quantita"		=>	1,
 					"id_iva"		=>	$record["id_iva"],
 					"aliquota_iva"	=>	$record["aliquota_iva"],
 					"id_marchio"	=>	$record["id_marchio"],
-					"id_marchio"	=>	$record["id_marchio"],
+					"id_c"			=>	$recordWeb["id_c"] ?? 0,
+					"id_page"		=>	$recordWeb["id_page"] ?? 0,
+					"attributi"		=>	$recordWeb["id_c"] ? $combModel->getStringa($recordWeb["id_c"], "<br />") : "",
 				), "sanitizeDb");
 				
 				$oarModel->insert();
@@ -279,5 +298,37 @@ class MagazzinoarticoliModel extends GenericModel
 		}
 		else
 			return $this->codiceView($record);
+	}
+	
+	public function titoloJson($id)
+	{
+		$clean["id"] = (int)$id;
+		
+		$recordWeb = MagazzinoarticolicombinazioniModel::getDatiWeb($clean["id"]);
+		
+		if (!empty($recordWeb))
+		{
+			$pModel = new PagesModel();
+			
+			return $pModel->titoloJson((int)$recordWeb["id_page"]);
+		}
+		else
+			return  $this->select("titolo")->whereId((int)$id)->field("titolo");
+	}
+	
+	public function titoloCombinazioneJson($id)
+	{
+		$clean["id"] = (int)$id;
+		
+		$recordWeb = MagazzinoarticolicombinazioniModel::getDatiWeb($clean["id"]);
+		
+		if (!empty($recordWeb))
+		{
+			$pModel = new CombinazioniModel();
+			
+			return $pModel->titoloJson((int)$recordWeb["id_c"]);
+		}
+		else
+			return  "--";
 	}
 }

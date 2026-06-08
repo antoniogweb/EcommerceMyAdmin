@@ -47,6 +47,9 @@ class MagazzinoarticoliController extends BaseController
 		'id_marchio:sanitizeAll'=>'tutti',
 		'acquistabile:sanitizeAll'=>'tutti',
 		'id_ordine_acquisto:sanitizeAll'=>'tutti',
+		'q:sanitizeAll'=>'tutti',
+		'id_page:sanitizeAll'=>'tutti',
+		'id_articolo_comb:sanitizeAll'=>'tutti',
 	);
 	
 	// public $mainButtons = 'ldel';
@@ -70,6 +73,11 @@ class MagazzinoarticoliController extends BaseController
 		$_GET["id_form_fornitore"] = "tutti";
 		
 		$this->shift();
+		
+		if ($this->viewArgs["q"] != "tutti")
+		{
+			$this->viewArgs["cerca"] = $this->viewArgs["q"];
+		}
 		
 		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","titoloCrud","varianteCrud","marchi.titolo","codiceCrud","combinazioni.codice","prodottoCrud","attivoCrud","acquistabileCrud","magazzino_articoli.prezzo","magazzino_articoli.sconto_1","magazzino_articoli.sconto_2","ultimaQtaCrud","magazzino_articoli.aliquota_iva");
 		$this->mainHead = "Immagine,Categoria ecommerce,Articolo,Variante,Marchio,Codice,Codice Web,Prod. Web,Vis. Web,Acq. Web,Prezzo,Sconto 1,Sconto 2,Ultima Qta.,Iva";
@@ -144,11 +152,41 @@ class MagazzinoarticoliController extends BaseController
 				))
 			->orderBy("categories.title,magazzino_articoli.titolo")->convert();
 		
+		if ($this->viewArgs["q"] != "tutti")
+		{
+			$this->m[$this->modelName]->groupBy("coalesce(magazzino_articoli_combinazioni.id_page,magazzino_articoli.id_articolo)");
+		}
+		
 		if ($this->viewArgs["cerca"] != "tutti")
 		{
 			$this->m[$this->modelName]->aWhere(array(
 				"  AND"	=>	MagazzinoarticoliModel::getWhereClauseRicercaLibera($this->viewArgs['cerca']),
 			));
+		}
+		
+		if ($this->viewArgs["id_page"] != "tutti")
+		{
+			$this->m[$this->modelName]->aWhere(array(
+				"pages.id_page"	=>	(int)$this->viewArgs["id_page"],
+			));
+		}
+		
+		if ($this->viewArgs["id_articolo_comb"] != "tutti")
+		{
+			$recordWeb = MagazzinoarticolicombinazioniModel::getDatiWeb((int)$this->viewArgs["id_articolo_comb"]);
+			
+			if (!empty($recordWeb))
+			{
+				$this->m[$this->modelName]->aWhere(array(
+					"pages.id_page"	=>	(int)$recordWeb["id_page"],
+				));
+				
+				$this->m[$this->modelName]->metodoPerTitolo = "titoloCombinazioneJson";
+			}
+			else
+				$this->m[$this->modelName]->aWhere(array(
+					"magazzino_articoli.id_articolo"	=>	(int)$this->viewArgs["id_articolo_comb"],
+				));
 		}
 		
 		if ($this->viewArgs["id_ordine_acquisto"] != "tutti")

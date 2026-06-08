@@ -149,8 +149,8 @@ class OrdiniacquistoController extends BaseController
 			$this->colProperties = array();
 		}
 		
-		$this->mainFields = array("primaImmagineCarrelloCrud", "ordini_acquisto_righe.titolo");
-		$this->mainHead = "Immagine,Articolo";
+		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloCrud", "attributiCrud");
+		$this->mainHead = "Immagine,Articolo,Variante";
 		
 		$pulsantiMenu = "back";
 		
@@ -179,5 +179,10 @@ class OrdiniacquistoController extends BaseController
 		$data["ordine"] = $this->m("OrdiniModel")->selectId($clean['id']);
 		
 		$this->append($data);
+	}
+	
+	public function inviipdf($id = 0)
+	{
+		$this->_posizioni['inviipdf'] = 'class="active"';
 	}
 }

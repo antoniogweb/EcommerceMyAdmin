@@ -52,4 +52,44 @@ class OrdiniacquistorigheModel extends GenericModel
 	{
 		return parent::update($id, $where);
 	}
+	
+	public function primaImmagineCarrelloCrud($record)
+    {
+		if (!$record["ordini_acquisto_righe"]["id_page"])
+			return "";
+		
+		$immagine = ProdottiModel::immagineCarrello($record["ordini_acquisto_righe"]["id_page"], $record["ordini_acquisto_righe"]["id_c"]);
+		
+		if ($immagine)
+			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagine."' />";
+		
+		return "";
+    }
+    
+	public function titoloCrud($record)
+	{
+		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
+		{
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='min-width:500px;' class='form-control' name='title' value='".$record["ordini_acquisto_righe"]["titolo"]."' />";
+		}
+		else
+			return $record["ordini_acquisto_righe"]["titolo"];
+	}
+    
+    public function attributiCrud($record)
+	{
+// 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
+// 		{
+// 			$selectVarianti = ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]);
+// 			
+// 			if (count($selectVarianti) === 1 && !reset($selectVarianti))
+// 				return Html_Form::hidden("id_c", array_key_first($selectVarianti));
+// 			else
+// 				return Html_Form::select("id_c",$record["righe"]["id_c"], ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]), "select_attributo_ordine_offline form-control", null, "yes");
+// 		}
+// 		else if ($record["ordini_acquisto_righe"]["attributi"])
+			return $record["ordini_acquisto_righe"]["attributi"];
+		
+		// return "--";
+	}
 }

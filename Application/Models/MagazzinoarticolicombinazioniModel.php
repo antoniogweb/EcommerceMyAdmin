@@ -40,4 +40,13 @@ class MagazzinoarticolicombinazioniModel extends GenericModel
 			'combinazione' => array("BELONGS_TO", 'CombinazioniModel', 'id_c',null,"CASCADE"),
 		);
     }
+    
+    public static function getDatiWeb($idArticolo)
+	{
+		$macModel = new MagazzinoarticolicombinazioniModel();
+		
+		return $macModel->clear()->where(array(
+			"id_articolo"	=>	(int)$idArticolo,
+		))->record();
+	}
 }

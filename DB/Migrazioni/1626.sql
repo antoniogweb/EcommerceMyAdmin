@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto_righe add attributi varchar(255) not null default '';
