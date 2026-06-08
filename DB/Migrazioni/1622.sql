@@ -1,0 +1,1 @@
+alter table magazzino_articoli_combinazioni add id_page int UNSIGNED NOT NULL DEFAULT 0;

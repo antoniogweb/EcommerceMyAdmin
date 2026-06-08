@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto_righe add gtin varchar(100) not null default '';

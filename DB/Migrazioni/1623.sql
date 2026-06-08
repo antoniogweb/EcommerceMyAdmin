@@ -1,0 +1,1 @@
+alter table magazzino_articoli add sconto_1 decimal(10,2) not null default 0.00, add sconto_2 decimal(10,2) not null default 0.00;

@@ -1,0 +1,1 @@
+alter table magazzino_articoli add gtin varchar(100) not null default '';

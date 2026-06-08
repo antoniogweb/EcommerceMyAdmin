@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto_righe add id_r int UNSIGNED NOT NULL DEFAULT 0, add id_c int UNSIGNED NOT NULL DEFAULT 0, add id_page int UNSIGNED NOT NULL DEFAULT 0, add sconto_1 decimal(10,2) not null default 0.00, add sconto_2 decimal(10,2) not null default 0.00;

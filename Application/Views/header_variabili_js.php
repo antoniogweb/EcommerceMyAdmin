@@ -7,6 +7,7 @@
 	var applicationNameNoTrailingSlash = "<?php echo getApplicationName();?>";
 	var controllerName = "<?php echo $this->controller;?>";
 	var actionName = "<?php echo $this->action;?>";
+	var csrf_token = "<?php echo sanitizeHtml(User::$csrfToken);?>";
 	var viewStatus = <?php echo json_encode($this->viewStatus,JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);?>;
 	var partial = <?php echo partial() ? "true" : "false";?>;
 	var altezza_aggiuntiva_ricalcola_altezza_dialog = 0;

@@ -88,7 +88,7 @@ class MagazzinoarticoliModel extends GenericModel
 		$combModel = new CombinazioniModel();
 		$macModel = new MagazzinoarticolicombinazioniModel();
 		
-		$combinazioni = $combModel->clear()->select("combinazioni.*,pages.id_iva,pages.title,iva.valore,pages.id_marchio")
+		$combinazioni = $combModel->clear()->select("combinazioni.*,pages.id_iva,pages.title,iva.valore,pages.id_marchio,pages.id_page")
 			->inner(array("pagina"))
 			->left("iva")->on("pages.id_iva = iva.id_iva")
 			->sWhere("NOT EXISTS ( select 1 from magazzino_articoli_combinazioni where magazzino_articoli_combinazioni.id_c = combinazioni.id_c)")
@@ -110,7 +110,10 @@ class MagazzinoarticoliModel extends GenericModel
 			$this->sValues(array(
 				"titolo"	=>	$titolo,
 				"codice"	=>	htmlentitydecode($c["combinazioni"]["codice"]),
-				"prezzo"	=>	number_format($c["combinazioni"]["price_scontato"],2,".",""),
+				"gtin"		=>	htmlentitydecode($c["combinazioni"]["gtin"]),
+				"prezzo"	=>	0,
+				"sconto_1"	=>	0,
+				"sconto_2"	=>	0,
 				"id_iva"	=>	(int)$c["pages"]["id_iva"],
 				"aliquota_iva"	=>	$c["iva"]["valore"],
 				"id_marchio"	=>	(int)$c["pages"]["id_marchio"],
@@ -122,6 +125,7 @@ class MagazzinoarticoliModel extends GenericModel
 				
 				$macModel->sValues(array(
 					"id_articolo"	=>	$lastId,
+					"id_page"		=>	(int)$c["pages"]["id_page"],
 					"id_c"			=>	(int)$idC
 				));
 				
@@ -141,6 +145,22 @@ class MagazzinoarticoliModel extends GenericModel
 			$this->db->commit();
 	}
 	
+	public function titoloCrud($record)
+	{
+		if (!$record["pages"]["id_page"])
+			return $record["magazzino_articoli"]["titolo"];
+		
+		return $record["pages"]["title"];
+	}
+	
+	public function varianteCrud($record)
+	{
+		if (!$record["pages"]["id_page"])
+			return "";
+		
+		return CombinazioniModel::g()->getStringa($record["combinazioni"]["id_c"], "<br />");
+	}
+	
 	public function attivoCrud($record)
 	{
 		if (!$record["pages"]["id_page"])
@@ -152,9 +172,14 @@ class MagazzinoarticoliModel extends GenericModel
 	public function prodottoCrud($record)
 	{
 		if ($record["pages"]["id_page"])
-			return "<a target='_blank' href='".Url::getRoot()."prodotti/form/update/".$record["pages"]["id_page"]."'>".gtext("Vedi")." <i class='fa fa-angle-right'></i></a>";
+		{
+			if (ControllersModel::checkAccessoAlController(array("prodotti")))
+				return "<a target='_blank' href='".Url::getRoot()."prodotti/form/update/".$record["pages"]["id_page"]."'> <i class='fa fa-eye'></i></a>";
+			else
+				return $record["pages"]["title"];
+		}
 		
-		return $record["magazzino_articoli"]["titolo"];
+		return "";
 	}
 	
 	public function acquistabileCrud($record)
@@ -236,4 +261,23 @@ class MagazzinoarticoliModel extends GenericModel
 			}
 		}
     }
+    
+    public function codiceView($record)
+	{
+		return gtext("SKU").": <b>".$record["magazzino_articoli"]["codice"]."</b><br />\n".gtext("GTIN").": ".$record["magazzino_articoli"]["gtin"]."<br />\n".gtext("MPN").": ".$record["magazzino_articoli"]["mpn"];
+	}
+	
+	public function codiceCrud($record)
+	{
+		if (!isset($_GET["esporta"]))
+		{
+			$html = "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("SKU").":</b> <input id-articolo='".$record["magazzino_articoli"]["id_articolo"]."' style='max-width:140px;display:inline;' class='form-control class_combinazione class_combinazione_".$record["magazzino_articoli"]["id_articolo"]."' name='codice' value='".$record["magazzino_articoli"]["codice"]."' /></div>";
+			
+			$html .= "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("GTIN").":</b> <input id-articolo='".$record["magazzino_articoli"]["id_articolo"]."' style='max-width:140px;display:inline;' class='form-control' name='gtin' value='".$record["magazzino_articoli"]["gtin"]."' /></div>";
+			
+			return $html;
+		}
+		else
+			return $this->codiceView($record);
+	}
 }

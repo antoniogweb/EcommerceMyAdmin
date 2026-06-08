@@ -901,11 +901,14 @@ class BaseController extends Controller
 		}
 	}
 	
-	protected function checkCsrf($force = false)
+	protected function checkCsrf($force = false, $metodo = "GET")
 	{
 		if (isset($_GET["delAction"]) || $force)
 		{
-			$csrf = $this->request->get("csrf","");
+			if ($metodo == "GET")
+				$csrf = $this->request->get("csrf","");
+			else
+				$csrf = $this->request->post("csrf","");
 			
 			if (!$this->s["admin"]->checkCSRF($csrf))
 				$this->responseCode(403);

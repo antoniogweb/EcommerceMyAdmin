@@ -71,8 +71,8 @@ class MagazzinoarticoliController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","magazzino_articoli.titolo","<b>;magazzino_articoli.codice;</b>","combinazioni.codice","marchi.titolo","prodottoCrud","attivoCrud","acquistabileCrud","magazzino_articoli.prezzo","magazzino_articoli.aliquota_iva");
-		$this->mainHead = "Immagine,Categoria ecommerce,Articolo magazzino,Codice,Codice Web,Marchio,Prod. Web,Vis. Web,Acq. Web,Prezzo,Iva";
+		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","titoloCrud","varianteCrud","marchi.titolo","codiceCrud","combinazioni.codice","prodottoCrud","attivoCrud","acquistabileCrud","magazzino_articoli.prezzo","magazzino_articoli.sconto_1","magazzino_articoli.sconto_2","ultimaQtaCrud","magazzino_articoli.aliquota_iva");
+		$this->mainHead = "Immagine,Categoria ecommerce,Articolo,Variante,Marchio,Codice,Codice Web,Prod. Web,Vis. Web,Acq. Web,Prezzo,Sconto 1,Sconto 2,Ultima Qta.,Iva";
 		
 		if ($this->viewArgs["id_ordine_acquisto"] != "tutti")
 		{
@@ -104,14 +104,38 @@ class MagazzinoarticoliController extends BaseController
 			"0"	=>	gtext("Non acquistabile"),
 		));
 		
-		$this->m[$this->modelName]->select("magazzino_articoli.*,categories.title,marchi.titolo,pages.id_page,pages.attivo,combinazioni.acquistabile,combinazioni.id_c,combinazioni.codice")
+		$this->inverseColProperties = array(
+			null,null,
+			array(
+				'class'	=>	'sfondo_colonna_prezzo',
+			),
+			array(
+				'class'	=>	'sfondo_colonna_prezzo',
+			),
+			array(
+				'class'	=>	'sfondo_colonna_prezzo',
+			),
+			array(
+				'class'	=>	'sfondo_colonna_prezzo',
+			),
+			array(
+				'class'	=>	'sfondo_colonna_prezzo',
+			),
+		);
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'save_articoli');
+		
+		$this->m[$this->modelName]->select("magazzino_articoli.*,categories.title,marchi.titolo,pages.id_page,pages.attivo,combinazioni.acquistabile,combinazioni.id_c,combinazioni.codice,pages.title")
 			->left(array("combinazioni"))
 			->left("combinazioni")->on("combinazioni.id_c = magazzino_articoli_combinazioni.id_c")
 			->left("pages")->on("pages.id_page = combinazioni.id_page")
 			->left("categories")->on("pages.id_c = categories.id_c")
 			->left("marchi")->on("pages.id_marchio = marchi.id_marchio")
 			->where(array(
-					"lk" => array('magazzino_articoli.titolo' => $this->viewArgs['prodotto']),
+					"OR"	=>	array(
+						"lk" => array('magazzino_articoli.titolo' => $this->viewArgs['prodotto']),
+						" lk" => array('pages.title' => $this->viewArgs['prodotto']),
+					),
 					" lk" => array('categories.title' => $this->viewArgs['categoria']),
 					"  lk" => array('magazzino_articoli.codice' => $this->viewArgs['codice']),
 					"pages.attivo"	=>	$this->viewArgs['attivo'],
@@ -149,14 +173,66 @@ class MagazzinoarticoliController extends BaseController
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		if ($queryType != "update")
+			$this->responseCode(403);
+		
 		$this->shift(2);
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$fields =  'titolo,prezzo,id_iva';
+		$fields =  'titolo,codice,gtin,id_iva';
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function salva()
+	{
+		$arrayIdsErrore = [];
+		
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		CombinazioniModel::$aggiornaAliasAdInserimento = false;
+		
+		$this->checkCsrf(true, "POST");
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
+		
+		$this->clean();
+		
+		$valori = $this->request->post("valori","[]");
+		
+		$valori = json_decode($valori, true);
+		
+		$arrayIdPage = array();
+		
+		foreach ($valori as $v)
+		{
+			if (v("usa_transactions"))
+				$record = $this->m[$this->modelName]->clear()->whereId((int)$v["id_articolo"])->forUpdate()->record();
+			else
+				$record = $this->m[$this->modelName]->selectId((int)$v["id_articolo"]);
+			
+			$this->m[$this->modelName]->setValues(array(
+				"codice"	=>	$v["codice"],
+				"gtin"		=>	$v["gtin"],
+			));
+
+			if (!empty($record))
+			{
+				if (!$this->m[$this->modelName]->update((int)$record["id_articolo"]))
+					$arrayIdsErrore[] = $v["id_articolo"];
+			}
+			else
+			{
+				$arrayIdsErrore[] = $v["id_articolo"];
+			}
+		}
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
+		
+		echo json_encode($arrayIdsErrore);
 	}
 }

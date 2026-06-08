@@ -367,6 +367,15 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" class="btn btn-success save_combinazioni menu_btn btn_trigger_click"',
 		"classIconBefore"	=>	'<i class="fa fa-refresh"></i>',
 	),
+	'save_articoli'	=>	array(
+		'title'	=>	"salva",
+		'text'	=>	"Salva valori",
+		'url'	=>	'main',
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-success save_articoli menu_btn btn_trigger_click"',
+		"classIconBefore"	=>	'<i class="fa fa-refresh"></i>',
+	),
 	'genera_redirect'	=>	array(
 		'title'	=>	"Rigenera file redirect",
 		'text'	=>	"Rigenera file redirect",
