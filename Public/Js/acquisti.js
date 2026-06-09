@@ -194,4 +194,31 @@ $(document).ready(function(){
 		$(".save_righe_ordini_acquisto").trigger("click");
 		
 	});
+	
+	$( "body" ).on( "click", ".aggiungi_riga_tipologia_ordine_acquisto", function(e){
+		
+		e.preventDefault();
+		
+		var idOrdine = $(this).attr("id-ordine"); 
+		var idRigaTipologia = $(this).attr("id-riga-tipologia"); 
+		var url = $(this).attr("href"); 
+		
+		$.ajaxQueue({
+			url: url,
+			cache:false,
+			async: true,
+			dataType: "html",
+			type: "POST",
+			data: {
+				id_ordine_acquisto: idOrdine,
+				id_ordine_acquisto_riga_tipologia: idRigaTipologia,
+				insertAction: "Y"
+			},
+			success: function(content){
+				
+				$(".save_righe_ordini_acquisto").trigger("click");
+				
+			}
+		});
+	});
 });

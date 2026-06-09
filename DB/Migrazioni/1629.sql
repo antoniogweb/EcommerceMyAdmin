@@ -1,0 +1,1 @@
+update ordini_acquisto_righe_tipologie set classe = 'btn btn-warning btn-w-m btn-sm btn-rounded' where id_ordine_acquisto_riga_tipologia = 1;

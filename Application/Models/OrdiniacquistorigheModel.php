@@ -45,7 +45,24 @@ class OrdiniacquistorigheModel extends GenericModel
 	
 	public function insert()
 	{
-		return parent::insert();
+		if (!isset($this->values["id_iva"]))
+		{
+			$ivaModel = new IvaModel();
+			
+			$this->values["id_iva"] = $ivaModel->clear()->select("id_iva")->orderBy("id_order")->limit(1)->field("id_iva");
+			$this->values["aliquota_iva"] = sanitizeAll($ivaModel->getValore((int)$this->values["id_iva"]));
+		}
+		
+		if (!isset($this->values["quantita"]))
+			$this->values["quantita"] = 1;
+		
+		if (parent::insert())
+		{
+			$idOrdine = $this->clear()->whereId((int)$this->lId)->field("id_ordine_acquisto");
+			
+			if ($idOrdine)
+				OrdiniacquistoModel::g(false)->aggiornaTotali((int)$idOrdine);
+		}
 	}
 	
 	public function update($id = null, $where = null)
@@ -170,5 +187,28 @@ class OrdiniacquistorigheModel extends GenericModel
 			return "<i class='text-danger fa fa-ban'></i>";
 		
 		return "";
+	}
+	
+	public static function subtotale($riga)
+	{
+		if ($riga["id_ordine_acquisto_riga_tipologia"])
+			return 0;
+		
+		$scontato1 = number_format($riga["prezzo"] * (1 - ($riga["sconto_1"] / 100)),2,".","");
+		$scontato2 = number_format($scontato1* (1 - ($riga["sconto_2"] / 100)),2,".","");
+		
+		$subtotale = number_format($scontato2 * $riga["quantita"],2,".","");
+		
+		return $subtotale;
+	}
+	
+	public function del($id = null, $where = null)
+	{
+		$idOrdine = $this->clear()->whereId((int)$id)->field("id_ordine_acquisto");
+		
+		if (parent::del($id, $where) && $idOrdine)
+		{
+			OrdiniacquistoModel::g(false)->aggiornaTotali((int)$idOrdine);
+		}
 	}
 }

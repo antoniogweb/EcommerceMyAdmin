@@ -145,4 +145,68 @@ class OrdiniacquistoModel extends GenericModel
 		
 		return false;
 	}
+	
+	public function imponibile($idOrdine)
+	{
+		$oarModel = new OrdiniacquistorigheModel();
+		
+		$righe = $oarModel->clear()->where(array(
+			"id_ordine_acquisto"	=>	(int)$idOrdine,
+		))->send(false);
+		
+		$imponibile = 0;
+		
+		foreach ($righe as $riga)
+		{
+			$imponibile += OrdiniacquistorigheModel::subtotale($riga);
+		}
+		
+		return $imponibile;
+	}
+	
+	public function iva($idOrdine)
+	{
+		$oarModel = new OrdiniacquistorigheModel();
+		
+		$righe = $oarModel->clear()->where(array(
+			"id_ordine_acquisto"	=>	(int)$idOrdine,
+		))->send(false);
+		
+		$arrayAliquote = array();
+		
+		foreach ($righe as $riga)
+		{
+			$imponibile = OrdiniacquistorigheModel::subtotale($riga);
+			$aliquota = number_format($riga["aliquota_iva"],2,".","");
+			
+			if (isset($arrayAliquote[$aliquota]))
+				$arrayAliquote[$aliquota] += $imponibile;
+			else
+				$arrayAliquote[$aliquota] = $imponibile;
+		}
+		
+		$iva = 0;
+		
+		foreach ($arrayAliquote as $aliquota => $imponibile)
+		{
+			$iva += number_format($imponibile * ($aliquota / 100), 2, ".", "");
+		}
+		
+		return $iva;
+	}
+	
+	public function aggiornaTotali($idOrdine)
+	{
+		$imponibile = $this->imponibile($idOrdine);
+		$iva = $this->iva($idOrdine);
+		$totale = $imponibile + $iva;
+		
+		$this->sValues(array(
+			"imponibile"	=>	$imponibile,
+			"iva"			=>	$iva,
+			"totale"		=>	$totale,
+		));
+		
+		$this->update((int)$idOrdine);
+	}
 }

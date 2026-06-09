@@ -63,7 +63,9 @@ class IvaModel extends GenericModel
 	
 	public function relations() {
         return array(
-			'pages' => array("HAS_MANY", 'PagesModel', 'id_iva', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
+			'pages' => array("HAS_MANY", 'PagesModel', 'id_iva', null, "RESTRICT", "L'elemento ha delle pagine collegate e non può essere eliminato"),
+			'magazzino' => array("HAS_MANY", 'MagazzinoarticoliModel', 'id_iva', null, "RESTRICT", "L'elemento ha degli articoli di magazzino collegati e non può essere eliminato"),
+			'righe_acquisto' => array("HAS_MANY", 'OrdiniacquistorigheModel', 'id_iva', null, "RESTRICT", "L'elemento ha delle righe di acquisto collegate e non può essere eliminato"),
         );
     }
     

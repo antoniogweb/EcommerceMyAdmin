@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto add imponibile decimal(10,2) not null default 0.00, add iva decimal(10,2) not null default 0.00, add totale decimal(10,2) not null default 0.00;

@@ -152,6 +152,10 @@ class OrdiniacquistoController extends BaseController
 			$this->colProperties = array();
 		}
 		
+		$this->rowAttributes = array(
+			"class"	=>	"listRow id_tipo_riga_acquisto_;ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia; id_articolo_;ordini_acquisto_righe.id_articolo;",
+		);
+		
 		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "sconto1Crud", "sconto2Crud", "quantitaCrud", ";ordini_acquisto_righe.aliquota_iva;%", "acquistabileCrud");
 		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Sconto 1, Sconto 2,Quantità,Aliquota,Acq";
 		
@@ -171,7 +175,7 @@ class OrdiniacquistoController extends BaseController
 			->where(array(
 				"ordini_acquisto_righe.id_ordine_acquisto"	=>	$clean['id']
 			))
-			->orderBy("ordini_acquisto_righe.id_order,ordini_acquisto_righe.id_order")
+			->orderBy("ordini_acquisto_righe_tipologie.id_order,ordini_acquisto_righe.id_order")
 			->convert()->save();
 		
 		$this->getTabViewFields("righe");
@@ -183,7 +187,7 @@ class OrdiniacquistoController extends BaseController
 		$data["titoloRecord"] = $this->m($mainModelName)->titolo($clean['id']);
 		$data["tipoSteps"] = "modifica";
 		$data["ordine"] = $this->m("OrdiniModel")->selectId($clean['id']);
-		
+		$data["tipologie"] = $this->m("OrdiniacquistorighetipologieModel")->clear()->orderBy("id_order")->send(false);
 		$this->append($data);
 	}
 	

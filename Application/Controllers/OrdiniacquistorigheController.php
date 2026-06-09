@@ -32,6 +32,18 @@ class OrdiniacquistorigheController extends BaseController
 			$this->responseCode(403);
 	}
 	
+	public function form($queryType = 'insert', $id = 0)
+	{
+		if ($queryType == "update")
+			$this->responseCode(403);
+		
+		$this->shift(2);
+		
+		$this->m[$this->modelName]->setValuesFromPost("id_ordine_acquisto,id_ordine_acquisto_riga_tipologia");
+		
+		parent::form($queryType, $id);
+	}
+	
 	public function salva()
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
@@ -48,6 +60,8 @@ class OrdiniacquistorigheController extends BaseController
 		
 		$arrayIdPage = array();
 		
+		$idOrdine = 0;
+		
 		if (count($valori) > 0 && isset($valori[0]["id_ordine_acquisto_riga"]))
 		{
 			$idOrdine = OrdiniacquistorigheModel::g()->whereId((int)$valori[0]["id_ordine_acquisto_riga"])->field("id_ordine_acquisto");
@@ -60,6 +74,9 @@ class OrdiniacquistorigheController extends BaseController
 				return;
 			}
 		}
+		
+		if (!$idOrdine)
+			return;
 		
 		$combModel = new CombinazioniModel();
 		
@@ -76,7 +93,7 @@ class OrdiniacquistorigheController extends BaseController
 					$recordArticolo = MagazzinoarticoliModel::g()->selectId((int)$v["id_articolo"]);
 					$recordWeb = MagazzinoarticolicombinazioniModel::getDatiWeb((int)$v["id_articolo"]);
 					
-					$rigaTipologia = $this->m("RighetipologieModel")->clear()->selectId((int)$recordRiga["id_ordine_acquisto_riga_tipologia"]);
+					// $rigaTipologia = $this->m("RighetipologieModel")->clear()->selectId((int)$recordRiga["id_ordine_acquisto_riga_tipologia"]);
 					
 					$moltiplicatore = 1;
 					
@@ -115,6 +132,8 @@ class OrdiniacquistorigheController extends BaseController
 			else
 				$this->m[$this->modelName]->del($v["id_ordine_acquisto_riga"]);
 		}
+		
+		$this->m("OrdiniacquistoModel")->aggiornaTotali($idOrdine);
 		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->commit();

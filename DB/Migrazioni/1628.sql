@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto_righe_tipologie add classe varchar(255) not null default '';
