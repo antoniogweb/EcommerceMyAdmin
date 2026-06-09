@@ -49,4 +49,25 @@ class MagazzinoarticolicombinazioniModel extends GenericModel
 			"id_articolo"	=>	(int)$idArticolo,
 		))->record();
 	}
+	
+	public static function selectCombinazioni($idPage)
+	{
+		$macModel = new MagazzinoarticolicombinazioniModel();
+		$c = new CombinazioniModel();
+		
+		$idcS = $macModel->clear()->where(array(
+			"id_page"	=>	(int)$idPage,
+		))->toList("id_articolo", "id_c")->send();
+		
+		$resultArray = [];
+		
+		foreach ($idcS as $idArticolo => $idc)
+		{
+			$stringa = strip_tags($c->getStringa($idc, ","));
+			
+			$resultArray[$idArticolo] = $stringa;
+		}
+		
+		return $resultArray;
+	}
 }

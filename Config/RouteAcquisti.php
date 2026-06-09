@@ -36,5 +36,6 @@ class RouteAcquisti
 		'magazzinoarticoli,main',
 		'magazzinoarticoli,form',
 		'magazzinoarticoli,salva',
+		'ordiniacquistorighe,salva',
 	);
 }

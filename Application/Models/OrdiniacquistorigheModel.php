@@ -70,7 +70,7 @@ class OrdiniacquistorigheModel extends GenericModel
 	{
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
 		{
-			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='min-width:500px;' class='form-control' name='title' value='".$record["ordini_acquisto_righe"]["titolo"]."' />";
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='min-width:500px;' class='form-control' name='titolo' value='".$record["ordini_acquisto_righe"]["titolo"]."' />";
 		}
 		else
 			return $record["ordini_acquisto_righe"]["titolo"];
@@ -78,18 +78,97 @@ class OrdiniacquistorigheModel extends GenericModel
     
     public function attributiCrud($record)
 	{
-// 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
-// 		{
-// 			$selectVarianti = ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]);
-// 			
-// 			if (count($selectVarianti) === 1 && !reset($selectVarianti))
-// 				return Html_Form::hidden("id_c", array_key_first($selectVarianti));
-// 			else
-// 				return Html_Form::select("id_c",$record["righe"]["id_c"], ProdottiModel::selectCombinazioni((int)$record["righe"]["id_page"]), "select_attributo_ordine_offline form-control", null, "yes");
-// 		}
-// 		else if ($record["ordini_acquisto_righe"]["attributi"])
+		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
+		{
+			if ($record["ordini_acquisto_righe"]["id_page"])
+			{
+				$selectVarianti = MagazzinoarticolicombinazioniModel::selectCombinazioni((int)$record["ordini_acquisto_righe"]["id_page"]);
+				
+				if (count($selectVarianti) === 1 && !reset($selectVarianti))
+					return Html_Form::hidden("id_articolo", array_key_first($selectVarianti));
+				else
+					return Html_Form::select("id_articolo",$record["ordini_acquisto_righe"]["id_articolo"], $selectVarianti, "select_attributo_ordine_acquisto_offline form-control", null, "yes");
+			}
+			else
+				return Html_Form::hidden("id_articolo", $record["ordini_acquisto_righe"]["id_articolo"]);
+		}
+		else
 			return $record["ordini_acquisto_righe"]["attributi"];
+	}
+	
+	public function codiceCrud($record)
+	{
+		$codice = $record["ordini_acquisto_righe"]["codice"];
 		
-		// return "--";
+		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
+		{
+			if ($record["ordini_acquisto_righe"]["id_page"])
+				return $record["ordini_acquisto_righe"]["codice"]."<input type='hidden' id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' name='codice' value='".$record["ordini_acquisto_righe"]["codice"]."' />";
+			else
+				return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='max-width:90px;' class='form-control codice_riga_ordine' name='codice' value='".$codice."' />";
+		}
+		else
+			return $codice;
+	}
+	
+	public function prezzoInteroCrud($record)
+	{
+		$prezzo = $record["ordini_acquisto_righe"]["prezzo"];
+		
+		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='max-width:90px;' class='form-control prezzo_pieno_riga_ordine' name='prezzo' value='".$prezzo."' />";
+		else
+			return $prezzo;
+	}
+	
+	public function sconto1Crud($record)
+	{
+		$sconto = $record["ordini_acquisto_righe"]["sconto_1"];
+		
+		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='max-width:65px;' class='form-control sconto_1_riga_ordine' name='sconto_1' value='".$sconto."' />";
+		else
+			return $sconto;
+	}
+	
+	public function sconto2Crud($record)
+	{
+		$sconto = $record["ordini_acquisto_righe"]["sconto_2"];
+		
+		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='max-width:65px;' class='form-control sconto_2_riga_ordine' name='sconto_2' value='".$sconto."' />";
+		else
+			return $sconto;
+	}
+	
+	public function quantitaCrud($record)
+	{
+		$quantita = $record["ordini_acquisto_righe"]["quantita"];
+		
+		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='max-width:60px;' class='form-control quantita_riga_ordine' name='quantita' value='".$quantita."' />";
+		else
+			return $quantita;
+	}
+	
+	public function deletable($id)
+	{
+		$idOrdine = (int)$this->whereId($id)->field("id_ordine_acquisto");
+		
+		return OrdiniacquistoModel::g()->isBozza($idOrdine);
+	}
+	
+	public function acquistabileCrud($record)
+	{
+		if (!$record["ordini_acquisto_righe"]["id_page"])
+			return "";
+		
+		$cModel = new CombinazioniModel();
+		$pModel = new PagesModel();
+		
+		if ($pModel->whereId((int)$record["ordini_acquisto_righe"]["id_page"])->field("attivo") == "N" || !$cModel->clear()->whereId((int)$record["ordini_acquisto_righe"]["id_c"])->field("acquistabile"))
+			return "<i class='text-danger fa fa-ban'></i>";
+		
+		return "";
 	}
 }

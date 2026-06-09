@@ -122,14 +122,76 @@ $(document).ready(function(){
 				},
 				success: function(content){
 					
-					// $(".save_righe_ordini").trigger("click");
-// 					aggiornaParziale(applicationControllerAction + "/" + idOrdine + "?ajax_partial_load");
-// 					reloadPage();
+					$(".save_righe_ordini_acquisto").trigger("click");
 					
 				}
 			});
 		}
 		else
 			alert("Attenzione, si prega di selezionare un articolo");
+	});
+	
+	$("body").on("click", ".save_righe_ordini_acquisto", function(e){
+		
+		e.preventDefault();
+		
+		var idOrdine = $(this).attr("id-ordine");
+		var urlSalva = $(this).attr("url-salva");
+		
+		var that = $(this);
+		
+		that.find("i").removeClass("fa-save").addClass("fa-spinner").addClass("fa-spin");
+		
+		var valori = [];
+		
+		$("table tr.listRow").each(function() {
+			
+			var id_ordine_acquisto_riga = $(this).find("[name='quantita']").attr("id-riga");
+			var quantita = $(this).find("[name='quantita']").val();
+			var prezzo = $(this).find("[name='prezzo']").val();
+			var titolo = $(this).find("[name='titolo']").val();
+			var id_articolo = $(this).find("[name='id_articolo']").val();
+			var codice = $(this).find("[name='codice']").val();
+			var sconto_1 = $(this).find("[name='sconto_1']").val();
+			var sconto_2 = $(this).find("[name='sconto_2']").val();
+			
+			var temp = {
+				id_ordine_acquisto_riga: id_ordine_acquisto_riga,
+				quantita: quantita,
+				prezzo: prezzo,
+				titolo: titolo,
+				id_articolo: id_articolo,
+				codice: codice,
+				sconto_1: sconto_1,
+				sconto_2: sconto_2,
+			};
+			
+			valori.push(temp);
+		});
+		
+// 		console.log(valori);
+		
+		$.ajaxQueue({
+			url: baseUrl + "/" + urlSalva,
+			cache:false,
+			async: true,
+			dataType: "html",
+			type: "POST",
+			data: {
+				valori: JSON.stringify(valori)
+			},
+			success: function(content){
+				
+				aggiornaParziale(applicationControllerAction + "/" + idOrdine + viewStatus + "&ajax_partial_load");
+				
+			}
+		});
+		
+	});
+	
+	$( "body" ).on( "change", ".select_attributo_ordine_acquisto_offline", function(e){
+		
+		$(".save_righe_ordini_acquisto").trigger("click");
+		
 	});
 });

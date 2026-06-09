@@ -273,7 +273,7 @@ class MagazzinoarticoliModel extends GenericModel
 					"id_marchio"	=>	$record["id_marchio"],
 					"id_c"			=>	$recordWeb["id_c"] ?? 0,
 					"id_page"		=>	$recordWeb["id_page"] ?? 0,
-					"attributi"		=>	$recordWeb["id_c"] ? $combModel->getStringa($recordWeb["id_c"], "<br />") : "",
+					"attributi"		=>	isset($recordWeb["id_c"]) ? $combModel->getStringa($recordWeb["id_c"], "<br />") : "",
 				), "sanitizeDb");
 				
 				$oarModel->insert();

@@ -403,6 +403,15 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" class="btn btn-success save_righe_ordini menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
+	'save_righe_ordini_acquisto'	=>	array(
+		'title'	=>	"Salva",
+		'text'	=>	"Salva",
+		'url'	=>	'main',
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-success save_righe_ordini_acquisto menu_btn"',
+		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
+	),
 	'vai_alla_lista'	=>	array(
 		'title'	=>	"Vai alla lista",
 		'text'	=>	"Vai alla lista",

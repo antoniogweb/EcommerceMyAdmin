@@ -1009,7 +1009,7 @@ $(document).ready(function(){
 		riga_modificata = true;
 	});
 
-	$("body").on("click", ".nav_dettaglio a, .mainMenu a:not(.save_righe_ordini), .sidebar a, .pulsanti_genera_invia_pdf a", function(e){
+	$("body").on("click", ".nav_dettaglio a, .mainMenu a:not(.save_righe_ordini), mainMenu a:not(.save_righe_ordini_acquisto), .sidebar a, .pulsanti_genera_invia_pdf a", function(e){
 		if (riga_modificata)
 		{
 			if (window.confirm("Se non salvi perderai le modifiche effettuate. Procedi comunque?")) {}

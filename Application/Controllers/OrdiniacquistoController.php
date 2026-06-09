@@ -29,9 +29,12 @@ Helper_List::$filtersFormLayout["filters"]["id_ordine_acquisto_filtro"] = array(
 	),
 );
 
+Helper_Menu::$htmlLinks["save_righe_ordini_acquisto"]["attributes"] .= " url-salva='ordiniacquistorighe/salva' ";
+
 class OrdiniacquistoController extends BaseController
 {
 	public $orderBy = "ragione_sociale";
+	public $pulsantiMenuRighe = "";
 	
 	public $argKeys = array(
 		'id_ordine_acquisto_filtro:sanitizeAll'=>'tutti',
@@ -149,15 +152,18 @@ class OrdiniacquistoController extends BaseController
 			$this->colProperties = array();
 		}
 		
-		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloCrud", "attributiCrud");
-		$this->mainHead = "Immagine,Articolo,Variante";
+		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "sconto1Crud", "sconto2Crud", "quantitaCrud", ";ordini_acquisto_righe.aliquota_iva;%", "acquistabileCrud");
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Sconto 1, Sconto 2,Quantità,Aliquota,Acq";
 		
-		$pulsantiMenu = "back";
+		if (!$this->pulsantiMenuRighe)
+		{
+			$this->pulsantiMenuRighe = "back";
+			
+			if (OrdiniacquistoModel::g()->isBozza((int)$id))
+				$this->pulsantiMenuRighe .= ",save_righe_ordini_acquisto";
+		}
 		
-		// if (OrdiniacquistoModel::g()->isDeletable((int)$id))
-		// 	$pulsantiMenu .= ",save_righe_ordini";
-		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$pulsantiMenu,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$this->pulsantiMenuRighe,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
 		$this->m($this->modelName)->clear()->select("ordini_acquisto_righe.*")
 			->left(array("articolo"))
@@ -170,7 +176,7 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->getTabViewFields("righe");
 		
-		// Helper_Menu::$htmlLinks["save_righe_ordini"]["attributes"] .= " id-ordine='".(int)$id."'";
+		Helper_Menu::$htmlLinks["save_righe_ordini_acquisto"]["attributes"] .= " id-ordine='".(int)$id."'";
 		
 		parent::main();
 		
