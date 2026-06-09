@@ -904,6 +904,7 @@ class EmbeddingsModel extends GenericModel
 					));
 					
 					$backupEmbeddings = array();
+					$useTitleBodyEmbeddings = ((float)v("perc_score_title_ricerca_semantica") > 0);
 					
 					foreach ($chunks as $chunk)
 					{
@@ -916,16 +917,21 @@ class EmbeddingsModel extends GenericModel
 
 						$response = self::normalizeEmbeddingJson(AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($embeddingText));
 						
-						$responseBody = self::normalizeEmbeddingJson(AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($estratto));
+						$responseTitle = $responseBody = "";
 						
-						if (isset($backupEmbeddings[$title]))
+						if ($useTitleBodyEmbeddings)
 						{
-							$responseTitle = $backupEmbeddings[$title];
-						}
-						else
-						{
-							$responseTitle = self::normalizeEmbeddingJson(AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($title));
-							$backupEmbeddings[$title] = $responseTitle;
+							$responseBody = self::normalizeEmbeddingJson(AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($estratto));
+							
+							if (isset($backupEmbeddings[$title]))
+							{
+								$responseTitle = $backupEmbeddings[$title];
+							}
+							else
+							{
+								$responseTitle = self::normalizeEmbeddingJson(AimodelliModel::getModulo($idModelloPredefinitoEmbeddings, true)->embeddings($title));
+								$backupEmbeddings[$title] = $responseTitle;
+							}
 						}
 						
 						// echo $title."\n\n\n".$estratto."\n\n\n";continue;
