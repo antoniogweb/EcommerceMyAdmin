@@ -121,7 +121,7 @@ class OrdiniacquistorigheController extends BaseController
 						"id_c"				=>	$recordWeb["id_c"] ?? 0,
 						"id_page"			=>	$recordWeb["id_page"] ?? 0,
 						"codice"			=>	isset($recordWeb["id_c"]) ? ($recordArticolo["codice"] ?? $codice) : $codice,
-						"attributi"			=>	isset($recordWeb["id_c"]) ? $combModel->getStringa($recordWeb["id_c"], "<br />") : "",
+						"attributi"			=>	isset($recordWeb["id_c"]) ? strip_tags($combModel->getStringa($recordWeb["id_c"], "<br />")) : "",
 					));
 					
 					// print_r($this->m[$this->modelName]->values);
