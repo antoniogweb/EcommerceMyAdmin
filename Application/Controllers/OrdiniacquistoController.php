@@ -186,14 +186,43 @@ class OrdiniacquistoController extends BaseController
 		
 		$data["titoloRecord"] = $this->m($mainModelName)->titolo($clean['id']);
 		$data["tipoSteps"] = "modifica";
-		$data["ordine"] = $this->m("OrdiniModel")->selectId($clean['id']);
 		$data["tipologie"] = $this->m("OrdiniacquistorighetipologieModel")->clear()->orderBy("id_order")->send(false);
 		$this->append($data);
 	}
 	
-	public function inviipdf($id = 0)
+	public function inviipdf($id)
 	{
+		$this->mainShift = 1;
+		
 		$this->_posizioni['inviipdf'] = 'class="active"';
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_ordine_acquisto";
+		
+		$mainModelName = $this->modelName;
+		
+		$this->modelName = "OrdiniacquistopdfModel";
+		
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+		$this->mainFields = array("cleanDateTime", "linkPdfCrud", "inviatoCrud", "adminusers.username");
+		$this->mainHead = "Data PDF,File PDF,Inviato,Generato da";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"inviipdf/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m($this->modelName)->select("ordini_acquisto_pdf.*,adminusers.username")->left("adminusers")->on("adminusers.id_user = ordini_acquisto_pdf.id_admin")->where(array("ordini_acquisto_pdf.id_ordine_acquisto"=>$clean['id']))->orderBy("ordini_acquisto_pdf.data_creazione desc")->convert()->save();
+		
+		$this->getTabViewFields("inviipdf");
+		
+		$this->mainButtons = "";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m[$mainModelName]->titolo($clean['id']);
+		$data["tipoSteps"] = "modifica";
+		
+		$this->append($data);
 	}
 	
 	public function storicostati($idO)

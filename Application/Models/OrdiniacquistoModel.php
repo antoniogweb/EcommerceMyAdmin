@@ -160,11 +160,11 @@ class OrdiniacquistoModel extends GenericModel
 		return false;
 	}
 	
-	public function getRighe($idOrdine, $diTestata = false)
+	public function getRighe($idOrdine, $diTestata = false, $fields = "ordini_acquisto_righe.*")
 	{
 		$oarModel = new OrdiniacquistorigheModel();
 		
-		$oarModel->clear()->left(array("tipologia"))->where(array(
+		$oarModel->clear()->select($fields)->left(array("tipologia"))->where(array(
 			"id_ordine_acquisto"	=>	(int)$idOrdine,
 		));
 		
@@ -173,7 +173,23 @@ class OrdiniacquistoModel extends GenericModel
 		else
 			$oarModel->sWhere("(ordini_acquisto_righe_tipologie.moltiplicatore IS NULL or ordini_acquisto_righe_tipologie.moltiplicatore >= 0)");
 		
-		return $oarModel->send(false);
+		return $oarModel->orderBy("ordini_acquisto_righe.id_order")->send(false);
+	}
+	
+	public function infoOrdine($idOrdine)
+	{
+		$ordine = $this->selectId($idOrdine);
+		
+		if (empty($ordine))
+			return array();
+		
+		$struttura = array(
+			"testata"	=>	$this->selectId($idOrdine),
+			"righe"		=>	$this->getRighe($idOrdine, false),
+			"sconti"	=>	$this->getRighe($idOrdine, true, "ordini_acquisto_righe.sconto_1 as sconto"),
+		);
+		
+		return $struttura;
 	}
 	
 	public function imponibile($idOrdine, $pieno = false)

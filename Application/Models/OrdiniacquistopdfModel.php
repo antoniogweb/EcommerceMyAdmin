@@ -48,6 +48,13 @@ class OrdiniacquistopdfModel extends GenericModel
 		return "media/PdfAcquisto/";
 	}
     
+    public function insert()
+	{
+		$this->values["id_admin"] = (int)User::$idAdmin;
+		
+		return parent::insert();
+	}
+    
     public function generaPdf($id, $salva = true, $invia = false)
     {
 		createFolderFull(self::getMediaPath(), LIBRARY);
@@ -86,7 +93,7 @@ class OrdiniacquistopdfModel extends GenericModel
 			));
 		
 		$values = array(
-			"id_ordine_acquisto"			=>	(int)$ordine["id_ordine_acquisto"],
+			"id_ordine_acquisto"	=>	(int)$ordine["id_ordine_acquisto"],
 			"filename"	=>	$fileName,
 			"titolo"	=>	$titolo,
 			"corrente"	=>	1,

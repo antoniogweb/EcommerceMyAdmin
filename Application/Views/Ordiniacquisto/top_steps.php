@@ -21,6 +21,17 @@
 						<td><?php echo gtext("Data ordine");?>:</td>
 						<td><b><?php echo F::getDateInCorrectFormat(strtotime($ordine["data_ordine"]));?></b></td>
 					</tr>
+					<?php $fornitore = FornitoriModel::g(false)->selectId((int)$ordine["id_fornitore"]);?>
+					<?php if (!empty($fornitore)) { ?>
+					<tr>
+						<td><?php echo gtext("Fornitore");?>:</td>
+						<td>
+							<b><?php echo $fornitore["ragione_sociale"];?></b>
+							<br /><i class="fa fa-envelope"></i> <?php echo $fornitore["email_amministrativa"];?>
+							<br /><i class="fa fa-phone"></i> <?php echo $fornitore["telefono"];?>
+						</td>
+					</tr>
+					<?php } ?>
 					<tr>
 						<td><?php echo gtext("Stato ordine");?>:</td>
 						<td>
@@ -36,14 +47,19 @@
 				<table class="table table-striped" style="margin-bottom:0px;">
 					<?php if ($ordine["imponibile"] != $ordine["imponibile_pieno"]) { ?>
 					<tr>
-						<td><?php echo gtext("Imponibile non scontato");?>:</td>
+						<td><?php echo gtext("Imponibile");?>:</td>
 						<td><b>&euro; <?php echo setPriceReverse($ordine["imponibile_pieno"]);?></b></td>
 					</tr>
-					<?php } ?>
+					<tr>
+						<td><?php echo gtext("Imponibile scontato");?>:</td>
+						<td><b>&euro; <?php echo setPriceReverse($ordine["imponibile"]);?></b></td>
+					</tr>
+					<?php } else { ?>
 					<tr>
 						<td><?php echo gtext("Imponibile");?>:</td>
 						<td><b>&euro; <?php echo setPriceReverse($ordine["imponibile"]);?></b></td>
 					</tr>
+					<?php } ?>
 					<tr>
 						<td><?php echo gtext("Iva");?>:</td>
 						<td><b>&euro; <?php echo setPriceReverse($ordine["iva"]);?></b></td>
