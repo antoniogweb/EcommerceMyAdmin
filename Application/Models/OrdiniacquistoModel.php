@@ -71,7 +71,13 @@ class OrdiniacquistoModel extends GenericModel
 	public function insert()
 	{
 		if ($this->checkNumero($this->values["numero_ordine"] ?? 0))
-			return parent::insert();
+		{
+			$res =  parent::insert();
+			
+			OrdiniacquistostatistoricoModel::g()->aggiungi($this->lId, $this->values["id_ordine_acquisto_stato"] ?? OrdiniacquistostatiModel::getIdStatoPending());
+			
+			return $res;
+		}
 		else
 		{
 			$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione il numero dell'ordine è già esistente nell'anno impostato.")."</div>".'<div style="display:none;" rel="hidden_alert_notice">numero_ordine</div>';
@@ -83,7 +89,14 @@ class OrdiniacquistoModel extends GenericModel
 	public function update($id = null, $where = null)
 	{
 		if ($this->checkNumero($this->values["numero_ordine"] ?? 0, (int)$id))
-			return parent::update($id, $where);
+		{
+			$res = parent::update($id, $where);
+			
+			if (isset($this->values["id_ordine_acquisto_stato"]))
+				OrdiniacquistostatistoricoModel::g()->aggiungi($id, $this->values["id_ordine_acquisto_stato"]);
+			
+			return $res;
+		}
 		else
 		{
 			$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione il numero dell'ordine è già esistente nell'anno impostato.")."</div>".'<div style="display:none;" rel="hidden_alert_notice">numero_ordine</div>';
@@ -133,7 +146,7 @@ class OrdiniacquistoModel extends GenericModel
 	
 	public function statoordinelabel($record)
 	{
-		return "<span class='text-bold label label-".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "classe")."'>".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "titolo")."<span>";
+		return "<span class='text-bold label label-".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "classe")."'>".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "titolo")."</span>";
 	}
 	
 	public function isBozza($idOrdineAcquisto)
@@ -162,10 +175,10 @@ class OrdiniacquistoModel extends GenericModel
 		return $oarModel->send(false);
 	}
 	
-	public function imponibile($idOrdine)
+	public function imponibile($idOrdine, $pieno = false)
 	{
 		$righe = $this->getRighe($idOrdine, false);
-		$righeTestata = $this->getRighe($idOrdine, true);
+		$righeTestata = $pieno ? array() : $this->getRighe($idOrdine, true);
 		
 		$imponibile = 0;
 		
@@ -207,11 +220,13 @@ class OrdiniacquistoModel extends GenericModel
 	
 	public function aggiornaTotali($idOrdine)
 	{
+		$imponibilePieno = $this->imponibile($idOrdine, true);
 		$imponibile = $this->imponibile($idOrdine);
 		$iva = $this->iva($idOrdine);
 		$totale = $imponibile + $iva;
 		
 		$this->sValues(array(
+			"imponibile_pieno"	=>	$imponibilePieno,
 			"imponibile"	=>	$imponibile,
 			"iva"			=>	$iva,
 			"totale"		=>	$totale,

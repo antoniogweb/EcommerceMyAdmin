@@ -30,6 +30,7 @@ class RouteAcquisti
 		'ordiniacquisto,main',
 		'ordiniacquisto,form',
 		'ordiniacquisto,righe',
+		'ordiniacquisto,storicostati',
 		'ordiniacquistostati,main',
 		'ordiniacquistostati,form',
 		'ordiniacquistostati,ordina',

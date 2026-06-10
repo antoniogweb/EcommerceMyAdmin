@@ -195,4 +195,22 @@ class OrdiniacquistoController extends BaseController
 	{
 		$this->_posizioni['inviipdf'] = 'class="active"';
 	}
+	
+	public function storicostati($idO)
+	{
+		$this->model("OrdinistatiModel");
+		
+		$data["stati"] = $this->m("OrdiniacquistostatistoricoModel")->clear()
+			->select("ordini_acquisto_stati_storico.data_creazione,ordini_acquisto_stati.titolo,adminusers.username,ordini_acquisto_stati_storico.id_ordine_acquisto_stato,ordini_acquisto_stati.titolo")
+			->left("ordini_acquisto_stati")->on("ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto_stati_storico.id_ordine_acquisto_stato")
+			->left("adminusers")->on("ordini_acquisto_stati_storico.id_admin = adminusers.id_user")
+			->where(array(
+				"ordini_acquisto_stati_storico.id_ordine_acquisto"	=>	(int)$idO,
+			))->orderBy("ordini_acquisto_stati_storico.id_ordine_acquisto_stato_storico")->send();
+		
+		// echo $this->m["OrdinistatiModel"]->getQuery();die();
+		
+		$this->append($data);
+		$this->load("vedi_storico");
+	}
 }

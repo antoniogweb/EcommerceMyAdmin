@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto add imponibile_pieno decimal(10,2) not null default 0.00;

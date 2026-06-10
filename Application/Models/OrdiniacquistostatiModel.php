@@ -167,4 +167,13 @@ class OrdiniacquistostatiModel extends GenericModel {
 	{
 		return $this->clear()->select("id_ordine_acquisto_stato,titolo")->orderBY("id_order")->toList("id_ordine_acquisto_stato", "titolo")->send();
 	}
+	
+	public static function getIdStatoPending()
+	{
+		$oasModel = new OrdiniacquistostatiModel();
+		
+		return $oasModel->clear()->where(array(
+			"chiuso"	=>	0,
+		))->limit(1)->orderBy("id_order")->field("id_ordine_acquisto_stato");
+	}
 }
