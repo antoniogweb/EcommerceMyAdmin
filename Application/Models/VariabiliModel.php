@@ -949,6 +949,8 @@ class VariabiliModel extends GenericModel {
 		### ACQUISTI ##
 		"attiva_modulo_acquisti"	=>	0, // se impostato su 1, attiva la sezione acquisti
 		"mostra_modulo_acquisti"	=>	0, // se impostato su 1, mostra il link al modulo acquisti nel pannello (non lo attiva!!)
+		"function_pdf_ordine_acquisto"			=>	"", // funzione per generare il PDF dell'ordine di acqusto. Se lasciato vuoto, utilizza le funzioni standard dell'ecommerce
+		"filename_pdf_ordine_acquisto"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine di acquisto allegato alla mail
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

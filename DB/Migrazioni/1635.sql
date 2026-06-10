@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES ('Ordini acquisto', 'ordiniacquistorighe', 'ordiniacquisto', '1', 'attiva_modulo_acquisti=1&mostra_modulo_acquisti=1', '152', '1', 'acquisti', 'main');

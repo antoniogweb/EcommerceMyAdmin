@@ -208,9 +208,39 @@ class OrdiniacquistoController extends BaseController
 				"ordini_acquisto_stati_storico.id_ordine_acquisto"	=>	(int)$idO,
 			))->orderBy("ordini_acquisto_stati_storico.id_ordine_acquisto_stato_storico")->send();
 		
-		// echo $this->m["OrdinistatiModel"]->getQuery();die();
-		
 		$this->append($data);
 		$this->load("vedi_storico");
+	}
+	
+	public function stampapdf($id = 0, $idPdf = 0)
+	{
+		$this->clean();
+		
+		$values = $this->m("OrdiniacquistopdfModel")->generaORestituisciPdfOrdine($id, $idPdf);
+		
+		$folder = LIBRARY . "/".OrdiniacquistopdfModel::getMediaPath();
+		
+		if (is_array($values) && !empty($values) && file_exists($folder."/".$values["filename"]))
+		{
+			header('Content-type: application/pdf');
+			header('Content-Disposition: inline; filename='.$values["titolo"]);
+			readfile($folder."/".$values["filename"]);
+			
+			$this->m("OrdiniacquistopdfModel")->eliminaPdfNonInviati();
+		}
+		else
+			$this->responseCode(403);
+	}
+	
+	public function inviapdf($id)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		if ($this->m("OrdiniacquistopdfModel")->inviaPdf($id))
+			flash("notice", "<div class='alert alert-success'>".gtext("Email inviata correttamente")."</div>");
+		
+		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
 	}
 }
