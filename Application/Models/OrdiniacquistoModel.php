@@ -146,19 +146,32 @@ class OrdiniacquistoModel extends GenericModel
 		return false;
 	}
 	
-	public function imponibile($idOrdine)
+	public function getRighe($idOrdine, $diTestata = false)
 	{
 		$oarModel = new OrdiniacquistorigheModel();
 		
-		$righe = $oarModel->clear()->where(array(
+		$oarModel->clear()->left(array("tipologia"))->where(array(
 			"id_ordine_acquisto"	=>	(int)$idOrdine,
-		))->send(false);
+		));
+		
+		if ($diTestata)
+			$oarModel->sWhere("ordini_acquisto_righe_tipologie.moltiplicatore < 0");
+		else
+			$oarModel->sWhere("(ordini_acquisto_righe_tipologie.moltiplicatore IS NULL or ordini_acquisto_righe_tipologie.moltiplicatore >= 0)");
+		
+		return $oarModel->send(false);
+	}
+	
+	public function imponibile($idOrdine)
+	{
+		$righe = $this->getRighe($idOrdine, false);
+		$righeTestata = $this->getRighe($idOrdine, true);
 		
 		$imponibile = 0;
 		
 		foreach ($righe as $riga)
 		{
-			$imponibile += OrdiniacquistorigheModel::subtotale($riga);
+			$imponibile += OrdiniacquistorigheModel::subtotale($riga, $righeTestata);
 		}
 		
 		return $imponibile;
@@ -166,17 +179,14 @@ class OrdiniacquistoModel extends GenericModel
 	
 	public function iva($idOrdine)
 	{
-		$oarModel = new OrdiniacquistorigheModel();
-		
-		$righe = $oarModel->clear()->where(array(
-			"id_ordine_acquisto"	=>	(int)$idOrdine,
-		))->send(false);
+		$righe = $this->getRighe($idOrdine, false);
+		$righeTestata = $this->getRighe($idOrdine, true);
 		
 		$arrayAliquote = array();
 		
 		foreach ($righe as $riga)
 		{
-			$imponibile = OrdiniacquistorigheModel::subtotale($riga);
+			$imponibile = OrdiniacquistorigheModel::subtotale($riga, $righeTestata);
 			$aliquota = number_format($riga["aliquota_iva"],2,".","");
 			
 			if (isset($arrayAliquote[$aliquota]))

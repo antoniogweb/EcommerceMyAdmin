@@ -104,7 +104,7 @@ class OrdiniacquistorigheController extends BaseController
 					
 					$sconto1 = $v["sconto_1"] ?? 0;
 					$sconto2 = $v["sconto_2"] ?? 0;
-					
+					$codice = $v["codice"] ?? "";
 					// if (!empty($rigaTipologia))
 					// {
 					// 	$price = $prezzo_intero;
@@ -112,21 +112,23 @@ class OrdiniacquistorigheController extends BaseController
 					// }
 					
 					$this->m[$this->modelName]->setValues(array(
-						"id_articolo"		=>	(int)$v["id_articolo"],
-						"quantita"			=>	$v["quantita"],
+						"id_articolo"		=>	$v["id_articolo"] ?? 0,
+						"quantita"			=>	$v["quantita"] ?? 1,
 						"prezzo"			=>	$price,
 						"sconto_1"			=>	$sconto1,
 						"sconto_2"			=>	$sconto2,
-						"titolo"			=>	$v["titolo"],
+						"titolo"			=>	$v["titolo"] ?? "",
 						"id_c"				=>	$recordWeb["id_c"] ?? 0,
 						"id_page"			=>	$recordWeb["id_page"] ?? 0,
-						"codice"			=>	isset($recordWeb["id_c"]) ? ($recordArticolo["codice"] ?? $v["codice"]) : $v["codice"],
+						"codice"			=>	isset($recordWeb["id_c"]) ? ($recordArticolo["codice"] ?? $codice) : $codice,
 						"attributi"			=>	isset($recordWeb["id_c"]) ? $combModel->getStringa($recordWeb["id_c"], "<br />") : "",
 					));
 					
 					// print_r($this->m[$this->modelName]->values);
 					
 					$this->m[$this->modelName]->update($v["id_ordine_acquisto_riga"]);
+					
+					echo $this->m[$this->modelName]->notice;
 				}
 			}
 			else

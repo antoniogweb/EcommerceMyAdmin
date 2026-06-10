@@ -1,0 +1,1 @@
+alter table ordini_acquisto_righe_tipologie add testata tinyint not null default 1

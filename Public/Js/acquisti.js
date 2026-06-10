@@ -146,14 +146,36 @@ $(document).ready(function(){
 		
 		$("table tr.listRow").each(function() {
 			
-			var id_ordine_acquisto_riga = $(this).find("[name='quantita']").attr("id-riga");
-			var quantita = $(this).find("[name='quantita']").val();
-			var prezzo = $(this).find("[name='prezzo']").val();
-			var titolo = $(this).find("[name='titolo']").val();
-			var id_articolo = $(this).find("[name='id_articolo']").val();
-			var codice = $(this).find("[name='codice']").val();
-			var sconto_1 = $(this).find("[name='sconto_1']").val();
-			var sconto_2 = $(this).find("[name='sconto_2']").val();
+			var id_ordine_acquisto_riga = $(this).find("[name='ordini_acquisto_righe_id_ordine_acquisto_riga']").attr("data-primary-key");
+			
+			var quantita = 1;
+			var prezzo = 0;
+			var titolo = "";
+			var id_articolo = 0;
+			var codice = "";
+			var sconto_1 = 0;
+			var sconto_2 = 0;
+			
+			if ($(this).find("[name='quantita']").length > 0)
+				quantita = $(this).find("[name='quantita']").val();
+			
+			if ($(this).find("[name='prezzo']").length > 0)
+				prezzo = $(this).find("[name='prezzo']").val();
+			
+			if ($(this).find("[name='titolo']").length > 0)
+				titolo = $(this).find("[name='titolo']").val();
+			
+			if ($(this).find("[name='id_articolo']").length > 0)
+				id_articolo = $(this).find("[name='id_articolo']").val();
+			
+			if ($(this).find("[name='codice']").length > 0)
+				codice = $(this).find("[name='codice']").val();
+			
+			if ($(this).find("[name='sconto_1']").length > 0)
+				sconto_1 = $(this).find("[name='sconto_1']").val();
+			
+			if ($(this).find("[name='sconto_2']").length > 0)
+				sconto_2 = $(this).find("[name='sconto_2']").val();
 			
 			var temp = {
 				id_ordine_acquisto_riga: id_ordine_acquisto_riga,

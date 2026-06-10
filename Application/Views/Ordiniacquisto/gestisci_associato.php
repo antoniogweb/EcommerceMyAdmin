@@ -4,7 +4,10 @@
 	<?php if (ControllersModel::checkAccessoAlController(array("magazzinoarticoli"))) { ?>
 		<?php if (OrdiniacquistoModel::g()->isBozza($id)) { ?>
 			<div>
-				<?php foreach ($tipologie as $t) { ?>
+				<?php foreach ($tipologie as $t) {
+					if (!OrdiniacquistorighetipologieModel::checkInserimentoTipologiaInOrdine($id, $t["id_ordine_acquisto_riga_tipologia"]))
+						continue;
+				?>
 				<a style="margin-left:5px;" id-ordine="<?php echo $id;?>" id-riga-tipologia="<?php echo (int)$t["id_ordine_acquisto_riga_tipologia"];?>" class="aggiungi_riga_tipologia_ordine_acquisto make_spinner pull-right <?php echo $t["classe"];?>" href="<?php echo $this->baseUrl."/ordiniacquistorighe/form/insert/0";?>"><i class="fa fa-plus"></i> <?php echo $t["titolo"];?></a>
 				<?php } ?>
 				

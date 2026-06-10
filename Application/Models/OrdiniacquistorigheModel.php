@@ -56,13 +56,23 @@ class OrdiniacquistorigheModel extends GenericModel
 		if (!isset($this->values["quantita"]))
 			$this->values["quantita"] = 1;
 		
+		if (isset($this->values["id_ordine_acquisto"]) && isset($this->values["id_ordine_acquisto_riga_tipologia"]) && $this->values["id_ordine_acquisto_riga_tipologia"])
+		{
+			if (!OrdiniacquistorighetipologieModel::checkInserimentoTipologiaInOrdine((int)$this->values["id_ordine_acquisto"], (int)$this->values["id_ordine_acquisto_riga_tipologia"]))
+				return false;
+		}
+		
 		if (parent::insert())
 		{
 			$idOrdine = $this->clear()->whereId((int)$this->lId)->field("id_ordine_acquisto");
 			
 			if ($idOrdine)
 				OrdiniacquistoModel::g(false)->aggiornaTotali((int)$idOrdine);
+			
+			return true;
 		}
+		
+		return false;
 	}
 	
 	public function update($id = null, $where = null)
@@ -85,9 +95,12 @@ class OrdiniacquistorigheModel extends GenericModel
     
 	public function titoloCrud($record)
 	{
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
+			return "";
+		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
 		{
-			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='min-width:500px;' class='form-control' name='titolo' value='".$record["ordini_acquisto_righe"]["titolo"]."' />";
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='min-width:350px;' class='form-control' name='titolo' value='".$record["ordini_acquisto_righe"]["titolo"]."' />";
 		}
 		else
 			return $record["ordini_acquisto_righe"]["titolo"];
@@ -95,6 +108,9 @@ class OrdiniacquistorigheModel extends GenericModel
     
     public function attributiCrud($record)
 	{
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
+			return "";
+		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
 		{
 			if ($record["ordini_acquisto_righe"]["id_page"])
@@ -115,6 +131,9 @@ class OrdiniacquistorigheModel extends GenericModel
 	
 	public function codiceCrud($record)
 	{
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
+			return "";
+		
 		$codice = $record["ordini_acquisto_righe"]["codice"];
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
@@ -130,6 +149,9 @@ class OrdiniacquistorigheModel extends GenericModel
 	
 	public function prezzoInteroCrud($record)
 	{
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
+			return "";
+		
 		$prezzo = $record["ordini_acquisto_righe"]["prezzo"];
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
@@ -150,6 +172,9 @@ class OrdiniacquistorigheModel extends GenericModel
 	
 	public function sconto2Crud($record)
 	{
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
+			return "";
+		
 		$sconto = $record["ordini_acquisto_righe"]["sconto_2"];
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
@@ -160,6 +185,9 @@ class OrdiniacquistorigheModel extends GenericModel
 	
 	public function quantitaCrud($record)
 	{
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
+			return "";
+		
 		$quantita = $record["ordini_acquisto_righe"]["quantita"];
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
@@ -177,6 +205,9 @@ class OrdiniacquistorigheModel extends GenericModel
 	
 	public function acquistabileCrud($record)
 	{
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
+			return "";
+		
 		if (!$record["ordini_acquisto_righe"]["id_page"])
 			return "";
 		
@@ -189,17 +220,29 @@ class OrdiniacquistorigheModel extends GenericModel
 		return "";
 	}
 	
-	public static function subtotale($riga)
+	public function aliquitaIvaCrud($record)
 	{
-		if ($riga["id_ordine_acquisto_riga_tipologia"])
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
+			return "";
+		
+		return $record["ordini_acquisto_righe"]["aliquota_iva"]."%";
+	}
+	
+	public static function subtotale($riga, $righeTestata = array())
+	{
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($riga["id_ordine_acquisto_riga_tipologia"]))
 			return 0;
 		
-		$scontato1 = number_format($riga["prezzo"] * (1 - ($riga["sconto_1"] / 100)),2,".","");
-		$scontato2 = number_format($scontato1* (1 - ($riga["sconto_2"] / 100)),2,".","");
+		$subtotale = number_format($riga["prezzo"] * $riga["quantita"],2,".","");
+		$scontato1 = number_format($subtotale * (1 - ($riga["sconto_1"] / 100)),2,".","");
+		$scontatofinale = number_format($scontato1 * (1 - ($riga["sconto_2"] / 100)),2,".","");
 		
-		$subtotale = number_format($scontato2 * $riga["quantita"],2,".","");
+		foreach ($righeTestata as $rigaTestata)
+		{
+			$scontatofinale = number_format($scontatofinale * (1 - ($rigaTestata["sconto_1"] / 100)),2,".","");
+		}
 		
-		return $subtotale;
+		return $scontatofinale;
 	}
 	
 	public function del($id = null, $where = null)

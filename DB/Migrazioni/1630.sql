@@ -1,0 +1,1 @@
+alter table ordini_acquisto_righe_tipologie add max_numero_in_ordine tinyint not null default 1;
