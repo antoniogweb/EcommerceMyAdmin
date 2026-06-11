@@ -24,6 +24,13 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class ImmaginitipologieModel extends GenericModel
 {
+	public static $contesti = array(
+		"P", // Pagina
+		"C", // Categoria
+		"M", // Marchio
+		"T" // Tag
+	);
+	
 	public function __construct() {
 		$this->_tables = 'immagini_tipologie';
 		$this->_idFields = 'id_immagine_tipologia';

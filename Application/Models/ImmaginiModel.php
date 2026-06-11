@@ -68,7 +68,16 @@ class ImmaginiModel extends GenericModel {
 	
 	public function selectTipologiaImmagine()
 	{
-		return array(0	=>	"--") + ImmaginitipologieModel::g(false)->orderBy("id_order")->toList("id_immagine_tipologia", "titolo")->send();
+		$itModel = new ImmaginitipologieModel();
+		
+		if (isset($_GET["contesto"]) && is_string($_GET["contesto"]) && in_array($_GET["contesto"], ImmaginitipologieModel::$contesti))
+		{
+			$itModel->aWhere(array(
+				"contesto"	=>	sanitizeAll($_GET["contesto"]),
+			));
+		}
+		
+		return array(0	=>	"--") + $itModel->orderBy("id_order")->toList("id_immagine_tipologia", "titolo")->send();
 	}
 	
 	public function getIdContenuto($id_immagine)

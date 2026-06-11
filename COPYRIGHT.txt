@@ -49,6 +49,11 @@ jQuery UI
 License:	The MIT License (MIT)
 link:		https://jqueryui.com/
 
+jQuery-File-Upload
+-------
+License:	The MIT License (MIT)
+link:		https://github.com/blueimp/jQuery-File-Upload
+
 iCheck
 -------
 License:	The MIT License (MIT)

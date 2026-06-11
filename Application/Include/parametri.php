@@ -42,6 +42,7 @@ class Parametri
 	
 	public static $cartellaImmaginiGeneriche = "images/generiche";
 	public static $cartellaImmaginiContenuti = "images/contents";
+	public static $cartellaImmaginiArchivi = "images/collections";
 	public static $cartellaImmaginiNews = "images/news";
 	public static $cartellaFatture = "admin/media/Fatture";
 	
