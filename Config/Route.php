@@ -74,17 +74,15 @@ class Route
 		'upload,main',
 		'upload,thumb',
 		'thumb,contenuto',
+		'thumb,archivio',
 		'thumb,mainimage',
 		'thumb,immagineinlistaprodotti',
 		'thumb,news',
 		'immagini,view',
-		'immagini,moveup',
-		'immagini,movedown',
 		'immagini,erase',
 		'immagini,ordina',
 		'immagini,rotateo',
 		'immagini,form',
-// 		'immagini,rotatea',
 		'ordini,main',
 		'ordini,form',
 		'ordini,settanonpagato',
@@ -170,6 +168,7 @@ class Route
 		'categorie,ordina',
 		'categorie,caratteristiche',
 		'categorie,ordinacaratteristiche',
+		'categorie,immagini',
 		
 		'prodotti,main',
 		'prodotti,aggiungicategoria',
@@ -990,6 +989,13 @@ class Route
 		
 		'ipchecker,main',
 		'ipchecker,form',
+		
+		'immaginiarchivi,view',
+		'immaginiarchivi,erase',
+		'immaginiarchivi,ordina',
+		'immaginiarchivi,rotateo',
+		'immaginiarchivi,form',
+		'immaginiarchivi,upload',
 	);
 	
 	//it can be 'yes' or 'no'

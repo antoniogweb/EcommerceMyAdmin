@@ -24,6 +24,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class CategoriesModel extends HierarchicalModel {
 
+	public $campoTitolo = "title";
 	public static $aliases = array();
 	public static $elencoTag = null;
 	public static $elencoMarchi = null;

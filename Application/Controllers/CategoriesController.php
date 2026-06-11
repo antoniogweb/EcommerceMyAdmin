@@ -22,8 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class CategoriesController extends BaseController {
-
+class CategoriesController extends BaseController
+{
 	public $voceMenu = "prodotti";
 	
 	public $queryFields = "title,alias,sottotitolo,id_p,immagine,description";
@@ -34,6 +34,7 @@ class CategoriesController extends BaseController {
 	public $orderBy = "id_order";
 	
 	public $tabella = "categoria";
+	public $contestoImmagini = "C";
 	
 	protected $_posizioni = array(
 		"main"		=>	null,
@@ -699,6 +700,14 @@ class CategoriesController extends BaseController {
 	public function ordina()
 	{
 		parent::ordinaGerarchico();
+	}
+	
+	public function immagini($id = 0)
+	{
+		if (!v("immagini_in_categorie_prodotti"))
+			$this->responseCode(403);
+		
+		parent::immagini($id);
 	}
 	
 }

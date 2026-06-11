@@ -25,10 +25,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 class ImmaginitipologieModel extends GenericModel
 {
 	public static $contesti = array(
-		"P", // Pagina
-		"C", // Categoria
-		"M", // Marchio
-		"T" // Tag
+		"P"	=>	"PagesModel", // Pagina
+		"C"	=>	"CategoriesModel", // Categoria
+		"M"	=>	"MarchiModel", // Marchio
+		"T"	=>	"TagModel" // Tag
 	);
 	
 	public function __construct() {
@@ -40,6 +40,35 @@ class ImmaginitipologieModel extends GenericModel
 		$this->traduzione = true;
 		
 		parent::__construct();
+	}
+	
+	public static function checkContesto($contesto)
+	{
+		if (!in_array($contesto, array_keys(self::$contesti)))
+			return false;
+		
+		switch ($contesto)
+		{
+			case "P":
+				return true;
+				break;
+			case "C":
+				if (v("immagini_in_categorie_prodotti"))
+					return true;
+				break;
+		}
+		
+		return false;
+	}
+	
+	public static function getModel($contesto)
+	{
+		if (!self::checkContesto($contesto))
+			return null;
+		
+		$modelString = self::$contesti[$contesto];
+		
+		return new $modelString();
 	}
 	
 	public static function numero()

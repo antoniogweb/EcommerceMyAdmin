@@ -59,6 +59,26 @@ class ThumbController extends BaseThumbController {
 		}
 	}
 	
+	public function archivio($image)
+	{
+		$this->clean();
+		
+		if (accepted($image))
+		{
+			$image = sanitizeAll($image);
+			$params = array(
+				'imgWidth'		=>	250,
+				'imgHeight'		=>	250,
+				'defaultImage'	=>  null,
+				'cropImage'		=>	'no',
+// 				'useCache'		=>	true,
+			);
+
+			$thumb = new Image_Gd_Thumbnail($this->publicRoot.'/'.Parametri::$cartellaImmaginiArchivi,$params);
+			$thumb->render($image);
+		}
+	}
+	
 	public function mainimage($image)
 	{
 		$this->clean();

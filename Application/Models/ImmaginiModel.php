@@ -29,8 +29,8 @@ class ImmaginiModel extends GenericModel {
 	
 	public $campoTitolo = "immagine";
 	
-	public function __construct() {
-
+	public function __construct()
+	{
 		$this->_tables='immagini';
 		$this->_idFields='id_immagine';
 
@@ -38,7 +38,7 @@ class ImmaginiModel extends GenericModel {
 
 		$this->_lang = 'It';
 		$this->_idOrder = 'id_order';
-
+		
 		parent::__construct();
 
 		$this->files->setBase(Domain::$parentRoot.'/'.Parametri::$cartellaImmaginiContenuti);
@@ -70,7 +70,7 @@ class ImmaginiModel extends GenericModel {
 	{
 		$itModel = new ImmaginitipologieModel();
 		
-		if (isset($_GET["contesto"]) && is_string($_GET["contesto"]) && in_array($_GET["contesto"], ImmaginitipologieModel::$contesti))
+		if (isset($_GET["contesto"]) && is_string($_GET["contesto"]) && ImmaginitipologieModel::checkContesto($_GET["contesto"]))
 		{
 			$itModel->aWhere(array(
 				"contesto"	=>	sanitizeAll($_GET["contesto"]),

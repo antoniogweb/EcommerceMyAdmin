@@ -26,18 +26,29 @@ class ImmaginiarchiviModel extends GenericModel
 {
 	public $campoTitolo = "immagine";
 	
-	public function __construct() {
-
+	public function __construct()
+	{
 		$this->_tables='immagini_archivi';
 		$this->_idFields='id_immagine_archivio';
 
-		$this->orderBy = 'immagini.id_order';
+		$this->orderBy = 'immagini_archivi.id_order';
 
 		$this->_idOrder = 'id_order';
-
+		
+		$this->uploadFields = array(
+			"immagine"	=>	array(
+				"type"	=>	"image",
+				"path"	=>	Parametri::$cartellaImmaginiArchivi,
+				"mandatory"	=>	true,
+				"allowedExtensions"	=>	'png,jpg,jpeg,gif,svg',
+				'allowedMimeTypes'	=>	'',
+				"createImage"	=>	true,
+				"maxFileSize"	=>	Parametri::$maxUploadSize,
+				"Content-Disposition"	=>	"inline",
+			),
+		);
+		
 		parent::__construct();
-
-		$this->files->setBase(Domain::$parentRoot.'/'.Parametri::$cartellaImmaginiArchivi);
 	}
 	
 	public function relations() {
@@ -68,7 +79,7 @@ class ImmaginiarchiviModel extends GenericModel
 	{
 		$itModel = new ImmaginitipologieModel();
 		
-		if (isset($_GET["contesto"]) && is_string($_GET["contesto"]) && in_array($_GET["contesto"], ImmaginitipologieModel::$contesti))
+		if (isset($_GET["contesto"]) && is_string($_GET["contesto"]) && ImmaginitipologieModel::checkContesto($_GET["contesto"]))
 		{
 			$itModel->aWhere(array(
 				"contesto"	=>	sanitizeAll($_GET["contesto"]),

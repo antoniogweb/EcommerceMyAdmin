@@ -64,11 +64,9 @@ class VariabiliModel extends GenericModel {
 		"attiva_ruoli"				=>	0,
 		"in_evidenza_blog"			=>	0,
 		"team_attivo"				=>	1,
-		"immagini_in_referenze"		=>	0,
 		"nome_cognome_anche_azienda"=>	0,
 		"accessori_in_prodotti"		=>	1,
 		"contenuti_in_pagine"		=>	1, // se sono visibili oppure no i contenuti nelle pagine
-		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini nelle pagine
 		"download_attivi"			=>	1,
 		"usa_tag"					=>	0, // se attivare i tag
 		"tag_in_prodotti"			=>	1, // se attivare i tag nella sezione prodotti
@@ -951,6 +949,10 @@ class VariabiliModel extends GenericModel {
 		"mostra_modulo_acquisti"	=>	0, // se impostato su 1, mostra il link al modulo acquisti nel pannello (non lo attiva!!)
 		"function_pdf_ordine_acquisto"			=>	"", // funzione per generare il PDF dell'ordine di acqusto. Se lasciato vuoto, utilizza le funzioni standard dell'ecommerce
 		"filename_pdf_ordine_acquisto"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine di acquisto allegato alla mail
+		### IMMAGINI SECONDARIE ##
+		"immagini_in_referenze"		=>	0, // se sono visibili oppure no le immagini nelle referenze
+		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini nelle pagine
+		"immagini_in_categorie_prodotti"	=>	0, // se sono visibili oppure no le immagini nelle categorie prodotti
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

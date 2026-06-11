@@ -1,0 +1,1 @@
+alter table immagini_archivi add contesto char(1) not null default 'C';

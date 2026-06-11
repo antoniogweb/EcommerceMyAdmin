@@ -22,7 +22,7 @@ function aggiornaOrdinamento()
 	$.ajax({
 		type: "POST",
 		data: post_data,
-		url: "<?php echo $this->baseUrl.'/immagini/ordina/';?>",
+		url: "<?php echo $this->baseUrl.'/immaginiarchivi/ordina/';?>",
 		async: false,
 		cache:false,
 		success: function(html){
@@ -62,30 +62,27 @@ $(function() {
 function import_thumb()
 {
 	$.ajaxQueue({
-		url: "<?php echo $this->baseUrl.'/immagini/view/'.$id_page."/".(int)$this->viewArgs["id_cmb"];?>",
+		url: "<?php echo $this->baseUrl.'/immaginiarchivi/view/'.$id."/".$contesto;?>",
 		async: false,
 		cache:false,
 		success: function(html){
-
 			$("#thumb_box_right").empty();
 			$("#thumb_box_right").append(html);
 		}
 	});
 }
-	
-var allowed = [ "jpg","jpeg","png","gif" ];
 
-var url = '<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/move";?>';
+var url = '<?php echo $this->baseUrl."/immaginiarchivi/upload";?>';
 
 $(function () {
 	'use strict';
-	$('#userfile').fileupload({
+	$('#immagine').fileupload({
 		url: url,
 		autoUpload: true,
 		formData: {
-			'token':'<?php echo $token;?>',
-			'id_page':'<?php echo $id_page; ?>',
-			'id_cmb':<?php echo (int)$this->viewArgs["id_cmb"];?>
+			'csrf':'<?php echo User::$csrfToken;?>',
+			'id':'<?php echo $id; ?>',
+			'contesto':'<?php echo $contesto;?>'
 		},
 		done: function (e, data) {
 			if (data.result.result != "OK")
@@ -128,7 +125,7 @@ $(document).ready(function(){
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1>Gestione <?php echo $tabella;?>: <?php echo $titoloPagina; ?></h1>
+	<h1>Gestione <?php echo $tabella;?>: <?php echo $titoloRecord; ?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>
@@ -144,7 +141,7 @@ $(document).ready(function(){
 				<?php echo $menu;?>
 			</div>
 			
-			<?php include($this->viewPath("steps"));?>
+			<?php include($this->viewPath("categories_steps"));?>
 			<?php } ?>
 			
 			<div class="box">
@@ -160,14 +157,14 @@ $(document).ready(function(){
 										<i class="fa fa-plus-circle"></i>
 										<span><?php echo gtext("SELEZIONA LE IMMAGINI");?></span>
 										<!-- The file input field used as target for the file upload widget -->
-										<input id="userfile" type="file" name="Filedata" multiple>
+										<input id="immagine" type="file" name="immagine" multiple>
 									</span>
 									<div style="display:none;margin-top:10px;" id="progress" class="progress">
 										<div class="progress-bar progress-bar-success"></div>
 									</div>
 									<div class="alert-fileupload"></div>
 									
-									<input type="hidden" name="id_page" value="<?php echo $id_page; ?>">
+									<input type="hidden" name="id" value="<?php echo $id; ?>">
 								</form>
 							</div>
 						</div>
@@ -177,7 +174,7 @@ $(document).ready(function(){
 			
 			<div id="thumb_box_right">
 
-							</div>
+			</div>
 		</div>
 		
 		

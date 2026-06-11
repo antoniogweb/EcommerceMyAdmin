@@ -1,0 +1,1 @@
+alter table immagini_archivi add estensione char(10) not null default '', add content_type varchar(100) not null default '';

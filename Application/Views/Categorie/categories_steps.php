@@ -8,13 +8,16 @@
 		<li <?php echo $posizioni['contenuti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/contenuti/$id".$this->viewStatus;?>"><?php echo gtext("Fasce");?></a></li>
 	<?php } ?>
 	<li <?php echo $posizioni['meta'];?>><a class="help_meta" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/meta/$id".$this->viewStatus;?>"><?php echo gtext("Meta");?></a></li>
+	<?php if (v("immagini_in_categorie_prodotti") && ControllersModel::checkAccessoAlController(array("immaginiarchivi"))) { ?>
+	<li <?php echo $posizioni['immagini'];?>><a class="help_immagini" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/immagini/$id".$this->viewStatus;?>"><?php echo gtext("Immagini");?></a></li>
+	<?php } ?>
 	<?php if (v("ecommerce_attivo") && v("attiva_classi_sconto") && ClassiscontoModel::g()->rowNumber() > 0) { ?>
 		<li <?php echo $posizioni['classisconto'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/classisconto/$id".$this->viewStatus;?>"><?php echo gtext("Classi sconto applicate");?></a></li>
 	<?php } ?>
 	<?php if (v("attiva_accessibilita_categorie")) { ?>
 	<li <?php echo $posizioni['gruppi'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/gruppi/$id".$this->viewStatus;?>"><?php echo gtext("Accessibilità");?></a></li>
 	<?php } ?>
-	<?php if (V("attiva_filtri_caratteristiche_separati_per_categoria")) { ?>
+	<?php if (v("attiva_filtri_caratteristiche_separati_per_categoria")) { ?>
 	<li <?php echo $posizioni['caratteristiche'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caratteristiche/$id".$this->viewStatus;?>"><?php echo gtext("Filtri");?></a></li>
 	<?php } ?>
 </ul>

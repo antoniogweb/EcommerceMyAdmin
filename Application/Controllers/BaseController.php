@@ -64,6 +64,7 @@ class BaseController extends Controller
 	public $contenutiTradottiFields = null; // se definito, forza i campi gestiti su contenuti tradotti
 	public $limitInEsporta = null;
 	public $permettiEsportaJsonLibero = false;
+	public $contestoImmagini = "C";
 	
 	public $baseArgsKeys = array(
 		'page:forceInt'=>1,
@@ -632,12 +633,12 @@ class BaseController extends Controller
 		}
 	}
 	
-	public function ordina()
+	protected function ordina()
 	{
 		$this->ordinaGeneric();
 	}
 	
-	public function ordinaGeneric()
+	protected function ordinaGeneric()
 	{
 		$this->s['admin']->check();
 		
@@ -661,13 +662,10 @@ class BaseController extends Controller
 					}
 				}
 				
-// 				$where = "in(".implode(",",$orderClean).")";
-				
 				$idOrderArray = $this->m[$this->modelName]->where(array(
 					"in" => array($this->m[$this->modelName]->getPrimaryKey() => $orderClean),
 				))->toList("id_order")->send();
 				
-// 				if ($this->orderBy === "pages.id_order")
 				if (!strstr(strtolower($this->orderBy), "desc"))
 				{
 					sort($idOrderArray);
@@ -928,5 +926,30 @@ class BaseController extends Controller
 				Helper_Menu::$htmlLinks[$button]["text"] .= " (max ".$this->limitInEsporta.")";
 			}
 		}
+	}
+	
+	protected function immagini($id = 0)
+	{
+		$this->_posizioni['immagini'] = 'class="active"';
+		$data['posizioni'] = $this->_posizioni;
+		
+		$data['type'] = "immagini";
+		
+		$this->shift(1);
+		
+		$pkName = $this->m($this->modelName)->getPrimaryKey();
+		
+		$clean['id'] = $data["id"] = (int)$id;
+		$this->id_name = $pkName;
+		
+		$data["titoloRecord"] = $this->m($this->modelName)->where(array($pkName=>$clean['id']))->field($this->m($this->modelName)->campoTitolo);
+		
+		$this->helper("Menu",$this->applicationUrl.$this->controller,"main");
+		
+		$data["menu"] = $this->h["Menu"]->render("back");
+		$data["contesto"] = $this->contestoImmagini;
+		
+		$this->append($data);
+		$this->load('immagini');
 	}
 }
