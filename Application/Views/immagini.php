@@ -141,7 +141,7 @@ $(document).ready(function(){
 				<?php echo $menu;?>
 			</div>
 			
-			<?php include($this->viewPath("categories_steps"));?>
+			<?php include($contesto == "C" ? $this->viewPath("categories_steps") : $this->viewPath("steps"));?>
 			<?php } ?>
 			
 			<div class="box">

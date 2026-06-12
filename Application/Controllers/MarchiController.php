@@ -32,6 +32,8 @@ class MarchiController extends BaseController
 	
 	public $sezionePannello = "ecommerce";
 	
+	public $contestoImmagini = "M";
+	
 	public function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -126,5 +128,13 @@ class MarchiController extends BaseController
 		$this->m[$this->modelName]->setValue("meta_modificato", 1);
 		
 		parent::form("update", $id);
+	}
+	
+	public function immagini($id = 0)
+	{
+		if (!v("immagini_in_marchi"))
+			$this->responseCode(403);
+		
+		parent::immagini($id);
 	}
 }

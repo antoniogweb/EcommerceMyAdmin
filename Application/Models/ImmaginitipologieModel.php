@@ -56,6 +56,14 @@ class ImmaginitipologieModel extends GenericModel
 				if (v("immagini_in_categorie_prodotti"))
 					return true;
 				break;
+			case "M":
+				if (v("immagini_in_marchi"))
+					return true;
+				break;
+			case "T":
+				if (v("immagini_in_tag"))
+					return true;
+				break;
 		}
 		
 		return false;

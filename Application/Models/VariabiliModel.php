@@ -950,9 +950,11 @@ class VariabiliModel extends GenericModel {
 		"function_pdf_ordine_acquisto"			=>	"", // funzione per generare il PDF dell'ordine di acqusto. Se lasciato vuoto, utilizza le funzioni standard dell'ecommerce
 		"filename_pdf_ordine_acquisto"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine di acquisto allegato alla mail
 		### IMMAGINI SECONDARIE ##
-		"immagini_in_referenze"		=>	0, // se sono visibili oppure no le immagini nelle referenze
-		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini nelle pagine
-		"immagini_in_categorie_prodotti"	=>	0, // se sono visibili oppure no le immagini nelle categorie prodotti
+		"immagini_in_referenze"		=>	0, // se sono visibili oppure no le immagini supplementari nelle referenze
+		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini supplementari nelle pagine
+		"immagini_in_categorie_prodotti"	=>	0, // se sono visibili oppure no le immagini supplementari nelle categorie prodotti
+		"immagini_in_marchi"	=>	0, // se sono visibili oppure no le immagini supplementari neli marchi
+		"immagini_in_tag"		=>	0, // se sono visibili oppure no le immagini supplementari neli tag
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

@@ -937,6 +937,9 @@ class BaseController extends Controller
 		
 		$this->shift(1);
 		
+		if (!ImmaginitipologieModel::checkContesto($this->contestoImmagini))
+			$this->responseCode(403);
+		
 		$pkName = $this->m($this->modelName)->getPrimaryKey();
 		
 		$clean['id'] = $data["id"] = (int)$id;
@@ -948,6 +951,7 @@ class BaseController extends Controller
 		
 		$data["menu"] = $this->h["Menu"]->render("back");
 		$data["contesto"] = $this->contestoImmagini;
+		$data["tabella"] = gtext($this->tabella);
 		
 		$this->append($data);
 		$this->load('immagini');

@@ -88,4 +88,23 @@ class ImmaginiarchiviModel extends GenericModel
 		
 		return array(0	=>	"--") + $itModel->orderBy("id_order")->toList("id_immagine_tipologia", "titolo")->send();
 	}
+	
+	public function update($id = null, $where = null)
+	{
+		// Controllo che la tipologia inserita sia corretta
+		if (isset($this->values["id_immagine_tipologia"]))
+		{
+			$contesto = $this->clear()->whereId((int)$id)->field("contesto");
+			
+			$itModel = new ImmaginitipologieModel();
+			
+			if ($contesto && !$itModel->aWhere(array(
+				"contesto"	=>	sanitizeAll($contesto),
+				"id_immagine_tipologia"	=>	(int)$this->values["id_immagine_tipologia"]
+			))->rowNumber())
+				$this->values["id_immagine_tipologia"] = 0;
+		}
+		
+		return parent::update($id, $where);
+	}
 }

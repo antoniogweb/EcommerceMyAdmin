@@ -404,6 +404,7 @@ class Route
 		'marchi,form',
 		'marchi,ordina',
 		'marchi,meta',
+		'marchi,immagini',
 		
 		'combinazioni,main',
 		'combinazioni,form',
@@ -455,6 +456,7 @@ class Route
 		'tag,form',
 		'tag,ordina',
 		'tag,meta',
+		'tag,immagini',
 		
 		'nazioni,main',
 		'nazioni,form',

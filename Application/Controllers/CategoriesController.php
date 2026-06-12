@@ -709,5 +709,4 @@ class CategoriesController extends BaseController
 		
 		parent::immagini($id);
 	}
-	
 }
