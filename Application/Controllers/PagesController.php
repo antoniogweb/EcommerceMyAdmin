@@ -491,7 +491,7 @@ class PagesController extends BaseController
 		{
 			$stringaExists = (int)$this->viewArgs['ok_acq'] ? "" : "NOT";
 			
-			$this->scaffold->model->sWhere("$stringaExists EXISTS ( select 1 from magazzino_articoli_combinazioni where magazzino_articoli_combinazioni.id_page = pages.id_page)");
+			$this->scaffold->model->sWhere(" $stringaExists EXISTS ( select 1 from magazzino_articoli_combinazioni where magazzino_articoli_combinazioni.id_page = pages.id_page)");
 		}
 		
 		$this->scaffold->update('moveup,movedown');
