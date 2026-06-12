@@ -141,6 +141,8 @@ class PagesModel extends GenericModel {
 	
 	public static $ordinamentiProdottiPermessi = array("tutti", "az", "za", "crescente", "decrescente", "pr", "mr", "piuvenduto");
 	
+	public static $idPagineInAcquisti = null;
+	
 	public function __construct() {
 		$this->_tables='pages';
 		$this->_idFields='id_page';
@@ -435,6 +437,18 @@ class PagesModel extends GenericModel {
 						null,
 						null,
 						"<div class='form_notice'>".gtext("Se viene indicato come nuovo nel sito, in funzione del tema")."</div>"
+					),
+				),
+				'ok_acquisti'	=>	array(
+					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_nuovo',
+					'labelString'=>	"Permetti l'importazione negli acquisti?",
+					'options'	=>	array(0 => gtext('no'),1 => gtext('sì')),
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se impostato su sì, verrà importato nel magazzino acquisti")."</div>"
 					),
 				),
 				'peso'		=>	array(
@@ -2255,6 +2269,14 @@ class PagesModel extends GenericModel {
 			return Html_Form::checkbox('attivo',$res[0]['pages']['in_evidenza'],'Y','in_evidenza_checkbox',$res[0]['pages']['id_page']).'<span class="loading_gif_del"><img src="'.Url::getFileRoot()."Public/Img/Icons/loading4.gif".'" /></span>';
 		}
 		return "";
+	}
+	
+	public function getInAcquistiCrud($record)
+	{
+		if (!isset(self::$idPagineInAcquisti))
+			self::$idPagineInAcquisti = MagazzinoarticolicombinazioniModel::g(false)->clear()->toList("id_page")->send();
+		
+		return in_array($record["pages"]["id_page"],self::$idPagineInAcquisti) ? "<i class='fa fa-check text text-success'></i>" : "<i class='fa fa-ban'></i>";
 	}
 	
 	public function getThumb($id_page)

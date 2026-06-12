@@ -22,6 +22,13 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["ok_acq"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class ProdottiController extends PagesController {
 
 	public $voceMenu = "prodotti";
@@ -105,6 +112,13 @@ class ProdottiController extends PagesController {
 		$this->tableFields[] = 'PagesModel.getInEvidenzaCheckbox|pages.id_page';
 		
 		$this->head .= ',In promoz?,Pubbl?,In evid?';
+		
+		if (v("attiva_modulo_acquisti"))
+		{
+			$this->tableFields[] = 'getInAcquistiCrud';
+			$this->head .= ',In acq.?';
+			$this->filters[] = array("ok_acq",null,array("tutti" => gtext("Tutti")) + gtextDeep(SlideModel::$attivoSiNo));
+		}
 		
 		$data["tabella"] = "prodotti";
 		
@@ -210,6 +224,9 @@ class ProdottiController extends PagesController {
 		
 		if (v("immagine_3_in_prodotto"))
 			$this->queryFields .= ",immagine_3";
+		
+		if (v("attiva_modulo_acquisti"))
+			$this->queryFields .= ",ok_acquisti";
 		
 		parent::form($queryType, $id);
 		

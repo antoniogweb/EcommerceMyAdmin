@@ -98,6 +98,9 @@ class MagazzinoarticoliModel extends GenericModel
 		$combinazioni = $combModel->clear()->select("combinazioni.*,pages.id_iva,pages.title,iva.valore,pages.id_marchio,pages.id_page")
 			->inner(array("pagina"))
 			->left("iva")->on("pages.id_iva = iva.id_iva")
+			->aWhere(array(
+				"pages.ok_acquisti"	=>	1,
+			))
 			->sWhere("NOT EXISTS ( select 1 from magazzino_articoli_combinazioni where magazzino_articoli_combinazioni.id_c = combinazioni.id_c)")
 			->send();
 		

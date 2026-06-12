@@ -94,6 +94,7 @@ class PagesController extends BaseController
 		'id_import:sanitizeAll'=>0,
 		'comb_acq:sanitizeAll'=>'1',
 		'q:sanitizeAll'=>'tutti',
+		'ok_acq:sanitizeAll'=>'tutti',
 	);
 	
 	protected $_posizioni = array(
@@ -207,6 +208,8 @@ class PagesController extends BaseController
 	{
 		$this->s['admin']->check();
 		
+		$this->checkCsrf(true);
+		
 		header('Content-type: text/html; charset=UTF-8');
 
 		$this->clean();
@@ -235,6 +238,8 @@ class PagesController extends BaseController
 	public function inevidenza($id,$value)
 	{
 		$this->s['admin']->check();
+		
+		$this->checkCsrf(true);
 		
 		header('Content-type: text/html; charset=UTF-8');
 
@@ -481,6 +486,13 @@ class PagesController extends BaseController
 			$this->scaffold->itemList->setBulkActions(array(
 				"++checkbox_pages_id_page"	=>	array("del","Elimina selezionati","confirm"),
 			));
+		
+		if (strcmp($this->viewArgs['ok_acq'],'tutti') !== 0)
+		{
+			$stringaExists = (int)$this->viewArgs['ok_acq'] ? "" : "NOT";
+			
+			$this->scaffold->model->sWhere("$stringaExists EXISTS ( select 1 from magazzino_articoli_combinazioni where magazzino_articoli_combinazioni.id_page = pages.id_page)");
+		}
 		
 		$this->scaffold->update('moveup,movedown');
 		

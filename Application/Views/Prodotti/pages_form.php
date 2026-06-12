@@ -191,6 +191,10 @@
 								<?php echo $form["id_p"];?>
 								<?php } ?>
 								
+								<?php if (isset($form["ok_acquisti"])) { ?>
+								<?php echo $form["ok_acquisti"];?>
+								<?php } ?>
+								
 								<?php include($this->viewPath("pages_link"));?>
 							</div>
 						</div>

@@ -65,8 +65,8 @@ $(document).ready(function(){
 
 		var t_gif = $(this).parent().find(".loading_gif_del img").css("visibility","visible");
 		
-		$.ajax({
-			url: "<?php echo $this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/pubblica/';?>"+t_id+"/"+t_value,
+		$.ajaxQueue({
+			url: "<?php echo $this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/pubblica/';?>"+t_id+"/"+t_value+"?csrf="+csrf_token,
 			async: false,
 			cache:false,
 			success: function(html){
@@ -91,8 +91,8 @@ $(document).ready(function(){
 
 		var t_gif = $(this).parent().find(".loading_gif_del img").css("visibility","visible");
 		
-		$.ajax({
-			url: "<?php echo $this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/inevidenza/';?>"+t_id+"/"+t_value,
+		$.ajaxQueue({
+			url: "<?php echo $this->baseUrl.'/'.$this->applicationUrl.$this->controller.'/inevidenza/';?>"+t_id+"/"+t_value+"?csrf="+csrf_token,
 			async: false,
 			cache:false,
 			success: function(html){

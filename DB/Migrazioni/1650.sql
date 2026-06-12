@@ -1,0 +1,1 @@
+ALTER TABLE pages ADD ok_acquisti tinyint not null default 1;
