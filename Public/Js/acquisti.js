@@ -155,6 +155,7 @@ $(document).ready(function(){
 			var codice = "";
 			var sconto_1 = 0;
 			var sconto_2 = 0;
+			var omaggio = 0;
 			
 			if ($(this).find("[name='quantita']").length > 0)
 				quantita = $(this).find("[name='quantita']").val();
@@ -177,6 +178,9 @@ $(document).ready(function(){
 			if ($(this).find("[name='sconto_2']").length > 0)
 				sconto_2 = $(this).find("[name='sconto_2']").val();
 			
+			if ($(this).find("[name='omaggio']").length > 0)
+				omaggio = $(this).find("[name='omaggio']").is(":checked") ? 1 : 0;
+			
 			var temp = {
 				id_ordine_acquisto_riga: id_ordine_acquisto_riga,
 				quantita: quantita,
@@ -186,6 +190,7 @@ $(document).ready(function(){
 				codice: codice,
 				sconto_1: sconto_1,
 				sconto_2: sconto_2,
+				omaggio: omaggio
 			};
 			
 			valori.push(temp);

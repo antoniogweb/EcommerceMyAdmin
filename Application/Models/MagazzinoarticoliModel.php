@@ -272,6 +272,7 @@ class MagazzinoarticoliModel extends GenericModel
 					"sconto_1"		=>	$this->getUltimoSconto1((int)$id),
 					"sconto_2"		=>	$this->getUltimoSconto2((int)$id),
 					"quantita"		=>	$this->getUltimaQuantita((int)$id),
+					"omaggio"		=>	0,
 					"id_iva"		=>	$record["id_iva"],
 					"aliquota_iva"	=>	$record["aliquota_iva"],
 					"id_marchio"	=>	$record["id_marchio"],
@@ -343,7 +344,8 @@ class MagazzinoarticoliModel extends GenericModel
 			$oarModel = new OrdiniacquistorigheModel();
 			
 			$riga = $oarModel->select("prezzo,sconto_1,sconto_2,quantita")->where(array(
-				"id_articolo"	=>	(int)$idArticolo
+				"id_articolo"	=>	(int)$idArticolo,
+				"omaggio"		=>	0,
 			))->orderBy("data_ultima_modifica desc")->limit("1")->record();
 			
 			if (!empty($riga))

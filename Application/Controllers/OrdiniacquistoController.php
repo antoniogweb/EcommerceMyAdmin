@@ -156,8 +156,8 @@ class OrdiniacquistoController extends BaseController
 			"class"	=>	"listRow id_tipo_riga_acquisto_;ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia; id_articolo_;ordini_acquisto_righe.id_articolo;",
 		);
 		
-		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "quantitaCrud", "sconto1Crud", "sconto2Crud", "aliquitaIvaCrud", "acquistabileCrud");
-		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Quantità,Sconto 1, Sconto 2,Aliquota,Acq";
+		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "quantitaCrud", "sconto1Crud", "sconto2Crud", "omaggioCrud", "aliquitaIvaCrud", "acquistabileCrud");
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Quantità,Sconto 1, Sconto 2,Om.,Aliquota,Acq";
 		
 		if (!$this->pulsantiMenuRighe)
 		{

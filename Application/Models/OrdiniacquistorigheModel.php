@@ -185,6 +185,21 @@ class OrdiniacquistorigheModel extends GenericModel
 			return $sconto;
 	}
 	
+	public function omaggioCrud($record)
+	{
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
+			return "";
+		
+		$omaggio = $record["ordini_acquisto_righe"]["omaggio"];
+		
+		$checked = $omaggio ? "checked" : "";
+		
+		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
+			return "<input $checked type='checkbox' id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='position:relative;max-width:14px;bottom:4px;' class='form-control omaggio_riga_ordine' name='omaggio' value='".$omaggio."' />";
+		else
+			return $omaggio ? "<i class='fa fa-check text text-success'></i>" : "";
+	}
+	
 	public function quantitaCrud($record)
 	{
 		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
@@ -238,6 +253,9 @@ class OrdiniacquistorigheModel extends GenericModel
 		$subtotale = number_format($riga["prezzo"] * $riga["quantita"],2,".","");
 		$scontato1 = number_format($subtotale * (1 - ($riga["sconto_1"] / 100)),2,".","");
 		$scontatofinale = number_format($scontato1 * (1 - ($riga["sconto_2"] / 100)),2,".","");
+		
+		if ($riga["omaggio"])
+			$scontatofinale = 0;
 		
 		if ($salvaSubtotale)
 		{

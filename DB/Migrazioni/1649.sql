@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto_righe ADD omaggio tinyint not null default 0;

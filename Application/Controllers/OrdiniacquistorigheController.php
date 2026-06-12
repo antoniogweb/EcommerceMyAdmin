@@ -105,18 +105,20 @@ class OrdiniacquistorigheController extends BaseController
 					$sconto1 = $v["sconto_1"] ?? 0;
 					$sconto2 = $v["sconto_2"] ?? 0;
 					$codice = $v["codice"] ?? "";
+					$omaggio = $v["omaggio"] ?? 0;
 					// if (!empty($rigaTipologia))
 					// {
 					// 	$price = $prezzo_intero;
 					// 	$sconto = 0;
 					// }
 					
-					$this->m[$this->modelName]->setValues(array(
+					$this->m[$this->modelName]->sValues(array(
 						"id_articolo"		=>	$v["id_articolo"] ?? 0,
 						"quantita"			=>	$v["quantita"] ?? 1,
 						"prezzo"			=>	$price,
 						"sconto_1"			=>	$sconto1,
 						"sconto_2"			=>	$sconto2,
+						"omaggio"			=>	(int)$omaggio,
 						"titolo"			=>	$v["titolo"] ?? "",
 						"id_c"				=>	$recordWeb["id_c"] ?? 0,
 						"id_page"			=>	$recordWeb["id_page"] ?? 0,
