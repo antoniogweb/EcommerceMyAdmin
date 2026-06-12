@@ -1,0 +1,1 @@
+alter table ordini_acquisto_righe add subtotale decimal(10,2) not null default 0.00;

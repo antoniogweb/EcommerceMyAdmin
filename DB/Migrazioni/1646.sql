@@ -1,0 +1,1 @@
+alter table magazzino_articoli add creato_da INT UNSIGNED NOT NULL default 0, add data_ultima_modifica datetime null default null, add modificato_da INT UNSIGNED NOT NULL default 0;

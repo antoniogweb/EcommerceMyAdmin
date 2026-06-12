@@ -26,6 +26,10 @@ class MagazzinoarticoliModel extends GenericModel
 {
 	public $metodoPerTitolo = "titoloJson";
 	public $campoValore = "id_articolo";
+	public $salvaDataModifica = true;
+	public $salvaIdInserimentoModifica = true;
+	
+	public static $idArticoloUltimaRigaOrdine = array();
 	
 	public function __construct()
 	{
@@ -264,10 +268,10 @@ class MagazzinoarticoliModel extends GenericModel
 					"titolo"		=>	$titoloWeb ?? $record["titolo"],
 					"codice"		=>	$record["codice"],
 					"gtin"			=>	$record["gtin"],
-					"prezzo"		=>	$record["prezzo"],
-					"sconto_1"		=>	$record["sconto_1"],
-					"sconto_2"		=>	$record["sconto_2"],
-					"quantita"		=>	1,
+					"prezzo"		=>	$this->getUltimoPrezzo((int)$id),
+					"sconto_1"		=>	$this->getUltimoSconto1((int)$id),
+					"sconto_2"		=>	$this->getUltimoSconto2((int)$id),
+					"quantita"		=>	$this->getUltimaQuantita((int)$id),
 					"id_iva"		=>	$record["id_iva"],
 					"aliquota_iva"	=>	$record["aliquota_iva"],
 					"id_marchio"	=>	$record["id_marchio"],
@@ -330,5 +334,85 @@ class MagazzinoarticoliModel extends GenericModel
 		}
 		else
 			return  "--";
+	}
+	
+	public function getUltimaRigaArticolo($idArticolo)
+	{
+		if (!isset(self::$idArticoloUltimaRigaOrdine[$idArticolo]))
+		{
+			$oarModel = new OrdiniacquistorigheModel();
+			
+			$riga = $oarModel->select("prezzo,sconto_1,sconto_2,quantita")->where(array(
+				"id_articolo"	=>	(int)$idArticolo
+			))->orderBy("data_ultima_modifica desc")->limit("1")->record();
+			
+			if (!empty($riga))
+				self::$idArticoloUltimaRigaOrdine[$idArticolo] = $riga;
+		}
+		
+		if (isset(self::$idArticoloUltimaRigaOrdine[$idArticolo]))
+			return self::$idArticoloUltimaRigaOrdine[$idArticolo];
+		
+		return array();
+	}
+	
+	public function getUltimoPrezzo($idArticolo)
+	{
+		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo);
+		
+		if (!empty($rigaOrdine))
+			return setPrice($rigaOrdine["prezzo"]);
+		
+		return 0;
+	}
+	
+	public function getUltimoSconto1($idArticolo)
+	{
+		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo);
+		
+		if (!empty($rigaOrdine))
+			return setPrice($rigaOrdine["sconto_1"]);
+		
+		return 0;
+	}
+	
+	public function getUltimoSconto2($idArticolo)
+	{
+		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo);
+		
+		if (!empty($rigaOrdine))
+			return setPrice($rigaOrdine["sconto_2"]);
+		
+		return 0;
+	}
+	
+	public function getUltimaQuantita($idArticolo)
+	{
+		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo);
+		
+		if (!empty($rigaOrdine))
+			return setPrice($rigaOrdine["quantita"]);
+		
+		return 0;
+	}
+	
+	public function prezzoCrud($record)
+	{
+		return setPriceReverse($this->getUltimoPrezzo($record["magazzino_articoli"]["id_articolo"]));
+	}
+	
+	public function sconto1Crud($record)
+	{
+		return setPriceReverse($this->getUltimoSconto1($record["magazzino_articoli"]["id_articolo"]));
+	}
+	
+	public function sconto2Crud($record)
+	{
+		return setPriceReverse($this->getUltimoSconto2($record["magazzino_articoli"]["id_articolo"]));
+	}
+	
+	public function quantitaCrud($record)
+	{
+		return $this->getUltimaQuantita($record["magazzino_articoli"]["id_articolo"]);
 	}
 }

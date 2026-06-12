@@ -27,7 +27,9 @@ class OrdiniacquistoModel extends GenericModel
 	use AcquistoModel;
 	
 	public $campoTitolo = "ragione_sociale";
-
+	public $salvaDataModifica = true;
+	public $salvaIdInserimentoModifica = true;
+	
 	public function __construct() {
 		$this->_tables = 'ordini_acquisto';
 		$this->_idFields = 'id_ordine_acquisto';
@@ -45,6 +47,7 @@ class OrdiniacquistoModel extends GenericModel
 			'fornitore' => array("BELONGS_TO", 'FornitoriModel', 'id_fornitore',null,"RESTRICT","Si prega di selezionare un fornitore".'<div style="display:none;" rel="hidden_alert_notice">id_fornitore</div>'),
 			'stato' => array("BELONGS_TO", 'OrdiniacquistostatiModel', 'id_ordine_acquisto_stato',null,"RESTRICT","Si prega di selezionare uno stato".'<div style="display:none;" rel="hidden_alert_notice">id_ordine_acquisto_stato</div>'),
 			'pdf' => array("BELONGS_TO", 'OrdiniacquistopdfModel', 'id_ordine_acquisto',null,"CASCADE"),
+			'righe' => array("HAS_MANY", 'OrdiniacquistorigheModel', 'id_ordine_acquisto', null, "CASCADE"),
 		);
     }
     
@@ -201,7 +204,7 @@ class OrdiniacquistoModel extends GenericModel
 		
 		foreach ($righe as $riga)
 		{
-			$imponibile += OrdiniacquistorigheModel::subtotale($riga, $righeTestata);
+			$imponibile += OrdiniacquistorigheModel::subtotale($riga, $righeTestata, true);
 		}
 		
 		return $imponibile;
@@ -250,5 +253,20 @@ class OrdiniacquistoModel extends GenericModel
 		));
 		
 		$this->update((int)$idOrdine);
+	}
+	
+	public function deletable($idOrdine)
+	{
+		if (!$this->isBozza($idOrdine))
+			return false;
+		
+		$numeroRighe = OrdiniacquistorigheModel::g(false)->where(array(
+			"id_ordine_acquisto"	=>	(int)$idOrdine
+		))->rowNumber();
+		
+		if ($numeroRighe > 0)
+			return false;
+		
+		return true;
 	}
 }

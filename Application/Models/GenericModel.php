@@ -86,6 +86,7 @@ class GenericModel extends Model_Tree
 	public $traduzione = false;
 	public $formStructAggiuntivoEntries = array();
 	public $salvaDataModifica = false;
+	public $salvaIdInserimentoModifica = false;
 	
 	public $cViewStatus = "";
 	
@@ -487,6 +488,8 @@ class GenericModel extends Model_Tree
 	{
 		$this->salvaDataUltimaModifica();
 		
+		$this->salvaCampoModificatoDa();
+		
 		$this->editData();
 		
 		$res = parent::update($id, $where);
@@ -560,9 +563,23 @@ class GenericModel extends Model_Tree
 			$this->values["data_ultima_modifica"] = date("Y-m-d H:i:s");
 	}
 	
+	public function salvaCampoCreatoDa()
+	{
+		if ($this->salvaIdInserimentoModifica)
+			$this->values["creato_da"] = User::$idAdmin;
+	}
+	
+	public function salvaCampoModificatoDa()
+	{
+		if ($this->salvaIdInserimentoModifica)
+			$this->values["modificato_da"] = User::$idAdmin;
+	}
+	
 	public function insert()
 	{
 		$this->salvaDataUltimaModifica();
+		
+		$this->salvaCampoCreatoDa();
 		
 		$this->editData();
 		

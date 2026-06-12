@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto_righe ADD INDEX ordini_acquisto_righe_articolo_data (id_articolo, data_ultima_modifica);

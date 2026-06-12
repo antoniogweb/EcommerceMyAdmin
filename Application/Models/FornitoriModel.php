@@ -27,7 +27,9 @@ class FornitoriModel extends GenericModel
 	use AcquistoModel;
 	
 	public $campoTitolo = "ragione_sociale";
-
+	public $salvaDataModifica = true;
+	public $salvaIdInserimentoModifica = true;
+	
 	public function __construct() {
 		$this->_tables = 'fornitori';
 		$this->_idFields = 'id_fornitore';

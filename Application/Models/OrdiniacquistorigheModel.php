@@ -25,7 +25,9 @@ if (!defined('EG')) die('Direct access not allowed!');
 class OrdiniacquistorigheModel extends GenericModel
 {
 	public $campoTitolo = "titolo";
-
+	public $salvaDataModifica = true;
+	public $salvaIdInserimentoModifica = true;
+	
 	public function __construct() {
 		$this->_tables = 'ordini_acquisto_righe';
 		$this->_idFields = 'id_ordine_acquisto_riga';
@@ -228,7 +230,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		return $record["ordini_acquisto_righe"]["aliquota_iva"]."%";
 	}
 	
-	public static function subtotale($riga, $righeTestata = array())
+	public static function subtotale($riga, $righeTestata = array(), $salvaSubtotale = false)
 	{
 		if (OrdiniacquistorighetipologieModel::rigaDiTestata($riga["id_ordine_acquisto_riga_tipologia"]))
 			return 0;
@@ -236,6 +238,17 @@ class OrdiniacquistorigheModel extends GenericModel
 		$subtotale = number_format($riga["prezzo"] * $riga["quantita"],2,".","");
 		$scontato1 = number_format($subtotale * (1 - ($riga["sconto_1"] / 100)),2,".","");
 		$scontatofinale = number_format($scontato1 * (1 - ($riga["sconto_2"] / 100)),2,".","");
+		
+		if ($salvaSubtotale)
+		{
+			$rModel = new OrdiniacquistorigheModel();
+			
+			$rModel->sValues(array(
+				"subtotale"	=>	$scontatofinale,
+			));
+			
+			$rModel->update((int)$riga["id_ordine_acquisto_riga"]);
+		}
 		
 		foreach ($righeTestata as $rigaTestata)
 		{

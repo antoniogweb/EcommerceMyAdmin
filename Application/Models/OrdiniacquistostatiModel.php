@@ -55,7 +55,7 @@ class OrdiniacquistostatiModel extends GenericModel {
 	
 	public function relations() {
         return array(
-			'traduzioni' => array("HAS_MANY", 'OrdiniacquistoModel', 'id_ordine_acquisto_stato', null, "RESTRICT", "L'elemento ha degli ordini di acquisto collegati e non può essere eliminato"),
+			'ordini' => array("HAS_MANY", 'OrdiniacquistoModel', 'id_ordine_acquisto_stato', null, "RESTRICT", "L'elemento ha degli ordini di acquisto collegati e non può essere eliminato"),
         );
     }
     
