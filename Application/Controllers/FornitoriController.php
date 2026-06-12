@@ -22,8 +22,15 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class FornitoriController extends BaseController {
-	
+Helper_List::$filtersFormLayout["filters"]["ragione_sociale"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Cerca..",
+	),
+);
+
+class FornitoriController extends BaseController
+{
 	public $filters = array("ragione_sociale");
 	
 	public $orderBy = "ragione_sociale";

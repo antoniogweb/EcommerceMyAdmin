@@ -29,6 +29,13 @@ Helper_List::$filtersFormLayout["filters"]["id_ordine_acquisto_filtro"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["ragione_sociale"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Cerca..",
+	),
+);
+
 Helper_Menu::$htmlLinks["save_righe_ordini_acquisto"]["attributes"] .= " url-salva='ordiniacquistorighe/salva' ";
 
 class OrdiniacquistoController extends BaseController
@@ -69,7 +76,7 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->m[$this->modelName]->select("ordini_acquisto.*,DATE_FORMAT(data_ordine, '%Y') as anno_ordine")
 			->aWhere(array(
-				"id_ordine_acquisto"	=>	$this->viewArgs["id_ordine_acquisto_filtro"],
+				"numero_ordine"	=>	$this->viewArgs["id_ordine_acquisto_filtro"],
 			))
 			->orderBy("anno_ordine desc,numero_ordine desc")->convert();
 		
@@ -124,8 +131,6 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->_posizioni['righe'] = 'class="active"';
 		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
-		
 		$this->shift(1);
 		
 		$clean['id'] = $this->id = (int)$id;
@@ -157,7 +162,7 @@ class OrdiniacquistoController extends BaseController
 		);
 		
 		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "quantitaCrud", "sconto1Crud", "sconto2Crud", "omaggioCrud", "aliquitaIvaCrud", "acquistabileCrud");
-		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Quantità,Sconto 1, Sconto 2,Om.,Aliquota,Acq";
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo,Quantità,Sconto 1, Sconto 2,Om.,Aliquota,Acq";
 		
 		if (!$this->pulsantiMenuRighe)
 		{

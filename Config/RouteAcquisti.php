@@ -40,6 +40,7 @@ class RouteAcquisti
 		'magazzinoarticoli,main',
 		'magazzinoarticoli,form',
 		'magazzinoarticoli,salva',
+		'ordiniacquistorighe,main',
 		'ordiniacquistorighe,form',
 		'ordiniacquistorighe,salva',
 	);

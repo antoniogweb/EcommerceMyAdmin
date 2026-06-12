@@ -27,8 +27,12 @@
 						<td><?php echo gtext("Fornitore");?>:</td>
 						<td>
 							<b><?php echo $fornitore["ragione_sociale"];?></b>
+							<?php if ($fornitore["email_amministrativa"]) { ?>
 							<br /><i class="fa fa-envelope"></i> <?php echo $fornitore["email_amministrativa"];?>
+							<?php } ?>
+							<?php if ($fornitore["telefono"]) { ?>
 							<br /><i class="fa fa-phone"></i> <?php echo $fornitore["telefono"];?>
+							<?php } ?>
 						</td>
 					</tr>
 					<?php } ?>

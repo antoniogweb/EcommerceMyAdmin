@@ -95,6 +95,27 @@ class OrdiniacquistorigheModel extends GenericModel
 		return "";
     }
     
+    public function prodottoCrud($record)
+	{
+		if ($record["ordini_acquisto_righe"]["id_articolo"])
+			return "<i class='fa text text-success fa-check'></i>";
+		
+		return "<i class='fa fa-ban'></i>";
+	}
+    
+    public function titoloAssociaCrud($record)
+	{
+		if ($record["ordini_acquisto_righe"]["id_articolo"])
+			return $record["ordini_acquisto_righe"]["titolo"];
+		else
+		{
+			ob_start();
+			$nascontiPulsanteAggiungiRiga = true;
+			include(LIBRARY."/Application/Views/Ordiniacquisto/gestisci_associato_pulsante_righe.php");
+			return $record["ordini_acquisto_righe"]["titolo"]."<br /><form>".ob_get_clean()."</form>";
+		}
+	}
+    
 	public function titoloCrud($record)
 	{
 		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
@@ -106,6 +127,11 @@ class OrdiniacquistorigheModel extends GenericModel
 		}
 		else
 			return $record["ordini_acquisto_righe"]["titolo"];
+	}
+    
+    public function ordineCrud($record)
+	{
+		return "<a href='".Url::getRoot()."ordiniacquisto/righe/".$record["ordini_acquisto_righe"]["id_ordine_acquisto"]."' target='_blank'>".$record["ordini_acquisto_righe"]["id_ordine_acquisto"]."</a>";
 	}
     
     public function attributiCrud($record)
@@ -185,6 +211,13 @@ class OrdiniacquistorigheModel extends GenericModel
 			return $sconto;
 	}
 	
+	public function omaggioAssociaCrud($record)
+	{
+		$omaggio = $record["ordini_acquisto_righe"]["omaggio"];
+		
+		return $omaggio ? "<i class='fa fa-check text text-success'></i>" : "";
+	}
+	
 	public function omaggioCrud($record)
 	{
 		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
@@ -195,7 +228,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		$checked = $omaggio ? "checked" : "";
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
-			return "<input $checked type='checkbox' id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='position:relative;max-width:14px;bottom:4px;' class='form-control omaggio_riga_ordine' name='omaggio' value='".$omaggio."' />";
+			return "<input $checked type='checkbox' id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='position:relative;bottom:4px;' class='omaggio_riga_ordine' name='omaggio' value='".$omaggio."' />";
 		else
 			return $omaggio ? "<i class='fa fa-check text text-success'></i>" : "";
 	}
@@ -284,5 +317,28 @@ class OrdiniacquistorigheModel extends GenericModel
 		{
 			OrdiniacquistoModel::g(false)->aggiornaTotali((int)$idOrdine);
 		}
+	}
+	
+	public function statoordinelabel($record)
+	{
+		return OrdiniacquistoModel::g(false)->statoordinelabel($record);
+	}
+	
+	public static function getWhereClauseRicercaLibera($search)
+	{
+		$tokens = explode(" ", $search);
+		$andArray = array();
+		$iCerca = 10;
+		
+		foreach ($tokens as $token)
+		{
+			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+				"ordini_acquisto_righe.titolo"	=>	sanitizeAll(htmlentitydecode($token)),
+			);
+			
+			$iCerca++;
+		}
+		
+		return $andArray;
 	}
 }

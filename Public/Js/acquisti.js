@@ -71,6 +71,7 @@ $(document).ready(function(){
 		
 		var idArticolo = $(this).val();
 		var urlCombinazione = $(this).attr("url-combinazione");
+		var that = $(this);
 		
 		$.ajaxQueue({
 			url: baseUrl + "/" + urlCombinazione + "/1?esporta_json&formato_json=select2&acquistabile=tutti&id_articolo_comb=" + idArticolo,
@@ -79,7 +80,7 @@ $(document).ready(function(){
 			dataType: "json",
 			success: function(content){
 				
-				var selectCombinazione = $(".select_combinazione_ordine_acquisto");
+				var selectCombinazione = that.closest("form").find(".select_combinazione_ordine_acquisto");
 				
 				selectCombinazione.find('option').remove();
 				

@@ -22,8 +22,29 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["titolo_riga"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Cerca prodotto..",
+	),
+);
+
+Helper_List::$filtersFormLayout["filters"]["cerca"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Cerca..",
+	),
+);
+
 class OrdiniacquistorigheController extends BaseController
 {
+	public $argKeys = array(
+		'cerca:sanitizeAll'=>'tutti',
+		'titolo_riga:sanitizeAll'=>'tutti',
+		'dal:sanitizeAll'=>'tutti',
+		'al:sanitizeAll'=>'tutti',
+	);
+	
 	public function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -31,6 +52,10 @@ class OrdiniacquistorigheController extends BaseController
 		if (!v("attiva_modulo_acquisti"))
 			$this->responseCode(403);
 	}
+	
+	public $sezionePannello = "acquisti";
+	
+	public $tabella = "righe ordini acquisto";
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
@@ -42,6 +67,61 @@ class OrdiniacquistorigheController extends BaseController
 		$this->m[$this->modelName]->setValuesFromPost("id_ordine_acquisto,id_ordine_acquisto_riga_tipologia");
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function main()
+	{
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'80px',
+			),
+		);
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'esporta');
+		
+		$this->shift();
+		
+		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloAssociaCrud", "ordineCrud", ";ordini_acquisto.ragione_sociale;<div>;ordini_acquisto.email_amministrativa;</div><div>;ordini_acquisto.telefono;</div>", "aggregate.anno_ordine","ordini_acquisto.data_ordine", "ordini_acquisto_righe.prezzo", "ordini_acquisto_righe.quantita", "ordini_acquisto_righe.sconto_1", "ordini_acquisto_righe.sconto_2", "omaggioAssociaCrud", "prodottoCrud", "statoordinelabel");
+		$this->mainHead = "Immagine,Articolo,N° Ordine,Fornitore,Anno,Data,Prezzo,Quantita,Sconto 1,Sconto 2,Omaggio,Web,Stato";
+		
+		$filtri = array("cerca", "titolo_riga", "dal","al");
+		$this->filters = $filtri;
+		
+		$this->rowAttributes = array(
+			"class"	=>	"listRow id_tipo_riga_acquisto_;ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia; id_articolo_;ordini_acquisto_righe.id_articolo;",
+		);
+		
+		$this->m[$this->modelName]->clear()
+				->select("ordini_acquisto_righe.*,ordini_acquisto.*,DATE_FORMAT(ordini_acquisto.data_ordine, '%Y') as anno_ordine,pages.id_page")
+				->inner(array("ordine"))
+				->left(array("articolo"))
+				->left("combinazioni")->on("combinazioni.id_c = ordini_acquisto_righe.id_c")
+				->left("pages")->on("pages.id_page = combinazioni.id_page")
+				->left("categories")->on("pages.id_c = categories.id_c")
+				->where(array(
+					"ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia"	=>	0,
+				))
+				->orderBy("ordini_acquisto_righe.id_articolo,anno_ordine desc,ordini_acquisto.numero_ordine desc")->convert();
+		
+		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], "data_ordine", "ordini_acquisto");
+		
+		if ($this->viewArgs['cerca'] != "tutti")
+			$this->m[$this->modelName]->aWhere(array(
+				"    AND"	=>	OrdiniacquistoModel::getWhereClauseRicercaLibera($this->viewArgs['cerca']),
+			));
+		
+		if ($this->viewArgs['titolo_riga'] != "tutti")
+			$this->m[$this->modelName]->aWhere(array(
+				"    AND"	=>	OrdiniacquistorigheModel::getWhereClauseRicercaLibera($this->viewArgs['titolo_riga']),
+			));
+		
+		$this->m[$this->modelName]->save();
+		
+		parent::main();
 	}
 	
 	public function salva()
@@ -88,17 +168,10 @@ class OrdiniacquistorigheController extends BaseController
 				
 				if (!empty($recordRiga))
 				{
-					// $giacenza = (int)$this->m("CombinazioniModel")->whereId((int)$recordRiga["id_c"])->field("giacenza");
-					
 					$recordArticolo = MagazzinoarticoliModel::g()->selectId((int)$v["id_articolo"]);
 					$recordWeb = MagazzinoarticolicombinazioniModel::getDatiWeb((int)$v["id_articolo"]);
 					
-					// $rigaTipologia = $this->m("RighetipologieModel")->clear()->selectId((int)$recordRiga["id_ordine_acquisto_riga_tipologia"]);
-					
 					$moltiplicatore = 1;
-					
-					// if (!empty($rigaTipologia))
-					// 	$moltiplicatore = (int)$rigaTipologia["moltiplicatore"];
 					
 					$price = abs((float)setPrice($v["prezzo"])) * $moltiplicatore;
 					
@@ -106,11 +179,6 @@ class OrdiniacquistorigheController extends BaseController
 					$sconto2 = $v["sconto_2"] ?? 0;
 					$codice = $v["codice"] ?? "";
 					$omaggio = $v["omaggio"] ?? 0;
-					// if (!empty($rigaTipologia))
-					// {
-					// 	$price = $prezzo_intero;
-					// 	$sconto = 0;
-					// }
 					
 					$this->m[$this->modelName]->sValues(array(
 						"id_articolo"		=>	$v["id_articolo"] ?? 0,

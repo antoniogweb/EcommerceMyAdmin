@@ -265,6 +265,8 @@ class MagazzinoarticoliModel extends GenericModel
 				
 				$oarModel = new OrdiniacquistorigheModel();
 				
+				$ultimaQuantita = $this->getUltimaQuantita((int)$id);
+				
 				$oarModel->sValues(array(
 					"id_articolo"	=>	(int)$id,
 					"id_ordine_acquisto"	=>	(int)$_GET["id_ordine_acquisto"],
@@ -274,7 +276,7 @@ class MagazzinoarticoliModel extends GenericModel
 					"prezzo"		=>	$this->getUltimoPrezzo((int)$id),
 					"sconto_1"		=>	$this->getUltimoSconto1((int)$id),
 					"sconto_2"		=>	$this->getUltimoSconto2((int)$id),
-					"quantita"		=>	$this->getUltimaQuantita((int)$id),
+					"quantita"		=>	$ultimaQuantita ? $this->getUltimaQuantita((int)$id) : 1,
 					"omaggio"		=>	0,
 					"id_iva"		=>	$record["id_iva"],
 					"aliquota_iva"	=>	$record["aliquota_iva"],
