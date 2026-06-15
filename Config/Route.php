@@ -561,6 +561,8 @@ class Route
 		'righe,salva',
 		'righe,elenco',
 		'righe,modificaevaso',
+		'righe,salvaqtadaordinare',
+		'righe,daordinare',
 		
 		'modali,main',
 		'modali,form',

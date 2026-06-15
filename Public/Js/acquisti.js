@@ -322,8 +322,6 @@ $(document).ready(function(){
 			valori.push(temp);
 		});
 		
-		// console.log(valori);
-		
 		$.ajaxQueue({
 			url: baseUrl + "/" + applicationName + controllerName + "/salvaqtadaordinare",
 			cache:false,
@@ -335,9 +333,7 @@ $(document).ready(function(){
 				valori: JSON.stringify(valori)
 			},
 			success: function(content){
-				
 				aggiornaParziale(applicationControllerAction + "/" + idOrdine + viewStatus + "&ajax_partial_load");
-				
 			}
 		});
 		

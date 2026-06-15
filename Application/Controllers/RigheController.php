@@ -348,6 +348,9 @@ class RigheController extends BaseController
 			$idR = $v["id_r"] ?? 0;
 			$qty = $v["qta_da_ordinare"] ?? 0;
 			
+			if ((int)$qty <= 0)
+				$qty = 0;
+			
 			if ($idR && isset($v["qta_da_ordinare"]))
 			{
 				$recordRiga = $this->m[$this->modelName]->selectId((int)$idR);
