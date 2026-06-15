@@ -345,16 +345,25 @@ class MagazzinoarticoliModel extends GenericModel
 			return  "--";
 	}
 	
-	public function getUltimaRigaArticolo($idArticolo)
+	public function getUltimaRigaArticolo($idArticolo, $escludiIdRiga = 0)
 	{
-		if (!isset(self::$idArticoloUltimaRigaOrdine[$idArticolo]))
+		if ($idArticolo && !isset(self::$idArticoloUltimaRigaOrdine[$idArticolo]))
 		{
 			$oarModel = new OrdiniacquistorigheModel();
 			
-			$riga = $oarModel->select("prezzo,sconto_1,sconto_2,quantita")->where(array(
+			$oarModel->select("prezzo,sconto_1,sconto_2,quantita")->where(array(
 				"id_articolo"	=>	(int)$idArticolo,
 				"omaggio"		=>	0,
-			))->orderBy("data_ultima_modifica desc")->limit("1")->record();
+			))->orderBy("data_ultima_modifica desc")->limit("1");
+			
+			if ($escludiIdRiga)
+				$oarModel->aWhere(array(
+					"ne"	=>	array(
+						"id_ordine_acquisto_riga"	=>	(int)$escludiIdRiga,
+					)
+				));
+			
+			$riga = $oarModel->record();
 			
 			if (!empty($riga))
 				self::$idArticoloUltimaRigaOrdine[$idArticolo] = $riga;
@@ -366,9 +375,9 @@ class MagazzinoarticoliModel extends GenericModel
 		return array();
 	}
 	
-	public function getUltimoPrezzo($idArticolo)
+	public function getUltimoPrezzo($idArticolo, $escludiIdRiga = 0)
 	{
-		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo);
+		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo, $escludiIdRiga);
 		
 		if (!empty($rigaOrdine))
 			return setPrice($rigaOrdine["prezzo"]);
@@ -376,9 +385,9 @@ class MagazzinoarticoliModel extends GenericModel
 		return 0;
 	}
 	
-	public function getUltimoSconto1($idArticolo)
+	public function getUltimoSconto1($idArticolo, $escludiIdRiga = 0)
 	{
-		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo);
+		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo, $escludiIdRiga);
 		
 		if (!empty($rigaOrdine))
 			return setPrice($rigaOrdine["sconto_1"]);
@@ -386,9 +395,9 @@ class MagazzinoarticoliModel extends GenericModel
 		return 0;
 	}
 	
-	public function getUltimoSconto2($idArticolo)
+	public function getUltimoSconto2($idArticolo, $escludiIdRiga = 0)
 	{
-		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo);
+		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo, $escludiIdRiga);
 		
 		if (!empty($rigaOrdine))
 			return setPrice($rigaOrdine["sconto_2"]);
@@ -396,9 +405,9 @@ class MagazzinoarticoliModel extends GenericModel
 		return 0;
 	}
 	
-	public function getUltimaQuantita($idArticolo)
+	public function getUltimaQuantita($idArticolo, $escludiIdRiga = 0)
 	{
-		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo);
+		$rigaOrdine = $this->getUltimaRigaArticolo((int)$idArticolo, $escludiIdRiga);
 		
 		if (!empty($rigaOrdine))
 			return setPrice($rigaOrdine["quantita"]);

@@ -162,6 +162,7 @@ class OrdiniacquistorigheController extends BaseController
 			return;
 		
 		$combModel = new CombinazioniModel();
+		$maModel = new MagazzinoarticoliModel();
 		
 		foreach ($valori as $v)
 		{
@@ -182,6 +183,13 @@ class OrdiniacquistorigheController extends BaseController
 					$sconto2 = $v["sconto_2"] ?? 0;
 					$codice = $v["codice"] ?? "";
 					$omaggio = $v["omaggio"] ?? 0;
+					
+					if ($v["id_articolo"] && (int)$recordRiga["id_articolo"] !== (int)$v["id_articolo"])
+					{
+						$price = $maModel->getUltimoPrezzo((int)$v["id_articolo"], (int)$recordRiga["id_ordine_acquisto_riga"]);
+						$sconto1 = $maModel->getUltimoSconto1((int)$v["id_articolo"], (int)$recordRiga["id_ordine_acquisto_riga"]);
+						$sconto2 = $maModel->getUltimoSconto2((int)$v["id_articolo"], (int)$recordRiga["id_ordine_acquisto_riga"]);
+					}
 					
 					$this->m[$this->modelName]->sValues(array(
 						"id_articolo"		=>	$v["id_articolo"] ?? 0,
