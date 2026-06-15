@@ -60,6 +60,8 @@ class MagazzinoarticoliController extends BaseController
 	
 	public $tabella = "articoli di magazzino";
 	
+	public $orderBy = "categories.title,pages.title";
+	
 	public function __construct($model, $controller, $queryString, $application, $action) {
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -77,6 +79,8 @@ class MagazzinoarticoliController extends BaseController
 		if ($this->viewArgs["q"] != "tutti")
 		{
 			$this->viewArgs["cerca"] = $this->viewArgs["q"];
+			
+			$this->orderBy = "pages.attivo desc,pages.title";
 		}
 		
 		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","titoloCrud","varianteCrud","marchi.titolo","codiceCrud","combinazioni.codice","attivoCrud","acquistabileCrud","prezzoCrud","sconto1Crud","sconto2Crud","quantitaCrud","magazzino_articoli.aliquota_iva");
@@ -150,7 +154,7 @@ class MagazzinoarticoliController extends BaseController
 					"pages.id_marchio"	=>	$this->viewArgs['id_marchio'],
 					"combinazioni.acquistabile"	=>	$this->viewArgs['acquistabile'],
 				))
-			->orderBy("categories.title,magazzino_articoli.titolo")->convert();
+			->orderBy($this->orderBy)->convert();
 		
 		if ($this->viewArgs["q"] != "tutti")
 		{

@@ -414,4 +414,9 @@ class RigheModel extends GenericModel {
 		
 		return "";
 	}
+	
+	public function daOrdinareCrud($record)
+	{
+		return "<input id-r='".$record["righe"]["id_r"]."' style='width:100px;' class='form-control' name='qta_da_ordinare' value='".$record["righe"]["qta_da_ordinare"]."' />";
+	}
 }

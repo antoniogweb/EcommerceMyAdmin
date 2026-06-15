@@ -40,7 +40,7 @@ class RigheController extends BaseController
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
-		if ($action == "elenco")
+		if ($action == "elenco" || $action == "daordinare")
 			$this->sezionePannello = "ecommerce";
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -90,6 +90,46 @@ class RigheController extends BaseController
 		$this->m[$this->modelName]->save();
 		
 		parent::main();
+	}
+	
+	public function daordinare($idO)
+	{
+		if (!v("attiva_modulo_acquisti"))
+			$this->responseCode(403);
+		
+		$this->tabella = "segna come da ordinare";
+		
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "";
+		$this->addBulkActions = false;
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'90px',
+			),
+		);
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>999999, 'mainMenu'=>'save_da_ordinare', 'mainAction'=>'elenco');
+		
+		$this->shift();
+		
+		$this->mainFields = array("immagineCrud", "righe.title", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", "daOrdinareCrud");
+		$this->mainHead = "Immagine,Prodotto,Codice,Prezzo,Prezzo scontato,Quantità acquistata,Quantità da ordinare";
+		
+		$this->m[$this->modelName]->clear()
+				->select("righe.*")
+				->inner("orders")->on("righe.id_o = orders.id_o")
+				->where(array(
+					"orders.id_o"	=>	(int)$idO,
+					"righe.id_riga_tipologia"	=>	0,
+				))
+				->orderBy("righe.id_order")->convert();
+		
+		$this->m[$this->modelName]->save();
+		
+		Helper_Menu::$htmlLinks["save_da_ordinare"]["attributes"] .= " id-ordine='".(int)$idO."'";
+		
+		$this->baseMain();
 	}
 	
 	public function elenco()
@@ -282,5 +322,48 @@ class RigheController extends BaseController
 			
 			OrdiniModel::g()->impostaAlloStatoSeTutteLeRigheSonoEvase((int)$riga["id_o"]);
 		}
+	}
+	
+	public function salvaqtadaordinare()
+	{
+		if (!v("attiva_modulo_acquisti"))
+			$this->responseCode(403);
+		
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
+		// check CSRF
+		$this->checkCsrf(true, "POST");
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
+		
+		$this->clean();
+		
+		$valori = $this->request->post("valori","[]");
+		
+		$valori = json_decode($valori, true);
+		
+		foreach ($valori as $v)
+		{
+			$idR = $v["id_r"] ?? 0;
+			$qty = $v["qta_da_ordinare"] ?? 0;
+			
+			if ($idR && isset($v["qta_da_ordinare"]))
+			{
+				$recordRiga = $this->m[$this->modelName]->selectId((int)$idR);
+				
+				if (!empty($recordRiga))
+				{
+					$this->m[$this->modelName]->setValues(array(
+						"qta_da_ordinare"	=>	(int)$qty,
+					));
+					
+					$this->m[$this->modelName]->update((int)$idR);
+				}
+			}
+		}
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
 	}
 }

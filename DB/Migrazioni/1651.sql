@@ -1,0 +1,1 @@
+ALTER TABLE righe ADD qta_da_ordinare INT UNSIGNED not null default 0;
