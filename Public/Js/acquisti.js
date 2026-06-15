@@ -132,6 +132,53 @@ $(document).ready(function(){
 			alert("Attenzione, si prega di selezionare un articolo");
 	});
 	
+	$("body").on("click", ".collega_righe_ordini_acquisto", function(e){
+		
+		e.preventDefault();
+		
+		var url = baseUrl + "/" + applicationName + controllerName + "/collega";
+		
+		var that = $(this);
+		
+		that.find("i").removeClass("fa-save").addClass("fa-spinner").addClass("fa-spin");
+		
+		var valori = [];
+		
+		$("table tr.listRow").each(function() {
+			
+			if ($(this).find(".form_associa").length > 0)
+			{
+				var id_riga = $(this).find(".form_associa").attr("id-riga");
+				var id_articolo = $(this).find(".select_combinazione_ordine_acquisto").val();
+				
+				var temp = {
+					id_riga: id_riga,
+					id_articolo: id_articolo
+				};
+				
+				valori.push(temp);
+			}
+		});
+		
+		$.ajaxQueue({
+			url: url,
+			cache:false,
+			async: true,
+			dataType: "html",
+			type: "POST",
+			data: {
+				csrf: csrf_token,
+				valori: JSON.stringify(valori)
+			},
+			success: function(content){
+				
+				aggiornaParziale(applicationControllerAction + viewStatus + "&ajax_partial_load");
+				
+			}
+		});
+		
+	});
+	
 	$("body").on("click", ".save_righe_ordini_acquisto", function(e){
 		
 		e.preventDefault();
@@ -206,9 +253,10 @@ $(document).ready(function(){
 			dataType: "html",
 			type: "POST",
 			data: {
+				csrf: csrf_token,
 				valori: JSON.stringify(valori)
 			},
-			success: function(content){
+			success: function(content) {
 				
 				aggiornaParziale(applicationControllerAction + "/" + idOrdine + viewStatus + "&ajax_partial_load");
 				

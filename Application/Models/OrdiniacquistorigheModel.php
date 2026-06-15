@@ -28,6 +28,8 @@ class OrdiniacquistorigheModel extends GenericModel
 	public $salvaDataModifica = true;
 	public $salvaIdInserimentoModifica = true;
 	
+	public static $numeroNonCollegateCache = null;
+	
 	public function __construct() {
 		$this->_tables = 'ordini_acquisto_righe';
 		$this->_idFields = 'id_ordine_acquisto_riga';
@@ -112,7 +114,7 @@ class OrdiniacquistorigheModel extends GenericModel
 			ob_start();
 			$nascontiPulsanteAggiungiRiga = true;
 			include(LIBRARY."/Application/Views/Ordiniacquisto/gestisci_associato_pulsante_righe.php");
-			return $record["ordini_acquisto_righe"]["titolo"]."<br /><form>".ob_get_clean()."</form>";
+			return $record["ordini_acquisto_righe"]["titolo"]."<br /><form class='form_associa' id-riga='".(int)$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."'>".ob_get_clean()."</form>";
 		}
 	}
     
@@ -155,6 +157,14 @@ class OrdiniacquistorigheModel extends GenericModel
 		}
 		else
 			return $record["ordini_acquisto_righe"]["attributi"];
+	}
+	
+	public function varianteCrud($record)
+	{
+		if (!$record["ordini_acquisto_righe"]["id_page"])
+			return "";
+		
+		return CombinazioniModel::g()->getStringa($record["ordini_acquisto_righe"]["id_c"], "<br />");
 	}
 	
 	public function codiceCrud($record)
@@ -340,5 +350,27 @@ class OrdiniacquistorigheModel extends GenericModel
 		}
 		
 		return $andArray;
+	}
+	
+	public static function numeroNonCollegate($idOrdine = 0)
+	{
+		if (!isset(self::$numeroNonCollegateCache[$idOrdine]))
+		{
+			$oarModel = new OrdiniacquistorigheModel();
+			
+			$oarModel->clear()->where(array(
+				"id_articolo"	=>	0,
+				"id_ordine_acquisto_riga_tipologia"	=>	0,
+			));
+			
+			if ($idOrdine)
+				$oarModel->aWhere(array(
+					"id_ordine_acquisto"	=>	(int)$idOrdine,
+				));
+			
+			self::$numeroNonCollegateCache[$idOrdine] = $oarModel->rowNumber();
+		}
+		
+		return self::$numeroNonCollegateCache[$idOrdine];
 	}
 }

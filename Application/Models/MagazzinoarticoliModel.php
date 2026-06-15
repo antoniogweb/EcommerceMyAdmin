@@ -256,6 +256,7 @@ class MagazzinoarticoliModel extends GenericModel
 				$titoloWeb = null;
 				
 				$combModel = new CombinazioniModel();
+				$pagesModel = new PagesModel();
 				
 				if (!empty($recordWeb))
 				{
@@ -266,6 +267,8 @@ class MagazzinoarticoliModel extends GenericModel
 				$oarModel = new OrdiniacquistorigheModel();
 				
 				$ultimaQuantita = $this->getUltimaQuantita((int)$id);
+				
+				$recordPage = $pagesModel->clear()->select("id_page,id_marchio")->whereId((int)$recordWeb["id_page"])->record();
 				
 				$oarModel->sValues(array(
 					"id_articolo"	=>	(int)$id,
@@ -280,7 +283,7 @@ class MagazzinoarticoliModel extends GenericModel
 					"omaggio"		=>	0,
 					"id_iva"		=>	$record["id_iva"],
 					"aliquota_iva"	=>	$record["aliquota_iva"],
-					"id_marchio"	=>	$record["id_marchio"],
+					"id_marchio"	=>	$recordPage["id_marchio"] ?? 0,
 					"id_c"			=>	$recordWeb["id_c"] ?? 0,
 					"id_page"		=>	$recordWeb["id_page"] ?? 0,
 					"attributi"		=>	isset($recordWeb["id_c"]) ? strip_tags($combModel->getStringa($recordWeb["id_c"], "<br />")) : "",

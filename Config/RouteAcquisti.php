@@ -43,5 +43,6 @@ class RouteAcquisti
 		'ordiniacquistorighe,main',
 		'ordiniacquistorighe,form',
 		'ordiniacquistorighe,salva',
+		'ordiniacquistorighe,collega',
 	);
 }

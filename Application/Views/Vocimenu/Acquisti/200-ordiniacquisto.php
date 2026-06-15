@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<li class="<?php echo tm($tm, array("ordiniacquisto","ordiniacquistorighe"));?> treeview help_fornitori">
+<li class="<?php echo tm($tm, array("ordiniacquisto","ordiniacquistorighe"));?> treeview help_ordini_acquisto">
 	<a href="#">
 		<i class="fa fa-book"></i>
 		<span><?php echo gtext("Ordini acquisto"); ?></span>
@@ -7,6 +7,17 @@
 	<ul class="treeview-menu">
 		<li><a href="<?php echo $this->baseUrl."/ordiniacquisto/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi ordine"); ?></a></li>
 		<li <?php if ($this->controller == "ordiniacquisto") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/ordiniacquisto/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista ordini"); ?></a></li>
-		<li <?php if ($this->controller == "ordiniacquistorighe") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/ordiniacquistorighe/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista righe"); ?></a></li>
+		<li <?php if ($this->controller == "ordiniacquistorighe") { ?>class="active"<?php } ?>>
+			<a href="<?php echo $this->baseUrl."/ordiniacquistorighe/main/1";?>">
+				<i class="fa fa-list"></i>
+				<?php echo gtext("Lista righe"); ?>
+				<?php
+				$numeroDaCollegare = OrdiniacquistorigheModel::numeroNonCollegate();
+				
+				if ($numeroDaCollegare) { ?>
+				<span class="label label-warning"><?php echo $numeroDaCollegare;?></span>
+				<?php } ?>
+			</a>
+		</li>
 	</ul>
 </li>

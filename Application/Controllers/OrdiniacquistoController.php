@@ -71,8 +71,8 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("[[ledit]];ordini_acquisto.numero_ordine;","ordini_acquisto.ragione_sociale","aggregate.anno_ordine","ordini_acquisto.data_ordine","ordini_acquisto.telefono","ordini_acquisto.email","statoordinelabel");
-		$this->mainHead = "N° Ordine,Ragione sociale,Anno,Data,Telefono,Email,Stato";
+		$this->mainFields = array("[[ledit]];ordini_acquisto.numero_ordine;", "ordini_acquisto.ragione_sociale", "aggregate.anno_ordine", "ordini_acquisto.data_ordine", "ordini_acquisto.telefono", "ordini_acquisto.email", "statoordinelabel", "numeroDaCollegareCrud");
+		$this->mainHead = "N° Ordine,Ragione sociale,Anno,Data,Telefono,Email,Stato,Da collegare";
 		
 		$this->m[$this->modelName]->select("ordini_acquisto.*,DATE_FORMAT(data_ordine, '%Y') as anno_ordine")
 			->aWhere(array(

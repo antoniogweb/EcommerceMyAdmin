@@ -57,6 +57,8 @@ class OrdiniacquistorigheController extends BaseController
 	
 	public $tabella = "righe ordini acquisto";
 	
+	public $scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'esporta,collega_righe_ordini_acquisto');
+	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		if ($queryType == "update")
@@ -81,12 +83,10 @@ class OrdiniacquistorigheController extends BaseController
 			),
 		);
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'esporta');
-		
 		$this->shift();
 		
-		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloAssociaCrud", "ordineCrud", ";ordini_acquisto.ragione_sociale;<div>;ordini_acquisto.email_amministrativa;</div><div>;ordini_acquisto.telefono;</div>", "aggregate.anno_ordine","ordini_acquisto.data_ordine", "ordini_acquisto_righe.prezzo", "ordini_acquisto_righe.quantita", "ordini_acquisto_righe.sconto_1", "ordini_acquisto_righe.sconto_2", "omaggioAssociaCrud", "prodottoCrud", "statoordinelabel");
-		$this->mainHead = "Immagine,Articolo,N° Ordine,Fornitore,Anno,Data,Prezzo,Quantita,Sconto 1,Sconto 2,Omaggio,Web,Stato";
+		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloAssociaCrud", "varianteCrud", "ordineCrud", ";ordini_acquisto.ragione_sociale;<div>;ordini_acquisto.email_amministrativa;</div><div>;ordini_acquisto.telefono;</div>", "aggregate.anno_ordine","ordini_acquisto.data_ordine", "ordini_acquisto_righe.prezzo", "ordini_acquisto_righe.quantita", "ordini_acquisto_righe.sconto_1", "ordini_acquisto_righe.sconto_2", "omaggioAssociaCrud", "prodottoCrud", "statoordinelabel");
+		$this->mainHead = "Immagine,Articolo,Variante,N° Ordine,Fornitore,Anno,Data,Prezzo,Quantita,Sconto 1,Sconto 2,Omaggio,Web,Stato";
 		
 		$filtri = array("cerca", "titolo_riga", "dal","al");
 		$this->filters = $filtri;
@@ -128,6 +128,9 @@ class OrdiniacquistorigheController extends BaseController
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
 // 		Params::$automaticConversionToDbFormat = false;
+		
+		// check CSRF
+		$this->checkCsrf(true, "POST");
 		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->beginTransaction();
@@ -194,11 +197,7 @@ class OrdiniacquistorigheController extends BaseController
 						"attributi"			=>	isset($recordWeb["id_c"]) ? strip_tags($combModel->getStringa($recordWeb["id_c"], "<br />")) : "",
 					));
 					
-					// print_r($this->m[$this->modelName]->values);
-					
 					$this->m[$this->modelName]->update($v["id_ordine_acquisto_riga"]);
-					
-					echo $this->m[$this->modelName]->notice;
 				}
 			}
 			else
@@ -206,6 +205,61 @@ class OrdiniacquistorigheController extends BaseController
 		}
 		
 		$this->m("OrdiniacquistoModel")->aggiornaTotali($idOrdine);
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->commit();
+	}
+	
+	public function collega()
+	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
+		// check CSRF
+		$this->checkCsrf(true, "POST");
+		
+		if (v("usa_transactions"))
+			$this->m[$this->modelName]->db->beginTransaction();
+		
+		$this->clean();
+		
+		$valori = $this->request->post("valori","[]");
+		
+		$valori = json_decode($valori, true);
+		
+		$arrayIdPage = array();
+		
+		$combModel = new CombinazioniModel();
+		$pagesModel = new PagesModel();
+		
+		foreach ($valori as $v)
+		{
+			$idRiga = $v["id_riga"] ?? 0;
+			$idArticolo = $v["id_articolo"] ?? 0;
+			
+			if ($idRiga && (int)$idArticolo)
+			{
+				$recordRiga = $this->m[$this->modelName]->selectId((int)$idRiga);
+				$recordArticolo = $this->m("MagazzinoarticoliModel")->selectId((int)$idArticolo);
+				$recordWeb = MagazzinoarticolicombinazioniModel::getDatiWeb((int)$idArticolo);
+				
+				if (!empty($recordRiga) && !empty($recordArticolo) && !empty($recordWeb))
+				{
+					$recordPage = $pagesModel->clear()->select("id_page,id_marchio")->whereId((int)$recordWeb["id_page"])->record();
+					
+					$this->m[$this->modelName]->sValues(array(
+						"id_articolo"		=>	(int)$idArticolo,
+						"id_c"				=>	$recordWeb["id_c"] ?? 0,
+						"id_page"			=>	$recordWeb["id_page"] ?? 0,
+						"attributi"			=>	isset($recordWeb["id_c"]) ? strip_tags($combModel->getStringa($recordWeb["id_c"], "<br />")) : "",
+						"id_marchio"		=>	$recordPage["id_marchio"] ?? 0,
+					));
+					
+					$this->m[$this->modelName]->update((int)$idRiga);
+					
+					// echo $this->m[$this->modelName]->notice;
+				}
+			}
+		}
 		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->commit();

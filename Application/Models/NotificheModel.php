@@ -65,6 +65,23 @@ class NotificheModel extends GenericModel {
 				"class"	=>	"text-yellow",
 			);
 		
+		if (v("attiva_modulo_acquisti") && v("mostra_modulo_acquisti"))
+		{
+			$numeroDaCollegare = OrdiniacquistorigheModel::numeroNonCollegate();
+			
+			if ($numeroDaCollegare)
+			{
+				$stringaRigheSingPlu = singPlu($numeroDaCollegare, "riga", "righe");
+				
+				$notifiche[] = array(
+					"testo"	=>	(int)$numeroDaCollegare." ".gtext("$stringaRigheSingPlu ordine acquisto da collegare"),
+					"link"	=>	Url::getRoot()."ordiniacquistorighe/main",
+					"icona"	=>	"fa-map-o",
+					"class"	=>	"text-yellow",
+				);
+			}
+		}
+		
 		if (!$soloPubblicate)
 		{
 			if (!v("tempo_log_permanenti_giorni") && LogModel::numeroLogPermanenti())

@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<li class="<?php echo tm($tm, "ordiniacquistostati");?> treeview help_fornitori">
+<li class="<?php echo tm($tm, "ordiniacquistostati");?> treeview help_ordini_acquisto_stati">
 	<a href="#">
 		<i class="fa fa-check-square-o"></i>
 		<span><?php echo gtext("Stati ordine acquisto"); ?></span>

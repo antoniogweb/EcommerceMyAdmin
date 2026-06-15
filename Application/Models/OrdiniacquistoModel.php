@@ -269,4 +269,14 @@ class OrdiniacquistoModel extends GenericModel
 		
 		return true;
 	}
+	
+	public function numeroDaCollegareCrud($record)
+	{
+		$numero = OrdiniacquistorigheModel::numeroNonCollegate((int)$record["ordini_acquisto"]["id_ordine_acquisto"]);
+		
+		if ($numero)
+			return '<span class="label label-warning">'.$numero.'</span>';
+		
+		return "";
+	}
 }
