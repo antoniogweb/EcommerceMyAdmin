@@ -45,6 +45,30 @@ class SpedizioninegoziocolliModel extends GenericModel {
 			return $record["spedizioni_negozio_colli"]["peso"];
     }
     
+    public function lunghezzaCrud($record)
+    {
+		if (SpedizioninegozioModel::g()->deletable($record["spedizioni_negozio_colli"]["id_spedizione_negozio"]))
+			return "<input id-riga='".$record["spedizioni_negozio_colli"]["id_spedizione_negozio_collo"]."' style='max-width:100px;' class='form-control' name='lunghezza' value='".$record["spedizioni_negozio_colli"]["lunghezza"]."' />";
+		else
+			return $record["spedizioni_negozio_colli"]["lunghezza"];
+    }
+    
+    public function profonditaCrud($record)
+    {
+		if (SpedizioninegozioModel::g()->deletable($record["spedizioni_negozio_colli"]["id_spedizione_negozio"]))
+			return "<input id-riga='".$record["spedizioni_negozio_colli"]["id_spedizione_negozio_collo"]."' style='max-width:100px;' class='form-control' name='profondita' value='".$record["spedizioni_negozio_colli"]["profondita"]."' />";
+		else
+			return $record["spedizioni_negozio_colli"]["profondita"];
+    }
+    
+    public function altezzaCrud($record)
+    {
+		if (SpedizioninegozioModel::g()->deletable($record["spedizioni_negozio_colli"]["id_spedizione_negozio"]))
+			return "<input id-riga='".$record["spedizioni_negozio_colli"]["id_spedizione_negozio_collo"]."' style='max-width:100px;' class='form-control' name='altezza' value='".$record["spedizioni_negozio_colli"]["altezza"]."' />";
+		else
+			return $record["spedizioni_negozio_colli"]["altezza"];
+    }
+    
     public function deletable($id)
 	{
 		$record = $this->selectId((int)$id);

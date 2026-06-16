@@ -610,7 +610,10 @@ class VariabiliModel extends GenericModel {
 		"url_tracking_gls"				=>	"https://infoweb.gls-italy.com", // usato per richiedere lo stato della spedizione GLS server to server (REST)
 		"url_rest_api_brt"				=>	"https://api.brt.it/rest/v1", // usato per inviare la spedizione BRT server to server (REST)
 		"url_tracking_brt"				=>	"https://api.brt.it/rest/v1/tracking/parcelID", // usato per richiedere lo stato della spedizione BRT server to server (REST)
-		"minuti_attesa_bordero_brt"		=>	5,
+		"minuti_attesa_bordero_brt"		=>	5, // minuti di attesa prima di poter creare la conferma della spedizione BRT
+		"url_api_fedex_sandbox"		=>	"https://apis-sandbox.fedex.com", // URL API di FedEx in modalità Sandox
+		"url_api_fedex"				=>	"https://apis.fedex.com", // URL API di FedEx in modalità Produzione
+		"fedex_get_token_saved_json"	=>	"", // Variabile dove salvare l'ultima richiesta di getToken
 		## IMAGES ##
 		"qualita_immagini_jpeg_default"	=>	75, // qualità di default compressione immagini jpeg
 		"converti_immagini_in_jpeg"	=>	0, // se impostato ad 1, forza la conversione di tutte le immagini a JPEG al caricamento

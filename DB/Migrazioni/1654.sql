@@ -1,0 +1,1 @@
+alter table spedizioni_negozio add modalita_ritiro varchar(50) not null default '';

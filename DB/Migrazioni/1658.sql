@@ -1,0 +1,1 @@
+alter table spedizioni_negozio_colli add lunghezza DECIMAL(10,1) not null default 0.0, add profondita DECIMAL(10,1) not null default 0.0, add altezza DECIMAL(10,1) not null default 0.0;

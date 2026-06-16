@@ -137,14 +137,29 @@ class Spedizioniere
 		return [];
 	}
 	
+	public function gModalitaRitiro()
+	{
+		return [];
+	}
+	
 	public function gTipoServizio()
 	{
 		return [];
 	}
 	
+	public function gCodiceClienteLabel()
+	{
+		return "Codice cliente";
+	}
+	
 	public function gPasswordLabel()
 	{
 		return "Password";
+	}
+	
+	public function gCodiceContrattoLabel()
+	{
+		return "Codice contratto";
 	}
 	
 	public function gCodiceTariffa()
@@ -275,5 +290,10 @@ class Spedizioniere
 	public function oscuraPassword($input)
 	{
 		return str_replace($this->getParam("password_cliente"),"XXXX", $input);
+	}
+	
+	public function permettiDimensioni()
+	{
+		return false;
 	}
 }

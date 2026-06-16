@@ -1,0 +1,1 @@
+alter table spedizionieri add usa_piattaforma_sandbox tinyint not null default 1;

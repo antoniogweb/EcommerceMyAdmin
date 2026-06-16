@@ -261,6 +261,8 @@ class SpedizioninegozioController extends BaseController {
 		if (!$this->m[$this->modelName]->whereId((int)$id)->rowNumber())
 			$this->responseCode(403);
 		
+		$modulo = SpedizioninegozioModel::getModulo((int)$id);
+		
 		$this->_posizioni['colli'] = 'class="active"';
 		
 		$this->shift(1);
@@ -277,6 +279,17 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->mainFields = array("pesoCrud");
 		$this->mainHead = "Peso (kg)";
+		
+		if ($modulo && $modulo->permettiDimensioni())
+		{
+			$this->mainFields[] = "lunghezzaCrud";
+			$this->mainFields[] = "profonditaCrud";
+			$this->mainFields[] = "altezzaCrud";
+			
+			$this->mainHead .= ",Lunghezza (cm)";
+			$this->mainHead .= ",Profondita (cm)";
+			$this->mainHead .= ",Altezza (cm)";
+		}
 		
 		$pulsantiMenu = partial() ? "" : "back";
 		

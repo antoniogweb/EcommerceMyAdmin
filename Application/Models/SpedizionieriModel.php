@@ -58,14 +58,32 @@ class SpedizionieriModel extends GenericModel
 					'options'	=>	array(
 						"Gls"	=>	"GLS",
 						"Brt"	=>	"BRT",
+						// "FedEx"	=>	"FedEx",
 					),
 					"reverse"	=>	"yes",
+				),
+				'codice_cliente'		=>	array(
+					'labelString'	=>	self::getModulo((int)$id)->gCodiceClienteLabel(),
 				),
 				'password_cliente'		=>	array(
 					'labelString'	=>	self::getModulo((int)$id)->gPasswordLabel(),
 					'type'	=>	"Password",
 					'fill'	=>	true,
 					'attributes'	=>	'autocomplete="new-password"',
+				),
+				'codice_contratto'		=>	array(
+					'labelString'	=>	self::getModulo((int)$id)->gCodiceContrattoLabel(),
+				),
+				'nazione_cliente'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	array("" => "Seleziona") + $this->selectNazioneNoDefault(),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'usa_piattaforma_sandbox'	=>	array(
+					'type'		=>	'Select',
+					'options'	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
 				),
 			),
 		);

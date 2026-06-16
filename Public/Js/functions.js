@@ -729,6 +729,11 @@ $(document).ready(function(){
 		
 		var valori = [];
 		
+		if (that[0].hasAttribute('controller'))
+			var controller = that.attr("controller");
+		else		
+			var controller = that.hasClass("save_righe_spedizione") ? "spedizioninegoziorighe" : "righe";
+		
 		$("table tr.listRow").each(function(){
 			
 			var id_riga = $(this).find("[name='quantity']").attr("id-riga");
@@ -743,15 +748,22 @@ $(document).ready(function(){
 // 				price: price
 			};
 			
+			if (controller == "spedizioninegoziocolli")
+			{
+				if ($(this).find("[name='lunghezza']").length > 0)
+					temp.lunghezza = $(this).find("[name='lunghezza']").val();
+				
+				if ($(this).find("[name='profondita']").length > 0)
+					temp.profondita = $(this).find("[name='profondita']").val();
+				
+				if ($(this).find("[name='altezza']").length > 0)
+					temp.altezza = $(this).find("[name='altezza']").val();
+			}
+			
 			valori.push(temp);
 		});
 		
 // 		console.log(valori);
-		
-		if (that[0].hasAttribute('controller'))
-			var controller = that.attr("controller");
-		else		
-			var controller = that.hasClass("save_righe_spedizione") ? "spedizioninegoziorighe" : "righe";
 		
 		$.ajaxQueue({
 			url: baseUrl + "/" + controller + "/salva",
@@ -760,6 +772,7 @@ $(document).ready(function(){
 			dataType: "html",
 			type: "POST",
 			data: {
+				csrf: csrf_token,
 				valori: JSON.stringify(valori)
 			},
 			success: function(content){
@@ -1083,6 +1096,47 @@ $(document).ready(function(){
 				
 				aggiornaParziale(applicationControllerAction + "/" + idOrdine + viewStatus + "&ajax_partial_load");
 				
+			}
+		});
+		
+	});
+	
+	$("body").on("click", ".save_da_ordinare", function(e){
+		
+		e.preventDefault();
+		
+		var that = $(this);
+		
+		var idOrdine = $(this).attr("id-ordine");
+		
+		that.find("i").removeClass("fa-refresh").addClass("fa-spinner").addClass("fa-spin");
+		
+		var valori = [];
+		
+		$("table tr.listRow").each(function() {
+			var id_r = $(this).find("[name='qta_da_ordinare']").attr("id-r");
+			var qta_da_ordinare = $(this).find("[name='qta_da_ordinare']").val();
+			
+			var temp = {
+				id_r: id_r,
+				qta_da_ordinare: qta_da_ordinare
+			};
+			
+			valori.push(temp);
+		});
+		
+		$.ajaxQueue({
+			url: baseUrl + "/" + applicationName + controllerName + "/salvaqtadaordinare",
+			cache:false,
+			async: true,
+			dataType: "json",
+			type: "POST",
+			data: {
+				csrf: csrf_token,
+				valori: JSON.stringify(valori)
+			},
+			success: function(content){
+				aggiornaParziale(applicationControllerAction + "/" + idOrdine + viewStatus + "&ajax_partial_load");
 			}
 		});
 		

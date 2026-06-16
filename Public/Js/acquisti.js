@@ -297,45 +297,4 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
-	$("body").on("click", ".save_da_ordinare", function(e){
-		
-		e.preventDefault();
-		
-		var that = $(this);
-		
-		var idOrdine = $(this).attr("id-ordine");
-		
-		that.find("i").removeClass("fa-refresh").addClass("fa-spinner").addClass("fa-spin");
-		
-		var valori = [];
-		
-		$("table tr.listRow").each(function() {
-			var id_r = $(this).find("[name='qta_da_ordinare']").attr("id-r");
-			var qta_da_ordinare = $(this).find("[name='qta_da_ordinare']").val();
-			
-			var temp = {
-				id_r: id_r,
-				qta_da_ordinare: qta_da_ordinare
-			};
-			
-			valori.push(temp);
-		});
-		
-		$.ajaxQueue({
-			url: baseUrl + "/" + applicationName + controllerName + "/salvaqtadaordinare",
-			cache:false,
-			async: true,
-			dataType: "json",
-			type: "POST",
-			data: {
-				csrf: csrf_token,
-				valori: JSON.stringify(valori)
-			},
-			success: function(content){
-				aggiornaParziale(applicationControllerAction + "/" + idOrdine + viewStatus + "&ajax_partial_load");
-			}
-		});
-		
-	});
 });

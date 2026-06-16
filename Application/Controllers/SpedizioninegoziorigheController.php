@@ -27,6 +27,7 @@ class SpedizioninegoziorigheController extends BaseController {
 	public $sezionePannello = "ecommerce";
 	
 	protected $campoDaModificare = "quantity";
+	protected $campiAggiuntiviDaModificare = array();
 	
 	function __construct($model, $controller, $queryString, $application, $action) {
 		
@@ -43,7 +44,10 @@ class SpedizioninegoziorigheController extends BaseController {
 	public function salva()
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
-		Params::$automaticConversionToDbFormat = false;
+		Params::$automaticConversionToDbFormat = true;
+		
+		// check CSRF
+		$this->checkCsrf(true, "POST");
 		
 		if (v("usa_transactions"))
 			$this->m[$this->modelName]->db->beginTransaction();
@@ -81,6 +85,16 @@ class SpedizioninegoziorigheController extends BaseController {
 						"".$this->campoDaModificare.""			=>	$v["quantity"],
 					));
 					
+					if (count($this->campiAggiuntiviDaModificare) > 0)
+					{
+						foreach ($this->campiAggiuntiviDaModificare as $campoAggiuntivo)
+						{
+							if (isset($v[$campoAggiuntivo]))
+							{
+								$this->m[$this->modelName]->setValue($campoAggiuntivo, setPrice($v[$campoAggiuntivo]));
+							}
+						}
+					}
 					
 					$this->m[$this->modelName]->update($v["id_riga"]);
 				}

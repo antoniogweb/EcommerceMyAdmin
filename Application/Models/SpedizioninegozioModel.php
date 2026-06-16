@@ -95,6 +95,14 @@ class SpedizioninegozioModel extends FormModel {
 			'labelString'=>	"Tipo servizio",
 		);
 		
+		$this->formStruct["entries"]["modalita_ritiro"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gModalitaRitiro() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	"Modalità di ritiro",
+		);
+		
 		$this->formStruct["entries"]["codice_tariffa"] = array(
 			"type"	=>	"Select",
 			"options"	=>	$modulo ? $modulo->gCodiceTariffa() : [],
