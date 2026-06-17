@@ -109,9 +109,10 @@ class RigheController extends BaseController
 			),
 		);
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>999999, 'mainMenu'=>'save_da_ordinare', 'mainAction'=>'elenco');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>999999, 'mainMenu'=>'save_da_ordinare', 'mainAction'=>'daordinare');
 		
-		$this->shift();
+		$this->shift(1);
+		$this->mainShift = 1;
 		
 		$this->mainFields = array("immagineCrud", "righe.title", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", "daOrdinareCrud");
 		$this->mainHead = "Immagine,Prodotto,Codice,Prezzo,Prezzo scontato,Quantità acquistata,Quantità da ordinare";
@@ -121,7 +122,7 @@ class RigheController extends BaseController
 				->inner("orders")->on("righe.id_o = orders.id_o")
 				->where(array(
 					"orders.id_o"	=>	(int)$idO,
-					"righe.id_riga_tipologia"	=>	0,
+					"prodotto_generico"	=>	0,
 				))
 				->orderBy("righe.id_order")->convert();
 		

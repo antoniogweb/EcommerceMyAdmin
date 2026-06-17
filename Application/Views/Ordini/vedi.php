@@ -110,6 +110,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 								<td class="text-right">
 									1
 								</td>
+								<?php if (v("attiva_modulo_acquisti")) { ?><td class="text-right"></td><?php } ?>
 								<td class="text-right colonne_non_ivate">
 									<?php echo $mostraIvato ? setPriceReverse($ordine["costo_pagamento_ivato"]) : setPriceReverse($ordine["costo_pagamento"], v("cifre_decimali"));?> €
 								</td>
@@ -139,6 +140,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 								<td class="text-right">
 									1
 								</td>
+								<?php if (v("attiva_modulo_acquisti")) { ?><td class="text-right"></td><?php } ?>
 								<td class="text-right colonne_non_ivate">
 									<?php echo $mostraIvato ? setPriceReverse($ordine["spedizione_ivato"]) : setPriceReverse($ordine["spedizione"], v("cifre_decimali"));?> €
 								</td>
@@ -168,6 +170,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 								<td class="text-right">
 									1
 								</td>
+								<?php if (v("attiva_modulo_acquisti")) { ?><td class="text-right"></td><?php } ?>
 								<td class="text-right colonne_non_ivate">
 									- <?php echo $mostraIvato ? setPriceReverse($ordine["euro_crediti"]) : setPriceReverse($ordine["euro_crediti"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
 								</td>
@@ -204,6 +207,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 								<td class="text-right">
 									1
 								</td>
+								<?php if (v("attiva_modulo_acquisti")) { ?><td class="text-right"></td><?php } ?>
 								<td class="text-right colonne_non_ivate">
 									- <?php echo $mostraIvato ? setPriceReverse($ordine["euro_promozione"]) : setPriceReverse($ordine["euro_promozione"] / (1 + ($ordine["iva_spedizione"] / 100)), v("cifre_decimali"));?> €
 								</td>

@@ -67,6 +67,14 @@
 	<td class="text-right"><?php echo $p["righe"]["codice"];?></td>
 	<td class="text-right"><?php echo $p["righe"]["id_riga_tipologia"] ? "" : setPriceReverse($p["righe"]["peso"]);?></td>
 	<td class="text-right"><?php echo $p["righe"]["quantity"];?></td>
+	<?php if (v("attiva_modulo_acquisti")) { ?>
+	<td class="text-right">
+		<?php if (!$p["righe"]["prodotto_generico"]) { ?>
+			<?php echo $p["righe"]["qta_da_ordinare"];?>
+			<a class="iframe" href="<?php echo $this->baseUrl."/righe/daordinare/".$ordine["id_o"];?>?partial=Y"><i class='fa fa-pencil'></i></a>
+		<?php } ?>
+	</td>
+	<?php } ?>
 	<td class="text-right colonne_non_ivate">
 		<?php
 		$campoIvato = $mostraIvato ? "_ivato" : "";

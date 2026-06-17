@@ -100,6 +100,7 @@ class MagazzinoarticoliModel extends GenericModel
 			->left("iva")->on("pages.id_iva = iva.id_iva")
 			->aWhere(array(
 				"pages.ok_acquisti"	=>	1,
+				"pages.prodotto_generico"	=>	0,
 			))
 			->sWhere("NOT EXISTS ( select 1 from magazzino_articoli_combinazioni where magazzino_articoli_combinazioni.id_c = combinazioni.id_c)")
 			->send();

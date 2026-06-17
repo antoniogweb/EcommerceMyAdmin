@@ -725,6 +725,12 @@ class OrdiniController extends BaseController {
 		$this->mainFields = array("immagineCrud", "titoloCrud", "attributiCrud", "codiceCrud", "prezzoInteroCrud", "scontoCrud", "prezzoScontatoCrud", "quantitaCrud", ";righe.iva;%", "evasaCrud", "acquistabileCrud");
 		$this->mainHead = "Immagine,Articolo,Variante,Codice,Prezzo pieno,Sconto (%),Prezzo scontato,Quantità,Aliquota,Evasa,Acq.";
 		
+		if (v("attiva_modulo_acquisti"))
+		{
+			$this->mainFields[] = "daOrdinareMostraCrud";
+			$this->mainHead .= ",Da. ordinare";
+		}
+		
 		$pulsantiMenu = "torna_ordine";
 		
 		if (OrdiniModel::g()->isDeletable((int)$id))

@@ -10,6 +10,9 @@
 		<th class="text-right"><?php echo gtext("Codice");?></th>
 		<th class="text-right"><?php echo gtext("Peso");?></th>
 		<th class="text-right"><?php echo gtext("Quantità");?></th>
+		<?php if (v("attiva_modulo_acquisti")) { ?>
+		<th class="text-right"><?php echo gtext("Da ordinare");?></th>
+		<?php } ?>
 		<th class="text-right colonne_non_ivate"><?php echo gtext("Prezzo");?><br /><?php echo gtext("IVA $labelIvaInclusaEsclusa");?></th>
 		<?php if (strcmp($ordine["usata_promozione"],"Y") === 0 && $ordine["tipo_promozione"] == "PERCENTUALE") { ?>
 		<th class="text-right colonne_non_ivate"><?php echo gtext("Sconto");?><br />(<i><?php echo $ordine["nome_promozione"];?></i>)</th>

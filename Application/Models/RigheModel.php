@@ -419,4 +419,12 @@ class RigheModel extends GenericModel {
 	{
 		return "<input id-r='".$record["righe"]["id_r"]."' style='width:100px;' class='form-control' name='qta_da_ordinare' value='".$record["righe"]["qta_da_ordinare"]."' />";
 	}
+	
+	public function daOrdinareMostraCrud($record)
+	{
+		if ($record["righe"]["prodotto_generico"])
+			return "";
+		
+		return $record["righe"]["qta_da_ordinare"]." <a class='iframe' href='".Url::getRoot()."righe/daordinare/".$record["righe"]["id_o"]."?partial=Y'><i class='fa fa-pencil'></i></a>";
+	}
 }
