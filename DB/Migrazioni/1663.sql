@@ -1,0 +1,1 @@
+ALTER TABLE spedizioni_negozio add descrizione_generica_merce varchar(255) not null default '';

@@ -38,6 +38,16 @@ class FedEx extends Spedizioniere
 		),
 	);
 	
+	protected function condizioniSpecificheCorriere(SpedizioninegozioModel $spedizione)
+	{
+		$nazione = Params::$arrayToValidate["nazione"] ?? $_POST["nazione"] ?? "IT";
+		
+		if ($nazione != "IT")
+		{
+			$spedizione->addStrongCondition("update",'checkNotEmpty|',"descrizione_generica_merce");
+		}
+	}
+	
 	public function gCodiceClienteLabel()
 	{
 		return "Api Key";
@@ -63,12 +73,12 @@ class FedEx extends Spedizioniere
 	
 	public function gCampiForm()
 	{
-		return 'titolo,modulo,attivo,usa_piattaforma_sandbox,codice_cliente,password_cliente,codice_contratto,ragione_sociale_cliente,persona_riferimento_cliente,telefono_cliente,indirizzo_cliente,citta,provincia_cliente,cap_cliente,nazione_cliente';
+		return 'titolo,modulo,attivo,usa_piattaforma_sandbox,codice_cliente,password_cliente,codice_contratto,ragione_sociale_cliente,persona_riferimento_cliente,telefono_cliente,indirizzo_cliente,citta,provincia_cliente,cap_cliente,nazione_cliente,descrizione_generica_merce';
 	}
 	
 	public function gCampiSpedizione()
 	{
-		return array('tipo_servizio', 'modalita_ritiro', 'codice_pagamento_contrassegno', 'formato_etichetta_pdf');
+		return array('tipo_servizio', 'modalita_ritiro', 'codice_pagamento_contrassegno', 'formato_etichetta_pdf', 'descrizione_generica_merce');
 	}
 	
 	public function gCampiIndirizzo()
@@ -111,57 +121,48 @@ class FedEx extends Spedizioniere
 		$spedizione->values["modalita_ritiro"] = OpzioniModel::primoCodice("FEDEX_MOD_RITIRO");
 		$spedizione->values["codice_pagamento_contrassegno"] = OpzioniModel::primoCodice("FEDEX_CODICE_PAGAMENTO");
 		$spedizione->values["formato_etichetta_pdf"] = $this->gFormatiEtichetta()[0];
+		$spedizione->values["descrizione_generica_merce"] = sanitizeDb($this->getParam('descrizione_generica_merce'));
 	}
 	
 	public function eliminaSpedizione($idS, ?SpedizioninegozioModel $spedizione = null)
 	{
 		if ($this->isAttivo())
 		{
-			
-			
-			return true;
-// 			$jsonArray = $this->getStrutturaSpedizione($idS, "delete");
-// 			
-// 			$result = true;
-// 			
-// 			if (SpedizioninegozioinfoModel::g(false)->getCodice($idS, "createResponse") != "")
-// 			{
-// 				$result = false;
-// 				$response = $this->send("/shipments/delete", "PUT", $jsonArray);
-// 				
-// 				// Salvo il log dell'input e dell'output
-// 				SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
-// 				SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteResponse", json_encode($response), "JSON");
-// 			}
-// 			
-// 			if (
-// 				$result === true
-// 				||
-// 				(
-// 					isset($response["deleteResponse"]["executionMessage"]["code"]) &&
-// 					(
-// 						$response["deleteResponse"]["executionMessage"]["code"] >= 0 || 
-// 						$response["deleteResponse"]["executionMessage"]["code"] == -151 ||
-// 						strpos($response["deleteResponse"]["executionMessage"]["message"], "not found") !== false
-// 					)
-// 				)
-// 			)
-// 			{
-// 				if (isset($response))
-// 				{
-// // 					// Salvo il log dell'input e dell'output
-// // 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
-// // 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteResponse", json_encode($response), "JSON");
-// 				}
-// 				
-// 				return true;
-// 			}
-// 			else
-// 			{
-// 				$this->settaNoticeModel($spedizione, isset($response["deleteResponse"]) ? $response["deleteResponse"]["executionMessage"]["message"] : "Errore, API non funzionante");
-// 				return false;
-// 			}
+			$jsonArray = $this->getStrutturaSpedizione($idS, "delete");
+
+			if (SpedizioninegozioinfoModel::g(false)->getCodice($idS, "createResponse") != "")
+			{
+				list($accessToken, $errore) = $this->getSavedToken();
+				
+				if ($accessToken && !$errore)
+				{
+					if (!empty($jsonArray))
+					{
+						$result = $this->requestJson('/ship/v1/shipments/cancel', 'PUT', $jsonArray, $accessToken);
+						
+						// print_r($result);die();
+						// Salvo il log dell'input e dell'output
+						SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
+						SpedizioninegozioinfoModel::g(false)->inserisci($idS, "deleteResponse", json_encode($result), "JSON");
+						
+						$errore = $this->getError($result);
+						
+						if (!trim($errore))
+							return true;
+						else
+							$this->settaNoticeModel($spedizione, $errore);
+					}
+					else
+						return true;
+				}
+				else
+					$this->settaNoticeModel($spedizione, "Errore, API non funzionante: ".$errore);
+			}
+			else
+				return true;
 		}
+		
+		return false;
 	}
 	
 	// Restituisce la spedizione pronta per essere inviata al corriere come array associativo
@@ -266,29 +267,29 @@ class FedEx extends Spedizioniere
 						'requestedPackageLineItems' => $jsonArrayColli,
 					],
 				];
+				
+				if ($record['nazione'] != $this->getParam('nazione_cliente')) {
+					$jsonArray['requestedShipment']['customsClearanceDetail'] = [
+						'commodities' => [[
+							'description' => trim($record['descrizione_generica_merce']) ? $record['descrizione_generica_merce'] : $this->getParam('descrizione_generica_merce'),
+						]],
+					];
+				}
 			}
-			// else if ($tipo == "delete")
-			// {
-			// 	$jsonArray = array(
-			// 		"account"	=>	$account,
-			// 		"deleteData"	=>	array(
-			// 			"senderCustomerCode"			=>	$params["codice_cliente"],
-			// 			"numericSenderReference"		=>	$record["riferimento_mittente_numerico"],
-			// 			"alphanumericSenderReference"	=>	$record["riferimento_mittente_alfa"],
-			// 		),
-			// 	);
-			// }
-			// else if ($tipo == "confirm")
-			// {
-			// 	$jsonArray = array(
-			// 		"account"	=>	$account,
-			// 		"confirmData"	=>	array(
-			// 			"senderCustomerCode"			=>	$params["codice_cliente"],
-			// 			"numericSenderReference"		=>	$record["riferimento_mittente_numerico"],
-			// 			"alphanumericSenderReference"	=>	$record["riferimento_mittente_alfa"],
-			// 		),
-			// 	);
-			// }
+			else if ($tipo == "delete")
+			{
+				if ($record["numero_spedizione"])
+				{
+					$jsonArray = [
+						'accountNumber' => [
+							'value' => $this->getParam("codice_contratto"),
+						],
+						'trackingNumber' =>	$record["numero_spedizione"],
+					];
+				}
+				else
+					return [];
+			}
 			
 			return $jsonArray;
 		}
@@ -309,8 +310,7 @@ class FedEx extends Spedizioniere
 			if ($this->eliminaSpedizione($idS, $spedizione))
 			{
 				list($accessToken, $errore) = $this->getSavedToken();
-				// echo $errore;
-				// die();
+				
 				if ($accessToken && !$errore)
 				{
 					$jsonArray = $this->getStrutturaSpedizione($idS);
@@ -338,6 +338,29 @@ class FedEx extends Spedizioniere
 		else
 			$this->settaNoticeModel($spedizione, "Attenzione, il modulo spedizioniere ".$this->params["titolo"]. " non è attivo");
 		
+		return false;
+	}
+	
+	// $idS array con gli ID delle spedizione da confermare
+	// $idInvio id dell'invio
+	public function confermaSpedizioni(array $idS, $idInvio)
+	{
+		$risultati = array();
+		
+		foreach ($idS as $id)
+		{
+			$errore = "";
+			
+			$this->scriviLogConfermata((int)$id);
+			$risultati[$id] = new Data_Spedizioni_Result("",$errore);
+		}
+		
+		return $risultati;
+	}
+	
+	// Imposta la spedizione come confermata anche se la conferma è andata in errore
+	public function impostaConfermatoAncheSeErrore()
+	{
 		return false;
 	}
 	
