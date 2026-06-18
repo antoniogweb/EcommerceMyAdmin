@@ -449,7 +449,25 @@ class FedEx extends Spedizioniere
 	
 	public function getUrlTracking($idSpedizione)
 	{
+		$spnModel = new SpedizioninegozioModel();
 		
+		$spedizione = $spnModel->selectId((int)$idSpedizione);
+		
+		$urlTracking = "";
+		
+		if (!empty($spedizione) && $spedizione["numero_spedizione"])
+		{
+			$lingua = strtolower($spedizione["lingua"] ?: "it");
+			$nazione = strtoupper($spedizione["nazione"] ?: "IT");
+			$nazioneCliente = strtolower($this->getParam("nazione_cliente") ?: "IT");
+			
+			$urlTracking = "https://www.fedex.com/wtrk/track/?action=track"
+				. "&tracknumbers=" . urlencode($spedizione["numero_spedizione"])
+				. "&locale=" . urlencode($lingua . "_" . $nazione)
+				. "&cntry_code=" . urlencode($nazioneCliente);
+		}
+		
+		return $urlTracking;
 	}
 	
 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
