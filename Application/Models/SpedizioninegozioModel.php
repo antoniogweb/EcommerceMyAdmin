@@ -125,6 +125,14 @@ class SpedizioninegozioModel extends FormModel {
 			"className"	=>	"form-control",
 			'labelString'=>	"Template lettera di vettura (per dropshipping)",
 		);
+		
+		$this->formStruct["entries"]["codice_cliente"] = array(
+			"type"	=>	"Select",
+			"options"	=>	$modulo ? $modulo->gCodiceCliente() : [],
+			"reverse"	=>	"yes",
+			"className"	=>	"form-control",
+			'labelString'=>	"Codice cliente",
+		);
 	}
 	
 	public function selectNazione($empty = false)

@@ -1,0 +1,1 @@
+ALTER TABLE spedizioni_negozio add codice_cliente varchar(50) not null default '';

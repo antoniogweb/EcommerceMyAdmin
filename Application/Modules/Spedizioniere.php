@@ -164,12 +164,22 @@ class Spedizioniere
 	
 	public function gCodiceTariffa()
 	{
-		return [];
+		return array();
 	}
 	
 	public function gAssicurazioneIntegrativa()
 	{
-		return [];
+		return array();
+	}
+	
+	public function gCodiceCliente()
+	{
+		return array();
+	}
+	
+	public function gWrapCodiceContratto()
+	{
+		return array();
 	}
 	
 	public function gCampiIndirizzo()

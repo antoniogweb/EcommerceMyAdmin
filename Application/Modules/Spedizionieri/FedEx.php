@@ -44,21 +44,32 @@ class FedEx extends Spedizioniere
 		
 		if ($nazione != "IT")
 			$spedizione->addStrongCondition("update",'checkNotEmpty|',"descrizione_generica_merce");
+		
+		$spedizione->addStrongCondition("update",'checkNotEmpty|',"codice_cliente");
 	}
 	
 	public function gCodiceClienteLabel()
 	{
-		return "Api Key";
+		return "Api Key (Ship API)";
 	}
 	
 	public function gPasswordLabel()
 	{
-		return "Secret Key";
+		return "Secret Key (Ship API)";
 	}
 	
 	public function gCodiceContrattoLabel()
 	{
-		return "Account Number";
+		return "Account Number (Ship API)";
+	}
+	
+	public function gWrapCodiceContratto()
+	{
+		return array(
+			null,
+			null,
+			"<div class='form_notice'>".gtext("Se più di uno, divedere i codici da virgola, senza spazi")."(Ex: 123456789,987654321)</div>"
+		);
 	}
 	
 	public function isAttivo()
@@ -71,12 +82,12 @@ class FedEx extends Spedizioniere
 	
 	public function gCampiForm()
 	{
-		return 'titolo,modulo,attivo,usa_piattaforma_sandbox,codice_cliente,password_cliente,codice_contratto,ragione_sociale_cliente,persona_riferimento_cliente,telefono_cliente,indirizzo_cliente,citta,provincia_cliente,cap_cliente,nazione_cliente,descrizione_generica_merce';
+		return 'titolo,modulo,attivo,usa_piattaforma_sandbox,codice_cliente,password_cliente,codice_contratto,api_key_track,api_secret_track,ragione_sociale_cliente,persona_riferimento_cliente,telefono_cliente,indirizzo_cliente,citta,provincia_cliente,cap_cliente,nazione_cliente,descrizione_generica_merce';
 	}
 	
 	public function gCampiSpedizione()
 	{
-		return array('tipo_servizio', 'modalita_ritiro', 'codice_pagamento_contrassegno', 'formato_etichetta_pdf', 'descrizione_generica_merce');
+		return array('codice_cliente', 'tipo_servizio', 'modalita_ritiro', 'codice_pagamento_contrassegno', 'formato_etichetta_pdf', 'descrizione_generica_merce');
 	}
 	
 	public function gCampiIndirizzo()
@@ -104,6 +115,22 @@ class FedEx extends Spedizioniere
 		return OpzioniModel::label("FEDEX_CODICE_PAGAMENTO", $valore);
 	}
 	
+	public function gCodiceCliente()
+	{
+		return $this->getParam('codice_contratto');
+	}
+	
+	protected function gPrimoCodiceContratto()
+	{
+		$codici = $this->getParam('codice_contratto');
+		$codiciArray = explode(",", $codici);
+		
+		if (count($codiciArray) > 0)
+			return $codiciArray[0];
+		
+		return "";
+	}
+	
 	public function gFormatiEtichetta()
 	{
 		return ['PAPER_4X6', 'PAPER_4X8', 'PAPER_4X9', 'PAPER_4X675', 'PAPER_7X47', 'PAPER_LETTER'];
@@ -120,6 +147,7 @@ class FedEx extends Spedizioniere
 		$spedizione->values["codice_pagamento_contrassegno"] = OpzioniModel::primoCodice("FEDEX_CODICE_PAGAMENTO");
 		$spedizione->values["formato_etichetta_pdf"] = $this->gFormatiEtichetta()[0];
 		$spedizione->values["descrizione_generica_merce"] = sanitizeDb($this->getParam('descrizione_generica_merce'));
+		$spedizione->values["codice_cliente"] = sanitizeDb($this->gPrimoCodiceContratto());
 	}
 	
 	public function eliminaSpedizione($idS, ?SpedizioninegozioModel $spedizione = null)
@@ -218,7 +246,7 @@ class FedEx extends Spedizioniere
 				$jsonArray = [
 					'labelResponseOptions' => 'LABEL',
 					'accountNumber' => [
-						'value' => $this->getParam("codice_contratto"),
+						'value' => $record["codice_cliente"],
 					],
 					'requestedShipment' => [
 						'shipDatestamp' => date('Y-m-d'),
@@ -280,7 +308,7 @@ class FedEx extends Spedizioniere
 				{
 					$jsonArray = [
 						'accountNumber' => [
-							'value' => $this->getParam("codice_contratto"),
+							'value' => $record["codice_cliente"],
 						],
 						'trackingNumber' =>	$record["numero_spedizione"],
 					];

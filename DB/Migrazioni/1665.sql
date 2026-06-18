@@ -1,0 +1,1 @@
+ALTER TABLE spedizionieri add api_key_track varchar(255) not null default '', add api_secret_track varchar(255) not null default '';

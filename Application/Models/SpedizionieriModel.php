@@ -68,11 +68,12 @@ class SpedizionieriModel extends GenericModel
 				'password_cliente'		=>	array(
 					'labelString'	=>	self::getModulo((int)$id)->gPasswordLabel(),
 					'type'	=>	"Password",
-					'fill'	=>	true,
+					'fill'	=>	false,
 					'attributes'	=>	'autocomplete="new-password"',
 				),
 				'codice_contratto'		=>	array(
 					'labelString'	=>	self::getModulo((int)$id)->gCodiceContrattoLabel(),
+					'wrap'		=>	self::getModulo((int)$id)->gWrapCodiceContratto(),
 				),
 				'nazione_cliente'	=>	array(
 					"type"	=>	"Select",
@@ -84,6 +85,14 @@ class SpedizionieriModel extends GenericModel
 					'type'		=>	'Select',
 					'options'	=>	self::$attivoSiNo,
 					"reverse"	=>	"yes",
+				),
+				'api_key_track'		=>	array(
+					'labelString'	=>	"Api Key (Track API)",
+				),
+				'api_secret_track'		=>	array(
+					'labelString'	=>	"Api Secret (Track API)",
+					'type'	=>	"Password",
+					'fill'	=>	false,
 				),
 			),
 		);
