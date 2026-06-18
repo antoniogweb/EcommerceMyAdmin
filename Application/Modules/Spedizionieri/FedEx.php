@@ -497,7 +497,7 @@ class FedEx extends Spedizioniere
 					return;
 				
 				$jsonArray = [
-					"includeDetailedScans" => false,
+					"includeDetailedScans" => true,
 					"trackingInfo" => [[
 						"trackingNumberInfo" => [
 							"trackingNumber" => $spedizione["numero_spedizione"],
@@ -533,12 +533,71 @@ class FedEx extends Spedizioniere
 	
 	public function consegnata($idSpedizione)
 	{
+		$spnModel = new SpedizioninegozioModel();
 		
+		$trackingInfo = $spnModel->getInfoTracking((int)$idSpedizione);
+		
+		if ($trackingInfo)
+		{
+			$codiceSpedizioniere = $this->getLabelSpedizioniere($trackingInfo, "code");
+			$codiceDerivatoSpedizioniere = $this->getLabelSpedizioniere($trackingInfo, "derivedCode");
+			$codiceEventoSpedizioniere = $this->getLabelSpedizioniere($trackingInfo, "eventType");
+			$codiceStatoEventoSpedizioniere = $this->getLabelSpedizioniere($trackingInfo, "derivedStatusCode");
+			
+			if (in_array("DL", array($codiceSpedizioniere, $codiceDerivatoSpedizioniere, $codiceEventoSpedizioniere, $codiceStatoEventoSpedizioniere), true))
+			{
+				$this->scriviLogConsegnata((int)$idSpedizione);
+				
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public function getDataConsegna($idSpedizione)
 	{
+		$spnModel = new SpedizioninegozioModel();
 		
+		$trackingInfo = $spnModel->getInfoTracking((int)$idSpedizione);
+		
+		if ($trackingInfo)
+		{
+			$trackingInfo = json_decode($trackingInfo, true);
+			
+			if (is_array($trackingInfo))
+			{
+				$trackResult = $trackingInfo["output"]["completeTrackResults"][0]["trackResults"][0] ?? [];
+				
+				if (isset($trackResult["dateAndTimes"]) && is_array($trackResult["dateAndTimes"]))
+				{
+					foreach ($trackResult["dateAndTimes"] as $dateAndTime)
+					{
+						if (($dateAndTime["type"] ?? "") == "ACTUAL_DELIVERY" && !empty($dateAndTime["dateTime"]))
+						{
+							$dateTime = new DateTime($dateAndTime["dateTime"]);
+							
+							return $dateTime->format("Y-m-d H:i:s");
+						}
+					}
+				}
+				
+				if (isset($trackResult["scanEvents"]) && is_array($trackResult["scanEvents"]))
+				{
+					foreach ($trackResult["scanEvents"] as $evento)
+					{
+						if (($evento["eventType"] ?? "") == "DL" && !empty($evento["date"]))
+						{
+							$dateTime = new DateTime($evento["date"]);
+							
+							return $dateTime->format("Y-m-d H:i:s");
+						}
+					}
+				}
+			}
+		}
+		
+		return parent::getDataConsegna($idSpedizione);
 	}
 	
 	protected function codiciTrackingDaNascondereFrontend()
