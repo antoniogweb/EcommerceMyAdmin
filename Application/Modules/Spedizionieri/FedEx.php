@@ -43,9 +43,7 @@ class FedEx extends Spedizioniere
 		$nazione = Params::$arrayToValidate["nazione"] ?? $_POST["nazione"] ?? "IT";
 		
 		if ($nazione != "IT")
-		{
 			$spedizione->addStrongCondition("update",'checkNotEmpty|',"descrizione_generica_merce");
-		}
 	}
 	
 	public function gCodiceClienteLabel()
@@ -307,6 +305,15 @@ class FedEx extends Spedizioniere
 	{
 		if ($this->isAttivo())
 		{
+			$record = SpedizioninegozioModel::g(false)->selectId((int)$idS);
+			
+			if (!empty($record) && !$this->contrassegnoZero($record["contrassegno"]))
+			{
+				$this->settaNoticeModel($spedizione, "FedEx non supporta spedizioni in contrassegno");
+				
+				return false;
+			}
+			
 			if ($this->eliminaSpedizione($idS, $spedizione))
 			{
 				list($accessToken, $errore) = $this->getSavedToken();
@@ -314,10 +321,10 @@ class FedEx extends Spedizioniere
 				if ($accessToken && !$errore)
 				{
 					$jsonArray = $this->getStrutturaSpedizione($idS);
-					// print_r($jsonArray);die();
+					
 					$result = $this->requestJson('/ship/v1/shipments', 'POST', $jsonArray, $accessToken);
 					
-// 					// Salvo il log dell'invio e dell'output
+ 					// Salvo il log dell'invio e dell'output
 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createResponse", json_encode($result), "JSON");
 					
@@ -588,6 +595,16 @@ class FedEx extends Spedizioniere
 		}
 		
 		return "";
+	}
+	
+	protected function contrassegnoZero($valore)
+	{
+		$valore = trim((string)$valore);
+		
+		if ($valore === "")
+			return true;
+		
+		return preg_match('/^0+(?:[,.]0+)?$/', $valore);
 	}
 	
 	public function oscuraPassword($input)
