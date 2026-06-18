@@ -613,7 +613,9 @@ class VariabiliModel extends GenericModel {
 		"minuti_attesa_bordero_brt"		=>	5, // minuti di attesa prima di poter creare la conferma della spedizione BRT
 		"url_api_fedex_sandbox"		=>	"https://apis-sandbox.fedex.com", // URL API di FedEx in modalità Sandox
 		"url_api_fedex"				=>	"https://apis.fedex.com", // URL API di FedEx in modalità Produzione
-		"fedex_get_token_saved_json"	=>	"", // Variabile dove salvare l'ultima richiesta di getToken
+		"sandbox_json_tracking_response_example"	=>	"", // contiene un JSON di test di una chiamata al metodo Track by Tracking Number nel caso si stia lavorando con JSON
+		"fedex_get_token_saved_json"	=>	"", // Variabile dove salvare l'ultima richiesta di getToken (Ship API)
+		"fedex_get_token_saved_json_track_api"	=>	"", // Variabile dove salvare l'ultima richiesta di getToken (Track API)
 		## IMAGES ##
 		"qualita_immagini_jpeg_default"	=>	75, // qualità di default compressione immagini jpeg
 		"converti_immagini_in_jpeg"	=>	0, // se impostato ad 1, forza la conversione di tutte le immagini a JPEG al caricamento

@@ -133,7 +133,7 @@ class FedEx extends Spedizioniere
 	
 	public function gFormatiEtichetta()
 	{
-		return ['PAPER_4X6', 'PAPER_4X8', 'PAPER_4X9', 'PAPER_4X675', 'PAPER_7X47', 'PAPER_LETTER'];
+		return ['PAPER_4X6', 'PAPER_4X8', 'PAPER_4X9', 'PAPER_4X675', 'PAPER_7X47', 'PAPER_LETTER', 'PAPER_85X11_TOP_HALF_LABEL'];
 	}
 	
 	// Inserisci i valori di default del corriere
@@ -473,7 +473,62 @@ class FedEx extends Spedizioniere
 	// Chiama i server del corriere e salva le informazioni del tracking nella spedizione
 	public function getInfo($idSpedizione)
 	{
+		$spnModel = new SpedizioninegozioModel();
 		
+		$spedizione = $spnModel->selectId((int)$idSpedizione);
+		
+		if (!$this->checkTimeInfo($spedizione))
+			return;
+		
+		$trackingInfo = $labelSpedizioniere = $labelSpedizioniereFrontend = "";
+		
+		if (!empty($spedizione) && $spedizione["numero_spedizione"])
+		{
+			if ((int)$this->getParam("usa_piattaforma_sandbox"))
+			{
+				$trackingInfo = htmlentitydecode(v("sandbox_json_tracking_response_example"));
+				$response = json_decode($trackingInfo, true);
+			}
+			else
+			{
+				list($accessToken, $errore) = $this->getSavedToken("fedex_get_token_saved_json_track_api", "api_key_track", "api_secret_track");
+				
+				if (!$accessToken || $errore)
+					return;
+				
+				$jsonArray = [
+					"includeDetailedScans" => false,
+					"trackingInfo" => [[
+						"trackingNumberInfo" => [
+							"trackingNumber" => $spedizione["numero_spedizione"],
+						],
+					]],
+				];
+				
+				$response = $this->requestJson('/track/v1/trackingnumbers', 'POST', $jsonArray, $accessToken);
+				$trackingInfo = json_encode($response);
+			}
+			
+			if (isset($response) && is_array($response))
+			{
+				$labelSpedizioniere = $this->getLabelSpedizioniere($response);
+				$codiceSpedizioniere = $this->getLabelSpedizioniere($response, "code");
+				
+				if (!in_array($codiceSpedizioniere, $this->codiciTrackingDaNascondereFrontend(), true))
+					$labelSpedizioniereFrontend = $labelSpedizioniere;
+			}
+			
+			$spnModel->sValues(array(
+				"struttura_info_tracking"			=>	$trackingInfo,
+				"time_ultima_richiesta_tracking"	=>	time(),
+				"label_spedizioniere"				=>	sanitizeHtml($labelSpedizioniere),
+				"label_spedizioniere_frontend"		=>	sanitizeHtml($labelSpedizioniereFrontend),
+			), "sanitizeDb");
+			
+			$spnModel->pUpdate((int)$idSpedizione);
+			
+			$this->scriviLogInfoTracking((int)$idSpedizione);
+		}
 	}
 	
 	public function consegnata($idSpedizione)
@@ -486,9 +541,38 @@ class FedEx extends Spedizioniere
 		
 	}
 	
-	public function getLabelSpedizioniere($trackingInfo, $campo = "Stato")
+	protected function codiciTrackingDaNascondereFrontend()
 	{
+		return ["OC"];
+	}
+	
+	public function getLabelSpedizioniere($trackingInfo, $campo = "eventDescription")
+	{
+		if (is_string($trackingInfo))
+			$trackingInfo = json_decode($trackingInfo, true);
 		
+		if (!is_array($trackingInfo))
+			return "";
+		
+		$trackResult = $trackingInfo["output"]["completeTrackResults"][0]["trackResults"][0] ?? [];
+		
+		if (isset($trackResult["scanEvents"]) && is_array($trackResult["scanEvents"]))
+		{
+			foreach ($trackResult["scanEvents"] as $evento)
+			{
+				if (isset($evento[$campo]) && trim((string)$evento[$campo]) !== "")
+					return (string)$evento[$campo];
+			}
+		}
+		
+		if (isset($trackResult["latestStatusDetail"][$campo]))
+			return (string)$trackResult["latestStatusDetail"][$campo];
+		
+		if (isset($trackResult[$campo]))
+			return (string)$trackResult[$campo];
+		
+		if ($campo == "eventDescription" && isset($trackResult["latestStatusDetail"]["description"]))
+			return (string)$trackResult["latestStatusDetail"]["description"];
 		
 		return "";
 	}
@@ -547,11 +631,11 @@ class FedEx extends Spedizioniere
 		return $response;
     }
 	
-	protected function getSavedToken(): array
+	protected function getSavedToken($cacheVariable = "fedex_get_token_saved_json", $apiKeyParam = "codice_cliente", $secretKeyParam = "password_cliente"): array
 	{
-		if (v("fedex_get_token_saved_json"))
+		if (v($cacheVariable))
 		{
-			$tokenResponse = json_decode(htmlentitydecode(v("fedex_get_token_saved_json")), true);
+			$tokenResponse = json_decode(htmlentitydecode(v($cacheVariable)), true);
 			
 			if (
 				is_array($tokenResponse) &&
@@ -563,13 +647,13 @@ class FedEx extends Spedizioniere
 			}
 		}
 		
-		return $this->getToken();
+		return $this->getToken($apiKeyParam, $secretKeyParam, $cacheVariable);
 	}
 	
-	protected function getToken(): array
+	protected function getToken($apiKeyParam = "codice_cliente", $secretKeyParam = "password_cliente", $cacheVariable = "fedex_get_token_saved_json"): array
 	{
-		$apiKey = $this->getParam("codice_cliente");
-		$secretKey = $this->getParam("password_cliente");
+		$apiKey = $this->getParam($apiKeyParam);
+		$secretKey = $this->getParam($secretKeyParam);
 
 		$ch = curl_init($this->getUrl() . '/oauth/token');
 
@@ -596,13 +680,8 @@ class FedEx extends Spedizioniere
 		
 		$response = json_decode($body, true);
 		
-		// print_r($response);die();
-		
 		if (!is_array($response))
 			return array("", 'Risposta FedEx OAuth non JSON. HTTP ' . $httpCode . ': ' . $body);
-		
-		// if ($httpCode < 200 || $httpCode >= 300)
-		// 	return array("", 'Errore FedEx OAuth HTTP ' . $httpCode . ': ' . json_encode($response));
 		
 		if (empty($response['access_token']))
 		{
@@ -616,12 +695,10 @@ class FedEx extends Spedizioniere
 				return array("", 'Token non presente nella risposta FedEx: ' . json_encode($response));
 		}
 		
-		// print_r($response);
-		
 		$response['created_at'] = time();
 		$response['expires_at'] = time() + (int)($response['expires_in'] ?? 3600) - 120;
 		
-		VariabiliModel::setValore("fedex_get_token_saved_json", json_encode($response));
+		VariabiliModel::setValore($cacheVariable, json_encode($response));
 		
 		return array($response['access_token'], "");
 	}
