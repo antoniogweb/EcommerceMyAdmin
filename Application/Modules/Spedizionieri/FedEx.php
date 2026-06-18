@@ -296,6 +296,11 @@ class FedEx extends Spedizioniere
 		return [];
 	}
 	
+	protected function estraiTrckingNumber(array $response): string
+    {
+        return $response['output']['transactionShipments'][0]['masterTrackingNumber'] ?? '';
+    }
+	
 	// Pronoto la spedizione al corriere per avere il numero di spedizione e l'etichetta
 	public function prenotaSpedizione($idS, ?SpedizioninegozioModel $spedizione = null)
 	{
@@ -311,32 +316,18 @@ class FedEx extends Spedizioniere
 					$jsonArray = $this->getStrutturaSpedizione($idS);
 					// print_r($jsonArray);die();
 					$result = $this->requestJson('/ship/v1/shipments', 'POST', $jsonArray, $accessToken);
-				// die();
-// 				$jsonArray = $this->getStrutturaSpedizione($idS);
-// 				
-// 				$result = $this->send("/shipments/shipment", "POST", $jsonArray);
-// 				
-// 				// Salvo il log dell'invio e dell'output
+					
+// 					// Salvo il log dell'invio e dell'output
 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createResponse", json_encode($result), "JSON");
 					
 					$errore = $this->getError($result);
-					print_r($jsonArray);
-					print_r($result);die();
+					$trackingNumber = trim($this->estraiTrckingNumber($result));
 					
-					if (!trim($errore))
+					if (!trim($errore) && $trackingNumber)
 					{
-						
+						return new Data_Spedizioni_Result($trackingNumber, "");
 					}
-// 						if (isset($result["createResponse"]) && $result["createResponse"]["executionMessage"]["code"] >= 0)
-// 						{
-// 		// 					// Salvo il log dell'invio e dell'output
-// 		// 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
-// 		// 					SpedizioninegozioinfoModel::g(false)->inserisci($idS, "createResponse", json_encode($result), "JSON");
-// 							
-// 							if (isset($result["createResponse"]["labels"]["label"][0]))
-// 								return new Data_Spedizioni_Result($result["createResponse"]["labels"]["label"][0]["trackingByParcelID"], "");
-// 						}
 					else
 						$this->settaNoticeModel($spedizione, $errore);
 				}
@@ -354,7 +345,42 @@ class FedEx extends Spedizioniere
 	// $returnPath se impostato su 1 restituisce il PDF del path del PDF
 	public function segnacollo($idSpedizione, $returnPath = false)
 	{
+		$createResponse = SpedizioninegozioinfoModel::g(false)->getCodice($idSpedizione, "createResponse");
 		
+		if ($createResponse)
+		{
+			$createResponse = json_decode($createResponse, true);
+			
+			// print_r($createResponse);
+			$pathSpedizione = $this->getLogPath((int)$idSpedizione)."/Pdf";
+			
+			if (!file_exists($pathSpedizione))
+				return;
+			
+			$pdfFilesToMerge = [];
+			
+			foreach ($createResponse['output']['transactionShipments'][0]['pieceResponses'] as $label)
+			{
+				foreach ($label["packageDocuments"] as $documento)
+				{
+					if ($documento["docType"] != "PDF")
+						continue;
+					
+					$pathPdf = $pathSpedizione."/".$label["trackingNumber"].".pdf";
+					
+					$pdfDaMergiare[] = $pathPdf;
+					
+					FilePutContentsAtomic($pathPdf, base64_decode($documento["encodedLabel"]));
+				}
+			}
+			
+			$tipoOutput = $returnPath ? "F" : "I";
+			
+			if (Pdf::merge($pdfDaMergiare, "$pathSpedizione/Etichetta.pdf", $tipoOutput))
+				return "$pathSpedizione/Etichetta.pdf";
+		}
+		
+		return "";
 	}
 	
 	// Stampa il pdf del borderò dell'invio $id
@@ -535,7 +561,7 @@ class FedEx extends Spedizioniere
 				$erroreArray[] = ($error["code"] ?? "").": ".($error["message"] ?? "");
 			}
 			
-			return implode("", $erroreArray);
+			return implode("<br />", $erroreArray);
 		}
 		
 		return "";

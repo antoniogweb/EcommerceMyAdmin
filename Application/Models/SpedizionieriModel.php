@@ -58,7 +58,7 @@ class SpedizionieriModel extends GenericModel
 					'options'	=>	array(
 						"Gls"	=>	"GLS",
 						"Brt"	=>	"BRT",
-						// "FedEx"	=>	"FedEx",
+						"FedEx"	=>	"FedEx",
 					),
 					"reverse"	=>	"yes",
 				),

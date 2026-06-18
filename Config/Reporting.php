@@ -32,7 +32,8 @@ define ('RUNTIME_CONFIGURATION',true);
 // !!! the following four directives will be applied only if RUNTIME_CONFIGURATION has been set to true !!!
 
 //set the php.ini error_reporting directive
-define ('ERROR_REPORTING_DIRECTIVE',E_ALL);
+if (!defined('ERROR_REPORTING_DIRECTIVE'))
+	define ('ERROR_REPORTING_DIRECTIVE',E_ALL);
 
 //set the php.ini display_errors directive
 //set to On or Off
