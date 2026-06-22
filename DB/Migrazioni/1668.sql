@@ -1,0 +1,1 @@
+ALTER TABLE `stati_ordine` add permetti_reso tinyint not null default 0;

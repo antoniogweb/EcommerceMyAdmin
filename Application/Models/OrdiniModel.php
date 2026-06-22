@@ -142,6 +142,127 @@ class OrdiniModel extends FormModel {
 		return $res;
 	}
 	
+	public function gTabellaPeriodiResoIdSpedizione($idO)
+	{
+		$periodi = $this->gTabellaPeriodiReso($idO);
+		
+		$tabellaSpedizioni = array();
+		
+		foreach ($periodi as $pr)
+		{
+			if (!$pr["id_spedizione_negozio"])
+				continue;
+			
+			if (isset($tabellaSpedizioni[$pr["id_spedizione_negozio"]]))
+				$tabellaSpedizioni[$pr["id_spedizione_negozio"]][] = $pr;
+			else
+				$tabellaSpedizioni[$pr["id_spedizione_negozio"]] = array($pr);
+		}
+		
+		return $tabellaSpedizioni;
+	}
+	
+	public function gTabellaPeriodiResoNonIdSpedizione($idO)
+	{
+		$periodi = $this->gTabellaPeriodiReso($idO);
+		
+		$periodiFinale = array();
+		
+		foreach ($periodi as $pr)
+		{
+			if ($pr["id_spedizione_negozio"])
+				continue;
+			
+			$periodiFinale[] = $pr;
+		}
+		
+		return $periodiFinale;
+	}
+	
+	public function gTabellaPeriodiReso($idO)
+	{
+		$oprModel = new OrdiniperiodiresoModel();
+		
+		$periodiManuali = $oprModel->clear()->where(array(
+			"id_o"		=>	(int)$idO,
+			"manuale"	=>	1,
+		))->orderBy("data_inizio")->send(false);
+		
+		if (count($periodiManuali) > 0)
+			return $periodiManuali;
+		
+		$rModel = new RigheModel();
+		
+		$spedizioni = $rModel->clear()
+			->select("spedizioni_negozio.id_spedizione_negozio,spedizioni_negozio.data_consegna")
+			->left("spedizioni_negozio_righe")->on("spedizioni_negozio_righe.id_r = righe.id_r")
+			->left("spedizioni_negozio")->on("spedizioni_negozio.id_spedizione_negozio = spedizioni_negozio_righe.id_spedizione_negozio")
+			->where(array(
+				"in"	=>	array(
+					"spedizioni_negozio.stato" => SpedizioninegozioModel::statiSpedizioniAnnullabili()
+				),
+				"righe.id_o"	=>	(int)$idO,
+			))
+			->orderBy("FIELD(spedizioni_negozio.stato, 'C', 'II'),spedizioni_negozio.id_spedizione_negozio desc")
+			->send();
+		
+		$dataConsegna = "";
+		
+		if (count($spedizioni) > 0)
+		{
+			$arrayBindedValues = array((int)$idO);
+			$idsSpedioniOrdine = array();
+			
+			foreach ($spedizioni as $spedizione)
+			{
+				$idsSpedioniOrdine[] = (int)$spedizione["spedizioni_negozio"]["id_spedizione_negozio"];
+				$arrayBindedValues[] = (int)$spedizione["spedizioni_negozio"]["id_spedizione_negozio"];
+			}
+			
+			// elimino la tabella creata da altre modalità
+			$oprModel->del(null, array(
+				"richiesta = 0 and id_o = ? and id_spedizione not in (".$this->placeholdersFromArray($idsSpedioniOrdine).")",
+				$arrayBindedValues
+			));
+			
+			foreach ($spedizioni as $spedizione)
+			{
+				if ($spedizione["spedizioni_negozio"]["data_consegna"])
+				{
+					$dateTime = new DateTime($spedizione["spedizioni_negozio"]["data_consegna"]);
+					
+					$dataInizio = $dateTime->format("Y-m-d");
+					
+					$dateTime->modify("+".v("giorni_periodo_reso")." days");
+					$dataFine = $dateTime->format("Y-m-d");
+					
+					$esisteRigaPeriodo = $oprModel->clear()->where(array(
+						"id_o"			=>	(int)$idO,
+						"id_spedizione_negozio"	=>	(int)$spedizione["spedizioni_negozio"]["id_spedizione_negozio"],
+					))->rowNumber();
+					
+					if (!$esisteRigaPeriodo)
+					{
+						$oprModel->sValues(array(
+							"id_o"		=>	(int)$idO,
+							"id_admin"	=>	!App::$isFrontend ? User::$id : 0,
+							"id_spedizione_negozio"	=>	(int)$spedizione["spedizioni_negozio"]["id_spedizione_negozio"],
+							"data_inizio"	=>	$dataInizio,
+							"data_fine"		=>	$dataFine,
+							"manuale"		=>	0,
+						));
+						
+						$oprModel->insert();
+					}
+				}
+			}
+		}
+		
+		return $oprModel->clear()->where(array(
+			"id_o"		=>	(int)$idO,
+		))->orderBy("data_inizio")->send(false);
+	}
+	
 	// Restituisce tutte le righe dell'ordine che sono in spedizioni non ancora confermate
 	public static function righeInSpedizione($idO)
 	{
@@ -500,6 +621,62 @@ class OrdiniModel extends FormModel {
 // 		}
 	}
 	
+	public function setDataReso($id = 0)
+	{
+		$record = $this->clear()->select("stato")->whereId((int)$id)->record();
+		
+		if (!empty($record) && isset($this->values["stato"]) && $this->values["stato"] != $record["stato"])
+		{
+			$oprModel = new OrdiniperiodiresoModel();
+			
+			$periodiManuali = $oprModel->clear()->where(array(
+				"id_o"		=>	(int)$id,
+				"OR"		=>	array(
+					"manuale"	=>	1,
+					"ne"	=>	array(
+						"id_spedizione_negozio"	=>	0,
+					),
+				)
+				
+			))->send(false);
+			
+			if (count($periodiManuali) === 0)
+			{
+				$numeroGiorni = (int)StatiordineModel::g(false)->numeroGiorniDataInizioReso($this->values["stato"]);
+				
+				if ($numeroGiorni >= 0)
+				{
+					$periodo = $oprModel->clear()->where(array(
+						"id_o"		=>	(int)$id,
+						"manuale"	=>	0,
+					))->record();
+					
+					$dateTime = new DateTime();
+					
+					$dateTime->modify("+$numeroGiorni days");
+					$dataInizio = $dateTime->format("Y-m-d");
+					
+					$dateTime->modify("+".v("giorni_periodo_reso")." days");
+					$dataFine = $dateTime->format("Y-m-d");
+			
+					$oprModel->sValues(array(
+						"id_o"		=>	(int)$id,
+						"id_admin"	=>	!App::$isFrontend ? User::$id : 0,
+						"id_spedizione_negozio"	=>	0,
+						"data_inizio"	=>	$dataInizio,
+						"data_fine"		=>	$dataFine,
+						"manuale"		=>	0,
+					));
+
+					if (empty($periodo))
+						$oprModel->insert();
+					else
+						$oprModel->update((int)$periodo["id_o_periodo_reso"]);
+				}
+			}
+		}
+	}
+	
 	public function setPagato($id = 0)
 	{
 		if (!OrdiniModel::$ordineImportato && isset($this->values["stato"]))
@@ -735,6 +912,8 @@ class OrdiniModel extends FormModel {
 		$this->setProvince();
 		
 		$this->setPagato($id);
+		
+		$this->setDataReso($id);
 		
 		if (!App::$isFrontend || $this->controllaCF($checkFiscale))
 		{

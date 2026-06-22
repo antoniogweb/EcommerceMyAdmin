@@ -88,4 +88,19 @@
 		</td>
 	</tr>
 	<?php } ?>
+	<?php
+	$tabellaPeriodiReso = OrdiniModel::g(false)->gTabellaPeriodiReso($ordine["id_o"]);
+	if (count($tabellaPeriodiReso) > 0) { ?>
+		<tr>
+			<td><?php echo gtext("Periodi reso");?>:</td>
+			<td>
+				<?php foreach ($tabellaPeriodiReso as $pr) { ?>
+					<?php if ($pr["id_spedizione_negozio"]) { ?>
+					<?php echo gtext("Spedizione")." ".$pr["id_spedizione_negozio"]; ?>: 
+					<?php } ?>
+					<?php echo smartDate($pr["data_inizio"], v("default_date_format"));?> - <b><?php echo smartDate($pr["data_fine"], v("default_date_format"));?></b><br />
+				<?php } ?>
+			</td>
+		</tr>
+	<?php } ?>
 </table>

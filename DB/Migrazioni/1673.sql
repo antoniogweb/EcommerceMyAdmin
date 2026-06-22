@@ -1,0 +1,1 @@
+ALTER TABLE `orders` drop data_inizio_periodo_reso;

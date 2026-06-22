@@ -1,0 +1,1 @@
+ALTER TABLE `orders` drop data_reso_impostata_automatico;

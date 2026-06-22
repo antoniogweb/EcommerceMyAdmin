@@ -1,0 +1,1 @@
+ALTER TABLE `stati_ordine` add setta_data_reso_giorni tinyint not null default -1;

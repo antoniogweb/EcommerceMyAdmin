@@ -87,7 +87,7 @@ class FedEx extends Spedizioniere
 	
 	public function gCampiSpedizione()
 	{
-		return array('codice_cliente', 'tipo_servizio', 'modalita_ritiro', 'codice_pagamento_contrassegno', 'formato_etichetta_pdf', 'descrizione_generica_merce');
+		return array('codice_cliente', 'tipo_servizio', 'modalita_ritiro', 'formato_etichetta_pdf', 'descrizione_generica_merce');
 	}
 	
 	public function gCampiIndirizzo()
@@ -144,7 +144,7 @@ class FedEx extends Spedizioniere
 		$spedizione->values = array();
 		$spedizione->values["tipo_servizio"] = OpzioniModel::primoCodice("FEDEX_TIPO_SERVIZIO");
 		$spedizione->values["modalita_ritiro"] = OpzioniModel::primoCodice("FEDEX_MOD_RITIRO");
-		$spedizione->values["codice_pagamento_contrassegno"] = OpzioniModel::primoCodice("FEDEX_CODICE_PAGAMENTO");
+		// $spedizione->values["codice_pagamento_contrassegno"] = OpzioniModel::primoCodice("FEDEX_CODICE_PAGAMENTO");
 		$spedizione->values["formato_etichetta_pdf"] = $this->gFormatiEtichetta()[0];
 		$spedizione->values["descrizione_generica_merce"] = sanitizeDb($this->getParam('descrizione_generica_merce'));
 		$spedizione->values["codice_cliente"] = sanitizeDb($this->gPrimoCodiceContratto());
@@ -299,6 +299,12 @@ class FedEx extends Spedizioniere
 						'commodities' => [[
 							'description' => trim($record['descrizione_generica_merce']) ? $record['descrizione_generica_merce'] : $this->getParam('descrizione_generica_merce'),
 						]],
+					];
+					
+					$jsonArray['requestedShipment']['shipmentSpecialServices'] = [
+						'specialServiceTypes' => [
+							'ELECTRONIC_TRADE_DOCUMENTS',
+						],
 					];
 				}
 			}

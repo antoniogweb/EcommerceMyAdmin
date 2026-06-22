@@ -1,0 +1,1 @@
+ALTER TABLE `orders` add data_reso_impostata_automatico tinyint not null default 1;

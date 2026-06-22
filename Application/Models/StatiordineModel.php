@@ -133,6 +133,41 @@ class StatiordineModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Se settato su sì, alla conferma di una spedizone, gli ordini collegati verranno impostati a questo stato. Può esserci un solo stato ordine con il campo Spedito impostato su sì.")."</div>"
 					),
 				),
+				'permetti_reso'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Permetti il reso se l'ordine è a questo stato",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se settato su sì, e se siamo all'interno del periodo di reso, quanto l'ordine è in questo stato il cliente vedrà, nella pagina dell'ordine, un pulsante per richiedere il reso")."</div>"
+					),
+				),
+				'setta_data_reso_giorni'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Imposta la data di inizio periodo di reso quando l'ordine va in questo stato",
+					"options"	=>	array(
+						-1	=>	"Non impostare",
+						0	=>	"Imposta alla data corrente",
+						1	=>	"Imposta alla data corrente + 1 giorno",
+						2	=>	"Imposta alla data corrente + 2 giorni",
+						3	=>	"Imposta alla data corrente + 3 giorni",
+						4	=>	"Imposta alla data corrente + 4 giorni",
+						5	=>	"Imposta alla data corrente + 5 giorni",
+						6	=>	"Imposta alla data corrente + 6 giorni",
+						7	=>	"Imposta alla data corrente + 7 giorni",
+						8	=>	"Imposta alla data corrente + 8 giorni",
+					),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se settato su sì, e se siamo all'interno del periodo di reso, quanto l'ordine è in questo stato il cliente vedrà, nella pagina dell'ordine, un pulsante per richiedere il reso")."</div>"
+					),
+				),
 				'classe'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Colore della label dello stato",
@@ -265,6 +300,14 @@ class StatiordineModel extends GenericModel {
 			return "";
 	}
 	
+	public function okResoCrud($record)
+	{
+		if ($record["stati_ordine"]["permetti_reso"])
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "";
+	}
+	
 	public function pagato($codiceStato)
 	{
 		if (!isset(self::$recordTabella))
@@ -295,6 +338,23 @@ class StatiordineModel extends GenericModel {
 			self::g(false)->setRecordTabella("codice");
 		
 		return self::$recordTabella[$codiceStato]["rimborsato"] ? true : false;
+	}
+	
+	public function permettiReso($codiceStato)
+	{
+		if (!isset(self::$recordTabella))
+			self::g(false)->setRecordTabella("codice");
+		
+		return self::$recordTabella[$codiceStato]["permetti_reso"] ?? 0;
+	}
+	
+	// Restituisce il numero di giorni per settare la data di inizio reso
+	public function numeroGiorniDataInizioReso($codiceStato)
+	{
+		if (!isset(self::$recordTabella))
+			self::g(false)->setRecordTabella("codice");
+		
+		return self::$recordTabella[$codiceStato]["setta_data_reso_giorni"] ?? -1;
 	}
 	
 	public static function getCampo($codiceStato, $campo)

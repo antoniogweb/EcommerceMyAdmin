@@ -55,7 +55,7 @@
 	<?php if (OrdiniModel::g()->pdfScaricabile((int)$ordine["id_o"])) { ?>
 	<tr>
 		<td><?php echo gtext("PDF ordine", false); ?>:</td>
-		<td><a target="_blank" class="uk-button uk-button-primary uk-button-small" href="<?php echo $baseUrl."pdf-ordine/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/download.svg");?> <?php echo gtext("Scarica PDF", false); ?></span></a></td>
+		<td><a target="_blank" class="uk-button uk-button-primary uk-button-small" href="<?php echo $baseUrl."pdf-ordine/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/download.svg");?></span> <?php echo gtext("Scarica PDF", false); ?></a></td>
 	</tr>
 	<?php } ?>
 	<?php if (v("attiva_gestione_spedizioni")) {
@@ -69,5 +69,20 @@
 			<td><b><?php echo $spModel->badgeSpedizione((int)$ordine["id_o"], 0, true, "<hr />", "uk-label");;?></b></td>
 		</tr>
 		<?php } ?>
+	<?php } ?>
+	<?php
+	$tabellaPeriodiReso = OrdiniModel::g(false)->gTabellaPeriodiResoNonIdSpedizione($ordine["id_o"]);
+	if (count($tabellaPeriodiReso) > 0 && StatiordineModel::g(false)->permettiReso($ordine["stato"])) { ?>
+	<tr>
+		<td><?php echo gtext("Reso", false); ?>:</td>
+		<td>
+			<?php foreach ($tabellaPeriodiReso as $pr) { ?>
+				<?php if (OrdiniperiodiresoModel::g(false)->inPeriodoReso($pr["id_o_periodo_reso"])) { ?>
+				<a target="_blank" class="uk-button uk-button-secondary uk-button-small" href="<?php echo OrdiniperiodiresoModel::g(false)->getUrlRichiediReso($pr["id_o_periodo_reso"])?>"><?php echo gtext("Richiedi il reso", false); ?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-right.svg");?></span></a><br />
+			<?php } ?>
+			<span class="uk-text-small"><?php echo gtext("Il reso può essere richiesto nel periodo:");?> <?php echo smartDate($pr["data_inizio"], v("default_date_format"));?> - <b><?php echo smartDate($pr["data_fine"], v("default_date_format"));?></b><br /></span>
+			<?php } ?>
+		</td>
+	</tr>
 	<?php } ?>
 </table>

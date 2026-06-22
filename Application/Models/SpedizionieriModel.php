@@ -128,6 +128,12 @@ class SpedizionieriModel extends GenericModel
 	{
 		$this->sistemaCodice();
 		
+		if (isset($this->values["password_cliente"]) && !trim((string)$this->values["password_cliente"]))
+			$this->delFields("password_cliente");
+		
+		if (isset($this->values["api_secret_track"]) && !trim((string)$this->values["api_secret_track"]))
+			$this->delFields("api_secret_track");
+		
 		return parent::update($id, $where);
 	}
 }

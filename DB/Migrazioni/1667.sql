@@ -1,0 +1,1 @@
+ALTER TABLE `orders` add data_inizio_periodo_reso date null default null;

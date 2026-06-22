@@ -585,6 +585,8 @@ class SpedizioninegozioModel extends FormModel {
 		
 		$checkAccesso = ControllersModel::checkAccessoAlController(array("spedizioninegozio"));
 		
+		$periodiReso = OrdiniModel::g()->gTabellaPeriodiResoIdSpedizione($idO);
+		
 		foreach ($spedizioni as $sp)
 		{
 			$html = "<p>";
@@ -629,7 +631,27 @@ class SpedizioninegozioModel extends FormModel {
 						$html .= '<br />(<i style="font-size:12px;">'.gtext("Il tracking della spedizione potrebbe essere disponibile da domani")."</i>)";
 				}
 			}
+			
+			if (App::$isFrontend && isset($periodiReso[$sp["spedizioni_negozio"]["id_spedizione_negozio"]]))
+			{
+				$oprModel = new OrdiniperiodiresoModel();
+				$periodiReso = $periodiReso[$sp["spedizioni_negozio"]["id_spedizione_negozio"]];
 				
+				foreach ($periodiReso as $periodoReso)
+				{
+					if ($periodoReso["richiesta"])
+					{
+						// $html .= "<br />";
+					}
+					else if ($oprModel->isResoInStatoPermesso($periodoReso["id_o_periodo_reso"]));
+					{
+						if ($oprModel->inPeriodoReso($periodoReso["id_o_periodo_reso"]))
+							$html .= "<br /><br /><a target='_blank' class='uk-button uk-button-secondary uk-button-small' href='".($oprModel->getUrlRichiediReso($periodoReso["id_o_periodo_reso"]))."'>".gtext("Richiedi il reso")."<span uk-icon='icon: arrow-right'></span></a>";
+						
+						$html .= '<br /><span class="uk-text-small">'.gtext("Il reso può essere richiesto nel periodo:").' '.smartDate($periodoReso["data_inizio"], v("default_date_format")). ' - <b>'.smartDate($periodoReso["data_fine"], v("default_date_format")).'</b><br /></span>';
+					}
+				}
+			}
 			
 			$html .= "</p>";
 			
