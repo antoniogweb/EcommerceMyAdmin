@@ -189,7 +189,9 @@ class OrdiniModel extends FormModel {
 		))->orderBy("data_inizio")->send(false);
 		
 		if (count($periodiManuali) > 0)
-			return $periodiManuali;
+			return $oprModel->clear()->where(array(
+				"id_o"		=>	(int)$idO,
+			))->orderBy("data_inizio")->send(false);
 		
 		$rModel = new RigheModel();
 		
@@ -221,7 +223,7 @@ class OrdiniModel extends FormModel {
 			
 			// elimino la tabella creata da altre modalità
 			$oprModel->del(null, array(
-				"richiesta = 0 and id_o = ? and id_spedizione not in (".$this->placeholdersFromArray($idsSpedioniOrdine).")",
+				"richiesta = 0 and id_o = ? and id_spedizione_negozio not in (".$this->placeholdersFromArray($idsSpedioniOrdine).")",
 				$arrayBindedValues
 			));
 			
