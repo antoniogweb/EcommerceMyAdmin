@@ -296,6 +296,13 @@ body {
 	width: auto;
 }
 
+.box-reso
+{
+	border-bottom:1px solid #EEE;
+	padding-bottom:4px;
+	margin-bottom:4px;
+}
+
 @media (min-width: 992px)
 {
 	.modal-lg {

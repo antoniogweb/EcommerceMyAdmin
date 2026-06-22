@@ -98,6 +98,8 @@ class Route
 		'ordini,stampapdf',
 		'ordini,inviapdf',
 		'ordini,inviipdf',
+		'ordiniperiodireso,main',
+		'ordiniperiodireso,form',
 		'promozioni,main',
 		'promozioni,form',
 		'promozioni,categorie',

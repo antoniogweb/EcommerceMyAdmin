@@ -94,12 +94,22 @@
 		<tr>
 			<td><?php echo gtext("Periodi reso");?>:</td>
 			<td>
-				<?php foreach ($tabellaPeriodiReso as $pr) { ?>
-					<?php if ($pr["id_spedizione_negozio"]) { ?>
-					<?php echo gtext("Spedizione")." ".$pr["id_spedizione_negozio"]; ?>: 
-					<?php } ?>
-					<?php echo smartDate($pr["data_inizio"], v("default_date_format"));?> - <b><?php echo smartDate($pr["data_fine"], v("default_date_format"));?></b><br />
+				<?php foreach ($tabellaPeriodiReso as $i => $pr) { ?>
+					<div class="box-reso">
+						<a href="<?php echo $this->baseUrl."/ordiniperiodireso/form/update/".$pr["id_o_periodo_reso"];?>?partial=Y" class="iframe pull-right"><i class="fa fa-pencil"></i></a>
+						<?php if (!$pr["richiesta"]) { ?>
+						<a style="margin-right:10px;" href="<?php echo $this->baseUrl."/ordiniperiodireso/main/?id_o_periodo_reso=".$pr["id_o_periodo_reso"]."&delAction=Y&csrf=".User::$csrfToken;?>" class="ajlink pull-right text-danger"><i class="fa fa-trash"></i></a>
+						<?php } ?>
+						<?php if ($pr["id_spedizione_negozio"]) { ?>
+						<?php echo gtext("Spedizione")." <b>".$pr["id_spedizione_negozio"]; ?></b>: 
+						<?php } ?>
+						<?php echo smartDate($pr["data_inizio"], v("default_date_format"));?> - <b><?php echo smartDate($pr["data_fine"], v("default_date_format"));?></b>
+						<?php if ($pr["richiesta"]) { ?>
+						<br /><span class="text text-danger text-bold"><i class="fa fa-exclamation-circle"></i> <?php echo gtext("Richiesta di reso effettuata in data")?> <?php echo smartDate($pr["data_richiesta"], v("default_date_format")." H:i");?></span>
+						<?php } ?>
+					</div>
 				<?php } ?>
+				<a class="iframe label label-info" href="<?php echo $this->baseUrl."/ordiniperiodireso/form/insert/0";?>?partial=Y&id_o=<?php echo $ordine["id_o"];?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi periodo")?></a>
 			</td>
 		</tr>
 	<?php } ?>

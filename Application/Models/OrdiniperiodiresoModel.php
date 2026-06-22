@@ -38,6 +38,27 @@ class OrdiniperiodiresoModel extends GenericModel
         );
     }
 	
+	public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				'data_inizio'	=>	array(
+					'labelString'=>	'Data inizio periodo di reso',
+					'className'	=>	'for_print form-control date_input',
+				),
+				'data_fine'	=>	array(
+					'labelString'=>	'Data fine periodo di reso',
+					'className'	=>	'for_print form-control date_input',
+				),
+				'data_richiesta'	=>	array(
+					'labelString'=>	'Data / ora richiesta reso',
+					'className'	=>	'for_print form-control',
+				),
+			),
+		);
+	}
+	
 	public function getUrlRichiediReso($id, $urlCompleto = true)
 	{
 		$pr = $this->selectId((int)$id);
@@ -119,6 +140,8 @@ class OrdiniperiodiresoModel extends GenericModel
 			"id_o"	=>	(int)$ordine["id_o"],
 			"lingua"	=>	$ordine["lingua"],
 			"testo_path"	=>	"Elementi/Mail/Resi/mail_al_cliente.php",
+			"tabella"		=>	"orders_periodi_reso",
+			"id_elemento"	=>	(int)$id,
 			"array_variabili_tema"	=>	array(
 				"CLIENTE"	=>	OrdiniModel::getNominativo($ordine),
 				"NUMERO_ORDINE"	=>	$ordine["id_o"],
@@ -137,6 +160,8 @@ class OrdiniperiodiresoModel extends GenericModel
 					"id_o"	=>	(int)$ordine["id_o"],
 					"lingua"	=>	v("default_backend_language"),
 					"testo_path"	=>	"Elementi/Mail/Resi/mail_al_negozio.php",
+					"tabella"		=>	"orders_periodi_reso",
+					"id_elemento"	=>	(int)$id,
 					"array_variabili_tema"	=>	array(
 						"CLIENTE"	=>	OrdiniModel::getNominativo($ordine),
 						"NUMERO_ORDINE"	=>	$ordine["id_o"],
@@ -147,6 +172,40 @@ class OrdiniperiodiresoModel extends GenericModel
 				return true;
 			}
 		}
+		
+		return false;
+	}
+	
+	public function setDataFine()
+	{
+		if (isset($this->values["data_inizio"]) && checkIsoDate(getIsoDate($this->values["data_inizio"])))
+		{
+			$dateTime = new DateTime(getIsoDate($this->values["data_inizio"]));
+			$dateTime->modify("+".v("giorni_periodo_reso")." days");
+			$this->values["data_fine"] = $dateTime->format("Y-m-d");
+		}
+	}
+	
+	public function update($id = null, $where = null)
+	{
+		$this->setDataFine();
+		
+		return parent::update($id, $where);
+	}
+	
+	public function insert()
+	{
+		$this->setDataFine();
+		
+		return parent::insert();
+	}
+	
+	public function deletable($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && !$record["richiesta"])
+			return true;
 		
 		return false;
 	}

@@ -91,6 +91,13 @@ Helper_List::$filtersFormLayout["filters"]["nazione_spedizione"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["reso"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";
@@ -151,6 +158,7 @@ class OrdiniController extends BaseController {
 		'alr:sanitizeAll'=>'tutti',
 		'dalle:sanitizeAll'=>'tutti',
 		'alle:sanitizeAll'=>'tutti',
+		'reso:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -268,10 +276,14 @@ class OrdiniController extends BaseController {
 			$this->mainHead .= ',Pagamento / Rimborso';
 		}
 		
+		$this->mainFields[] = 'resoCrud';
+		$this->mainHead .= ',';
+		
 		$this->mainFields[] = 'infoGatewayCrud';
 		$this->mainHead .= ',';
 		
 		$this->inverseColProperties = array(
+			null,
 			null,
 			null,
 			array(
@@ -456,6 +468,13 @@ class OrdiniController extends BaseController {
 			));
 		}
 		
+		if ($this->viewArgs["reso"] != "tutti")
+		{
+			$previssoExists = (int)$this->viewArgs["reso"] ? "" : "NOT";
+			
+			$this->m[$this->modelName]->sWhere(" $previssoExists EXISTS ( select 1 from orders_periodi_reso where orders_periodi_reso.id_o = orders.id_o and orders_periodi_reso.richiesta = 1 )");
+		}
+		
 		$this->m[$this->modelName]->save();
 		
 		$filtroStato = array(
@@ -513,6 +532,8 @@ class OrdiniController extends BaseController {
 			$this->filters[] = array("dalr");
 			$this->filters[] = array("alr");
 		}
+		
+		$this->filters[] = array("reso",null,array("tutti" => "Richiesta reso sì/no") + array("1" => gtext("Con richiesta reso"), "0" => gtext("Senza richiesta reso")));
 		
 		$this->getTabViewFields("main");
 

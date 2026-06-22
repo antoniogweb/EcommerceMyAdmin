@@ -235,9 +235,6 @@ class OrdiniModel extends FormModel {
 					
 					$dataInizio = $dateTime->format("Y-m-d");
 					
-					$dateTime->modify("+".v("giorni_periodo_reso")." days");
-					$dataFine = $dateTime->format("Y-m-d");
-					
 					$esisteRigaPeriodo = $oprModel->clear()->where(array(
 						"id_o"			=>	(int)$idO,
 						"id_spedizione_negozio"	=>	(int)$spedizione["spedizioni_negozio"]["id_spedizione_negozio"],
@@ -250,7 +247,6 @@ class OrdiniModel extends FormModel {
 							"id_admin"	=>	!App::$isFrontend ? User::$id : 0,
 							"id_spedizione_negozio"	=>	(int)$spedizione["spedizioni_negozio"]["id_spedizione_negozio"],
 							"data_inizio"	=>	$dataInizio,
-							"data_fine"		=>	$dataFine,
 							"manuale"		=>	0,
 						));
 						
@@ -658,15 +654,11 @@ class OrdiniModel extends FormModel {
 					$dateTime->modify("+$numeroGiorni days");
 					$dataInizio = $dateTime->format("Y-m-d");
 					
-					$dateTime->modify("+".v("giorni_periodo_reso")." days");
-					$dataFine = $dateTime->format("Y-m-d");
-			
 					$oprModel->sValues(array(
 						"id_o"		=>	(int)$id,
 						"id_admin"	=>	!App::$isFrontend ? User::$id : 0,
 						"id_spedizione_negozio"	=>	0,
 						"data_inizio"	=>	$dataInizio,
-						"data_fine"		=>	$dataFine,
 						"manuale"		=>	0,
 					));
 
@@ -2651,6 +2643,17 @@ class OrdiniModel extends FormModel {
 		$sp = new SpedizionieriModel();
 		
 		return (string)$sp->clear()->whereId($record["id_spedizioniere"])->field("titolo");
+	}
+	
+	public function resoCrud($record)
+	{
+		$oprModel = new OrdiniperiodiresoModel();
+		
+		if ($oprModel->clear()->where(array(
+			"id_o"		=>	(int)$record["orders"]["id_o"],
+			"richiesta"	=>	1,
+		))->rowNumber())
+			return "<i title='".gtext("Ordine con richiesta di reso")."' class='text-danger fa fa-exclamation-circle'></i>";
 	}
 	
 	public function infoGatewayCrud($record)

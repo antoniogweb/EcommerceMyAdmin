@@ -641,7 +641,7 @@ class SpedizioninegozioModel extends FormModel {
 				{
 					ob_start();
 					include(tpf("/Elementi/Ordini/resoconto_acquisto_dettagli_reso.php"));
-					$html .= "<br />" . ob_get_clean();
+					$html .= "<br /><br />" . ob_get_clean();
 				}
 			}
 			
