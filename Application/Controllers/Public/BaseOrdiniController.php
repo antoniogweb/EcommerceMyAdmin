@@ -506,6 +506,32 @@ class BaseOrdiniController extends BaseController
 		
 	}
 	
+	public function resoordine($id_o = 0, $cart_uid = 0, $admin_token = "token", $id_p = 0)
+	{
+		$clean["cart_uid"] = sanitizeAll($cart_uid);
+		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
+		$clean["id_o"] = (int)$id_o;
+		
+		if (!$this->m("OrdiniModel")->recordExists($clean["id_o"], $clean["cart_uid"], $clean["admin_token"], v("check_accesso_admin_token_ordine_frontend_da")))
+			$this->redirect("");
+		
+		$ordine = $data["ordine"] = OrdiniModel::g()->selectId($clean["id_o"]);
+		
+		if (!$this->m("StatiordineModel")->permettiReso($ordine["stato"]))
+			$this->redirect("");
+		
+		$periodo = $data["periodo"] =$this->m("OrdiniperiodiresoModel")->clear()->where(array(
+			"id_o"	=>	(int)$ordine["id_o"],
+			"id_o_periodo_reso"	=>	(int)$id_p,
+		))->record();
+		
+		if (empty($periodo))
+			$this->redirect("");
+		
+		$this->append($data);
+		$this->load("reso_ordine");
+	}
+	
 	public function pdfordine($id_o = 0, $cart_uid = 0, $admin_token = "token")
 	{
 		$clean["cart_uid"] = sanitizeAll($cart_uid);

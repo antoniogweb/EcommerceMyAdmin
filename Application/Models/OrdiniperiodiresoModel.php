@@ -47,7 +47,7 @@ class OrdiniperiodiresoModel extends GenericModel
 			$ordine = OrdiniModel::g(false)->clear()->select("id_o,cart_uid,admin_token")->whereId((int)$pr["id_o"])->record();
 			
 			if (!empty($ordine))
-				return "reso-ordine/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."/".((int)$id);
+				return Url::getRoot()."reso-ordine/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."/".((int)$id);
 		}
 		
 		return "";

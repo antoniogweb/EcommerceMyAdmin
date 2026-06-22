@@ -135,6 +135,7 @@ class PagesModel extends GenericModel {
 		"GARANZIA"		=>	"Pagina informazioni garanzia",
 		"ASSISTENZA"	=>	"Pagina informazioni assistenza",
 		"GUIDA_ACQUISTO"=>	"Pagina Guida all'acquisto",
+		"RICHIEDI_RESO"	=>	"Pagina per richiedere un reso di un ordine",
 	);
 	
 	public static $ordinamentoDefaultProdotti = "";
@@ -3194,18 +3195,24 @@ class PagesModel extends GenericModel {
 			))->rowNumber();
 	}
 	
-	public static function gTipoPagina($tipo)
+	public static function gTipoPagina($tipo, $attivo = true)
 	{
-		if (isset(self::$tipiPaginaId[$tipo]))
+		if ($attivo && isset(self::$tipiPaginaId[$tipo]))
 			return self::$tipiPaginaId[$tipo];
 		
 		$p = new PagesModel();
 		
-		return $p->clear()->where(array(
-			"attivo"	=>	"Y",
+		$p->clear()->where(array(
 			"tipo_pagina"		=>	sanitizeAll($tipo),
 			"principale"	=>	"Y",
-		))->field("id_page");
+		));
+		
+		if ($attivo)
+			$p->aWhere(array(
+				"attivo"	=>	"Y",
+			));
+		
+		return $p->field("id_page");
 	}
 	
 	// Controlla che esista una pagina di $id e $tipo
