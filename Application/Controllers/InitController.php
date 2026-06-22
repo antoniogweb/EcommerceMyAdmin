@@ -64,6 +64,7 @@ trait InitController
 			Parametri::$iva = ImpostazioniModel::$valori["iva"];
 			Parametri::$ivaInclusa = ImpostazioniModel::$valori["iva_inclusa"] == "Y" ? true : false;
 			Parametri::$mailReplyTo = (isset(ImpostazioniModel::$valori["reply_to_mail"]) && ImpostazioniModel::$valori["reply_to_mail"]) ? ImpostazioniModel::$valori["reply_to_mail"] : Parametri::$mailFrom;
+			Parametri::$mailReso = (isset(ImpostazioniModel::$valori["mail_richiesta_di_reso"]) && ImpostazioniModel::$valori["mail_richiesta_di_reso"]) ? ImpostazioniModel::$valori["mail_richiesta_di_reso"] : Parametri::$mailInvioOrdine;
 		}
 		
 		// Variabili

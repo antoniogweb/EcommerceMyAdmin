@@ -45,7 +45,7 @@ class ImpostazioniController extends BaseController
 		if (v("mostra_impostazioni_smtp"))
 			$fieldsSmtp = "$fieldsSmtpDefault,";
 		
-		$fields = 'nome_sito,title_home_page,meta_description,keywords,iva,mail_invio_ordine,mail_invio_conferma_pagamento,mail_registrazione_utenti,analytics,smtp_from,smtp_nome,reply_to_mail,bcc,'.$fieldsSmtp.$fieldsEcommerce.'mailchimp_list_id,mailchimp_api_key';
+		$fields = 'nome_sito,title_home_page,meta_description,keywords,iva,mail_invio_ordine,mail_invio_conferma_pagamento,mail_registrazione_utenti,mail_richiesta_di_reso,analytics,smtp_from,smtp_nome,reply_to_mail,bcc,'.$fieldsSmtp.$fieldsEcommerce.'mailchimp_list_id,mailchimp_api_key';
 		
 		if (v("campi_impostazioni"))
 			$fields = v("campi_impostazioni");

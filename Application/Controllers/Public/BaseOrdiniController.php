@@ -528,6 +528,20 @@ class BaseOrdiniController extends BaseController
 		if (empty($periodo))
 			$this->redirect("");
 		
+		if (isset($_POST["invia"]))
+		{
+			// Controlla CSRF
+			$this->checkCsrf();
+			
+			if (!$periodo["richiesta"] && OrdiniperiodiresoModel::g(false)->inPeriodoReso($periodo["id_o_periodo_reso"]))
+			{
+				if ($this->m("OrdiniperiodiresoModel")->richiedi($periodo["id_o_periodo_reso"]))
+					$this->redirect($this->m("OrdiniperiodiresoModel")->getUrlRichiediReso($periodo["id_o_periodo_reso"], false));
+			}
+			else
+				$this->responseCode(403);
+		}
+		
 		$this->append($data);
 		$this->load("reso_ordine");
 	}

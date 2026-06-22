@@ -637,19 +637,11 @@ class SpedizioninegozioModel extends FormModel {
 				$oprModel = new OrdiniperiodiresoModel();
 				$periodiReso = $periodiReso[$sp["spedizioni_negozio"]["id_spedizione_negozio"]];
 				
-				foreach ($periodiReso as $periodoReso)
+				foreach ($periodiReso as $pr)
 				{
-					if ($periodoReso["richiesta"])
-					{
-						// $html .= "<br />";
-					}
-					else if ($oprModel->isResoInStatoPermesso($periodoReso["id_o_periodo_reso"]));
-					{
-						if ($oprModel->inPeriodoReso($periodoReso["id_o_periodo_reso"]))
-							$html .= "<br /><br /><a target='_blank' class='uk-button uk-button-secondary uk-button-small' href='".($oprModel->getUrlRichiediReso($periodoReso["id_o_periodo_reso"]))."'>".gtext("Richiedi il reso")."<span uk-icon='icon: arrow-right'></span></a>";
-						
-						$html .= '<br /><span class="uk-text-small">'.gtext("Il reso può essere richiesto nel periodo:").' '.smartDate($periodoReso["data_inizio"], v("default_date_format")). ' - <b>'.smartDate($periodoReso["data_fine"], v("default_date_format")).'</b><br /></span>';
-					}
+					ob_start();
+					include(tpf("/Elementi/Ordini/resoconto_acquisto_dettagli_reso.php"));
+					$html .= "<br />" . ob_get_clean();
 				}
 			}
 			

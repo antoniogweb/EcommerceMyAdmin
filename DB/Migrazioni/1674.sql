@@ -1,0 +1,1 @@
+ALTER TABLE `impostazioni` add mail_richiesta_di_reso varchar(255) not null default '';

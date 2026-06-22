@@ -36,6 +36,7 @@ class Parametri
 	public static $mailInvioConfermaPagamento = "";
 	public static $nomeNegozio = "";
 	public static $mailReplyTo = "";
+	public static $mailReso = "";
 	
 	public static $useHtmlExtension = true;
 	public static $hideNotAllowedNodesInLists = true;

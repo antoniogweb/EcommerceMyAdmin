@@ -77,10 +77,7 @@
 		<td><?php echo gtext("Reso", false); ?>:</td>
 		<td>
 			<?php foreach ($tabellaPeriodiReso as $pr) { ?>
-				<?php if (OrdiniperiodiresoModel::g(false)->inPeriodoReso($pr["id_o_periodo_reso"])) { ?>
-				<a target="_blank" class="uk-button uk-button-secondary uk-button-small" href="<?php echo OrdiniperiodiresoModel::g(false)->getUrlRichiediReso($pr["id_o_periodo_reso"])?>"><?php echo gtext("Richiedi il reso", false); ?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-right.svg");?></span></a><br />
-			<?php } ?>
-			<span class="uk-text-small"><?php echo gtext("Il reso può essere richiesto nel periodo:");?> <?php echo smartDate($pr["data_inizio"], v("default_date_format"));?> - <b><?php echo smartDate($pr["data_fine"], v("default_date_format"));?></b><br /></span>
+				<?php include(tpf("/Elementi/Ordini/resoconto_acquisto_dettagli_reso.php"));?>
 			<?php } ?>
 		</td>
 	</tr>

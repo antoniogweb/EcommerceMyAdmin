@@ -38,10 +38,34 @@ if (!isset($baseUrl))
 <div><?php echo htmlentitydecode(field($pReso, "description"));?></div>
 <?php } ?>
 
+<?php if ($periodo["richiesta"]) { ?>
+	<div class="uk-alert uk-alert-success">
+	<?php echo gtext("In data")." <b>".smartDate($periodo["data_richiesta"], v("default_date_format")." H:i");?></b>
+	<?php echo gtext("hai eseguito un richiesta di resto per l'ordine")." <b>".$ordine["id_o"]; ?></b>
+	<?php if ($periodo["id_spedizione_negozio"]) { echo " - ". gtext("merce consegnata il")." ".smartDate($periodo["data_inizio"], v("default_date_format"));} ?>
+	</div>
+<?php } else { ?>
+	<?php if (OrdiniperiodiresoModel::g(false)->inPeriodoReso($periodo["id_o_periodo_reso"])) { ?>
+	<form action="<?php echo OrdiniperiodiresoModel::g(false)->getUrlRichiediReso($periodo["id_o_periodo_reso"]);?>" method="POST">
+		<button type="submit" class="uk-button uk-button-primary">
+			<?php echo gtext("Conferma la richiesta di reso ordine", false)." ".$ordine["id_o"]; ?>
+			<?php if ($periodo["id_spedizione_negozio"]) { echo " - ". gtext("merce consegnata il")." ".smartDate($periodo["data_inizio"], v("default_date_format"));} ?>
+			<span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-right.svg");?></span>
+		</button>
+		<?php include (tpf("Elementi/Pagine/campo-csrf.php"));?>
+		<input type="hidden" name="invia" value="invia" />
+	</form>
+	<br />
+	<span class="uk-text-small"><?php echo gtext("Il reso può essere richiesto nel seguente periodo:");?> <?php echo smartDate($periodo["data_inizio"], v("default_date_format"));?> - <b><?php echo smartDate($periodo["data_fine"], v("default_date_format"));?></b><br /></span>
+	<?php } else { ?>
+	<span class="uk-text-small uk-text-warning"><?php echo gtext("Il reso può essere richiesto nel seguente periodo:");?> <?php echo smartDate($periodo["data_inizio"], v("default_date_format"));?> - <b><?php echo smartDate($periodo["data_fine"], v("default_date_format"));?></b><br /></span>
+	<?php } ?>
+<?php } ?>
+
 <?php
 // if (isset($isFromAreariservata))
 	include(tpf("/Elementi/Pagine/riservata_bottom.php"));
 
 include(tpf("/Elementi/Pagine/page_bottom.php"));
-?> 
+?>
 

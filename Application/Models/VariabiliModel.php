@@ -582,6 +582,7 @@ class VariabiliModel extends GenericModel {
 		"permetti_annullare_data_pagamento_e_annullamento"	=>	0, // se impostato a 1, permette di annullare le date di pagamento e annullamento nello stesso giorno
 		"mostra_date_pagamento_annullamento_in_elenco"	=>	0, // se impostato a 1, mostra le date di pagamento e annullamento nell'elenco ordini
 		"giorni_periodo_reso"		=>	14, // numero di giorni in cui il cliente ha diritto al reso
+		"oggetto_mail_richiesta_reso"	=>	"Richiesta di reso ricevuta per ordine [ID_ORDINE]", // oggetto richiesta di reso fatta dal cliente
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout

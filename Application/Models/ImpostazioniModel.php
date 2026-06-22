@@ -119,6 +119,9 @@ class ImpostazioniModel extends GenericModel {
 				'mail_registrazione_utenti'		=>	array(
 					'labelString'=>	"Mail a cui inviare l'avviso di nuovo cliente registrato",
 				),
+				'mail_richiesta_di_reso'		=>	array(
+					'labelString'=>	"Mail a cui inviare l'avviso di una richiesta di reso fatta da un cliente",
+				),
 				'smtp_from'		=>	array(
 					'labelString'=>	'Campo DA (FROM) nelle mail di sistema',
 				),
@@ -290,6 +293,7 @@ class ImpostazioniModel extends GenericModel {
 			Parametri::$paypalSeller = self::$valori["paypal_seller"];
 			Parametri::$paypalSandBoxSeller = self::$valori["paypal_sandbox_seller"];
 			Parametri::$mailReplyTo = (isset(self::$valori["reply_to_mail"]) && self::$valori["reply_to_mail"]) ? self::$valori["reply_to_mail"] : Parametri::$mailFrom;
+			Parametri::$mailReso = (isset(self::$valori["mail_richiesta_di_reso"]) && self::$valori["mail_richiesta_di_reso"]) ? self::$valori["mail_richiesta_di_reso"] : Parametri::$mailInvioOrdine;
 		}
 		
 		self::$parametriImpostati = true;

@@ -38,7 +38,7 @@ class OrdiniperiodiresoModel extends GenericModel
         );
     }
 	
-	public function getUrlRichiediReso($id)
+	public function getUrlRichiediReso($id, $urlCompleto = true)
 	{
 		$pr = $this->selectId((int)$id);
 		
@@ -47,7 +47,14 @@ class OrdiniperiodiresoModel extends GenericModel
 			$ordine = OrdiniModel::g(false)->clear()->select("id_o,cart_uid,admin_token")->whereId((int)$pr["id_o"])->record();
 			
 			if (!empty($ordine))
-				return Url::getRoot()."reso-ordine/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."/".((int)$id);
+			{
+				$url = "reso-ordine/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."/".((int)$id);;
+				
+				if ($urlCompleto)
+					return Url::getRoot().$url;
+				else
+					return $url;
+			}
 		}
 		
 		return "";
@@ -80,6 +87,65 @@ class OrdiniperiodiresoModel extends GenericModel
 			
 			if (StatiordineModel::g(false)->permettiReso($statoOrdine))
 				return true;
+		}
+		
+		return false;
+	}
+	
+	public function richiedi($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (empty($record))
+			return false;
+		
+		$oModel = new OrdiniModel();
+		
+		$ordine = $oModel->selectId((int)$record["id_o"]);
+		
+		if (empty($ordine))
+			return false;
+		
+		$this->sValues(array(
+			"richiesta"	=>	1,
+			"ip"		=>	getIp(),
+			"data_richiesta"	=>	date("Y-m-d H:i:s"),
+		));
+		
+		$res = MailordiniModel::inviaMail(array(
+			"emails"	=>	array($ordine["email"]),
+			"oggetto"	=>	v("oggetto_mail_richiesta_reso"),
+			"tipologia"	=>	"RESO",
+			"id_o"	=>	(int)$ordine["id_o"],
+			"lingua"	=>	$ordine["lingua"],
+			"testo_path"	=>	"Elementi/Mail/Resi/mail_al_cliente.php",
+			"array_variabili_tema"	=>	array(
+				"CLIENTE"	=>	OrdiniModel::getNominativo($ordine),
+				"NUMERO_ORDINE"	=>	$ordine["id_o"],
+				"NOME_NEGOZIO"	=>	Parametri::$nomeNegozio,
+			),
+		));
+		
+		if ($res)
+		{
+			if ($this->update($id))
+			{
+				$res = MailordiniModel::inviaMail(array(
+					"emails"	=>	array(Parametri::$mailReso),
+					"oggetto"	=>	v("oggetto_mail_richiesta_reso"),
+					"tipologia"	=>	"RESO_NEGOZIO",
+					"id_o"	=>	(int)$ordine["id_o"],
+					"lingua"	=>	v("default_backend_language"),
+					"testo_path"	=>	"Elementi/Mail/Resi/mail_al_negozio.php",
+					"array_variabili_tema"	=>	array(
+						"CLIENTE"	=>	OrdiniModel::getNominativo($ordine),
+						"NUMERO_ORDINE"	=>	$ordine["id_o"],
+						"NOME_NEGOZIO"	=>	Parametri::$nomeNegozio,
+					),
+				));
+				
+				return true;
+			}
 		}
 		
 		return false;
