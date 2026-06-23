@@ -95,7 +95,7 @@ class HierarchicalModel extends GenericModel {
 			}
 			else
 			{
-				if (count($this->sLeft) > 0)
+				if (is_array($this->sLeft) && count($this->sLeft) > 0)
 				{
 					for ($i=0;$i<count($this->sLeft);$i++)
 					{
@@ -132,7 +132,7 @@ class HierarchicalModel extends GenericModel {
 			}
 			else
 			{
-				if (count($this->sLeft) > 0)
+				if (is_array($this->sLeft) && count($this->sLeft) > 0)
 				{
 					$whereArray = array();
 					for ($i=0;$i<count($this->sLeft);$i++)
@@ -177,6 +177,9 @@ class HierarchicalModel extends GenericModel {
 			$this->restore();
 			
 			$this->sLeft = [];
+			$this->sRight = [];
+			$this->sId = [];
+			$this->sIdParent = [];
 			
 			if (count($res) > 0)
 			{
@@ -688,7 +691,7 @@ class HierarchicalModel extends GenericModel {
 					}
 					else
 					{
-						if (count($this->sLeft) > 0)
+						if (is_array($this->sLeft) && count($this->sLeft) > 0)
 						{
 							$boolArray = array();
 							for ($i=0;$i<count($this->sLeft);$i++)
