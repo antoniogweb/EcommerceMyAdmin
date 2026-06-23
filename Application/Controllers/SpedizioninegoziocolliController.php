@@ -25,5 +25,5 @@ if (!defined('EG')) die('Direct access not allowed!');
 class SpedizioninegoziocolliController extends SpedizioninegoziorigheController {
 	
 	protected $campoDaModificare = "peso";
-	protected $campiAggiuntiviDaModificare = array("lunghezza", "profondita", "altezza");
+	protected $campiAggiuntiviDaModificare = array("lunghezza", "profondita", "altezza", "valore");
 }

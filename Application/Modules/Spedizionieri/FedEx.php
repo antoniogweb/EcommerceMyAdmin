@@ -218,6 +218,7 @@ class FedEx extends Spedizioniere
 			{
 				$jsonArrayColli = array();
 				$pesoTotale = 0;
+				$valoreTotale = 0;
 				
 				foreach ($colli as $collo)
 				{
@@ -238,6 +239,17 @@ class FedEx extends Spedizioniere
 							'height' => (int)ceil($collo['altezza']),
 							'units' => 'CM',
 						];
+					}
+					
+					if ($collo['valore'] > 0)
+					{
+						$valore = number_format($collo["valore"],2,".","");
+						$valoreTotale += $valore;
+						
+						$tempCollo["declaredValue"] = array(
+							"amount"	=>	$valore,
+							"currency"	=>	v("codice_valuta"),
+						);
 					}
 					
 					$jsonArrayColli[] = $tempCollo;
@@ -306,6 +318,14 @@ class FedEx extends Spedizioniere
 							'ELECTRONIC_TRADE_DOCUMENTS',
 						],
 					];
+				}
+				
+				if ($valoreTotale > 0)
+				{
+					$jsonArray["totalDeclaredValue"] = array(
+						"amount"	=>	number_format($valoreTotale,2,".",""),
+						"currency"	=>	v("codice_valuta"),
+					);
 				}
 			}
 			else if ($tipo == "delete")
@@ -648,6 +668,11 @@ class FedEx extends Spedizioniere
 	}
 	
 	public function permettiDimensioni()
+	{
+		return true;
+	}
+	
+	public function permettiValoreCollo()
 	{
 		return true;
 	}

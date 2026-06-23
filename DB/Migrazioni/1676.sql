@@ -1,0 +1,1 @@
+alter table spedizioni_negozio_colli add valore decimal(10,2) not null default 0.00;

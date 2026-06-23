@@ -758,6 +758,9 @@ $(document).ready(function(){
 				
 				if ($(this).find("[name='altezza']").length > 0)
 					temp.altezza = $(this).find("[name='altezza']").val();
+				
+				if ($(this).find("[name='valore']").length > 0)
+					temp.valore = $(this).find("[name='valore']").val();
 			}
 			
 			valori.push(temp);

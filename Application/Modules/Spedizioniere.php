@@ -306,4 +306,9 @@ class Spedizioniere
 	{
 		return false;
 	}
+	
+	public function permettiValoreCollo()
+	{
+		return false;
+	}
 }

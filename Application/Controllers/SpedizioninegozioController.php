@@ -291,6 +291,13 @@ class SpedizioninegozioController extends BaseController {
 			$this->mainHead .= ",Altezza (cm)";
 		}
 		
+		if ($modulo && $modulo->permettiValoreCollo())
+		{
+			$this->mainFields[] = "valoreCrud";
+			
+			$this->mainHead .= ",Valore assicurato (€)";
+		}
+		
 		$pulsantiMenu = partial() ? "" : "back";
 		
 		if (SpedizioninegozioModel::g()->deletable($id))

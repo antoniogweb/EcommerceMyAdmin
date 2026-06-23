@@ -69,6 +69,14 @@ class SpedizioninegoziocolliModel extends GenericModel {
 			return $record["spedizioni_negozio_colli"]["altezza"];
     }
     
+    public function valoreCrud($record)
+    {
+		if (SpedizioninegozioModel::g()->deletable($record["spedizioni_negozio_colli"]["id_spedizione_negozio"]))
+			return "<input id-riga='".$record["spedizioni_negozio_colli"]["id_spedizione_negozio_collo"]."' style='max-width:100px;' class='form-control' name='valore' value='".$record["spedizioni_negozio_colli"]["valore"]."' />";
+		else
+			return $record["spedizioni_negozio_colli"]["valore"];
+    }
+    
     public function deletable($id)
 	{
 		$record = $this->selectId((int)$id);
