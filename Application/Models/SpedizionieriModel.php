@@ -110,11 +110,32 @@ class SpedizionieriModel extends GenericModel
         );
     }
     
-    public function selectTendina($mostraOpzioneVuota = true)
+    public function selectTendina($mostraOpzioneVuota = true, $id = null)
 	{
 		$opzioneVuota = $mostraOpzioneVuota ? array(0 => "Seleziona") : [];
 		
-		return $opzioneVuota + $this->orderBy("id_order")->toList("id_spedizioniere","titolo")->send();
+		$this->orderBy("id_order")->toList("id_spedizioniere","titolo");
+		
+		if (isset($id))
+		{
+			if ((int)$id)
+			{
+				$idSpedizioniere = SpedizioninegozioModel::g()->whereId((int)$id)->field("id_spedizioniere");
+				
+				$this->where(array(
+					"OR"	=>	array(
+						"id_spedizioniere"	=>	(int)$idSpedizioniere,
+						"attivo"			=>	1,
+					),
+				));
+			}
+			else
+				$this->where(array(
+					"attivo"	=>	1,
+				));
+		}
+		
+		return $opzioneVuota + $this->send();
 	}
 	
 	public function insert()

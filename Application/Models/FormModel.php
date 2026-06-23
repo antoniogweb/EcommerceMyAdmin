@@ -254,7 +254,7 @@ class FormModel extends GenericModel {
 				'id_spedizioniere'		=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'Spedizioniere (GLS / BRT / ...)',
-					'options'	=>	SpedizionieriModel::g(false)->selectTendina(),
+					'options'	=>	SpedizionieriModel::g(false)->selectTendina(true, $id),
 					'reverse' => 'yes',
 				),
 				'id_p'		=>	array(
