@@ -13,6 +13,7 @@
 	<li <?php echo $posizioni['righe'];?>><a class="help_pagine_lista_righe" href="<?php echo $this->baseUrl."/".$this->controller."/righe/$id".$this->viewStatus;?>"><?php echo gtext("Righe ordine");?></a></li>
 	<?php } ?>
 	<li <?php echo $posizioni['invii'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/invii/$id".$this->viewStatus;?>"><?php echo gtext("Mail con dedica");?></a></li>
+	<li <?php echo $posizioni['resi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/resi/$id".$this->viewStatus;?>"><?php echo gtext("Consegne / Resi");?></a></li>
 </ul>
 
 <?php } else { ?>

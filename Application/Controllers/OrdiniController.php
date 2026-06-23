@@ -91,13 +91,6 @@ Helper_List::$filtersFormLayout["filters"]["nazione_spedizione"] = array(
 	),
 );
 
-Helper_List::$filtersFormLayout["filters"]["reso"] = array(
-	"type"	=>	"select",
-	"attributes"	=>	array(
-		"class"	=>	"form-control",
-	),
-);
-
 class OrdiniController extends BaseController {
 	
 	public $sezionePannello = "ecommerce";

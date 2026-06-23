@@ -36,6 +36,8 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
     </div>
 </div>
 
+<?php include(tpf("/Listeregalo/resi.php"));?>
+
 <div class="uk-margin-large-top">
 	<ul class="uk-subnav uk-subnav-pill tab_lista">
 		<li><a class="link_prodotti" href="#prodotti-lista"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/tag.svg");?></span> <?php echo gtext("Prodotti");?></a></li>

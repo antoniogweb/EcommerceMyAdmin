@@ -24,7 +24,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class OrdiniperiodiresoModel extends GenericModel
 {
-	public function __construct() {
+	public $campoTitolo = "data_inizio";
+	
+	public function __construct()
+	{
 		$this->_tables = 'orders_periodi_reso';
 		$this->_idFields = 'id_o_periodo_reso';
 		$this->_idOrder = 'id_order';
@@ -44,7 +47,7 @@ class OrdiniperiodiresoModel extends GenericModel
 		(
 			'entries' 	=> 	array(
 				'data_inizio'	=>	array(
-					'labelString'=>	'Data inizio periodo di reso',
+					'labelString'=>	'Data consegna della merce',
 					'className'	=>	'for_print form-control date_input',
 				),
 				'data_fine'	=>	array(
@@ -70,6 +73,28 @@ class OrdiniperiodiresoModel extends GenericModel
 			if (!empty($ordine))
 			{
 				$url = "reso-ordine/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."/".((int)$id);;
+				
+				if ($urlCompleto)
+					return Url::getRoot().$url;
+				else
+					return $url;
+			}
+		}
+		
+		return "";
+	}
+	
+	public function getUrlRichiediResoLista($id, $urlCompleto = true)
+	{
+		$pr = $this->selectId((int)$id);
+		
+		if (!empty($pr))
+		{
+			$lista = ListeregaloModel::listeUtenteModel(User::$id, (int)$pr["id_lista_regalo"])->record();
+			
+			if (!empty($lista))
+			{
+				$url = "reso-lista/".$pr["id_lista_regalo"]."/".((int)$id);;
 				
 				if ($urlCompleto)
 					return Url::getRoot().$url;
@@ -121,11 +146,15 @@ class OrdiniperiodiresoModel extends GenericModel
 			return false;
 		
 		$oModel = new OrdiniModel();
+		$listaModel = new ListeregaloModel();
 		
 		$ordine = $oModel->selectId((int)$record["id_o"]);
+		$lista = $listaModel->selectId((int)$record["id_lista_regalo"]);
 		
-		if (empty($ordine))
+		if (empty($ordine) && empty($lista))
 			return false;
+		
+		$tipo = !empty($ordine) ? "O" : "L";
 		
 		$dataOraRichiesta = date("Y-m-d H:i:s");
 		$dataOraRichiestaFormattata = smartDate($dataOraRichiesta, v("default_date_format")." H:i");
@@ -136,48 +165,56 @@ class OrdiniperiodiresoModel extends GenericModel
 			"data_richiesta"	=>	$dataOraRichiesta,
 		));
 		
-		$res = MailordiniModel::inviaMail(array(
-			"emails"	=>	array($ordine["email"]),
-			"oggetto"	=>	v("oggetto_mail_richiesta_reso"),
-			"tipologia"	=>	"RESO",
-			"id_o"	=>	(int)$ordine["id_o"],
-			"lingua"	=>	$ordine["lingua"],
-			"testo_path"	=>	"Elementi/Mail/Resi/mail_al_cliente.php",
-			"tabella"		=>	"orders_periodi_reso",
-			"id_elemento"	=>	(int)$id,
-			"array_variabili_tema"	=>	array(
-				"CLIENTE"	=>	OrdiniModel::getNominativo($ordine),
-				"NUMERO_ORDINE"	=>	$ordine["id_o"],
-				"NOME_NEGOZIO"	=>	Parametri::$nomeNegozio,
-				"ID_RICHIESTA"	=>	(int)$id,
-				"DATA_ORA_RICHIESTA"	=>	$dataOraRichiestaFormattata,
-			),
-		));
+		$suffissoTemplate = $tipo == "O" ? "" : "_lista";
 		
-		if ($res)
+		if ($this->update($id))
 		{
-			if ($this->update($id))
-			{
-				$res = MailordiniModel::inviaMail(array(
-					"emails"	=>	array(Parametri::$mailReso),
-					"oggetto"	=>	v("oggetto_mail_richiesta_reso"),
-					"tipologia"	=>	"RESO_NEGOZIO",
-					"id_o"	=>	(int)$ordine["id_o"],
-					"lingua"	=>	v("default_backend_language"),
-					"testo_path"	=>	"Elementi/Mail/Resi/mail_al_negozio.php",
-					"tabella"		=>	"orders_periodi_reso",
-					"id_elemento"	=>	(int)$id,
-					"array_variabili_tema"	=>	array(
-						"CLIENTE"	=>	OrdiniModel::getNominativo($ordine),
-						"NUMERO_ORDINE"	=>	$ordine["id_o"],
-						"NOME_NEGOZIO"	=>	Parametri::$nomeNegozio,
-						"ID_RICHIESTA"	=>	(int)$id,
-						"DATA_ORA_RICHIESTA"	=>	$dataOraRichiestaFormattata,
-					),
-				));
-				
-				return true;
-			}
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	$tipo == "O" ? array($ordine["email"]) : array($lista["email"]),
+				"oggetto"	=>	$tipo == "O" ? v("oggetto_mail_richiesta_reso") : v("oggetto_mail_richiesta_reso_lista"),
+				"tipologia"	=>	"RESO",
+				"id_o"	=>	$tipo == "O" ? (int)$ordine["id_o"] : 0,
+				"oggetto_placeholder"	=>	$tipo == "O" ? "" : $lista["titolo"],
+				"lingua"	=>	$tipo == "O" ? $ordine["lingua"] : $lista["lingua"],
+				"testo_path"	=>	"Elementi/Mail/Resi/mail_al_cliente$suffissoTemplate.php",
+				"tabella"		=>	"orders_periodi_reso",
+				"id_elemento"	=>	(int)$id,
+				"array_variabili_tema"	=>	array(
+					"CLIENTE"	=>	$tipo == "O" ? OrdiniModel::getNominativo($ordine) : $lista["genitore_1"],
+					"NUMERO_ORDINE"	=>	$ordine["id_o"] ?? 0,
+					"NOME_NEGOZIO"	=>	Parametri::$nomeNegozio,
+					"ID_RICHIESTA"	=>	(int)$id,
+					"DATA_ORA_RICHIESTA"	=>	$dataOraRichiestaFormattata,
+					"CODICE_LISTA"	=>	$lista["codice"] ?? "",
+					"TITOLO_LISTA"	=>	$lista["titolo"] ?? "",
+					"GENITORE_2"	=>	$lista["genitore_2"] ?? "",
+				),
+			));
+			
+			$res = MailordiniModel::inviaMail(array(
+				"emails"	=>	array(Parametri::$mailReso),
+				"oggetto"	=>	$tipo == "O" ? v("oggetto_mail_richiesta_reso") : v("oggetto_mail_richiesta_reso_lista"),
+				"tipologia"	=>	"RESO_NEGOZIO",
+				"id_o"	=>	$tipo == "O" ? (int)$ordine["id_o"] : 0,
+				"oggetto_placeholder"	=>	$tipo == "O" ? "" : $lista["titolo"],
+				"lingua"	=>	v("default_backend_language"),
+				"testo_path"	=>	"Elementi/Mail/Resi/mail_al_negozio$suffissoTemplate.php",
+				"tabella"		=>	"orders_periodi_reso",
+				"id_elemento"	=>	(int)$id,
+				"array_variabili_tema"	=>	array(
+					"CLIENTE"	=>	$tipo == "O" ? OrdiniModel::getNominativo($ordine) : $lista["genitore_1"],
+					"NUMERO_ORDINE"	=>	$ordine["id_o"] ?? 0,
+					"NOME_NEGOZIO"	=>	Parametri::$nomeNegozio,
+					"ID_RICHIESTA"	=>	(int)$id,
+					"DATA_ORA_RICHIESTA"	=>	$dataOraRichiestaFormattata,
+					"CODICE_LISTA"	=>	$lista["codice"] ?? "",
+					"TITOLO_LISTA"	=>	$lista["titolo"] ?? "",
+					"ID_LISTA"		=>	$lista["id_lista_regalo"] ?? "",
+					"GENITORE_2"	=>	$lista["genitore_2"] ?? "",
+				),
+			));
+			
+			return true;
 		}
 		
 		return false;
@@ -215,5 +252,18 @@ class OrdiniperiodiresoModel extends GenericModel
 			return true;
 		
 		return false;
+	}
+	
+	public function dataInizioCrud($record)
+	{
+		return "<a class='iframe action_iframe' href='".Url::getRoot()."ordiniperiodireso/form/update/".$record["orders_periodi_reso"]["id_o_periodo_reso"]."?partial=Y&nobuttons=Y'>".$record["orders_periodi_reso"]["data_inizio"]."</a>";
+	}
+	
+	public function richiestaCrud($record)
+	{
+		if ($record["orders_periodi_reso"]["richiesta"])
+			return "<i class='text-danger fa fa-check'></i>";
+		else
+			return "<i class='fa fa-ban'></i>";
 	}
 }

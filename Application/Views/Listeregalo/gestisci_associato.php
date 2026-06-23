@@ -17,3 +17,9 @@
 <p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/ordini/form/insert/0";?>?partial=Y&id_lista_insert=<?php echo $id;?>"><i class="fa fa-plus-square-o"></i> <?php echo gtext("Aggiungi ordine");?></a></p>
 
 <?php } ?>
+
+<?php if ($this->action === "resi") { ?>
+
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/ordiniperiodireso/form/insert/0";?>?partial=Y&id_lista_insert=<?php echo $id;?>&nobuttons=Y"><i class="fa fa-plus-square-o"></i> <?php echo gtext("Aggiungi periodo reso");?></a></p>
+
+<?php } ?>

@@ -1,0 +1,1 @@
+alter table orders_periodi_reso add id_lista_regalo int not null default 0 after id_o;

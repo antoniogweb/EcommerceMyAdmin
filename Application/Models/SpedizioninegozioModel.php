@@ -639,9 +639,12 @@ class SpedizioninegozioModel extends FormModel {
 				
 				foreach ($periodiReso as $pr)
 				{
-					ob_start();
-					include(tpf("/Elementi/Ordini/resoconto_acquisto_dettagli_reso.php"));
-					$html .= "<br /><br />" . ob_get_clean();
+					if ($pr["richiesta"] || OrdiniperiodiresoModel::g(false)->inPeriodoReso($pr["id_o_periodo_reso"]))
+					{
+						ob_start();
+						include(tpf("/Elementi/Ordini/resoconto_acquisto_dettagli_reso.php"));
+						$html .= "<br /><br />" . ob_get_clean();
+					}
 				}
 			}
 			

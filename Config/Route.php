@@ -812,6 +812,7 @@ class Route
 		'listeregalo,ordini',
 		'listeregalo,invii',
 		'listeregalo,righe',
+		'listeregalo,resi',
 		
 		'listeregalolink,form',
 		'listeregalolink,invia',

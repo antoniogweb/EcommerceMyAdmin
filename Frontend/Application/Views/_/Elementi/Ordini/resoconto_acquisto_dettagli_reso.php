@@ -7,8 +7,4 @@
 	</span>
 <?php } else { ?>
 	<a target="_blank" class="uk-button uk-button-secondary uk-button-small" href="<?php echo OrdiniperiodiresoModel::g(false)->getUrlRichiediReso($pr["id_o_periodo_reso"])?>"><?php echo gtext("Richiedi il reso", false); ?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-right.svg");?></span></a><br />
-	
-	<?php if (false && $pr["id_spedizione_negozio"]) { ?>
-	<span class="uk-text-small"><?php echo gtext("Il reso può essere richiesto nel seguente periodo:");?> <?php echo smartDate($pr["data_inizio"], v("default_date_format"));?> - <b><?php echo smartDate($pr["data_fine"], v("default_date_format"));?></b><br /></span>
-	<?php } ?>
 <?php } ?>

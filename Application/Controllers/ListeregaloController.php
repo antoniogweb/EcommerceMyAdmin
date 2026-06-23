@@ -31,6 +31,7 @@ class ListeregaloController extends BaseController
 		'al:sanitizeAll'=>'tutti',
 		'titolo:sanitizeAll'=>'tutti',
 		'id_c:sanitizeAll'=>'tutti',
+		'reso:sanitizeAll'=>'tutti',
 	);
 	
 	public $tabella = "liste regalo";
@@ -48,6 +49,7 @@ class ListeregaloController extends BaseController
 		$this->model("ListeregalopagesModel");
 		$this->model("ListeregalolinkModel");
 		$this->model("OrdiniModel");
+		$this->model("OrdiniperiodiresoModel");
 	}
 	
 	public function main()
@@ -57,6 +59,9 @@ class ListeregaloController extends BaseController
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>100, 'mainMenu'=>'add');
 		$this->mainFields = array("cliente", "liste_regalo.titolo", "liste_regalo_tipi.titolo", "liste_regalo.codice", "liste_regalo.nome_bambino", "liste_regalo.genitore_1", "cleanDateTime", "liste_regalo.data_scadenza", "liste_regalo.attivo");
 		$this->mainHead = "Cliente,Titolo,Tipo,Codice,Nome Bimbo/a,Genitore 1,Creazione,Scadenza,Attivo";
+		
+		$this->mainFields[] = 'resoCrud';
+		$this->mainHead .= ',Reso';
 		
 		SlideModel::$YN["tutti"] = gtext("Attiva / NON attiva");
 		
@@ -100,7 +105,16 @@ class ListeregaloController extends BaseController
 			))->groupBy("liste_regalo.id_lista_regalo");
 		}
 		
+		if ($this->viewArgs["reso"] != "tutti")
+		{
+			$previssoExists = (int)$this->viewArgs["reso"] ? "" : "NOT";
+			
+			$this->m[$this->modelName]->sWhere(" $previssoExists EXISTS ( select 1 from orders_periodi_reso where orders_periodi_reso.id_lista_regalo = liste_regalo.id_lista_regalo and orders_periodi_reso.richiesta = 1 )");
+		}
+		
 		$this->m[$this->modelName]->convert()->save();
+		
+		$this->filters[] = array("reso",null,array("tutti" => "Richiesta reso sì/no") + array("1" => gtext("Con richiesta reso"), "0" => gtext("Senza richiesta reso")));
 		
 		parent::main();
 	}
@@ -401,6 +415,44 @@ class ListeregaloController extends BaseController
 		$data["titoloRecord"] = $this->m["ListeregaloModel"]->titolo($clean['id']);
 		
 		$data["record"] = $this->m["ListeregaloModel"]->selectId($clean['id']);
+		
+		$this->append($data);
+	}
+	
+	public function resi($id = 0)
+	{
+		$this->_posizioni['resi'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $data["id"] = $this->id = (int)$id;
+		$this->id_name = "id_lista_regalo";
+		
+		$this->queryActions = $this->bulkQueryActions = "";
+		$this->mainButtons = "ldel";
+		$this->addBulkActions = false;
+		$this->colProperties = array();
+		
+		$this->modelName = "OrdiniperiodiresoModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array(
+			'dataInizioCrud',
+			'orders_periodi_reso.data_fine',
+			'richiestaCrud',
+			'orders_periodi_reso.data_richiesta',
+		);
+		
+		$this->mainHead = "Data consegna della merce,Data fine periodo di reso,Richiesto reso,Data richiesta";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"resi/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->clear()->orderBy("orders_periodi_reso.id_o_periodo_reso")->where(array("id_lista_regalo"=>$clean['id']))->convert()->save();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["ListeregaloModel"]->titolo($clean['id']);
 		
 		$this->append($data);
 	}

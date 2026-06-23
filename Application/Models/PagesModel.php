@@ -185,6 +185,7 @@ class PagesModel extends GenericModel {
 		{
 			self::$tipiPagina["LISTA_REGALO"] = "Pagina pubblica lista regalo";
 			self::$tipiPagina["LISTA_REGALO_NE"] = "Pagina lista regalo non esistente o scaduta";
+			self::$tipiPagina["RICHIEDI_RESO_LISTA"] = "Pagina per richiedere un reso di una lista";
 		}
 		
 		if (v("attiva_crediti"))

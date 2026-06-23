@@ -24,7 +24,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class OrdiniperiodiresoController extends BaseController
 {
-	public $argKeys = array('id_o:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'id_o:sanitizeAll'=>'tutti',
+		'id_lista_insert:sanitizeAll'=>'tutti',
+	);
 	
 	public $sezionePannello = "ecommerce";
 	
@@ -78,6 +81,9 @@ class OrdiniperiodiresoController extends BaseController
 		
 		if ($queryType == "insert" && $this->viewArgs["id_o"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_o", $this->viewArgs["id_o"]);
+		
+		if ($queryType == "insert" && $this->viewArgs["id_lista_insert"] != "tutti")
+			$this->m[$this->modelName]->setValue("id_lista_regalo", $this->viewArgs["id_lista_insert"]);
 		
 		parent::form($queryType, $id);
 	}

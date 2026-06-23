@@ -74,14 +74,12 @@
 	$tabellaPeriodiReso = OrdiniModel::g(false)->gTabellaPeriodiResoNonIdSpedizione($ordine["id_o"]);
 	if (count($tabellaPeriodiReso) > 0 && StatiordineModel::g(false)->permettiReso($ordine["stato"])) { ?>
 		<?php foreach ($tabellaPeriodiReso as $pr) {
-			if ($pr["richiesta"] || OrdiniperiodiresoModel::g(false)->inPeriodoReso($pr["id_o_periodo_reso"])) { 
+			if ($pr["richiesta"] || OrdiniperiodiresoModel::g(false)->inPeriodoReso($pr["id_o_periodo_reso"])) {
 		?>
 			<tr>
 				<td><?php echo gtext("Reso", false); ?>:</td>
 				<td>
-					
-						<?php include(tpf("/Elementi/Ordini/resoconto_acquisto_dettagli_reso.php"));?>
-					
+					<?php include(tpf("/Elementi/Ordini/resoconto_acquisto_dettagli_reso.php"));?>
 				</td>
 			</tr>
 			<?php } ?>

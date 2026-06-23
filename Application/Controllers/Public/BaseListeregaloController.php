@@ -427,4 +427,40 @@ class BaseListeregaloController extends BaseController
 			"errore"	=>	$errore,
 		));
 	}
+	
+	public function resolista($id = 0, $idPr = 0)
+	{
+		$clean["id"] = $data["id"] = $data["idListaRegalo"] = (int)$id;
+		
+		$this->checkLista($id);
+		
+		$periodo = $data["periodo"] =$this->m("OrdiniperiodiresoModel")->clear()->where(array(
+			"id_lista_regalo"	=>	$clean["id"],
+			"id_o_periodo_reso"	=>	(int)$idPr,
+		))->record();
+		
+		if (empty($periodo))
+			$this->redirect("");
+		
+		if (isset($_POST["invia"]))
+		{
+			// Controlla CSRF
+			$this->checkCsrf();
+			
+			if (!$periodo["richiesta"] && OrdiniperiodiresoModel::g(false)->inPeriodoReso($periodo["id_o_periodo_reso"]))
+			{
+				if ($this->m("OrdiniperiodiresoModel")->richiedi($periodo["id_o_periodo_reso"]))
+					$this->redirect($this->m("OrdiniperiodiresoModel")->getUrlRichiediResoLista($periodo["id_o_periodo_reso"], false));
+			}
+			else
+				$this->responseCode(403);
+		}
+		
+		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Fai un reso dei prodotti della tua lista"));
+		
+		$data["lista"] = $lista = $this->m('ListeregaloModel')->selectId($clean["id"]);
+		
+		$this->append($data);
+		$this->load('reso');
+	}
 }
