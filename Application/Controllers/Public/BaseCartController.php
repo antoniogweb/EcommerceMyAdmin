@@ -31,6 +31,9 @@ class BaseCartController extends BaseController
 		$this->load('header');
 		$this->load('footer','last');
 		
+		if (!v("ecommerce_attivo"))
+			$this->responseCode(403);
+		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Carrello'));
 		
 		$data["arrayLingue"] = array();

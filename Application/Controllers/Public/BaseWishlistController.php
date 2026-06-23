@@ -35,6 +35,9 @@ class BaseWishlistController extends BaseController
 			$this->load('footer','last');
 		}
 		
+		if (!v("ecommerce_attivo"))
+			$this->responseCode(403);
+		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista dei dsideri"));
 		
 		$data["arrayLingue"] = array();

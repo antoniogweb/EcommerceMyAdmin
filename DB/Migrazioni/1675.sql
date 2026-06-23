@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`id_controller`, `data_creazione`, `titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES (NULL, '2026-01-29 12:58:59', 'Periodi reso', 'ordiniperiodireso', 'ordini', '1', '', '154', '1', 'ecommerce', 'main');
