@@ -34,9 +34,6 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 if (!isset($baseUrl))
 	$baseUrl = $this->baseUrl."/";
 ?>
-<?php if (isset($pReso)) { ?>
-<div><?php echo htmlentitydecode(field($pReso, "description"));?></div>
-<?php } ?>
 
 <?php if ($periodo["richiesta"]) { ?>
 	<div class="uk-alert uk-alert-success">
@@ -45,6 +42,10 @@ if (!isset($baseUrl))
 	<?php if ($periodo["id_spedizione_negozio"]) { echo " - ". gtext("merce consegnata il")." ".smartDate($periodo["data_inizio"], v("default_date_format"));} ?>
 	</div>
 <?php } else { ?>
+	<?php if (isset($pReso)) { ?>
+	<div><?php echo htmlentitydecode(field($pReso, "description"));?></div>
+	<?php } ?>
+	
 	<?php if (OrdiniperiodiresoModel::g(false)->inPeriodoReso($periodo["id_o_periodo_reso"])) { ?>
 	<form action="<?php echo OrdiniperiodiresoModel::g(false)->getUrlRichiediReso($periodo["id_o_periodo_reso"]);?>" method="POST">
 		<button type="submit" class="uk-button uk-button-primary">
