@@ -127,10 +127,13 @@ class OrdiniperiodiresoModel extends GenericModel
 		if (empty($ordine))
 			return false;
 		
+		$dataOraRichiesta = date("Y-m-d H:i:s");
+		$dataOraRichiestaFormattata = smartDate($dataOraRichiesta, v("default_date_format")." H:i");
+		
 		$this->sValues(array(
 			"richiesta"	=>	1,
 			"ip"		=>	getIp(),
-			"data_richiesta"	=>	date("Y-m-d H:i:s"),
+			"data_richiesta"	=>	$dataOraRichiesta,
 		));
 		
 		$res = MailordiniModel::inviaMail(array(
@@ -146,6 +149,8 @@ class OrdiniperiodiresoModel extends GenericModel
 				"CLIENTE"	=>	OrdiniModel::getNominativo($ordine),
 				"NUMERO_ORDINE"	=>	$ordine["id_o"],
 				"NOME_NEGOZIO"	=>	Parametri::$nomeNegozio,
+				"ID_RICHIESTA"	=>	(int)$id,
+				"DATA_ORA_RICHIESTA"	=>	$dataOraRichiestaFormattata,
 			),
 		));
 		
@@ -166,6 +171,8 @@ class OrdiniperiodiresoModel extends GenericModel
 						"CLIENTE"	=>	OrdiniModel::getNominativo($ordine),
 						"NUMERO_ORDINE"	=>	$ordine["id_o"],
 						"NOME_NEGOZIO"	=>	Parametri::$nomeNegozio,
+						"ID_RICHIESTA"	=>	(int)$id,
+						"DATA_ORA_RICHIESTA"	=>	$dataOraRichiestaFormattata,
 					),
 				));
 				
