@@ -40,6 +40,9 @@ class TagController extends BaseController
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		if (!v("usa_tag"))
+			$this->responseCode(403);
+		
 		$this->s["admin"]->check();
 		
 		$this->tabella = gtext("Tag / Linee",true);
