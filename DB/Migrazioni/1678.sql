@@ -1,0 +1,1 @@
+alter table pages add prodotto_rappresentativo tinyint not null default 0;
