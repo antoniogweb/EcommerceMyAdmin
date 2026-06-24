@@ -162,11 +162,6 @@ class StatiordineModel extends GenericModel {
 					),
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
-					'wrap'		=>	array(
-						null,
-						null,
-						"<div class='form_notice'>".gtext("Se settato su sì, e se siamo all'interno del periodo di reso, quanto l'ordine è in questo stato il cliente vedrà, nella pagina dell'ordine, un pulsante per richiedere il reso")."</div>"
-					),
 				),
 				'classe'	=>	array(
 					"type"	=>	"Select",
