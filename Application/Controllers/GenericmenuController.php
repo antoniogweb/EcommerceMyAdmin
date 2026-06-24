@@ -30,8 +30,9 @@ class GenericmenuController extends BaseController {
 	
 // 	public $sezionePannello = "utenti";
 	
-	function __construct($model, $controller, $queryString) {
-		parent::__construct($model, $controller, $queryString);
+	function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		if (!v("attiva_gestione_menu"))
 			$this->responseCode(403);
@@ -53,6 +54,8 @@ class GenericmenuController extends BaseController {
 		
 		$data["titoloMenu"] = $this->mod->titoloMenu;
 		$this->append($data);
+		
+		MenuModel::$usaCacheStrutturaCategorie = false;
 		
 		$this->model("LingueModel");
 	}

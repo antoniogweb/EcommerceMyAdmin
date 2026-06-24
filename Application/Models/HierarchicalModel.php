@@ -51,6 +51,7 @@ class HierarchicalModel extends GenericModel {
 	public static $rebuildTreeOnUpdate = true;
 	
 	public static $currentRecord = null;
+	public static $usaCacheStrutturaCategorie = true;
 	public static $strutturaCategorie = [];
 	public static $strutturaCategorieRid = [];
 	
@@ -857,8 +858,13 @@ class HierarchicalModel extends GenericModel {
 	
 	public static function getDataCategoria($idC)
 	{
-		if (isset(self::$strutturaCategorie[$idC]))
-			return self::$strutturaCategorie[$idC];
+		if (self::$usaCacheStrutturaCategorie)
+		{
+			if (isset(self::$strutturaCategorie[$idC]))
+				return self::$strutturaCategorie[$idC];
+		}
+		else
+			self::$strutturaCategorie = [];
 		
 		$className = get_called_class();
 		
