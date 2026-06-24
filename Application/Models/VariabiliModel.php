@@ -202,7 +202,6 @@ class VariabiliModel extends GenericModel {
 		"alias_fascia_prezzo"		=>	"fascia-prezzo",
 		"attiva_formn_contatti"		=>	0,
 		"attiva_nazione_marchi"		=>	0,
-		"attiva_campo_nuovo_in_pagine"	=>	0,
 		"attiva_in_evidenza_marchi"	=>	0,
 		"attiva_in_evidenza_nazioni"=>	0,
 		"attiva_in_evidenza_slide"	=>	0,
@@ -452,6 +451,8 @@ class VariabiliModel extends GenericModel {
 		"mostra_prezzi_con_aliquota_estera"	=>	0, // mostra i prezzi con l'IVA derlla nazione che si sta visualizzando
 		"imposta_la_nazione_dell_utente_a_quella_nell_url"	=> 0, // se impostato a 1, prende il listino dalla nazione dell'URL
 		"permetti_aggiunta_listino_estero"	=>	0, // se impostato su 1, permette di aggiungere un listino estero
+		"attiva_campo_nuovo_in_pagine"	=>	0, // se impostato su 1, permette la gestione del campo "nuovo" nella scheda prodotto
+		"attiva_campo_prodotto_rappresentativo_in_pagine"	=> 0, // se impostato su 1, permette la gestione del campo "prodtoto rappresentativo" nella scheda prodotto
 		## VENDITE ESTERO ##
 		"scorpora_iva_prezzo_estero"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default (solo per prodotti)
 		"scorpora_iva_prezzo_estero_azienda"	=>	1, // se impostato su 1, scorpora l'IVA nelle vendite fuori la nazione di default (solo per prodotti) per le aziende anche se scorpora_iva_prezzo_estero = 0

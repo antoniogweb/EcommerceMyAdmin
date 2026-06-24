@@ -228,6 +228,9 @@ class ProdottiController extends PagesController {
 		if (v("attiva_modulo_acquisti"))
 			$this->queryFields .= ",ok_acquisti";
 		
+		if (v("attiva_campo_prodotto_rappresentativo_in_pagine"))
+			$this->queryFields .= ",prodotto_rappresentativo";
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);
