@@ -11,7 +11,7 @@ if (isset($tipiPagina["MARCHI"]))
 	$dettagliPagina = PagesModel::getPageDetails($tipiPagina["MARCHI"]);
 	
 	if ($dettagliPagina)
-		$breadcrumb[field($dettagliPagina, "title")] = getUrlAlias($dettagliPagina["pages"]["id_page"]);
+		$breadcrumb[field($dettagliPagina, "title")] = $this->baseUrl."/".getUrlAlias($dettagliPagina["pages"]["id_page"]);
 }
 
 $breadcrumb[$titoloPagina] = "";

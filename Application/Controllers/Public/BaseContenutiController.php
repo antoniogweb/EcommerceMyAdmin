@@ -297,7 +297,22 @@ class BaseContenutiController extends BaseController
 				}
 				
 				if ($this->idMarchio)
+				{
 					array_splice($this->pageArgs, $indiceMarchio, 1);
+					
+					if (v("attiva_pagina_produttore"))
+					{
+						$aliasPaginaMarchi = $this->m("MarchiModel")->getAliasPaginaMarchi();
+						
+						if ($aliasPaginaMarchi)
+						{
+							$indiceAliasMarchi = array_search($aliasPaginaMarchi, $this->pageArgs);
+							
+							if ($indiceAliasMarchi !== false)
+								array_splice($this->pageArgs, $indiceAliasMarchi, 1);
+						}
+					}
+				}
 			}
 		}
 		

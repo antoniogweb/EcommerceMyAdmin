@@ -3653,13 +3653,18 @@ class PagesModel extends GenericModel {
 		return $riga["title_lingua"] ? $riga["title_lingua"] : $riga["title"];
 	}
 	
-	public static function getPageDetails($idPage, $lingua = null)
+	public static function getPageDetails($idPage, $lingua = null, $fields = null)
 	{
 		$p = new PagesModel();
 		
-		return $p->clear()->addJoinTraduzionePagina($lingua)->where(array(
+		$p->clear()->addJoinTraduzionePagina($lingua)->where(array(
 			"id_page"	=>	(int)$idPage,
-		))->first();
+		));
+		
+		if (isset($fields))
+			$p->select($fields);
+		
+		return $p->first();
 	}
 	
 	public static function getPageDetailsPreloaded($idPage, $lingua = null)

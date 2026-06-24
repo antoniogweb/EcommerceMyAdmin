@@ -186,6 +186,15 @@ class MarchiModel extends GenericModel
 		$this->controllaLinguaGeneric($id, "id_marchio", "-marchio-");
 	}
 	
+	public function getAliasPaginaMarchi($suffisso = "")
+	{
+		$idPaginaMarchi = PagesModel::gTipoPagina("MARCHI");
+		
+		$dettagliPagina = PagesModel::getPageDetails($idPaginaMarchi, null, "pages.alias,contenuti_tradotti.alias");
+		
+		return !empty($dettagliPagina) ? field($dettagliPagina, "alias").$suffisso : "";
+	}
+	
 	public function getUrlAlias($id, $paginaDettaglioMarchio = false, $lingua = null)
 	{
 		$marchio = $this->clear()->where(array(
@@ -196,24 +205,29 @@ class MarchiModel extends GenericModel
 		
 		if (count($marchio) > 0)
 		{
-			if (v("shop_in_alias_marchio") && !$paginaDettaglioMarchio)
+			if (!v("attiva_pagina_produttore"))
 			{
-				$c = new CategoriesModel;
-		
-				$idShop = $c->getShopCategoryId();
-				
-				if (v("marchio_prima_della_categoria_in_url"))
-					return mfield($marchio[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
-				else
+				if (v("shop_in_alias_marchio") && !$paginaDettaglioMarchio)
 				{
-					Parametri::$useHtmlExtension = false;
-					$aliasShop = $c->getUrlAlias($idShop);
-					Parametri::$useHtmlExtension = true;
-					return $aliasShop."/".mfield($marchio[0],"alias").v("estensione_url_categorie");
+					$c = new CategoriesModel;
+			
+					$idShop = $c->getShopCategoryId();
+					
+					if (v("marchio_prima_della_categoria_in_url"))
+						return mfield($marchio[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
+					else
+					{
+						Parametri::$useHtmlExtension = false;
+						$aliasShop = $c->getUrlAlias($idShop);
+						Parametri::$useHtmlExtension = true;
+						return $aliasShop."/".mfield($marchio[0],"alias").v("estensione_url_categorie");
+					}
 				}
+				else
+					return mfield($marchio[0],"alias").v("estensione_url_categorie");
 			}
 			else
-				return mfield($marchio[0],"alias").v("estensione_url_categorie");
+				return $this->getAliasPaginaMarchi("/").mfield($marchio[0],"alias").v("estensione_url_categorie");
 		}
 		
 		return "";
