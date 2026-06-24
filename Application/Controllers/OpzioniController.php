@@ -46,6 +46,9 @@ class OpzioniController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		if (!v("attiva_gestione_opzioni"))
+			$this->responseCode(403);
+		
 		$this->tabella = OpzioniModel::labelTabella();
 	}
 	

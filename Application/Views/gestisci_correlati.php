@@ -2,7 +2,7 @@
 
 <form select2="" class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST' enctype="multipart/form-data">
 
-	<?php echo Html_Form::select("id_corr","",$listaProdotti,"","","yes");?>
+	<?php echo Html_Form::select("id_corr","",$listaProdotti,"","","yes","style='min-width:400px;'");?>
 	
 	<?php if ($mostra_tendina_tipologia) { ?>
 	<?php echo Html_Form::select("id_tipologia_correlato","",$listaTipologieCorrelati,"","","yes");?>

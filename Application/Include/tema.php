@@ -112,24 +112,27 @@ class Tema
 		
 		foreach ($arrayPercorsi as $path => $valori)
 		{
-			$items = scandir($path);
-		
-			foreach( $items as $this_file )
+			if (is_dir($path))
 			{
-				if(strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"_") !== 0 && strpos($this_file, "__") === false)
+				$items = scandir($path);
+				
+				foreach($items as $this_file )
 				{
-					if (@is_dir($path."/$this_file"))
+					if(strcmp($this_file,".") !== 0 && strcmp($this_file,"..") !== 0 && strcmp($this_file,"_") !== 0 && strpos($this_file, "__") === false)
 					{
-						if (!$tema || ((string)$tema === (string)$this_file && ctype_alnum($tema)))
+						if (@is_dir($path."/$this_file"))
 						{
-							$previewUrl = $valori["frontend"] . "/$this_file/_Preview/preview.png";
-							
-							self::$elenco[] = array(
-								"nome"	=>	$this_file,
-								"preview"	=>	file_exists($path."/$this_file/_Preview/preview.png") ? true : false,
-								"preview_url"	=>	$previewUrl,
-								"path"	=>	$path."/$this_file",
-							);
+							if (!$tema || ((string)$tema === (string)$this_file && ctype_alnum($tema)))
+							{
+								$previewUrl = $valori["frontend"] . "/$this_file/_Preview/preview.png";
+								
+								self::$elenco[] = array(
+									"nome"	=>	$this_file,
+									"preview"	=>	file_exists($path."/$this_file/_Preview/preview.png") ? true : false,
+									"preview_url"	=>	$previewUrl,
+									"path"	=>	$path."/$this_file",
+								);
+							}
 						}
 					}
 				}

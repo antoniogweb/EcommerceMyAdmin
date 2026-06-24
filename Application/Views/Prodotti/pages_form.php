@@ -195,6 +195,10 @@
 								<?php echo $form["ok_acquisti"];?>
 								<?php } ?>
 								
+								<?php if (isset($form["prodotto_rappresentativo"])) { ?>
+								<?php echo $form["prodotto_rappresentativo"];?>
+								<?php } ?>
+								
 								<?php include($this->viewPath("pages_link"));?>
 							</div>
 						</div>

@@ -41,7 +41,7 @@ class IntegrazioniController extends BaseController
 		$this->s["admin"]->check();
 		
 		if (!v("attiva_gestione_integrazioni"))
-			die();
+			$this->responseCode(403);
 	}
 
 	public function main()

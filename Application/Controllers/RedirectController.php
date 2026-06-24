@@ -45,7 +45,7 @@ class RedirectController extends BaseController {
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
 		if (!v("attiva_redirect"))
-			die();
+			$this->responseCode(403);
 	}
 	
 	public function main()

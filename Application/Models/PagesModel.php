@@ -453,6 +453,18 @@ class PagesModel extends GenericModel {
 						"<div class='form_notice'>".gtext("Se impostato su sì, verrà importato nel magazzino acquisti")."</div>"
 					),
 				),
+				'prodotto_rappresentativo'	=>	array(
+					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_nuovo',
+					'labelString'=>	'Prodotto rappresentativo della categoria?',
+					'options'	=>	array(0 => gtext('no'),1 => gtext('sì')),
+					'reverse' => 'yes',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se viene indicato come rappresentativo, sarà il prodotto estratto quando serve mostrare un solo prodotto per quella categoria")."</div>"
+					),
+				),
 				'peso'		=>	array(
 					'labelString'=>	'Peso (kg)',
 					'entryClass'	=>	'form_input_text help_peso',
