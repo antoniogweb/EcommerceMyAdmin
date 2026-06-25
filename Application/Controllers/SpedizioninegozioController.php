@@ -295,7 +295,7 @@ class SpedizioninegozioController extends BaseController {
 		{
 			$this->mainFields[] = "valoreCrud";
 			
-			$this->mainHead .= ",Valore assicurato (€)";
+			$this->mainHead .= ",Valore (€)";
 		}
 		
 		$pulsantiMenu = partial() ? "" : "back";
