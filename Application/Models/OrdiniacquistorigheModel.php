@@ -263,6 +263,53 @@ class OrdiniacquistorigheModel extends GenericModel
 		return OrdiniacquistoModel::g()->isBozza($idOrdine);
 	}
 	
+	protected function getTitoloRigaDaOrdinare($o)
+	{
+		return "O:".$o["orders"]["id_o"]." - SKU: ".$o["righe"]["codice"]." ".$o["righe"]["title"]." ".strip_tags($o["righe"]["attributi_backend"]);
+	}
+	
+	public function riferimentoRigaCrud($record)
+	{
+		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))
+			return "";
+		
+		$idR = $record["ordini_acquisto_righe"]["id_r"];
+		
+		$recordAttuale = array();
+		
+		if ($idR)
+		{
+			$rModel = new RigheModel();
+			
+			$recordAttuale = $rModel->clear()->select("righe.id_r,righe.title,righe.codice,righe.attributi_backend,righe.qta_da_ordinare,orders.numero_documento,orders.data_documento,orders.sezionale,orders.id_o")->whereId((int)$idR)->inner("orders")->on("orders.id_o = righe.id_o")->first();
+		}
+		
+		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
+		{
+			$opzioni = OrdiniModel::righeDaOrdinare($record["ordini_acquisto_righe"]["id_c"]);
+			
+			$arraySelect = array(0 => "--");
+			
+			if (!empty($recordAttuale))
+				$arraySelect[$idR] = $this->getTitoloRigaDaOrdinare($recordAttuale);
+			
+			foreach ($opzioni as $o)
+			{
+				if (!isset($arraySelect[$o["righe"]["id_r"]]))
+					$arraySelect[$o["righe"]["id_r"]] = $this->getTitoloRigaDaOrdinare($o);
+			}
+			
+			return '<span style="display:inline-block;width:250px;" select2="">'.Html_Form::select("id_r", $record["ordini_acquisto_righe"]["id_r"], $arraySelect,"form-control select_id_r_riga_acquisto", null, "yes")."<span>";
+		}
+		else
+		{
+			if (!empty($recordAttuale))
+				return $this->getTitoloRigaDaOrdinare($recordAttuale);
+		}
+		
+		return "";
+	}
+	
 	public function acquistabileCrud($record)
 	{
 		if (OrdiniacquistorighetipologieModel::rigaDiTestata($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga_tipologia"]))

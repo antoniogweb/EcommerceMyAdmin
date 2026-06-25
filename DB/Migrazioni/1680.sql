@@ -1,0 +1,1 @@
+ALTER TABLE `magazzino_articoli` CHANGE `codice` `codice` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;

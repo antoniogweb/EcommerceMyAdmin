@@ -420,11 +420,82 @@ class RigheModel extends GenericModel {
 		return "<input id-r='".$record["righe"]["id_r"]."' style='width:100px;' class='form-control' name='qta_da_ordinare' value='".$record["righe"]["qta_da_ordinare"]."' />";
 	}
 	
+	public function ordinataCrud($record)
+	{
+		$res = $this->getClauseRigheOrdinate($record["righe"]["id_r"])->select("ordini_acquisto.id_ordine_acquisto,ordini_acquisto.data_ordine,ordini_acquisto.numero_ordine,sum(ordini_acquisto_righe.quantita) as SOMMA")->groupBy("ordini_acquisto.id_ordine_acquisto")->send();
+		
+		$html = "";
+		
+		foreach ($res as $r)
+		{
+			$html .= gtext("Ordine acquisto"). " <b>".$r["ordini_acquisto"]["numero_ordine"]."</b> ".gtext("del")." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>. ".gtext("Quantità").": <b>".(int)$r["aggregate"]["SOMMA"]."</b>";
+		}
+		
+		return $html;
+	}
+	
+	public function getClauseRigheOrdinate($idR)
+	{
+		$oarModel = new OrdiniacquistorigheModel();
+		
+		return $oarModel->clear()
+			->inner(array("ordine"))
+			->inner("ordini_acquisto_stati")->on("ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto.id_ordine_acquisto_stato")
+			->where(array(
+				"ordini_acquisto_righe.id_r"		=>	(int)$idR,
+				"ordini_acquisto_stati.chiuso"		=>	1,
+				"ordini_acquisto_stati.annullato"	=>	0
+			));
+	}
+	
+	public function prodottiOrdinati($idR)
+	{
+		$oarModel = new OrdiniacquistorigheModel();
+		
+		$res = $this->getClauseRigheOrdinate($idR)->select("sum(ordini_acquisto_righe.quantita) as SOMMA")->send();
+			
+		if (count($res) > 0)
+			return (int)$res[0]["aggregate"]["SOMMA"];
+		
+		return 0;
+	}
+	
+	public function prodottiArrivati($idR)
+	{
+		return 0;
+	}
+	
+	public function getSpecchiettoInArrivo($idR)
+	{
+		$riga = $this->selectId($idR);
+		
+		if (empty($riga))
+			return "";
+		
+		$html = "";
+		
+		$numeroOrdinati = $this->prodottiOrdinati($idR);
+		
+		if ($numeroOrdinati)
+		{
+			$label = ($riga["qta_da_ordinare"] <= $numeroOrdinati) ? "text-success" : "text-danger";
+			
+			$html .= "<br />".gtext("O").":<b class='$label'>".$numeroOrdinati."</b>";
+		
+			$html .= " | ".gtext("A").":<b>".$this->prodottiArrivati($idR)."</b>";
+		}
+		
+		return $html;
+	}
 	public function daOrdinareMostraCrud($record)
 	{
 		if ($record["righe"]["prodotto_generico"])
 			return "";
 		
-		return $record["righe"]["qta_da_ordinare"]." <a class='iframe' href='".Url::getRoot()."righe/daordinare/".$record["righe"]["id_o"]."?partial=Y'><i class='fa fa-pencil'></i></a>";
+		$html = $record["righe"]["qta_da_ordinare"]." <a class='iframe' href='".Url::getRoot()."righe/daordinare/".$record["righe"]["id_o"]."?partial=Y'><i class='fa fa-pencil'></i></a>";
+		
+		$html .= $this->getSpecchiettoInArrivo($record["righe"]["id_r"]);
+		
+		return $html;
 	}
 }

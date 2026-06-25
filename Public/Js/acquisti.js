@@ -204,6 +204,7 @@ $(document).ready(function(){
 			var sconto_1 = 0;
 			var sconto_2 = 0;
 			var omaggio = 0;
+			var id_r = 0;
 			
 			if ($(this).find("[name='quantita']").length > 0)
 				quantita = $(this).find("[name='quantita']").val();
@@ -229,6 +230,9 @@ $(document).ready(function(){
 			if ($(this).find("[name='omaggio']").length > 0)
 				omaggio = $(this).find("[name='omaggio']").is(":checked") ? 1 : 0;
 			
+			if ($(this).find("[name='id_r']").length > 0)
+				id_r = $(this).find("[name='id_r']").val();
+			
 			var temp = {
 				id_ordine_acquisto_riga: id_ordine_acquisto_riga,
 				quantita: quantita,
@@ -238,7 +242,8 @@ $(document).ready(function(){
 				codice: codice,
 				sconto_1: sconto_1,
 				sconto_2: sconto_2,
-				omaggio: omaggio
+				omaggio: omaggio,
+				id_r: id_r
 			};
 			
 			valori.push(temp);
@@ -265,7 +270,7 @@ $(document).ready(function(){
 		
 	});
 	
-	$( "body" ).on( "change", ".select_attributo_ordine_acquisto_offline", function(e){
+	$( "body" ).on( "change", ".select_attributo_ordine_acquisto_offline, .select_id_r_riga_acquisto", function(e){
 		
 		$(".save_righe_ordini_acquisto").trigger("click");
 		

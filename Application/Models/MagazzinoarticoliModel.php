@@ -231,7 +231,7 @@ class MagazzinoarticoliModel extends GenericModel
 		foreach ($tokens as $token)
 		{
 			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-				"n!concat(magazzino_articoli.titolo,' ',marchi.titolo,' ',categories.title,' ',magazzino_articoli.codice,' ',pages.title,' ',magazzino_articoli.codice)"	=>	sanitizeAll(htmlentitydecode($token)),
+				"n!CONCAT_WS(magazzino_articoli.titolo,' ',marchi.titolo,' ',categories.title,' ',magazzino_articoli.codice,' ',pages.title,' ',magazzino_articoli.codice)"	=>	sanitizeAll(htmlentitydecode($token)),
 			);
 			
 			$iCerca++;

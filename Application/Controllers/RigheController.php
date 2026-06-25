@@ -114,8 +114,8 @@ class RigheController extends BaseController
 		$this->shift(1);
 		$this->mainShift = 1;
 		
-		$this->mainFields = array("immagineCrud", "righe.title", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", "daOrdinareCrud");
-		$this->mainHead = "Immagine,Prodotto,Codice,Prezzo,Prezzo scontato,Quantità acquistata,Quantità da ordinare";
+		$this->mainFields = array("immagineCrud", "righe.title", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", "daOrdinareCrud", "ordinataCrud");
+		$this->mainHead = "Immagine,Prodotto,Codice,Prezzo,Prezzo scontato,Quantità acquistata,Quantità da ordinare,Quantità ordinata";
 		
 		$this->m[$this->modelName]->clear()
 				->select("righe.*")

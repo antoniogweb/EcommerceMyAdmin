@@ -183,12 +183,14 @@ class OrdiniacquistorigheController extends BaseController
 					$sconto2 = $v["sconto_2"] ?? 0;
 					$codice = $v["codice"] ?? "";
 					$omaggio = $v["omaggio"] ?? 0;
+					$idR = $v["id_r"] ?? 0;
 					
 					if ($v["id_articolo"] && (int)$recordRiga["id_articolo"] !== (int)$v["id_articolo"])
 					{
 						$price = $maModel->getUltimoPrezzo((int)$v["id_articolo"], (int)$recordRiga["id_ordine_acquisto_riga"]);
 						$sconto1 = $maModel->getUltimoSconto1((int)$v["id_articolo"], (int)$recordRiga["id_ordine_acquisto_riga"]);
 						$sconto2 = $maModel->getUltimoSconto2((int)$v["id_articolo"], (int)$recordRiga["id_ordine_acquisto_riga"]);
+						$idR = 0;
 					}
 					
 					$this->m[$this->modelName]->sValues(array(
@@ -201,6 +203,7 @@ class OrdiniacquistorigheController extends BaseController
 						"titolo"			=>	$v["titolo"] ?? "",
 						"id_c"				=>	$recordWeb["id_c"] ?? 0,
 						"id_page"			=>	$recordWeb["id_page"] ?? 0,
+						"id_r"				=>	(int)$idR,
 						"codice"			=>	isset($recordWeb["id_c"]) ? ($recordArticolo["codice"] ?? $codice) : $codice,
 						"attributi"			=>	isset($recordWeb["id_c"]) ? strip_tags($combModel->getStringa($recordWeb["id_c"], "<br />")) : "",
 					));

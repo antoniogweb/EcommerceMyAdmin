@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto_righe ADD INDEX ordini_acquisto_righe_id_r (id_r);

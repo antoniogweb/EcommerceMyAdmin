@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto_stati ADD annullato tinyint not null default 0;

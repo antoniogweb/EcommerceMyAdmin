@@ -1,0 +1,1 @@
+ALTER TABLE righe ADD INDEX idx_righe_da_ordinare (gift_card,prodotto_digitale,prodotto_crediti,id_riga_tipologia,qta_da_ordinare,id_r);

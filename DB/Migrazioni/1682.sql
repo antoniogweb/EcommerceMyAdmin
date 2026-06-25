@@ -1,0 +1,1 @@
+ALTER TABLE ordini_acquisto ADD INDEX `ordini_acquisto_id_ordine_acquisto_stato` (`id_ordine_acquisto_stato`);

@@ -83,6 +83,13 @@ class OrdiniacquistostatiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'annullato'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Stato corrispondente ad un ordine annullato",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 				'classe'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Colore della label dello stato",
@@ -142,6 +149,14 @@ class OrdiniacquistostatiModel extends GenericModel {
 	public function chiusoCrud($record)
 	{
 		if ($record["ordini_acquisto_stati"]["chiuso"])
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "";
+	}
+	
+	public function annullatoCrud($record)
+	{
+		if ($record["ordini_acquisto_stati"]["annullato"])
 			return "<i class='fa fa-check text text-success'></i>";
 		else
 			return "";
