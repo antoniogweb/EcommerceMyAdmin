@@ -42,7 +42,7 @@ Helper_Menu::$htmlLinks["add"]["text"] = "aggiungi link libero";
 
 class SitemapController extends BaseController
 {
-	public $orderBy = "id_order";
+	// public $orderBy = "id_order";
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
