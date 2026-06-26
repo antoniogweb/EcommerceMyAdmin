@@ -1,0 +1,1 @@
+INSERT INTO `controllers` (`id_controller`, `data_creazione`, `titolo`, `codice`, `codice_padre`, `visibile`, `condizioni`, `id_order`, `attivo`, `pannello`, `action_per_link`) VALUES (NULL, '2026-06-26 16:44:10', 'Ricezioni di ordini di acquisto', 'ordiniacquistoricezioni', '', '1', 'attiva_modulo_acquisti=1&mostra_modulo_acquisti=1', '155', '1', 'acquisti', 'main')

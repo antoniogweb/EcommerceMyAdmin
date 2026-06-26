@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
 // See COPYRIGHT.txt and LICENSE.txt.
 //
 // This file is part of EcommerceMyAdmin
@@ -22,29 +22,21 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class RouteAcquisti
+class OrdiniacquistoricezionirigheModel extends GenericModel
 {
-	public static $allowed = array(
-		'fornitori,main',
-		'fornitori,form',
-		'ordiniacquisto,main',
-		'ordiniacquisto,form',
-		'ordiniacquisto,righe',
-		'ordiniacquisto,inviipdf',
-		'ordiniacquisto,storicostati',
-		'ordiniacquisto,stampapdf',
-		'ordiniacquisto,inviapdf',
-		'ordiniacquistostati,main',
-		'ordiniacquistostati,form',
-		'ordiniacquistostati,ordina',
-		'magazzinoarticoli,main',
-		'magazzinoarticoli,form',
-		'magazzinoarticoli,salva',
-		'ordiniacquistorighe,main',
-		'ordiniacquistorighe,form',
-		'ordiniacquistorighe,salva',
-		'ordiniacquistorighe,collega',
-		'ordiniacquistoricezioni,main',
-		'ordiniacquistoricezioni,form',
-	);
+	public $salvaDataModifica = true;
+	public $salvaIdInserimentoModifica = true;
+	
+	public function __construct() {
+		$this->_tables = 'ordini_acquisto_ricezioni_righe';
+		$this->_idFields = 'id_ordine_acquisto_ricezione_riga';
+		
+		parent::__construct();
+	}
+	
+	public function relations() {
+		return array(
+			'riga' => array("BELONGS_TO", 'OrdiniacquistorigheModel', 'id_ordine_acquisto_riga',null,"CASCADE"),
+		);
+    }
 }

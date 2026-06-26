@@ -41,6 +41,7 @@ class OrdiniacquistorigheModel extends GenericModel
 	
 	public function relations() {
 		return array(
+			'righe_ricezione' => array("HAS_MANY", 'OrdiniacquistoricezionirigheModel', 'id_ordine_acquisto_riga', null, "RESTRICT", "L'elemento ha delle ricezioni collegate e non può essere eliminato"),
 			'ordine' => array("BELONGS_TO", 'OrdiniacquistoModel', 'id_ordine_acquisto',null,"CASCADE"),
 			'articolo' => array("BELONGS_TO", 'MagazzinoarticoliModel', 'id_articolo',null,"CASCADE"),
 			'tipologia' => array("BELONGS_TO", 'OrdiniacquistorighetipologieModel', 'id_ordine_acquisto_riga_tipologia',null,"CASCADE"),

@@ -78,6 +78,7 @@ class OrdiniperiodiresoController extends BaseController
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		$this->m[$this->modelName]->setValue("manuale", 1);
+		$this->m[$this->modelName]->setValue("id_admin", User::$idAdmin);
 		
 		if ($queryType == "insert" && $this->viewArgs["id_o"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_o", $this->viewArgs["id_o"]);

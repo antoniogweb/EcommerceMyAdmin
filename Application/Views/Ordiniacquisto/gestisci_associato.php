@@ -11,7 +11,7 @@
 				<a style="margin-left:5px;" id-ordine="<?php echo $id;?>" id-riga-tipologia="<?php echo (int)$t["id_ordine_acquisto_riga_tipologia"];?>" class="aggiungi_riga_tipologia_ordine_acquisto make_spinner pull-right <?php echo $t["classe"];?>" href="<?php echo $this->baseUrl."/ordiniacquistorighe/form/insert/0";?>"><i class="fa fa-plus"></i> <?php echo $t["titolo"];?></a>
 				<?php } ?>
 				
-				<a style="margin-left:5px;" id-ordine="<?php echo $id;?>" id-riga-tipologia="0" class="aggiungi_riga_tipologia_ordine_acquisto make_spinner pull-right btn btn-default" href="<?php echo $this->baseUrl."/ordiniacquistorighe/form/insert/0";?>"><i class="fa fa-plus"></i> <?php echo gtext("Riga libera");?></a>
+				<a style="margin-left:5px;" id-ordine="<?php echo $id;?>" id-riga-tipologia="0" class="aggiungi_riga_tipologia_ordine_acquisto make_spinner pull-right btn btn-sm btn-default" href="<?php echo $this->baseUrl."/ordiniacquistorighe/form/insert/0";?>"><i class="fa fa-plus"></i> <?php echo gtext("Riga libera");?></a>
 				<form class="form-inline form_inserisci_articolo" id-ordine="<?php echo $id;?>" role="form" action='#' method='POST' enctype="multipart/form-data">
 					<?php include($this->viewPath("gestisci_associato_pulsante_righe"));?>
 				</form>

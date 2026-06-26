@@ -401,7 +401,7 @@ class RigheModel extends GenericModel {
 	
 	public function linkcruddaordinare($record)
 	{
-		$sigla = $record["orders"]["sezionale"] ? $record["orders"]["sezionale"].": ".$record["orders"]["numero_documento"] : "O:".$record["orders"]["id_o"];
+		$sigla = $record["orders"]["sezionale"] ? $record["orders"]["sezionale"].":".$record["orders"]["numero_documento"] : "O:".$record["orders"]["id_o"];
 		
 		return '<a href="'.Url::getRoot().$this->applicationUrl.'ordini/vedi/'.$record["orders"]["id_o"].$this->cViewStatus.'">'.$sigla.'</a>';
 	}

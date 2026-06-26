@@ -23,7 +23,12 @@
 			<a href="<?php echo $this->baseUrl."/righe/daordinare?da_ordinare=D";?>">
 				<i class="fa fa-list"></i>
 				<?php echo gtext("Da ordinare"); ?>
+				<?php
+				$numeroDaOrdinare = count(OrdiniModel::idRigheDaOrdinare());
 				
+				if ($numeroDaOrdinare) { ?>
+				<span class="label label-warning"><?php echo $numeroDaOrdinare;?></span>
+				<?php } ?>
 			</a>
 		</li>
 	</ul>

@@ -123,14 +123,16 @@ class RigheController extends BaseController
 		
 		$recordsPerPage = 30;
 		$daOrdinareCrud = "righe.qta_da_ordinare";
+		$mainMenu = "";
 		
 		if ($this->viewArgs["id_o_da_ordinare"] != "tutti")
 		{
 			$recordsPerPage = 999999;
 			$daOrdinareCrud = "daOrdinareCrud";
+			$mainMenu = "save_da_ordinare";
 		}
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>$recordsPerPage, 'mainMenu'=>'save_da_ordinare', 'mainAction'=>'daordinare');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>$recordsPerPage, 'mainMenu'=>$mainMenu, 'mainAction'=>'daordinare');
 		
 		$this->mainFields = array("immagineCrud", "righe.title", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", $daOrdinareCrud, "ordinataCrud");
 		$this->mainHead = "Immagine,Prodotto,Codice,Prezzo,Prezzo scontato,Quantità acquistata,Quantità da ordinare,Quantità ordinata";
@@ -174,10 +176,15 @@ class RigheController extends BaseController
 			
 			if ($this->viewArgs["da_ordinare"] != "tutti")
 			{
-				if ($this->viewArgs["da_ordinare"] = "D")
-				{
-
-				}
+				$idRs = OrdiniModel::idRigheDaOrdinare();
+				
+				$inNin = $this->viewArgs["da_ordinare"] == "D" ? "in" : "nin";
+				
+				$this->m[$this->modelName]->aWhere(array(
+						"$inNin"	=>	array(
+							"righe.id_r"	=>	forceIntDeep($idRs),
+						),
+					));
 			}
 		}
 		
