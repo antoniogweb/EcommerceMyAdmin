@@ -53,7 +53,7 @@ class TestiController extends BaseController {
 	{
 		$this->shift();
 		
-		$this->mainFields = array("thumb","testi.tipo", "testi.chiave", "lingua");
+		$this->mainFields = array("thumb","gtext|testi.tipo", "testi.chiave", "lingua");
 		$this->mainHead = "Thumb,Tipo,Titolo,Lingua";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>50, 'mainMenu'=>'');
