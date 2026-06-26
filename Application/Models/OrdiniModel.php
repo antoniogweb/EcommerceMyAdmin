@@ -143,7 +143,7 @@ class OrdiniModel extends FormModel {
 	}
 	
 	// Restituisce le righe segnate da ordine ma ancora da ordinare
-	public static function righeDaOrdinare($idc = 0, $idO = 0)
+	public static function righeDaOrdinare($idc = 0, $idO = 0, $mostraGeneriche = false)
 	{
 		$rModel = new RigheModel();
 		
@@ -158,9 +158,25 @@ class OrdiniModel extends FormModel {
 				"righe.id_o"	=>	(int)$idO,
 			));
 		
+		$idCs = array();
+		
 		if ($idc)
+			$idCs[] = (int)$idc;
+		
+		if ($mostraGeneriche)
+		{
+			$idCGen = ProdottiModel::getIdProdottoGenerico();
+			
+			if ($idCGen)
+				$idCs[] = (int)$idCGen;
+		}
+		
+		if (count($idCs) > 0)
 			$rModel->aWhere(array(
-				"righe.id_c"	=>	(int)$idc,
+				"in"	=>	array(
+					"righe.id_c"	=>	$idCs,
+				),
+				
 			));
 		
 		$res = $rModel->send();

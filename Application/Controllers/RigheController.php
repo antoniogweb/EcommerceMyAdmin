@@ -22,6 +22,13 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_List::$filtersFormLayout["filters"]["da_ordinare"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class RigheController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
@@ -32,6 +39,8 @@ class RigheController extends BaseController
 		'titolo:sanitizeAll'=>'tutti',
 		'titolo_riga:sanitizeAll'=>'tutti',
 		'id_marchio:sanitizeAll'=>'tutti',
+		'id_o_da_ordinare:sanitizeAll'=>'tutti',
+		'da_ordinare:sanitizeAll'=>'tutti',
 	);
 	
 	public $sezionePannello = "marketing";
@@ -92,7 +101,7 @@ class RigheController extends BaseController
 		parent::main();
 	}
 	
-	public function daordinare($idO)
+	public function daordinare()
 	{
 		if (!v("attiva_modulo_acquisti"))
 			$this->responseCode(403);
@@ -109,26 +118,70 @@ class RigheController extends BaseController
 			),
 		);
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>999999, 'mainMenu'=>'save_da_ordinare', 'mainAction'=>'daordinare');
+		$this->shift();
+		$this->mainShift = 0;
 		
-		$this->shift(1);
-		$this->mainShift = 1;
+		$recordsPerPage = 30;
+		$daOrdinareCrud = "righe.qta_da_ordinare";
 		
-		$this->mainFields = array("immagineCrud", "righe.title", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", "daOrdinareCrud", "ordinataCrud");
+		if ($this->viewArgs["id_o_da_ordinare"] != "tutti")
+		{
+			$recordsPerPage = 999999;
+			$daOrdinareCrud = "daOrdinareCrud";
+		}
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>$recordsPerPage, 'mainMenu'=>'save_da_ordinare', 'mainAction'=>'daordinare');
+		
+		$this->mainFields = array("immagineCrud", "righe.title", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", $daOrdinareCrud, "ordinataCrud");
 		$this->mainHead = "Immagine,Prodotto,Codice,Prezzo,Prezzo scontato,Quantità acquistata,Quantità da ordinare,Quantità ordinata";
 		
 		$this->m[$this->modelName]->clear()
-				->select("righe.*")
+				->select("orders.id_o,orders.stato,orders.sezionale,orders.numero_documento,orders.data_creazione,righe.*")
 				->inner("orders")->on("righe.id_o = orders.id_o")
 				->where(array(
-					"orders.id_o"	=>	(int)$idO,
-					"prodotto_generico"	=>	0,
+					"orders.id_o"	=>	$this->viewArgs["id_o_da_ordinare"],
+					"id_riga_tipologia"	=>	0,
 				))
 				->orderBy("righe.id_order")->convert();
 		
-		$this->m[$this->modelName]->save();
+		if ($this->viewArgs["id_o_da_ordinare"] == "tutti")
+		{
+			$this->m[$this->modelName]->aWhere(array(
+				"gt"	=>	array(
+					"qta_da_ordinare"	=>	0,
+				),
+			));
+			
+			$this->clean();
+			$this->sezionePannello = "acquisti";
+			$this->loadHeaderAndFooter();
+			$this->tabella = "righe ordini di vendita da ordinare";
+			
+			$this->mainFields[] = "linkcruddaordinare";
+			$this->mainFields[] = "cleanDateTimeOrdine";
+			$this->mainFields[] = "statoordinelabel";
+			
+			$this->mainHead .= ",N°Ordine,Data Ora,Stato ordine";
+			
+			$filtroDaOrdinare = array(
+				"tutti"		=>	gtext("Filtro da ordinare"),
+			) + array(
+				"D"	=>	gtext("Da ordinare"),
+				"O"		=>	gtext("Ordinati"),
+			);
+			
+			$this->filters = array(array("da_ordinare",null,$filtroDaOrdinare));
+			
+			if ($this->viewArgs["da_ordinare"] != "tutti")
+			{
+				if ($this->viewArgs["da_ordinare"] = "D")
+				{
+
+				}
+			}
+		}
 		
-		Helper_Menu::$htmlLinks["save_da_ordinare"]["attributes"] .= " id-ordine='".(int)$idO."'";
+		$this->m[$this->modelName]->save();
 		
 		$this->baseMain();
 	}
@@ -156,13 +209,13 @@ class RigheController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("linkcrud", "cleanDateTime", 'OrdiniModel.getNome|orders.id_o', "righe.title", "righe.quantity", "righe.prezzo_intero_ivato", "righe.price_ivato");
-		$this->mainHead = "N°Ordine,Data Ora,Nome/Rag.Soc,Prodotto,Quantità,Prezzo,Prezzo scontato";
+		$this->mainFields = array("linkcrud", "statoordinelabel", "cleanDateTime", 'OrdiniModel.getNome|orders.id_o', "righe.title", "righe.quantity", "righe.prezzo_intero_ivato", "righe.price_ivato");
+		$this->mainHead = "N°Ordine,Stato ordine,Data Ora,Nome/Rag.Soc,Prodotto,Quantità,Prezzo,Prezzo scontato";
 		
 		$this->filters = array("titolo", "titolo_riga", "dal", "al");
 		
 		$this->m[$this->modelName]->clear()
-				->select("orders.id_o,righe.*")
+				->select("orders.id_o,orders.stato,righe.*")
 				->inner("orders")->on("righe.id_o = orders.id_o")
 				->where(array(
 					"righe.id_riga_tipologia"	=>	0,
@@ -182,7 +235,7 @@ class RigheController extends BaseController
 					"pages.id_marchio"	=>	(int)$this->viewArgs["id_marchio"],
 				));
 		}
-				
+		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], "data_creazione", "orders");
 		
 		if ($this->viewArgs["titolo"] != "tutti")
@@ -196,8 +249,6 @@ class RigheController extends BaseController
 			$this->m[$this->modelName]->aWhere(array(
 				"    AND"	=>	RigheModel::getWhereClauseRicercaLibera($this->viewArgs['titolo_riga']),
 			));
-		
-		
 		
 		$this->m[$this->modelName]->save();
 		

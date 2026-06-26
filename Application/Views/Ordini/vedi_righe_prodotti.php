@@ -71,7 +71,7 @@
 	<td class="text-right">
 		<?php if (!$p["righe"]["prodotto_generico"]) { ?>
 			<?php echo $p["righe"]["qta_da_ordinare"];?>
-			<a class="iframe" href="<?php echo $this->baseUrl."/righe/daordinare/".$ordine["id_o"];?>?partial=Y"><i class='fa fa-pencil'></i></a>
+			<a class="iframe" href="<?php echo $this->baseUrl."/righe/daordinare";?>?partial=Y&id_o_da_ordinare=<?php echo $ordine["id_o"];?>"><i class='fa fa-pencil'></i></a>
 			<?php echo RigheModel::g(false)->getSpecchiettoInArrivo($p["righe"]["id_r"]); ?>
 		<?php } ?>
 	</td>

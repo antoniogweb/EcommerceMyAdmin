@@ -171,11 +171,7 @@ class BaseController extends Controller
 		
 		$this->append($data);
 		
-		if (!isset($_GET["ajax_partial_load"]))
-		{
-			$this->load('header_'.$this->sezionePannello);
-			$this->load('footer','last');
-		}
+		$this->loadHeaderAndFooter();
 		
 		$this->generaPosizioni();
 		
@@ -188,6 +184,15 @@ class BaseController extends Controller
 		// Controlla che tutti i prodotti abbiano la combinazione canonical
 		if (v("ecommerce_attivo") && VariabiliModel::combinazioniLinkVeri())
 			CombinazioniModel::g(false)->checkCanonicalAll();
+	}
+	
+	protected function loadHeaderAndFooter()
+	{
+		if (!isset($_GET["ajax_partial_load"]))
+		{
+			$this->load('header_'.$this->sezionePannello);
+			$this->load('footer','last');
+		}
 	}
 	
 	protected function hookAfterLoginAdmin()

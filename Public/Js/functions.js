@@ -1110,8 +1110,6 @@ $(document).ready(function(){
 		
 		var that = $(this);
 		
-		var idOrdine = $(this).attr("id-ordine");
-		
 		that.find("i").removeClass("fa-refresh").addClass("fa-spinner").addClass("fa-spin");
 		
 		var valori = [];
@@ -1139,7 +1137,7 @@ $(document).ready(function(){
 				valori: JSON.stringify(valori)
 			},
 			success: function(content){
-				aggiornaParziale(applicationControllerAction + "/" + idOrdine + viewStatus + "&ajax_partial_load");
+				aggiornaParziale(applicationControllerAction + viewStatus + "&ajax_partial_load");
 			}
 		});
 		

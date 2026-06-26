@@ -346,10 +346,6 @@ class RigheModel extends GenericModel {
 	public function statoordinelabel($records)
 	{
 		return OrdiniModel::g()->statoordinelabel($records);
-// 		if (isset(OrdiniModel::$stati[$records["orders"]["stato"]]))
-// 			return "<span class='text-bold label label-".OrdiniModel::$labelStati[$records["orders"]["stato"]]."'>".OrdiniModel::$stati[$records["orders"]["stato"]]."<span>";
-// 		
-// 		return $records["orders"]["stato"];
 	}
 	
 	// Restituisce la quantità da spedire
@@ -403,6 +399,13 @@ class RigheModel extends GenericModel {
 		return '<a href="'.Url::getRoot().$this->applicationUrl.'ordini/vedi/'.$record["orders"]["id_o"].$this->cViewStatus.'">#'.$record["orders"]["id_o"].'</a>';
 	}
 	
+	public function linkcruddaordinare($record)
+	{
+		$sigla = $record["orders"]["sezionale"] ? $record["orders"]["sezionale"].": ".$record["orders"]["numero_documento"] : "O:".$record["orders"]["id_o"];
+		
+		return '<a href="'.Url::getRoot().$this->applicationUrl.'ordini/vedi/'.$record["orders"]["id_o"].$this->cViewStatus.'">'.$sigla.'</a>';
+	}
+	
 	public function marchiTitoloCrud($record)
 	{
 		$idPage = (int)$record["righe"]["id_page"];
@@ -428,7 +431,7 @@ class RigheModel extends GenericModel {
 		
 		foreach ($res as $r)
 		{
-			$html .= gtext("Ordine acquisto"). " <b>".$r["ordini_acquisto"]["numero_ordine"]."</b> ".gtext("del")." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>. ".gtext("Quantità").": <b>".(int)$r["aggregate"]["SOMMA"]."</b>";
+			$html .= gtext("Ordine acquisto"). " <a class='label label-info' target='_blank' href='".Url::getRoot()."ordiniacquisto/righe/".$r["ordini_acquisto"]["id_ordine_acquisto"]."'>".$r["ordini_acquisto"]["numero_ordine"]."</a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>. ".gtext("Quantità").": <b>".(int)$r["aggregate"]["SOMMA"]."</b>";
 		}
 		
 		return $html;
@@ -487,15 +490,23 @@ class RigheModel extends GenericModel {
 		
 		return $html;
 	}
+	
 	public function daOrdinareMostraCrud($record)
 	{
-		if ($record["righe"]["prodotto_generico"])
+		if ($record["righe"]["id_riga_tipologia"])
 			return "";
 		
-		$html = $record["righe"]["qta_da_ordinare"]." <a class='iframe' href='".Url::getRoot()."righe/daordinare/".$record["righe"]["id_o"]."?partial=Y'><i class='fa fa-pencil'></i></a>";
+		$html = $record["righe"]["qta_da_ordinare"]." <a class='iframe' href='".Url::getRoot()."righe/daordinare?partial=Y&id_o_da_ordinare=".$record["righe"]["id_o"]."'><i class='fa fa-pencil'></i></a>";
 		
 		$html .= $this->getSpecchiettoInArrivo($record["righe"]["id_r"]);
 		
 		return $html;
+	}
+	
+	public function cleanDateTimeOrdine($record)
+	{
+		$formato = implode("-", App::$dateFormatArray);
+		
+		return date($formato,strtotime($record["orders"]["data_creazione"]));
 	}
 }

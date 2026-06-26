@@ -76,7 +76,7 @@ class NotificheModel extends GenericModel {
 				$notifiche[] = array(
 					"testo"	=>	(int)$numeroDaCollegare." ".gtext("$stringaRigheSingPlu ordine acquisto da collegare"),
 					"link"	=>	Url::getRoot()."ordiniacquistorighe/main",
-					"icona"	=>	"fa-map-o",
+					"icona"	=>	"fa-archive",
 					"class"	=>	"text-yellow",
 				);
 			}

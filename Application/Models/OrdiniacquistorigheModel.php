@@ -265,7 +265,9 @@ class OrdiniacquistorigheModel extends GenericModel
 	
 	protected function getTitoloRigaDaOrdinare($o)
 	{
-		return "O:".$o["orders"]["id_o"]." - SKU: ".$o["righe"]["codice"]." ".$o["righe"]["title"]." ".strip_tags($o["righe"]["attributi_backend"]);
+		$sigla = $o["orders"]["sezionale"] ? $o["orders"]["sezionale"].": ".$o["orders"]["numero_documento"] : "O:".$o["orders"]["id_o"];
+		
+		return $sigla." - SKU: ".$o["righe"]["codice"]." ".$o["righe"]["title"]." ".strip_tags($o["righe"]["attributi_backend"]);
 	}
 	
 	public function riferimentoRigaCrud($record)
@@ -286,7 +288,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
 		{
-			$opzioni = OrdiniModel::righeDaOrdinare($record["ordini_acquisto_righe"]["id_c"]);
+			$opzioni = OrdiniModel::righeDaOrdinare($record["ordini_acquisto_righe"]["id_c"], 0, true);
 			
 			$arraySelect = array(0 => "--");
 			
