@@ -67,12 +67,12 @@ class TestiController extends BaseController {
 			),
 		);
 		
-		$filtroLingua = array("tutti" => "LINGUA") + $this->m[$this->modelName]->selectLingua();
-		$filtroTipo = array("tutti" => "TIPO") + array(
-			"TESTO"		=>	"Testo",
-			"IMMAGINE"	=>	"Immagine",
-			"LINK"		=>	"Link",
-			"VIDEO"		=>	"Video",
+		$filtroLingua = array("tutti" => gtext("LINGUA")) + $this->m[$this->modelName]->selectLingua();
+		$filtroTipo = array("tutti" => gtext("TIPO")) + array(
+			"TESTO"		=>	gtext("Testo"),
+			"IMMAGINE"	=>	gtext("Immagine"),
+			"LINK"		=>	gtext("Link"),
+			"VIDEO"		=>	gtext("Video"),
 		);
 		
 		$this->filters = array('chiave',array("tipo_testo","",$filtroTipo), array("lingua","",$filtroLingua));
