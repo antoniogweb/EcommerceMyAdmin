@@ -223,30 +223,42 @@ class TraduzioniController extends BaseController {
 		$idT = $this->request->post("id_t",0,"forceInt");
 		$valore = $this->request->post("valore",0,"none");
 		
-		$this->m[$this->modelName]->setValues(array(
-			"valore"	=>	$valore,
-		));
+		$possibileModificare = $this->m[$this->modelName]->clear()->where(array(
+			"contesto"	=>	"front",
+			"id_t"		=>	(int)$idT,
+		))->rowNUmber();
 		
-		$this->m[$this->modelName]->update($idT);
+		if ($possibileModificare)
+		{
+			$this->m[$this->modelName]->setValues(array(
+				"valore"	=>	$valore,
+			));
+			
+			$this->m[$this->modelName]->update($idT);
+		}
 	}
 	
 	public function elimina($id_t)
 	{
 		$this->checkCsrf(true);
-
+		
 		$this->clean();
 		
 		$record = $this->m[$this->modelName]->selectId((int)$id_t);
 		
-		foreach ($this->elencoLingue as $codiceLingua => $desc)
+		if (!empty($record))
 		{
-			$traduzione =  $this->m[$this->modelName]->clear()->where(array(
-				"lingua"	=>	$codiceLingua,
-				"chiave"	=>	sanitizeDb($record["chiave"]),
-			))->record();
-			
-			if (!empty($traduzione))
-				$this->m[$this->modelName]->del($traduzione["id_t"]);
+			foreach ($this->elencoLingue as $codiceLingua => $desc)
+			{
+				$traduzione =  $this->m[$this->modelName]->clear()->where(array(
+					"lingua"	=>	$codiceLingua,
+					"chiave"	=>	sanitizeDb($record["chiave"]),
+					"contesto"	=>	"front",
+				))->record();
+				
+				if (!empty($traduzione))
+					$this->m[$this->modelName]->del($traduzione["id_t"]);
+			}
 		}
 	}
 	
@@ -295,6 +307,9 @@ class TraduzioniController extends BaseController {
 	
 	public function form($queryType = 'insert',$id = 0)
 	{
+		if (!v("traduzione_backend"))
+			$this->responseCode(403);
+		
 		$this->shift(2);
 		
 		$_GET["partial"] = "Y";
@@ -302,7 +317,7 @@ class TraduzioniController extends BaseController {
 		$this->_posizioni['main'] = 'class="active"';
 		$data['posizioni'] = $this->_posizioni;
 		
-		$qAllowed = array("insert","update");
+		$qAllowed = array("update");
 		
 		$clean['id'] = (int)$id;
 		
