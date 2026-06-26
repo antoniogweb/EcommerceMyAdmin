@@ -68,12 +68,12 @@ class CookiearchivioModel extends GenericModel
 		
 		$cookieProfilazione = App::getCookieProfilazione();
 		
-		if (count($cookies) > 0 || count($cookieProfilazione) > 0)
-		{
+		// if (count($cookies) > 0 || count($cookieProfilazione) > 0)
+		// {
 			ob_start();
 			include tpf("Elementi/Cookie/elenco_cookie.php");
 			return ob_get_clean();
-		}
+		// }
 		
 		return "";
 	}

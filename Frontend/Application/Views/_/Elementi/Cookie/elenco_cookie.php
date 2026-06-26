@@ -30,6 +30,7 @@
 	</table>
 </div>
 
+<?php if (count($cookieProfilazione) > 0 || count($cookies) > 0) { ?>
 <h3><?php echo gtext("Elenco dei cookie di profilazione a fini statistici e di marketing");?></h3>
 
 <div class="uk-overflow-auto">
@@ -62,5 +63,6 @@
 		</tbody>
 	</table>
 </div>
+<?php } ?>
 
 <?php include(tpf("Elementi/Cookie/gestione_cookie.php"));?>
