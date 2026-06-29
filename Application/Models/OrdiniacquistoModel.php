@@ -46,10 +46,10 @@ class OrdiniacquistoModel extends GenericModel
 	
 	public function relations() {
 		return array(
+			'righe' => array("HAS_MANY", 'OrdiniacquistorigheModel', 'id_ordine_acquisto', null, "RESTRICT", "L'elemento ha delle righe collegate e non può essere eliminato"),
 			'fornitore' => array("BELONGS_TO", 'FornitoriModel', 'id_fornitore',null,"RESTRICT","Si prega di selezionare un fornitore".'<div style="display:none;" rel="hidden_alert_notice">id_fornitore</div>'),
 			'stato' => array("BELONGS_TO", 'OrdiniacquistostatiModel', 'id_ordine_acquisto_stato',null,"RESTRICT","Si prega di selezionare uno stato".'<div style="display:none;" rel="hidden_alert_notice">id_ordine_acquisto_stato</div>'),
 			'pdf' => array("BELONGS_TO", 'OrdiniacquistopdfModel', 'id_ordine_acquisto',null,"CASCADE"),
-			'righe' => array("HAS_MANY", 'OrdiniacquistorigheModel', 'id_ordine_acquisto', null, "CASCADE"),
 		);
     }
     

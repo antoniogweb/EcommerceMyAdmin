@@ -36,4 +36,10 @@ class OrdiniacquistoricezioniModel extends GenericModel
 		
 		parent::__construct();
 	}
+	
+	public function relations() {
+		return array(
+			'righe' => array("HAS_MANY", 'OrdiniacquistoricezionirigheModel', 'id_ordine_acquisto_ricezione', null, "RESTRICT", "L'elemento ha delle righe collegate e non può essere eliminato"),
+		);
+    }
 }

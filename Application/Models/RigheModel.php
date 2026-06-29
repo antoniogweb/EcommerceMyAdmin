@@ -22,8 +22,11 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class RigheModel extends GenericModel {
-
+class RigheModel extends GenericModel
+{
+	public $urlOrdineAcquisto = "ordiniacquisto";
+	public $urlOrdineAcquistoRicezione = "ordiniacquistoricezioni";
+	
 	public function __construct() {
 		$this->_tables='righe';
 		$this->_idFields='id_r';
@@ -403,7 +406,7 @@ class RigheModel extends GenericModel {
 	{
 		$sigla = $record["orders"]["sezionale"] ? $record["orders"]["sezionale"].":".$record["orders"]["numero_documento"] : "O:".$record["orders"]["id_o"];
 		
-		return '<a href="'.Url::getRoot().$this->applicationUrl.'ordini/vedi/'.$record["orders"]["id_o"].$this->cViewStatus.'">'.$sigla.'</a>';
+		return '<a target="_blank" href="'.Url::getRoot().$this->applicationUrl.'ordini/vedi/'.$record["orders"]["id_o"].$this->cViewStatus.'">'.$sigla.'</a>';
 	}
 	
 	public function marchiTitoloCrud($record)
@@ -436,7 +439,7 @@ class RigheModel extends GenericModel {
 			$html .= "<div class='well-small'>";
 			$label = $this->getLabel($record["righe"]["qta_da_ordinare"], (int)$numeroOrdinati, "");
 			
-			$html .= gtext("Ordine acquisto"). " <a class='label label-default' target='_blank' href='".Url::getRoot()."ordiniacquisto/righe/".$r["ordini_acquisto"]["id_ordine_acquisto"]."'>".$r["ordini_acquisto"]["numero_ordine"]."</a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>.<br />".gtext("Quantità ordinata").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
+			$html .= gtext("Ordine acquisto"). " <a class='label label-default' target='_blank' href='".Url::getRoot().$this->urlOrdineAcquisto."/righe/".$r["ordini_acquisto"]["id_ordine_acquisto"]."'>".$r["ordini_acquisto"]["numero_ordine"]."</a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>.<br />".gtext("Quantità ordinata").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
 			$html .= "</div>";
 		}
 		
@@ -456,7 +459,7 @@ class RigheModel extends GenericModel {
 			$html .= "<div class='well-small'>";
 			$label = $this->getLabel($record["righe"]["qta_da_ordinare"], (int)$numeroOrdinati, "");
 
-			$temp = gtext("Ricezione N°"). " <a class='label label-default' target='_blank' href='".Url::getRoot()."ordiniacquistoricezioni/righe/".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."'>".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."</a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"],v("default_date_format"))."</b>.<br />".gtext("Quantità ricevuta").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
+			$temp = gtext("Ricezione N°"). " <a class='label label-default' target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezione."/righe/".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."'>".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."</a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"],v("default_date_format"))."</b>.<br />".gtext("Quantità ricevuta").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
 			
 			if ($r["ordini_acquisto_ricezioni"]["numero_documento_trasporto"])
 				$temp .= "<br />DDT: <b>".$r["ordini_acquisto_ricezioni"]["numero_documento_trasporto"]."</b>";

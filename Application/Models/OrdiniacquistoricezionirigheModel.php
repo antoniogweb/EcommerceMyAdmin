@@ -59,4 +59,14 @@ class OrdiniacquistoricezionirigheModel extends GenericModel
 	{
 		return "<input id-riga='".$record["ordini_acquisto_ricezioni_righe"]["id_ordine_acquisto_ricezione_riga"]."' style='max-width:60px;' class='form-control quantita_riga_ricezione' name='quantita' value='".$record["ordini_acquisto_ricezioni_righe"]["quantita"]."' />";
 	}
+	
+	public function riferimentoRigaCrud($record)
+	{
+		$rModel = new RigheModel();
+		
+		$recordAttuale = $rModel->clear()->select("righe.id_r,righe.title,righe.codice,righe.attributi_backend,righe.qta_da_ordinare,orders.numero_documento,orders.data_documento,orders.sezionale,orders.id_o")->whereId((int)$record["ordini_acquisto_righe"]["id_r"])->inner("orders")->on("orders.id_o = righe.id_o")->first();
+		
+		if (!empty($recordAttuale))
+			return OrdiniacquistorigheModel::g()->getTitoloRigaDaOrdinare($recordAttuale);
+	}
 }

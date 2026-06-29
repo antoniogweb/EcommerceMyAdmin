@@ -266,7 +266,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		return OrdiniacquistoModel::g()->isBozza($idOrdine);
 	}
 	
-	protected function getTitoloRigaDaOrdinare($o)
+	public function getTitoloRigaDaOrdinare($o)
 	{
 		$sigla = $o["orders"]["sezionale"] ? $o["orders"]["sezionale"].": ".$o["orders"]["numero_documento"] : "O:".$o["orders"]["id_o"];
 		

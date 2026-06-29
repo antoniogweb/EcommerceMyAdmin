@@ -163,7 +163,7 @@ class RigheController extends BaseController
 			$this->mainFields[] = "cleanDateTimeOrdine";
 			$this->mainFields[] = "statoordinelabel";
 			
-			$this->mainHead .= ",N°Ordine acquisto,Data Ora,Stato ordine";
+			$this->mainHead .= ",Rif. Ordine vendita,Data Ora vendita,Stato ordine vendita";
 			
 			$filtroDaOrdinare = array(
 				"tutti"		=>	gtext("Filtro da ordinare"),
