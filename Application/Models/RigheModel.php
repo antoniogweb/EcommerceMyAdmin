@@ -427,11 +427,42 @@ class RigheModel extends GenericModel {
 	{
 		$res = $this->getClauseRigheOrdinate($record["righe"]["id_r"])->select("ordini_acquisto.id_ordine_acquisto,ordini_acquisto.data_ordine,ordini_acquisto.numero_ordine,sum(ordini_acquisto_righe.quantita) as SOMMA")->groupBy("ordini_acquisto.id_ordine_acquisto")->send();
 		
+		$numeroOrdinati = $this->prodottiOrdinati($record["righe"]["id_r"]);
+		
 		$html = "";
 		
 		foreach ($res as $r)
 		{
-			$html .= gtext("Ordine acquisto"). " <a class='label label-info' target='_blank' href='".Url::getRoot()."ordiniacquisto/righe/".$r["ordini_acquisto"]["id_ordine_acquisto"]."'>".$r["ordini_acquisto"]["numero_ordine"]."</a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>. ".gtext("Quantità").": <b>".(int)$r["aggregate"]["SOMMA"]."</b>";
+			$html .= "<div class='well-small'>";
+			$label = $this->getLabel($record["righe"]["qta_da_ordinare"], (int)$numeroOrdinati, "");
+			
+			$html .= gtext("Ordine acquisto"). " <a class='label label-default' target='_blank' href='".Url::getRoot()."ordiniacquisto/righe/".$r["ordini_acquisto"]["id_ordine_acquisto"]."'>".$r["ordini_acquisto"]["numero_ordine"]."</a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>.<br />".gtext("Quantità ordinata").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
+			$html .= "</div>";
+		}
+		
+		return $html;
+	}
+	
+	public function ricevutaCrud($record)
+	{
+		$res = $this->getClauseRigheRicevute($record["righe"]["id_r"])->select("ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione,ordini_acquisto_ricezioni.data_ricezione_merce,ordini_acquisto_ricezioni.numero_documento_trasporto,sum(ordini_acquisto_ricezioni_righe.quantita) as SOMMA")->groupBy("ordini_acquisto_ricezioni_righe.id_ordine_acquisto_ricezione")->send();
+		
+		$numeroOrdinati = $this->prodottiArrivati($record["righe"]["id_r"]);
+		
+		$html = "";
+		
+		foreach ($res as $r)
+		{
+			$html .= "<div class='well-small'>";
+			$label = $this->getLabel($record["righe"]["qta_da_ordinare"], (int)$numeroOrdinati, "");
+
+			$temp = gtext("Ricezione N°"). " <a class='label label-default' target='_blank' href='".Url::getRoot()."ordiniacquistoricezioni/righe/".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."'>".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."</a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"],v("default_date_format"))."</b>.<br />".gtext("Quantità ricevuta").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
+			
+			if ($r["ordini_acquisto_ricezioni"]["numero_documento_trasporto"])
+				$temp .= "<br />DDT: <b>".$r["ordini_acquisto_ricezioni"]["numero_documento_trasporto"]."</b>";
+			
+			$html .= $temp;
+			$html .= "</div>";
 		}
 		
 		return $html;
@@ -468,6 +499,7 @@ class RigheModel extends GenericModel {
 		
 		return $oarModel->clear()
 			->inner("ordini_acquisto_ricezioni_righe")->on("ordini_acquisto_ricezioni_righe.id_ordine_acquisto_riga = ordini_acquisto_righe.id_ordine_acquisto_riga")
+			->inner("ordini_acquisto_ricezioni")->on("ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione = ordini_acquisto_ricezioni_righe.id_ordine_acquisto_ricezione")
 			->where(array(
 				"ordini_acquisto_righe.id_r"		=>	(int)$idR,
 			));
@@ -485,6 +517,11 @@ class RigheModel extends GenericModel {
 		return 0;
 	}
 	
+	protected function getLabel($attesa, $ricevuta, $prefisso = "text-")
+	{
+		return ($attesa <= $ricevuta) ? $prefisso."success" : $prefisso."danger";
+	}
+	
 	public function getSpecchiettoInArrivo($idR)
 	{
 		$riga = $this->selectId($idR);
@@ -498,11 +535,14 @@ class RigheModel extends GenericModel {
 		
 		if ($numeroOrdinati)
 		{
-			$label = ($riga["qta_da_ordinare"] <= $numeroOrdinati) ? "text-success" : "text-danger";
+			$numeroRicevuti = $this->prodottiArrivati($idR);
+			
+			$label = $this->getLabel($riga["qta_da_ordinare"], $numeroOrdinati);
+			$labelRicevuti = $this->getLabel($riga["qta_da_ordinare"], $numeroRicevuti);
 			
 			$html .= "<br />".gtext("O").":<b class='$label'>".$numeroOrdinati."</b>";
 		
-			$html .= " | ".gtext("A").":<b>".$this->prodottiArrivati($idR)."</b>";
+			$html .= " | ".gtext("R").":<b class='$labelRicevuti'>".$this->prodottiArrivati($idR)."</b>";
 		}
 		
 		return $html;

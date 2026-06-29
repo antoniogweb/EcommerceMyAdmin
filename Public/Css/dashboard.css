@@ -303,6 +303,11 @@ body {
 	margin-bottom:4px;
 }
 
+.well-small
+{
+	margin-bottom: 5px !important;
+}
+
 @media (min-width: 992px)
 {
 	.modal-lg {

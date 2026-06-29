@@ -134,8 +134,8 @@ class RigheController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>$recordsPerPage, 'mainMenu'=>$mainMenu, 'mainAction'=>'daordinare');
 		
-		$this->mainFields = array("immagineCrud", "righe.title", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", $daOrdinareCrud, "ordinataCrud");
-		$this->mainHead = "Immagine,Prodotto,Codice,Prezzo,Prezzo scontato,Quantità acquistata,Quantità da ordinare,Quantità ordinata";
+		$this->mainFields = array("immagineCrud", "righe.title", "righe.attributi", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", $daOrdinareCrud, "ordinataCrud", "ricevutaCrud");
+		$this->mainHead = "Immagine,Prodotto,Variante,Codice,Prezzo,Prezzo scontato,Quantità acquistata,Quantità da ordinare,Quantità ordinata,Quantità ricevuta";
 		
 		$this->m[$this->modelName]->clear()
 				->select("orders.id_o,orders.stato,orders.sezionale,orders.numero_documento,orders.data_creazione,righe.*")
@@ -163,7 +163,7 @@ class RigheController extends BaseController
 			$this->mainFields[] = "cleanDateTimeOrdine";
 			$this->mainFields[] = "statoordinelabel";
 			
-			$this->mainHead .= ",N°Ordine,Data Ora,Stato ordine";
+			$this->mainHead .= ",N°Ordine acquisto,Data Ora,Stato ordine";
 			
 			$filtroDaOrdinare = array(
 				"tutti"		=>	gtext("Filtro da ordinare"),

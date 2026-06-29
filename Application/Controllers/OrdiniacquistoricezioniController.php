@@ -101,9 +101,6 @@ class OrdiniacquistoricezioniController extends BaseController
 			array(
 				'width'	=>	'60px',
 			),
-			// array(
-			// 	'width'	=>	'80px',
-			// ),
 		);
 		
 		// if (!OrdiniacquistoModel::g()->isBozza((int)$id))
@@ -116,16 +113,16 @@ class OrdiniacquistoricezioniController extends BaseController
 			"class"	=>	"listRow id_tipo_riga_acquisto_;ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia; id_articolo_;ordini_acquisto_righe.id_articolo;",
 		);
 		
-		$this->mainFields = array("primaImmagineCarrelloCrud", "ordini_acquisto_righe.titolo", "ordini_acquisto_righe.attributi", "ordineCrud", "ordini_acquisto_righe.id_ordine_acquisto_riga", "quantitaCrud");
-		$this->mainHead = "Immagine,Articolo,Variante,N° Ordine acquisto,ID Riga,Quantità ricevuta";
+		$this->mainFields = array("primaImmagineCarrelloCrud", "ordini_acquisto_righe.titolo", "ordini_acquisto_righe.attributi", "ordini_acquisto_righe.codice", "ordineCrud", "ordini_acquisto_righe.id_ordine_acquisto_riga", "quantitaCrud");
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,N° Ordine acquisto,ID Riga,Quantità ricevuta";
 		
-// 		if (!$this->pulsantiMenuRighe)
-// 		{
+		if (!$this->pulsantiMenuRighe)
+		{
 			$this->pulsantiMenuRighe = "back";
 // 			
 // 			if (OrdiniacquistoModel::g()->isBozza((int)$id))
 				$this->pulsantiMenuRighe .= ",save_righe_ordini_acquisto_ricezione";
-		// }
+		}
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$this->pulsantiMenuRighe,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
