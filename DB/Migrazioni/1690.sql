@@ -1,0 +1,1 @@
+alter table ordini_acquisto_ricezioni_righe add id_ordine_acquisto_ricezione INT UNSIGNED NOT NULL default 0;

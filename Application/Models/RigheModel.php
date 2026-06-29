@@ -446,9 +446,8 @@ class RigheModel extends GenericModel {
 			->inner("ordini_acquisto_stati")->on("ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto.id_ordine_acquisto_stato")
 			->where(array(
 				"ordini_acquisto_righe.id_r"		=>	(int)$idR,
-				"ordini_acquisto_stati.chiuso"		=>	1,
-				"ordini_acquisto_stati.annullato"	=>	0
-			));
+			))
+			->aWhere(OrdiniacquistoModel::getChiusiWhereClause());
 	}
 	
 	public function prodottiOrdinati($idR)
@@ -456,15 +455,33 @@ class RigheModel extends GenericModel {
 		$oarModel = new OrdiniacquistorigheModel();
 		
 		$res = $this->getClauseRigheOrdinate($idR)->select("sum(ordini_acquisto_righe.quantita) as SOMMA")->send();
-			
+		
 		if (count($res) > 0)
 			return (int)$res[0]["aggregate"]["SOMMA"];
 		
 		return 0;
 	}
 	
+	public function getClauseRigheRicevute($idR)
+	{
+		$oarModel = new OrdiniacquistorigheModel();
+		
+		return $oarModel->clear()
+			->inner("ordini_acquisto_ricezioni_righe")->on("ordini_acquisto_ricezioni_righe.id_ordine_acquisto_riga = ordini_acquisto_righe.id_ordine_acquisto_riga")
+			->where(array(
+				"ordini_acquisto_righe.id_r"		=>	(int)$idR,
+			));
+	}
+	
 	public function prodottiArrivati($idR)
 	{
+		$oarModel = new OrdiniacquistorigheModel();
+		
+		$res = $this->getClauseRigheRicevute($idR)->select("sum(ordini_acquisto_ricezioni_righe.quantita) as SOMMA")->send();
+		
+		if (count($res) > 0)
+			return (int)$res[0]["aggregate"]["SOMMA"];
+		
 		return 0;
 	}
 	

@@ -36,7 +36,27 @@ class OrdiniacquistoricezionirigheModel extends GenericModel
 	
 	public function relations() {
 		return array(
+			'ricezione' => array("BELONGS_TO", 'OrdiniacquistoricezioniModel', 'id_ordine_acquisto',null,"CASCADE"),
 			'riga' => array("BELONGS_TO", 'OrdiniacquistorigheModel', 'id_ordine_acquisto_riga',null,"CASCADE"),
 		);
     }
+    
+    public function primaImmagineCarrelloCrud($record)
+    {
+		$oarModel = new OrdiniacquistorigheModel();
+		
+		return $oarModel->primaImmagineCarrelloCrud($record);
+    }
+    
+    public function ordineCrud($record)
+	{
+		$oarModel = new OrdiniacquistorigheModel();
+
+		return $oarModel->ordineCrud($record);
+	}
+	
+	public function quantitaCrud($record)
+	{
+		return "<input id-riga='".$record["ordini_acquisto_ricezioni_righe"]["id_ordine_acquisto_ricezione_riga"]."' style='max-width:60px;' class='form-control quantita_riga_ricezione' name='quantita' value='".$record["ordini_acquisto_ricezioni_righe"]["quantita"]."' />";
+	}
 }

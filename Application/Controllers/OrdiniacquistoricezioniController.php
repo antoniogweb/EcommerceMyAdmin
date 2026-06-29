@@ -22,6 +22,8 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_Menu::$htmlLinks["save_righe_ordini_acquisto_ricezione"]["attributes"] .= " url-salva='ordiniacquistoricezionirighe/salva' ";
+
 class OrdiniacquistoricezioniController extends BaseController
 {
 	public $argKeys = array(
@@ -33,6 +35,9 @@ class OrdiniacquistoricezioniController extends BaseController
 	public $sezionePannello = "acquisti";
 	
 	public $tabella = "ricezioni di ordini di acquisto";
+	
+	public $pulsantiMenuRighe = "";
+	public $modelNameRighe = "OrdiniacquistoricezionirigheModel";
 	
 	public function __construct($model, $controller, $queryString, $application, $action) {
 		
@@ -46,8 +51,8 @@ class OrdiniacquistoricezioniController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("[[ledit]];ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione;",'ordini_acquisto_ricezioni.data_ricezione_merce');
-		$this->mainHead = "N° Ricezione,Data ricezione";
+		$this->mainFields = array("[[ledit]];ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione;", 'ordini_acquisto_ricezioni.data_ricezione_merce', 'ordini_acquisto_ricezioni.numero_documento_trasporto');
+		$this->mainHead = "N° Ricezione,Data ricezione,Numero DDT";
 		
 		$this->m[$this->modelName]->select("ordini_acquisto_ricezioni.*")
 			->aWhere(array(
@@ -77,6 +82,74 @@ class OrdiniacquistoricezioniController extends BaseController
 	
 	public function righe($id = 0)
 	{
+		$this->mainShift = 1;
 		
+		$this->_posizioni['righe'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_ordine_acquisto_ricezione";
+		
+		$this->mainButtons = "ldel";
+		
+		$mainModelName = $this->modelName;
+		
+		$this->modelName = $this->modelNameRighe;
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+			// array(
+			// 	'width'	=>	'80px',
+			// ),
+		);
+		
+		// if (!OrdiniacquistoModel::g()->isBozza((int)$id))
+		// {
+		// 	$this->addBulkActions = false;
+		// 	$this->colProperties = array();
+		// }
+		
+		$this->rowAttributes = array(
+			"class"	=>	"listRow id_tipo_riga_acquisto_;ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia; id_articolo_;ordini_acquisto_righe.id_articolo;",
+		);
+		
+		$this->mainFields = array("primaImmagineCarrelloCrud", "ordini_acquisto_righe.titolo", "ordini_acquisto_righe.attributi", "ordineCrud", "ordini_acquisto_righe.id_ordine_acquisto_riga", "quantitaCrud");
+		$this->mainHead = "Immagine,Articolo,Variante,N° Ordine acquisto,ID Riga,Quantità ricevuta";
+		
+// 		if (!$this->pulsantiMenuRighe)
+// 		{
+			$this->pulsantiMenuRighe = "back";
+// 			
+// 			if (OrdiniacquistoModel::g()->isBozza((int)$id))
+				$this->pulsantiMenuRighe .= ",save_righe_ordini_acquisto_ricezione";
+		// }
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$this->pulsantiMenuRighe,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m($this->modelName)->clear()->select("ordini_acquisto_ricezioni_righe.*,ordini_acquisto_righe.*,ordini_acquisto.numero_ordine,ordini_acquisto.data_ordine")
+			->left(array("riga"))
+			->left("ordini_acquisto")->on("ordini_acquisto_righe.id_ordine_acquisto = ordini_acquisto.id_ordine_acquisto")
+			->left("ordini_acquisto_righe_tipologie")->on("ordini_acquisto_righe_tipologie.id_ordine_acquisto_riga_tipologia = ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia")
+			->where(array(
+				"ordini_acquisto_ricezioni_righe.id_ordine_acquisto_ricezione"	=>	$clean['id']
+			))
+			->orderBy("ordini_acquisto_righe_tipologie.id_order,ordini_acquisto.numero_ordine,ordini_acquisto_righe.id_order")
+			->convert()->save();
+		
+		$this->getTabViewFields("righe");
+		
+		Helper_Menu::$htmlLinks["save_righe_ordini_acquisto_ricezione"]["attributes"] .= " id-ordine='".(int)$id."'";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m($mainModelName)->titolo($clean['id']);
+		$data["tipoSteps"] = "modifica";
+		$data["ordiniDaRicevere"] = array(0 => gtext("Seleziona ordine acquisto")) + OrdiniacquistoModel::ordiniDaRicevereSelect();
+		
+		// print_r($data["ordiniDaRicevere"]);
+		$this->append($data);
 	}
 }

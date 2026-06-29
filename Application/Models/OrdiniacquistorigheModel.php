@@ -25,6 +25,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 class OrdiniacquistorigheModel extends GenericModel
 {
 	public $campoTitolo = "titolo";
+	public $metodoPerTitolo = "titoloJson";
+	public $campoValore = "id_ordine_acquisto_riga";
 	public $salvaDataModifica = true;
 	public $salvaIdInserimentoModifica = true;
 	
@@ -422,5 +424,74 @@ class OrdiniacquistorigheModel extends GenericModel
 		}
 		
 		return self::$numeroNonCollegateCache[$idOrdine];
+	}
+	
+	public function titoloJson($id)
+	{
+		$clean["id"] = (int)$id;
+		
+		$record = $this->selectId($clean["id"]);
+		
+		if (!empty($record))
+			return "ID Riga:". $record["id_ordine_acquisto_riga"]." - ".$record["codice"]." ".$record["titolo"]." ".$record["attributi"];
+		
+		return "";
+	}
+	
+	public function aggiungiaricezione($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && !$record["id_ordine_acquisto_riga_tipologia"] && isset($_GET["id_ordine_acquisto_ricezione"]))
+		{
+			$oaRic = new OrdiniacquistoricezioniModel();
+			$oaRicRighe = new OrdiniacquistoricezionirigheModel();
+			$recordRicezione = $oaRic->selectId((int)$_GET["id_ordine_acquisto_ricezione"]);
+			
+			if (!empty($recordRicezione) && !OrdiniacquistoModel::g(false)->isBozza((int)$record["id_ordine_acquisto"]))
+			{
+				$ultimaQuantita = $this->getUltimaQuantita((int)$id);
+				
+				$oaRicRighe->sValues(array(
+					"id_admin"		=>	(int)User::$idAdmin,
+					"id_ordine_acquisto_ricezione"	=>	(int)$_GET["id_ordine_acquisto_ricezione"],
+					"quantita"		=>	$this->prodottiDaRicevere((int)$id),
+					"id_ordine_acquisto_riga"		=>	(int)$id,
+				), "sanitizeDb");
+				
+				$oaRicRighe->insert();
+			}
+		}
+    }
+    
+    public function getClauseRigheOrdinate($idRigaAcquisto)
+	{
+		$oarrModel = new OrdiniacquistoricezionirigheModel();
+		
+		return $oarrModel->clear()
+			->where(array(
+				"ordini_acquisto_ricezioni_righe.id_ordine_acquisto_riga"		=>	(int)$idRigaAcquisto,
+			));
+	}
+    
+    public function prodottiRicevuti($idRigaAcquisto)
+	{
+		$oarModel = new OrdiniacquistoricezionirigheModel();
+		
+		$res = $this->getClauseRigheOrdinate($idRigaAcquisto)->select("sum(ordini_acquisto_ricezioni_righe.quantita) as SOMMA")->send();
+			
+		if (count($res) > 0)
+			return (int)$res[0]["aggregate"]["SOMMA"];
+		
+		return 0;
+	}
+	
+	public function prodottiDaRicevere($idRigaAcquisto)
+	{
+		$quantita = (int)$this->clear()->select("quantita")->whereId((int)$idRigaAcquisto)->field("quantita");
+		
+		$ricevuti = $this->prodottiRicevuti($idRigaAcquisto);
+		
+		return ($quantita > $ricevuti) ? (int)($quantita - $ricevuti) : 0;
 	}
 }

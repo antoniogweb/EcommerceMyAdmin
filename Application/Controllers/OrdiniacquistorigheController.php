@@ -36,6 +36,13 @@ Helper_List::$filtersFormLayout["filters"]["cerca"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["da_ricevere"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class OrdiniacquistorigheController extends BaseController
 {
 	public $argKeys = array(
@@ -43,6 +50,9 @@ class OrdiniacquistorigheController extends BaseController
 		'titolo_riga:sanitizeAll'=>'tutti',
 		'dal:sanitizeAll'=>'tutti',
 		'al:sanitizeAll'=>'tutti',
+		'da_ricevere:sanitizeAll'=>'tutti',
+		'id_oar:sanitizeAll'=>'tutti',
+		'id_ordine_acquisto_ricezione:sanitizeAll'=>'tutti',
 	);
 	
 	public function __construct($model, $controller, $queryString, $application, $action) {
@@ -75,7 +85,6 @@ class OrdiniacquistorigheController extends BaseController
 	{
 		$this->queryActions = $this->bulkQueryActions = "";
 		$this->mainButtons = "";
-		$this->addBulkActions = false;
 		
 		$this->colProperties = array(
 			array(
@@ -85,10 +94,17 @@ class OrdiniacquistorigheController extends BaseController
 		
 		$this->shift();
 		
-		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloAssociaCrud", "varianteCrud", "ordineCrud", ";ordini_acquisto.ragione_sociale;<div>;ordini_acquisto.email_amministrativa;</div><div>;ordini_acquisto.telefono;</div>", "aggregate.anno_ordine","ordini_acquisto.data_ordine", "ordini_acquisto_righe.prezzo", "ordini_acquisto_righe.quantita", "ordini_acquisto_righe.sconto_1", "ordini_acquisto_righe.sconto_2", "omaggioAssociaCrud", "prodottoCrud", "statoordinelabel");
-		$this->mainHead = "Immagine,Articolo,Variante,N° Ordine,Fornitore,Anno,Data,Prezzo,Quantita,Sconto 1,Sconto 2,Omaggio,Web,Stato";
+		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloAssociaCrud", "varianteCrud", "ordini_acquisto_righe.codice", "ordineCrud", "ordini_acquisto_righe.id_ordine_acquisto_riga", ";ordini_acquisto.ragione_sociale;<div>;ordini_acquisto.email_amministrativa;</div><div>;ordini_acquisto.telefono;</div>", "aggregate.anno_ordine","ordini_acquisto.data_ordine", "ordini_acquisto_righe.quantita", "ordini_acquisto_righe.prezzo", "ordini_acquisto_righe.sconto_1", "ordini_acquisto_righe.sconto_2", "omaggioAssociaCrud", "prodottoCrud", "statoordinelabel");
+		$this->mainHead = "Immagine,Articolo,Variante,Codice,N° Ordine acquisto,ID Riga,Fornitore,Anno,Data,Quantita,Prezzo,Sconto 1,Sconto 2,Omaggio,Web,Stato";
 		
-		$filtri = array("cerca", "titolo_riga", "dal","al");
+		$filtroDaOrdinare = array(
+			"tutti"		=>	gtext("Filtro da ricevere"),
+		) + array(
+			"D"	=>	gtext("Da ricevere"),
+			"R"		=>	gtext("Ricevuti"),
+		);
+		
+		$filtri = array("cerca", "titolo_riga", "dal","al",array("da_ricevere",null,$filtroDaOrdinare));
 		$this->filters = $filtri;
 		
 		$this->rowAttributes = array(
@@ -102,8 +118,9 @@ class OrdiniacquistorigheController extends BaseController
 				->left("combinazioni")->on("combinazioni.id_c = ordini_acquisto_righe.id_c")
 				->left("pages")->on("pages.id_page = combinazioni.id_page")
 				->left("categories")->on("pages.id_c = categories.id_c")
-				->where(array(
+				->aWhere(array(
 					"ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia"	=>	0,
+					"ordini_acquisto_righe.id_ordine_acquisto"					=>	$this->viewArgs['id_oar'],
 				))
 				->orderBy("ordini_acquisto_righe.id_articolo,anno_ordine desc,ordini_acquisto.numero_ordine desc")->convert();
 		
@@ -118,6 +135,37 @@ class OrdiniacquistorigheController extends BaseController
 			$this->m[$this->modelName]->aWhere(array(
 				"    AND"	=>	OrdiniacquistorigheModel::getWhereClauseRicercaLibera($this->viewArgs['titolo_riga']),
 			));
+		
+		if ($this->viewArgs["da_ricevere"] != "tutti")
+		{
+			$idRs = OrdiniacquistoModel::idRigheDaRicevere();
+			
+			// print_r($idRs);
+			
+			$inNin = $this->viewArgs["da_ricevere"] == "D" ? "in" : "nin";
+			
+			$this->m[$this->modelName]->aWhere(array(
+					"$inNin"	=>	array(
+						"ordini_acquisto_righe.id_ordine_acquisto_riga"	=>	forceIntDeep($idRs),
+					),
+				));
+			
+			if ($this->viewArgs["da_ricevere"] == "R")
+				$this->m[$this->modelName]->inner("ordini_acquisto_stati")->on("ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto.id_ordine_acquisto_stato")->aWhere(OrdiniacquistoModel::getChiusiWhereClause());
+		}
+		
+		if ($this->viewArgs["id_ordine_acquisto_ricezione"] != "tutti")
+		{
+			$this->bulkActions = array(
+				"++checkbox_ordini_acquisto_righe_id_ordine_acquisto_riga"	=>	array("aggiungiaricezione","Aggiungi alla ricezione"),
+			);
+			
+			$this->mainButtons = '';
+			$this->queryActions = '';
+			$this->bulkQueryActions = "aggiungiaricezione";
+		}
+		else
+			$this->addBulkActions = false;
 		
 		$this->m[$this->modelName]->save();
 		

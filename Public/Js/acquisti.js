@@ -132,6 +132,122 @@ $(document).ready(function(){
 			alert("Attenzione, si prega di selezionare un articolo");
 	});
 	
+	$( "body" ).on( "change", ".select_ordine_acquisto_da_ricevere", function(e){
+		
+		var idOrdine = $(this).val();
+		var urlRigaOrdineAcquisto = $(this).attr("url-riga-ordine-acquisto");
+		var that = $(this);
+		
+		$.ajaxQueue({
+			url: baseUrl + "/" + urlRigaOrdineAcquisto + "/1?esporta_json&formato_json=select2&da_ricevere=D&id_oar=" + idOrdine,
+			cache:false,
+			async: true,
+			dataType: "json",
+			success: function(content){
+				
+				var selectCombinazione = that.closest("form").find(".select_riga_ordine_acquisto_da_ricevere");
+				
+				selectCombinazione.find('option').remove();
+				
+				var res = content.results;
+				
+				for (var i =0; i < res.length; i++)
+				{
+					selectCombinazione.append("<option value='" + res[i].id + "'>" + res[i].text + "</option>");
+				}
+				
+				selectCombinazione.select2("destroy");
+				selectCombinazione.select2();
+			}
+		});
+	});
+	
+	$( "body" ).on( "click", ".aggiungi_riga_a_ordine_acquisto_ricezione", function(e){
+		
+		e.preventDefault();
+		
+		var id_riga = $(".select_riga_ordine_acquisto_da_ricevere").val();
+		var urlAggiungi = $(this).attr("url-aggiungi");
+		
+		if (id_riga != 0 && id_riga != "")
+		{
+			makeSpinner($(this));
+			
+			var idOrdine = $(".form_inserisci_riga").attr("id-ordine"); 
+			
+			$.ajaxQueue({
+				url: baseUrl + "/" + urlAggiungi + "?id_ordine_acquisto_ricezione=" + idOrdine,
+				cache:false,
+				async: true,
+				dataType: "html",
+				type: "POST",
+				data: {
+					bulkActionValues: id_riga,
+					bulkAction: "aggiungiaricezione",
+					ajax_no_return_html: "Y"
+				},
+				success: function(content){
+					
+					$(".save_righe_ordini_acquisto_ricezione").trigger("click");
+					
+				}
+			});
+		}
+		else
+			alert("Attenzione, si prega di selezionare una riga");
+	});
+	
+	$("body").on("click", ".save_righe_ordini_acquisto_ricezione", function(e){
+		
+		e.preventDefault();
+		
+		var idOrdine = $(this).attr("id-ordine");
+		var urlSalva = $(this).attr("url-salva");
+		
+		var that = $(this);
+		
+		that.find("i").removeClass("fa-save").addClass("fa-spinner").addClass("fa-spin");
+		
+		var valori = [];
+		
+		$("table tr.listRow").each(function() {
+			
+			var id_ordine_acquisto_ricezione_riga = $(this).find("[name='ordini_acquisto_ricezioni_righe_id_ordine_acquisto_ricezione_riga']").attr("data-primary-key");
+			
+			var quantita = 1;
+			
+			if ($(this).find("[name='quantita']").length > 0)
+				quantita = $(this).find("[name='quantita']").val();
+			
+			var temp = {
+				id_ordine_acquisto_ricezione_riga: id_ordine_acquisto_ricezione_riga,
+				quantita: quantita,
+			};
+			
+			valori.push(temp);
+		});
+		
+// 		console.log(valori);
+		
+		$.ajaxQueue({
+			url: baseUrl + "/" + urlSalva,
+			cache:false,
+			async: true,
+			dataType: "html",
+			type: "POST",
+			data: {
+				csrf: csrf_token,
+				valori: JSON.stringify(valori)
+			},
+			success: function(content) {
+				
+				aggiornaParziale(applicationControllerAction + "/" + idOrdine + viewStatus + "&ajax_partial_load");
+				
+			}
+		});
+		
+	});
+	
 	$("body").on("click", ".collega_righe_ordini_acquisto", function(e){
 		
 		e.preventDefault();

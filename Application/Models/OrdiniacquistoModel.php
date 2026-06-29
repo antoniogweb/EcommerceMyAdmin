@@ -30,6 +30,8 @@ class OrdiniacquistoModel extends GenericModel
 	public $salvaDataModifica = true;
 	public $salvaIdInserimentoModifica = true;
 	
+	public static $idRigheDaRicevere = array();
+	
 	public function __construct() {
 		$this->_tables = 'ordini_acquisto';
 		$this->_idFields = 'id_ordine_acquisto';
@@ -278,5 +280,87 @@ class OrdiniacquistoModel extends GenericModel
 			return '<span class="label label-warning">'.$numero.'</span>';
 		
 		return "";
+	}
+	
+	public static function getChiusiWhereClause()
+	{
+		return array(
+			"ordini_acquisto_stati.chiuso"		=>	1,
+			"ordini_acquisto_stati.annullato"	=>	0
+		);
+	}
+	
+	public static function righeDaRicevereClause($idO = 0)
+	{
+		$rModel = new OrdiniacquistorigheModel();
+		
+		$rModel->clear()
+			->inner(array("ordine"))
+			->inner("ordini_acquisto_stati")->on("ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto.id_ordine_acquisto_stato")
+			->left("(select id_ordine_acquisto_ricezione_riga,id_ordine_acquisto_riga,quantita from ordini_acquisto_ricezioni_righe) as rr")->on("rr.id_ordine_acquisto_riga = ordini_acquisto_righe.id_ordine_acquisto_riga")
+			->aWhere(self::getChiusiWhereClause())
+			->sWhere("ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia = 0 and ordini_acquisto_righe.quantita > 0")
+			->groupBy("ordini_acquisto_righe.id_ordine_acquisto_riga HAVING (ordini_acquisto_righe.quantita > sum(rr.quantita) or rr.id_ordine_acquisto_ricezione_riga IS NULL)");
+		
+		if ($idO)
+			$rModel->aWhere(array(
+				"ordini_acquisto_righe.id_ordine_acquisto"	=>	(int)$idO,
+			));
+		
+		return $rModel;
+	}
+	
+	public static function idRigheDaRicevere($idO = 0)
+	{
+		if (isset(self::$idRigheDaRicevere[$idO]))
+			return self::$idRigheDaRicevere[$idO];
+		
+		self::$idRigheDaRicevere[$idO] = self::righeDaRicevereClause()->select("ordini_acquisto_righe.id_ordine_acquisto_riga,ordini_acquisto_righe.quantita,rr.quantita,rr.id_ordine_acquisto_ricezione_riga,ordini_acquisto_righe.id_ordine_acquisto")->toList("ordini_acquisto_righe.id_ordine_acquisto_riga")->send();
+		
+		// echo $righeModel->getQuery();
+		
+		return self::$idRigheDaRicevere[$idO];
+	}
+	
+	// Restituisce gli ordini con almeno una riga da ricevere
+	public static function idOrdiniDaRicevere()
+	{
+		$idRigheDaRicevere = self::righeDaRicevereClause()->select("ordini_acquisto_righe.id_ordine_acquisto_riga,ordini_acquisto_righe.quantita,rr.quantita,rr.id_ordine_acquisto_ricezione_riga,ordini_acquisto_righe.id_ordine_acquisto")->toList("ordini_acquisto_righe.id_ordine_acquisto")->send();
+		
+		if (count($idRigheDaRicevere) > 0)
+			return array_unique($idRigheDaRicevere);
+		
+		return array();
+	}
+	
+	// Restituisce la tendina per la selezione degli ordini con almeno una riga da ricevere
+	public static function ordiniDaRicevere()
+	{
+		$idOrdiniDaRicevere = self::idOrdiniDaRicevere();
+		
+		if (count($idOrdiniDaRicevere) > 0)
+		{
+			return self::g()->clear()->where(array(
+				"in"	=>	array(
+					"id_ordine_acquisto"	=>	forceIntDeep($idOrdiniDaRicevere)
+				)
+			))->send(false);
+		}
+		
+		return array();
+	}
+	
+	public static function ordiniDaRicevereSelect()
+	{
+		$ordini = self::ordiniDaRicevere();
+		
+		$tendina = array();
+		
+		foreach ($ordini as $o)
+		{
+			$tendina[$o["id_ordine_acquisto"]] = "Ordine N° ".$o["numero_ordine"]." ".gtext("del")." ".smartDate($o["data_ordine"],v("default_date_format"))." - ".gtext("Fornitore").": ".$o["ragione_sociale"];
+		}
+		
+		return $tendina;
 	}
 }

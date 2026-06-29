@@ -421,6 +421,15 @@ Helper_Menu::$htmlLinks = array(
 		"attributes" => 'role="button" class="btn btn-success save_righe_ordini_acquisto menu_btn"',
 		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
 	),
+	'save_righe_ordini_acquisto_ricezione'	=>	array(
+		'title'	=>	"Salva",
+		'text'	=>	"Salva",
+		'url'	=>	'main',
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-success save_righe_ordini_acquisto_ricezione menu_btn"',
+		"classIconBefore"	=>	'<i class="fa fa-save"></i>',
+	),
 	'collega_righe_ordini_acquisto'	=>	array(
 		'title'	=>	"Salva",
 		'text'	=>	"Salva",
