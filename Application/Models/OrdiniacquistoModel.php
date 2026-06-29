@@ -315,7 +315,7 @@ class OrdiniacquistoModel extends GenericModel
 		if (isset(self::$idRigheDaRicevere[$idO]))
 			return self::$idRigheDaRicevere[$idO];
 		
-		self::$idRigheDaRicevere[$idO] = self::righeDaRicevereClause()->select("ordini_acquisto_righe.id_ordine_acquisto_riga,ordini_acquisto_righe.quantita,rr.quantita,rr.id_ordine_acquisto_ricezione_riga,ordini_acquisto_righe.id_ordine_acquisto")->toList("ordini_acquisto_righe.id_ordine_acquisto_riga")->send();
+		self::$idRigheDaRicevere[$idO] = self::righeDaRicevereClause($idO)->select("ordini_acquisto_righe.id_ordine_acquisto_riga,ordini_acquisto_righe.quantita,rr.quantita,rr.id_ordine_acquisto_ricezione_riga,ordini_acquisto_righe.id_ordine_acquisto")->toList("ordini_acquisto_righe.id_ordine_acquisto_riga")->send();
 		
 		// echo $righeModel->getQuery();
 		
@@ -363,4 +363,23 @@ class OrdiniacquistoModel extends GenericModel
 		
 		return $tendina;
 	}
+	
+	// Aggiungi le righe dell'ordine alla ricezione definita in $_GET["id_ordine_acquisto_ricezione"]
+	// $idO : ID ordine acquisto
+	public function aggiungiaricezione($idO)
+	{
+		$record = $this->selectId((int)$idO);
+		
+		if (!empty($record) && isset($_GET["id_ordine_acquisto_ricezione"]))
+		{
+			$idSRighe = self::idRigheDaRicevere((int)$idO);
+			
+			foreach ($idSRighe as $idRiga)
+			{
+				$oarModel = new OrdiniacquistorigheModel();
+				
+				$oarModel->aggiungiaricezione($idRiga);
+			}
+		}
+    }
 }

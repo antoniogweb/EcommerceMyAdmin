@@ -50,6 +50,7 @@ class MagazzinoarticoliController extends BaseController
 		'q:sanitizeAll'=>'tutti',
 		'id_page:sanitizeAll'=>'tutti',
 		'id_articolo_comb:sanitizeAll'=>'tutti',
+		'id_ordine_acquisto_ricezione:sanitizeAll'=>'tutti',
 	);
 	
 	// public $mainButtons = 'ldel';
@@ -193,22 +194,32 @@ class MagazzinoarticoliController extends BaseController
 				));
 		}
 		
-		if ($this->viewArgs["id_ordine_acquisto"] != "tutti")
+		if ($this->viewArgs["id_ordine_acquisto"] != "tutti" || $this->viewArgs["id_ordine_acquisto_ricezione"] != "tutti")
 		{
-			$this->bulkActions = array(
-				"++checkbox_magazzino_articoli_id_articolo"	=>	array("aggiungiaordine","Aggiungi all'ordine"),
-			);
-			
 			$this->mainButtons = '';
 			$this->queryActions = '';
-			$this->bulkQueryActions = "aggiungiaordine";
+			
+			if ($this->viewArgs["id_ordine_acquisto"] != "tutti")
+			{
+				$metodo = "aggiungiaordine";
+				$testoBulk = "Aggiungi all'ordine";
+			}
+			else
+			{
+				$metodo = "aggiungiaricezione";
+				$testoBulk = "Aggiungi alla ricezione";
+			}
+			
+			$this->bulkActions = array(
+				"++checkbox_magazzino_articoli_id_articolo"	=>	array($metodo, $testoBulk),
+			);
+			
+			$this->bulkQueryActions = $metodo;
 		}
 		else
 			$this->addBulkActions = false;
 		
 		$this->m[$this->modelName]->save();
-		
-		// $this->filters = array("id_ordine_acquisto_filtro","ragione_sociale","dal","al");
 		
 		parent::main();
 	}

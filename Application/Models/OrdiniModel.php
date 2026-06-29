@@ -149,7 +149,7 @@ class OrdiniModel extends FormModel
 		
 		$rModel->clear()
 			->inner("orders")->on("orders.id_o = righe.id_o")
-			->left("(select id_ordine_acquisto_riga,id_r,quantita from ordini_acquisto_righe inner join ordini_acquisto on ordini_acquisto.id_ordine_acquisto = ordini_acquisto_righe.id_ordine_acquisto inner join ordini_acquisto_stati on ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto.id_ordine_acquisto_stato where ordini_acquisto_stati.chiuso = 1 and ordini_acquisto_stati.annullato = 0) as rr")->on("rr.id_r = righe.id_r")
+			->left("(select id_ordine_acquisto_riga,id_r,quantita from ordini_acquisto_righe inner join ordini_acquisto on ordini_acquisto.id_ordine_acquisto = ordini_acquisto_righe.id_ordine_acquisto inner join ordini_acquisto_stati on ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto.id_ordine_acquisto_stato) as rr")->on("rr.id_r = righe.id_r")
 			->sWhere("righe.gift_card = 0 and righe.prodotto_digitale = 0 and righe.prodotto_crediti = 0 and righe.id_riga_tipologia = 0 and righe.qta_da_ordinare > 0")
 			->groupBy("righe.id_r HAVING (righe.qta_da_ordinare > sum(rr.quantita) or rr.id_ordine_acquisto_riga IS NULL)");
 		

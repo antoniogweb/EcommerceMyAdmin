@@ -9,4 +9,4 @@
 
 <button url-aggiungi="ordiniacquistorighe/main" class="submit_file btn btn-success btn-sm aggiungi_riga_a_ordine_acquisto_ricezione" type="submit" name="insertAction" value="<?php echo gtext("Aggiungi riga")?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi riga");?></button>
 
-<button url-aggiungi="ordiniacquistorighe/main" class="submit_file btn btn-primary btn-sm aggiungi_ordine_acquisto_a_ordine_acquisto_ricezione" type="submit" name="insertAction" value="<?php echo gtext("Aggiungi ordine")?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi ordine");?></button>
+<button url-aggiungi="ordiniacquisto/main" class="submit_file btn btn-primary btn-sm aggiungi_ordine_acquisto_a_ordine_acquisto_ricezione" type="submit" name="insertAction" value="<?php echo gtext("Aggiungi ordine")?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi ordine");?></button>

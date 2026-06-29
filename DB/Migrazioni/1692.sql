@@ -1,0 +1,1 @@
+alter table ordini_acquisto_ricezioni_righe add id_articolo int not null default 0;

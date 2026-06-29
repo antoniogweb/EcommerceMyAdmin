@@ -113,7 +113,7 @@ class OrdiniacquistoricezioniController extends BaseController
 			"class"	=>	"listRow id_tipo_riga_acquisto_;ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia; id_articolo_;ordini_acquisto_righe.id_articolo;",
 		);
 		
-		$this->mainFields = array("primaImmagineCarrelloCrud", "ordini_acquisto_righe.titolo", "ordini_acquisto_righe.attributi", "ordini_acquisto_righe.codice", "ordineCrud", "ordini_acquisto_righe.id_ordine_acquisto_riga", "riferimentoRigaCrud", "quantitaCrud");
+		$this->mainFields = array("primaImmagineCarrelloCrud", "titoloCrud", "attributiCrud", "codiceCrud", "ordineCrud", "ordini_acquisto_righe.id_ordine_acquisto_riga", "riferimentoRigaCrud", "quantitaCrud");
 		$this->mainHead = "Immagine,Articolo,Variante,Codice,N° Ordine acquisto,ID Riga,Riferimento riga ordine di vendita,Quantità ricevuta";
 		
 		if (!$this->pulsantiMenuRighe)
@@ -126,14 +126,18 @@ class OrdiniacquistoricezioniController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>$this->pulsantiMenuRighe,'mainAction'=>"righe/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m($this->modelName)->clear()->select("ordini_acquisto_ricezioni_righe.*,ordini_acquisto_righe.*,ordini_acquisto.numero_ordine,ordini_acquisto.data_ordine")
+		$this->m($this->modelName)->clear()->select("ordini_acquisto_ricezioni_righe.*,ordini_acquisto_righe.*,ordini_acquisto.numero_ordine,ordini_acquisto.data_ordine,magazzino_articoli_combinazioni.id_page,magazzino_articoli_combinazioni.id_c,magazzino_articoli.codice,pages.title,pages.id_page,combinazioni.id_c")
 			->left(array("riga"))
 			->left("ordini_acquisto")->on("ordini_acquisto_righe.id_ordine_acquisto = ordini_acquisto.id_ordine_acquisto")
 			->left("ordini_acquisto_righe_tipologie")->on("ordini_acquisto_righe_tipologie.id_ordine_acquisto_riga_tipologia = ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia")
+			->left(array("articolo"))
+			->left("magazzino_articoli_combinazioni")->on("magazzino_articoli_combinazioni.id_articolo = ordini_acquisto_ricezioni_righe.id_articolo")
+			->left("combinazioni")->on("combinazioni.id_c = magazzino_articoli_combinazioni.id_c")
+			->left("pages")->on("pages.id_page = combinazioni.id_page")
 			->where(array(
 				"ordini_acquisto_ricezioni_righe.id_ordine_acquisto_ricezione"	=>	$clean['id']
 			))
-			->orderBy("ordini_acquisto_righe_tipologie.id_order,ordini_acquisto.numero_ordine,ordini_acquisto_righe.id_order")
+			->orderBy("(ordini_acquisto.numero_ordine = 0) DESC,ordini_acquisto.numero_ordine,ordini_acquisto_righe_tipologie.id_order,ordini_acquisto_righe.id_order")
 			->convert()->save();
 		
 		$this->getTabViewFields("righe");

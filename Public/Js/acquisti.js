@@ -197,6 +197,41 @@ $(document).ready(function(){
 			alert("Attenzione, si prega di selezionare una riga");
 	});
 	
+	$( "body" ).on( "click", ".aggiungi_ordine_acquisto_a_ordine_acquisto_ricezione", function(e){
+		
+		e.preventDefault();
+		
+		var id_ordine = $(".select_ordine_acquisto_da_ricevere").val();
+		var urlAggiungi = $(this).attr("url-aggiungi");
+		
+		if (id_ordine != 0 && id_ordine != "")
+		{
+			makeSpinner($(this));
+			
+			var idOrdine = $(".form_inserisci_riga").attr("id-ordine"); 
+			
+			$.ajaxQueue({
+				url: baseUrl + "/" + urlAggiungi + "?id_ordine_acquisto_ricezione=" + idOrdine,
+				cache:false,
+				async: true,
+				dataType: "html",
+				type: "POST",
+				data: {
+					bulkActionValues: id_ordine,
+					bulkAction: "aggiungiaricezione",
+					ajax_no_return_html: "Y"
+				},
+				success: function(content){
+					
+					$(".save_righe_ordini_acquisto_ricezione").trigger("click");
+					
+				}
+			});
+		}
+		else
+			alert("Attenzione, si prega di selezionare una riga");
+	});
+	
 	$("body").on("click", ".save_righe_ordini_acquisto_ricezione", function(e){
 		
 		e.preventDefault();

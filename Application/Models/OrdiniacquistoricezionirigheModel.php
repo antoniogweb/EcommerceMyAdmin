@@ -36,17 +36,45 @@ class OrdiniacquistoricezionirigheModel extends GenericModel
 	
 	public function relations() {
 		return array(
-			'ricezione' => array("BELONGS_TO", 'OrdiniacquistoricezioniModel', 'id_ordine_acquisto',null,"CASCADE"),
+			'ricezione' => array("BELONGS_TO", 'OrdiniacquistoricezioniModel', 'id_ordine_acquisto_ricezione',null,"CASCADE"),
 			'riga' => array("BELONGS_TO", 'OrdiniacquistorigheModel', 'id_ordine_acquisto_riga',null,"CASCADE"),
+			'articolo' => array("BELONGS_TO", 'MagazzinoarticoliModel', 'id_articolo',null,"CASCADE"),
 		);
     }
     
     public function primaImmagineCarrelloCrud($record)
     {
-		$oarModel = new OrdiniacquistorigheModel();
+		if ($record["ordini_acquisto_ricezioni_righe"]["id_ordine_acquisto_riga"])
+			$model = new OrdiniacquistorigheModel();
+		else
+			$model = new MagazzinoarticoliModel();
 		
-		return $oarModel->primaImmagineCarrelloCrud($record);
+		return $model->primaImmagineCarrelloCrud($record);
     }
+    
+    public function titoloCrud($record)
+	{
+		if ($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"])
+			return $record["ordini_acquisto_righe"]["titolo"];
+		else
+			return $record["pages"]["title"];
+	}
+	
+	public function attributiCrud($record)
+	{
+		if ($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"])
+			return $record["ordini_acquisto_righe"]["attributi"];
+		else
+			return strip_tags(MagazzinoarticoliModel::g()->varianteCrud($record));
+	}
+	
+	public function codiceCrud($record)
+	{
+		if ($record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"])
+			return $record["ordini_acquisto_righe"]["codice"];
+		else
+			return $record["magazzino_articoli"]["codice"];
+	}
     
     public function ordineCrud($record)
 	{

@@ -50,6 +50,7 @@ class OrdiniacquistoController extends BaseController
 		'ragione_sociale:sanitizeAll'=>'tutti',
 		'dal:sanitizeAll'=>'tutti',
 		'al:sanitizeAll'=>'tutti',
+		'id_ordine_acquisto_ricezione:sanitizeAll'=>'tutti',
 	);
 	
 	public $useEditor = true;
@@ -89,6 +90,17 @@ class OrdiniacquistoController extends BaseController
 		}
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], 'data_ordine');
+		
+		if ($this->viewArgs["id_ordine_acquisto_ricezione"] != "tutti")
+		{
+			$this->bulkActions = array(
+				"++checkbox_ordini_acquisto_id_ordine_acquisto"	=>	array("aggiungiaricezione","Aggiungi alla ricezione"),
+			);
+			
+			$this->mainButtons = '';
+			$this->queryActions = '';
+			$this->bulkQueryActions = "aggiungiaricezione";
+		}
 		
 		$this->m[$this->modelName]->save();
 		
@@ -165,8 +177,8 @@ class OrdiniacquistoController extends BaseController
 			"class"	=>	"listRow id_tipo_riga_acquisto_;ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia; id_articolo_;ordini_acquisto_righe.id_articolo;",
 		);
 		
-		$this->mainFields = array("ordini_acquisto_righe.id_ordine_acquisto_riga", "primaImmagineCarrelloCrud", "titoloCrud", "attributiCrud", "riferimentoRigaCrud", "codiceCrud", "prezzoInteroCrud", "quantitaCrud", "sconto1Crud", "sconto2Crud", "omaggioCrud", "aliquitaIvaCrud", "acquistabileCrud");
-		$this->mainHead = "ID Riga,Immagine,Articolo,Variante,Riferimento riga ordine di vendita,Codice,Prezzo,Quantità,Sconto 1, Sconto 2,Om.,Aliquota,Acq";
+		$this->mainFields = array("ordini_acquisto_righe.id_ordine_acquisto_riga", "primaImmagineCarrelloCrud", "titoloCrud", "attributiCrud", "riferimentoRigaCrud", "codiceCrud", "prezzoInteroCrud", "quantitaCrud", "sconto1Crud", "sconto2Crud", "omaggioCrud", "aliquitaIvaCrud", "acquistabileCrud", "ricezioniCrud");
+		$this->mainHead = "ID Riga,Immagine,Articolo,Variante,Riferimento riga ordine di vendita,Codice,Prezzo,Quantità,Sconto 1, Sconto 2,Om.,Aliquota,Acq,Ricezioni";
 		
 		if (!$this->pulsantiMenuRighe)
 		{

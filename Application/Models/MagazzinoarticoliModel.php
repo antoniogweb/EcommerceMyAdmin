@@ -245,6 +245,34 @@ class MagazzinoarticoliModel extends GenericModel
 		return "<i data-azione='aggiungiaordine' title='".gtext("Aggiungi all'ordine")."' class='bulk_trigger help_trigger_aggiungi_ad_ordine_acquisto fa fa-plus-circle text text-primary'></i>";
     }
     
+    
+	// Aggiungi l'articolo alla ricezione definita in $_GET["id_ordine_acquisto_ricezione"]
+	// $id : ID riga articolo
+	public function aggiungiaricezione($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_ordine_acquisto_ricezione"]))
+		{
+			$oaRic = new OrdiniacquistoricezioniModel();
+			$oaRicRighe = new OrdiniacquistoricezionirigheModel();
+			$recordRicezione = $oaRic->selectId((int)$_GET["id_ordine_acquisto_ricezione"]);
+			
+			if (!empty($recordRicezione))
+			{
+				$oaRicRighe->sValues(array(
+					"id_admin"		=>	(int)User::$idAdmin,
+					"id_ordine_acquisto_ricezione"	=>	(int)$_GET["id_ordine_acquisto_ricezione"],
+					"quantita"		=>	1,
+					"id_ordine_acquisto_riga"		=>	0,
+					"id_articolo"	=>	(int)$id,
+				), "sanitizeDb");
+				
+				$oaRicRighe->insert();
+			}
+		}
+    }
+    
     public function aggiungiaordine($id)
     {
 		$record = $this->selectId((int)$id);

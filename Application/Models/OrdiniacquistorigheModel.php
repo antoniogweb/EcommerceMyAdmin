@@ -30,6 +30,8 @@ class OrdiniacquistorigheModel extends GenericModel
 	public $salvaDataModifica = true;
 	public $salvaIdInserimentoModifica = true;
 	
+	protected $urlOrdineAcquistoRicezioni = "ordiniacquistoricezioni";
+	
 	public static $numeroNonCollegateCache = null;
 	
 	public function __construct() {
@@ -196,7 +198,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		$prezzo = $record["ordini_acquisto_righe"]["prezzo"];
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
-			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='max-width:90px;' class='form-control prezzo_pieno_riga_ordine' name='prezzo' value='".$prezzo."' />";
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='width:90px;' class='form-control prezzo_pieno_riga_ordine' name='prezzo' value='".$prezzo."' />";
 		else
 			return $prezzo;
 	}
@@ -206,7 +208,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		$sconto = $record["ordini_acquisto_righe"]["sconto_1"];
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
-			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='max-width:65px;' class='form-control sconto_1_riga_ordine' name='sconto_1' value='".$sconto."' />";
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='width:65px;' class='form-control sconto_1_riga_ordine' name='sconto_1' value='".$sconto."' />";
 		else
 			return $sconto;
 	}
@@ -219,7 +221,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		$sconto = $record["ordini_acquisto_righe"]["sconto_2"];
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
-			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='max-width:65px;' class='form-control sconto_2_riga_ordine' name='sconto_2' value='".$sconto."' />";
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='width:65px;' class='form-control sconto_2_riga_ordine' name='sconto_2' value='".$sconto."' />";
 		else
 			return $sconto;
 	}
@@ -438,8 +440,10 @@ class OrdiniacquistorigheModel extends GenericModel
 		return "";
 	}
 	
+	// Aggiungi la riga alla ricezione definita in $_GET["id_ordine_acquisto_ricezione"]
+	// $id : ID riga ordine acquisto
 	public function aggiungiaricezione($id)
-    {
+	{
 		$record = $this->selectId((int)$id);
 		
 		if (!empty($record) && !$record["id_ordine_acquisto_riga_tipologia"] && isset($_GET["id_ordine_acquisto_ricezione"]))
@@ -450,13 +454,12 @@ class OrdiniacquistorigheModel extends GenericModel
 			
 			if (!empty($recordRicezione) && !OrdiniacquistoModel::g(false)->isBozza((int)$record["id_ordine_acquisto"]))
 			{
-				$ultimaQuantita = $this->getUltimaQuantita((int)$id);
-				
 				$oaRicRighe->sValues(array(
 					"id_admin"		=>	(int)User::$idAdmin,
 					"id_ordine_acquisto_ricezione"	=>	(int)$_GET["id_ordine_acquisto_ricezione"],
 					"quantita"		=>	$this->prodottiDaRicevere((int)$id),
 					"id_ordine_acquisto_riga"		=>	(int)$id,
+					"id_articolo"	=>	(int)$record["id_articolo"],
 				), "sanitizeDb");
 				
 				$oaRicRighe->insert();
@@ -493,5 +496,25 @@ class OrdiniacquistorigheModel extends GenericModel
 		$ricevuti = $this->prodottiRicevuti($idRigaAcquisto);
 		
 		return ($quantita > $ricevuti) ? (int)($quantita - $ricevuti) : 0;
+	}
+	
+	public function ricezioniCrud($record)
+	{
+		$oarrModel = new OrdiniacquistoricezionirigheModel();
+		
+		$ricezioni = $oarrModel->clear()->select("ordini_acquisto_ricezioni_righe.quantita,ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione,ordini_acquisto_ricezioni.numero_documento_trasporto")->inner(array("ricezione"))->where(array(
+			"id_ordine_acquisto_riga"	=>	(int)$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"],
+		))->send();
+		
+		$htmlArray = array();
+		
+		foreach ($ricezioni as $r)
+		{
+			$idRicezione = (int)$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"];
+			
+			$htmlArray[] = "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezioni."/righe/$idRicezione'><b>N°".$idRicezione."</b></a> - <b>".(int)$r["ordini_acquisto_ricezioni_righe"]["quantita"]."</b>Pz";
+		}
+		
+		return implode("<br />", $htmlArray);
 	}
 }
