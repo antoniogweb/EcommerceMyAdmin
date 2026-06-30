@@ -1,0 +1,1 @@
+update ordini_acquisto_stati set ricevuto = 1 where id_ordine_acquisto_stato = 5;

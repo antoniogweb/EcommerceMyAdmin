@@ -203,9 +203,7 @@ class OrdiniacquistoricezioniController extends BaseController
 				$this->responseCode(403);
 			
 			if ($this->m($this->modelName)->update((int)$idRicezione) && $chiusuraRicezione)
-			{
 				$this->m($this->modelName)->settaStatoRicevutoOrdiniCollegati((int)$idRicezione);
-			}
 			
 			$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$idRicezione.$this->viewStatus);
 		}
