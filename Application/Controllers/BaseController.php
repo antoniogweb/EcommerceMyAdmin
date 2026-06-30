@@ -308,7 +308,7 @@ class BaseController extends Controller
 			
 			$record = $this->m[$this->modelName]->selectId($clean["id"]);
 			
-			if (!empty($record) && strcmp($record[$field],"") !== 0 and file_exists($folder."/".$record[$field]))
+			if (!empty($record) && strcmp($record[$field],"") !== 0 and is_file($folder."/".$record[$field]))
 			{
 				$finfo = finfo_open(FILEINFO_MIME_TYPE);
 				$MIMEtype = finfo_file($finfo, $folder."/".$record[$field]);

@@ -24,17 +24,27 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 Helper_Menu::$htmlLinks["save_righe_ordini_acquisto_ricezione"]["attributes"] .= " url-salva='ordiniacquistoricezionirighe/salva' ";
 
+Helper_List::$filtersFormLayout["filters"]["id_ricezione_filtro"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"N° Ricezione",
+	),
+);
+
 class OrdiniacquistoricezioniController extends BaseController
 {
 	public $argKeys = array(
-	
+		'id_ricezione_filtro:sanitizeAll'=>'tutti',
+		'numero_ordine_acquisto:sanitizeAll'=>'tutti',
+		'dal:sanitizeAll'=>'tutti',
+		'al:sanitizeAll'=>'tutti',
 	);
 	
 	public $useEditor = true;
 	
 	public $sezionePannello = "acquisti";
 	
-	public $tabella = "ricezioni di ordini di acquisto";
+	public $tabella = "ricezioni di prodotti";
 	
 	public $pulsantiMenuRighe = "";
 	public $modelNameRighe = "OrdiniacquistoricezionirigheModel";
@@ -54,20 +64,30 @@ class OrdiniacquistoricezioniController extends BaseController
 	{
 		$this->shift();
 		
-		$this->mainFields = array("[[ledit]];ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione;", 'ordini_acquisto_ricezioni.data_ricezione_merce', 'ordini_acquisto_ricezioni.numero_documento_trasporto', "ordiniAcquistoCrud");
-		$this->mainHead = "N° Ricezione,Data ricezione,Numero DDT,Ordini acquisto";
+		$this->mainFields = array("[[ledit]];ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione;", 'ordini_acquisto_ricezioni.data_ricezione_merce', 'ordini_acquisto_ricezioni.numero_documento_trasporto', "statoLabelCrud", "ordiniAcquistoCrud");
+		$this->mainHead = "N° Ricezione,Data ricezione,Numero DDT,Stato,Ordini acquisto";
 		
 		$this->m[$this->modelName]->select("ordini_acquisto_ricezioni.*")
 			->aWhere(array(
-				// "numero_ordine"	=>	$this->viewArgs["id_ordine_acquisto_filtro"],
+				"id_ordine_acquisto_ricezione"	=>	$this->viewArgs["id_ricezione_filtro"],
 			))
 			->orderBy("id_ordine_acquisto_ricezione desc")->convert();
 		
-		// $this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], 'data_ordine');
+		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], 'data_ricezione_merce');
+		
+		if ($this->viewArgs["numero_ordine_acquisto"] != "tutti")
+		{
+			$this->m[$this->modelName]->inner(array("righe"))
+				->inner("ordini_acquisto_righe")->on("ordini_acquisto_ricezioni_righe.id_ordine_acquisto_riga = ordini_acquisto_righe.id_ordine_acquisto_riga")->inner("ordini_acquisto")->on("ordini_acquisto.id_ordine_acquisto = ordini_acquisto_righe.id_ordine_acquisto")
+				->aWhere(array(
+					"ordini_acquisto.numero_ordine"	=>	$this->viewArgs["numero_ordine_acquisto"],
+				))
+				->groupBy("ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione");
+		}
 		
 		$this->m[$this->modelName]->save();
 		
-		// $this->filters = array("id_ordine_acquisto_filtro","ragione_sociale","dal","al");
+		$this->filters = array("id_ricezione_filtro","numero_ordine_acquisto","dal","al");
 		
 		parent::main();
 	}
@@ -78,7 +98,7 @@ class OrdiniacquistoricezioniController extends BaseController
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$this->m[$this->modelName]->setValuesFromPost('data_ricezione_merce,numero_documento_trasporto');
+		$this->m[$this->modelName]->setValuesFromPost('data_ricezione_merce,numero_documento_trasporto,filename');
 		
 		parent::form($queryType, $id);
 	}
@@ -165,22 +185,36 @@ class OrdiniacquistoricezioniController extends BaseController
 		
 		if (!empty($ricezione))
 		{
+			$chiusuraRicezione = false;
+			
 			if ($ricezione["chiuso"] && (int)$chiuso === 0)
 				$this->m($this->modelName)->sValues(array(
 					"chiuso"	=>	0,
 				));
 			else if (!$ricezione["chiuso"] && (int)$chiuso === 1)
+			{
 				$this->m($this->modelName)->sValues(array(
 					"chiuso"	=>	1,
 				));
+				
+				$chiusuraRicezione = true;
+			}
 			else
 				$this->responseCode(403);
 			
-			$this->m($this->modelName)->update((int)$idRicezione);
+			if ($this->m($this->modelName)->update((int)$idRicezione) && $chiusuraRicezione)
+			{
+				$this->m($this->modelName)->settaStatoRicevutoOrdiniCollegati((int)$idRicezione);
+			}
 			
 			$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$idRicezione.$this->viewStatus);
 		}
 		else
 			$this->responseCode(403);
+	}
+	
+	public function documento($field = "", $id = 0)
+	{
+		parent::documento($field, $id);
 	}
 }

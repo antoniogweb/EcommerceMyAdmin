@@ -4,9 +4,9 @@
 	<div class="panel-heading">
 		<div class="pull-right pulsanti_genera_invia_pdf">
 			<?php if ($ricezione["chiuso"]) { ?>
-				<a class="pull-right btn btn-xs btn-warning btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/chiudi/".$ricezione["id_ordine_acquisto_ricezione"];?>/0"><i class="fa fa-unlock"></i> <?php echo gtext("Apri");?></a>
-			<?php } else { ?>
-				<a class="pull-right btn btn-xs btn-success btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/chiudi/".$ricezione["id_ordine_acquisto_ricezione"];?>/1"><i class="fa fa-lock"></i> <?php echo gtext("Chiudi");?></a>
+				<a class="pull-right btn btn-xs btn-<?php echo OrdiniacquistoricezioniModel::$stati["aperto"]["label"];?> btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/chiudi/".$ricezione["id_ordine_acquisto_ricezione"];?>/0"><i class="fa fa-unlock"></i> <?php echo gtext(OrdiniacquistoricezioniModel::$stati["chiuso"]["azione"]);?></a>
+			<?php } else if (OrdiniacquistoricezioniModel::haRighe((int)$ricezione["id_ordine_acquisto_ricezione"])) { ?>
+				<a class="pull-right btn btn-xs btn-<?php echo OrdiniacquistoricezioniModel::$stati["chiuso"]["label"];?> btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/chiudi/".$ricezione["id_ordine_acquisto_ricezione"];?>/1"><i class="fa fa-lock"></i> <?php echo gtext(OrdiniacquistoricezioniModel::$stati["aperto"]["azione"]);?></a>
 			<?php } ?>
 		</div>
 		<?php echo gtext("N° Ricezione");?> #<b><?php echo $ricezione["id_ordine_acquisto_ricezione"];?></b></b>
@@ -26,6 +26,10 @@
 					<tr>
 						<td><?php echo gtext("Data ricezione");?>:</td>
 						<td><b><?php echo F::getDateInCorrectFormat(strtotime($ricezione["data_ricezione_merce"]));?></b></td>
+					</tr>
+					<tr>
+						<td><?php echo gtext("Stato");?>:</td>
+						<td><b><?php echo OrdiniacquistoricezioniModel::g()->statoLabelCrud(array("ordini_acquisto_ricezioni"=>$ricezione));?></b></td>
 					</tr>
 				</table>
 			</div>

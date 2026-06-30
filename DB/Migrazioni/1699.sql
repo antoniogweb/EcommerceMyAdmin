@@ -1,0 +1,1 @@
+alter table ordini_acquisto_ricezioni add clean_filename varchar(255) not null default '';

@@ -980,6 +980,12 @@ Helper_List::$filtersFormLayout = array(
 				"class"	=>	"form-control",
 			),
 		),
+		"numero_ordine_acquisto"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+				"placeholder"	=>	"N° Ordine acquisto",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(

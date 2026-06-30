@@ -24,6 +24,8 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class OrdiniacquistostatistoricoModel extends GenericModel
 {
+	public static $segnaIdAdmin = true;
+	
 	public function __construct() {
 		$this->_tables = 'ordini_acquisto_stati_storico';
 		$this->_idFields = 'id_ordine_acquisto_stato_storico';
@@ -33,7 +35,7 @@ class OrdiniacquistostatistoricoModel extends GenericModel
 	
 	public function insert()
 	{
-		if (!App::$isFrontend)
+		if (!App::$isFrontend && self::$segnaIdAdmin)
 			$this->values["id_admin"] = (int)User::$idAdmin;
 		
 		$this->values["time_creazione"] = time();

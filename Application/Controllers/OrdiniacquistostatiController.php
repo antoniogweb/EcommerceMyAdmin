@@ -53,8 +53,8 @@ class OrdiniacquistostatiController extends BaseController
 		$mainMenu = "add";
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>$mainMenu);
 		
-		$this->mainFields = array("edit", "chiusoCrud", "annullatoCrud");
-		$this->mainHead = "Titolo,Chiuso,Annullato";
+		$this->mainFields = array("edit", "chiusoCrud", "annullatoCrud", "parzialmenteRicevutoCrud", "ricevutoCrud");
+		$this->mainHead = "Titolo,Chiuso,Annullato,Parzialmente ricevuto,Ricevuto";
 		
 		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
 		
@@ -63,7 +63,7 @@ class OrdiniacquistostatiController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,classe,chiuso,inviato,annullato';
+		$fields = 'titolo,classe,chiuso,inviato,annullato,parzialmente_ricevuto,ricevuto';
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		

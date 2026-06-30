@@ -32,7 +32,7 @@ class OrdiniacquistoModel extends GenericModel
 	
 	public static $idRigheDaRicevere = array();
 	
-	protected $urlOrdineAcquistoRicezioni = "ordiniacquistoricezioni";
+	public $urlOrdineAcquistoRicezioni = "ordiniacquistoricezioni";
 	
 	public function __construct() {
 		$this->_tables = 'ordini_acquisto';
@@ -144,9 +144,9 @@ class OrdiniacquistoModel extends GenericModel
 				)
 			));
 		
-		$nRighe = $this->rowNumber();
+		$nOrdini = $this->rowNumber();
 		
-		if ($nRighe > 0)
+		if ($nOrdini > 0)
 			return false;
 		
 		return true;
@@ -155,22 +155,6 @@ class OrdiniacquistoModel extends GenericModel
 	public function statoordinelabel($record)
 	{
 		return "<span class='text-bold label label-".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "classe")."'>".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "titolo")."</span>";
-	}
-	
-	public function haRicezioni($idOrdineAcquisto)
-	{
-		// Controllo le ricezioni
-		$oarr = new OrdiniacquistoricezionirigheModel();
-		
-		$numero = $oarr->clear()->sWhere(array(
-			"EXISTS ( select 1 from ordini_acquisto_righe where ordini_acquisto_righe.id_ordine_acquisto_riga = ordini_acquisto_ricezioni_righe.id_ordine_acquisto_riga and ordini_acquisto_righe.id_ordine_acquisto = ? )",
-			array((int)$idOrdineAcquisto),
-		))->rowNumber();
-		
-		if ($numero)
-			return true;
-		
-		return false;
 	}
 	
 	public function isBozza($idOrdineAcquisto)
@@ -345,7 +329,24 @@ class OrdiniacquistoModel extends GenericModel
 		return self::$idRigheDaRicevere[$idO];
 	}
 	
-	// Restituisce tru o false se ha o non ha righeda ricevere
+	// Restituisce true o false se ha o non ha almeno una riga ricevuta
+	public function haRicezioni($idOrdineAcquisto)
+	{
+		// Controllo le ricezioni
+		$oarr = new OrdiniacquistoricezionirigheModel();
+		
+		$numero = $oarr->clear()->sWhere(array(
+			"EXISTS ( select 1 from ordini_acquisto_righe where ordini_acquisto_righe.id_ordine_acquisto_riga = ordini_acquisto_ricezioni_righe.id_ordine_acquisto_riga and ordini_acquisto_righe.id_ordine_acquisto = ? )",
+			array((int)$idOrdineAcquisto),
+		))->rowNumber();
+		
+		if ($numero)
+			return true;
+		
+		return false;
+	}
+	
+	// Restituisce true o false se ha o non ha righe da ricevere
 	// $idO: ID ordine di acquisto
 	public static function haRigheDaRicevere($idO)
 	{
@@ -415,17 +416,22 @@ class OrdiniacquistoModel extends GenericModel
 		}
     }
     
-    public function ricezioniCrud($record)
-	{
+    public function ricezioniCollegate($idOrdine)
+    {
 		$oarrModel = new OrdiniacquistoricezionirigheModel();
 		
-		$ricezioni = $oarrModel->clear()
+		return $oarrModel->clear()
 			->select("distinct ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione,ordini_acquisto_ricezioni.data_ricezione_merce,ordini_acquisto_ricezioni.numero_documento_trasporto")
 			->inner(array("riga"))
 			->inner(array("ricezione"))->where(array(
-				"ordini_acquisto_righe.id_ordine_acquisto"	=>	(int)$record["ordini_acquisto"]["id_ordine_acquisto"],
+				"ordini_acquisto_righe.id_ordine_acquisto"	=>	(int)$idOrdine,
 			))->send();
-		
+	}
+	
+    public function ricezioniCrud($record)
+	{
+		$ricezioni = $this->ricezioniCollegate((int)$record["ordini_acquisto"]["id_ordine_acquisto"]);
+			
 		$htmlArray = array();
 		
 		foreach ($ricezioni as $r)

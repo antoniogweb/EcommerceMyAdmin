@@ -22,13 +22,6 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-Helper_List::$filtersFormLayout["filters"]["id_ordine_acquisto_filtro"] = array(
-	"attributes"	=>	array(
-		"class"	=>	"form-control",
-		"placeholder"	=>	"N° Ordine",
-	),
-);
-
 Helper_List::$filtersFormLayout["filters"]["ragione_sociale"] = array(
 	"attributes"	=>	array(
 		"class"	=>	"form-control",
@@ -45,7 +38,7 @@ class OrdiniacquistoController extends BaseController
 	public $modelNameRighe = "OrdiniacquistorigheModel";
 	
 	public $argKeys = array(
-		'id_ordine_acquisto_filtro:sanitizeAll'=>'tutti',
+		'numero_ordine_acquisto:sanitizeAll'=>'tutti',
 		'id_form_fornitore:sanitizeAll'=>'tutti',
 		'ragione_sociale:sanitizeAll'=>'tutti',
 		'dal:sanitizeAll'=>'tutti',
@@ -65,6 +58,9 @@ class OrdiniacquistoController extends BaseController
 		
 		if (!v("attiva_modulo_acquisti"))
 			$this->responseCode(403);
+		
+		$data["urlOrdineAcquistoRicezioni"] = $this->m[$this->modelName]->urlOrdineAcquistoRicezioni;
+		$this->append($data);
 	}
 	
 	public function main()
@@ -78,7 +74,7 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->m[$this->modelName]->select("ordini_acquisto.*,DATE_FORMAT(data_ordine, '%Y') as anno_ordine")
 			->aWhere(array(
-				"numero_ordine"	=>	$this->viewArgs["id_ordine_acquisto_filtro"],
+				"numero_ordine"	=>	$this->viewArgs["numero_ordine_acquisto"],
 			))
 			->orderBy("anno_ordine desc,numero_ordine desc")->convert();
 		
@@ -104,7 +100,7 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->m[$this->modelName]->save();
 		
-		$this->filters = array("id_ordine_acquisto_filtro","ragione_sociale","dal","al");
+		$this->filters = array("numero_ordine_acquisto","ragione_sociale","dal","al");
 		
 		parent::main();
 	}

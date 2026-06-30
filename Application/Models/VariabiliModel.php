@@ -958,6 +958,7 @@ class VariabiliModel extends GenericModel {
 		"mostra_modulo_acquisti"	=>	0, // se impostato su 1, mostra il link al modulo acquisti nel pannello (non lo attiva!!)
 		"function_pdf_ordine_acquisto"			=>	"", // funzione per generare il PDF dell'ordine di acqusto. Se lasciato vuoto, utilizza le funzioni standard dell'ecommerce
 		"filename_pdf_ordine_acquisto"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine di acquisto allegato alla mail
+		"dimensioni_upload_ricezioni"	=>	10000000, // dimensione massima degli upload nelle ricezioni
 		### IMMAGINI SECONDARIE ##
 		"immagini_in_referenze"		=>	0, // se sono visibili oppure no le immagini supplementari nelle referenze
 		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini supplementari nelle pagine

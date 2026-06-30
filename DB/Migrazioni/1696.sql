@@ -1,0 +1,1 @@
+alter table ordini_acquisto_stati add parzialmente_ricevuto tinyint not null default 0;

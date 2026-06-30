@@ -90,6 +90,20 @@ class OrdiniacquistostatiModel extends GenericModel {
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",
 				),
+				'parzialmente_ricevuto'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Stato corrispondente ad un ordine parzialmente ricevuto",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'ricevuto'	=>	array(
+					"type"	=>	"Select",
+					"labelString"	=>	"Stato corrispondente ad un ordine completamente ricevuto",
+					"options"	=>	self::$attivoSiNo,
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 				'classe'	=>	array(
 					"type"	=>	"Select",
 					"labelString"	=>	"Colore della label dello stato",
@@ -162,6 +176,22 @@ class OrdiniacquistostatiModel extends GenericModel {
 			return "";
 	}
 	
+	public function parzialmenteRicevutoCrud($record)
+	{
+		if ($record["ordini_acquisto_stati"]["parzialmente_ricevuto"])
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "";
+	}
+	
+	public function ricevutoCrud($record)
+	{
+		if ($record["ordini_acquisto_stati"]["ricevuto"])
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "";
+	}
+	
 	public function bozza($idStato)
 	{
 		if (!isset(self::$recordTabella))
@@ -189,6 +219,18 @@ class OrdiniacquistostatiModel extends GenericModel {
 		
 		return $oasModel->clear()->where(array(
 			"chiuso"	=>	0,
+		))->limit(1)->orderBy("id_order")->field("id_ordine_acquisto_stato");
+	}
+	
+	public static function getIdStatoCondizione($condizione = "chiuso")
+	{
+		if (!in_array($condizione, array("chiuso", "parzialmente_ricevuto", "ricevuto")))
+			return 0;
+		
+		$oasModel = new OrdiniacquistostatiModel();
+		
+		return $oasModel->clear()->where(array(
+			$condizione	=>	1,
 		))->limit(1)->orderBy("id_order")->field("id_ordine_acquisto_stato");
 	}
 }

@@ -1,0 +1,1 @@
+UPDATE `ordini_acquisto_stati` SET `titolo` = 'Parzialmente ricevuto' WHERE `ordini_acquisto_stati`.`id_ordine_acquisto_stato` = 4;

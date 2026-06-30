@@ -24,17 +24,41 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class OrdiniacquistoricezioniModel extends GenericModel
 {
-	public $campoTitolo = "numero_documento_trasporto";
+	public $campoTitolo = "id_ordine_acquisto_ricezione";
 	public $salvaDataModifica = true;
 	public $salvaIdInserimentoModifica = true;
 	
 	public $urlOrdineAcquisto = "ordiniacquisto";
+	
+	public static $stati = array(
+		"chiuso"	=>	array(
+			"text"	=>	"Chiuso",
+			"label"	=>	"success",
+			"azione"=>	"Apri",
+		),
+		"aperto"	=>	array(
+			"text"	=>	"Aperto",
+			"label"	=>	"warning",
+			"azione"=>	"Chiudi",
+		),
+	);
 	
 	public function __construct() {
 		$this->_tables = 'ordini_acquisto_ricezioni';
 		$this->_idFields = 'id_ordine_acquisto_ricezione';
 		
 		$this->addStrongCondition("both",'checkNotEmpty',"data_ricezione_merce");
+		
+		$this->uploadFields = array(
+			"filename"	=>	array(
+				"type"	=>	"file",
+				"path"	=>	"admin/media/Ricezioni",
+				"allowedExtensions"	=>	'pdf,png,jpg,jpeg,pdf',
+				"maxFileSize"	=>	v("dimensioni_upload_ricezioni"),
+				"clean_field"	=>	"clean_filename",
+				"Content-Disposition"	=>	"inline",
+			),
+		);
 		
 		parent::__construct();
 	}
@@ -44,6 +68,18 @@ class OrdiniacquistoricezioniModel extends GenericModel
 			'righe' => array("HAS_MANY", 'OrdiniacquistoricezionirigheModel', 'id_ordine_acquisto_ricezione', null, "RESTRICT", "L'elemento ha delle righe collegate e non può essere eliminato"),
 		);
     }
+    
+    public function setFormStruct($id = 0)
+	{
+		$this->formStruct = array
+		(
+			'entries' 	=> 	array(
+				
+			),
+			
+			'enctype'	=>	'multipart/form-data',
+		);
+	}
     
     public function deletable($idRicezione)
     {
@@ -65,12 +101,27 @@ class OrdiniacquistoricezioniModel extends GenericModel
 		if ($this->chiuso($idRicezione))
 			return false;
 		
+		if ($this->movimentato($idRicezione))
+			return false;
+		
 		return true;
+	}
+    
+    public function movimentato($idRicezione)
+	{
+		return false;
 	}
     
     public function chiuso($idRicezione)
 	{
 		return (int)$this->clear()->whereId((int)$idRicezione)->field("chiuso");
+	}
+	
+	public static function haRighe($idRicezione)
+	{
+		return OrdiniacquistoricezionirigheModel::g()->clear()->where(array(
+			"id_ordine_acquisto_ricezione"	=>	(int)$idRicezione,
+		))->rowNumber();
 	}
 	
 	public function ordiniCollegati($idRicezione)
@@ -102,5 +153,74 @@ class OrdiniacquistoricezioniModel extends GenericModel
 		}
 		
 		return implode("<br />", $htmlArray);
+	}
+	
+	// Imposta lo stato parzialmente ricevuto o ricevuto per gli ordini di acquisto collegati alla ricezione $idRicezione
+	public function settaStatoRicevutoOrdiniCollegati($idRicezione)
+	{
+		$idStatoPazialmenteRicevuto = OrdiniacquistostatiModel::getIdStatoCondizione("parzialmente_ricevuto");
+		$idStatoRicevuto = OrdiniacquistostatiModel::getIdStatoCondizione("ricevuto");
+		
+		$ordiniCollegati = $this->ordiniCollegati((int)$idRicezione);
+		
+		$oaModel = new OrdiniacquistoModel();
+		
+		OrdiniacquistostatistoricoModel::$segnaIdAdmin = false;
+		
+		foreach ($ordiniCollegati as $ordine)
+		{
+			$idOrdineAcquisto = (int)$ordine["ordini_acquisto"]["id_ordine_acquisto"];
+			
+			$haRicezioni = $oaModel->haRicezioni($idOrdineAcquisto);
+			$haRigheDaRicevere = $oaModel->haRigheDaRicevere($idOrdineAcquisto);
+			
+			$idStatoFinale = 0;
+			
+			if ($haRicezioni && !$haRigheDaRicevere)
+			{
+				if ($idStatoRicevuto)
+					$idStatoFinale = $idStatoRicevuto;
+			}
+			else if ($haRicezioni)
+			{
+				if ($idStatoPazialmenteRicevuto)
+					$idStatoFinale = $idStatoPazialmenteRicevuto;
+			}
+			
+			if ($idStatoFinale)
+			{
+				$oaModel->sValues(array(
+					"id_ordine_acquisto_stato"	=>	(int)$idStatoFinale,
+				));
+				
+				$oaModel->update($idOrdineAcquisto);
+			}
+		}
+		
+		OrdiniacquistostatistoricoModel::$segnaIdAdmin = true;
+	}
+	
+	public function statoLabelCrud($record)
+	{
+		if ($record["ordini_acquisto_ricezioni"]["chiuso"])
+			return "<span class='label label-".self::$stati["chiuso"]["label"]."'>".gtext(self::$stati["chiuso"]["text"])."</span>";
+		else
+			return "<span class='label label-".self::$stati["aperto"]["label"]."'>".gtext(self::$stati["aperto"]["text"])."</span>";
+	}
+	
+	public function insert()
+	{
+		if ($this->upload("insert"))
+			return parent::insert();
+		
+		return false;
+	}
+	
+	public function update($id = NULL, $whereClause = NULL)
+	{
+		if ($this->upload("update"))
+			return parent::update($id, $whereClause);
+		
+		return false;
 	}
 }
