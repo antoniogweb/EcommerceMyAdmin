@@ -10,7 +10,7 @@
 			</form>
 			<br />
 		<?php } else { ?>
-			<div class="callout callout-info"><?php echo gtext("Le righe della ricezine non sono modificabili in quanto la ricezione è stata chiusa");?></b></div>
+			<div class="callout callout-info"><?php echo gtext("Le righe della ricezione non sono modificabili in quanto la ricezione è stata chiusa");?></b></div>
 		<?php } ?>
 	<?php } ?>
 <?php } ?>
