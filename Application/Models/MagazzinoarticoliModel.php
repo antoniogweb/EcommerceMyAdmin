@@ -258,7 +258,7 @@ class MagazzinoarticoliModel extends GenericModel
 			$oaRicRighe = new OrdiniacquistoricezionirigheModel();
 			$recordRicezione = $oaRic->selectId((int)$_GET["id_ordine_acquisto_ricezione"]);
 			
-			if (!empty($recordRicezione))
+			if (!empty($recordRicezione) && OrdiniacquistoricezioniModel::g()->editabile((int)$recordRicezione["id_ordine_acquisto_ricezione"]))
 			{
 				$oaRicRighe->sValues(array(
 					"id_admin"		=>	(int)User::$idAdmin,

@@ -3,7 +3,11 @@
 <div class="panel panel-info">
 	<div class="panel-heading">
 		<div class="pull-right pulsanti_genera_invia_pdf">
-			
+			<?php if ($ricezione["chiuso"]) { ?>
+				<a class="pull-right btn btn-xs btn-warning btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/chiudi/".$ricezione["id_ordine_acquisto_ricezione"];?>/0"><i class="fa fa-unlock"></i> <?php echo gtext("Apri");?></a>
+			<?php } else { ?>
+				<a class="pull-right btn btn-xs btn-success btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/chiudi/".$ricezione["id_ordine_acquisto_ricezione"];?>/1"><i class="fa fa-lock"></i> <?php echo gtext("Chiudi");?></a>
+			<?php } ?>
 		</div>
 		<?php echo gtext("N° Ricezione");?> #<b><?php echo $ricezione["id_ordine_acquisto_ricezione"];?></b></b>
 	</div>

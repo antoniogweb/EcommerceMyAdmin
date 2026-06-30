@@ -1,0 +1,1 @@
+alter table ordini_acquisto_ricezioni add chiuso tinyint not null default 0;

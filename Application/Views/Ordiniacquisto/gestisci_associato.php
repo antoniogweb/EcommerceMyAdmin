@@ -18,7 +18,7 @@
 			</div>
 			<br />
 		<?php } else { ?>
-			<div class="callout callout-info"><?php echo gtext("Le righe dell'ordine non sono modificabili in quanto l'ordine non è più in stato di Bozza");?></b></div>
+			<div class="callout callout-info"><?php echo gtext("Le righe dell'ordine non sono modificabili in quanto l'ordine non è più in stato di Bozza oppure ha delle ricezioni collegate");?></b></div>
 		<?php } ?>
 	<?php } ?>
 <?php } ?>

@@ -32,6 +32,8 @@ class OrdiniacquistoModel extends GenericModel
 	
 	public static $idRigheDaRicevere = array();
 	
+	protected $urlOrdineAcquistoRicezioni = "ordiniacquistoricezioni";
+	
 	public function __construct() {
 		$this->_tables = 'ordini_acquisto';
 		$this->_idFields = 'id_ordine_acquisto';
@@ -155,10 +157,31 @@ class OrdiniacquistoModel extends GenericModel
 		return "<span class='text-bold label label-".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "classe")."'>".OrdiniacquistostatiModel::getCampo($record["ordini_acquisto"]["id_ordine_acquisto_stato"], "titolo")."</span>";
 	}
 	
+	public function haRicezioni($idOrdineAcquisto)
+	{
+		// Controllo le ricezioni
+		$oarr = new OrdiniacquistoricezionirigheModel();
+		
+		$numero = $oarr->clear()->sWhere(array(
+			"EXISTS ( select 1 from ordini_acquisto_righe where ordini_acquisto_righe.id_ordine_acquisto_riga = ordini_acquisto_ricezioni_righe.id_ordine_acquisto_riga and ordini_acquisto_righe.id_ordine_acquisto = ? )",
+			array((int)$idOrdineAcquisto),
+		))->rowNumber();
+		
+		if ($numero)
+			return true;
+		
+		return false;
+	}
+	
 	public function isBozza($idOrdineAcquisto)
 	{
 		$record = $this->clear()->select("id_ordine_acquisto,id_ordine_acquisto_stato")->whereId((int)$idOrdineAcquisto)->record();
 		
+		// Controllo le ricezioni
+		if ($this->haRicezioni($idOrdineAcquisto))
+			return false;
+		
+		// Controllo lo stato
 		if (!empty($record) && OrdiniacquistostatiModel::g()->bozza((int)$record["id_ordine_acquisto_stato"]))
 			return true;
 		
@@ -382,4 +405,27 @@ class OrdiniacquistoModel extends GenericModel
 			}
 		}
     }
+    
+    public function ricezioniCrud($record)
+	{
+		$oarrModel = new OrdiniacquistoricezionirigheModel();
+		
+		$ricezioni = $oarrModel->clear()
+			->select("distinct ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione,ordini_acquisto_ricezioni.numero_documento_trasporto")
+			->inner(array("riga"))
+			->inner(array("ricezione"))->where(array(
+				"ordini_acquisto_righe.id_ordine_acquisto"	=>	(int)$record["ordini_acquisto"]["id_ordine_acquisto"],
+			))->send();
+		
+		$htmlArray = array();
+		
+		foreach ($ricezioni as $r)
+		{
+			$idRicezione = (int)$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"];
+			
+			$htmlArray[] = "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezioni."/righe/$idRicezione'><b>".$idRicezione."</b></a>";
+		}
+		
+		return implode("<br />", $htmlArray);
+	}
 }

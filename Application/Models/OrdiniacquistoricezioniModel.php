@@ -42,4 +42,32 @@ class OrdiniacquistoricezioniModel extends GenericModel
 			'righe' => array("HAS_MANY", 'OrdiniacquistoricezionirigheModel', 'id_ordine_acquisto_ricezione', null, "RESTRICT", "L'elemento ha delle righe collegate e non può essere eliminato"),
 		);
     }
+    
+    public function deletable($idRicezione)
+    {
+		if (!$this->editabile($idRicezione))
+			return false;
+		
+		$numeroRighe = OrdiniacquistoricezionirigheModel::g(false)->where(array(
+			"id_ordine_acquisto_ricezione"	=>	(int)$idRicezione
+		))->rowNumber();
+		
+		if ($numeroRighe > 0)
+			return false;
+		
+		return true;
+	}
+	
+    public function editabile($idRicezione)
+	{
+		if ($this->chiuso($idRicezione))
+			return false;
+		
+		return true;
+	}
+    
+    public function chiuso($idRicezione)
+	{
+		return (int)$this->clear()->whereId((int)$idRicezione)->field("chiuso");
+	}
 }

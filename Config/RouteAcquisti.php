@@ -47,6 +47,7 @@ class RouteAcquisti
 		'ordiniacquistoricezioni,main',
 		'ordiniacquistoricezioni,form',
 		'ordiniacquistoricezioni,righe',
+		'ordiniacquistoricezioni,chiudi',
 		'ordiniacquistoricezionirighe,salva',
 	);
 }

@@ -85,7 +85,10 @@ class OrdiniacquistoricezionirigheModel extends GenericModel
 	
 	public function quantitaCrud($record)
 	{
-		return "<input id-riga='".$record["ordini_acquisto_ricezioni_righe"]["id_ordine_acquisto_ricezione_riga"]."' style='max-width:60px;' class='form-control quantita_riga_ricezione' name='quantita' value='".$record["ordini_acquisto_ricezioni_righe"]["quantita"]."' />";
+		if (OrdiniacquistoricezioniModel::g()->editabile($record["ordini_acquisto_ricezioni_righe"]["id_ordine_acquisto_ricezione"]))
+			return "<input id-riga='".$record["ordini_acquisto_ricezioni_righe"]["id_ordine_acquisto_ricezione_riga"]."' style='max-width:60px;' class='form-control quantita_riga_ricezione' name='quantita' value='".$record["ordini_acquisto_ricezioni_righe"]["quantita"]."' />";
+		else
+			return $record["ordini_acquisto_ricezioni_righe"]["quantita"];
 	}
 	
 	public function riferimentoRigaCrud($record)
@@ -96,5 +99,12 @@ class OrdiniacquistoricezionirigheModel extends GenericModel
 		
 		if (!empty($recordAttuale))
 			return OrdiniacquistorigheModel::g()->getTitoloRigaDaOrdinare($recordAttuale);
+	}
+	
+	public function deletable($id)
+	{
+		$idRicezione = (int)$this->whereId($id)->field("id_ordine_acquisto_ricezione");
+		
+		return OrdiniacquistoricezioniModel::g()->editabile($idRicezione);
 	}
 }

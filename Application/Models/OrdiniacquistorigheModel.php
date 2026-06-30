@@ -452,7 +452,7 @@ class OrdiniacquistorigheModel extends GenericModel
 			$oaRicRighe = new OrdiniacquistoricezionirigheModel();
 			$recordRicezione = $oaRic->selectId((int)$_GET["id_ordine_acquisto_ricezione"]);
 			
-			if (!empty($recordRicezione) && !OrdiniacquistoModel::g(false)->isBozza((int)$record["id_ordine_acquisto"]))
+			if (!empty($recordRicezione) && OrdiniacquistoricezioniModel::g()->editabile((int)$recordRicezione["id_ordine_acquisto_ricezione"]))
 			{
 				$oaRicRighe->sValues(array(
 					"id_admin"		=>	(int)User::$idAdmin,
@@ -512,7 +512,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		{
 			$idRicezione = (int)$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"];
 			
-			$htmlArray[] = "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezioni."/righe/$idRicezione'><b>N°".$idRicezione."</b></a> - <b>".(int)$r["ordini_acquisto_ricezioni_righe"]["quantita"]."</b>Pz";
+			$htmlArray[] = "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezioni."/righe/$idRicezione'><b>".$idRicezione."</b></a> - <b>".(int)$r["ordini_acquisto_ricezioni_righe"]["quantita"]." Pz</b>";
 		}
 		
 		return implode("<br />", $htmlArray);

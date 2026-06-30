@@ -103,11 +103,10 @@ class OrdiniacquistoricezioniController extends BaseController
 			),
 		);
 		
-		// if (!OrdiniacquistoModel::g()->isBozza((int)$id))
-		// {
-		// 	$this->addBulkActions = false;
-		// 	$this->colProperties = array();
-		// }
+		if (!OrdiniacquistoricezioniModel::g()->editabile((int)$id))
+		{
+			$this->addBulkActions = false;
+		}
 		
 		$this->rowAttributes = array(
 			"class"	=>	"listRow id_tipo_riga_acquisto_;ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia; id_articolo_;ordini_acquisto_righe.id_articolo;",
@@ -119,8 +118,8 @@ class OrdiniacquistoricezioniController extends BaseController
 		if (!$this->pulsantiMenuRighe)
 		{
 			$this->pulsantiMenuRighe = "back";
-// 			
-// 			if (OrdiniacquistoModel::g()->isBozza((int)$id))
+			
+			if (OrdiniacquistoricezioniModel::g()->editabile((int)$id))
 				$this->pulsantiMenuRighe .= ",save_righe_ordini_acquisto_ricezione";
 		}
 		
@@ -152,5 +151,33 @@ class OrdiniacquistoricezioniController extends BaseController
 		
 		// print_r($data["ordiniDaRicevere"]);
 		$this->append($data);
+	}
+	
+	public function chiudi($idRicezione, $chiuso = 1)
+	{
+		$this->shift(2);
+		$this->clean();
+		
+		$ricezione = $this->m($this->modelName)->selectId((int)$idRicezione);
+		
+		if (!empty($ricezione))
+		{
+			if ($ricezione["chiuso"] && (int)$chiuso === 0)
+				$this->m($this->modelName)->sValues(array(
+					"chiuso"	=>	0,
+				));
+			else if (!$ricezione["chiuso"] && (int)$chiuso === 1)
+				$this->m($this->modelName)->sValues(array(
+					"chiuso"	=>	1,
+				));
+			else
+				$this->responseCode(403);
+			
+			$this->m($this->modelName)->update((int)$idRicezione);
+			
+			$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$idRicezione.$this->viewStatus);
+		}
+		else
+			$this->responseCode(403);
 	}
 }

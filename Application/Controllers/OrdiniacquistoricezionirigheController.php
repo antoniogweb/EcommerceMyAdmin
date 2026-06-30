@@ -65,11 +65,15 @@ class OrdiniacquistoricezionirigheController extends BaseController
 				
 				if (!empty($recordRiga))
 				{
-					$this->m[$this->modelName]->sValues(array(
-						"quantita"			=>	$v["quantita"] ?? 1,
-					));
-					
-					$this->m[$this->modelName]->update($v["id_ordine_acquisto_ricezione_riga"]);
+					// Controlla che sia editabile
+					if (OrdiniacquistoricezioniModel::g()->editabile($recordRiga["id_ordine_acquisto_ricezione"]))
+					{
+						$this->m[$this->modelName]->sValues(array(
+							"quantita"			=>	$v["quantita"] ?? 1,
+						));
+						
+						$this->m[$this->modelName]->update($v["id_ordine_acquisto_ricezione_riga"]);
+					}
 				}
 			}
 			else
