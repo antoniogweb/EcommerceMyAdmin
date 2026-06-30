@@ -56,7 +56,7 @@
 							<td><?php echo gtext("Ricezioni").":";?></td>
 							<td>
 								<?php foreach ($ricezioniCollegate as $ricezione) { ?>
-								<?php echo gtext("N°");?> <a target="_blank" href="<?php echo $this->baseUrl."/$urlOrdineAcquistoRicezioni/form/update/".$ricezione["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"];?>"><b><?php echo $ricezione["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"];?></b></a> <?php echo gtext("del");?> <b><?php echo smartDate($ricezione["ordini_acquisto_ricezioni"]["data_ricezione_merce"], v("default_date_format"));?></b>
+								<?php echo gtext("N°");?> <a target="_blank" href="<?php echo $this->baseUrl."/$urlOrdineAcquistoRicezioni/form/update/".$ricezione["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"];?>"><b><?php echo $ricezione["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"];?></b></a> <?php echo gtext("del");?> <b><?php echo smartDate($ricezione["ordini_acquisto_ricezioni"]["data_ricezione_merce"], v("default_date_format"));?></b> <?php echo OrdiniacquistoricezioniModel::g()->statoLabelCrud($ricezione);?>
 								<br />
 								<?php } ?>
 							</td>

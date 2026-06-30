@@ -439,7 +439,9 @@ class RigheModel extends GenericModel
 			$html .= "<div class='well-small'>";
 			$label = $this->getLabel($record["righe"]["qta_da_ordinare"], (int)$numeroOrdinati, "");
 			
-			$html .= gtext("O.A."). " <a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquisto."/righe/".$r["ordini_acquisto"]["id_ordine_acquisto"]."'><b>".$r["ordini_acquisto"]["numero_ordine"]."</b></a> <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
+			$link = v("mostra_modulo_acquisti") ? "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquisto."/righe/".$r["ordini_acquisto"]["id_ordine_acquisto"]."'><b>".$r["ordini_acquisto"]["numero_ordine"]."</b></a>" : "<b>".$r["ordini_acquisto"]["numero_ordine"]."</b>";
+			
+			$html .= gtext("O.A."). " ".$link." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
 			$html .= "</div>";
 		}
 		
@@ -458,8 +460,10 @@ class RigheModel extends GenericModel
 		{
 			$html .= "<div class='well-small'>";
 			$label = $this->getLabel($record["righe"]["qta_da_ordinare"], (int)$numeroOrdinati, "");
-
-			$temp = gtext("Ric."). " <a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezione."/righe/".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."'><b>".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."</b></a> <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
+			
+			$link = v("mostra_modulo_acquisti") ? "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezione."/righe/".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."'><b>".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."</b></a>" : "<b>".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."</b>";
+			
+			$temp = gtext("Ric.")." ".$link." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
 			
 			if ($r["ordini_acquisto_ricezioni"]["numero_documento_trasporto"])
 				$temp .= "<br />DDT: <b>".$r["ordini_acquisto_ricezioni"]["numero_documento_trasporto"]."</b>";

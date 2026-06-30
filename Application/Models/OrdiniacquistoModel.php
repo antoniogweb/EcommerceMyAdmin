@@ -421,7 +421,7 @@ class OrdiniacquistoModel extends GenericModel
 		$oarrModel = new OrdiniacquistoricezionirigheModel();
 		
 		return $oarrModel->clear()
-			->select("distinct ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione,ordini_acquisto_ricezioni.data_ricezione_merce,ordini_acquisto_ricezioni.numero_documento_trasporto")
+			->select("distinct ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione,ordini_acquisto_ricezioni.data_ricezione_merce,ordini_acquisto_ricezioni.numero_documento_trasporto,ordini_acquisto_ricezioni.chiuso")
 			->inner(array("riga"))
 			->inner(array("ricezione"))->where(array(
 				"ordini_acquisto_righe.id_ordine_acquisto"	=>	(int)$idOrdine,

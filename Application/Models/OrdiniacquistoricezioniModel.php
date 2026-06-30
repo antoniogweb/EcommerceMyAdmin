@@ -129,7 +129,7 @@ class OrdiniacquistoricezioniModel extends GenericModel
 		$oarrModel = new OrdiniacquistoricezionirigheModel();
 		
 		return $oarrModel->clear()
-			->select("distinct ordini_acquisto.id_ordine_acquisto,ordini_acquisto.numero_ordine,ordini_acquisto.data_ordine")
+			->select("distinct ordini_acquisto.id_ordine_acquisto,ordini_acquisto.numero_ordine,ordini_acquisto.data_ordine,ordini_acquisto.id_ordine_acquisto_stato")
 			->inner(array("riga"))
 			->inner("ordini_acquisto")->on("ordini_acquisto.id_ordine_acquisto = ordini_acquisto_righe.id_ordine_acquisto")
 			->where(array(

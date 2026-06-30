@@ -28,7 +28,7 @@
 						<td><b><?php echo F::getDateInCorrectFormat(strtotime($ricezione["data_ricezione_merce"]));?></b></td>
 					</tr>
 					<tr>
-						<td><?php echo gtext("Stato");?>:</td>
+						<td><?php echo gtext("Stato ricezione");?>:</td>
 						<td><b><?php echo OrdiniacquistoricezioniModel::g()->statoLabelCrud(array("ordini_acquisto_ricezioni"=>$ricezione));?></b></td>
 					</tr>
 				</table>
