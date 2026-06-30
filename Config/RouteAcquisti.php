@@ -34,6 +34,7 @@ class RouteAcquisti
 		'ordiniacquisto,storicostati',
 		'ordiniacquisto,stampapdf',
 		'ordiniacquisto,inviapdf',
+		'ordiniacquisto,generaricezione',
 		'ordiniacquistostati,main',
 		'ordiniacquistostati,form',
 		'ordiniacquistostati,ordina',

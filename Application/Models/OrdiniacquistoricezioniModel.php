@@ -28,6 +28,8 @@ class OrdiniacquistoricezioniModel extends GenericModel
 	public $salvaDataModifica = true;
 	public $salvaIdInserimentoModifica = true;
 	
+	public $urlOrdineAcquisto = "ordiniacquisto";
+	
 	public function __construct() {
 		$this->_tables = 'ordini_acquisto_ricezioni';
 		$this->_idFields = 'id_ordine_acquisto_ricezione';
@@ -69,5 +71,36 @@ class OrdiniacquistoricezioniModel extends GenericModel
     public function chiuso($idRicezione)
 	{
 		return (int)$this->clear()->whereId((int)$idRicezione)->field("chiuso");
+	}
+	
+	public function ordiniCollegati($idRicezione)
+	{
+		$oarrModel = new OrdiniacquistoricezionirigheModel();
+		
+		return $oarrModel->clear()
+			->select("distinct ordini_acquisto.id_ordine_acquisto,ordini_acquisto.numero_ordine,ordini_acquisto.data_ordine")
+			->inner(array("riga"))
+			->inner("ordini_acquisto")->on("ordini_acquisto.id_ordine_acquisto = ordini_acquisto_righe.id_ordine_acquisto")
+			->where(array(
+				"ordini_acquisto_ricezioni_righe.id_ordine_acquisto_ricezione"	=>	(int)$idRicezione,
+			))
+			->orderBy("ordini_acquisto.numero_ordine")
+			->send();
+	}
+	
+	public function ordiniAcquistoCrud($record)
+	{
+		$ordiniAcquisto = $this->ordiniCollegati($record["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]);
+		
+		$htmlArray = array();
+		
+		foreach ($ordiniAcquisto as $r)
+		{
+			$idOrdine = (int)$r["ordini_acquisto"]["id_ordine_acquisto"];
+			
+			$htmlArray[] = "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquisto."/form/update/$idOrdine'><b>".$idOrdine."</b></a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto"]["data_ordine"], v("default_date_format"))."</b>";
+		}
+		
+		return implode("<br />", $htmlArray);
 	}
 }

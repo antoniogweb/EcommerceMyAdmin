@@ -3,7 +3,11 @@
 <div class="panel panel-info">
 	<div class="panel-heading">
 		<div class="pull-right pulsanti_genera_invia_pdf">
-			<a class="pull-right btn btn-xs btn-warning btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/inviapdf/".$ordine["id_ordine_acquisto"];?>"><i class="fa fa-envelope"></i> <?php echo gtext("Invia PDF");?></a>
+			<?php if (OrdiniacquistoModel::haRigheDaRicevere($ordine["id_ordine_acquisto"])) { ?>
+			<a class="m-l pull-right btn btn-xs btn-info btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/generaricezione/".$ordine["id_ordine_acquisto"];?>"><i class="fa fa-truck"></i> <?php echo gtext("Genera ricezione");?></a>
+			<?php } ?>
+			
+			<a class="m-l pull-right btn btn-xs btn-warning btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/inviapdf/".$ordine["id_ordine_acquisto"];?>"><i class="fa fa-envelope"></i> <?php echo gtext("Invia PDF");?></a>
 			
 			<a target="_blank" class="pull-right btn btn-xs btn-success btn-rounded" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/stampapdf/".$ordine["id_ordine_acquisto"];?>"><i class="fa fa-file-pdf-o"></i> <?php echo gtext("Stampa PDF");?></a>
 		</div>

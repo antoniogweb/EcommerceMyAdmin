@@ -30,7 +30,7 @@ class OrdiniacquistorigheModel extends GenericModel
 	public $salvaDataModifica = true;
 	public $salvaIdInserimentoModifica = true;
 	
-	protected $urlOrdineAcquistoRicezioni = "ordiniacquistoricezioni";
+	public $urlOrdineAcquistoRicezioni = "ordiniacquistoricezioni";
 	
 	public static $numeroNonCollegateCache = null;
 	

@@ -293,4 +293,47 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
 	}
+	
+	public function generaricezione($id)
+	{
+		$this->clean();
+		$this->shift(1);
+		
+		if ($this->m($this->modelName)->whereId((int)$id)->rowNumber())
+		{
+			if (!$this->m($this->modelName)->isBozza((int)$id))
+			{
+				$idRigheDaRicevere = OrdiniacquistoModel::idRigheDaRicevere((int)$id);
+				
+				if (count($idRigheDaRicevere) > 0)
+				{
+					$this->m("OrdiniacquistoricezioniModel")->sValues(array(
+						"data_ricezione_merce"	=>	date("Y-m-d"),
+						"chiuso"	=>	0,
+						"numero_documento_trasporto"	=>	"",
+					));
+					
+					if ($this->m("OrdiniacquistoricezioniModel")->insert())
+					{
+						$lId = $this->m("OrdiniacquistoricezioniModel")->lId;
+						
+						$_GET["id_ordine_acquisto_ricezione"] = (int)$lId;
+						
+						foreach ($idRigheDaRicevere as $idRiga)
+						{
+							$this->m($this->modelNameRighe)->aggiungiaricezione($idRiga);
+						}
+						
+						$this->redirect($this->m($this->modelNameRighe)->urlOrdineAcquistoRicezioni."/form/update/".(int)$lId);
+					}
+				}
+				else
+					$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);
+			}
+			else
+				$this->responseCode(403);
+		}
+		else
+			$this->responseCode(403);
+	}
 }

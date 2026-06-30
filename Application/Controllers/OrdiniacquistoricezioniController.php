@@ -45,14 +45,17 @@ class OrdiniacquistoricezioniController extends BaseController
 		
 		if (!v("attiva_modulo_acquisti"))
 			$this->responseCode(403);
+		
+		$data["urlOrdineAcquisto"] = $this->m[$this->modelName]->urlOrdineAcquisto;
+		$this->append($data);
 	}
 	
 	public function main()
 	{
 		$this->shift();
 		
-		$this->mainFields = array("[[ledit]];ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione;", 'ordini_acquisto_ricezioni.data_ricezione_merce', 'ordini_acquisto_ricezioni.numero_documento_trasporto');
-		$this->mainHead = "N° Ricezione,Data ricezione,Numero DDT";
+		$this->mainFields = array("[[ledit]];ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione;", 'ordini_acquisto_ricezioni.data_ricezione_merce', 'ordini_acquisto_ricezioni.numero_documento_trasporto', "ordiniAcquistoCrud");
+		$this->mainHead = "N° Ricezione,Data ricezione,Numero DDT,Ordini acquisto";
 		
 		$this->m[$this->modelName]->select("ordini_acquisto_ricezioni.*")
 			->aWhere(array(

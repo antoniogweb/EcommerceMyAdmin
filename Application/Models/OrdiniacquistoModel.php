@@ -345,6 +345,15 @@ class OrdiniacquistoModel extends GenericModel
 		return self::$idRigheDaRicevere[$idO];
 	}
 	
+	// Restituisce tru o false se ha o non ha righeda ricevere
+	// $idO: ID ordine di acquisto
+	public static function haRigheDaRicevere($idO)
+	{
+		$idRigheDaRicevere = self::idRigheDaRicevere((int)$idO);
+		
+		return count($idRigheDaRicevere) > 0 ? true : false;
+	}
+	
 	// Restituisce gli ordini con almeno una riga da ricevere
 	public static function idOrdiniDaRicevere()
 	{
@@ -411,7 +420,7 @@ class OrdiniacquistoModel extends GenericModel
 		$oarrModel = new OrdiniacquistoricezionirigheModel();
 		
 		$ricezioni = $oarrModel->clear()
-			->select("distinct ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione,ordini_acquisto_ricezioni.numero_documento_trasporto")
+			->select("distinct ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione,ordini_acquisto_ricezioni.data_ricezione_merce,ordini_acquisto_ricezioni.numero_documento_trasporto")
 			->inner(array("riga"))
 			->inner(array("ricezione"))->where(array(
 				"ordini_acquisto_righe.id_ordine_acquisto"	=>	(int)$record["ordini_acquisto"]["id_ordine_acquisto"],
@@ -423,7 +432,7 @@ class OrdiniacquistoModel extends GenericModel
 		{
 			$idRicezione = (int)$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"];
 			
-			$htmlArray[] = "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezioni."/righe/$idRicezione'><b>".$idRicezione."</b></a>";
+			$htmlArray[] = "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezioni."/righe/$idRicezione'><b>".$idRicezione."</b></a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"], v("default_date_format"))."</b>";
 		}
 		
 		return implode("<br />", $htmlArray);

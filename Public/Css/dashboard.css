@@ -308,6 +308,11 @@ body {
 	margin-bottom: 5px !important;
 }
 
+.m-l
+{
+	margin-left: 5px;
+}
+
 @media (min-width: 992px)
 {
 	.modal-lg {

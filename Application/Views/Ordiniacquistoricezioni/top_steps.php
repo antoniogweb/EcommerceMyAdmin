@@ -30,9 +30,22 @@
 				</table>
 			</div>
 			<div class="col-lg-6">
+				<?php $ordiniAcquisto = OrdiniacquistoricezioniModel::g()->ordiniCollegati((int)$ricezione["id_ordine_acquisto_ricezione"]);?>
+				<?php if (count($ordiniAcquisto) > 0) { ?>
 				<table class="table table-striped" style="margin-bottom:0px;">
 					
+					<tr>
+						<td><?php echo gtext("Ordini di acquisto").":";?></td>
+						<td>
+							<?php foreach ($ordiniAcquisto as $ordine) { ?>
+							<?php echo gtext("N°");?> <a target="_blank" href="<?php echo $this->baseUrl."/$urlOrdineAcquisto/form/update/".$ordine["ordini_acquisto"]["id_ordine_acquisto"];?>"><b><?php echo $ordine["ordini_acquisto"]["numero_ordine"];?></b></a> <?php echo gtext("del");?> <b><?php echo smartDate($ordine["ordini_acquisto"]["data_ordine"], v("default_date_format"));?></b>
+							<br />
+							<?php } ?>
+						</td>
+					</tr>
+					
 				</table>
+				<?php } ?>
 			</div>
 		</div>
 	</div>

@@ -122,7 +122,7 @@ class OrdiniacquistorigheController extends BaseController
 					"ordini_acquisto_righe.id_ordine_acquisto_riga_tipologia"	=>	0,
 					"ordini_acquisto_righe.id_ordine_acquisto"					=>	$this->viewArgs['id_oar'],
 				))
-				->orderBy("ordini_acquisto_righe.id_articolo,anno_ordine desc,ordini_acquisto.numero_ordine desc")->convert();
+				->orderBy("(ordini_acquisto_righe.id_articolo = 0) DESC,anno_ordine desc,ordini_acquisto.numero_ordine desc")->convert();
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], "data_ordine", "ordini_acquisto");
 		
