@@ -21,7 +21,7 @@ foreach ($pages as $p)
 	$prezzoFinaleIvato = number_format(calcolaPrezzoFinale($p["pages"]["id_page"], $prezzoMinimo, true, !v("prezzi_ivati_in_carrello")),2,".","");
 	
 	$items["items"][] = array(
-		"item_id"	=>	v("usa_sku_come_id_item") ? $p["pages"]["codice"] : $p["pages"]["id_page"],
+		"item_id"	=>	v("usa_sku_come_id_item") ? FeedModel::cXF("GOOGLEMERCHANT",$p["pages"]["codice"]) : $p["pages"]["id_page"],
 		"item_name"	=>	sanitizeJs(htmlentitydecode(field($p, "title"))),
 		"quantity"	=>	1,
 		"price"		=>	$prezzoFinaleIvato,

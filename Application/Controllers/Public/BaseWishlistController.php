@@ -140,21 +140,21 @@ class BaseWishlistController extends BaseController
 			
 			if (!empty($page))
 			{
+				$idC = $p->getIdCombinazioneCanonical($clean["id_cart"]);
+				
+				$combinazione = $combModel->selectId((int)$idC);
+				
 				$contentsFbk = array(
 					"currency"	=>	"EUR",
 					"content_type"	=>	"product",
 					"content_name"	=>	sanitizeJs(htmlentitydecode($page["title"])),
 					"contents"	=>	array(
 						array(
-							"id"		=>	$page["id_page"],
+							"id"		=>	v("usa_sku_come_id_item") ? FeedModel::cXF("FACEBOOK",$combinazione["codice"]) : $page["id_page"],
 							"quantity"	=>	1,
 						)
 					),
 				);
-				
-				$idC = $p->getIdCombinazioneCanonical($clean["id_cart"]);
-				
-				$combinazione = $combModel->selectId((int)$idC);
 				
 				$campoId = v("versione_google_analytics") == 3 ? "id" : "item_id";
 				$campoName = v("versione_google_analytics") == 3 ? "name" : "item_name";
@@ -166,7 +166,7 @@ class BaseWishlistController extends BaseController
 				$prezzoProdottoNelCarrello = v("prezzi_ivati_in_carrello") ? $prezzoFinaleIvato : $prezzoFinale;
 				
 				$contentsGtm = array(array(
-					"$campoId"	=>	v("usa_sku_come_id_item") ? $combinazione["codice"] : $combinazione["id_page"],
+					"$campoId"	=>	v("usa_sku_come_id_item") ? FeedModel::cXF("GOOGLEMERCHANT",$combinazione["codice"]) : $combinazione["id_page"],
 					"$campoName"	=>	sanitizeJs(htmlentitydecode($page["title"])),
 					"quantity"	=>	1,
 					"price"		=>	number_format($prezzoProdottoNelCarrello,2,".",""),

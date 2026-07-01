@@ -111,4 +111,15 @@ class FeedModel extends GenericModel
 		
 		$this->moduleFormStruct($id);
 	}
+	
+	// Estrae il codice da stampare nel feed
+	public static function cXF($codiceFeed, $sku)
+	{
+		$variantiInFeed = (int)self::getCampoG($codiceFeed, "link_a_combinazione", "codice");
+		
+		if ($variantiInFeed)
+			return $sku;
+		else
+			return CombinazioniModel::g()->getCodiceCanonicalDaCodiceVariante($sku);
+	}
 }

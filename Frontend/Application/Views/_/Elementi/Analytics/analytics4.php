@@ -18,7 +18,7 @@ if (v("codice_gtm_analytics"))
 	{
 		$itemGtag = array(
 			array(
-				"item_id"	=>	v("usa_sku_come_id_item") ? $codicePerTracking : $idPaginaPerTracking,
+				"item_id"	=>	v("usa_sku_come_id_item") ? FeedModel::cXF("GOOGLEMERCHANT",$codicePerTracking) : $idPaginaPerTracking,
 				"item_name"	=>	sanitizeJs(F::meta($nomePaginaPerTracking)),
 			),
 		);
@@ -61,7 +61,7 @@ if (v("codice_gtm_analytics"))
 					$catGTM = $c->clear()->where(array("id_c"=>$pagGTM["id_c"]))->field("title");
 				
 				$temp = array(
-					"item_id"	=>	v("usa_sku_come_id_item") ? $ro["codice"] : $ro["id_page"],
+					"item_id"	=>	v("usa_sku_come_id_item") ? FeedModel::cXF("GOOGLEMERCHANT",$ro["codice"]) : $ro["id_page"],
 					"item_name"	=>	sanitizeJs(htmlentitydecode($ro["title"])),
 				);
 				
@@ -141,7 +141,7 @@ if (v("codice_gtm_analytics"))
 		foreach ($pages as $p)
 		{
 			$items["items"][] = array(
-				"item_id"	=>	v("usa_sku_come_id_item") ? $p["cart"]["codice"] : $p["cart"]["id_page"],
+				"item_id"	=>	v("usa_sku_come_id_item") ? FeedModel::cXF("GOOGLEMERCHANT",$p["cart"]["codice"]) : $p["cart"]["id_page"],
 				"item_name"	=>	sanitizeJs(htmlentitydecode($p["cart"]["title"])),
 				"quantity"	=>	$p["cart"]["quantity"],
 				"price"		=>	v("prezzi_ivati_in_carrello") ? $p["cart"]["price_ivato"] : $p["cart"]["price"],

@@ -250,7 +250,7 @@ class BaseCartController extends BaseController
 										"content_name"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
 										"contents"	=>	array(
 											array(
-												"id"		=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
+												"id"		=>	v("usa_sku_come_id_item") ? FeedModel::cXF("FACEBOOK",$rcu["codice"]) : $rcu["id_page"],
 												"quantity"	=>	$clean["quantity"],
 											)
 										),
@@ -262,7 +262,7 @@ class BaseCartController extends BaseController
 									$prezzoProdottoNelCarrello = v("prezzi_ivati_in_carrello") ? $rcu["price_ivato"] : $rcu["price"];
 									
 									$contentsGtm = array(array(
-										"$campoId"	=>	v("usa_sku_come_id_item") ? $rcu["codice"] : $rcu["id_page"],
+										"$campoId"	=>	v("usa_sku_come_id_item") ? FeedModel::cXF("GOOGLEMERCHANT",$rcu["codice"]) : $rcu["id_page"],
 										"$campoName"	=>	sanitizeJs(htmlentitydecode($rcu["title"])),
 										"quantity"	=>	$clean["quantity"],
 										"price"		=>	$prezzoProdottoNelCarrello,

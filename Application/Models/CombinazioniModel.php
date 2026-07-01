@@ -1649,4 +1649,17 @@ class CombinazioniModel extends GenericModel {
 		
 		return "";
 	}
+	
+	// Restituisce il codice della variante canonical dato il codice di qualsiasi variante del prodotto id_page
+	public function getCodiceCanonicalDaCodiceVariante($codiceVariante)
+	{
+		$res = $this->clear()->select("c2.codice")->inner("combinazioni as c2")->on("c2.id_page = combinazioni.id_page AND c2.canonical = 1")->where(array(
+			"combinazioni.codice"	=>	sanitizeAll($codiceVariante)
+		))->limit(1)->send();
+		
+		if (count($res) > 0)
+			return $res[0]["c2"]["codice"];
+		
+		return $codiceVariante;
+	}
 }
