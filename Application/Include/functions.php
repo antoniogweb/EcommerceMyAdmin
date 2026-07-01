@@ -983,6 +983,7 @@ function attivaModuli($string, $obj = null)
 		$string = preg_replace_callback('/\[eventi\]/', array($obj,'getEventiFascia') ,$string);
 		$string = preg_replace_callback('/\[form-contatti\]/', array($obj,'getFasciaFormContatti') ,$string);
 		$string = preg_replace_callback('/\[marchi\]/', array($obj,'getFasciaMarchi') ,$string);
+		$string = preg_replace_callback('/\[marchi-pagina\]/', array($obj,'getFasciaMarchiPagina') ,$string);
 		$string = preg_replace_callback('/\[marchi-nuovi\]/', array($obj,'getFasciaMarchiNuovi') ,$string);
 		$string = preg_replace_callback('/\[info-spedizioni\]/', array($obj,'getFasciaInfoSpedizioni') ,$string);
 		$string = preg_replace_callback('/\[prodotti-in-promozione\]/', array($obj,'getFasciaProdottiInPromozione') ,$string);

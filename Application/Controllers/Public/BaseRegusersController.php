@@ -1344,6 +1344,9 @@ class BaseRegusersController extends BaseController
 	
 	public function spedizione($id = 0)
 	{
+		if (!v("attiva_spedizione_area_riservata"))
+			$this->responseCode(403);
+		
 		VariabiliModel::$valori["attiva_spedizione"] = 1;
 		
 		$this->s['registered']->check(null,0);

@@ -132,10 +132,27 @@ class MarchiModel extends GenericModel
 						"<div class='form_notice'>".gtext("Se viene indicato come nuovo nel sito, in funzione del tema")."</div>"
 					),
 				),
+				'id_page'		=>	array(
+					'type'		=>	'Select',
+					'entryClass'	=>	'form_input_text help_principale',
+					'labelString'=>	'Pagina di appartenenza',
+					'options'	=>	$this->selectTendinaPaginaAppartenenza(),
+					'reverse' => 'yes',
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
 		);
+	}
+	
+	public function selectTendinaPaginaAppartenenza()
+	{
+		$pModel = new PagesModel();
+		
+		return array(0 => "--") + $pModel->clear()->select("id_page,title")->where(array(
+			"pages.id_c"	=>	1,
+			"tipo_pagina"	=>	"MARCHI",
+		))->toList("id_page", "title")->send();
 	}
 	
     public function update($id = NULL, $whereClause = NULL)
@@ -186,9 +203,27 @@ class MarchiModel extends GenericModel
 		$this->controllaLinguaGeneric($id, "id_marchio", "-marchio-");
 	}
 	
-	public function getAliasPaginaMarchi($suffisso = "")
+	public function getIdPaginaMarchi($idMarchio = 0)
 	{
-		$idPaginaMarchi = PagesModel::gTipoPagina("MARCHI");
+		$idPaginaMarchi = 0;
+		
+		if ($idMarchio)
+			$idPaginaMarchi = (int)$this->clear()->select("id_page")->whereId((int)$idMarchio)->field("id_page");
+		
+		if (!$idPaginaMarchi)
+			$idPaginaMarchi = PagesModel::gTipoPagina("MARCHI");
+		
+		return $idPaginaMarchi;
+	}
+	
+	public function getAliasPaginaMarchi($idMarchio = 0, $suffisso = "")
+	{
+// 		if ($idMarchio)
+// 			$idPaginaMarchi = (int)$this->clear()->select("id_page")->whereId((int)$idMarchio)->field("id_page");
+// 		else
+// 			$idPaginaMarchi = PagesModel::gTipoPagina("MARCHI");
+// 		
+		$idPaginaMarchi = $this->getIdPaginaMarchi($idMarchio);
 		
 		$dettagliPagina = PagesModel::getPageDetails($idPaginaMarchi, null, "pages.alias,contenuti_tradotti.alias");
 		
@@ -227,7 +262,7 @@ class MarchiModel extends GenericModel
 					return mfield($marchio[0],"alias").v("estensione_url_categorie");
 			}
 			else
-				return $this->getAliasPaginaMarchi("/").mfield($marchio[0],"alias").v("estensione_url_categorie");
+				return $this->getAliasPaginaMarchi($id, "/").mfield($marchio[0],"alias").v("estensione_url_categorie");
 		}
 		
 		return "";

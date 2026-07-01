@@ -35,6 +35,9 @@ class BaseOrdiniController extends BaseController
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
 		
+		if (!v("attiva_ordini_in_ecommerce"))
+			$this->responseCode(403);
+		
 		VariabiliModel::$valori["usa_versione_random"] = 1;
 
 		$this->load('header');

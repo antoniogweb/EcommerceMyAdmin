@@ -6,9 +6,11 @@ $breadcrumb = array(
 	gtext("Home") 		=> $this->baseUrl,
 );
 
-if (isset($tipiPagina["MARCHI"]))
+$idPaginaMarchi = MarchiModel::g(false)->getIdPaginaMarchi($idMarchio);
+
+if ($idPaginaMarchi)
 {
-	$dettagliPagina = PagesModel::getPageDetails($tipiPagina["MARCHI"]);
+	$dettagliPagina = PagesModel::getPageDetails($idPaginaMarchi);
 	
 	if ($dettagliPagina)
 		$breadcrumb[field($dettagliPagina, "title")] = $this->baseUrl."/".getUrlAlias($dettagliPagina["pages"]["id_page"]);

@@ -57,6 +57,9 @@ class BaseRiservataController extends BaseController
 
 	public function ordini()
 	{
+		if (!v("attiva_ordini_in_ecommerce"))
+			$this->responseCode(403);
+		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/ordini-effettuati";
@@ -133,6 +136,9 @@ class BaseRiservataController extends BaseController
 	
 	public function indirizzi()
 	{
+		if (!v("attiva_spedizione_area_riservata"))
+			$this->responseCode(403);
+		
 		foreach (Params::$frontEndLanguages as $l)
 		{
 			$data["arrayLingue"][$l] = $l."/riservata/indirizzi";

@@ -1,0 +1,1 @@
+alter table marchi add id_page int UNSIGNED NOT NULL default 0;

@@ -13,9 +13,11 @@
 		<a href="<?php echo $this->baseUrl."/documenti-riservati/";?>" title="<?php echo gtext("Documenti riservati", false);?>"><?php echo gtext("Documenti riservati");?></a>
 	</li>
 	<?php } ?>
+	<?php if (v("attiva_ordini_in_ecommerce")) { ?>
 	<li>
 		<a href="<?php echo $this->baseUrl."/ordini-effettuati";?>" title="<?php echo gtext("Ordini effettuati", false);?>"><?php echo gtext("Ordini effettuati");?></a>
 	</li>
+	<?php } ?>
 	<?php if (v("attiva_agenti") && User::$isAgente) { ?>
 	<li>
 		<a href="<?php echo $this->baseUrl."/promozioni/elenco/";?>" title="<?php echo gtext("Codici coupon", false);?>"><?php echo gtext("Codici coupon");?></a>

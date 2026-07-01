@@ -27,7 +27,10 @@ class BaseCartController extends BaseController
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
-
+		
+		if (!v("attiva_ordini_in_ecommerce"))
+			$this->responseCode(403);
+		
 		$this->load('header');
 		$this->load('footer','last');
 		

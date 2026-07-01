@@ -115,6 +115,9 @@ class MarchiController extends BaseController
 		if (v("attiva_nuovo_marchi"))
 			$campi .= ",nuovo";
 		
+		if (v("attiva_pagina_produttore"))
+			$campi .= ",id_page";
+		
 		$this->m[$this->modelName]->setValuesFromPost($campi);
 		
 		parent::form($queryType, $id);

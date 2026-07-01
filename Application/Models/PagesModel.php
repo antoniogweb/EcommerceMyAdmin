@@ -840,7 +840,7 @@ class PagesModel extends GenericModel {
 		return $res;
 	}
 	
-	// Select di tuttu le pagine di una certa sezione
+	// Select di tutte le pagine di una certa sezione
 	public function selectPagineSezione($sezione, $withEmpty = false, $soloAttivi = true)
 	{
 		$res = $this->clear()

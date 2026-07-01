@@ -191,7 +191,7 @@ class VariabiliModel extends GenericModel {
 		"url_inserisci_slide"		=>	"slide/form/insert/0",
 		"default_backend_language"	=>	"it",
 		"attiva_categorie_download"	=>	1,
-		"attiva_pagina_produttore"	=>	0,
+		"attiva_pagina_produttore"	=>	0, // se è prevista una pagina specifica per ogni produttore
 		"vista_promozioni_separata"	=>	0,
 		"divisorio_filtri_url"		=>	"--",
 		"attiva_filtri_caratteristiche"	=>	0,
@@ -585,6 +585,7 @@ class VariabiliModel extends GenericModel {
 		"giorni_periodo_reso"		=>	14, // numero di giorni in cui il cliente ha diritto al reso
 		"oggetto_mail_richiesta_reso"	=>	"Richiesta di reso ricevuta per ordine [ID_ORDINE]", // oggetto richiesta di reso fatta dal cliente per un ordine
 		"oggetto_mail_richiesta_reso_lista"	=>	"Richiesta di reso ricevuta per lista [OGGETTO_PLACEHOLDER]", // oggetto richiesta di reso fatta dal cliente per una lista
+		"attiva_ordini_in_ecommerce"	=>	1, // attiva la sezione ordini nell'ecommerce
 		## CHECKOUT E RESOCONTO ORDINE ##
 		"classi_titoli_checkout"	=>	"uk-margin-bottom uk-text-emphasis uk-text-large", // classi usate nei titoli delle varie sezioni al checkout
 		"classi_icona_checkout"		=>	"", // classi usate nelle icone al checkout

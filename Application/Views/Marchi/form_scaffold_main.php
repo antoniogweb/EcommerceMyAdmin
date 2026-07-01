@@ -23,6 +23,7 @@ $().ready(function() {
 			</div>
 			<?php echo $form["sottotitolo"];?>
 			
+			<?php echo isset($form["id_page"]) ? $form["id_page"] : "";?>
 			<?php echo isset($form["nazione"]) ? $form["nazione"] : "";?>
 			<?php echo isset($form["in_evidenza"]) ? $form["in_evidenza"] : "";?>
 			<?php echo isset($form["nuovo"]) ? $form["nuovo"] : "";?>

@@ -281,6 +281,26 @@ trait BaseFasceController
 		return $output;
 	}
 	
+	// Elenca i marchi che hanno come pagina padre la pagina corrente
+	public function getFasciaMarchiPagina()
+	{
+		if (PagesModel::$currentIdPage)
+		{
+			$pages = $this->m("MarchiModel")->clear()->where(array(
+				"attivo"	=>	1,
+				"id_page"	=>	(int)PagesModel::$currentIdPage,
+			))->addJoinTraduzione()->orderBy("marchi.id_order")->send();
+			
+			ob_start();
+			include tpf("Fasce/fascia_marchi.php");
+			$output = ob_get_clean();
+			
+			return $output;
+		}
+		
+		return "";
+	}
+	
 	public function getFasciaTag()
 	{
 		$pages = $this->m("TagModel")->clear()->addJoinTraduzione()->orderBy("tag.id_order")->send();

@@ -267,33 +267,33 @@ class BaseContenutiController extends BaseController
 				$elencoMarchiTitle[mfield($marchio,"alias")] = mfield($marchio,"titolo");
 			}
 			
-			// Alias della pagina c i marchi
-			$aliasPaginaMarchi = "";
+// 			// Alias della pagina con i marchi
+// 			$aliasPaginaMarchi = "";
+// 			
+// 			if (v("attiva_pagina_produttore"))
+// 				$aliasPaginaMarchi = $this->m("MarchiModel")->getAliasPaginaMarchi();
 			
-			if (v("attiva_pagina_produttore"))
-				$aliasPaginaMarchi = $this->m("MarchiModel")->getAliasPaginaMarchi();
-			
-			// Marchio prima della categoria
-			if (v("marchio_prima_della_categoria_in_url"))
-			{
-				$indiceMarchio = 0;
-				
-				if ($aliasPaginaMarchi && count($this->pageArgs) > 0 && $this->pageArgs[0] == $aliasPaginaMarchi)
-					$indiceMarchio = 1;
-				
-				if (count($this->pageArgs) > $indiceMarchio && isset($elencoMarchiEncoded[$this->pageArgs[$indiceMarchio]]))
-				{
-					$this->idMarchio = MarchiModel::$currentId = $elencoMarchiEncoded[$this->pageArgs[$indiceMarchio]];
-					$titleMarchio = $this->titleMarchio = $elencoMarchiTitle[$this->pageArgs[$indiceMarchio]];
-					$this->aliasMarchio = $data["aliasMarchioCorrente"] = $this->pageArgs[$indiceMarchio];
-					
-					array_splice($this->pageArgs, $indiceMarchio, 1);
-				}
-			}
-			
-			// Marchio dopo la categoria
-			if (!v("marchio_prima_della_categoria_in_url"))
-			{
+// 			// Marchio prima della categoria
+// 			if (v("marchio_prima_della_categoria_in_url"))
+// 			{
+// 				$indiceMarchio = 0;
+// 				
+// 				if ($aliasPaginaMarchi && count($this->pageArgs) > 0 && $this->pageArgs[0] == $aliasPaginaMarchi)
+// 					$indiceMarchio = 1;
+// 				
+// 				if (count($this->pageArgs) > $indiceMarchio && isset($elencoMarchiEncoded[$this->pageArgs[$indiceMarchio]]))
+// 				{
+// 					$this->idMarchio = MarchiModel::$currentId = $elencoMarchiEncoded[$this->pageArgs[$indiceMarchio]];
+// 					$titleMarchio = $this->titleMarchio = $elencoMarchiTitle[$this->pageArgs[$indiceMarchio]];
+// 					$this->aliasMarchio = $data["aliasMarchioCorrente"] = $this->pageArgs[$indiceMarchio];
+// 					
+// 					array_splice($this->pageArgs, $indiceMarchio, 1);
+// 				}
+// 			}
+// 			
+// 			// Marchio dopo la categoria
+// 			if (!v("marchio_prima_della_categoria_in_url"))
+// 			{
 				$indiceMarchio = 0;
 				
 				foreach ($this->pageArgs as $pArg)
@@ -312,15 +312,21 @@ class BaseContenutiController extends BaseController
 				
 				if ($this->idMarchio)
 					array_splice($this->pageArgs, $indiceMarchio, 1);
-			}
+			// }
 			
 			// Cerco e tolgo la pagina con tutti i marchi
-			if ($this->idMarchio && v("attiva_pagina_produttore") && $aliasPaginaMarchi)
+			if ($this->idMarchio && v("attiva_pagina_produttore"))
 			{
-				$indiceAliasMarchi = array_search($aliasPaginaMarchi, $this->pageArgs);
+				// Alias della pagina con i marchi
+				$aliasPaginaMarchi = $this->m("MarchiModel")->getAliasPaginaMarchi($this->idMarchio);
 				
-				if ($indiceAliasMarchi !== false && $indiceAliasMarchi === ($indiceMarchio-1))
-					array_splice($this->pageArgs, $indiceAliasMarchi, 1);
+				if ($aliasPaginaMarchi)
+				{
+					$indiceAliasMarchi = array_search($aliasPaginaMarchi, $this->pageArgs);
+					
+					if ($indiceAliasMarchi !== false && $indiceAliasMarchi === ($indiceMarchio-1))
+						array_splice($this->pageArgs, $indiceAliasMarchi, 1);
+				}
 			}
 		}
 		
@@ -1592,6 +1598,7 @@ class BaseContenutiController extends BaseController
 			$data["meta_description"] = F::meta(mfield($marchioCorrente, "meta_description"));
 			$data["keywords"] = mfield($marchioCorrente, "keywords");
 			$data["title"] = mfield($marchioCorrente, "titolo");
+			$data["idMarchio"] = (int)$id;
 			
 			$this->append($data);
 			

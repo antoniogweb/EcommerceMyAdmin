@@ -598,6 +598,13 @@ class PagesController extends BaseController
 		$this->load("pages_aggiungi_categoria");
 	}
 	
+	public function ordina()
+	{
+		$this->modelName = "PagesModel";
+		
+		parent::ordina();
+	}
+	
 	public function ordinacorrelati()
 	{
 		$this->orderBy = "prodotti_correlati.id_order";
