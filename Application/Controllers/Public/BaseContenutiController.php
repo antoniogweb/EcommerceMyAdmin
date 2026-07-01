@@ -315,7 +315,7 @@ class BaseContenutiController extends BaseController
 			// }
 			
 			// Cerco e tolgo la pagina con tutti i marchi
-			if ($this->idMarchio && v("attiva_pagina_produttore"))
+			if ($this->idMarchio && v("attiva_pagina_produttore") && v("pagina_marchi_in_url_marchio"))
 			{
 				// Alias della pagina con i marchi
 				$aliasPaginaMarchi = $this->m("MarchiModel")->getAliasPaginaMarchi($this->idMarchio);
@@ -1575,9 +1575,9 @@ class BaseContenutiController extends BaseController
 		
 		$linguaPrincipale = LingueModel::getPrincipale();
 		
-		$marchiAlias = $this->m("MarchiModel")->clear()->select("contenuti_tradotti.lingua,contenuti_tradotti.alias")->left("contenuti_tradotti")->on("contenuti_tradotti.id_marchio = marchi.id_marchio")->where(array(
-			"marchi.id_marchio"	=>	(int)$id,
-		))->toList("contenuti_tradotti.lingua", "contenuti_tradotti.alias")->send();
+		// $marchiAlias = $this->m("MarchiModel")->clear()->select("contenuti_tradotti.lingua,contenuti_tradotti.alias")->addJoinTraduzione()->where(array(
+		// 	"marchi.id_marchio"	=>	(int)$id,
+		// ))->toList("contenuti_tradotti.lingua", "contenuti_tradotti.alias")->send();
 		
 		$marchioCorrente = $data["marchioCorrente"] = $this->m("MarchiModel")->clear()->addJoinTraduzione()->where(array(
 			"marchi.id_marchio"	=>	(int)$this->idMarchio,
@@ -1589,10 +1589,7 @@ class BaseContenutiController extends BaseController
 			
 			foreach (Params::$frontEndLanguages as $l)
 			{
-				if ($l == $linguaPrincipale || !isset($marchiAlias[$l]))
-					$data["arrayLingue"][$l] = $l."/".$marchioCorrente["marchi"]["alias"].".html";
-				else
-					$data["arrayLingue"][$l] = $l."/".$marchiAlias[$l].".html";
+				$data["arrayLingue"][$l] = $this->m("MarchiModel")->getUrlAlias((int)$id, true, $l);
 			}
 			
 			$data["meta_description"] = F::meta(mfield($marchioCorrente, "meta_description"));

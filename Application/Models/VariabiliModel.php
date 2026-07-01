@@ -191,7 +191,8 @@ class VariabiliModel extends GenericModel {
 		"url_inserisci_slide"		=>	"slide/form/insert/0",
 		"default_backend_language"	=>	"it",
 		"attiva_categorie_download"	=>	1,
-		"attiva_pagina_produttore"	=>	0, // se è prevista una pagina specifica per ogni produttore
+		"attiva_pagina_produttore"	=>	0, // se è prevista una pagina specifica per ogni produttore (marchio)
+		"pagina_marchi_in_url_marchio"	=>	0, // se l'alias della pagina marchi (pagina padre) deve comparire nell'URL
 		"vista_promozioni_separata"	=>	0,
 		"divisorio_filtri_url"		=>	"--",
 		"attiva_filtri_caratteristiche"	=>	0,
