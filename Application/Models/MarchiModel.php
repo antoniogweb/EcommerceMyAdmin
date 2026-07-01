@@ -218,11 +218,6 @@ class MarchiModel extends GenericModel
 	
 	public function getAliasPaginaMarchi($idMarchio = 0, $suffisso = "")
 	{
-// 		if ($idMarchio)
-// 			$idPaginaMarchi = (int)$this->clear()->select("id_page")->whereId((int)$idMarchio)->field("id_page");
-// 		else
-// 			$idPaginaMarchi = PagesModel::gTipoPagina("MARCHI");
-// 		
 		$idPaginaMarchi = $this->getIdPaginaMarchi($idMarchio);
 		
 		$dettagliPagina = PagesModel::getPageDetails($idPaginaMarchi, null, "pages.alias,contenuti_tradotti.alias");
@@ -298,5 +293,14 @@ class MarchiModel extends GenericModel
 		}
 
 		return self::$elencoAliasId;
+	}
+	
+	public function paginaPadreGrud($record)
+	{
+		$idPage = $record["marchi"]["id_page"];
+		
+		$pModel = new PagesModel();
+		
+		return $pModel->clear()->whereId((int)$idPage)->field("title");
 	}
 }

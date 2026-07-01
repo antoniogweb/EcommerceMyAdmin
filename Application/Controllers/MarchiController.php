@@ -52,6 +52,12 @@ class MarchiController extends BaseController
 		$this->mainFields = array("marchi.titolo", "marchi.codice", "attivo");
 		$this->mainHead = "Titolo,Codice,Attivo";
 		
+		if (v("attiva_pagina_produttore"))
+		{
+			$this->mainFields[] = "paginaPadreGrud";
+			$this->mainHead .= ",Pagina padre";
+		}
+		
 		if (v("attiva_nazione_marchi"))
 		{
 			$this->mainFields[] = "nazione";
