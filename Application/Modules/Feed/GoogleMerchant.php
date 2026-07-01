@@ -192,9 +192,19 @@ class GoogleMerchant extends Feed
 			{
 // 				$country = isset(Params::$country) ? strtoupper(Params::$country) : v("nazione_default");
 				
-				$temp["g:shipping"]["g:country"] = $r["nazione"];
-				$temp["g:shipping"]["g:service"] = F::alt($r["nome_corriere"], ENT_NOQUOTES);
-				$temp["g:shipping"]["g:price"] = $r["spese_spedizione"]." EUR";
+				// if (!$this->isFbk)
+				// {
+					$temp["g:shipping"]["g:country"] = $r["nazione"];
+					$temp["g:shipping"]["g:service"] = F::alt($r["nome_corriere"], ENT_NOQUOTES);
+					$temp["g:shipping"]["g:price"] = $r["spese_spedizione"]." EUR";
+				// }
+				// else
+				// {
+				// 	$nome_pulito = preg_replace('/\s*\(.*?\)/u', '', F::alt($r["nome_corriere"], ENT_NOQUOTES));
+				// 	$nome_pulito = str_replace(":","",$nome_pulito);
+				// 	$nome_pulito = trim($nome_pulito);
+				// 	$temp["shipping"] = $r["nazione"]."::".$nome_pulito.":".$r["spese_spedizione"]." EUR";
+				// }
 			}
 			
 			if (!$this->isFbk && count($etichettePersonalizzate) > 0)
