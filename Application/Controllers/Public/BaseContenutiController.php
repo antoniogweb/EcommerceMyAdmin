@@ -1573,12 +1573,6 @@ class BaseContenutiController extends BaseController
 		if (v("attiva_formn_contatti"))
 			$this->inviaMailFormContatti(0);
 		
-		$linguaPrincipale = LingueModel::getPrincipale();
-		
-		// $marchiAlias = $this->m("MarchiModel")->clear()->select("contenuti_tradotti.lingua,contenuti_tradotti.alias")->addJoinTraduzione()->where(array(
-		// 	"marchi.id_marchio"	=>	(int)$id,
-		// ))->toList("contenuti_tradotti.lingua", "contenuti_tradotti.alias")->send();
-		
 		$marchioCorrente = $data["marchioCorrente"] = $this->m("MarchiModel")->clear()->addJoinTraduzione()->where(array(
 			"marchi.id_marchio"	=>	(int)$this->idMarchio,
 		))->first();
