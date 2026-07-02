@@ -842,25 +842,22 @@ class SpedizioninegozioModel extends FormModel {
 		
 		if (!empty($record) && $record["id_spedizioniere"])
 		{
-			// if (SpedizioninegozioModel::aperto((int)$id))
-			// {
-				$modulo = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true);
+			$modulo = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true);
+			
+			if ($modulo && $modulo->permettiRichiestaSpese())
+			{
+				$costoStimato = $modulo->richiediCosto($id, $this);
 				
-				if ($modulo && $modulo->permettiRichiestaSpese())
+				if ($costoStimato !== false)
 				{
-					$costoStimato = $modulo->richiediCosto($id, $this);
+					$this->sValues(array(
+						"costo_stimato"	=>	$costoStimato,
+					));
 					
-					if ($costoStimato !== false)
-					{
-						$this->sValues(array(
-							"costo_stimato"	=>	$costoStimato,
-						));
-						
-						if ($this->update($id))
-							return true;
-					}
+					if ($this->update($id))
+						return true;
 				}
-			// }
+			}
 		}
 		
 		return false;

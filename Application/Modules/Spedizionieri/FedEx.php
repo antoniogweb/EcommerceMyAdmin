@@ -439,6 +439,13 @@ class FedEx extends Spedizioniere
 					$jsonArray['requestedShipment']['customsClearanceDetail'] = [
 						'commodities' => [[
 							'description' => trim($record['descrizione_generica_merce']) ? $record['descrizione_generica_merce'] : $this->getParam('descrizione_generica_merce'),
+							// 'numberOfPieces' => count($colli),
+							'quantity' => count($colli),
+							'quantityUnits' => 'PCS',
+							'customsValue' => [
+								'amount' => $valoreTotale > 0 ? number_format($valoreTotale, 2, ".", "") : "1.00",
+								'currency' => v("codice_valuta"),
+							],
 						]],
 					];
 					
@@ -537,7 +544,7 @@ class FedEx extends Spedizioniere
 			{
 				$rateType = strtoupper((string)($ratedShipmentDetail["rateType"] ?? $ratedShipmentDetail["shipmentRateDetail"]["rateType"] ?? ""));
 				
-				if (strpos($rateType, "ACCOUNT") !== false || strpos($rateType, "PAYOR") !== false)
+				if (strpos($rateType, "ACCOUNT") !== false)
 					$accountDetails[] = $ratedShipmentDetail;
 				else
 					$otherDetails[] = $ratedShipmentDetail;
@@ -558,12 +565,13 @@ class FedEx extends Spedizioniere
 	protected function estraiImportoCostoStimato(array $ratedShipmentDetail)
 	{
 		$campi = array(
-			array("totalNetCharge"),
 			array("totalNetFedExCharge"),
-			array("shipmentRateDetail", "totalNetCharge"),
 			array("shipmentRateDetail", "totalNetFedExCharge"),
+			array("totalNetCharge"),
+			array("shipmentRateDetail", "totalNetCharge"),
 			array("shipmentRateDetail", "totalNetChargeWithDutiesAndTaxes"),
 		);
+
 		
 		foreach ($campi as $path)
 		{
