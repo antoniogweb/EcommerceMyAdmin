@@ -2046,6 +2046,10 @@ class PagesModel extends GenericModel {
 			
 			$indiceNode = 0;
 			
+			// rimuovi l'alias della sezione prodotti
+			if (!v("mantieni_alias_sezione_in_url_prodotti") && count($parents) > 1 && isset($parents[0]["categories"]["section"]) && $parents[0]["categories"]["section"] == Parametri::$nomeSezioneProdotti)
+				array_shift($parents);
+			
 			foreach ($parents as $node)
 			{
 				if (isset($node["categories"][$this->aliaseFieldName]))
