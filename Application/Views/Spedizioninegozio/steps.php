@@ -164,6 +164,17 @@ $(document).ready(function(){
 							<?php } ?>
 						</td>
 					</tr>
+					<?php if ($modulo->permettiRichiestaSpese() && $modulo->metodo("richiediCosto")) { ?>
+					<tr>
+						<td><?php echo gtext("Costo stimato");?>:</td>
+						<td>
+							<a style="margin-left:5px;" title="<?php echo gtext("Richiedi costo stimato")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/richiedicosto/".(int)$id.$this->viewStatus;?>" class="pull-right badge make_spinner"><i class="fa fa-refresh"></i> <?php echo gtext("Richiedi costo");?></a>
+							
+							<?php echo setPriceReverse($spedizione["spedizioni_negozio"]["costo_stimato"]);?><br />
+							
+						</td>
+					</tr>
+					<?php } ?>
 				</table>
 			</div>
 		</div>

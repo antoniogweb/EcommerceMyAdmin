@@ -477,7 +477,10 @@ class SpedizioninegozioController extends BaseController {
 		
 		$this->clean();
 		
-		print_r($this->m($this->modelName)->richiedicosto($id));
+		if (!$this->m($this->modelName)->richiedicosto($id))
+			flash("notice",$this->m($this->modelName)->notice);
+		
+		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}
 	
 	// Setta la spedizione $id come aperta (stato = A)

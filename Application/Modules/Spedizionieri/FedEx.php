@@ -517,6 +517,11 @@ class FedEx extends Spedizioniere
 		return false;
 	}
 	
+	protected function estraiCostoStimato($result)
+	{
+		return 10;
+	}
+	
 	public function richiediCosto($idS, ?SpedizioninegozioModel $spedizione = null)
 	{
 		if ($this->isAttivo())
@@ -532,33 +537,21 @@ class FedEx extends Spedizioniere
 				SpedizioninegozioinfoModel::g(false)->inserisci($idS, "quotesRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
 				SpedizioninegozioinfoModel::g(false)->inserisci($idS, "quotesResponse", json_encode($result), "JSON");
 				
-				return $result;
-			}
-			else
-			{
-				$result = array(
-					"errors" => array(
-						array(
-							"code" => "FEDEX.OAUTH.ERROR",
-							"message" => "Errore, API non funzionante: ".$errore,
-						),
-					),
-				);
+				$errore = $this->getError($result);
 				
-				return $result;
+				if (!trim($errore))
+				{
+					return trim($this->estraiCostoStimato($result));
+				}
+				else
+					$this->settaNoticeModel($spedizione, $errore);
 			}
+			$this->settaNoticeModel($spedizione, "Errore, API non funzionante: ".$errore);
 		}
+		else
+			$this->settaNoticeModel($spedizione, "Attenzione, il modulo spedizioniere ".$this->params["titolo"]. " non è attivo");
 		
-		$result = array(
-			"errors" => array(
-				array(
-					"code" => "FEDEX.MODULE.NOT_ACTIVE",
-					"message" => "Attenzione, il modulo spedizioniere ".$this->params["titolo"]." non è attivo",
-				),
-			),
-		);
-		
-		return $result;
+		return false;
 	}
 	
 	// $idS array con gli ID delle spedizione da confermare

@@ -838,8 +838,6 @@ class SpedizioninegozioModel extends FormModel {
 	
 	public function richiedicosto($id = 0)
 	{
-		$result = array(false, array());
-		
 		$record = $this->clear()->selectId((int)$id);
 		
 		if (!empty($record) && $record["id_spedizioniere"])
@@ -850,12 +848,22 @@ class SpedizioninegozioModel extends FormModel {
 				
 				if ($modulo && $modulo->permettiRichiestaSpese())
 				{
-					$result = array(true,$modulo->richiediCosto($id, $this));
+					$costoStimato = $modulo->richiediCosto($id, $this);
+					
+					if ($costoStimato !== false)
+					{
+						$this->sValues(array(
+							"costo_stimato"	=>	$costoStimato,
+						));
+						
+						if ($this->update($id))
+							return true;
+					}
 				}
 			}
 		}
 		
-		return $result;
+		return false;
 	}
 	
 	// Invia la spedizione $id al corriere
