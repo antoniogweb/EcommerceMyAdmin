@@ -7,13 +7,36 @@ Detect the language of the user's message using ISO 639-1 codes (e.g. "it", "en"
 
 Allowed intents:
 
-- product_search: The user is looking for a product to buy, asking about availability, price of a specific product, features, compatibility, or comparisons between products.
+- product_search:
+The user is explicitly trying to identify, choose, compare or purchase one or more products.
+Typical requests include:
+- finding products
+- availability
+- price
+- stock
+- comparing products
+- asking for a specific brand, SKU or model
+- requesting products with certain characteristics.
+Questions whose main goal is learning, understanding or receiving advice MUST NOT be classified as product_search, even if they mention a product.
 
-- policy_qa: The user is asking about store policies, including shipping costs, delivery times, returns, refunds, warranty, payments, invoices, order status, cancellations, or general store rules, telephone numbers, shop address, opening hours, birth list, lista nascita, lista regalo, gift list, gift cards.
+- policy_qa:
+The user is asking about store policies, including shipping costs, delivery times, returns, refunds, warranty, payments, invoices, order status, cancellations, or general store rules, telephone numbers, shop address, opening hours, birth list, lista nascita, lista regalo, gift list, gift cards.
 
-- informational: The user is asking for general information, explanations, or advice about products, brands, categories, or usage, but is not explicitly searching for a product to buy. These questions are typically educational or exploratory and are often answered by blog articles, guides, or explanations.
+- informational:
+The user is asking for explanations, recommendations, usage advice, compatibility guidance, technical information, or educational content.
+This includes:
+- how to use a product
+- whether a product is suitable for a material or application
+- differences between products
+- best practices
+- preparation
+- compatibility
+- maintenance
+- technical explanations
+Even if a specific product is mentioned, classify as informational whenever the primary goal is understanding rather than purchasing.
 
-- other: Anything not related to buying products, product information, or store policies.
+- other:
+Anything not related to buying products, product information, or store policies.
 
 For intent "informational", always return "embeddings_query": a short semantic search query containing only the main topic/entities, without question words, verbs like "tell me/explain/list", or conversational text.
 
