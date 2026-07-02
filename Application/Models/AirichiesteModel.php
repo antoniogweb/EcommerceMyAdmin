@@ -649,8 +649,13 @@ class AirichiesteModel extends GenericModel
 		$emb = new EmbeddingsModel();
 		$emb = $emb->innerPages($lingua)->addWhereAttivo();
 		
+		$idCatStrutturaFeedProdotti = 1;
+		
 		if ($soloProdotti)
+		{
+			$idCatStrutturaFeedProdotti = 0;
 			$emb->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
+		}
 		
 		// var_dump($routingJson);
 		$productTitle = $routingJson["entities"]["product_title"]["value"] ?? "";
@@ -773,7 +778,7 @@ class AirichiesteModel extends GenericModel
 			));
 			
 			TraduzioniModel::sLingua($lingua, "front");
-			$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 0);
+			$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, $idCatStrutturaFeedProdotti);
 			TraduzioniModel::rLingua();
 		}
 		else if ($productTitle || $productSKU)
@@ -796,7 +801,7 @@ class AirichiesteModel extends GenericModel
 			}
 			
 			TraduzioniModel::sLingua($lingua, "front");
-			$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 0);
+			$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, $idCatStrutturaFeedProdotti);
 			TraduzioniModel::rLingua();
 		}
 		
