@@ -519,7 +519,72 @@ class FedEx extends Spedizioniere
 	
 	protected function estraiCostoStimato($result)
 	{
-		return 10;
+		if (is_string($result))
+			$result = json_decode($result, true);
+		
+		if (!is_array($result))
+			return "";
+		
+		$rateReplyDetails = $result["output"]["rateReplyDetails"] ?? [];
+		
+		foreach ($rateReplyDetails as $rateReplyDetail)
+		{
+			$ratedShipmentDetails = $rateReplyDetail["ratedShipmentDetails"] ?? [];
+			$accountDetails = array();
+			$otherDetails = array();
+			
+			foreach ($ratedShipmentDetails as $ratedShipmentDetail)
+			{
+				$rateType = strtoupper((string)($ratedShipmentDetail["rateType"] ?? $ratedShipmentDetail["shipmentRateDetail"]["rateType"] ?? ""));
+				
+				if (strpos($rateType, "ACCOUNT") !== false || strpos($rateType, "PAYOR") !== false)
+					$accountDetails[] = $ratedShipmentDetail;
+				else
+					$otherDetails[] = $ratedShipmentDetail;
+			}
+			
+			foreach (array_merge($accountDetails, $otherDetails) as $ratedShipmentDetail)
+			{
+				$costo = $this->estraiImportoCostoStimato($ratedShipmentDetail);
+				
+				if ($costo !== "")
+					return $costo;
+			}
+		}
+		
+		return "";
+	}
+	
+	protected function estraiImportoCostoStimato(array $ratedShipmentDetail)
+	{
+		$campi = array(
+			array("totalNetCharge"),
+			array("totalNetFedExCharge"),
+			array("shipmentRateDetail", "totalNetCharge"),
+			array("shipmentRateDetail", "totalNetFedExCharge"),
+			array("shipmentRateDetail", "totalNetChargeWithDutiesAndTaxes"),
+		);
+		
+		foreach ($campi as $path)
+		{
+			$valore = $ratedShipmentDetail;
+			
+			foreach ($path as $key)
+			{
+				if (!is_array($valore) || !array_key_exists($key, $valore))
+					continue 2;
+				
+				$valore = $valore[$key];
+			}
+			
+			if (is_array($valore) && isset($valore["amount"]))
+				$valore = $valore["amount"];
+			
+			if (is_numeric($valore))
+				return number_format((float)$valore, 2, ".", "");
+		}
+		
+		return "";
 	}
 	
 	public function richiediCosto($idS, ?SpedizioninegozioModel $spedizione = null)

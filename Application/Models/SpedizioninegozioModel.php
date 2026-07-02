@@ -842,8 +842,8 @@ class SpedizioninegozioModel extends FormModel {
 		
 		if (!empty($record) && $record["id_spedizioniere"])
 		{
-			if (SpedizioninegozioModel::aperto((int)$id))
-			{
+			// if (SpedizioninegozioModel::aperto((int)$id))
+			// {
 				$modulo = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true);
 				
 				if ($modulo && $modulo->permettiRichiestaSpese())
@@ -860,7 +860,7 @@ class SpedizioninegozioModel extends FormModel {
 							return true;
 					}
 				}
-			}
+			// }
 		}
 		
 		return false;
