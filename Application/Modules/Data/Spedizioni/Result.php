@@ -27,12 +27,14 @@ class Data_Spedizioni_Result
 	private $numeroSpedizione = "";
 	private $erroreSpedizione = "";
 	private $warningSpedizione = "";
+	private $costoSpedizione = 0;
 	
-	public function __construct($numeroSpedizione = "", $erroreSpedizione = "", $warningSpedizione = "")
+	public function __construct($numeroSpedizione = "", $erroreSpedizione = "", $warningSpedizione = "", $costoSpedizione = 0)
 	{
 		$this->numeroSpedizione = $numeroSpedizione;
 		$this->erroreSpedizione = $erroreSpedizione;
 		$this->warningSpedizione = $warningSpedizione;
+		$this->costoSpedizione = $costoSpedizione;
 	}
 	
 	public function instradato()
@@ -48,7 +50,10 @@ class Data_Spedizioni_Result
 		);
 		
 		if ($numeroSpedizione)
+		{
 			$res["numero_spedizione"] = $this->numeroSpedizione;
+			$res["costo_stimato"] = (float)$this->costoSpedizione;
+		}
 		
 		return $res;
 	}

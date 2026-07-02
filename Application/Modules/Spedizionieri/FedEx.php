@@ -476,6 +476,25 @@ class FedEx extends Spedizioniere
         return $response['output']['transactionShipments'][0]['masterTrackingNumber'] ?? '';
     }
 	
+	protected function estraiSpeseSpedizione($response)
+	{
+		$shipmentRateDetails = $response['output']['transactionShipments'][0]['completedShipmentDetail']['shipmentRating']
+		['shipmentRateDetails'] ?? [];
+
+		foreach ($shipmentRateDetails as $shipmentRateDetail)
+		{
+			if (isset($shipmentRateDetail["totalNetFedExCharge"]) && is_numeric($shipmentRateDetail["totalNetFedExCharge"]))
+				return number_format((float)$shipmentRateDetail["totalNetFedExCharge"], 2, ".", "");
+		}
+
+		$netRateAmount = $response['output']['transactionShipments'][0]['pieceResponses'][0]['netRateAmount'] ?? "";
+
+		if (is_numeric($netRateAmount))
+			return number_format((float)$netRateAmount, 2, ".", "");
+
+		return 0;
+	}
+
 	// Pronoto la spedizione al corriere per avere il numero di spedizione e l'etichetta
 	public function prenotaSpedizione($idS, ?SpedizioninegozioModel $spedizione = null)
 	{
@@ -506,10 +525,11 @@ class FedEx extends Spedizioniere
 					
 					$errore = $this->getError($result);
 					$trackingNumber = trim($this->estraiTrckingNumber($result));
+					$costoSpedizione = $this->estraiSpeseSpedizione($result);
 					
 					if (!trim($errore) && $trackingNumber)
 					{
-						return new Data_Spedizioni_Result($trackingNumber, "");
+						return new Data_Spedizioni_Result($trackingNumber, "", "", $costoSpedizione);
 					}
 					else
 						$this->settaNoticeModel($spedizione, $errore);

@@ -985,6 +985,8 @@ class SpedizioninegozioModel extends FormModel {
 			$this->setValue($k, $v);
 		}
 		
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
 		if ($this->update((int)$id))
 		{
 			SpedizioninegozioeventiModel::g()->inserisci((int)$id, $stato);
