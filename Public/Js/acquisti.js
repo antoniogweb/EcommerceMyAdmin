@@ -23,11 +23,13 @@ $(document).ready(function(){
 			var id_articolo = $(this).find("[name='codice']").attr("id-articolo");
 			var codice = $(this).find("[name='codice']").val();
 			var gtin = $(this).find("[name='gtin']").val();
+			var mpn = $(this).find("[name='mpn']").val();
 			
 			var temp = {
 				id_articolo: id_articolo,
 				codice: codice,
-				gtin: gtin
+				gtin: gtin,
+				mpn: mpn
 			};
 			
 			valori.push(temp);

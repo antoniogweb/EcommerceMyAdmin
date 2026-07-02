@@ -150,7 +150,11 @@ class MagazzinoarticoliController extends BaseController
 						" lk" => array('pages.title' => $this->viewArgs['prodotto']),
 					),
 					" lk" => array('categories.title' => $this->viewArgs['categoria']),
-					"  lk" => array('magazzino_articoli.codice' => $this->viewArgs['codice']),
+					" OR"	=>	array(
+						"lk" => array('magazzino_articoli.codice' => $this->viewArgs['codice']),
+						" lk" => array('magazzino_articoli.gtin' => $this->viewArgs['codice']),
+						"  lk" => array('magazzino_articoli.mpn' => $this->viewArgs['codice']),
+					),
 					"pages.attivo"	=>	$this->viewArgs['attivo'],
 					"pages.id_marchio"	=>	$this->viewArgs['id_marchio'],
 					"combinazioni.acquistabile"	=>	$this->viewArgs['acquistabile'],
@@ -268,8 +272,9 @@ class MagazzinoarticoliController extends BaseController
 				$record = $this->m[$this->modelName]->selectId((int)$v["id_articolo"]);
 			
 			$this->m[$this->modelName]->setValues(array(
-				"codice"	=>	$v["codice"],
-				"gtin"		=>	$v["gtin"],
+				"codice"	=>	$v["codice"] ?? '',
+				"gtin"		=>	$v["gtin"] ?? '',
+				"mpn"		=>	$v["mpn"] ?? '',
 			));
 
 			if (!empty($record))

@@ -1,0 +1,1 @@
+alter table magazzino_articoli add mpn 	varchar(100) not null default '';

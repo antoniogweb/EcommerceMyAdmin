@@ -88,7 +88,7 @@ class MagazzinoarticoliModel extends GenericModel
     public function importaArticoliDaEcommerce($log = null)
 	{
 		VariabiliModel::$valori["template_attributo"] = "[VALORE]";
-	
+		
 		if (v("usa_transactions"))
 			$this->db->beginTransaction();
 		
@@ -122,6 +122,7 @@ class MagazzinoarticoliModel extends GenericModel
 				"titolo"	=>	$titolo,
 				"codice"	=>	htmlentitydecode($c["combinazioni"]["codice"]),
 				"gtin"		=>	htmlentitydecode($c["combinazioni"]["gtin"]),
+				"mpn"		=>	htmlentitydecode($c["combinazioni"]["mpn"]),
 				"prezzo"	=>	0,
 				"sconto_1"	=>	0,
 				"sconto_2"	=>	0,
@@ -335,6 +336,8 @@ class MagazzinoarticoliModel extends GenericModel
 			$html = "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("SKU").":</b> <input id-articolo='".$record["magazzino_articoli"]["id_articolo"]."' style='max-width:140px;display:inline;' class='form-control class_combinazione class_combinazione_".$record["magazzino_articoli"]["id_articolo"]."' name='codice' value='".$record["magazzino_articoli"]["codice"]."' /></div>";
 			
 			$html .= "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("GTIN").":</b> <input id-articolo='".$record["magazzino_articoli"]["id_articolo"]."' style='max-width:140px;display:inline;' class='form-control' name='gtin' value='".$record["magazzino_articoli"]["gtin"]."' /></div>";
+			
+			$html .= "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("MPN").":</b> <input id-articolo='".$record["magazzino_articoli"]["id_articolo"]."' style='max-width:140px;display:inline;' class='form-control' name='mpn' value='".$record["magazzino_articoli"]["mpn"]."' /></div>";
 			
 			return $html;
 		}
