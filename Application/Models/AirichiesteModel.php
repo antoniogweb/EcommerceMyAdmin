@@ -664,7 +664,7 @@ class AirichiesteModel extends GenericModel
 		$prezzoMassimo =  $routingJson["entities"]["price_range"]["max"] ?? null;
 		$brand =  $routingJson["entities"]["brand"]["value"] ?? null;
 		
-		if ($prezzoMassimo)
+		if ($prezzoMassimo && $soloProdotti)
 		{
 			$emb->aWhere(array(
 				"lte"	=>	array(
@@ -673,7 +673,7 @@ class AirichiesteModel extends GenericModel
 			));
 		}
 		
-		if ($prezzoMinimo)
+		if ($prezzoMinimo && $soloProdotti)
 		{
 			$emb->aWhere(array(
 				"gte"	=>	array(
