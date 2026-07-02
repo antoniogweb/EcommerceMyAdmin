@@ -218,6 +218,9 @@ class MarchiModel extends GenericModel
 	
 	public function getAliasPaginaMarchi($idMarchio = 0, $suffisso = "")
 	{
+		if (!v("pagina_marchi_in_url_marchio"))
+			return "";
+		
 		$idPaginaMarchi = $this->getIdPaginaMarchi($idMarchio);
 		
 		$dettagliPagina = PagesModel::getPageDetails($idPaginaMarchi, null, "pages.alias,contenuti_tradotti.alias");
@@ -235,26 +238,21 @@ class MarchiModel extends GenericModel
 		
 		if (count($marchio) > 0)
 		{
-			if (!v("attiva_pagina_produttore"))
+			if (v("shop_in_alias_marchio") && !$paginaDettaglioMarchio)
 			{
-				if (v("shop_in_alias_marchio") && !$paginaDettaglioMarchio)
-				{
-					$c = new CategoriesModel;
-			
-					$idShop = $c->getShopCategoryId();
-					
-					if (v("marchio_prima_della_categoria_in_url"))
-						return mfield($marchio[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
-					else
-					{
-						Parametri::$useHtmlExtension = false;
-						$aliasShop = $c->getUrlAlias($idShop);
-						Parametri::$useHtmlExtension = true;
-						return $aliasShop."/".mfield($marchio[0],"alias").v("estensione_url_categorie");
-					}
-				}
+				$c = new CategoriesModel;
+		
+				$idShop = $c->getShopCategoryId();
+				
+				if (v("marchio_prima_della_categoria_in_url"))
+					return mfield($marchio[0],"alias")."/".$c->getUrlAlias($idShop, $lingua);
 				else
-					return mfield($marchio[0],"alias").v("estensione_url_categorie");
+				{
+					Parametri::$useHtmlExtension = false;
+					$aliasShop = $c->getUrlAlias($idShop);
+					Parametri::$useHtmlExtension = true;
+					return $aliasShop."/".mfield($marchio[0],"alias").v("estensione_url_categorie");
+				}
 			}
 			else
 				return $this->getAliasPaginaMarchi($id, "/").mfield($marchio[0],"alias").v("estensione_url_categorie");
