@@ -27,5 +27,18 @@ Return exactly:
 PRICE RULES:
 - Price information must ONLY be placed in "price_range".
 
+PRODUCT CODE / SKU RULES:
+- Extract product codes, SKUs, item codes, model codes, EAN/GTIN-like codes, or user-written product references into entities.SKU.value.
+- Product codes may be numeric, alphanumeric, or contain dashes, slashes, dots, spaces, or mixed uppercase/lowercase letters.
+- Also extract codes introduced by words such as: codice, cod., sku, riferimento, ref, modello, model, articolo, art., product code, item code, EAN, GTIN.
+- If the user writes a standalone code-like token and the message is about availability, price, compatibility, or product information, treat it as SKU with medium/high confidence.
+- Do NOT put the product code in product_title unless it is clearly part of a natural product name.
+- Preserve the code exactly as written by the user, except trim surrounding punctuation.
+- If multiple product codes are present, return the most relevant one in SKU.value.
+
 Set value fields to null if not present.
-If unsure, use "other" with confidence <= 0.40.
+If the message is related to products, product usage, product compatibility, brands, categories, materials, or product characteristics, NEVER use "other".
+Use "other" only when the message is completely unrelated to products, store policies, or product information.
+If unsure between product_search and informational:
+- use product_search when the user refers to a specific product, product name, SKU, model, availability, price, compatibility, or whether a product can be used for a specific purpose;
+- use informational when the user asks a general educational question about a category, material, technique, or usage without referring to a specific purchasable product.
