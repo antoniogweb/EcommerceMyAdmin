@@ -342,6 +342,121 @@ class FedEx extends Spedizioniere
 				else
 					return [];
 			}
+			else if ($tipo == "quote")
+			{
+				$jsonArrayColli = array();
+				$pesoTotale = 0;
+				$valoreTotale = 0;
+				
+				foreach ($colli as $collo)
+				{
+					$pesoTotale += number_format($collo["peso"],1,".","");
+					
+					$tempCollo = [
+						'weight' => [
+							'units' => 'KG',
+							'value' => number_format($collo["peso"],1,".",""),
+						],
+					];
+					
+					if ($collo['lunghezza'] > 0 && $collo['profondita'] > 0 && $collo['altezza'] > 0)
+					{
+						$tempCollo['dimensions'] = [
+							'length' => (int)ceil($collo['lunghezza']),
+							'width' => (int)ceil($collo['profondita']),
+							'height' => (int)ceil($collo['altezza']),
+							'units' => 'CM',
+						];
+					}
+					
+					if ($collo['valore'] > 0)
+					{
+						$valore = number_format($collo["valore"],2,".","");
+						$valoreTotale += $valore;
+						
+						$tempCollo["declaredValue"] = array(
+							"amount"	=>	$valore,
+							"currency"	=>	v("codice_valuta"),
+						);
+					}
+					
+					$jsonArrayColli[] = $tempCollo;
+				}
+				
+				$jsonArray = [
+					'accountNumber' => [
+						'value' => $record["codice_cliente"],
+					],
+					'rateRequestControlParameters' => [
+						'returnTransitTimes' => true,
+					],
+					'requestedShipment' => [
+						'shipDateStamp' => date('Y-m-d'),
+						'pickupType' => $record["modalita_ritiro"],
+						'serviceType' => $record["tipo_servizio"],
+						'packagingType' => 'YOUR_PACKAGING',
+						'totalPackageCount' => count($colli),
+						'totalWeight' => $pesoTotale,
+						'rateRequestType' => [
+							'ACCOUNT',
+							'LIST',
+						],
+						'shipper' => [
+							'contact' => [
+								'personName' => $this->getParam("persona_riferimento_cliente"),
+								'companyName' => $this->getParam("ragione_sociale_cliente"),
+								'phoneNumber' => $this->getParam("telefono_cliente"),
+							],
+							'address' => [
+								'streetLines' => [$this->getParam("indirizzo_cliente")],
+								'city' => $this->getParam("citta"),
+								'stateOrProvinceCode' => $this->getParam("provincia_cliente"),
+								'postalCode' => $this->getParam("cap_cliente"),
+								'countryCode' => $this->getParam("nazione_cliente"),
+							],
+						],
+						'recipient' => [
+							'contact' => [
+								'companyName' => $record["ragione_sociale_2"],
+								'phoneNumber' => $record["telefono"],
+							],
+							'address' => [
+								'streetLines' => [$record["indirizzo"]],
+								'city' => $record["citta"],
+								'stateOrProvinceCode' => $record["nazione"] == "IT" ? $record["provincia"] : "",
+								'postalCode' => $record["cap"],
+								'countryCode' => $record["nazione"],
+							],
+						],
+						'shippingChargesPayment' => [
+							'paymentType' => 'SENDER',
+						],
+						'requestedPackageLineItems' => $jsonArrayColli,
+					],
+				];
+				
+				if ($record['nazione'] != $this->getParam('nazione_cliente')) {
+					$jsonArray['requestedShipment']['customsClearanceDetail'] = [
+						'commodities' => [[
+							'description' => trim($record['descrizione_generica_merce']) ? $record['descrizione_generica_merce'] : $this->getParam('descrizione_generica_merce'),
+						]],
+					];
+					
+					$jsonArray['requestedShipment']['shipmentSpecialServices'] = [
+						'specialServiceTypes' => [
+							'ELECTRONIC_TRADE_DOCUMENTS',
+						],
+					];
+				}
+				
+				if ($valoreTotale > 0)
+				{
+					$jsonArray["requestedShipment"]["totalDeclaredValue"] = array(
+						"amount"	=>	number_format($valoreTotale,2,".",""),
+						"currency"	=>	v("codice_valuta"),
+					);
+				}
+			}
 			
 			return $jsonArray;
 		}
@@ -400,6 +515,50 @@ class FedEx extends Spedizioniere
 			$this->settaNoticeModel($spedizione, "Attenzione, il modulo spedizioniere ".$this->params["titolo"]. " non è attivo");
 		
 		return false;
+	}
+	
+	public function richiediCosto($idS, ?SpedizioninegozioModel $spedizione = null)
+	{
+		if ($this->isAttivo())
+		{
+			list($accessToken, $errore) = $this->getSavedToken();
+			
+			if ($accessToken && !$errore)
+			{
+				$jsonArray = $this->getStrutturaSpedizione($idS, "quote");
+				
+				$result = $this->requestJson('/rate/v1/rates/quotes', 'POST', $jsonArray, $accessToken);
+				
+				SpedizioninegozioinfoModel::g(false)->inserisci($idS, "quotesRequest", $this->oscuraPassword(json_encode($jsonArray)), "JSON");
+				SpedizioninegozioinfoModel::g(false)->inserisci($idS, "quotesResponse", json_encode($result), "JSON");
+				
+				return $result;
+			}
+			else
+			{
+				$result = array(
+					"errors" => array(
+						array(
+							"code" => "FEDEX.OAUTH.ERROR",
+							"message" => "Errore, API non funzionante: ".$errore,
+						),
+					),
+				);
+				
+				return $result;
+			}
+		}
+		
+		$result = array(
+			"errors" => array(
+				array(
+					"code" => "FEDEX.MODULE.NOT_ACTIVE",
+					"message" => "Attenzione, il modulo spedizioniere ".$this->params["titolo"]." non è attivo",
+				),
+			),
+		);
+		
+		return $result;
 	}
 	
 	// $idS array con gli ID delle spedizione da confermare
@@ -823,5 +982,10 @@ class FedEx extends Spedizioniere
 	public function oscuraPassword($input)
 	{
 		return str_replace($this->getParam("codice_contratto"),"XXXX", $input);
+	}
+	
+	public function permettiRichiestaSpese()
+	{
+		return true;
 	}
 }

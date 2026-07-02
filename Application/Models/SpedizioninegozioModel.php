@@ -836,6 +836,28 @@ class SpedizioninegozioModel extends FormModel {
 		return false;
 	}
 	
+	public function richiedicosto($id = 0)
+	{
+		$result = array(false, array());
+		
+		$record = $this->clear()->selectId((int)$id);
+		
+		if (!empty($record) && $record["id_spedizioniere"])
+		{
+			if (SpedizioninegozioModel::aperto((int)$id))
+			{
+				$modulo = SpedizionieriModel::getModulo((int)$record["id_spedizioniere"], true);
+				
+				if ($modulo && $modulo->permettiRichiestaSpese())
+				{
+					$result = array(true,$modulo->richiediCosto($id, $this));
+				}
+			}
+		}
+		
+		return $result;
+	}
+	
 	// Invia la spedizione $id al corriere
 	public function prontaDaInviare($id)
 	{

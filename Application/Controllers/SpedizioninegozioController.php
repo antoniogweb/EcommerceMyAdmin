@@ -470,6 +470,16 @@ class SpedizioninegozioController extends BaseController {
 		$this->redirect("spedizioninegozio/form/update/".(int)$id.$this->viewStatus);
 	}
 	
+	// richiedi il costo della spedizione
+	public function richiedicosto($id = 0)
+	{
+		$this->shift(1);
+		
+		$this->clean();
+		
+		print_r($this->m($this->modelName)->richiedicosto($id));
+	}
+	
 	// Setta la spedizione $id come aperta (stato = A)
 	public function apri($id = 0, $forza = 0)
 	{

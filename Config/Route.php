@@ -889,6 +889,7 @@ class Route
 		'spedizioninegozio,apri',
 		'spedizioninegozio,annulla',
 		'spedizioninegozio,prontadainviare',
+		'spedizioninegozio,richiedicosto',
 		'spedizioninegozio,conferma',
 		'spedizioninegozio,confermaspedizioni',
 		'spedizioninegozio,controllaspedizioni',

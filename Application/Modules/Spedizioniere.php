@@ -311,4 +311,9 @@ class Spedizioniere
 	{
 		return false;
 	}
+	
+	public function permettiRichiestaSpese()
+	{
+		return false;
+	}
 }
