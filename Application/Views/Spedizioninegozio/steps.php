@@ -166,7 +166,7 @@ $(document).ready(function(){
 					</tr>
 					<?php if ($modulo->permettiRichiestaSpese() && $modulo->metodo("richiediCosto")) { ?>
 					<tr>
-						<td><?php echo gtext("Costo stimato");?>:</td>
+						<td><?php echo gtext("Costo stimato (IVA esclusa)");?>:</td>
 						<td>
 							<a style="margin-left:5px;" title="<?php echo gtext("Richiedi costo stimato")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/richiedicosto/".(int)$id.$this->viewStatus;?>" class="pull-right badge make_spinner"><i class="fa fa-refresh"></i> <?php echo gtext("Richiedi costo");?></a>
 							
