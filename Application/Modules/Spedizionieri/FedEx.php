@@ -204,7 +204,7 @@ class FedEx extends Spedizioniere
 			
 			$colli = $spModel->getColli([(int)$idS]);
 			$peso = $spModel->peso([(int)$idS]);
-			
+			$quantitaTotale =  max(1, $spModel->quantitaTotale([(int)$idS]));
 			// print_r($colli);die();
 			
 			$params = htmlentitydecodeDeep($this->params);
@@ -440,7 +440,7 @@ class FedEx extends Spedizioniere
 						'commodities' => [[
 							'description' => trim($record['descrizione_generica_merce']) ? $record['descrizione_generica_merce'] : $this->getParam('descrizione_generica_merce'),
 							// 'numberOfPieces' => count($colli),
-							'quantity' => count($colli),
+							'quantity' => $quantitaTotale,
 							'quantityUnits' => 'PCS',
 							'customsValue' => [
 								'amount' => $valoreTotale > 0 ? number_format($valoreTotale, 2, ".", "") : "1.00",

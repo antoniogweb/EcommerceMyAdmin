@@ -1168,6 +1168,24 @@ class SpedizioninegozioModel extends FormModel {
 		return OrdiniModel::g(false)->listaregalo($record, "spedizioni_negozio");
 	}
 	
+	// Restituisce il numero totale dei prodotti guardando le righe inserite
+	// array $idS
+	public function quantitaTotale($idS)
+	{
+		$snrModel = new SpedizioninegoziorigheModel();
+		
+		$res = $snrModel->clear()->select("sum(quantity) as QTA")->where(array(
+			"in"	=>	array(
+				"id_spedizione_negozio"	=>	forceIntDeep($idS),
+			),
+		))->send();
+		
+		if (count($res) > 0 && $res[0]["aggregate"]["QTA"])
+			return $res[0]["aggregate"]["QTA"];
+		
+		return 0;
+	}
+	
 	// Restituisce il peso totale della spedizione guardando le righe inserite
 	// array $idS
 	public function pesoRighe($idS)
