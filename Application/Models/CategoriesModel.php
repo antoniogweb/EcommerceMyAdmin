@@ -546,7 +546,7 @@ class CategoriesModel extends HierarchicalModel {
 		$p = new PagesModel();
 		$res = $p->clear()->where(array("-id_c"=>$clean["id_c"]))->rowNumber();
 		
-		if (trim($record["section"]))
+		if (isset($record["section"]) && trim($record["section"]))
 		{
 			$this->notice = "<div class='alert alert-danger'>".gtext("Non è possibile eliminare questa categoria")."</div>";
 			return false;
