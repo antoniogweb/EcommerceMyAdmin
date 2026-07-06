@@ -299,6 +299,10 @@ class PagesModel extends GenericModel {
 		
 		$testoLasciareVuotoSeNonPresente = "Lasciare vuoto se non presente o non conosciuto";
 		
+		ob_start();
+		include(LIBRARY . "/Application/Views/Prodotti/inviaadacquisti.php");
+		$contentInviaAdAcquisti = ob_get_clean();
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -450,7 +454,8 @@ class PagesModel extends GenericModel {
 					'wrap'		=>	array(
 						null,
 						null,
-						"<div class='form_notice'>".gtext("Se impostato su sì, verrà importato nel magazzino acquisti")."</div>"
+						"<div class='form_notice'>".gtext("Se impostato su sì, verrà importato nel magazzino acquisti")."</div>",
+						$contentInviaAdAcquisti
 					),
 				),
 				'prodotto_rappresentativo'	=>	array(

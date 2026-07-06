@@ -61,7 +61,7 @@ class MagazzinoarticoliController extends BaseController
 	
 	public $tabella = "articoli di magazzino";
 	
-	public $orderBy = "categories.title,pages.title";
+	public $orderBy = "categories.title,pages.title,combinazioni.acquistabile desc,combinazioni.id_order";
 	
 	public function __construct($model, $controller, $queryString, $application, $action) {
 		

@@ -1602,6 +1602,12 @@ class PagesController extends BaseController
 				$this->h['List']->addItem("text",";linkMovimentiCrud;");
 				$head .= ",Mov.";
 			}
+			
+			if (v("attiva_modulo_acquisti"))
+			{
+				$this->h['List']->addItem("text",";inAcquistiCrud;");
+				$head .= ",In Acquisti";
+			}
 		}
 		
 		$this->h['List']->setHead($head);

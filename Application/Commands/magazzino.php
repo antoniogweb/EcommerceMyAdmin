@@ -28,9 +28,12 @@ define('EG','allowed');
 
 $options = getopt(null, array(
 	"azione::",
+	"sovrascrivi::",
 ));
 
-$default = array();
+$default = array(
+	"sovrascrivi"	=>	0,
+);
 
 $params = array_merge($default, $options);
 
@@ -53,7 +56,9 @@ if ($params["azione"] == "importa-articoli-da-ecommerce")
 {
 	$log->writeString("INIZIO IMPORT DA ECOMMERCE");
 	
-	MagazzinoarticoliModel::g()->importaArticoliDaEcommerce($log);
+	$sovrascrivi = (isset($params["sovrascrivi"]) && (int)$params["sovrascrivi"]) ? true : false;
+	
+	MagazzinoarticoliModel::g()->importaArticoliDaEcommerce($log, $idPage = 0, $sovrascrivi);
 	
 	$log->writeString("FINE IMPORT DA ECOMMERCE");
 }

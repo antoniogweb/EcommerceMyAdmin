@@ -208,6 +208,7 @@ class Route
 		'prodotti,lingue',
 		'prodotti,aggiungicaratteristica',
 		'prodotti,categorie',
+		'prodotti,inviaadacquisti',
 		
 		'testi,main',
 		'testi,form',

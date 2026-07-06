@@ -41,6 +41,13 @@ class MagazzinoarticolicombinazioniModel extends GenericModel
 		);
     }
     
+    public function getIdArticoloDaIdC($idC)
+	{
+		return (int)$this->clear()->where(array(
+			"id_c"	=>	(int)$idC,
+		))->field("id_articolo");
+	}
+    
     public static function getDatiWeb($idArticolo)
 	{
 		$macModel = new MagazzinoarticolicombinazioniModel();

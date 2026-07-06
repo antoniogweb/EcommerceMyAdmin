@@ -1253,6 +1253,16 @@ class GenericModel extends Model_Tree
 		return $this;
 	}
 	
+	public function addWhereOkAcqusti()
+	{
+		$this->aWhere(array(
+			"pages.ok_acquisti"	=>	1,
+			"pages.prodotto_generico"	=>	0,
+		));
+		
+		return $this;
+	}
+	
 	public function addWhereAttivoCategoria()
 	{
 		$this->aWhere(array(
@@ -1889,5 +1899,17 @@ class GenericModel extends Model_Tree
 			else
 				$this->values["template"] = "";
 		}
+	}
+	
+	// Check if the recoird will be edited
+	public function willBeEdited($currentRecord = array())
+	{
+		foreach ($currentRecord as $key => $value)
+		{
+			if (isset($this->values[$key]) && $this->values[$key] != $value)
+				return true;
+		}
+		
+		return false;
 	}
 }

@@ -85,31 +85,45 @@ class MagazzinoarticoliModel extends GenericModel
 		return parent::update($id, $where);
 	}
     
-    public function importaArticoliDaEcommerce($log = null)
+    public static function combinazioniDaImportare($idPage = 0, $sovrascrivi = false)
+    {
+		$combModel = new CombinazioniModel();
+		
+		$combModel->clear()->select("combinazioni.*,pages.id_iva,pages.title,iva.valore,pages.id_marchio,pages.id_page")
+			->inner(array("pagina"))
+			->left("iva")->on("pages.id_iva = iva.id_iva")
+			->addWhereOkAcqusti();
+		
+		if (!$sovrascrivi)
+			$combModel->sWhere("NOT EXISTS ( select 1 from magazzino_articoli_combinazioni where magazzino_articoli_combinazioni.id_c = combinazioni.id_c)");
+		
+		if ($idPage)
+			$combModel->aWhere(array(
+				"pages.id_page"	=>	(int)$idPage,
+			));
+		
+		return $combModel->send();
+	}
+	
+    public function importaArticoliDaEcommerce($log = null, $idPage = 0, $sovrascrivi = false)
 	{
 		VariabiliModel::$valori["template_attributo"] = "[VALORE]";
 		
 		if (v("usa_transactions"))
 			$this->db->beginTransaction();
 		
-		$combModel = new CombinazioniModel();
 		$macModel = new MagazzinoarticolicombinazioniModel();
+		$combModel = new CombinazioniModel();
 		
-		$combinazioni = $combModel->clear()->select("combinazioni.*,pages.id_iva,pages.title,iva.valore,pages.id_marchio,pages.id_page")
-			->inner(array("pagina"))
-			->left("iva")->on("pages.id_iva = iva.id_iva")
-			->aWhere(array(
-				"pages.ok_acquisti"	=>	1,
-				"pages.prodotto_generico"	=>	0,
-			))
-			->sWhere("NOT EXISTS ( select 1 from magazzino_articoli_combinazioni where magazzino_articoli_combinazioni.id_c = combinazioni.id_c)")
-			->send();
+		$combinazioni = self::combinazioniDaImportare($idPage, $sovrascrivi);
 		
 		// echo count($combinazioni);die();
 			
 		foreach ($combinazioni as $c)
 		{
 			$idC = (int)$c["combinazioni"]["id_c"];
+			
+			$idArticolo = $macModel->getIdArticoloDaIdC((int)$idC);
 			
 			$stringa = htmlentitydecode($combModel->getStringa($idC, " ", false, true));
 			
@@ -123,32 +137,53 @@ class MagazzinoarticoliModel extends GenericModel
 				"codice"	=>	htmlentitydecode($c["combinazioni"]["codice"]),
 				"gtin"		=>	htmlentitydecode($c["combinazioni"]["gtin"]),
 				"mpn"		=>	htmlentitydecode($c["combinazioni"]["mpn"]),
-				"prezzo"	=>	0,
-				"sconto_1"	=>	0,
-				"sconto_2"	=>	0,
+				// "prezzo"	=>	0,
+				// "sconto_1"	=>	0,
+				// "sconto_2"	=>	0,
 				"id_iva"	=>	(int)$c["pages"]["id_iva"],
 				"aliquota_iva"	=>	$c["iva"]["valore"],
 				"id_marchio"	=>	(int)$c["pages"]["id_marchio"],
 			));
 			
-			if ($this->insert())
+			if (!$idArticolo)
 			{
-				$lastId = (int)$this->lId;
+				$this->setValue("prezzo", 0);
+				$this->setValue("sconto_1", 0);
+				$this->setValue("sconto_2", 0);
 				
-				$macModel->sValues(array(
-					"id_articolo"	=>	$lastId,
-					"id_page"		=>	(int)$c["pages"]["id_page"],
-					"id_c"			=>	(int)$idC
-				));
-				
-				if (!$macModel->insert())
+				if ($this->insert())
 				{
-					$this->del($lastId);
+					$lastId = (int)$this->lId;
+					
+					$macModel->sValues(array(
+						"id_articolo"	=>	$lastId,
+						"id_page"		=>	(int)$c["pages"]["id_page"],
+						"id_c"			=>	(int)$idC
+					));
+					
+					if (!$macModel->insert())
+					{
+						$this->del($lastId);
+					}
+					else
+					{
+						if ($log)
+							$log->writeString("Prodotto inserito: $titolo, ID Combinazione: $idC");
+					}
 				}
-				else
+			}
+			else if ($sovrascrivi)
+			{
+				$record = $this->clear()->select("titolo,codice,gtin,mpn,id_iva,aliquota_iva,id_marchio")->whereId((int)$idArticolo)->record();
+				
+				if ($this->willBeEdited($record) && $this->update((int)$idArticolo))
 				{
 					if ($log)
-						$log->writeString("Prodotto: $titolo, ID Combinazione: $idC");
+					{
+						echo "Prodotto aggiornato: $titolo, ID Combinazione: $idC\n";
+						
+						$log->writeString("Prodotto aggiornato: $titolo, ID Combinazione: $idC");
+					}
 				}
 			}
 		}

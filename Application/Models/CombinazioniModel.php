@@ -1662,4 +1662,25 @@ class CombinazioniModel extends GenericModel {
 		
 		return $codiceVariante;
 	}
+	
+	// Restituisce true o false se la combinazione $idC è in acquisti
+	public static function inAcquisto($idC)
+	{
+		$macModel = new MagazzinoarticolicombinazioniModel();
+		
+		return $macModel->clear()->where(array(
+			"id_c"	=>	(int)$idC,
+		))->rowNumber();
+	}
+	
+	// Spunta se è in acquisti o meno
+	public function inAcquistiCrud($record)
+	{
+		$macModel = new MagazzinoarticolicombinazioniModel();
+		
+		if (self::inAcquisto((int)$record["combinazioni"]["id_c"]))
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "<i class='fa fa-ban'></i>";
+	}
 }

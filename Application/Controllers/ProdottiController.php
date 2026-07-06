@@ -240,5 +240,23 @@ class ProdottiController extends PagesController {
 	{
 		parent::documento($field, $id);
 	}
-
+	
+	public function inviaadacquisti($idPage = 0)
+	{
+		if (!v("attiva_modulo_acquisti"))
+			$this->responseCode(403);
+		
+		$this->clean();
+		
+		$numero = $this->m("PagesModel")->whereID((int)$idPage)->rowNumber();
+		
+		if ($numero && isProdotto((int)$idPage))
+		{
+			Files_Log::$logFolder = LIBRARY."/Logs";
+			$log = Files_Log::getInstance("log_comandi_magazzino");
+			$log->writeString("INIZIO INVIO MANUALE DA ECOMMERCE");
+			$this->m("MagazzinoarticoliModel")->importaArticoliDaEcommerce($log, (int)$idPage, true);
+			$log->writeString("FINE INVIO MANUALE DA ECOMMERCE");
+		}
+	}
 }
