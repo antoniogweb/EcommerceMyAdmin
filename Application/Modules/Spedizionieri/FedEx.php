@@ -133,7 +133,7 @@ class FedEx extends Spedizioniere
 	
 	public function gFormatiEtichetta()
 	{
-		return ['PAPER_LETTER', 'PAPER_4X6', 'PAPER_4X8', 'PAPER_4X9', 'PAPER_4X675', 'PAPER_7X47', 'PAPER_85X11_TOP_HALF_LABEL'];
+		return ['PAPER_85X11_BOTTOM_HALF_LABEL', 'PAPER_85X11_TOP_HALF_LABEL', 'PAPER_LETTER', 'PAPER_4X6', 'PAPER_4X8', 'PAPER_4X9', 'PAPER_4X675', 'PAPER_7X47'];
 	}
 	
 	// Inserisci i valori di default del corriere
