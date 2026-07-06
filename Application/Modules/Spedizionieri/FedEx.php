@@ -639,7 +639,8 @@ class FedEx extends Spedizioniere
 				else
 					$this->settaNoticeModel($spedizione, $errore);
 			}
-			$this->settaNoticeModel($spedizione, "Errore, API non funzionante: ".$errore);
+			else
+				$this->settaNoticeModel($spedizione, "Errore, API non funzionante: ".$errore);
 		}
 		else
 			$this->settaNoticeModel($spedizione, "Attenzione, il modulo spedizioniere ".$this->params["titolo"]. " non è attivo");
