@@ -89,6 +89,16 @@ trait CrudModel
 		))->rowNumber())
 			return false;
 		
+		if (v("attiva_modulo_acquisti"))
+		{
+			$macModel = new MagazzinoarticolicombinazioniModel();
+			
+			if ($macModel->clear()->where(array(
+				$this->_idFields	=>	(int)$idElemento,
+			))->rowNumber())
+				return false;
+		}
+		
 		return true;
 	}
 }

@@ -600,9 +600,9 @@ class CombinazioniModel extends GenericModel {
 	{
 		$cmModel = new CombinazionimovimentiModel();
 		
-		$sql = "select id_c from combinazioni_movimenti where id_page = ? UNION select id_c from righe where id_page = ? UNION select id_c from liste_regalo_pages where id_page = ?";
+		$sql = "select id_c from combinazioni_movimenti where id_page = ? UNION select id_c from righe where id_page = ? UNION select id_c from liste_regalo_pages where id_page = ? UNION select id_c from magazzino_articoli_combinazioni where id_page = ? ";
 		
-		$res = $this->query(array($sql, array((int)$idPage, (int)$idPage, (int)$idPage)));
+		$res = $this->query(array($sql, array((int)$idPage, (int)$idPage, (int)$idPage, (int)$idPage)));
 		
 		$idCS = $this->getList($res, "aggregate.id_c");
 		
