@@ -1546,6 +1546,8 @@ class PagesController extends BaseController
 		
 		foreach ($colonne as $col)
 		{
+			$col = str_replace(","," ", $col);
+			
 			if ($head)
 				$head .= ",$col";
 			else
