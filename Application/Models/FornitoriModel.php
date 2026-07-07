@@ -45,6 +45,7 @@ class FornitoriModel extends GenericModel
 	public function relations() {
 		return array(
 			'ordini' => array("HAS_MANY", 'OrdiniacquistoModel', 'id_fornitore', null, "RESTRICT", "L'elemento ha degli ordini di acquisto collegati e non può essere eliminato"),
+			'import' => array("HAS_MANY", 'FornitoriimportModel', 'id_fornitore', null, "CASCADE"),
 		);
     }
     

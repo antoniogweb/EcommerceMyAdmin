@@ -22,20 +22,15 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-Helper_List::$filtersFormLayout["filters"]["ragione_sociale"] = array(
-	"attributes"	=>	array(
-		"class"	=>	"form-control",
-		"placeholder"	=>	"Cerca..",
-	),
-);
-
-class FornitoriController extends BaseController
+class FornitoriimportController extends BaseController
 {
-	public $filters = array("ragione_sociale");
+	// public $filters = array("ragione_sociale");
 	
-	public $orderBy = "ragione_sociale";
+	// public $orderBy = "ragione_sociale";
 	
-	public $argKeys = array('ragione_sociale:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'id_fornitore_insert:sanitizeAll'=>'tutti'
+	);
 	
 	public $useEditor = true;
 	
@@ -72,49 +67,25 @@ class FornitoriController extends BaseController
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
+		$this->shift(2);
+		
 		$this->_posizioni['main'] = 'class="active"';
 		
-		$fields = 'ragione_sociale,email,email_amministrativa,pec,codice_fiscale,p_iva,telefono,telefono_2,indirizzo,numero_civico,nazione,provincia,comune,cap,localita,referente,telefono_referente,cellulare_referente,email_referente';
+		$fields = 'filename';
+		
+		if ($queryType == "update")
+			$fields .= ",foglio,colonna_descrizione,colonna_codice_sku,colonna_codice_ean_gtin,colonna_codice_mpn_barcode";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
+		
+		if ($queryType == "insert" && $this->viewArgs["id_fornitore_insert"] != "tutti")
+			$this->m[$this->modelName]->setValue("id_fornitore", (int)$this->viewArgs["id_fornitore_insert"]);
 		
 		parent::form($queryType, $id);
 	}
 	
-	public function import($id = 0)
+	public function documento($field = "", $id = 0)
 	{
-		$this->model("FornitoriimportModel");
-		
-		$this->_posizioni['import'] = 'class="active"';
-		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
-		
-		$this->shift(1);
-		
-		$clean['id'] = $this->id = (int)$id;
-		$this->id_name = "id_fornitori";
-		
-		$this->mainButtons = "ldel";
-		
-		$this->modelName = "FornitoriimportModel";
-		
-		$this->m[$this->modelName]->updateTable('del');
-		
-		$this->mainFields = array("cleanDateTime", "filenameCrud");
-		$this->mainHead = "Data / Ora,Filename";
-		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"import/".$clean['id'],'pageVariable'=>'page_fgl');
-		
-		$this->m[$this->modelName]->orderBy("fornitori_import.id_fornitore_import")->where(array(
-			"id_fornitore"	=>	$clean['id'],
-		))->convert()->save();
-		
-		$this->tabella = "fornitori";
-		
-		parent::main();
-		
-		$data["titoloRecord"] = $this->m["FornitoriModel"]->titolo($clean['id']);
-		
-		$this->append($data);
+		parent::documento($field, $id);
 	}
 }
