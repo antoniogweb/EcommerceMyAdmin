@@ -166,7 +166,7 @@ class FornitoriimportModel extends GenericModel
 	
 	public function filenameCrud($record)
     {
-		return "<a class='iframe action_iframe' href='".Url::getRoot()."fornitoriimport/form/update/".$record["fornitori_import"]["id_fornitore_import"]."?partial=Y&nobuttons=Y'>".$record["fornitori_import"]["clean_filename"]."</a>";
+		return "<a class='iframe action_iframe' href='".Url::getRoot()."fornitoriimport/form/update/".$record["fornitori_import"]["id_fornitore_import"]."?partial=Y&nobuttons=N'>".$record["fornitori_import"]["clean_filename"]."</a>";
     }
     
     public function completo($id)
