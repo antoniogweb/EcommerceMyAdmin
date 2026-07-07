@@ -1,0 +1,1 @@
+ALTER TABLE `fornitori_import` add elaborato tinyint not null default 0;

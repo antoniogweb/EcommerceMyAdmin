@@ -54,16 +54,98 @@ class FornitoriimportModel extends GenericModel
 		);
     }
     
+    public static function getFolderPath()
+	{
+		return LIBRARY . "/media/Import";
+	}
+    
 	public function setFormStruct($id = 0)
 	{
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
-				
+				'colonna_descrizione'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->selectColonne($id),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'colonna_codice_sku'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->selectColonne($id),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'colonna_codice_ean_gtin'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->selectColonne($id),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'colonna_codice_mpn_barcode'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->selectColonne($id),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
+				'colonna_prezzo'	=>	array(
+					"type"	=>	"Select",
+					"options"	=>	$this->selectColonne($id),
+					"reverse"	=>	"yes",
+					"className"	=>	"form-control",
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
 		);
+	}
+	
+	public function selectColonne($id)
+	{
+		$fileName = $this->clear()->select("filename")->whereId((int)$id)->field("filename");
+		
+		$selectArray = array("" => "--");
+		
+		if ($fileName)
+		{
+			$filePath = self::getFolderPath()."/".$fileName;
+			
+			if (is_file($filePath))
+			{
+				$data = Xlsx::getData($filePath, null, 0, true);
+				
+				if (count($data) > 0)
+				{
+					foreach ($data[0] as $k => $v)
+					{
+						if ($v)
+							$selectArray[$k] = $k." - ".$v;
+					}
+				}
+			}
+		}
+		
+		return $selectArray;
+	}
+	
+	public function selectFogli($id)
+	{
+		$fileName = $this->clear()->select("filename")->whereId((int)$id)->field("filename");
+		
+		if ($fileName)
+		{
+			$filePath = LIBRARY . "/media/Import/$fileName";
+			
+			if (is_file($filePath))
+			{
+				$sheets = Xlsx::getSheets($filePath);
+				
+				if (count($sheets) > 0)
+					return $sheets;
+			}
+		}
+		
+		return array(0 => gtext("Default"));
 	}
 	
 	public function insert()
@@ -86,4 +168,33 @@ class FornitoriimportModel extends GenericModel
     {
 		return "<a class='iframe action_iframe' href='".Url::getRoot()."fornitoriimport/form/update/".$record["fornitori_import"]["id_fornitore_import"]."?partial=Y&nobuttons=Y'>".$record["fornitori_import"]["clean_filename"]."</a>";
     }
+    
+    public function completo($id)
+	{
+		$record = $this->selectId((int)$id);
+		
+		if ($record)
+		{
+			if (!$record["elaborato"] && $record["filename"] && is_file(self::getFolderPath()."/".$record["filename"]) && $record["colonna_descrizione"] && $record["colonna_codice_sku"] && $record["colonna_codice_ean_gtin"] && $record["colonna_codice_mpn_barcode"] && $record["colonna_prezzo"])
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public function deletable($id)
+	{
+		if ($this->clear()->whereId((int)$id)->field("elaborato"))
+			return false;
+		
+		return true;
+	}
+	
+	public function manageable($id)
+	{
+		if ($this->clear()->whereId((int)$id)->field("elaborato"))
+			return false;
+		
+		return true;
+	}
 }

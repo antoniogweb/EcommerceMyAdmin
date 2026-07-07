@@ -81,13 +81,46 @@ class FornitoriController extends BaseController
 		parent::form($queryType, $id);
 	}
 	
+	public function listino($id = 0)
+	{
+		$this->model("MagazzinoarticolilistiniModel");
+		
+		$this->_posizioni['listino'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_fornitori";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "MagazzinoarticolilistiniModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("magazzino_articoli_listini.titolo", "magazzino_articoli_listini.codice", "magazzino_articoli_listini.gtin", "magazzino_articoli_listini.mpn", "magazzino_articoli_listini.prezzo", "inAcquistiCrud");
+		$this->mainHead = "Descrizione,Codice,GTIN/EAN,MPN/Barcode,Prezzo,In Acquisti";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"listino/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->clear()->where(array(
+			"id_fornitore"	=>	$clean['id'],
+		))->orderBy("magazzino_articoli_listini.titolo")->convert()->save();
+		
+		$this->tabella = "fornitori";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["FornitoriModel"]->titolo($clean['id']);
+		
+		$this->append($data);
+	}
+	
 	public function import($id = 0)
 	{
 		$this->model("FornitoriimportModel");
 		
 		$this->_posizioni['import'] = 'class="active"';
-		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
 		
 		$this->shift(1);
 		
@@ -105,9 +138,9 @@ class FornitoriController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"import/".$clean['id'],'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->orderBy("fornitori_import.id_fornitore_import")->where(array(
+		$this->m[$this->modelName]->clear()->where(array(
 			"id_fornitore"	=>	$clean['id'],
-		))->convert()->save();
+		))->orderBy("fornitori_import.id_fornitore_import")->convert()->save();
 		
 		$this->tabella = "fornitori";
 		

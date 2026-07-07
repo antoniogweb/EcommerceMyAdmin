@@ -1,0 +1,1 @@
+ALTER TABLE `fornitori_import` DROP `foglio`;

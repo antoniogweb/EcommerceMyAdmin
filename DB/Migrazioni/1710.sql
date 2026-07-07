@@ -1,0 +1,1 @@
+alter table fornitori_import add colonna_prezzo char(3) NOT NULL DEFAULT '';

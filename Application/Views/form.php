@@ -55,7 +55,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<?php include($this->viewPath("form_menu"));?>
-				
+			
 			<?php include($this->viewPath("steps"));?>
 			<?php if (!showreport()) { ?>
 			<div class="box">

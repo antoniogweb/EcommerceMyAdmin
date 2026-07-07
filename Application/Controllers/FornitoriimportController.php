@@ -22,6 +22,16 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
+Helper_Menu::$htmlLinks["elabora_import"] = array(
+	"htmlBefore" => '',
+	"htmlAfter" => '',
+	"attributes" => 'role="button" class="btn btn-primary make_spinner"',
+	"class"	=>	"btn btn-info",
+	'text'	=>	"Elabora import",
+	'queryString'	=>	'',
+	"classIconBefore"	=>	'<i class="fa fa-check"></i>',
+);
+
 class FornitoriimportController extends BaseController
 {
 	// public $filters = array("ragione_sociale");
@@ -44,37 +54,26 @@ class FornitoriimportController extends BaseController
 			$this->responseCode(403);
 	}
 	
-	public function main()
-	{
-		$this->shift();
-		
-		$this->mainFields = array("[[ledit]];fornitori.ragione_sociale;","fornitori.telefono","fornitori.email");
-		$this->mainHead = "Ragione sociale,Telefono,Email";
-		
-		$this->m[$this->modelName]->orderBy($this->orderBy)->convert();
-		
-		if ($this->viewArgs["ragione_sociale"] != "tutti")
-		{
-			$this->m[$this->modelName]->aWhere(array(
-				"  AND"	=>	FornitoriModel::getWhereClauseRicercaLibera($this->viewArgs['ragione_sociale']),
-			));
-		}
-		
-		$this->m[$this->modelName]->save();
-		
-		parent::main();
-	}
-	
 	public function form($queryType = 'insert', $id = 0)
 	{
 		$this->shift(2);
+		
+		$this->menuLinks = "elabora_import";
+		$this->menuLinksInsert = "";
 		
 		$this->_posizioni['main'] = 'class="active"';
 		
 		$fields = 'filename';
 		
 		if ($queryType == "update")
-			$fields .= ",foglio,colonna_descrizione,colonna_codice_sku,colonna_codice_ean_gtin,colonna_codice_mpn_barcode";
+		{
+			$fields .= ",colonna_descrizione,colonna_codice_sku,colonna_codice_ean_gtin,colonna_codice_mpn_barcode,colonna_prezzo";
+			
+			$elaborato = $this->m[$this->modelName]->clear()->whereId((int)$id)->field("elaborato");
+			
+			if ($elaborato)
+				$_GET["report"] = "Y";
+		}
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
 		
@@ -82,6 +81,80 @@ class FornitoriimportController extends BaseController
 			$this->m[$this->modelName]->setValue("id_fornitore", (int)$this->viewArgs["id_fornitore_insert"]);
 		
 		parent::form($queryType, $id);
+	}
+	
+	public function elabora($id)
+	{
+		Params::$setValuesConditionsFromDbTableStruct = false;
+		
+		$this->clean();
+		
+		if ($this->m[$this->modelName]->completo((int)$id))
+		{
+			$record = $this->m[$this->modelName]->selectId((int)$id);
+			
+			$filePath = FornitoriimportModel::getFolderPath()."/".$record["filename"];
+			
+			$dati = Xlsx::getData($filePath, null, null, true);
+			
+			$colonnaDescrizione = $record["colonna_descrizione"];
+			$colonnaSKU = $record["colonna_codice_sku"];
+			$colonnaGTIN = $record["colonna_codice_ean_gtin"];
+			$colonnaMPN = $record["colonna_codice_mpn_barcode"];
+			$colonnaPrezzo = $record["colonna_prezzo"];
+			
+			if (v("usa_transactions"))
+				$this->m("MagazzinoarticolilistiniModel")->db->beginTransaction();
+			
+			foreach ($dati as $indice => $row)
+			{
+				if ($indice <= 0)
+					continue;
+				
+				$row = array_map_recursive('nullToBlank', $row);
+				
+				if (!trim($row[$colonnaPrezzo]) || !trim($row[$colonnaSKU]))
+					continue;
+				
+				$recordArticolo = $this->m("MagazzinoarticolilistiniModel")->clear()->select("id_articolo_listino")->where(array(
+					"id_fornitore"	=>	(int)$record["id_fornitore"],
+					"codice"		=>	$row[$colonnaSKU],
+				))->record();
+				
+				$this->m("MagazzinoarticolilistiniModel")->sValues(array(
+					"titolo"		=>	$row[$colonnaDescrizione],
+					"prezzo"		=>	$row[$colonnaPrezzo],
+					"codice"		=>	$row[$colonnaSKU],
+					"gtin"			=>	$row[$colonnaGTIN],
+					"mpn"			=>	$row[$colonnaMPN],
+					"codice"		=>	$row[$colonnaSKU],
+					"id_import"		=>	(int)$record["id_fornitore_import"],
+					"id_fornitore"	=>	(int)$record["id_fornitore"],
+				));
+				
+				if (empty($recordArticolo))
+					$this->m("MagazzinoarticolilistiniModel")->insert();
+				else
+					$this->m("MagazzinoarticolilistiniModel")->update($recordArticolo["id_articolo_listino"]);
+			}
+			
+			$this->m[$this->modelName]->sValues(array(
+				"elaborato"	=>	1,
+			));
+			
+			$this->m[$this->modelName]->update((int)$id);
+			
+			if (v("usa_transactions"))
+				$this->m("MagazzinoarticolilistiniModel")->db->commit();
+			
+			$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id."?partial=Y&nobuttons=Y");
+		}
+	}
+	
+	protected function aggiungiUrlmenuScaffold($id)
+	{
+		if ($id && $this->m[$this->modelName]->completo((int)$id))
+			$this->scaffold->mainMenu->links['elabora_import']['url'] = 'elabora/'.(int)$id;
 	}
 	
 	public function documento($field = "", $id = 0)

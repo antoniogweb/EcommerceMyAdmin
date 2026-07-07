@@ -31,7 +31,25 @@ class Xlsx
 		return HtmlToXlsx::download($html, $titolo);
 	}
 	
-	public static function getData($filePath, $sheet = null)
+	public static function getSheets($filePath)
+	{
+		$sheets = [];
+		
+		if (is_file($filePath))
+		{
+			$inputFileType = ucfirst(Files_Upload::sFileExtension(basename($filePath)));
+			
+			if ($inputFileType == "Xls" || $inputFileType == "Xlsx")
+			{
+				$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+				$sheets = $reader->listWorksheetNames($filePath);
+			}
+		}
+		
+		return $sheets;
+	}
+	
+	public static function getData($filePath, $sheet = null, $rowNumber = null, $useLetters = false)
 	{
 		$arrayDati = [];
 		
@@ -42,11 +60,51 @@ class Xlsx
 			if ($inputFileType == "Xls" || $inputFileType == "Xlsx")
 			{
 				$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+				$reader->setReadDataOnly(true);
+				
+				if ($rowNumber !== null)
+				{
+					$reader->setReadFilter(new class((int)$rowNumber + 1) implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
+						private $rowNumber;
+						
+						public function __construct($rowNumber)
+						{
+							$this->rowNumber = $rowNumber;
+						}
+						
+						public function readCell(string $columnAddress, int $row, string $worksheetName = ""): bool
+						{
+							return $row === $this->rowNumber;
+						}
+					});
+				}
+				
+				$sheetName = null;
+				
+				if ($sheet !== null)
+				{
+					if (is_int($sheet))
+					{
+						$sheetNames = $reader->listWorksheetNames($filePath);
+						$sheetName = isset($sheetNames[$sheet]) ? $sheetNames[$sheet] : null;
+					}
+					else
+					{
+						$sheetName = $sheet;
+					}
+					
+					if ($sheetName !== null)
+					{
+						$reader->setLoadSheetsOnly([$sheetName]);
+					}
+				}
 				
 				$Spreadsheet = $reader->load($filePath);
-				$worksheet = $Spreadsheet->getActiveSheet();
+				$worksheet = $sheetName !== null ? $Spreadsheet->getSheetByName($sheetName) : $Spreadsheet->getActiveSheet();
 				
-				foreach ($worksheet->getRowIterator() as $row)
+				$rowIterator = $rowNumber !== null ? $worksheet->getRowIterator((int)$rowNumber + 1, (int)$rowNumber + 1) : $worksheet->getRowIterator();
+				
+				foreach ($rowIterator as $row)
 				{
 					$cellIterator = $row->getCellIterator();
 					$cellIterator->setIterateOnlyExistingCells(FALSE);
@@ -55,7 +113,14 @@ class Xlsx
 					
 					foreach ($cellIterator as $cell)
 					{
-						$temp[] = $cell->getValue();
+						if ($useLetters)
+						{
+							$temp[$cell->getColumn()] = $cell->getValue();
+						}
+						else
+						{
+							$temp[] = $cell->getValue();
+						}
 					}
 					
 					$arrayDati[] = $temp;
