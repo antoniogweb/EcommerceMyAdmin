@@ -29,13 +29,23 @@ Helper_List::$filtersFormLayout["filters"]["ragione_sociale"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["cerca_listino"] = array(
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+		"placeholder"	=>	"Cerca..",
+	),
+);
+
 class FornitoriController extends BaseController
 {
 	public $filters = array("ragione_sociale");
 	
 	public $orderBy = "ragione_sociale";
 	
-	public $argKeys = array('ragione_sociale:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'ragione_sociale:sanitizeAll'=>'tutti',
+		'cerca_listino:sanitizeAll'=>'tutti',
+	);
 	
 	public $useEditor = true;
 	
@@ -108,6 +118,8 @@ class FornitoriController extends BaseController
 		))->orderBy("magazzino_articoli_listini.titolo")->convert()->save();
 		
 		$this->tabella = "fornitori";
+		
+		$this->filters = array("cerca_listino");
 		
 		parent::main();
 		
