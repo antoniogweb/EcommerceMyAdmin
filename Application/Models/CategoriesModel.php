@@ -166,6 +166,7 @@ class CategoriesModel extends HierarchicalModel {
 			'classisconto' => array("HAS_MANY", 'ClassiscontocategoriesModel', 'id_c', null, "CASCADE"),
 			'sitemap' => array("HAS_MANY", 'SitemapModel', 'id_c', null, "CASCADE"),
 			'caratteristiche' => array("HAS_MANY", 'CategoriescaratteristicheModel', 'id_c', null, "CASCADE"),
+			'immagini' => array("HAS_MANY", 'ImmaginiarchiviModel', 'id_c', null, "CASCADE"),
         );
     }
     

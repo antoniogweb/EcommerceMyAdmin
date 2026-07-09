@@ -89,6 +89,7 @@ class MarchiModel extends GenericModel
 			'pagine' => array("HAS_MANY", 'PagesModel', 'id_marchio', null, "RESTRICT", "L'elemento ha delle pagine collegate non può essere eliminato"),
 			'magazzino' => array("HAS_MANY", 'MagazzinoarticoliModel', 'id_marchio', null, "RESTRICT", "L'elemento ha degli articoli di magazzino collegati e non può essere eliminato"),
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_marchio', null, "CASCADE"),
+			'immagini' => array("HAS_MANY", 'ImmaginiarchiviModel', 'id_marchio', null, "CASCADE"),
         );
     }
     
