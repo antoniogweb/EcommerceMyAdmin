@@ -22,15 +22,11 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-function logBlocco($folderLogJail)
+$ip = getIp();
+
+function logBlocco()
 {
-    // $file = date("YmdHis")."_".microtime(true);
-    // $fp = fopen(ROOT.$folderLogJail.'/Logs/Blocchi/'.$file.'.txt', 'a+');
-    // fwrite($fp, date("Y-m-d H:i:s")."\n");
-    // fwrite($fp, print_r($_COOKIE,true));
-    // fwrite($fp, print_r($_GET,true));
-    // fwrite($fp, print_r($_POST,true));
-    // fclose($fp);
+
 }
 
 function generateStringBlockIp($charNumb = 8,$allowedChars = '0123456789abcdefghijklmnopqrstuvwxyz')
@@ -42,6 +38,8 @@ function generateStringBlockIp($charNumb = 8,$allowedChars = '0123456789abcdefgh
 	}
 	return $str;
 }
+
+$md5UserAgent = (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT']) ? md5($_SERVER['HTTP_USER_AGENT']) : md5("XXX");
 
 $DDOSRoot = LIBRARY."/Logs/CaptchaDDOS/";
 $DDOSPath = $DDOSRoot."Img";
@@ -150,19 +148,29 @@ if (is_dir($DDOSPath))
 				</style>
 			</head>
 			</body>
-				<p>We need to verify that you are not a robot.<br />Please type the 6-digit code in the field below and then press the button "Send / Invia" to continue browsing the site normally.</p>
-				
+				<?php if (Params::$lang == "it") { ?>
 				<p>Dobbiamo verificare che tu non sia un robot.<br />Per favore digita nel campo sottostante il codice a 6 cifre e poi premi il pulsante "Send / Invia" per continuare a navigare il sito normalmente.</p>
+				<?php } else if (Params::$lang == "en") { ?>
+				<p>We need to verify that you are not a robot.<br />Please type the 6-digit code in the field below and then press the button "Send / Invia" to continue browsing the site normally.</p>
+				<?php } else if (Params::$lang == "fr") { ?>
+				<p>Nous devons vérifier que vous n'êtes pas un robot.<br />Veuillez saisir le code à 6 chiffres dans le champ ci-dessous, puis appuyez sur le bouton « Envoyer » pour continuer à naviguer normalement sur le site.</p>
+				<?php } else if (Params::$lang == "es") { ?>
+				<p>Necesitamos verificar que no eres un robot.<br />Por favor, introduce el código de 6 dígitos en el campo de abajo y pulsa el botón "Enviar" para seguir navegando por el sitio con normalidad.</p>
+				<?php } else if (Params::$lang == "de") { ?>
+				<p>Wir müssen überprüfen, ob Sie kein Roboter sind.<br />Bitte geben Sie den 6-stelligen Code in das untenstehende Feld ein und klicken Sie anschließend auf „Senden“, um die Website wie gewohnt weiter zu nutzen.</p>
+				<?php } else { ?>
+				<p>Dobbiamo verificare che tu non sia un robot.<br />Per favore digita nel campo sottostante il codice a 6 cifre e poi premi il pulsante "Send / Invia" per continuare a navigare il sito normalmente.</p>
+				<?php } ?>
 				
 				<img src="/admin/Logs/CaptchaDDOS/Img/<?php echo $fileName;?>" /><br />
-				<form action="/" method="POST">
+				<form action="" method="POST">
 					<input style="width:200px;height:20px;margin-top:10px;" type="text" name="<?php echo $captcha_ddos_session_post_key;?>" value="" placeholder="Write here the code.."/><br />
 					<button style="width:200px;height:30px;margin-top:10px;" type="submit">Send / Invia</button>
 				</form>
 			</body>
 			</html>
 			<?php
-			logBlocco($folderLogJail);
+			logBlocco();
 			die();
 		}
 	}

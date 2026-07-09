@@ -116,6 +116,39 @@ if ($params["azione"] == "check-numero-query")
 	$log->writeString($testoThrottle. "FINE CHECK NUMERO QUERY");
 }
 
+if ($params["azione"] == "check-numero-query-ddos")
+{
+	$log->writeString("INIZIO CHECK NUMERO QUERY DDOS");
+	
+	$query = $params["query"] ?? 20000;
+	$secondi = $params["secondi"] ?? 60;
+	$mail = isset($params["email"]) ? $params["email"] : "";
+	$blocca = isset($params["blocca"]) ? true : false;
+	
+	$conteggio = ConteggioqueryModel::numeroQueryGlobali($query, $secondi);
+	
+	if (!empty($conteggio) && $mail && !Shield::CapctaDDOSFolderAlreadyPresent())
+		MailordiniModel::inviaMailLog("DDOS: Superato il limite di $query query negli ultimi $secondi secondi. Creati captcha anti DDOS.", "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>", "LIMITE QUERY");
+	
+	if (!empty($conteggio))
+	{
+		$log->writeString("IP\n".json_encode($conteggio,JSON_PRETTY_PRINT));
+		
+		print_r($conteggio);
+	}
+	
+	if (!empty($conteggio) && $blocca && !Shield::CapctaDDOSFolderAlreadyPresent())
+	{
+		Shield::creaCapctaDDOS(120);
+		
+		$log->writeString("È stato attivato il sistema anti DDOS");
+	}
+	
+	Shield::freeDDOSAttack();
+	
+	$log->writeString("FINE CHECK NUMERO QUERY DDOS");
+}
+
 if ($params["azione"] == "check-numero-attacchi")
 {
 	$log->writeString("INIZIO CHECK NUMERO ATTACCHI");
@@ -302,12 +335,7 @@ if ($params["azione"] == "elimina-captcha-ddos")
 {
 	$log->writeString("INIZIO ELIMINAZIONE CAPTCHA");
 	
-	if (is_dir(LIBRARY."/Logs/CaptchaDDOS"))
-	{
-		$nuovoNome = randomToken(20);
-		rename(LIBRARY."/Logs/CaptchaDDOS", LIBRARY."/Logs/$nuovoNome");
-		PagesModel::eliminaCartella(LIBRARY."/Logs/$nuovoNome");
-	}
+	Shield::eliminaCapctaDDOS();
 	
 	$log->writeString("FINE ELIMINAZIONE CAPTCHA");
 }

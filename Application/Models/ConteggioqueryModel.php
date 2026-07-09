@@ -322,26 +322,28 @@ class ConteggioqueryModel extends GenericModel
 		return $resNazioni;
 	}
 	
-// 	public static function numeroQueryGlobali($soglia = 1000, $secondi = 60)
-// 	{
-// 		$secondi = time() - $secondi;
-// 		
-// 		$dataOra = date("Y-m-d H:i:s", $secondi);
-// 		
-// 		$cq = new ConteggioqueryModel();
-// 		
-// 		$sWhereIp = self::getSWhereIp();
-// 		
-// 		$res = $cq->clear()->select("SUM(numero) as numero_query")->aWhere(array(
-// 			"gte"	=>	array(
-// 				"data_creazione"	=>	sanitizeAll($dataOra),
-// 			),
-// 		))
-// 		->sWhere($sWhereIp)
-// 		->groupBy("having numero_query > ".(int)$soglia)->toList("aggregate.numero_query")->send();
-// 		
-// 		return $res;
-// 	}
+	public static function numeroQueryGlobali($soglia = 1000, $secondi = 60)
+	{
+		$secondi = time() - $secondi;
+		
+		$dataOra = date("Y-m-d H:i:s", $secondi);
+		
+		$cq = new ConteggioqueryModel();
+		
+		$sWhereIp = self::getSWhereIp();
+		
+		$res = $cq->query(array(
+			"select SUM(numero) as numero_query from conteggio_query where codice != '403' and data_creazione >= ? having numero_query > ?",
+			array(
+				sanitizeAll($dataOra),
+				(int)$soglia
+			)
+		));
+		
+		// echo $cq->getQuery();
+		
+		return $cq->getList($res, "aggregate.numero_query");
+	}
 	
 	public static function rimuoviWhiteList($ipArray)
 	{

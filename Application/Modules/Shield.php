@@ -26,6 +26,7 @@ class Shield
 {
 	public static $freedAfterSeconds = 3600;
 	public static $freedThrottleAfterSeconds = 120;
+	public static $freeDDOSSeconds = 600;
 	
 	public static function createLogFolders()
 	{
@@ -202,6 +203,39 @@ class Shield
 			}
 			
 			FilePutContentsAtomic(LIBRARY."/Logs/CaptchaDDOS/captcha_ddos_json_codes.txt", json_encode($arrayOfCodes));
+		}
+	}
+	
+	public static function CapctaDDOSFolderAlreadyPresent()
+	{
+		$pathDDOS = LIBRARY."/Logs/CaptchaDDOS/";
+		
+		if (is_dir($pathDDOS) && is_file($pathDDOS."time.txt"))
+			return true;
+		
+		return false;
+	}
+	
+	public static function freeDDOSAttack()
+	{
+		$pathDDOS = LIBRARY."/Logs/CaptchaDDOS/";
+		
+		if (is_dir($pathDDOS) && is_file($pathDDOS."time.txt"))
+		{
+			$time = (int)file_get_contents($pathDDOS."time.txt");
+			
+			if ((time() - $time) >= self::$freeDDOSSeconds)
+				self::eliminaCapctaDDOS();
+		}
+	}
+	
+	public static function eliminaCapctaDDOS()
+	{
+		if (is_dir(LIBRARY."/Logs/CaptchaDDOS"))
+		{
+			$nuovoNome = randomToken(20);
+			rename(LIBRARY."/Logs/CaptchaDDOS", LIBRARY."/Logs/$nuovoNome");
+			PagesModel::eliminaCartella(LIBRARY."/Logs/$nuovoNome");
 		}
 	}
 	
