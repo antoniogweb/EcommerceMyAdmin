@@ -161,7 +161,25 @@ class Shield
 		if (!is_dir(LIBRARY."/Logs/CaptchaDDOS"))
 		{
 			createFolderFull("Logs/CaptchaDDOS", LIBRARY, false);
-			createFolderFull("Logs/CaptchaDDOS/Img", LIBRARY, false, false);
+			FilePutContentsAtomic(LIBRARY."/Logs/CaptchaDDOS/time.txt", time());
+			FilePutContentsAtomic(LIBRARY."/Logs/CaptchaDDOS/captcha_ddos_session_ok_key.txt", "ddos_ok_key_".generateString(20));
+			FilePutContentsAtomic(LIBRARY."/Logs/CaptchaDDOS/captcha_ddos_post_key.txt", "ddos_post_key_".generateString(20));
+			FilePutContentsAtomic(LIBRARY."/Logs/CaptchaDDOS/captcha_ddos_session_key.txt", "ddos_key_".generateString(20));
+			
+			createFolderFull("Logs/CaptchaDDOS/Img", LIBRARY, true, false);
+			$fp = @fopen(LIBRARY."/Logs/CaptchaDDOS/Img/.htaccess", 'w');
+			fwrite($fp, 'allow from all');
+			fclose($fp);
+			
+			$old = umask(0);
+			mkdir(LIBRARY."/Logs/CaptchaDDOS/Ip",0777);
+			$fp = fopen(LIBRARY."/Logs/CaptchaDDOS/Ip" . "/index.html", 'w');
+			fclose($fp);
+			
+			$fp = fopen(LIBRARY."/Logs/CaptchaDDOS/Ip" . "/.htaccess", 'w');
+			fwrite($fp, 'deny from all');
+			fclose($fp);
+			umask($old);
 			
 			$captcha = new Image_Gd_Captcha(array(
 				"boxWidth"	=>	200,
@@ -170,13 +188,44 @@ class Shield
 				"charHeight"=>	22,
 			));
 			
+			$arrayOfCodes = array();
+			
 			for ($i = 0; $i < $numero; $i++)
 			{
-				$captcha->setString(generateString(6));
-				$captcha->render(LIBRARY."/Logs/CaptchaDDOS/Img/");
+				$code = generateString(6);
+				$codeFile = generateString(30);
+				
+				$arrayOfCodes[$codeFile] = $code;
+				
+				$captcha->setString($code);
+				$captcha->render(LIBRARY."/Logs/CaptchaDDOS/Img/", $codeFile);
 			}
+			
+			FilePutContentsAtomic(LIBRARY."/Logs/CaptchaDDOS/captcha_ddos_json_codes.txt", json_encode($arrayOfCodes));
 		}
 	}
+	
+// 	public static function creaCapctaDDOS($numero = 120)
+// 	{
+// 		if (!is_dir(LIBRARY."/Logs/CaptchaDDOS"))
+// 		{
+// 			createFolderFull("Logs/CaptchaDDOS", LIBRARY, false);
+// 			createFolderFull("Logs/CaptchaDDOS/Img", LIBRARY, false, false);
+// 			
+// 			$captcha = new Image_Gd_Captcha(array(
+// 				"boxWidth"	=>	200,
+// 				"fontPath"	=>	LIBRARY."/External/Fonts/FreeFont/FreeMono.ttf",
+// 				"boxHeight"	=>	60,
+// 				"charHeight"=>	22,
+// 			));
+// 			
+// 			for ($i = 0; $i < $numero; $i++)
+// 			{
+// 				$captcha->setString(generateString(6));
+// 				$captcha->render(LIBRARY."/Logs/CaptchaDDOS/Img/");
+// 			}
+// 		}
+// 	}
 	
 	public static function waf()
 	{

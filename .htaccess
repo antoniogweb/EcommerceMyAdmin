@@ -10,7 +10,11 @@ Options -Indexes
 	RewriteRule (^|/)\.git(/|$) - [R=404,L]
 
 	# Cartella Log
-	RewriteRule (^|/)Logs(/|$) - [R=404,L]
+# 	RewriteRule (^|/)Logs(/|$) - [R=404,L]
+	# Consenti solo Logs/CaptchaDDOS
+	RewriteCond %{REQUEST_URI} ^/Logs/ [NC]
+	RewriteCond %{REQUEST_URI} !^/Logs/CaptchaDDOS(/|$) [NC]
+	RewriteRule ^ - [R=404,L]
 	
 	# Blocca README.md
 	RewriteRule (^|/)README\.md$ - [R=404,L,NC]
