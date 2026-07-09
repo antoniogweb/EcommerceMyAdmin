@@ -638,7 +638,7 @@ class BaseController extends Controller
 		}
 	}
 	
-	protected function ordina()
+	public function ordina()
 	{
 		$this->ordinaGeneric();
 	}
