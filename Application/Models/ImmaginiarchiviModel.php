@@ -107,4 +107,16 @@ class ImmaginiarchiviModel extends GenericModel
 		
 		return parent::update($id, $where);
 	}
+	
+	public static function get($campo = "id_c", $id = 0)
+	{
+		if (!in_array($campo, array("id_c", "id_marchio", "id_gat")))
+			return array();
+		
+		$iaModel = new ImmaginiarchiviModel();
+		
+		return $iaModel->clear()->where(array(
+			"$campo"	=>	(int)$id,
+		))->orderBy("id_order")->send(false);
+	}
 }
