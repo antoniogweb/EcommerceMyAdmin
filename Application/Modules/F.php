@@ -120,7 +120,7 @@ class F
 		return $string;
 	}
 
-	public static function alt($string, $flags = ENT_QUOTES)
+	public static function alt($string, $flags = ENT_QUOTES | ENT_SUBSTITUTE)
 	{
 		$string = strip_tags(htmlentitydecode($string));
 		

@@ -58,6 +58,8 @@ class BaseContenutiController extends BaseController
 	public $titleTag = "";
 	public $titleMarchio = "";
 	
+	public $iChildren = array();
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -888,7 +890,7 @@ class BaseContenutiController extends BaseController
 		$data["breadcrumb"] = $this->breadcrumbHtml = $this->breadcrumb();
 		
 		if (v("mostra_categorie_figlie_in_griglia_prodotti"))
-			$data["iChildren"] = $this->getImmediateChildren($clean['id']);
+			$data["iChildren"] = $this->iChildren = $this->getImmediateChildren($clean['id']);
 		
 		if (v("mostra_categorie_sorelle_in_griglia_prodotti") && isset($data["datiCategoria"]))
 			$data["piChildren"] = $this->getImmediateChildren($data["datiCategoria"]["categories"]["id_p"]);
@@ -1583,7 +1585,7 @@ class BaseContenutiController extends BaseController
 			
 			foreach (Params::$frontEndLanguages as $l)
 			{
-				$data["arrayLingue"][$l] = $this->m("MarchiModel")->getUrlAlias((int)$id, true, $l);
+				$data["arrayLingue"][$l] = $l."/".$this->m("MarchiModel")->getUrlAlias((int)$id, true, $l);
 			}
 			
 			$data["meta_description"] = F::meta(mfield($marchioCorrente, "meta_description"));

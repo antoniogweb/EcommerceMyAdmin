@@ -166,6 +166,7 @@ class CategoriesModel extends HierarchicalModel {
 			'classisconto' => array("HAS_MANY", 'ClassiscontocategoriesModel', 'id_c', null, "CASCADE"),
 			'sitemap' => array("HAS_MANY", 'SitemapModel', 'id_c', null, "CASCADE"),
 			'caratteristiche' => array("HAS_MANY", 'CategoriescaratteristicheModel', 'id_c', null, "CASCADE"),
+			'immagini' => array("HAS_MANY", 'ImmaginiarchiviModel', 'id_c', null, "CASCADE"),
         );
     }
     
@@ -580,13 +581,14 @@ class CategoriesModel extends HierarchicalModel {
 	{
 		$clean["id_c"] = (int)$id_c;
 		
-		$children = $this->children($clean["id_c"], true);
+// 		$children = $this->children($clean["id_c"], true);
+// 		
+// 		$pages = $this->clear()->select("pages.id_page")->inner("pages")->using("id_c")->where(array(
+// 			"in" => array("id_c" => $children),
+// 			"n!pages.attivo"=>"Y"
+// 		))->toList("pages.id_page")->send();
 		
-		$whereIds = "in(".implode(',',array_values($children)).")";
-		$pages = $this->clear()->select("pages.id_page")->inner("pages")->using("id_c")->where(array(
-			"in" => array("id_c" => $children),
-			"n!pages.attivo"=>"Y"
-		))->toList("pages.id_page")->send();
+		$pages = self::gPage($clean["id_c"])->select("pages.id_page")->toList("pages.id_page")->send();
 		
 		if (count($pages) > 0)
 		{

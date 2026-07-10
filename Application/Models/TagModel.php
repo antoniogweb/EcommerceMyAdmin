@@ -84,6 +84,7 @@ class TagModel extends GenericModel
         return array(
 			'pagine' => array("HAS_MANY", 'PagestagModel', 'id_tag', null, "RESTRICT", "L'elemento ha delle relazioni e non può essere eliminato"),
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_tag', null, "CASCADE"),
+			'immagini' => array("HAS_MANY", 'ImmaginiarchiviModel', 'id_tag', null, "CASCADE"),
         );
     }
     
