@@ -1585,7 +1585,7 @@ class BaseContenutiController extends BaseController
 			
 			foreach (Params::$frontEndLanguages as $l)
 			{
-				$data["arrayLingue"][$l] = $this->m("MarchiModel")->getUrlAlias((int)$id, true, $l);
+				$data["arrayLingue"][$l] = $l."/".$this->m("MarchiModel")->getUrlAlias((int)$id, true, $l);
 			}
 			
 			$data["meta_description"] = F::meta(mfield($marchioCorrente, "meta_description"));
