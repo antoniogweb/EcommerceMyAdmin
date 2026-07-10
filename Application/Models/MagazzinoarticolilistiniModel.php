@@ -60,4 +60,23 @@ class MagazzinoarticolilistiniModel extends GenericModel
 		
 		return "";
 	}
+	
+	public static function getWhereClauseRicercaLibera($search, $table = "")
+	{
+		$tokens = explode(" ", $search);
+		$andArray = array();
+		$iCerca = 8;
+		
+		foreach ($tokens as $token)
+		{
+			$token = trim($token);
+			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
+				"n!concat(".$table."titolo,' ',".$table."codice,' ',".$table."gtin,' ',".$table."mpn)"	=>	sanitizeAll(htmlentitydecode($token)),
+			);
+			
+			$iCerca++;
+		}
+		
+		return $andArray;
+	}
 }

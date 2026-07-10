@@ -115,7 +115,16 @@ class FornitoriController extends BaseController
 		
 		$this->m[$this->modelName]->clear()->where(array(
 			"id_fornitore"	=>	$clean['id'],
-		))->orderBy("magazzino_articoli_listini.titolo")->convert()->save();
+		))->orderBy("magazzino_articoli_listini.titolo")->convert();
+		
+		if ($this->viewArgs["cerca_listino"] != "tutti")
+		{
+			$this->m[$this->modelName]->aWhere(array(
+				"  AND"	=>	MagazzinoarticolilistiniModel::getWhereClauseRicercaLibera($this->viewArgs['cerca_listino']),
+			));
+		}
+		
+		$this->m[$this->modelName]->save();
 		
 		$this->tabella = "fornitori";
 		
@@ -145,8 +154,8 @@ class FornitoriController extends BaseController
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
-		$this->mainFields = array("cleanDateTime", "filenameCrud");
-		$this->mainHead = "Data / Ora,Filename";
+		$this->mainFields = array("cleanDateTime", "filenameCrud", "elaboratoCrud");
+		$this->mainHead = "Data / Ora,Filename,Elaborato";
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"import/".$clean['id'],'pageVariable'=>'page_fgl');
 		

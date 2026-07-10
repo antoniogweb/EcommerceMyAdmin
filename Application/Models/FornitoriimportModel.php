@@ -197,4 +197,12 @@ class FornitoriimportModel extends GenericModel
 		
 		return true;
 	}
+	
+	public function elaboratoCrud($record)
+	{
+		if ($record["fornitori_import"]["elaborato"])
+			return "<i class='fa fa-check text text-success'></i>";
+		else
+			return "<i class='fa fa-ban text text-success'></i>";
+	}
 }
