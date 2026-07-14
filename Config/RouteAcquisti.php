@@ -56,5 +56,6 @@ class RouteAcquisti
 		'ordiniacquistoricezioni,chiudi',
 		'ordiniacquistoricezioni,documento',
 		'ordiniacquistoricezionirighe,salva',
+		'magazzinoarticolilistini,main',
 	);
 }

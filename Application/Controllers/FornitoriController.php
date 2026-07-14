@@ -42,6 +42,8 @@ class FornitoriController extends BaseController
 	
 	public $orderBy = "ragione_sociale";
 	
+	public $modelNameImport = "FornitoriimportModel";
+	
 	public $argKeys = array(
 		'ragione_sociale:sanitizeAll'=>'tutti',
 		'cerca_listino:sanitizeAll'=>'tutti',
@@ -132,14 +134,14 @@ class FornitoriController extends BaseController
 		
 		parent::main();
 		
-		$data["titoloRecord"] = $this->m["FornitoriModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m("FornitoriModel")->titolo($clean['id']);
 		
 		$this->append($data);
 	}
 	
 	public function import($id = 0)
 	{
-		$this->model("FornitoriimportModel");
+		$this->model($this->modelNameImport);
 		
 		$this->_posizioni['import'] = 'class="active"';
 		
@@ -150,7 +152,7 @@ class FornitoriController extends BaseController
 		
 		$this->mainButtons = "ldel";
 		
-		$this->modelName = "FornitoriimportModel";
+		$this->modelName = $this->modelNameImport;
 		
 		$this->m[$this->modelName]->updateTable('del');
 		
@@ -167,7 +169,7 @@ class FornitoriController extends BaseController
 		
 		parent::main();
 		
-		$data["titoloRecord"] = $this->m["FornitoriModel"]->titolo($clean['id']);
+		$data["titoloRecord"] = $this->m("FornitoriModel")->titolo($clean['id']);
 		
 		$this->append($data);
 	}

@@ -43,6 +43,7 @@ class MagazzinoarticoliModel extends GenericModel
 	
 	public function relations() {
 		return array(
+			'righe_ordine'	=>	array("HAS_MANY", 'OrdiniacquistorigheModel', 'id_articolo', null, "RESTRICT", "L'articolo ha degli ordini di acquisto collegati e non può essere eliminato"),
 			'combinazioni' => array("HAS_MANY", 'MagazzinoarticolicombinazioniModel', 'id_articolo', null, "CASCADE"),
 			'marchio' => array("BELONGS_TO", 'MarchiModel', 'id_marchio',null,"CASCADE"),
 		);

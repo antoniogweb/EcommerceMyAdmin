@@ -41,6 +41,8 @@ class RigheController extends BaseController
 		'id_marchio:sanitizeAll'=>'tutti',
 		'id_o_da_ordinare:sanitizeAll'=>'tutti',
 		'da_ordinare:sanitizeAll'=>'tutti',
+		'cerca_prodotto:sanitizeAll'=>'tutti',
+		'riferimento:sanitizeAll'=>'tutti',
 	);
 	
 	public $sezionePannello = "marketing";
@@ -172,7 +174,7 @@ class RigheController extends BaseController
 				"O"		=>	gtext("Ordinati"),
 			);
 			
-			$this->filters = array(array("da_ordinare",null,$filtroDaOrdinare));
+			$this->filters = array(array("da_ordinare",null,$filtroDaOrdinare), "cerca_prodotto", "riferimento");
 			
 			if ($this->viewArgs["da_ordinare"] != "tutti")
 			{
@@ -186,6 +188,19 @@ class RigheController extends BaseController
 						),
 					));
 			}
+			
+			if ($this->viewArgs["cerca_prodotto"] != "tutti")
+				$this->m[$this->modelName]->aWhere(array(
+					"  AND"	=>	RigheModel::getWhereClauseRicercaLibera($this->viewArgs['cerca_prodotto']),
+				));
+			
+			if ($this->viewArgs["riferimento"] != "tutti")
+				$this->m[$this->modelName]->aWhere(array(
+					" OR"	=>	array(
+						"orders.id_o"				=>	$this->viewArgs["riferimento"],
+						"orders.numero_documento"	=>	$this->viewArgs["riferimento"],
+					)
+				));
 		}
 		
 		$this->m[$this->modelName]->save();

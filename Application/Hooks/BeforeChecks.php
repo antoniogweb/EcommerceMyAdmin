@@ -986,6 +986,18 @@ Helper_List::$filtersFormLayout = array(
 				"placeholder"	=>	"N° Ordine acquisto",
 			),
 		),
+		"cerca_prodotto"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+				"placeholder"	=>	"Cerca prodotto..",
+			),
+		),
+		"riferimento"	=>	array(
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+				"placeholder"	=>	"Rifer. vendita..",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(

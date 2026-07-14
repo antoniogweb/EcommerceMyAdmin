@@ -22,15 +22,16 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-Helper_Menu::$htmlLinks["elabora_import"] = array(
-	"htmlBefore" => '',
-	"htmlAfter" => '',
-	"attributes" => 'role="button" class="btn btn-primary make_spinner"',
-	"class"	=>	"btn btn-info",
-	'text'	=>	"Elabora import",
-	'queryString'	=>	'',
-	"classIconBefore"	=>	'<i class="fa fa-check"></i>',
-);
+if (!isset(Helper_Menu::$htmlLinks["elabora_import"]))
+	Helper_Menu::$htmlLinks["elabora_import"] = array(
+		"htmlBefore" => '',
+		"htmlAfter" => '',
+		"attributes" => 'role="button" class="btn btn-primary make_spinner"',
+		"class"	=>	"btn btn-info",
+		'text'	=>	"Elabora import",
+		'queryString'	=>	'',
+		"classIconBefore"	=>	'<i class="fa fa-check"></i>',
+	);
 
 class FornitoriimportController extends BaseController
 {
