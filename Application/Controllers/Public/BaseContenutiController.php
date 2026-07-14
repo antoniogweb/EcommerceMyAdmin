@@ -61,6 +61,7 @@ class BaseContenutiController extends BaseController
 	public $iChildren = array();
 	
 	public $customPageArgs = array(); // page args definiti nel frontend
+	public $numeroPagineTrovate = 0; // viene popolato in category()
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
@@ -957,7 +958,7 @@ class BaseContenutiController extends BaseController
 		
 		$this->queryElencoProdotti($clean['id'], $firstSection, array(), true, $attivaJoinSubito);
 		
-		$rowNumber = $data["rowNumber"] = $this->m("PagesModel")->save()->rowNumber();
+		$rowNumber = $data["rowNumber"] = $this->numeroPagineTrovate = $this->m("PagesModel")->save()->rowNumber();
 		
 // 		echo $this->m("PagesModel")->getQuery();die();
 		
