@@ -60,6 +60,8 @@ class BaseContenutiController extends BaseController
 	
 	public $iChildren = array();
 	
+	public $customPageArgs = array(); // page args definiti nel frontend
+	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		parent::__construct($model, $controller, $queryString, $application, $action);
@@ -801,6 +803,14 @@ class BaseContenutiController extends BaseController
 			'o:sanitizeAll'	=>	PagesModel::$ordinamentoDefaultProdotti,
 			'search:sanitizeAll'	=>	"",
 		);
+		
+		if (is_array($this->customPageArgs) && count($this->customPageArgs) > 0)
+		{
+			foreach ($this->customPageArgs as $k => $v)
+			{
+				$argKeys[$k] = $v;
+			}
+		}
 		
 		if (v("attiva_ricerca_documento"))
 			$argKeys["searchdoc:sanitizeAll"] = "";
