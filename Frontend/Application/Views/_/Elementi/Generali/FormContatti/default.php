@@ -19,7 +19,7 @@
 			</div>
 
 			<div class="uk-margin">
-				<?php echo Html_Form::textarea("messaggio",Form::gValue("messaggio"),"uk-textarea class_messaggio","messaggio","rows='5' placeholder='".gtext("Messsaggio*")."'");?>
+				<?php echo Html_Form::textarea("messaggio",Form::gValue("messaggio"),"uk-textarea class_messaggio","messaggio","rows='5' placeholder='".gtext("Messaggio*")."'");?>
 			</div>
 			
 			<?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>
