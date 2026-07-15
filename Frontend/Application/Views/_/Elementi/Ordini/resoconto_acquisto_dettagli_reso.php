@@ -2,7 +2,7 @@
 <?php if ($pr["richiesta"]) { ?>
 	<span class="uk-text-small uk-text-warning">
 		<?php echo gtext("In data")." <b>".smartDate($pr["data_richiesta"], v("default_date_format")." H:i");?></b>
-		<?php echo gtext("hai eseguito una richiesta di resto per l'ordine")." <b>".$pr["id_o"]; ?></b>
+		<?php echo gtext("hai eseguito una richiesta di reso per l'ordine")." <b>".$pr["id_o"]; ?></b>
 		<?php if ($pr["id_spedizione_negozio"]) { echo " - ". gtext("merce consegnata il")." ".smartDate($pr["data_inizio"], v("default_date_format"));} ?>
 	</span>
 <?php } else { ?>

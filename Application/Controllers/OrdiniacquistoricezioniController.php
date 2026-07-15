@@ -38,6 +38,8 @@ class OrdiniacquistoricezioniController extends BaseController
 		'numero_ordine_acquisto:sanitizeAll'=>'tutti',
 		'dal:sanitizeAll'=>'tutti',
 		'al:sanitizeAll'=>'tutti',
+		'cerca_prodotto:sanitizeAll'=>'tutti',
+		'riferimento:sanitizeAll'=>'tutti',
 	);
 	
 	public $useEditor = true;
@@ -75,19 +77,33 @@ class OrdiniacquistoricezioniController extends BaseController
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], 'data_ricezione_merce');
 		
-		if ($this->viewArgs["numero_ordine_acquisto"] != "tutti")
+		if ($this->viewArgs["numero_ordine_acquisto"] != "tutti" || $this->viewArgs["cerca_prodotto"] != "tutti" || $this->viewArgs["riferimento"] != "tutti")
 		{
 			$this->m[$this->modelName]->inner(array("righe"))
-				->inner("ordini_acquisto_righe")->on("ordini_acquisto_ricezioni_righe.id_ordine_acquisto_riga = ordini_acquisto_righe.id_ordine_acquisto_riga")->inner("ordini_acquisto")->on("ordini_acquisto.id_ordine_acquisto = ordini_acquisto_righe.id_ordine_acquisto")
-				->aWhere(array(
-					"ordini_acquisto.numero_ordine"	=>	$this->viewArgs["numero_ordine_acquisto"],
-				))
-				->groupBy("ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione");
+				->inner("ordini_acquisto_righe")->on("ordini_acquisto_ricezioni_righe.id_ordine_acquisto_riga = ordini_acquisto_righe.id_ordine_acquisto_riga");
+			
+			if ($this->viewArgs["numero_ordine_acquisto"] != "tutti")
+				$this->m[$this->modelName]->inner("ordini_acquisto")->on("ordini_acquisto.id_ordine_acquisto = ordini_acquisto_righe.id_ordine_acquisto")
+					->aWhere(array(
+						"ordini_acquisto.numero_ordine"	=>	$this->viewArgs["numero_ordine_acquisto"],
+					))
+					->groupBy("ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione");
+			else if ($this->viewArgs["cerca_prodotto"] != "tutti")
+				$this->m[$this->modelName]->aWhere(array(
+					"  AND"	=>	OrdiniacquistorigheModel::getWhereClauseRicercaLibera($this->viewArgs['cerca_prodotto']),
+				));
+			else
+				$this->m[$this->modelName]->inner("righe")->on("righe.id_r = ordini_acquisto_righe.id_r")->inner("orders")->on("orders.id_o = righe.id_o")->aWhere(array(
+					" OR"	=>	array(
+						"orders.id_o"				=>	$this->viewArgs["riferimento"],
+						"orders.numero_documento"	=>	$this->viewArgs["riferimento"],
+					)
+				));
 		}
 		
 		$this->m[$this->modelName]->save();
 		
-		$this->filters = array("id_ricezione_filtro","numero_ordine_acquisto","dal","al");
+		$this->filters = array("id_ricezione_filtro","numero_ordine_acquisto","cerca_prodotto","riferimento","dal","al");
 		
 		parent::main();
 	}

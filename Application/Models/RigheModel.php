@@ -388,7 +388,7 @@ class RigheModel extends GenericModel
 		foreach ($tokens as $token)
 		{
 			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-				"righe.title"	=>	sanitizeAll(htmlentitydecode($token)),
+				"n!concat(righe.title,' ',righe.codice)"	=>	sanitizeAll(htmlentitydecode($token)),
 			);
 			
 			$iCerca++;
@@ -484,6 +484,7 @@ class RigheModel extends GenericModel
 			->inner("ordini_acquisto_stati")->on("ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto.id_ordine_acquisto_stato")
 			->where(array(
 				"ordini_acquisto_righe.id_r"		=>	(int)$idR,
+				"ordini_acquisto_stati.annullato"	=>	0
 			));
 			// ->aWhere(OrdiniacquistoModel::getChiusiWhereClause());
 	}

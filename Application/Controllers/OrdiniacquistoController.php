@@ -25,7 +25,7 @@ if (!defined('EG')) die('Direct access not allowed!');
 Helper_List::$filtersFormLayout["filters"]["ragione_sociale"] = array(
 	"attributes"	=>	array(
 		"class"	=>	"form-control",
-		"placeholder"	=>	"Cerca..",
+		"placeholder"	=>	"Cerca ordine..",
 	),
 );
 
@@ -44,6 +44,8 @@ class OrdiniacquistoController extends BaseController
 		'dal:sanitizeAll'=>'tutti',
 		'al:sanitizeAll'=>'tutti',
 		'id_ordine_acquisto_ricezione:sanitizeAll'=>'tutti',
+		'cerca_prodotto:sanitizeAll'=>'tutti',
+		'riferimento:sanitizeAll'=>'tutti',
 	);
 	
 	public $useEditor = true;
@@ -72,7 +74,7 @@ class OrdiniacquistoController extends BaseController
 		$this->mainFields = array("[[ledit]];ordini_acquisto.numero_ordine;", "ordini_acquisto.ragione_sociale", "aggregate.anno_ordine", "ordini_acquisto.data_ordine", "ordini_acquisto.telefono", "ordini_acquisto.email", "statoordinelabel", "ricezioniCrud", "numeroDaCollegareCrud");
 		$this->mainHead = "N° Ordine,Ragione sociale,Anno,Data,Telefono,Email,Stato,Ricezioni,Righe da collegare";
 		
-		$this->m[$this->modelName]->select("ordini_acquisto.*,DATE_FORMAT(data_ordine, '%Y') as anno_ordine")
+		$this->m[$this->modelName]->select("distinct ordini_acquisto.id_ordine_acquisto,ordini_acquisto.*,DATE_FORMAT(data_ordine, '%Y') as anno_ordine")
 			->aWhere(array(
 				"numero_ordine"	=>	$this->viewArgs["numero_ordine_acquisto"],
 			))
@@ -81,8 +83,25 @@ class OrdiniacquistoController extends BaseController
 		if ($this->viewArgs["ragione_sociale"] != "tutti")
 		{
 			$this->m[$this->modelName]->aWhere(array(
-				"  AND"	=>	FornitoriModel::getWhereClauseRicercaLibera($this->viewArgs['ragione_sociale']),
+				"  AND"	=>	OrdiniacquistoModel::getWhereClauseRicercaLibera($this->viewArgs['ragione_sociale']),
 			));
+		}
+		
+		if ($this->viewArgs["cerca_prodotto"] != "tutti" || $this->viewArgs["riferimento"] != "tutti")
+		{
+			$this->m[$this->modelName]->inner(array("righe"));
+			
+			if ($this->viewArgs["cerca_prodotto"] != "tutti")
+				$this->m[$this->modelName]->aWhere(array(
+					"  AND"	=>	OrdiniacquistorigheModel::getWhereClauseRicercaLibera($this->viewArgs['cerca_prodotto']),
+				));
+			else
+				$this->m[$this->modelName]->inner("righe")->on("righe.id_r = ordini_acquisto_righe.id_r")->inner("orders")->on("orders.id_o = righe.id_o")->aWhere(array(
+					" OR"	=>	array(
+						"orders.id_o"				=>	$this->viewArgs["riferimento"],
+						"orders.numero_documento"	=>	$this->viewArgs["riferimento"],
+					)
+				));
 		}
 		
 		$this->m[$this->modelName]->setDalAlWhereClause($this->viewArgs['dal'], $this->viewArgs['al'], 'data_ordine');
@@ -100,7 +119,7 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->m[$this->modelName]->save();
 		
-		$this->filters = array("numero_ordine_acquisto","ragione_sociale","dal","al");
+		$this->filters = array("numero_ordine_acquisto","ragione_sociale","cerca_prodotto","riferimento", "dal","al");
 		
 		parent::main();
 	}

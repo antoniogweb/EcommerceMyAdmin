@@ -397,7 +397,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		foreach ($tokens as $token)
 		{
 			$andArray[str_repeat(" ", $iCerca)."lk"] = array(
-				"ordini_acquisto_righe.titolo"	=>	sanitizeAll(htmlentitydecode($token)),
+				"n!concat(ordini_acquisto_righe.titolo,' ',ordini_acquisto_righe.codice)"	=>	sanitizeAll(htmlentitydecode($token)),
 			);
 			
 			$iCerca++;
