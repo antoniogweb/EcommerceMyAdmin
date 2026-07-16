@@ -223,15 +223,18 @@ class ImmaginiModel extends GenericModel {
 			if (!$idC)
 				$idC = PagesModel::$IdCombinazione ? PagesModel::$IdCombinazione : $pModel->getIdCombinazioneCanonical((int)$idPage);
 			
-			$immaginiCombinazione = $i->aWhere(array(
-				"id_c"	=>	(int)$idC,
-			))->send(false);
-			
-			if (count($immaginiCombinazione) > 0)
+			if ($idC)
 			{
-				array_shift($immaginiCombinazione);
+				$immaginiCombinazione = $i->aWhere(array(
+					"id_c"	=>	(int)$idC,
+				))->send(false);
 				
-				$altreImmagini = $immaginiCombinazione;
+				if (count($immaginiCombinazione) > 0)
+				{
+					array_shift($immaginiCombinazione);
+					
+					$altreImmagini = $immaginiCombinazione;
+				}
 			}
 		}
 		

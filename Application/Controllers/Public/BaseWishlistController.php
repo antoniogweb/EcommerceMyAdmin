@@ -181,13 +181,13 @@ class BaseWishlistController extends BaseController
 		}
 		
 		// Se sono JSON, stampa in output il carrello completo
-		if (Output::$json)
-		{
-			Output::setHeaderValue("CartProductsNumber",$this->m("WishlistModel")->numberOfItems());
-			
-			$this->load("api_output");
-		}
-		else
+// 		if (Output::$json)
+// 		{
+// 			Output::setHeaderValue("CartProductsNumber",$this->m("WishlistModel")->numberOfItems());
+// 			
+// 			$this->load("api_output");
+// 		}
+// 		else
 			echo json_encode(array(
 				"result"	=>	$result,
 				"contens_fbk"	=>	$contentsFbk,
@@ -212,9 +212,9 @@ class BaseWishlistController extends BaseController
 		}
 		
 		// Se sono JSON, stampa in output il carrello completo
-		if (Output::$json)
-			$this->index();
-		else
+		// if (Output::$json)
+		// 	$this->index();
+		// else
 			echo json_encode(array(
 				"result"	=>	$result,
 				"contens_fbk"	=>	"",
