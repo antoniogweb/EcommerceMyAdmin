@@ -70,7 +70,22 @@ trait TraitController
 		else if ($section == "email_detail")
 			$fields = 'title,editor_visuale,description';
 		else if ($section == "contenuti")
-			$fields = 'title,descrizione'.$stringaSottotitolo;
+		{
+			$fields = 'titolo,descrizione'.$stringaSottotitolo;
+			
+			if (isset($record["id_cont"]))
+			{
+				$tipo = $this->m("ContenutiModel")->clear()->select("tipi_contenuto.campi")->inner(array("tipo"))->where(array(
+					"contenuti.id_cont"	=>	(int)$record["id_cont"],
+				))->first();
+				
+				if (!empty($tipo) && strpos($tipo["tipi_contenuto"]["campi"], "sottotitolo") !== false && strpos($fields, "sottotitolo") === false)
+					$fields .= ",sottotitolo";
+				
+				if (!empty($tipo) && strpos($tipo["tipi_contenuto"]["campi"], "testo_link") !== false)
+					$fields .= ",testo_link";
+			}
+		}
 		else if ($section == "pagamenti")
 			$fields = 'titolo,descrizione,istruzioni_pagamento';
 		
