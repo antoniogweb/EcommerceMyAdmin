@@ -600,7 +600,7 @@ class BaseBaseController extends Controller
 				"in_evidenza"	=>	"Y"
 			))->toList("iso_country_code")->send();
 		
-		$data["title"] =  gtext(ImpostazioniModel::$valori["title_home_page"]);
+		$data["title"] =  gtext(htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]));
 		$data["meta_description"] = F::meta(htmlentitydecode(ImpostazioniModel::$valori["meta_description"]));
 		$data["keywords"] = F::meta(htmlentitydecode(ImpostazioniModel::$valori["keywords"]));
 		
