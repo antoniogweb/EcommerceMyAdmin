@@ -71,7 +71,7 @@ class OrdiniacquistostatiModel extends GenericModel {
 			'entries' 	=> 	array(
 				'chiuso'	=>	array(
 					"type"	=>	"Select",
-					"labelString"	=>	"Stato corrispondente ad un ordine Chiuso",
+					"labelString"	=>	"Stato corrispondente ad un ordine chiuso",
 					"options"	=>	self::$attivoSiNo,
 					"reverse"	=>	"yes",
 					"className"	=>	"form-control",

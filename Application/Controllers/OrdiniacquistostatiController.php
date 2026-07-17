@@ -63,7 +63,7 @@ class OrdiniacquistostatiController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,classe,chiuso,inviato,annullato,parzialmente_ricevuto,ricevuto';
+		$fields = 'titolo,classe,chiuso,annullato,parzialmente_ricevuto,ricevuto';
 		
 		$record = $data["record"] = $this->m[$this->modelName]->selectId((int)$id);
 		
