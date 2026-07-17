@@ -116,6 +116,14 @@ $().ready(function() {
 			</div>
 			<?php } ?>
 			
+			<?php if (isset($form["target"])) { ?>
+			<?php echo $form["target"];?>
+			<?php } ?>
+			
+			<?php if (isset($form["testo_link"])) { ?>
+			<?php echo $form["testo_link"];?>
+			<?php } ?>
+			
 			<?php if (isset($form["posizione"]) || isset($form["animazione"])) { ?>
 			<div class="well">
 				<h3>Posizione e animazione</h3>
