@@ -98,6 +98,16 @@ class OrdiniacquistoModel extends GenericModel
 	{
 		if ($this->checkNumero($this->values["numero_ordine"] ?? 0, (int)$id))
 		{
+			if ($this->haRicezioni($id) && isset($this->values["id_ordine_acquisto_stato"]) && (
+				OrdiniacquistostatiModel::g(false)->annullato((int)$this->values["id_ordine_acquisto_stato"]) || 
+				OrdiniacquistostatiModel::g(false)->bozza((int)$this->values["id_ordine_acquisto_stato"])
+			))
+			{
+				$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione, l'ordine non può più essere annullato né messo in bozza perché ha delle ricezioni collegate.")."</div>".'<div style="display:none;" rel="hidden_alert_notice">id_ordine_acquisto_stato</div>';
+				$this->result = false;
+				return false;
+			}
+			
 			$res = parent::update($id, $where);
 			
 			if (isset($this->values["id_ordine_acquisto_stato"]))

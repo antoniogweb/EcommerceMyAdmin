@@ -220,8 +220,10 @@ class OrdiniacquistorigheController extends BaseController
 				
 				if (!empty($recordRiga))
 				{
-					$recordArticolo = MagazzinoarticoliModel::g()->selectId((int)$v["id_articolo"]);
-					$recordWeb = MagazzinoarticolicombinazioniModel::getDatiWeb((int)$v["id_articolo"]);
+					$idArticolo = (int)$v["id_articolo"] ?? 0;
+					
+					$recordArticolo = MagazzinoarticoliModel::g()->selectId($idArticolo);
+					$recordWeb = MagazzinoarticolicombinazioniModel::getDatiWeb($idArticolo);
 					
 					$moltiplicatore = 1;
 					
@@ -233,16 +235,16 @@ class OrdiniacquistorigheController extends BaseController
 					$omaggio = $v["omaggio"] ?? 0;
 					$idR = $v["id_r"] ?? 0;
 					
-					if ($v["id_articolo"] && (int)$recordRiga["id_articolo"] !== (int)$v["id_articolo"])
+					if ($v["id_articolo"] && (int)$recordRiga["id_articolo"] !== $idArticolo)
 					{
-						$price = $maModel->getUltimoPrezzo((int)$v["id_articolo"], (int)$recordRiga["id_ordine_acquisto_riga"]);
-						$sconto1 = $maModel->getUltimoSconto1((int)$v["id_articolo"], (int)$recordRiga["id_ordine_acquisto_riga"]);
-						$sconto2 = $maModel->getUltimoSconto2((int)$v["id_articolo"], (int)$recordRiga["id_ordine_acquisto_riga"]);
+						$price = $maModel->getUltimoPrezzo($idArticolo, (int)$recordRiga["id_ordine_acquisto_riga"]);
+						$sconto1 = $maModel->getUltimoSconto1($idArticolo, (int)$recordRiga["id_ordine_acquisto_riga"]);
+						$sconto2 = $maModel->getUltimoSconto2($idArticolo, (int)$recordRiga["id_ordine_acquisto_riga"]);
 						$idR = 0;
 					}
 					
 					$this->m[$this->modelName]->sValues(array(
-						"id_articolo"		=>	$v["id_articolo"] ?? 0,
+						"id_articolo"		=>	$idArticolo,
 						"quantita"			=>	$v["quantita"] ?? 1,
 						"prezzo"			=>	$price,
 						"sconto_1"			=>	$sconto1,

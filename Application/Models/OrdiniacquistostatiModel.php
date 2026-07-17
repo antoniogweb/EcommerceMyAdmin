@@ -152,14 +152,6 @@ class OrdiniacquistostatiModel extends GenericModel {
 		return true;
 	}
 	
-	public function chiuso($idStato)
-	{
-		if (!isset(self::$recordTabella))
-			self::g(false)->setRecordTabella("id_ordine_acquisto_stato");
-		
-		return self::$recordTabella[$idStato]["chiuso"] > 0 ? true : false;
-	}
-	
 	public function chiusoCrud($record)
 	{
 		if ($record["ordini_acquisto_stati"]["chiuso"])
@@ -192,12 +184,28 @@ class OrdiniacquistostatiModel extends GenericModel {
 			return "";
 	}
 	
+	public function chiuso($idStato)
+	{
+		if (!isset(self::$recordTabella))
+			self::g(false)->setRecordTabella("id_ordine_acquisto_stato");
+		
+		return self::$recordTabella[$idStato]["chiuso"] > 0 ? true : false;
+	}
+	
 	public function bozza($idStato)
 	{
 		if (!isset(self::$recordTabella))
 			self::g(false)->setRecordTabella("id_ordine_acquisto_stato");
 		
 		return ((int)self::$recordTabella[$idStato]["chiuso"] <= 0) ? true : false;
+	}
+	
+	public function annullato($idStato)
+	{
+		if (!isset(self::$recordTabella))
+			self::g(false)->setRecordTabella("id_ordine_acquisto_stato");
+		
+		return ((int)self::$recordTabella[$idStato]["annullato"] > 0) ? true : false;
 	}
 	
 	public static function getCampo($idStato, $campo)
