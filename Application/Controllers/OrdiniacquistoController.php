@@ -29,6 +29,13 @@ Helper_List::$filtersFormLayout["filters"]["ragione_sociale"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["id_stato"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 Helper_Menu::$htmlLinks["save_righe_ordini_acquisto"]["attributes"] .= " url-salva='ordiniacquistorighe/salva' ";
 
 class OrdiniacquistoController extends BaseController
@@ -46,6 +53,7 @@ class OrdiniacquistoController extends BaseController
 		'id_ordine_acquisto_ricezione:sanitizeAll'=>'tutti',
 		'cerca_prodotto:sanitizeAll'=>'tutti',
 		'riferimento:sanitizeAll'=>'tutti',
+		'id_stato:sanitizeAll'=>'tutti',
 	);
 	
 	public $useEditor = true;
@@ -77,6 +85,7 @@ class OrdiniacquistoController extends BaseController
 		$this->m[$this->modelName]->select("distinct ordini_acquisto.id_ordine_acquisto,ordini_acquisto.*,DATE_FORMAT(data_ordine, '%Y') as anno_ordine")
 			->aWhere(array(
 				"numero_ordine"	=>	$this->viewArgs["numero_ordine_acquisto"],
+				"id_ordine_acquisto_stato"	=>	$this->viewArgs["id_stato"],
 			))
 			->orderBy("anno_ordine desc,numero_ordine desc")->convert();
 		
@@ -119,7 +128,9 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->m[$this->modelName]->save();
 		
-		$this->filters = array("numero_ordine_acquisto","ragione_sociale","cerca_prodotto","riferimento", "dal","al");
+		$filtroStato = array("tutti"	=>	gtext("Stato")) + OrdiniacquistostatiModel::g()->selectStati();
+		
+		$this->filters = array("numero_ordine_acquisto","ragione_sociale","cerca_prodotto","riferimento", "dal","al", array("id_stato",null,$filtroStato));
 		
 		parent::main();
 	}
