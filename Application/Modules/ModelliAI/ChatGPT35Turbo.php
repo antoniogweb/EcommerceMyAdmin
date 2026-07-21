@@ -87,8 +87,6 @@ class ChatGPT35Turbo extends ModelloAI
 						],
 					];
 				
-				// print_r($request);
-				
 				$response = $client->responses()->create($request);
 				
 				$responseArray = $response->toArray();
