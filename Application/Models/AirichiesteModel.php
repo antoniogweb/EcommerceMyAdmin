@@ -745,9 +745,11 @@ class AirichiesteModel extends GenericModel
 			}
 			
 			$queryArray = array_unique($queryArray);
-			$messaggio = implode(" ", $queryArray);
+			
+			if ($soloProdotti)
+				$messaggio = implode(" ", $queryArray);
 		}
-		else if ($productSKU)
+		else if ($productSKU && $soloProdotti)
 		{
 			$emb->aWhere(array(
 				"    lk"	=>	array(

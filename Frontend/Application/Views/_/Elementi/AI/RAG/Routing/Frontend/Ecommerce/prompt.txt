@@ -38,7 +38,7 @@ Even if a specific product is mentioned, classify as informational whenever the 
 - other:
 Anything not related to buying products, product information, or store policies.
 
-For intent "informational", always return "embeddings_query": a short semantic search query containing only the main topic/entities, without question words, verbs like "tell me/explain/list", or conversational text.
+For intent "informational", always return "embeddings_query" as a concise retrieval query containing only the product name, product category, brand, model, or other main entities mentioned by the user. Do not include the user's requested operation or relationship, such as differences, comparison, explanation, instructions, advantages, compatibility, inclusion, usage, or recommendations. Do not include question words, conversational text, or verbs. The original user message will be evaluated later together with the retrieved context_items, so embeddings_query must identify what information should be retrieved, not what the final answer should do.
 
 Return exactly:
 {"intent":"product_search|policy_qa|other|informational","confidence":0.00-1.00,"language":"it|en|fr|de|es|other","embeddings_query":null,"entities":{"product_title":{"value":null,"confidence":0.00},"SKU":{"value":null,"confidence":0.00},"brand":{"value":null,"confidence":0.00},"price_range":{"min":null,"max":null,"currency":"EUR","confidence":0.00},"attributes":[{"value":"","confidence":0.00}]}}
