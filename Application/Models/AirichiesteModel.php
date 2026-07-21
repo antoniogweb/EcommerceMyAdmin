@@ -409,7 +409,7 @@ class AirichiesteModel extends GenericModel
 								list($ris, $messaggio) = array(1, gtext(self::$fraseTroppeRichiesteIp));
 							else
 							{
-								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "minimal");
+								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low");
 								
 								$messaggio = strip_tags($messaggio);
 								
