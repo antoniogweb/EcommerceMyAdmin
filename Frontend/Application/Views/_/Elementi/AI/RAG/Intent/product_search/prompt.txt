@@ -25,5 +25,5 @@ intro_text:
 - MUST be <= 12 words.
 
 If no match:
-intro_text="Non ho trovato alcun prodotto pertinente."
+intro_text="Non ho trovato alcun prodotto pertinente. Controlla di aver digitato bene il codice o il titolo del prodotto."
 items=[]

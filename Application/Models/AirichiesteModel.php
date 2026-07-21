@@ -833,161 +833,11 @@ class AirichiesteModel extends GenericModel
 				switch($intent)
 				{
 					case "product_search":
-// 						$emb = new EmbeddingsModel();
-// 						$emb = $emb->innerPages($lingua)->addWhereAttivo()->inner("combinazioni")->on("pages.id_page = combinazioni.id_page");
-// 						
-// 						// var_dump($routingJson);
-// 						$productTitle = $routingJson["entities"]["product_title"]["value"] ?? "";
-// 						$productSKU = $routingJson["entities"]["SKU"]["value"] ?? "";
-// 						$prezzoMinimo =  $routingJson["entities"]["price_range"]["min"] ?? null;
-// 						$prezzoMassimo =  $routingJson["entities"]["price_range"]["max"] ?? null;
-// 						$brand =  $routingJson["entities"]["brand"]["value"] ?? null;
-// 						
-// 						if ($prezzoMassimo)
-// 						{
-// 							$emb->aWhere(array(
-// 								"lte"	=>	array(
-// 									"combinazioni.price_scontato_ivato"	=> (int)$prezzoMassimo,
-// 								),
-// 							));
-// 						}
-// 						
-// 						if ($prezzoMinimo)
-// 						{
-// 							$emb->aWhere(array(
-// 								"gte"	=>	array(
-// 									"combinazioni.price_scontato_ivato"	=> (int)$prezzoMinimo,
-// 								),
-// 							));
-// 						}
-// 						
-// 						if ($brand)
-// 						{
-// 							$numero = MarchiModel::g(false)->clear()->where(array(
-// 								"lk"	=>	array(
-// 									"titolo"	=>	sanitizeAll($brand),
-// 								)
-// 							))->rowNumber();
-// 							
-// 							if ($numero)
-// 								$emb->inner("marchi")->on("pages.id_marchio = marchi.id_marchio")->aWhere(array(
-// 									"lk"	=>	array(
-// 										"marchi.titolo"	=> sanitizeAll(nullToBlank($brand)),
-// 									),
-// 								));
-// 						}
-// 						
-// 						if ($productTitle && !$productSKU)
-// 						{
-// 							if ($lingua == Params::$defaultFrontEndLanguage)
-// 							{
-// 								$titleWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "title");
-// 								$descWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "description");
-// 							}
-// 							else
-// 							{
-// 								$emb->addJoinTraduzione($lingua, "contenuti_tradotti", false, new PagesModel());
-// 								
-// 								$titleWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "title", "contenuti_tradotti");
-// 								$descWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "description", "contenuti_tradotti");
-// 							}
-// 							
-// 							$orWhere = array(
-// 								"  OR"	=>	array(
-// 									"AND"	=> $titleWhere,
-// 									" AND"	=>	$descWhere,
-// 								)
-// 							);
-// 							
-// 							$emb->save();
-// 							$emb->aWhere($descWhere);
-// 							
-// 							$queryArray = explode(" ", $productTitle);
-// 							
-// 							if ($brand)
-// 								$queryArray[] = (string)$brand;
-// 							
-// 							if (isset($routingJson["entities"]["attributes"]) && is_array($routingJson["entities"]["attributes"]))
-// 							{
-// 								foreach ($routingJson["entities"]["attributes"] as $attr)
-// 								{
-// 									if (isset($attr["value"]))
-// 									{
-// 										$words = explode(" ", $attr["value"]);
-// 										
-// 										foreach ($words as $word)
-// 										{
-// 											$queryArray[] = $word;
-// 										}
-// 									}
-// 								}
-// 							}
-// 							
-// 							$queryArray = array_unique($queryArray);
-// 							$messaggio = implode(" ", $queryArray);
-// 						}
-// 						else if ($productSKU)
-// 						{
-// 							$emb->aWhere(array(
-// 								"    lk"	=>	array(
-// 									"combinazioni.codice" => sanitizeAll($productSKU),
-// 								)
-// 							));
-// 						}
-// 						
-// 						$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
-// 						
-// 						$idPages = $result["pages"];
-// 						
-// 						if (count($idPages) <= 0 && $productTitle && !$productSKU)
-// 						{
-// 							$emb->clear()->restore();
-// 							$result = EmbeddingsModel::ricercaSemantica($messaggio, $emb, $lingua, $numeroRisultati);
-// 							$idPages = $result["pages"];
-// 						}
-// 						
-// 						// print_r($result);
-// 						
-// 						if (count($idPages) > 0)
-// 						{
-// 							$p = PagesModel::g(false)->where(array(
-// 								"   in"	=>	array(
-// 									"id_page"	=>	forceIntDeep($idPages),
-// 								)
-// 							));
-// 							
-// 							TraduzioniModel::sLingua($lingua, "front");
-// 							$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 0);
-// 							TraduzioniModel::rLingua();
-// 						}
-// 						else if ($productTitle || $productSKU)
-// 						{
-// 							if ($productSKU)
-// 							{
-// 								$p = PagesModel::g(false)->sWhere(array(
-// 									"pages.id_page in (select distinct id_page from combinazioni where codice like ?)",
-// 									array(sanitizeAll($productSKU))
-// 								));
-// 							}
-// 							else
-// 							{
-// 								if ($lingua == Params::$defaultFrontEndLanguage)
-// 									$titleWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "title");
-// 								else
-// 									$titleWhere = $emb->getWhereSearch(sanitizeAll($productTitle), 50, "title", "contenuti_tradotti");
-// 								
-// 								$p = PagesModel::g(false)->aWhere($titleWhere);
-// 							}
-// 							
-// 							TraduzioniModel::sLingua($lingua, "front");
-// 							$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 0);
-// 							TraduzioniModel::rLingua();
-// 						}
 						
 						$contents = $this->estraiContents($messaggio, $routingJson, $lingua, $numeroRisultati);
 						
-						if (count($contents) <= 0)
-							$intent = "other";
+						// if (count($contents) <= 0)
+						// 	$intent = "other";
 						
 						break;
 					case "informational":
@@ -995,32 +845,8 @@ class AirichiesteModel extends GenericModel
 						
 						$contents = $this->estraiContents($embeddingQuery, $routingJson, $lingua, $numeroRisultati, false);
 						
-// 						$emb = new EmbeddingsModel();
-// 						$emb = $emb->sWhere("not exists (select 1 from combinazioni where combinazioni.id_page = pages.id_page)")->innerPages($lingua)->aWhere(array(
-// 							"pages.attivo"	=>	"Y",
-// 						));
-// 						
-// 						$result = EmbeddingsModel::ricercaSemantica($embeddingQuery, $emb, $lingua, $numeroRisultati);
-// 						
-// 						$idPages = $result["pages"];
-// 						
-// 						// print_r($idPages);
-// 						
-// 						if (count($idPages) > 0)
-// 						{
-// 							$p = PagesModel::g(false)->where(array(
-// 								"   in"	=>	array(
-// 									"id_page"	=>	forceIntDeep($idPages),
-// 								)
-// 							));
-// 							
-// 							TraduzioniModel::sLingua($lingua, "front");
-// 							$contents = MotoriricercaModel::getModuloPadre()->strutturaFeedProdotti($p, 0, 0, false, 0, 1);
-// 							TraduzioniModel::rLingua();
-// 						}
-						
-						if (count($contents) <= 0)
-							$intent = "other";
+						// if (count($contents) <= 0)
+						// 	$intent = "other";
 						
 						break;
 					case "policy_qa":
