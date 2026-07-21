@@ -41,7 +41,7 @@ class AbuseIpDb extends Ipchecker
 	{
 		$model->formStruct["entries"]["key_1"]["labelString"] = "AbuseIpDB ApiKey";
 		$model->formStruct["entries"]["key_1"]["type"] = "Password";
-		$model->formStruct["entries"]["key_1"]["fill"] = true;
+		$model->formStruct["entries"]["key_1"]["fill"] = false;
 	}
 	
 	public function check($ip)

@@ -71,6 +71,9 @@ class IpcheckerModel extends GenericModel
 		if (isset($this->values["attivo"]) && $this->values["attivo"])
 			$this->db->query("update ip_checker set attivo = 0 where 1");
 		
+		if (isset($this->values["key_1"]) && !trim((string)$this->values["key_1"]))
+			$this->delFields("key_1");
+		
 		return parent::update($id, $where);
 	}
 	
