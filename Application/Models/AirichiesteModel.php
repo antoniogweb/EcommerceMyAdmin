@@ -855,8 +855,16 @@ class AirichiesteModel extends GenericModel
 						
 						$contentsAll = $this->estraiContents($messaggio, $routingJson, $lingua, $numeroRisultati, false);
 						
+						$arrayTipiIA = explode(",", v("tipi_pagine_come_testo_base_policy_qa"));
+						$arrayTipiIA = sanitizeAllDeep($arrayTipiIA);
+						
 						$p = PagesModel::g(false)->where(array(
-								"policy_ai"	=>	1,
+								"OR"	=>	array(
+									"pages.policy_ai"	=>	1,
+									"IN"	=>	array(
+										"pages.tipo_pagina"	=>	$arrayTipiIA,
+									)
+								)
 							));
 							
 						TraduzioniModel::sLingua($lingua, "front");
