@@ -999,6 +999,7 @@ class AirichiesteModel extends GenericModel
 			$linguaRouting = $routingJson["language"] ?? "";
 			$intentConosciuto = false;
 			$subjects = $routingJson["subjects"] ?? array();
+			$operation = $routingJson["operation"] ?? "";
 			
 			if ($linguaRouting && LingueModel::checkLinguaAttiva((string)$linguaRouting))
 				$lingua = (string)$linguaRouting;
@@ -1071,7 +1072,10 @@ class AirichiesteModel extends GenericModel
 				}
 			// }
 			
-			$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
+			if ($operation == "compare")
+				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt_compare.txt");
+			else
+				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
 			
 			if (isset($tpf) && is_file($tpf))
 			{
@@ -1090,6 +1094,14 @@ class AirichiesteModel extends GenericModel
 					$compactDesc = implode(' | ', $lines);
 					
 					$links = F::estraiLink(htmlentitydecode($c["descrizione"]));
+					
+					if (count($links) <= 0 && $operation == "compare")
+					{
+						$links[] = array(
+							"url" 	=> $c["link"],
+							"text" 	=> $c["titolo"],
+						);
+					}
 					
 					$temp = array(
 						"id"		=>	$c["id_page"],

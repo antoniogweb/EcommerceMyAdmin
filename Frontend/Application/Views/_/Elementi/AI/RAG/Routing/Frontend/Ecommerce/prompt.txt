@@ -4,7 +4,7 @@ Detect the language of the user's message using ISO 639-1 codes (e.g. "it", "en"
 Allowed intents:
 
 - product_search:
-The user is explicitly trying to identify, choose, compare or purchase one or more products.
+The user is explicitly trying to identify, find, filter, choose or purchase one or more products.
 Typical requests include:
 - finding products
 - availability
@@ -50,6 +50,8 @@ SUBJECT RULES:
 - If multiple products are explicitly mentioned (for example in comparisons), return one subject for each product.
 - Never merge multiple distinct products into a single embeddings_query.
 - If the user asks for a comparison between products, set operation to "compare".
+- If the user asks for differences between two or more products, always set operation to "compare".
+- A request containing expressions such as "difference between", "differences between", "compare", "confronta", "differenza tra", or "differenze tra" must use operation "compare".
 - If the user asks for an explanation, usage, compatibility, preparation, or technical information, set operation to "explain".
 - If the user asks for recommendations, set operation to "recommend".
 - Otherwise set operation to "lookup".
@@ -82,5 +84,5 @@ Set value fields to null if not present.
 If the message is related to products, product usage, product compatibility, brands, categories, materials, or product characteristics, NEVER use "other".
 Use "other" only when the message is completely unrelated to products, store policies, or product information.
 If unsure between product_search and informational:
-- use product_search when the user refers to a specific product, product name, SKU, model, availability, price, compatibility, or whether a product can be used for a specific purpose;
-- use informational when the user asks a general educational question about a category, material, technique, or usage without referring to a specific purchasable product.
+- use product_search when the primary goal is finding, filtering, selecting, checking price, stock, availability, or purchasing a product;
+- use informational when the primary goal is understanding, comparing technical or functional differences, usage, suitability, compatibility, preparation, maintenance, or receiving technical advice, even when one or more specific purchasable products are explicitly mentioned.
