@@ -404,6 +404,20 @@ function setPrice($price)
 	return $price;
 }
 
+function normalizzaPrezzo($prezzo): string
+{
+    $prezzo = trim((string)$prezzo);
+    $prezzo = preg_replace('/[^\d,.-]/', '', $prezzo);
+
+    if (str_contains($prezzo, ',') && str_contains($prezzo, '.')) {
+        $prezzo = str_replace('.', '', $prezzo);
+    }
+
+    $prezzo = setPrice($prezzo);
+
+    return number_format((float)$prezzo, 2, '.', '');
+}
+
 function setPriceReverse($price, $numeroCifre = 2)
 {
 	$price = number_format((float)$price,$numeroCifre,".","");
