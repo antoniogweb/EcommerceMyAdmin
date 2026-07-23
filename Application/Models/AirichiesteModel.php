@@ -29,6 +29,180 @@ class AirichiesteModel extends GenericModel
 	public static $fraseTroppeRichieste = "Il sistema sta ricevendo molte richieste in questo momento. Riprova tra un minuto.";
 	public static $fraseTroppeRichiesteIp = "Hai superato il limite di richieste per ora. Riprova tra un'ora.";
 	
+	public static $routingSchema = [
+		'type' => 'object',
+		'additionalProperties' => false,
+		'properties' => [
+			'intent' => [
+				'type' => 'string',
+				'enum' => [
+					'product_search',
+					'policy_qa',
+					'other',
+					'informational',
+				],
+			],
+			'confidence' => [
+				'type' => 'number',
+				'minimum' => 0,
+				'maximum' => 1,
+			],
+			'language' => [
+				'type' => 'string',
+				'enum' => ['it', 'en', 'fr', 'de', 'es', 'other'],
+			],
+			'operation' => [
+				'type' => 'string',
+				'enum' => [
+					'lookup',
+					'compare',
+					'recommend',
+					'explain',
+					'other',
+				],
+			],
+			'subjects' => [
+				'type' => 'array',
+				'minItems' => 1,
+				'items' => [
+					'type' => 'object',
+					'additionalProperties' => false,
+					'properties' => [
+						'embeddings_query' => [
+							'type' => ['string', 'null'],
+						],
+						'entities' => [
+							'type' => 'object',
+							'additionalProperties' => false,
+							'properties' => [
+								'product_title' => [
+									'type' => 'object',
+									'additionalProperties' => false,
+									'properties' => [
+										'value' => [
+											'type' => ['string', 'null'],
+										],
+										'confidence' => [
+											'type' => 'number',
+											'minimum' => 0,
+											'maximum' => 1,
+										],
+									],
+									'required' => [
+										'value',
+										'confidence',
+									],
+								],
+								'SKU' => [
+									'type' => 'object',
+									'additionalProperties' => false,
+									'properties' => [
+										'value' => [
+											'type' => ['string', 'null'],
+										],
+										'confidence' => [
+											'type' => 'number',
+											'minimum' => 0,
+											'maximum' => 1,
+										],
+									],
+									'required' => [
+										'value',
+										'confidence',
+									],
+								],
+								'brand' => [
+									'type' => 'object',
+									'additionalProperties' => false,
+									'properties' => [
+										'value' => [
+											'type' => ['string', 'null'],
+										],
+										'confidence' => [
+											'type' => 'number',
+											'minimum' => 0,
+											'maximum' => 1,
+										],
+									],
+									'required' => [
+										'value',
+										'confidence',
+									],
+								],
+								'price_range' => [
+									'type' => 'object',
+									'additionalProperties' => false,
+									'properties' => [
+										'min' => [
+											'type' => ['number', 'null'],
+										],
+										'max' => [
+											'type' => ['number', 'null'],
+										],
+										'currency' => [
+											'type' => 'string',
+											'enum' => ['EUR'],
+										],
+										'confidence' => [
+											'type' => 'number',
+											'minimum' => 0,
+											'maximum' => 1,
+										],
+									],
+									'required' => [
+										'min',
+										'max',
+										'currency',
+										'confidence',
+									],
+								],
+								'attributes' => [
+									'type' => 'array',
+									'items' => [
+										'type' => 'object',
+										'additionalProperties' => false,
+										'properties' => [
+											'value' => [
+												'type' => 'string',
+											],
+											'confidence' => [
+												'type' => 'number',
+												'minimum' => 0,
+												'maximum' => 1,
+											],
+										],
+										'required' => [
+											'value',
+											'confidence',
+										],
+									],
+								],
+							],
+							'required' => [
+								'product_title',
+								'SKU',
+								'brand',
+								'price_range',
+								'attributes',
+							],
+						],
+					],
+					'required' => [
+						'embeddings_query',
+						'entities',
+					],
+				],
+			],
+		],
+		'required' => [
+			'intent',
+			'confidence',
+			'language',
+			'operation',
+			'subjects',
+		],
+	];
+	
 	public function __construct()
 	{
 		$this->_tables = 'ai_richieste';
@@ -409,7 +583,7 @@ class AirichiesteModel extends GenericModel
 								list($ris, $messaggio) = array(1, gtext(self::$fraseTroppeRichiesteIp));
 							else
 							{
-								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low");
+								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "minimal");
 								
 								$messaggio = strip_tags($messaggio);
 								
@@ -721,7 +895,7 @@ class AirichiesteModel extends GenericModel
 			);
 			
 			$emb->save();
-			$emb->aWhere($descWhere);
+			$emb->aWhere($titleWhere);
 			
 			$queryArray = explode(" ", $productTitle);
 			
@@ -821,14 +995,13 @@ class AirichiesteModel extends GenericModel
 			// echo $routing."\n";
 			$intent = $routingJson["intent"] ?? "";
 			$confidence = $routingJson["confidence"] ?? "";
-			$contents = array();
+			$contents = $contentsAll = array();
 			$linguaRouting = $routingJson["language"] ?? "";
 			$intentConosciuto = false;
+			$subjects = $routingJson["subjects"] ?? array();
 			
 			if ($linguaRouting && LingueModel::checkLinguaAttiva((string)$linguaRouting))
 				$lingua = (string)$linguaRouting;
-			
-			
 			
 			// if ((float)$confidence > 0.6)
 			// {
@@ -836,16 +1009,22 @@ class AirichiesteModel extends GenericModel
 				{
 					case "product_search":
 						
-						$contents = $this->estraiContents($messaggio, $routingJson, $lingua, $numeroRisultati);
+						foreach ($subjects as $subject)
+						{
+							$contents = array_merge($contents, $this->estraiContents($messaggio, $subject, $lingua, $numeroRisultati));
+						}
 						
 						// if (count($contents) <= 0)
 						// 	$intent = "other";
 						
 						break;
 					case "informational":
-						$embeddingQuery = trim($routingJson["embeddings_query"] ?? $messaggio);
+						foreach ($subjects as $subject)
+						{
+							$embeddingQuery = trim($subject["embeddings_query"] ?? $messaggio);
 						
-						$contents = $this->estraiContents($embeddingQuery, $routingJson, $lingua, $numeroRisultati, false);
+							$contents = array_merge($contents, $this->estraiContents($embeddingQuery, $subject, $lingua, $numeroRisultati, false));
+						}
 						
 						// if (count($contents) <= 0)
 						// 	$intent = "other";
@@ -853,10 +1032,21 @@ class AirichiesteModel extends GenericModel
 						break;
 					case "policy_qa":
 						
-						$contentsAll = $this->estraiContents($messaggio, $routingJson, $lingua, $numeroRisultati, false);
+						foreach ($subjects as $subject)
+						{
+							$contentsAll = array_merge($contentsAll, $this->estraiContents($messaggio, $subject, $lingua, $numeroRisultati, false));
+						}
+						
+						$arrayTipiIA = explode(",", v("tipi_pagine_come_testo_base_policy_qa"));
+						$arrayTipiIA = sanitizeAllDeep($arrayTipiIA);
 						
 						$p = PagesModel::g(false)->where(array(
-								"policy_ai"	=>	1,
+								"OR"	=>	array(
+									"pages.policy_ai"	=>	1,
+									"IN"	=>	array(
+										"pages.tipo_pagina"	=>	$arrayTipiIA,
+									)
+								)
 							));
 							
 						TraduzioniModel::sLingua($lingua, "front");
@@ -964,7 +1154,7 @@ class AirichiesteModel extends GenericModel
 				AirichiesteresponseModel::$idLastInsert = $airrModel->aggiungi("", "");
 				$airrModel->db->commit();
 				
-				return $this->richiesta(array($messaggio), "", $istruzioni);
+				return $this->richiesta(array($messaggio), "", $istruzioni, null, false, "minimal", self::$routingSchema);
 			}
 			else
 			{
@@ -1000,7 +1190,7 @@ class AirichiesteModel extends GenericModel
 		return false;
 	}
 	
-	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false, $reasoning = "low")
+	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false, $reasoning = "low", $routingSchema = array())
 	{
 		if (!isset($idModello))
 			$idModello = AimodelliModel::g(false)->getModelloPredefinito();
@@ -1016,7 +1206,7 @@ class AirichiesteModel extends GenericModel
 		if (!$forza && !$this->checkRichiesta($messaggi))
 			list($res, $output) = array(0, gtext("La richiesta è troppo lunga, riprovi con una domanda più corta"));
 		else
-			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni, $reasoning);
+			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni, $reasoning, $routingSchema);
 		
 		// echo $output."\n\n\n";
 		

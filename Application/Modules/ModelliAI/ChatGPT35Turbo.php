@@ -57,7 +57,7 @@ class ChatGPT35Turbo extends ModelloAI
 		return $this->client;
 	}
 	
-	public function chat($messaggi, $contesto = "", $istruzioni = "", $reasoning = "low")
+	public function chat($messaggi, $contesto = "", $istruzioni = "", $reasoning = "low", $routingSchema = array())
 	{
 		$client = $this->getClient();
 
@@ -76,6 +76,16 @@ class ChatGPT35Turbo extends ModelloAI
 						'effort' => $reasoning, // oppure 'minimal', 'low', 'medium', and 'high'
 					],
 				];
+				
+				if (!empty($routingSchema))
+					$request["text"] = [
+						'format' => [
+							'type' => 'json_schema',
+							'name' => 'routing_result',
+							'strict' => true,
+							'schema' => $routingSchema,
+						],
+					];
 				
 				$response = $client->responses()->create($request);
 				

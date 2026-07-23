@@ -855,7 +855,7 @@ class VariabiliModel extends GenericModel {
 		"attiva_assistente_testo_backend"	=>	0, // Se impostato ad 1, attiva la chat lato backend per la creazione di testo strutturato
 		"attiva_assistente_frontend"		=>	0, // Se impostato ad 1, attiva la chat lato frontend
 		"mostra_assistente_frontend"		=>	0, // Se impostato ad 1, mostra la chat lato frontend
-		"assistente_ambito_default"	=>	"Ecommerce", // Ambito di default per l'assistente virtuale
+		"assistente_ambito_default"			=>	"Ecommerce", // Ambito di default per l'assistente virtuale
 		"assistente_virtuale_ip_permessi"	=>	"", // Elenco di IP divisi da virgola. Se vuoto, tutti gli IP sono permessi
 		"attiva_embeddings_su_informazioni_strutturate"	=>	0, // Se impostato su 1, genera JSON trutturato del testo e genera embeddings su semantic_text e search_queries
 		"numero_richieste_routing_al_minuto"	=>	10, // Numero massimo di richieste di ROUTING al minuto
@@ -869,6 +869,7 @@ class VariabiliModel extends GenericModel {
 		"ricerca_semantica_memory_limit"	=>	'128M', // memory limit per la ricerca semantica tramite embeddings
 		"numero_elementi_batch_ricerca_semantica"	=>	200, // numero elementi batch ricerca semantica (diventa il limit della query nella tabella embeddings)
 		"numero_massimo_estratti_ricerca"	=>	1, // Numero massimo di estratti dalla ricerca per embeddings da mostrare nel risultato della ricerca semantica
+		"tipi_pagine_come_testo_base_policy_qa"	=>	"COOKIE,CONDIZIONI,PRIVACY,AZIENDA,CONTATTI,RESI,INFO_LEGALI,SPEDIZIONI,FILOSOFIA,PAGAMENTI,GARANZIA,ASSISTENZA,GUIDA_ACQUISTO,RICHIEDI_RESO,CONDIZIONI_FEEDBACK", // tipi di pagina che vengono passati al chatbot nel caso di intent = policy_qa
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)
