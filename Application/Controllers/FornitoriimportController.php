@@ -124,7 +124,7 @@ class FornitoriimportController extends BaseController
 				
 				$this->m("MagazzinoarticolilistiniModel")->sValues(array(
 					"titolo"		=>	$row[$colonnaDescrizione],
-					"prezzo"		=>	$row[$colonnaPrezzo],
+					"prezzo"		=>	normalizzaPrezzo($row[$colonnaPrezzo]),
 					"codice"		=>	$row[$colonnaSKU],
 					"gtin"			=>	$row[$colonnaGTIN],
 					"mpn"			=>	$row[$colonnaMPN],
