@@ -684,6 +684,23 @@ function htmlentitydecode($value)
 	return html_entity_decode($value, ENT_QUOTES, "UTF-8");
 }
 
+function stripTagsSicuro($value)
+{
+	$value = (string)$value;
+
+	do {
+			$decoded = htmlentitydecode($value);
+
+			if ($decoded === $value)
+					break;
+
+			$value = $decoded;
+	} while (true);
+
+	return strip_tags($value);
+}
+
+
 function htmlentitydecodeDeep($value) {
 	return array_map('htmlentitydecode', $value);
 }

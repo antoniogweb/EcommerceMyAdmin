@@ -510,7 +510,7 @@ class AirichiesteModel extends GenericModel
 		if (!empty($record))
 		{
 			// $messaggio = $_POST["messaggio"] ?? "";
-			// $messaggio = htmlentitydecode(strip_tags(trim($messaggio)));
+			// $messaggio = htmlentitydecode(stripTagsSicuro(trim($messaggio)));
 			
 			if (trim($messaggio))
 			{
@@ -585,7 +585,7 @@ class AirichiesteModel extends GenericModel
 							{
 								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "minimal");
 								
-								$messaggio = strip_tags($messaggio);
+								$messaggio = stripTagsSicuro($messaggio);
 								
 								$messaggio = $this->elaboraRisposta($intent, $messaggio, $record["lingua"]);
 							}
@@ -594,7 +594,11 @@ class AirichiesteModel extends GenericModel
 							list($ris, $messaggio) = array(0, gtext("Errore connessione"));
 					}
 					else
+					{
 						list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, null, true, "high");
+						
+						$messaggio = stripTagsSicuro($messaggio);
+					}
 					
 					$airmModel->sValues(array(
 						"messaggio"			=>	$messaggio,
@@ -653,8 +657,12 @@ class AirichiesteModel extends GenericModel
 			include $tpf;
 			$layoutText = ob_get_clean();
 			
-			$layoutText = str_replace("[INTRO_TEXT]", strip_tags($introText), $layoutText);
-			$layoutText = str_replace("[TEXT]", strip_tags($text), $layoutText);
+			// I messaggi assistant possono contenere HTML generato da elaboraRisposta().
+			// Il decode e' ammesso solo per contenuti passati da stripTagsSicuro()
+			// e/o template server-side controllati prima del salvataggio.
+			
+			$layoutText = str_replace("[INTRO_TEXT]", stripTagsSicuro($introText), $layoutText);
+			$layoutText = str_replace("[TEXT]", stripTagsSicuro($text), $layoutText);
 			
 			$tpfItems = tpf("Elementi/AI/RAG/Intent/$intent/item.txt");
 			
@@ -670,8 +678,8 @@ class AirichiesteModel extends GenericModel
 				foreach ($items as $item)
 				{
 					$id = isset($item["id"]) ? (int)$item["id"] : 0;
-					$title = isset($item["title"]) ? strip_tags($item["title"]) : "";
-					$comment = isset($item["comment"]) ? strip_tags($item["comment"]) : "";
+					$title = isset($item["title"]) ? stripTagsSicuro($item["title"]) : "";
+					$comment = isset($item["comment"]) ? stripTagsSicuro($item["comment"]) : "";
 					$links = (isset($item["in_depth"]) && is_array($item["in_depth"]) && count($item["in_depth"]) > 0)? $item["in_depth"] : array();
 					
 					$tmp = $layoutItem;
@@ -691,12 +699,17 @@ class AirichiesteModel extends GenericModel
 						{
 							if (isset($link["text"]) && isset($link["url"]) && trim($link["text"]) && trim($link["url"]))
 							{
-								$li = "<a target='_blank' href='".strip_tags($link["url"])."'>".strip_tags($link["text"])."</a>";
+								$link["url"] = stripTagsSicuro($link["url"]);
 								
-								if (isset($link["comment"]) && trim($link["comment"]))
-									$li .= " ".strip_tags($link["comment"]);
-								
-								$linksArray[] = "<li>".$li."</li>";
+								if (preg_match('/^https?:\/\/[a-zA-Z0-9._\/-]+$/', $link["url"]) && filter_var($link["url"], FILTER_VALIDATE_URL))
+								{
+									$li = "<a rel='noopener noreferrer' target='_blank' href='".$link["url"]."'>".stripTagsSicuro($link["text"])."</a>";
+									
+									if (isset($link["comment"]) && trim($link["comment"]))
+										$li .= " ".stripTagsSicuro($link["comment"]);
+									
+									$linksArray[] = "<li>".$li."</li>";
+								}
 							}
 						}
 						
