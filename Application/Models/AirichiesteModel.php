@@ -1173,11 +1173,6 @@ class AirichiesteModel extends GenericModel
 			if (!$tpf)
 				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
 			
-// 			if ($operation == "compare")
-// 				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt_compare.txt");
-// 			else
-// 				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
-// 			
 			if (isset($tpf) && is_file($tpf))
 			{
 				ob_start();
