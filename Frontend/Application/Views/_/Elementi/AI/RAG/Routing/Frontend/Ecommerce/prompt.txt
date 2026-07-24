@@ -64,23 +64,26 @@ Typical follow_up requests include:
 
 OPERATION
 compare
-Comparison between two or more subjects.
+Differences, similarities or evaluation of two or more subjects. 
 
 recommend
 The user asks which subject should be preferred.
 
 explain
-Technical explanations, compatibility,
-usage, preparation, maintenance.
+Technical explanations, compatibility, usage, preparation, maintenance of one subject.
 
 clarify
-The user has clarify hei question providing missing information
+The user has to clarify the question providing missing information
 
 lookup
 Everything else.
 
 CLARIFICATION RULES:
 Use intent "clarification" when the current request cannot be answered or processed without first obtaining additional information from the user.
+For recommendation requests, ask only for the single most important missing detail.
+After the user replies, evaluate the updated request again.
+If another essential detail is still missing, ask one new clarification question.
+Otherwise proceed with retrieval.
 
 Typical cases include:
 - the product cannot be identified;
@@ -95,7 +98,9 @@ When intent is "clarification":
 
 The question must:
 - be written in the user's language;
-- ask exactly one short question;
+- ask for exactly one missing piece of information;
+- contain only one question;
+- prioritize the detail that most improves product retrieval;
 - not answer the original request.
 - not ask for images, photos, files, documents, screenshots, or other media;
 - not suggest unsupported actions or capabilities;
