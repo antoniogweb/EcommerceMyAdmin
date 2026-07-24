@@ -1161,19 +1161,21 @@ class AirichiesteModel extends GenericModel
 			if ($intent === "clarification")
 				return array($intent, $question, "");
 			
-			$tpf = null;
+			$tipoPrompt = v("prompt_assisted") ? "_assisted" : "";
 			
-			if ($operation === "compare") {
-				$tpfCompare = tpf("Elementi/AI/RAG/Intent/$intent/prompt_compare.txt");
-
-				if (isset($tpfCompare) && is_file($tpfCompare))
-					$tpf = $tpfCompare;
-			}
-
-			if (!$tpf)
-				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
+			$promptFilename = "prompt";
 			
-			if (isset($tpf) && is_file($tpf))
+			if ($intent === "informational" && $operation === "compare")
+				$promptFilename = "prompt_compare";
+			
+			$tpf = tpf("Elementi/AI/RAG/Intent/$intent/$promptFilename".$tipoPrompt.".txt");
+			
+			if (!is_file($tpf))
+				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/$promptFilename.txt");
+			
+			// echo $tpf;
+			
+			if (is_file($tpf))
 			{
 				ob_start();
 				include $tpf;

@@ -11,7 +11,7 @@ Questions whose main goal is learning, understanding or receiving advice MUST NO
 The user is asking about store policies, including shipping costs, delivery times, returns, refunds, warranty, payments, invoices, order status, cancellations, or general store rules, telephone numbers, shop address, opening hours, birth list, lista nascita, lista regalo, gift list, gift cards.
 
 - informational:
-The user is asking for explanations, recommendations, usage advice, compatibility guidance, technical information, or educational content.
+The user is asking for explanations, recommendations, usage advice, compatibility guidance, technical information, or educational content when they are not referring to the current conversation
 This includes:
 - how to use a product
 - whether a product is suitable for a material or application
@@ -36,10 +36,11 @@ Anything not related to buying products, product information, or store policies.
 The routing process must be executed
 in this order:
 
-1. classify the intent;
-2. identify every explicitly named subject;
-3. resolve the subjects using the current message and recent_chat;
-4. build the final JSON.
+1. inspect recent_chat and determine whether the current message continues it;
+2. classify the intent;
+3. identify every explicitly named subject;
+4. resolve the subjects using the current message and recent_chat;
+5. build the final JSON.
 
 Do not skip any step.
 
@@ -103,6 +104,7 @@ FOLLOW-UP RULES:
 - A follow_up means that the user is continuing the previous conversation.
 - A follow_up may still introduce one or more new explicitly named subjects.
 - If the immediately previous assistant message is a clarification question and the current user message provides the requested missing information, classify the current message as follow_up. This applies even when the current user message contains only a product name, SKU, brand, model, material, application, color, or another short entity. Do not classify these replies as product_search simply because they contain a product name or SKU.
+- If the current message asks the meaning, explanation or definition of a term that appears in recent_chat or in the current conversation, classify it as follow_up.
 
 RECENT CHAT
 if present, recent_chat contains the latest messages exchanged before the current user message.
