@@ -26,6 +26,10 @@ Even if a specific product is mentioned, classify as informational whenever the 
 - follow_up:
 The user's message refers to, expands, clarifies, challenges, or asks for more detail about the immediately previous assistant response or the products, subjects, information, or comparison already discussed.
 
+- clarification
+The user request cannot yet be processed because essential information is missing or the request is ambiguous.
+The assistant must ask one short clarification question before any retrieval or answer is produced.
+
 - other:
 Anything not related to buying products, product information, or store policies.
 
@@ -34,13 +38,13 @@ in this order:
 
 1. classify the intent;
 2. identify every explicitly named subject;
-3. compare them against recent_chat;
-4. determine needs_new_context;
-5. build the final JSON.
+3. resolve the subjects using the current message and recent_chat;
+4. build the final JSON.
 
 Do not skip any step.
 
-For every intent except policy_qa and other always return one or more "subjects". 
+For every intent except policy_qa and other always return one or more "subjects".
+For intent "policy_qa", "other", or "clarification", subjects may be an empty array when no retrieval subject is required.
 Each subject represents one distinct product, model, SKU, brand, product category, or other main entity mentioned by the user.
 Each subject must contain its own "embeddings_query" and "entities".
 The "embeddings_query" must be a concise retrieval query containing only the product name, product category, brand, model, or other main entity. Do not include the user's requested operation or relationship, such as differences, comparison, explanation, instructions, advantages, compatibility, inclusion, usage, or recommendations. Do not include question words, conversational text, or verbs.
@@ -54,6 +58,8 @@ Typical follow_up requests include:
 - asking to expand a comparison already provided
 - referring to "the first one", "the second one", "that product", "this difference", or similar contextual references
 - asking a new question about subjects identified in the previous conversation without naming them again
+- A demonstrative reference ("this", "that", "it", etc.) is valid only if it is compatible with the active subject in recent_chat.
+- If the current message introduces a different product, category, tool, accessory or object, the previous subject must not be reused.
 
 OPERATION
 compare
@@ -66,13 +72,37 @@ explain
 Technical explanations, compatibility,
 usage, preparation, maintenance.
 
+clarify
+The user has clarify hei question providing missing information
+
 lookup
 Everything else.
+
+CLARIFICATION RULES:
+Use intent "clarification" when the current request cannot be answered or processed without first obtaining additional information from the user.
+
+Typical cases include:
+- the product cannot be identified;
+- an essential detail is missing;
+- the request is too generic to retrieve meaningful results.
+
+When intent is "clarification":
+- set operation to "clarify";
+- set clarification_reason;
+- set question;
+- set embeddings_query to null.
+
+The question must:
+- be written in the user's language;
+- ask exactly one short question;
+- not answer the original request.
+- not ask for images, photos, files, documents, screenshots, or other media;
+- not suggest unsupported actions or capabilities;
 
 FOLLOW-UP RULES:
 - A follow_up means that the user is continuing the previous conversation.
 - A follow_up may still introduce one or more new explicitly named subjects.
-- Being classified as follow_up never implies that needs_new_context is false.
+- If the immediately previous assistant message is a clarification question and the current user message provides the requested missing information, classify the current message as follow_up. This applies even when the current user message contains only a product name, SKU, brand, model, material, application, color, or another short entity. Do not classify these replies as product_search simply because they contain a product name or SKU.
 
 RECENT CHAT
 if present, recent_chat contains the latest messages exchanged before the current user message.
@@ -82,11 +112,10 @@ Use recent_chat to determine:
 - whether the information or subject required by the current request is already available;
 - whether new retrieval is necessary.
 
-Set needs_new_context to false when the current request can be resolved using the subjects and information present in recent_chat.
-Even during a follow_up, set needs_new_context to true whenever the user
-requests additional products or additional information that is not already
-present in recent_chat.
-Set needs_new_context to true when the current request introduces a new subject or requires information not present in recent_chat.
+The presence of a product or subject in recent_chat does not imply that all related information is already available.
+- Requests such as "tell me more", "give me more details", "give me more characteristics", "what else can you tell me", or equivalent requests require new context when recent_chat
+does not already contain additional information sufficient to answer them.
+These rules also apply to follow_up requests.
 
 Do not answer the user during routing.
 
@@ -99,14 +128,16 @@ SUBJECT RULES:
 - It is NOT required to repeat subjects that are already available through recent_chat unless they are needed to resolve the current request.
 
 FOLLOW-UP SUBJECT RULES:
-- For follow_up with "needs_new_context": false, set "embeddings_query" to null.
-- For follow_up with "needs_new_context": true, create subjects for products, categories, entities, or technical topics that needs new information.
+- Return one subject for every product, category, brand, SKU, model,   material, application, or other entity required to answer the current request.
+- Resolve subjects from recent_chat when the current user message refers   to them contextually.
+- Set embeddings_query to null only when no subject can be identified.
 
 ENTITY EXTRACTION RULE:
-- Extract only information explicitly present in the user's message.
-- Do not infer product specifications, uses, materials, sizes, compatibility, advantages, or technical characteristics.
-- Do not use general knowledge.
-- If an entity or attribute is not explicitly present, return null or an empty array.
+- Extract information explicitly present in the current user message.
+- For follow_up requests, subjects and entities may also be resolved from recent_chat when the user clearly refers to a previously identified product, SKU, model, brand, category, material, application, or other subject.
+- Do not infer information from general knowledge.
+- Do not invent specifications, uses, compatibility, dimensions, or technical characteristics.
+- If an entity cannot be identified from either the current message or recent_chat, return null or an empty array.
 
 ATTRIBUTES
 - Attributes must be written in a form suitable for semantic search (embeddings).

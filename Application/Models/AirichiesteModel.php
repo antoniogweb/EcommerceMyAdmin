@@ -43,6 +43,7 @@ class AirichiesteModel extends GenericModel
 					'other',
 					'informational',
 					'follow_up',
+					'clarification',
 				],
 			],
 			'confidence' => [
@@ -61,15 +62,25 @@ class AirichiesteModel extends GenericModel
 					'compare',
 					'recommend',
 					'explain',
+					'clarify',
 					'other',
 				],
 			],
-			'needs_new_context' => [
-				'type' => 'boolean',
+			'clarification_reason' => [
+				'type' => ['string', 'null'],
+				'enum' => [
+					'missing_product',
+					'ambiguous_product',
+					'missing_details',
+					'ambiguous_request',
+					null,
+				],
+			],
+			'question' => [
+				'type' => ['string', 'null'],
 			],
 			'subjects' => [
 				'type' => 'array',
-				'minItems' => 1,
 				'items' => [
 					'type' => 'object',
 					'additionalProperties' => false,
@@ -205,8 +216,9 @@ class AirichiesteModel extends GenericModel
 			'confidence',
 			'language',
 			'operation',
-			'needs_new_context',
 			'subjects',
+			'clarification_reason',
+			'question',
 		],
 	];
 	
@@ -625,9 +637,11 @@ class AirichiesteModel extends GenericModel
 								list($ris, $messaggio) = array(1, gtext(self::$fraseTroppeRichieste));
 							else if ($intent == "threshold_exceeded_ip")
 								list($ris, $messaggio) = array(1, gtext(self::$fraseTroppeRichiesteIp));
+							else if ($intent == "clarification")
+								list($ris, $messaggio) = array(1, $messaggoRag);
 							else
 							{
-								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "minimal");
+								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low");
 								
 								$messaggio = stripTagsSicuro($messaggio);
 								
@@ -1089,7 +1103,6 @@ class AirichiesteModel extends GenericModel
 						
 						break;
 					case "policy_qa":
-						
 						foreach ($subjects as $subject)
 						{
 							$contentsAll = array_merge($contentsAll, $this->estraiContents($messaggio, $subject, $lingua, $numeroRisultati, false));
@@ -1118,15 +1131,19 @@ class AirichiesteModel extends GenericModel
 						
 						break;
 					case "follow_up":
-						if (isset($routingJson["needs_new_context"]) && $routingJson["needs_new_context"])
+						foreach ($subjects as $subject)
 						{
-							foreach ($subjects as $subject)
-							{
-								$embeddingQuery = trim($subject["embeddings_query"] ?? $messaggio);
-							
-								$contents = array_merge($contents, $this->estraiContents($embeddingQuery, $subject, $lingua, $numeroRisultati, false));
-							}
+							$embeddingQuery = trim($subject["embeddings_query"] ?? $messaggio);
+						
+							$contents = array_merge($contents, $this->estraiContents($embeddingQuery, $subject, $lingua, $numeroRisultati, false));
 						}
+						break;
+					case "clarification":
+						$question = (isset($routingJson["question"]) && $routingJson["question"]) ? $routingJson["question"] : "";
+						
+						if (!$question)
+							$intent = "other";
+						
 						break;
 					case "other":
 						break;
@@ -1139,6 +1156,10 @@ class AirichiesteModel extends GenericModel
 						break;
 				}
 			// }
+			
+			// Se clarification restituisci la question secca
+			if ($intent === "clarification")
+				return array($intent, $question, "");
 			
 			$tpf = null;
 			
@@ -1168,10 +1189,12 @@ class AirichiesteModel extends GenericModel
 				
 				foreach ($contents as $c)
 				{
-					$lines = QueryAwareContextBuilder::extractRelevantSnippet($messaggio, stripTagsDecode($c["descrizione"]), 4);
+					$descrizione = $c["descrizione"]." ".$c["descrizione_2"]." ".$c["descrizione_3"]." ".$c["descrizione_4"];
+					
+					$lines = QueryAwareContextBuilder::extractRelevantSnippet($messaggio, stripTagsDecode($descrizione), 4);
 					$compactDesc = implode(' | ', $lines);
 					
-					$links = F::estraiLink(htmlentitydecode($c["descrizione"]));
+					$links = F::estraiLink(htmlentitydecode($descrizione));
 					
 					if (count($links) <= 0 && $operation == "compare")
 					{
@@ -1185,7 +1208,7 @@ class AirichiesteModel extends GenericModel
 						"id"		=>	$c["id_page"],
 						"title"		=>	$c["titolo"],
 						"SKU"		=>	$c["codice"],
-						"description"	=>	$intent == "product_search" ? $compactDesc : stripTagsDecode($c["descrizione"]),
+						"description"	=>	$intent == "product_search" ? $compactDesc : stripTagsDecode($descrizione),
 						"price"		=>	$c["prezzo_pieno"],
 						"discounted_price"		=>	$c["prezzo_scontato"],
 						"brand"		=>	$c["marchio"],

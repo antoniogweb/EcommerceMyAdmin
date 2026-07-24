@@ -51,7 +51,17 @@ class ChatGPT35Turbo extends ModelloAI
 			require_once(LIBRARY . '/External/libs/vendor/autoload.php');
 			
 			if (class_exists("OpenAI"))
-				$this->client = OpenAI::client($this->getParam("key_1"));
+			{
+				$httpClient = new \GuzzleHttp\Client([
+					'connect_timeout' => 8,
+					'timeout' => 60,
+				]);
+
+				$this->client = OpenAI::factory()
+					->withApiKey($this->getParam("key_1"))
+					->withHttpClient($httpClient)
+					->make();
+			}
 		}
 
 		return $this->client;
