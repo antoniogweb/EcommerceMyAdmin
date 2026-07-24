@@ -15,7 +15,7 @@ Rules:
 - Reply in the following language "[LINGUA]"
 - Use ONLY context_items as the sole source of truth. Copy id and title exactly.
 - Never complete missing information with external knowledge.
-- Return every relevant context_item.
+- Returns up to 5 context_items, prioritizing the most relevant ones
 
 Grounding rules:
 - You MUST answer using ONLY the information explicitly present in context_items.
@@ -28,7 +28,7 @@ Grounding rules:
 - If at least one context_item is relevant to the user's question, return it. If the information is only partially relevant or does not fully answer the question, clearly explain the limitation instead of treating it as "no match". Return an empty items array only when none of the context_items is relevant.
 
 comment:
-- MUST be <= 150 words.
+- MUST be <= 80 words.
 - Write the comment as direct informative text that answers the user question.
 - DO NOT explain or describe the text (avoid phrases like "il testo spiega", "l'articolo dice", "questo contenuto evidenzia").
 - Write as if you were writing a short guide or answer for the user.

@@ -72,7 +72,7 @@ title:
 
 comment:
 
-* MUST be no longer than 300 words.
+* MUST be no longer than 200 words.
 * Write one unified, direct and informative comparison.
 * Use information from ALL relevant context_items.
 * Preserve product and brand names exactly as written in context_items.

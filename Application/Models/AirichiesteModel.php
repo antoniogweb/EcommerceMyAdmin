@@ -534,7 +534,7 @@ class AirichiesteModel extends GenericModel
 		{
 			$messaggi[] = array(
 				"role"		=>	$r["ruolo"],
-				"content"	=>	strip_tags(htmlentitydecode($r["messaggio"])),
+				"content"	=>	preg_replace('/\s+/u',' ',strip_tags(htmlentitydecode($r["messaggio"]))),
 			);
 		}
 		
@@ -589,7 +589,7 @@ class AirichiesteModel extends GenericModel
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
 					
 					if ($intent == "follow_up")
-						$messaggi = $this->recuperaMessaggi($id, 10);
+						$messaggi = $this->recuperaMessaggi($id, v("numero_messaggi_storico_chat_da_riportare"));
 					
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggoRag);
 					
@@ -1217,34 +1217,34 @@ class AirichiesteModel extends GenericModel
 		return array("", $messaggio, "");
 	}
 	
-	public function getLastRoutingSubjects($idChat)
-	{
-		$lastResponce = AirichiesteresponseModel::getLast(array("ROUTING"), $idChat);
-		
-		$previousSubjects = array();
-		
-		if (!empty($lastResponce) && isset($lastResponce["response"]))
-		{
-			$responseArray = json_decode($lastResponce["response"], true);
-			
-			$output =  $responseArray["output_text"] ?? "";
-			
-			if (trim($output))
-			{
-				$outputArray = json_decode($output, true);
-				
-				$subjects = $outputArray["subjects"] ?? array();
-				
-				foreach ($subjects as $subject)
-				{
-					if (isset($subject["embeddings_query"]) && trim($subject["embeddings_query"]))
-						$previousSubjects[] = $subject["embeddings_query"];
-				}
-			}
-		}
-		
-		return $previousSubjects;
-	}
+// 	public function getLastRoutingSubjects($idChat)
+// 	{
+// 		$lastResponce = AirichiesteresponseModel::getLast(array("ROUTING"), $idChat);
+// 		
+// 		$previousSubjects = array();
+// 		
+// 		if (!empty($lastResponce) && isset($lastResponce["response"]))
+// 		{
+// 			$responseArray = json_decode($lastResponce["response"], true);
+// 			
+// 			$output =  $responseArray["output_text"] ?? "";
+// 			
+// 			if (trim($output))
+// 			{
+// 				$outputArray = json_decode($output, true);
+// 				
+// 				$subjects = $outputArray["subjects"] ?? array();
+// 				
+// 				foreach ($subjects as $subject)
+// 				{
+// 					if (isset($subject["embeddings_query"]) && trim($subject["embeddings_query"]))
+// 						$previousSubjects[] = $subject["embeddings_query"];
+// 				}
+// 			}
+// 		}
+// 		
+// 		return $previousSubjects;
+// 	}
 	
 // 	public function getLastContextItems($idChat)
 // 	{
@@ -1284,14 +1284,14 @@ class AirichiesteModel extends GenericModel
 			
 			$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
 			
-			$previousSubjects = $this->getLastRoutingSubjects(self::$idChat);
+			$messaggi = $this->recuperaMessaggi(self::$idChat, v("numero_messaggi_storico_chat_da_riportare"));
 			
 			$contestoPrecedente = "";
 			
-			if (count($previousSubjects) > 0)
+			if (count($messaggi) > 0)
 			{
 				$contestoPrecedente = json_encode(array(
-					"previous_subjects" => $previousSubjects,
+					"recent_chat" => $messaggi,
 				));
 			}
 			

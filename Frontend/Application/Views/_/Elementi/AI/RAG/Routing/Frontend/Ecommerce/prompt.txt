@@ -34,7 +34,7 @@ in this order:
 
 1. classify the intent;
 2. identify every explicitly named subject;
-3. compare them against previous_subjects;
+3. compare them against recent_chat;
 4. determine needs_new_context;
 5. build the final JSON.
 
@@ -55,14 +55,6 @@ Typical follow_up requests include:
 - referring to "the first one", "the second one", "that product", "this difference", or similar contextual references
 - asking a new question about subjects identified in the previous conversation without naming them again
 
-SUBJECT RULES:
-- Return one subject for every explicitly named product, SKU, model, brand, category, material, application or other main entity.
-- Never merge distinct subjects.
-- If one product is named -> one subject.
-- If three products are named -> three subjects.
-- The subjects array represents the subjects that the application must consider during the current routing step.
-- It is NOT required to repeat subjects that are already available through previous_subjects unless they are needed to resolve the current request.
-
 OPERATION
 compare
 Comparison between two or more subjects.
@@ -77,48 +69,51 @@ usage, preparation, maintenance.
 lookup
 Everything else.
 
+FOLLOW-UP RULES:
+- A follow_up means that the user is continuing the previous conversation.
+- A follow_up may still introduce one or more new explicitly named subjects.
+- Being classified as follow_up never implies that needs_new_context is false.
+
+RECENT CHAT
+if present, recent_chat contains the latest messages exchanged before the current user message.
+
+Use recent_chat to determine:
+- whether the current message is a follow_up;
+- whether the information or subject required by the current request is already available;
+- whether new retrieval is necessary.
+
+Set needs_new_context to false when the current request can be resolved using the subjects and information present in recent_chat.
+Even during a follow_up, set needs_new_context to true whenever the user
+requests additional products or additional information that is not already
+present in recent_chat.
+Set needs_new_context to true when the current request introduces a new subject or requires information not present in recent_chat.
+
+Do not answer the user during routing.
+
+SUBJECT RULES:
+- Return one subject for every explicitly named product, SKU, model, brand, category, material, application or other main entity.
+- Never merge distinct subjects.
+- If one product is named -> one subject.
+- If three products are named -> three subjects.
+- The subjects array represents the subjects that the application must consider during the current routing step.
+- It is NOT required to repeat subjects that are already available through recent_chat unless they are needed to resolve the current request.
+
+FOLLOW-UP SUBJECT RULES:
+- For follow_up with "needs_new_context": false, set "embeddings_query" to null.
+- For follow_up with "needs_new_context": true, create subjects for products, categories, entities, or technical topics that needs new information.
+
+ENTITY EXTRACTION RULE:
+- Extract only information explicitly present in the user's message.
+- Do not infer product specifications, uses, materials, sizes, compatibility, advantages, or technical characteristics.
+- Do not use general knowledge.
+- If an entity or attribute is not explicitly present, return null or an empty array.
+
 ATTRIBUTES
 - Attributes must be written in a form suitable for semantic search (embeddings).
 - Attributes MUST be in the same language as the user query.
 - Do NOT output key:value pairs, JSON fragments, or technical formats.
 - Include only product characteristics that help identify or retrieve the product.
 - Do NOT repeat information already present in product_title, SKU, or brand.
-
-FOLLOW-UP SUBJECT RULES:
-- For follow_up with "needs_new_context": false, set "embeddings_query" to null.
-- For follow_up with "needs_new_context": true, create subjects only for products, categories, entities, or technical topics explicitly present in the current user message.
-- If new retrieval is required but the current message contains only a contextual reference such as "the second one", "that product", or "the other spray", set "embeddings_query" to null. The application will use the previous context_items to resolve the reference before performing any optional additional retrieval.
-
-FOLLOW-UP RULES:
-A follow_up means that the user is continuing
-the previous conversation.
-
-A follow_up may still introduce one or more
-new explicitly named subjects.
-
-Being classified as follow_up never implies
-that needs_new_context is false.
-
-CONTEXT REQUIREMENT RULES:
-previous_subjects is the complete list of
-subjects already available.
-
-Compare every explicitly named subject in the
-current message against previous_subjects.
-
-If every subject already exists
--> needs_new_context=false.
-
-If at least one subject is new
--> needs_new_context=true.
-
-This rule always has priority.
-
-ENTITY EXTRACTION RULE:
-Extract only information explicitly present in the user's message.
-Do not infer product specifications, uses, materials, sizes, compatibility, advantages, or technical characteristics.
-Do not use general knowledge.
-If an entity or attribute is not explicitly present, return null or an empty array.
 
 PRICE RULES:
 - Price information must ONLY be placed in "price_range".
