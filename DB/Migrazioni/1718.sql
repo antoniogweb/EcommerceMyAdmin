@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste_response` CHANGE `request` `request` MEDIUMTEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;

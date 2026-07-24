@@ -47,7 +47,7 @@ class AirichiestemessaggiModel extends GenericModel
 
 		return $numero ? $this->rowNumber() : $this->orderBy("id_order")->send(false);
 	}
-
+	
 	public function getMessaggioDefault($idRichiesta)
 	{
 		$testoDefault = "";

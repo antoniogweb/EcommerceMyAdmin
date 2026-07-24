@@ -29,6 +29,8 @@ class AirichiesteModel extends GenericModel
 	public static $fraseTroppeRichieste = "Il sistema sta ricevendo molte richieste in questo momento. Riprova tra un minuto.";
 	public static $fraseTroppeRichiesteIp = "Hai superato il limite di richieste per ora. Riprova tra un'ora.";
 	
+	public static $idChat = 0; // Usato nel routing per recuperare altri messaggi dalla stessa chat
+	
 	public static $routingSchema = [
 		'type' => 'object',
 		'additionalProperties' => false,
@@ -40,6 +42,7 @@ class AirichiesteModel extends GenericModel
 					'policy_qa',
 					'other',
 					'informational',
+					'follow_up',
 				],
 			],
 			'confidence' => [
@@ -60,6 +63,9 @@ class AirichiesteModel extends GenericModel
 					'explain',
 					'other',
 				],
+			],
+			'needs_new_context' => [
+				'type' => 'boolean',
 			],
 			'subjects' => [
 				'type' => 'array',
@@ -199,6 +205,7 @@ class AirichiesteModel extends GenericModel
 			'confidence',
 			'language',
 			'operation',
+			'needs_new_context',
 			'subjects',
 		],
 	];
@@ -503,8 +510,41 @@ class AirichiesteModel extends GenericModel
 		return $this->clear()->whereId((int)$id)->field("rag");
 	}
 	
+	public function recuperaMessaggi($idChat, $limit = 0)
+	{
+		$messaggi = array();
+		
+		$airmModel = new AirichiestemessaggiModel();
+		
+		$desc = $limit ? " DESC" : "";
+		
+		$airmModel->clear()->select("messaggio,ruolo")->where(array(
+			"id_ai_richiesta"	=>	(int)$idChat,
+		))->orderBy("data_creazione".$desc)->process();
+		
+		if ($limit)
+			$airmModel->limit((int)$limit);
+		
+		$res = $airmModel->send(false);
+		
+		if ($limit)
+			$res = array_reverse($res);
+		
+		foreach ($res as $r)
+		{
+			$messaggi[] = array(
+				"role"		=>	$r["ruolo"],
+				"content"	=>	strip_tags(htmlentitydecode($r["messaggio"])),
+			);
+		}
+		
+		return $messaggi;
+	}
+	
 	public function messaggio($id, $messaggio = "")
 	{
+		self::$idChat = (int)$id; // salva l'ID della chat
+		
 		$record = $this->selectId((int)$id);
 
 		if (!empty($record))
@@ -525,17 +565,18 @@ class AirichiesteModel extends GenericModel
 				
 				if (!$isRag)
 				{
-					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
-						"id_ai_richiesta"	=>	(int)$id,
-					))->orderBy("data_creazione")->process()->send(false);
-					
-					foreach ($res as $r)
-					{
-						$messaggi[] = array(
-							"role"		=>	$r["ruolo"],
-							"content"	=>	htmlentitydecode($r["messaggio"]),
-						);
-					}
+					$messaggi = $this->recuperaMessaggi($id);
+// 					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
+// 						"id_ai_richiesta"	=>	(int)$id,
+// 					))->orderBy("data_creazione")->process()->send(false);
+// 					
+// 					foreach ($res as $r)
+// 					{
+// 						$messaggi[] = array(
+// 							"role"		=>	$r["ruolo"],
+// 							"content"	=>	htmlentitydecode($r["messaggio"]),
+// 						);
+// 					}
 
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggio);
 					
@@ -546,6 +587,9 @@ class AirichiesteModel extends GenericModel
 					$numeroProdotti = 10;
 					
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
+					
+					if ($intent == "follow_up")
+						$messaggi = $this->recuperaMessaggi($id, 10);
 					
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggoRag);
 					
@@ -591,7 +635,7 @@ class AirichiesteModel extends GenericModel
 							}
 						}
 						else
-							list($ris, $messaggio) = array(0, gtext("Errore connessione"));
+							list($ris, $messaggio) = array(0, gtext("Non sono riuscito a elaborare la richiesta. Riprova."));
 					}
 					else
 					{
@@ -1008,7 +1052,7 @@ class AirichiesteModel extends GenericModel
 			// echo $routing."\n";
 			$intent = $routingJson["intent"] ?? "";
 			$confidence = $routingJson["confidence"] ?? "";
-			$contents = $contentsAll = array();
+			$contents = $contentsAll = $contextItems = array();
 			$linguaRouting = $routingJson["language"] ?? "";
 			$intentConosciuto = false;
 			$subjects = $routingJson["subjects"] ?? array();
@@ -1073,6 +1117,17 @@ class AirichiesteModel extends GenericModel
 							$intent = "other";
 						
 						break;
+					case "follow_up":
+						if (isset($routingJson["needs_new_context"]) && $routingJson["needs_new_context"])
+						{
+							foreach ($subjects as $subject)
+							{
+								$embeddingQuery = trim($subject["embeddings_query"] ?? $messaggio);
+							
+								$contents = array_merge($contents, $this->estraiContents($embeddingQuery, $subject, $lingua, $numeroRisultati, false));
+							}
+						}
+						break;
 					case "other":
 						break;
 					case "threshold_exceeded":
@@ -1085,11 +1140,23 @@ class AirichiesteModel extends GenericModel
 				}
 			// }
 			
-			if ($operation == "compare")
-				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt_compare.txt");
-			else
+			$tpf = null;
+			
+			if ($operation === "compare") {
+				$tpfCompare = tpf("Elementi/AI/RAG/Intent/$intent/prompt_compare.txt");
+
+				if (isset($tpfCompare) && is_file($tpfCompare))
+					$tpf = $tpfCompare;
+			}
+
+			if (!$tpf)
 				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
 			
+// 			if ($operation == "compare")
+// 				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt_compare.txt");
+// 			else
+// 				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/prompt.txt");
+// 			
 			if (isset($tpf) && is_file($tpf))
 			{
 				ob_start();
@@ -1098,8 +1165,6 @@ class AirichiesteModel extends GenericModel
 				
 				$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
 				$istruzioni = str_replace("[LINGUA]", $lingua, $istruzioni);
-				
-				$contextItems = array();
 				
 				foreach ($contents as $c)
 				{
@@ -1152,6 +1217,61 @@ class AirichiesteModel extends GenericModel
 		return array("", $messaggio, "");
 	}
 	
+	public function getLastRoutingSubjects($idChat)
+	{
+		$lastResponce = AirichiesteresponseModel::getLast(array("ROUTING"), $idChat);
+		
+		$previousSubjects = array();
+		
+		if (!empty($lastResponce) && isset($lastResponce["response"]))
+		{
+			$responseArray = json_decode($lastResponce["response"], true);
+			
+			$output =  $responseArray["output_text"] ?? "";
+			
+			if (trim($output))
+			{
+				$outputArray = json_decode($output, true);
+				
+				$subjects = $outputArray["subjects"] ?? array();
+				
+				foreach ($subjects as $subject)
+				{
+					if (isset($subject["embeddings_query"]) && trim($subject["embeddings_query"]))
+						$previousSubjects[] = $subject["embeddings_query"];
+				}
+			}
+		}
+		
+		return $previousSubjects;
+	}
+	
+// 	public function getLastContextItems($idChat)
+// 	{
+// 		$lastResponce = AirichiesteresponseModel::getLast(array("PRODUCT_SEARCH", "INFORMATIONAL", "POLICY_QA", "FOLLOW_UP"), $idChat);
+// 		
+// 		if (!empty($lastResponce) && isset($lastResponce["request"]))
+// 		{
+// 			$responseArray = json_decode($lastResponce["request"], true);
+// 			
+// 			$input =  $responseArray["input"] ?? array();
+// 			
+// 			if (count($input) > 0)
+// 			{
+// 				$lastInput = $input[count($input) - 1];
+// 				
+// 				if (isset($lastInput["role"]) && $lastInput["role"] == "user" && isset($lastInput["content"]) && trim($lastInput["content"]))
+// 				{
+// 					$contentArray = json_decode($lastInput["content"], true);
+// 					
+// 					return $contentArray["context_items"] ?? array();
+// 				}
+// 			}
+// 		}
+// 		
+// 		return array();
+// 	}
+	
 	public function routing($messaggio, $zona = "Backend", $ambito = "Ecommerce")
 	{
 		$tpf = tpf("Elementi/AI/RAG/Routing/$zona/$ambito/prompt.txt");
@@ -1163,6 +1283,17 @@ class AirichiesteModel extends GenericModel
 			$istruzioni = ob_get_clean();
 			
 			$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
+			
+			$previousSubjects = $this->getLastRoutingSubjects(self::$idChat);
+			
+			$contestoPrecedente = "";
+			
+			if (count($previousSubjects) > 0)
+			{
+				$contestoPrecedente = json_encode(array(
+					"previous_subjects" => $previousSubjects,
+				));
+			}
 			
 			$messaggio = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito(), true)->setMessaggio($messaggio);
 			
@@ -1179,7 +1310,7 @@ class AirichiesteModel extends GenericModel
 				AirichiesteresponseModel::$idLastInsert = $airrModel->aggiungi("", "");
 				$airrModel->db->commit();
 				
-				return $this->richiesta(array($messaggio), "", $istruzioni, null, false, "minimal", self::$routingSchema);
+				return $this->richiesta(array($messaggio), $contestoPrecedente, $istruzioni, null, false, "low", self::$routingSchema);
 			}
 			else
 			{

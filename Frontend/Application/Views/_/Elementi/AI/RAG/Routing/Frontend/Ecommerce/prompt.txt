@@ -5,14 +5,6 @@ Allowed intents:
 
 - product_search:
 The user is explicitly trying to identify, find, filter, choose or purchase one or more products.
-Typical requests include:
-- finding products
-- availability
-- price
-- stock
-- comparing products
-- asking for a specific brand, SKU or model
-- requesting products with certain characteristics.
 Questions whose main goal is learning, understanding or receiving advice MUST NOT be classified as product_search, even if they mention a product.
 
 - policy_qa:
@@ -31,36 +23,96 @@ This includes:
 - technical explanations
 Even if a specific product is mentioned, classify as informational whenever the primary goal is understanding rather than purchasing.
 
+- follow_up:
+The user's message refers to, expands, clarifies, challenges, or asks for more detail about the immediately previous assistant response or the products, subjects, information, or comparison already discussed.
+
 - other:
 Anything not related to buying products, product information, or store policies.
 
-For intent "informational", always return one or more "subjects". 
+The routing process must be executed
+in this order:
+
+1. classify the intent;
+2. identify every explicitly named subject;
+3. compare them against previous_subjects;
+4. determine needs_new_context;
+5. build the final JSON.
+
+Do not skip any step.
+
+For every intent except policy_qa and other always return one or more "subjects". 
 Each subject represents one distinct product, model, SKU, brand, product category, or other main entity mentioned by the user.
 Each subject must contain its own "embeddings_query" and "entities".
 The "embeddings_query" must be a concise retrieval query containing only the product name, product category, brand, model, or other main entity. Do not include the user's requested operation or relationship, such as differences, comparison, explanation, instructions, advantages, compatibility, inclusion, usage, or recommendations. Do not include question words, conversational text, or verbs.
 The original user message will be evaluated later together with the retrieved context_items, so embeddings_query must identify what information should be retrieved, not what the final answer should do.
 If the user explicitly mentions multiple products or entities, return one subject for each.
 
-Return exactly:
-{"intent":"product_search|policy_qa|other|informational","confidence":0.00,"language":"it|en|fr|de|es|other","operation":"lookup|compare|recommend|explain|other","subjects":[{"embeddings_query":null,"entities":{"product_title":{"value":null,"confidence":0.00},"SKU":{"value":null,"confidence":0.00},"brand":{"value":null,"confidence":0.00},"price_range":{"min":null,"max":null,"currency":"EUR","confidence":0.00},"attributes":[]}}]}
+Typical follow_up requests include:
+
+- asking to explain the previous answer better
+- asking for more details about a previously mentioned point
+- asking to expand a comparison already provided
+- referring to "the first one", "the second one", "that product", "this difference", or similar contextual references
+- asking a new question about subjects identified in the previous conversation without naming them again
 
 SUBJECT RULES:
-- Return exactly one subject for each distinct product, SKU, model, brand, or product category explicitly mentioned by the user.
-- If only one product or category is mentioned, return exactly one subject.
-- If multiple products are explicitly mentioned (for example in comparisons), return one subject for each product.
-- Never merge multiple distinct products into a single embeddings_query.
-- If the user asks for a comparison between products, set operation to "compare".
-- If the user asks for differences between two or more products, always set operation to "compare".
-- A request containing expressions such as "difference between", "differences between", "compare", "confronta", "differenza tra", or "differenze tra" must use operation "compare".
-- If the user asks for an explanation, usage, compatibility, preparation, or technical information, set operation to "explain".
-- If the user asks for recommendations, set operation to "recommend".
-- Otherwise set operation to "lookup".
+- Return one subject for every explicitly named product, SKU, model, brand, category, material, application or other main entity.
+- Never merge distinct subjects.
+- If one product is named -> one subject.
+- If three products are named -> three subjects.
+- The subjects array represents the subjects that the application must consider during the current routing step.
+- It is NOT required to repeat subjects that are already available through previous_subjects unless they are needed to resolve the current request.
 
+OPERATION
+compare
+Comparison between two or more subjects.
+
+recommend
+The user asks which subject should be preferred.
+
+explain
+Technical explanations, compatibility,
+usage, preparation, maintenance.
+
+lookup
+Everything else.
+
+ATTRIBUTES
 - Attributes must be written in a form suitable for semantic search (embeddings).
 - Attributes MUST be in the same language as the user query.
 - Do NOT output key:value pairs, JSON fragments, or technical formats.
 - Include only product characteristics that help identify or retrieve the product.
 - Do NOT repeat information already present in product_title, SKU, or brand.
+
+FOLLOW-UP SUBJECT RULES:
+- For follow_up with "needs_new_context": false, set "embeddings_query" to null.
+- For follow_up with "needs_new_context": true, create subjects only for products, categories, entities, or technical topics explicitly present in the current user message.
+- If new retrieval is required but the current message contains only a contextual reference such as "the second one", "that product", or "the other spray", set "embeddings_query" to null. The application will use the previous context_items to resolve the reference before performing any optional additional retrieval.
+
+FOLLOW-UP RULES:
+A follow_up means that the user is continuing
+the previous conversation.
+
+A follow_up may still introduce one or more
+new explicitly named subjects.
+
+Being classified as follow_up never implies
+that needs_new_context is false.
+
+CONTEXT REQUIREMENT RULES:
+previous_subjects is the complete list of
+subjects already available.
+
+Compare every explicitly named subject in the
+current message against previous_subjects.
+
+If every subject already exists
+-> needs_new_context=false.
+
+If at least one subject is new
+-> needs_new_context=true.
+
+This rule always has priority.
 
 ENTITY EXTRACTION RULE:
 Extract only information explicitly present in the user's message.

@@ -90,6 +90,18 @@ class AirichiesteresponseModel extends GenericModel
 		self::$microtime = microtime(true);
 	}
 	
+	public static function getLast(array $tipi, int $idRichiesta) : array
+	{
+		$model = new AirichiesteresponseModel();
+		
+		return $model->clear()->where(array(
+			"IN"	=>	array(
+				"tipo"	=>	sanitizeAllDeep($tipi),
+			),
+			"id_ai_richiesta"	=>	(int)$idRichiesta,
+		))->orderBy("id_ai_richieste_response desc")->limit(1)->record();
+	}
+	
 	public static function aggiungi($request, $response)
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
