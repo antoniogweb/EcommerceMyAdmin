@@ -1173,8 +1173,6 @@ class AirichiesteModel extends GenericModel
 			if (!is_file($tpf))
 				$tpf = tpf("Elementi/AI/RAG/Intent/$intent/$promptFilename.txt");
 			
-			// echo $tpf;
-			
 			if (is_file($tpf))
 			{
 				ob_start();
