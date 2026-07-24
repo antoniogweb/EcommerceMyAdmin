@@ -180,13 +180,20 @@ class RigheController extends BaseController
 			{
 				$idRs = OrdiniModel::idRigheDaOrdinare();
 				
-				$inNin = $this->viewArgs["da_ordinare"] == "D" ? "in" : "nin";
-				
-				$this->m[$this->modelName]->aWhere(array(
+				if (count($idRs) > 0)
+				{
+					$inNin = $this->viewArgs["da_ordinare"] == "D" ? "in" : "nin";
+					
+					$this->m[$this->modelName]->aWhere(array(
 						"$inNin"	=>	array(
 							"righe.id_r"	=>	forceIntDeep($idRs),
 						),
 					));
+				}
+				else if ($this->viewArgs["da_ordinare"] == "D")
+				{
+					$this->m[$this->modelName]->sWhere("1 != 1");
+				}
 			}
 			
 			if ($this->viewArgs["cerca_prodotto"] != "tutti")
