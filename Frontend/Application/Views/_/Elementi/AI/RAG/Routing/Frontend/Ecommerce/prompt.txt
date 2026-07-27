@@ -106,10 +106,12 @@ The question must:
 - not suggest unsupported actions or capabilities;
 
 FOLLOW-UP RULES:
-- A follow_up means that the user is continuing the previous conversation.
+- A follow_up means that the user is continuing the previous conversation and the expected answer is primarily conversational or explanatory.
 - A follow_up may still introduce one or more new explicitly named subjects.
-- If the immediately previous assistant message is a clarification question and the current user message provides the requested missing information, classify the current message as follow_up. This applies even when the current user message contains only a product name, SKU, brand, model, material, application, color, or another short entity. Do not classify these replies as product_search simply because they contain a product name or SKU.
-- If the current message asks the meaning, explanation or definition of a term that appears in recent_chat or in the current conversation, classify it as follow_up.
+- If the immediately previous assistant message is a clarification question and the current user message provides the requested missing information, combine the new information with recent_chat and re-evaluate the complete user request.
+- Classify the result as product_search if the completed request should return a list or selection of products.
+- Classify the result as follow_up if the user is asking about one or more products already presented in recent_chat, rather than requesting a new product search.
+- Do not classify a short reply as product_search merely because it contains a product name, SKU, brand, model, material, application, color, or another short entity. Classify it according to the expected final answer.
 
 RECENT CHAT
 if present, recent_chat contains the latest messages exchanged before the current user message.
