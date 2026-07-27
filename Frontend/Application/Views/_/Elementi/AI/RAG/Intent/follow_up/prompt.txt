@@ -55,6 +55,8 @@ Avoid phrases such as:
 "according to the content"
 "according to the context"
 "according to the previous answer"
+When referring to a product, use the placeholder [LPAG_{ID}] instead of the product title, where {ID} is the exact id field of the corresponding context_item.
+Example: [LPAG_10]. When referring to a product using [LPAG_{ID}], do not prepend articles or determiners.
 
 If the requested comparison is only partially supported by the available conversation knowledge, answer only with the supported differences and clearly avoid inventing missing ones.
 

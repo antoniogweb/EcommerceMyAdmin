@@ -108,6 +108,9 @@ When using general technical knowledge, clearly distinguish it from confirmed pr
 "it may",
 "it should".
 
+When referring to a product, use the placeholder [LPAG_{ID}] instead of the product title, where {ID} is the exact id field of the corresponding context_item.
+Example: [LPAG_10]. When referring to a product using [LPAG_{ID}], do not prepend articles or determiners.
+
 If no match:
 
 {
