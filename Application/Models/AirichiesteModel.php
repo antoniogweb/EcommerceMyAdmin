@@ -558,7 +558,15 @@ class AirichiesteModel extends GenericModel
 		self::$idChat = (int)$id; // salva l'ID della chat
 		
 		$record = $this->selectId((int)$id);
-
+		
+		$this->sendEvent([
+			'type'	=>	'status',
+			'phase'	=>	'understanding',
+			'text'	=>	gtext('Preparo la risposta...'),
+		]);
+		
+		$risposta = "";
+		
 		if (!empty($record))
 		{
 			// $messaggio = $_POST["messaggio"] ?? "";
@@ -634,32 +642,32 @@ class AirichiesteModel extends GenericModel
 						if ($okRouting)
 						{
 							if ($intent == "threshold_exceeded")
-								list($ris, $messaggio) = array(1, gtext(self::$fraseTroppeRichieste));
+								list($ris, $risposta) = array(1, gtext(self::$fraseTroppeRichieste));
 							else if ($intent == "threshold_exceeded_ip")
-								list($ris, $messaggio) = array(1, gtext(self::$fraseTroppeRichiesteIp));
+								list($ris, $risposta) = array(1, gtext(self::$fraseTroppeRichiesteIp));
 							else if ($intent == "clarification")
-								list($ris, $messaggio) = array(1, $messaggoRag);
+								list($ris, $risposta) = array(1, $messaggoRag);
 							else
 							{
-								list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low");
+								list($ris, $risposta) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low");
 								
-								$messaggio = stripTagsSicuro($messaggio);
+								$risposta = stripTagsSicuro($risposta);
 								
-								$messaggio = $this->elaboraRisposta($intent, $messaggio, $record["lingua"]);
+								$risposta = $this->elaboraRisposta($intent, $risposta, $record["lingua"]);
 							}
 						}
 						else
-							list($ris, $messaggio) = array(0, gtext("Non sono riuscito a elaborare la richiesta. Riprova."));
+							list($ris, $risposta) = array(0, gtext("Non sono riuscito a elaborare la richiesta. Riprova."));
 					}
 					else
 					{
-						list($ris, $messaggio) = $this->richiesta($messaggi, $contesto, $istruzioni, null, true, "high");
+						list($ris, $risposta) = $this->richiesta($messaggi, $contesto, $istruzioni, null, true, "high");
 						
-						$messaggio = stripTagsSicuro($messaggio);
+						$risposta = stripTagsSicuro($risposta);
 					}
 					
 					$airmModel->sValues(array(
-						"messaggio"			=>	$messaggio,
+						"messaggio"			=>	$risposta,
 						"id_ai_richiesta"	=>	(int)$id,
 						"id_admin"			=>	User::$id,
 						"ruolo"				=>	"assistant",
@@ -670,6 +678,11 @@ class AirichiesteModel extends GenericModel
 				}
 			}
 		}
+		
+		$this->sendEvent([
+			'type'	=>	'result',
+			'data'	=>	$risposta
+		]);
 	}
 	
 	public function richiestaCompleta($messaggio, $zona = "Backend", $ambito = "Ecommerce", $lingua = "it", $numeroRisultati = 10)
@@ -1072,6 +1085,13 @@ class AirichiesteModel extends GenericModel
 			$subjects = $routingJson["subjects"] ?? array();
 			$operation = $routingJson["operation"] ?? "";
 			
+			if (count($subjects) > 0)
+				$this->sendEvent([
+					'type'	=>	'status',
+					'phase'	=>	'understanding',
+					'text'	=>	gtext('Sto recuperando le informazioni...'),
+				]);
+			
 			if ($linguaRouting && LingueModel::checkLinguaAttiva((string)$linguaRouting))
 				$lingua = (string)$linguaRouting;
 			
@@ -1294,6 +1314,12 @@ class AirichiesteModel extends GenericModel
 	{
 		$tpf = tpf("Elementi/AI/RAG/Routing/$zona/$ambito/prompt.txt");
 		
+		$this->sendEvent([
+			'type'	=>	'status',
+			'phase'	=>	'understanding',
+			'text'	=>	gtext('Sto pensando...'),
+		]);
+		
 		if (is_file($tpf))
 		{
 			ob_start();
@@ -1388,5 +1414,15 @@ class AirichiesteModel extends GenericModel
 			AirichiestecacheModel::g()->set($messaggi, $contesto, $istruzioni, $idModello, $output);
 		
 		return array($res, $output);
+	}
+	
+	public function sendEvent(array $data): void
+	{
+		echo json_encode($data, JSON_UNESCAPED_UNICODE) . "\n";
+
+		if (ob_get_level() > 0)
+			ob_flush();
+
+		flush();
 	}
 }
