@@ -81,8 +81,8 @@ class BaseAssistentevirtualeController extends BaseController
 	{
 		IpcheckModel::check("ASSISTENTE VIRTUALE");
 		
-		header('Content-Type: application/x-ndjson');
-		header('Cache-Control: no-cache');
+		header('Content-Type: application/x-ndjson; charset=utf-8');
+		header('Cache-Control: no-cache, no-transform');
 		header('X-Accel-Buffering: no');
 		
 		$this->clean();
