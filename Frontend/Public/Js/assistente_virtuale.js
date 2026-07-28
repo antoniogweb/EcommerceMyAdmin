@@ -36,12 +36,30 @@ function aggiornaChat()
 		dataType: "html",
 		success: function(content){
 			$(".chat_messages").html(content);
+			resetStatoAssistenteVirtuale();
 			
 			setTimeout(function() {
 				scorriChatInBasso();
 			}, 100);
 		}
 	});
+}
+
+function resetStatoAssistenteVirtuale()
+{
+	$(".assistente_virtuale_status").addClass("uk-hidden").empty();
+}
+
+function mostraStato(testo)
+{
+	var contenitore = $(".assistente_virtuale_status");
+
+	if (!contenitore.length || !testo)
+		return;
+
+	contenitore.removeClass("uk-hidden");
+	contenitore.append($("<div></div>").text(testo));
+	scorriChatInBasso();
 }
 
 function initAssistenteVirtualeWidget()
@@ -106,7 +124,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$( "body" ).on( "click", ".send_request_to_va", function(e) {
+	$( "body" ).on( "click", ".send_request_to_va", async function(e) {
 		
 		e.preventDefault();
 
@@ -123,27 +141,68 @@ $(document).ready(function(){
 		testo.addClass("uk-hidden");
 		loader.removeClass("uk-hidden");
 		
-		$.ajaxQueue({
-			url: baseUrl + "/virtual-assistant/request/",
-			async: true,
-			cache: false,
-			type: "POST",
-			data: {
-				messaggio: messaggio
-			},
-			dataType: "html",
-			success: function(content){
+		resetStatoAssistenteVirtuale();
+		
+		var dati = new FormData();
+		dati.append("messaggio", messaggio);
+		
+		try
+		{
+			var response = await fetch(baseUrl + "/virtual-assistant/request/", {
+				method: "POST",
+				body: dati,
+				credentials: "same-origin"
+			});
+			
+			if (!response.body)
+				throw new Error("Streaming non supportato");
+			
+			var reader = response.body.getReader();
+			var decoder = new TextDecoder();
+			var buffer = "";
+			
+			while (true)
+			{
+				var lettura = await reader.read();
 				
-				$(".request_message").val("");
-				aggiornaChat();
+				if (lettura.done)
+					break;
 				
-			},
-			complete: function() {
-				bottone.prop("disabled", false);
-				testo.removeClass("uk-hidden");
-				loader.addClass("uk-hidden");
+				buffer += decoder.decode(lettura.value, { stream: true });
+				
+				var righe = buffer.split("\n");
+				buffer = righe.pop() || "";
+				
+				for (var i = 0; i < righe.length; i++)
+				{
+					var riga = righe[i];
+					
+					if (!riga.trim())
+						continue;
+					
+					var event = JSON.parse(riga);
+					
+					if (event.type === "status")
+						mostraStato(event.text);
+				}
 			}
-		});
+			
+			if (buffer.trim())
+			{
+				var event = JSON.parse(buffer);
+				
+				if (event.type === "status")
+					mostraStato(event.text);
+			}
+		}
+		finally
+		{
+			$(".request_message").val("");
+			aggiornaChat();
+			bottone.prop("disabled", false);
+			testo.removeClass("uk-hidden");
+			loader.addClass("uk-hidden");
+		}
 	});
 	
 });

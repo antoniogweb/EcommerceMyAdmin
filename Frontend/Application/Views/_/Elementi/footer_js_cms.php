@@ -32,8 +32,10 @@
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>promozioni.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
 <?php } ?>
 
-<?php if ($this->controller == "assistentevirtuale" || VariabiliModel::mostraAssistenteFrontend()) { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>assistente_virtuale.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
+<?php if ($this->controller == "assistentevirtuale" || VariabiliModel::mostraAssistenteFrontend()) {
+	$randomAssistente = $this->controller == "assistentevirtuale" ? true : false;
+?>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>assistente_virtuale.min.js?v=<?php echo $randomAssistente ? rand(1,10000): v("js_version_number");?>"></script>
 <?php if (VariabiliModel::mostraAssistenteFrontend()) { ?>
 <?php include(tpf("/Assistentevirtuale/widget.php"));?>
 <?php } ?>

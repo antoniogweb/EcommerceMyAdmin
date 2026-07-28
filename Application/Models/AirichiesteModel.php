@@ -559,12 +559,6 @@ class AirichiesteModel extends GenericModel
 		
 		$record = $this->selectId((int)$id);
 		
-		$this->sendEvent([
-			'type'	=>	'status',
-			'phase'	=>	'understanding',
-			'text'	=>	gtext('Preparo la risposta...'),
-		]);
-		
 		$risposta = "";
 		
 		if (!empty($record))
@@ -607,6 +601,12 @@ class AirichiesteModel extends GenericModel
 					$numeroProdotti = 10;
 					
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
+					
+					$this->sendEvent([
+						'type'	=>	'status',
+						'phase'	=>	'understanding',
+						'text'	=>	gtext('Preparo la risposta...'),
+					]);
 					
 					if ($intent == "follow_up")
 						$messaggi = $this->recuperaMessaggi($id, v("numero_messaggi_storico_chat_da_riportare"));

@@ -90,7 +90,7 @@ class BaseAssistentevirtualeController extends BaseController
 		Session::open();
 		
 		$messaggio = $this->request->post("messaggio","");
-		$messaggio = strip_tags(trim($messaggio));
+		$messaggio = stripTagsSicuro(trim($messaggio));
 		
 		$idChat = $this->m("AirichiesteModel")->getChat(true);
 		

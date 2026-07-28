@@ -689,12 +689,12 @@ function stripTagsSicuro($value)
 	$value = (string)$value;
 
 	do {
-			$decoded = htmlentitydecode($value);
+		$decoded = htmlentitydecode($value);
 
-			if ($decoded === $value)
-					break;
+		if ($decoded === $value)
+				break;
 
-			$value = $decoded;
+		$value = $decoded;
 	} while (true);
 
 	return strip_tags($value);

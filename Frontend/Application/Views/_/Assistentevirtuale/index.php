@@ -11,6 +11,7 @@
 		<div class="chat_messages">
 			<?php include(tpf("Assistentevirtuale/messaggi.php"));?>
 		</div>
+		<div class="assistente_virtuale_status uk-hidden uk-text-small uk-text-muted uk-padding-small"></div>
 	</div>
 	
 	<div class="assistente_virtuale_composer uk-margin-remove-top">
