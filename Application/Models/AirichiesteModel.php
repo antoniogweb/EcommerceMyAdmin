@@ -28,6 +28,7 @@ class AirichiesteModel extends GenericModel
 {
 	public static $fraseTroppeRichieste = "Il sistema sta ricevendo molte richieste in questo momento. Riprova tra un minuto.";
 	public static $fraseTroppeRichiesteIp = "Hai superato il limite di richieste per ora. Riprova tra un'ora.";
+	public static $fraseRichiestaTroppoLunga = "La richiesta è troppo lunga, riprovi con una domanda più corta";
 	
 	public static $idChat = 0; // Usato nel routing per recuperare altri messaggi dalla stessa chat
 	
@@ -598,6 +599,36 @@ class AirichiesteModel extends GenericModel
 				}
 				else
 				{
+					if (strlen($messaggio) > (int)v("numero_massimo_caratteri_messaggio_ai"))
+					{
+						$airmModel->sValues(array(
+							"messaggio"			=>	gtext("[Messaggio troppo lungo]"),
+							"id_ai_richiesta"	=>	(int)$id,
+							"id_admin"			=>	(!App::$isFrontend) ? User::$id : 0,
+							"id_user"			=>	App::$isFrontend ? User::$id : 0,
+							"ruolo"				=>	"user",
+						));
+						
+						$airmModel->insert();
+						
+						$airmModel->sValues(array(
+							"messaggio"			=>	gtext(self::$fraseRichiestaTroppoLunga),
+							"id_ai_richiesta"	=>	(int)$id,
+							"id_admin"			=>	User::$id,
+							"ruolo"				=>	"assistant",
+							"risultato_richiesta"	=>	1,
+						));
+						
+						$airmModel->insert();
+						
+						$this->sendEvent([
+							'type'	=>	'result',
+							'data'	=>	self::$fraseRichiestaTroppoLunga
+						]);
+						
+						return;
+					}
+					
 					$numeroProdotti = 10;
 					
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
@@ -1404,7 +1435,7 @@ class AirichiesteModel extends GenericModel
 		}
 		
 		if (!$forza && !$this->checkRichiesta($messaggi))
-			list($res, $output) = array(0, gtext("La richiesta è troppo lunga, riprovi con una domanda più corta"));
+			list($res, $output) = array(0, gtext(self::$fraseRichiestaTroppoLunga));
 		else
 			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni, $reasoning, $routingSchema);
 		
