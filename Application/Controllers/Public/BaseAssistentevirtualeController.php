@@ -90,21 +90,23 @@ class BaseAssistentevirtualeController extends BaseController
 		
 		$idChat = $this->m("AirichiesteModel")->getChat(true);
 		
+		Session::close();
+		
 		if ($idChat)
 		{
 			AirichiesteresponseModel::$idRichiesta = (int)$idChat;
 			
 			$this->m("AirichiesteModel")->messaggio((int)$idChat, $messaggio);
 		}
-		
-		Session::restore();
 	}
 	
 	public function status()
 	{
 		$this->clean();
 		
-		$idChat = $this->m("AirichiesteModel")->getChat(true);
+		Session::open();
+		$idChat = $this->m("AirichiesteModel")->getChat();
+		Session::close();
 		
 		$status = "error";
 		$output = "";

@@ -36,10 +36,45 @@ function aggiornaChat()
 		dataType: "html",
 		success: function(content){
 			$(".chat_messages").html(content);
+			resetStatoAssistenteVirtuale();
 			
 			setTimeout(function() {
 				scorriChatInBasso();
 			}, 100);
+		}
+	});
+}
+
+var ultimoStatoAssistenteVirtuale = "";
+
+function resetStatoAssistenteVirtuale()
+{
+	ultimoStatoAssistenteVirtuale = "";
+	$(".assistente_virtuale_status").addClass("uk-hidden").empty();
+}
+
+function mostraStatoAssistenteVirtuale(testo)
+{
+	var contenitore = $(".assistente_virtuale_status");
+
+	if (!contenitore.length || !testo || testo === ultimoStatoAssistenteVirtuale)
+		return;
+
+	ultimoStatoAssistenteVirtuale = testo;
+	contenitore.removeClass("uk-hidden").append($("<div></div>").text(testo));
+	scorriChatInBasso();
+}
+
+function aggiornaStatoAssistenteVirtuale()
+{
+	$.ajax({
+		url: baseUrl + "/virtual-assistant/status/",
+		cache: false,
+		async: true,
+		dataType: "json",
+		success: function(response){
+			if (response && response.output)
+				mostraStatoAssistenteVirtuale(response.output);
 		}
 	});
 }
@@ -122,6 +157,10 @@ $(document).ready(function(){
 		bottone.prop("disabled", true);
 		testo.addClass("uk-hidden");
 		loader.removeClass("uk-hidden");
+		resetStatoAssistenteVirtuale();
+		// aggiornaStatoAssistenteVirtuale();
+		
+		var intervalloStato = setInterval(aggiornaStatoAssistenteVirtuale, 2000);
 		
 		$.ajaxQueue({
 			url: baseUrl + "/virtual-assistant/request/",
@@ -139,6 +178,7 @@ $(document).ready(function(){
 				
 			},
 			complete: function() {
+				clearInterval(intervalloStato);
 				bottone.prop("disabled", false);
 				testo.removeClass("uk-hidden");
 				loader.addClass("uk-hidden");
