@@ -90,16 +90,27 @@ class AirichiesteresponseModel extends GenericModel
 		self::$microtime = microtime(true);
 	}
 	
-	public static function getLast(array $tipi, int $idRichiesta) : array
+	public static function getLast(array $tipi = array(), int $idRichiesta = 0) : array
 	{
 		$model = new AirichiesteresponseModel();
 		
-		return $model->clear()->where(array(
-			"IN"	=>	array(
-				"tipo"	=>	sanitizeAllDeep($tipi),
-			),
-			"id_ai_richiesta"	=>	(int)$idRichiesta,
-		))->orderBy("id_ai_richieste_response desc")->limit(1)->record();
+		$model->clear()->orderBy("id_ai_richieste_response desc")->limit(1);
+		
+		if (!empty($tipi))
+			$model->aWhere(array(
+				"IN"	=>	array(
+					"tipo"	=>	sanitizeAllDeep($tipi),
+				),
+			));
+		
+		if ($idRichiesta)
+			$model->where(array(
+				"id_ai_richiesta"	=>	(int)$idRichiesta,
+			));
+		
+		$res = $model->record();
+		
+		return $res;
 	}
 	
 	public static function aggiungi($request, $response)

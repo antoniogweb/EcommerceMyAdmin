@@ -81,10 +81,6 @@ class BaseAssistentevirtualeController extends BaseController
 	{
 		IpcheckModel::check("ASSISTENTE VIRTUALE");
 		
-		header('Content-Type: application/x-ndjson; charset=utf-8');
-		header('Cache-Control: no-cache, no-transform');
-		header('X-Accel-Buffering: no');
-		
 		$this->clean();
 		
 		Session::open();
@@ -102,5 +98,43 @@ class BaseAssistentevirtualeController extends BaseController
 		}
 		
 		Session::restore();
+	}
+	
+	public function status()
+	{
+		$this->clean();
+		
+		$idChat = $this->m("AirichiesteModel")->getChat(true);
+		
+		$status = "error";
+		$output = "";
+		
+		if ($idChat)
+		{
+			$lastResponce = AirichiesteresponseModel::getLast(array(), (int)$idChat);
+			
+			if (!empty($lastResponce))
+			{
+				$status = "wait";
+				
+				switch ($lastResponce["tipo"])
+				{
+					case "ROUTING":
+						$output = gtext("Sto pensando...");
+						break;
+					case "EMBEDDINGS":
+						$output = gtext("Sto recuperando le informazioni...");
+						break;
+					default:
+						$output = gtext("Preparo la risposta...");
+						break;
+				}
+			}
+		}
+		
+		echo json_encode(array(
+			"status"	=>	$status,
+			"output"	=>	$output,
+		));
 	}
 }

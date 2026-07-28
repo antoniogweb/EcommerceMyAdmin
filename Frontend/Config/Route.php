@@ -224,6 +224,7 @@ class Route
 		'assistentevirtuale,index',
 		'assistentevirtuale,messaggi',
 		'assistentevirtuale,request',
+		'assistentevirtuale,status',
 // 		'riservata,cancellaaccount',
 	);
 	
@@ -427,6 +428,7 @@ class Route
 		'captcha/index/([1-2]{1})'	=>	'captcha/index/${1}',
 		'paypal/createorder/([0-9a-fA-F]{32})/([0-9a-fA-F]{32})'	=>	'paypal/createorder/${1}/${2}',
 		'paypal/captureorder/([0-9a-fA-F]{32})/([0-9a-fA-F]{32})'	=>	'paypal/captureorder/${1}/${2}',
+		'virtual-assistant/status/?'	=>	'assistentevirtuale/status',
 		'virtual-assistant/messages/?'	=>	'assistentevirtuale/messaggi',
 		'virtual-assistant/request/?'	=>	'assistentevirtuale/request',
 		'virtual-assistant/?'		=>	'assistentevirtuale/index',

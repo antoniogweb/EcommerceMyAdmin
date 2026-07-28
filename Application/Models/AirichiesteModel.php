@@ -621,10 +621,10 @@ class AirichiesteModel extends GenericModel
 						
 						$airmModel->insert();
 						
-						$this->sendEvent([
-							'type'	=>	'result',
-							'data'	=>	self::$fraseRichiestaTroppoLunga
-						]);
+						// $this->sendEvent([
+						// 	'type'	=>	'result',
+						// 	'data'	=>	self::$fraseRichiestaTroppoLunga
+						// ]);
 						
 						return;
 					}
@@ -633,11 +633,11 @@ class AirichiesteModel extends GenericModel
 					
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
 					
-					$this->sendEvent([
-						'type'	=>	'status',
-						'phase'	=>	'understanding',
-						'text'	=>	gtext('Preparo la risposta...'),
-					]);
+					// $this->sendEvent([
+					// 	'type'	=>	'status',
+					// 	'phase'	=>	'understanding',
+					// 	'text'	=>	gtext('Preparo la risposta...'),
+					// ]);
 					
 					if ($intent == "follow_up")
 						$messaggi = $this->recuperaMessaggi($id, v("numero_messaggi_storico_chat_da_riportare"));
@@ -710,10 +710,10 @@ class AirichiesteModel extends GenericModel
 			}
 		}
 		
-		$this->sendEvent([
-			'type'	=>	'result',
-			'data'	=>	$risposta
-		]);
+		// $this->sendEvent([
+		// 	'type'	=>	'result',
+		// 	'data'	=>	$risposta
+		// ]);
 	}
 	
 	public function richiestaCompleta($messaggio, $zona = "Backend", $ambito = "Ecommerce", $lingua = "it", $numeroRisultati = 10)
@@ -1116,12 +1116,12 @@ class AirichiesteModel extends GenericModel
 			$subjects = $routingJson["subjects"] ?? array();
 			$operation = $routingJson["operation"] ?? "";
 			
-			if (count($subjects) > 0)
-				$this->sendEvent([
-					'type'	=>	'status',
-					'phase'	=>	'understanding',
-					'text'	=>	gtext('Sto recuperando le informazioni...'),
-				]);
+			// if (count($subjects) > 0)
+			// 	$this->sendEvent([
+			// 		'type'	=>	'status',
+			// 		'phase'	=>	'understanding',
+			// 		'text'	=>	gtext('Sto recuperando le informazioni...'),
+			// 	]);
 			
 			if ($linguaRouting && LingueModel::checkLinguaAttiva((string)$linguaRouting))
 				$lingua = (string)$linguaRouting;
@@ -1345,11 +1345,11 @@ class AirichiesteModel extends GenericModel
 	{
 		$tpf = tpf("Elementi/AI/RAG/Routing/$zona/$ambito/prompt.txt");
 		
-		$this->sendEvent([
-			'type'	=>	'status',
-			'phase'	=>	'understanding',
-			'text'	=>	gtext('Sto pensando...'),
-		]);
+		// $this->sendEvent([
+		// 	'type'	=>	'status',
+		// 	'phase'	=>	'understanding',
+		// 	'text'	=>	gtext('Sto pensando...'),
+		// ]);
 		
 		if (is_file($tpf))
 		{
