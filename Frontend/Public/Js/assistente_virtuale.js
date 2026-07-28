@@ -65,6 +65,21 @@ function mostraStatoAssistenteVirtuale(testo)
 	scorriChatInBasso();
 }
 
+function aggiungiMessaggioUtenteAssistenteVirtuale(messaggio)
+{
+	var contenitore = $(".chat_messages");
+
+	if (!contenitore.length || !messaggio)
+		return;
+
+	var riga = $("<div></div>").addClass("chat_message_row chat_message_row_user");
+	var bubble = $("<div></div>").addClass("chat_message_bubble chat_message_bubble_user").text(messaggio);
+
+	riga.append(bubble);
+	contenitore.append(riga);
+	scorriChatInBasso();
+}
+
 function aggiornaStatoAssistenteVirtuale()
 {
 	$.ajax({
@@ -158,6 +173,7 @@ $(document).ready(function(){
 		testo.addClass("uk-hidden");
 		loader.removeClass("uk-hidden");
 		resetStatoAssistenteVirtuale();
+		aggiungiMessaggioUtenteAssistenteVirtuale(messaggio);
 		// aggiornaStatoAssistenteVirtuale();
 		
 		var intervalloStato = setInterval(aggiornaStatoAssistenteVirtuale, 2000);
