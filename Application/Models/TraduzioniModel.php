@@ -97,7 +97,7 @@ class TraduzioniModel extends GenericModel {
 			$href = self::$contestoStatic == "back" ? "href='".Url::getRoot("traduzioni/form/update/".$res["id_t"])."'" : "";
 			
 			$valore = call_user_func($function,$res["valore"]);
-			return "<span class='blocco_traduzione'>".stripTagsSicuro($valore)."<img $href data-id='".$res["id_t"]."' class='edit_traduzione $iframe' src='".Url::getFileRoot()."Public/Img/mini-plus.jpg' /></span>";
+			return "<span class='blocco_traduzione'>".sanitizeHtml(stripTagsSicuro($valore))."<img $href data-id='".$res["id_t"]."' class='edit_traduzione $iframe' src='".Url::getFileRoot()."Public/Img/mini-plus.jpg' /></span>";
 		}
 		
 		return "";

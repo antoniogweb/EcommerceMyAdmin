@@ -61,7 +61,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 		}
 		else
 		{
-			return call_user_func($function,stripTagsSicuro(Lang::$i18n[$tempLang][$string]));
+			return call_user_func($function,sanitizeHtml(stripTagsSicuro(Lang::$i18n[$tempLang][$string])));
 // 			return Lang::$i18n[$tempLang][$string];
 		}
 	}
@@ -91,7 +91,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 // 			
 // 		}
 		
-		return call_user_func($function,$string);
+		return call_user_func($function,sanitizeHtml($string));
 		
 // 		return $string;
 	}
