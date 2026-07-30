@@ -72,12 +72,10 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 		if (!isset($contesto))
 			$contesto = TraduzioniModel::$contestoStatic;
 		
-		$string = stripTagsSicuro($string);
-		
 		//inserisco la traduzione
 		$t->values = array(
 			"chiave"	=>	sanitizeDb($string),
-			"valore"	=>	sanitizeAll($string),
+			"valore"	=>	sanitizeAll(stripTagsSicuro($string)),
 			"lingua"	=>	sanitizeDb($tempLang),
 			"contesto"	=>	sanitizeDb($contesto),
 			"gestibile"	=>	(int)$gestibile,
@@ -93,7 +91,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 // 			
 // 		}
 		
-		return call_user_func($function,sanitizeHtmlLight($string));
+		return call_user_func($function,sanitizeHtmlLight(stripTagsSicuro($string)));
 		
 // 		return $string;
 	}
