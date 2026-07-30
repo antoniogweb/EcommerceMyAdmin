@@ -84,7 +84,7 @@ class Purifier
 				]
 			);
 
-			createFolderFull('/Logs/htmlpurifier', LIBRARY);
+			createFolderFull('Logs/htmlpurifier', LIBRARY);
 			
 			$config->set(
 				'Cache.SerializerPath',
