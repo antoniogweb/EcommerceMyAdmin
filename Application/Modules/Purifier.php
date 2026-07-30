@@ -22,14 +22,14 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-require_once(LIBRARY . '/External/libs/vendor/autoload.php');
-
 class Purifier
 {
 	public static $purifier;
 	
 	public static function purify(string $html): string
 	{
+		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
+		
 		if (!isset(self::$purifier))
 		{
 			$config = HTMLPurifier_Config::createDefault();
