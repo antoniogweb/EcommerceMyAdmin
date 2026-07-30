@@ -16,7 +16,7 @@
 		
 		<?php if (v("attiva_personalizzazioni")) { ?>
 		<li class="dropdown-header"><?php echo gtext("Personalizzazioni");?></li>
-		<li class="<?php echo tm($tm, array("personalizzazioni"));?>"><a href="<?php echo $this->baseUrl."/personalizzazioni/main/1";?>"><i class="fa fa-cogs"></i> <?php echo gtext("Lista personalizzazioni<");?>/a></li>
+		<li class="<?php echo tm($tm, array("personalizzazioni"));?>"><a href="<?php echo $this->baseUrl."/personalizzazioni/main/1";?>"><i class="fa fa-cogs"></i> <?php echo gtext("Lista personalizzazioni");?></a></li>
 		<?php } ?>
 	</ul>
 </li>
