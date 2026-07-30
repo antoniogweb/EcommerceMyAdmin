@@ -44,6 +44,8 @@ function getLinguaIso()
 }
 
 //get the text in the right language
+// Output sicuro per testo HTML e attributi testuali.
+// Le callback sono responsabilita' del template: non devono decodificare entita' o reintrodurre HTML.
 function gtext($string, $edit = true, $function = "none", $contesto = null, $gestibile = 1, $applicativo = "")
 {
 	$t = new TraduzioniModel();
@@ -61,7 +63,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 		}
 		else
 		{
-			return call_user_func($function,sanitizeHtml(stripTagsSicuro(Lang::$i18n[$tempLang][$string])));
+			return call_user_func($function,sanitizeHtmlLight(stripTagsSicuro(Lang::$i18n[$tempLang][$string])));
 // 			return Lang::$i18n[$tempLang][$string];
 		}
 	}
@@ -91,7 +93,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 // 			
 // 		}
 		
-		return call_user_func($function,sanitizeHtml($string));
+		return call_user_func($function,sanitizeHtmlLight($string));
 		
 // 		return $string;
 	}

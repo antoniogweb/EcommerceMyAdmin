@@ -122,9 +122,9 @@ class F
 
 	public static function alt($string, $flags = ENT_QUOTES | ENT_SUBSTITUTE)
 	{
-		$string = strip_tags(htmlentitydecode($string));
+		$string = stripTagsSicuro($string);
 		
-		return htmlspecialchars($string, $flags, "UTF-8");
+		return htmlspecialchars($string, $flags, Params::$htmlentititiesCharset);
 	}
 	
 	public static function toUTF8($string)
