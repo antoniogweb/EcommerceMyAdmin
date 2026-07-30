@@ -224,3 +224,8 @@ phpseclib - PHP Secure Communications Library
 -------
 License:	The MIT License (MIT)
 link: 		https://github.com/phpseclib/phpseclib
+
+HTML Purifier
+-------
+License:	LGPL-2.1 license
+link: 		https://github.com/ezyang/htmlpurifier
