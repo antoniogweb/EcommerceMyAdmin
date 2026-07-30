@@ -708,7 +708,7 @@ function htmlentitydecodeDeep($value) {
 function stripTagsDecode($value)
 {
 	$value = nullToBlank($value);
-	return strip_tags(htmlentitydecode($value));
+	return stripTagsSicuro($value);
 }
 
 //restituisci $numProdotti case random tra quelle presenti in $arrayProdotti
