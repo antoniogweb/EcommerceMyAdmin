@@ -1003,6 +1003,48 @@ class VariabiliModel extends GenericModel {
 		"token_cron_ai",
 	);
 	
+	// Condizioni per il salvataggio in /variabili
+	public static $validationRules = array(
+		"telefono_aziendale"	=> array(
+			"checkMatch|/^[0-9\s\+]+$/"	=>	"Si prega di controllare che il telefono aziendale sia un numero telefonico",
+		),
+		"email_aziendale"		=>	array(
+			"checkMail"	=>	"Si prega di controllare che l'e-mail aziendale sia un'indirizzo e-mail valido",
+		),
+		"facebook_link"		=>	array(
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare che il link alla pagina Facebook",
+		),
+		"instagram_link"		=>	array(
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare che il link alla pagina Facebook",
+		),
+		"youtube_link"		=>	array(
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare che il link alla pagina Facebook",
+		),
+		"twitter_link"		=>	array(
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare che il link alla pagina Facebook",
+		),
+		"pinterest_link"		=>	array(
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare che il link alla pagina Facebook",
+		),
+	);
+	
+	// Setta le condizioni per il salvataggio
+    public function setUpdateConditions()
+    {
+		$this->applySoftConditionsOnPost = true;
+		$this->applySoftConditionsOnValues = false;
+		
+		foreach (self::$validationRules as $variable => $rules)
+		{
+			foreach ($rules as $rule => $error)
+			{
+				$errorSuffix = '<div style="display:none;" rel="hidden_alert_notice">'.$variable.'</div>';
+				
+				$this->addSoftCondition("update",$rule,$variable."|".gtext($error).$errorSuffix);
+			}
+		}
+    }
+    
 	public static function inizializza($variabili = array())
 	{
 		$daInizializzare = self::$daInizializzare;

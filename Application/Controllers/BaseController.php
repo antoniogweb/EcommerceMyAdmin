@@ -811,13 +811,20 @@ class BaseController extends Controller
 			
 			if (isset($_POST["updateAction"]))
 			{
-				foreach ($variabili as $v)
-				{
-					if (isset($_POST[$v]))
-						VariabiliModel::setValore($v, $_POST[$v]);
-				}
+				$this->m("VariabiliModel")->setUpdateConditions();
 				
-				$data["notice"] = "<div class='alert alert-success'>operazione eseguita!</div>";
+				if ($this->m("VariabiliModel")->checkConditions('update', 0))
+				{
+					foreach ($variabili as $v)
+					{
+						if (isset($_POST[$v]))
+							VariabiliModel::setValore($v, $_POST[$v]);
+					}
+					
+					$data["notice"] = "<div class='alert alert-success'>operazione eseguita!</div>";
+				}
+				else
+					$data["notice"] = $this->m("VariabiliModel")->notice;
 			}
 		}
 		
@@ -850,7 +857,7 @@ class BaseController extends Controller
 				
 				$entries[$v]["className"] = "form-control";
 				
-				$values[$v] = v($v);
+				$values[$v] = isset($_POST[$v]) ? sanitizeHtml($_POST[$v]) : v($v);
 			}
 		}
 		
