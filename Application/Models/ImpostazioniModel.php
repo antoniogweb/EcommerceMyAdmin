@@ -276,27 +276,30 @@ class ImpostazioniModel extends GenericModel {
 		
 		//leggi le impostazioni
 		if (self::$valori)
-		{
-			Parametri::$useSMTP = self::$valori["usa_smtp"] == "Y" ? true : false;
-			Parametri::$SMTPHost = self::$valori["smtp_host"];
-			Parametri::$SMTPPort = self::$valori["smtp_port"];
-			Parametri::$SMTPUsername = self::$valori["smtp_user"];
-			Parametri::$SMTPPassword = self::$valori["smtp_psw"];
-			Parametri::$mailFrom = self::$valori["smtp_from"];
-			Parametri::$mailFromName = htmlentitydecode(self::$valori["smtp_nome"]);
-			Parametri::$mailInvioOrdine = self::$valori["mail_invio_ordine"];
-			Parametri::$mailInvioConfermaPagamento = self::$valori["mail_invio_conferma_pagamento"];
-			Parametri::$nomeNegozio = htmlentitydecode(self::$valori["nome_sito"]);
-			Parametri::$iva = self::$valori["iva"];
-			Parametri::$ivaInclusa = self::$valori["iva_inclusa"] == "Y" ? true : false;
-			Parametri::$useSandbox = self::$valori["usa_sandbox"] == "Y" ? true : false;
-			Parametri::$paypalSeller = self::$valori["paypal_seller"];
-			Parametri::$paypalSandBoxSeller = self::$valori["paypal_sandbox_seller"];
-			Parametri::$mailReplyTo = (isset(self::$valori["reply_to_mail"]) && self::$valori["reply_to_mail"]) ? self::$valori["reply_to_mail"] : Parametri::$mailFrom;
-			Parametri::$mailReso = (isset(self::$valori["mail_richiesta_di_reso"]) && self::$valori["mail_richiesta_di_reso"]) ? self::$valori["mail_richiesta_di_reso"] : Parametri::$mailInvioOrdine;
-		}
+			self::setParametri();
 		
 		self::$parametriImpostati = true;
+	}
+	
+	public static function setParametri()
+	{
+		Parametri::$useSMTP = ImpostazioniModel::$valori["usa_smtp"] == "Y" ? true : false;
+		Parametri::$SMTPHost = ImpostazioniModel::$valori["smtp_host"];
+		Parametri::$SMTPPort = ImpostazioniModel::$valori["smtp_port"];
+		Parametri::$SMTPUsername = ImpostazioniModel::$valori["smtp_user"];
+		Parametri::$SMTPPassword = ImpostazioniModel::$valori["smtp_psw"];
+		Parametri::$mailFrom = ImpostazioniModel::$valori["smtp_from"];
+		Parametri::$mailFromName = stripTagsSicuro(ImpostazioniModel::$valori["smtp_nome"]);
+		Parametri::$mailInvioOrdine = ImpostazioniModel::$valori["mail_invio_ordine"];
+		Parametri::$mailInvioConfermaPagamento = ImpostazioniModel::$valori["mail_invio_conferma_pagamento"];
+		Parametri::$nomeNegozio = stripTagsSicuro(ImpostazioniModel::$valori["nome_sito"]);
+		Parametri::$iva = ImpostazioniModel::$valori["iva"];
+		Parametri::$ivaInclusa = ImpostazioniModel::$valori["iva_inclusa"] == "Y" ? true : false;
+		Parametri::$useSandbox = ImpostazioniModel::$valori["usa_sandbox"] == "Y" ? true : false;
+		Parametri::$paypalSeller = ImpostazioniModel::$valori["paypal_seller"];
+		Parametri::$paypalSandBoxSeller = ImpostazioniModel::$valori["paypal_sandbox_seller"];
+		Parametri::$mailReplyTo = (isset(ImpostazioniModel::$valori["reply_to_mail"]) && ImpostazioniModel::$valori["reply_to_mail"]) ? ImpostazioniModel::$valori["reply_to_mail"] : Parametri::$mailFrom;
+		Parametri::$mailReso = (isset(ImpostazioniModel::$valori["mail_richiesta_di_reso"]) && ImpostazioniModel::$valori["mail_richiesta_di_reso"]) ? ImpostazioniModel::$valori["mail_richiesta_di_reso"] : Parametri::$mailInvioOrdine;
 	}
 	
 	public static function getEmailAvvisoPagamentoOrdine()
@@ -306,6 +309,6 @@ class ImpostazioniModel extends GenericModel {
 	
 	public static function getReplyToMailOrdini()
 	{
-		return (isset(self::$valori["reply_to_mail_ordini"]) && self::$valori["reply_to_mail_ordini"]) ? self::$valori["reply_to_mail_ordini"] : Parametri::$mailReplyTo;
+		return (isset(ImpostazioniModel::$valori["reply_to_mail_ordini"]) && ImpostazioniModel::$valori["reply_to_mail_ordini"]) ? ImpostazioniModel::$valori["reply_to_mail_ordini"] : Parametri::$mailReplyTo;
 	}
 }

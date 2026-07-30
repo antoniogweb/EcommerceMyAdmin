@@ -97,7 +97,7 @@ class TraduzioniModel extends GenericModel {
 			$href = self::$contestoStatic == "back" ? "href='".Url::getRoot("traduzioni/form/update/".$res["id_t"])."'" : "";
 			
 			$valore = call_user_func($function,$res["valore"]);
-			return "<span class='blocco_traduzione'>".htmlentitydecode($valore)."<img $href data-id='".$res["id_t"]."' class='edit_traduzione $iframe' src='".Url::getFileRoot()."Public/Img/mini-plus.jpg' /></span>";
+			return "<span class='blocco_traduzione'>".stripTagsSicuro($valore)."<img $href data-id='".$res["id_t"]."' class='edit_traduzione $iframe' src='".Url::getFileRoot()."Public/Img/mini-plus.jpg' /></span>";
 		}
 		
 		return "";
@@ -117,7 +117,7 @@ class TraduzioniModel extends GenericModel {
 			
 			$this->values = array(
 				"chiave"	=>	sanitizeDb($string),
-				"valore"	=>	sanitizeDb($string),
+				"valore"	=>	sanitizeAll($string),
 				"lingua"	=>	$lingua,
 				"contesto"	=>	self::$contestoStaticEdit,
 				"applicativo"	=>	$record["traduzioni"]["applicativo"],
@@ -132,7 +132,7 @@ class TraduzioniModel extends GenericModel {
 			$valore = $traduzione["valore"];
 			
 			if (isset($_GET["esporta"]) && $_GET["esporta"] == "Y")
-				$valore = htmlentitydecode($valore);
+				$valore = stripTagsSicuro($valore);
 			
 			return "<div style='position:relative;'><textarea style='min-width:300px;' id-t='".$traduzione["id_t"]."' class='form-control edit-traduzione' name='en' >".$valore."</textarea>".F::getRefreshIconOnInput()."</div>";
 		}

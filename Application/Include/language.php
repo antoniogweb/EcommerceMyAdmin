@@ -61,7 +61,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 		}
 		else
 		{
-			return call_user_func($function,htmlentitydecode(Lang::$i18n[$tempLang][$string]));
+			return call_user_func($function,stripTagsSicuro(Lang::$i18n[$tempLang][$string]));
 // 			return Lang::$i18n[$tempLang][$string];
 		}
 	}
@@ -70,10 +70,12 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 		if (!isset($contesto))
 			$contesto = TraduzioniModel::$contestoStatic;
 		
+		$string = stripTagsSicuro($string);
+		
 		//inserisco la traduzione
 		$t->values = array(
 			"chiave"	=>	sanitizeDb($string),
-			"valore"	=>	sanitizeDb($string),
+			"valore"	=>	sanitizeAll($string),
 			"lingua"	=>	sanitizeDb($tempLang),
 			"contesto"	=>	sanitizeDb($contesto),
 			"gestibile"	=>	(int)$gestibile,

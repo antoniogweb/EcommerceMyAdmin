@@ -50,22 +50,7 @@ trait InitController
 		
 		// Leggi le impostazioni
 		if (ImpostazioniModel::$valori)
-		{
-			Parametri::$useSMTP = ImpostazioniModel::$valori["usa_smtp"] == "Y" ? true : false;
-			Parametri::$SMTPHost = ImpostazioniModel::$valori["smtp_host"];
-			Parametri::$SMTPPort = ImpostazioniModel::$valori["smtp_port"];
-			Parametri::$SMTPUsername = ImpostazioniModel::$valori["smtp_user"];
-			Parametri::$SMTPPassword = ImpostazioniModel::$valori["smtp_psw"];
-			Parametri::$mailFrom = ImpostazioniModel::$valori["smtp_from"];
-			Parametri::$mailFromName = htmlentitydecode(ImpostazioniModel::$valori["smtp_nome"]);
-			Parametri::$mailInvioOrdine = ImpostazioniModel::$valori["mail_invio_ordine"];
-			Parametri::$mailInvioConfermaPagamento = ImpostazioniModel::$valori["mail_invio_conferma_pagamento"];
-			Parametri::$nomeNegozio = htmlentitydecode(ImpostazioniModel::$valori["nome_sito"]);
-			Parametri::$iva = ImpostazioniModel::$valori["iva"];
-			Parametri::$ivaInclusa = ImpostazioniModel::$valori["iva_inclusa"] == "Y" ? true : false;
-			Parametri::$mailReplyTo = (isset(ImpostazioniModel::$valori["reply_to_mail"]) && ImpostazioniModel::$valori["reply_to_mail"]) ? ImpostazioniModel::$valori["reply_to_mail"] : Parametri::$mailFrom;
-			Parametri::$mailReso = (isset(ImpostazioniModel::$valori["mail_richiesta_di_reso"]) && ImpostazioniModel::$valori["mail_richiesta_di_reso"]) ? ImpostazioniModel::$valori["mail_richiesta_di_reso"] : Parametri::$mailInvioOrdine;
-		}
+			ImpostazioniModel::setParametri();
 		
 		// Variabili
 		$this->model('VariabiliModel');

@@ -188,7 +188,7 @@ class TraduzioniController extends BaseController {
 										{
 											$this->m[$this->modelName]->values = array(
 												"chiave"	=>	sanitizeDb($chiave),
-												"valore"	=>	sanitizeDb($data[$indice]),
+												"valore"	=>	sanitizeAll($data[$indice]),
 												"lingua"	=>	$lingua,
 												"contesto"	=>	"front",
 											);
