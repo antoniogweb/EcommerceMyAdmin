@@ -1012,19 +1012,22 @@ class VariabiliModel extends GenericModel {
 			"checkMail"	=>	"Si prega di controllare che l'e-mail aziendale sia un'indirizzo e-mail valido",
 		),
 		"facebook_link"		=>	array(
-			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare che il link alla pagina Facebook",
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare il link alla pagina Facebook",
 		),
 		"instagram_link"		=>	array(
-			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare che il link alla pagina Facebook",
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare il link alla pagina Instagram",
 		),
 		"youtube_link"		=>	array(
-			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare che il link alla pagina Facebook",
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-\@]+$/"	=>	"Si prega di ricontrollare il link alla pagina Youtube",
 		),
 		"twitter_link"		=>	array(
-			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare che il link alla pagina Facebook",
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare il link alla pagina X",
 		),
 		"pinterest_link"		=>	array(
-			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare che il link alla pagina Facebook",
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare il link alla pagina Pinterest",
+		),
+		"linkedin_link"		=>	array(
+			"checkMatch|/^https?:\/\/[a-zA-Z0-9._\/-]+$/"	=>	"Si prega di ricontrollare il link alla pagina LinkedIn",
 		),
 	);
 	
