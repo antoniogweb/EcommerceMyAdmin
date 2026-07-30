@@ -78,8 +78,15 @@ class AWSTranslate extends Traduttore
 				'Text' => $textToTranslate,
 			]);
 			
-			$testo = $this->ripristinaPlaceholder($result['TranslatedText'])."\n";
+			$testo = $result['TranslatedText'];
+			
+			// Sanitizzazione HTML
+			$testo = Purifier::purify($testo);
+			
+			// Ripristino placeholder
+			$testo = $this->ripristinaPlaceholder($testo)."\n";
 
+			// Correzioni
 			$testo = TraduzionicorrezioniModel::correggi($targetLanguage, $testo);
 
 			return $testo;

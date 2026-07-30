@@ -20,6 +20,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         '6783aef8c489bbc166eee2536fe605d5' => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src/functions.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         'da5f6548f070d3d306f90eee42dd5de6' => __DIR__ . '/..' . '/donatj/phpuseragentparser/src/UserAgentParser.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'db356362850385d08a5381de2638b5fd' => __DIR__ . '/..' . '/mpdf/mpdf/src/functions.php',
         '61ba3e92ef91a7a0f1cc260ebd9290e4' => __DIR__ . '/..' . '/openai-php/client/src/OpenAI.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
@@ -345,6 +346,16 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Algolia\\AlgoliaSearch\\' => 
         array (
             0 => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'H' => 
+        array (
+            'HTMLPurifier' => 
+            array (
+                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
+            ),
         ),
     );
 
@@ -1050,6 +1061,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e::$classMap;
 
         }, null, ClassLoader::class);
