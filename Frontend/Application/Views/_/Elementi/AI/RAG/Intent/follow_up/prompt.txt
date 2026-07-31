@@ -63,7 +63,7 @@ If the requested comparison is only partially supported by the available convers
 If no match:
 
 {
-"text": "Non ho abbastanza informazioni per rispondere."
+"text": "Non ho trovato questa informazione nella scheda prodotto o nei contenuti del sito. Se hai bisogno di un dettaglio non presente online, ti consiglio di contattare il nostro servizio clienti."
 }
 
 Translate the "no match" message into the user's language.

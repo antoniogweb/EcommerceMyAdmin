@@ -114,7 +114,7 @@ Example: [LPAG_10]. When referring to a product using [LPAG_{ID}], do not prepen
 If no match:
 
 {
-"text": "Non ho abbastanza informazioni per rispondere."
+"text": "Non ho trovato questa informazione nella scheda prodotto o nei contenuti del sito. Se hai bisogno di un dettaglio non presente online, ti consiglio di contattare il nostro servizio clienti."
 }
 
 Translate the "no match" message into the user's language.
