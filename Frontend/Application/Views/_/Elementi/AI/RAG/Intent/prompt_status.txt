@@ -1,0 +1,7 @@
+Always include these fields in the JSON response:
+
+- "status": "OK" if the request was successfully answered, otherwise "FAILED".
+- "reason": null if status is "OK", otherwise one of:
+  "INSUFFICIENT_INFORMATION", "NO_MATCH", "AMBIGUOUS_REQUEST", "MULTIPLE_MATCHES", "OUT_OF_SCOPE", "NO_PERMISSION", or "ERROR".
+
+Never omit these fields.
