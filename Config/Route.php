@@ -171,6 +171,7 @@ class Route
 		'categorie,caratteristiche',
 		'categorie,ordinacaratteristiche',
 		'categorie,immagini',
+		'categorie,nazioni',
 		
 		'prodotti,main',
 		'prodotti,aggiungicategoria',
@@ -209,6 +210,7 @@ class Route
 		'prodotti,aggiungicaratteristica',
 		'prodotti,categorie',
 		'prodotti,inviaadacquisti',
+		'prodotti,nazioni',
 		
 		'testi,main',
 		'testi,form',

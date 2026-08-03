@@ -21,3 +21,9 @@
 <p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/caratteristiche/main";?>?partial=Y&nobuttons=N&id_c=<?php echo $id;?>"><i class="fa fa-plus-square-o"></i> <?php echo gtext("Aggiungi filtro");?></a></p>
 
 <?php } ?>
+
+<?php if ($this->action === "nazioni") { ?>
+
+<p><a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/nazioni/main?id_c=$id&partial=Y&cl_on_sv=Y&nobuttons=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi nazione");?></a></p>
+
+<?php } ?>

@@ -105,6 +105,7 @@ class PagesModel extends GenericModel {
 		"PagesregioniModel",
 		"PageslingueModel",
 		"PagescategoriesModel",
+		"PagesnazioniModel",
 	);
 	
 	public static $tipiPaginaAddizionali = array();
@@ -224,6 +225,7 @@ class PagesModel extends GenericModel {
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_page', null, "CASCADE"),
 			'contenuti' => array("HAS_MANY", 'ContenutiModel', 'id_page', null, "CASCADE"),
 			'documenti' => array("HAS_MANY", 'DocumentiModel', 'id_page', null, "CASCADE"),
+			'nazioni' => array("HAS_MANY", 'PagesnazioniModel', 'id_page', null, "CASCADE"),
 			'personalizzazioni' => array("HAS_MANY", 'PagespersonalizzazioniModel', 'id_page', null, "CASCADE"),
 			'combinazioni' => array("HAS_MANY", 'CombinazioniModel', 'id_page', null, "CASCADE"),
 			'caratteristiche' => array("HAS_MANY", 'PagescarvalModel', 'id_page', null, "CASCADE"),

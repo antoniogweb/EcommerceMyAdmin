@@ -20,6 +20,9 @@
 	<?php if (v("attiva_filtri_caratteristiche_separati_per_categoria")) { ?>
 	<li <?php echo $posizioni['caratteristiche'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caratteristiche/$id".$this->viewStatus;?>"><?php echo gtext("Filtri");?></a></li>
 	<?php } ?>
+	<?php if (v("attiva_limitazione_spedizione_nazioni")) { ?>
+	<li <?php echo $posizioni['nazioni'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/nazioni/$id".$this->viewStatus;?>"><?php echo gtext("Nazioni spedizione");?></a></li>
+	<?php } ?>
 </ul>
 
 

@@ -152,6 +152,7 @@ class PagesController extends BaseController
 		$this->model("PageslingueModel");
 		$this->model("ContattiModel");
 		$this->model("PagescategoriesModel");
+		$this->model("PagesnazioniModel");
 		
 		if (v("attiva_localizzazione_prodotto"))
 		{
@@ -2205,6 +2206,60 @@ class PagesController extends BaseController
 		}
 		
 		$this->redirect($this->applicationUrl.$this->controller."/caratteristiche/".(int)$id.$this->viewStatus);
+	}
+	
+	public function nazioni($id = 0)
+	{
+		$this->_posizioni['nazioni'] = 'class="active"';
+		$data['posizioni'] = $this->_posizioni;
+		
+		$data['type'] = "nazioni";
+		
+		$this->shift(1);
+		
+		$this->s['admin']->check();
+		
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->m[$this->modelName]->checkPrincipale($clean['id']);
+		
+		if (!$this->m[$this->modelName]->modificaPaginaPermessa($clean['id']))
+			die("non permesso");
+		
+		$this->modelName = "PagesnazioniModel";
+		$this->mainButtons = 'ldel';
+		$data["orderBy"] = "nazioni.titolo";
+		
+		$mainAction = "nazioni/".$clean['id'];
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainFields = array("nazioni.titolo");
+		$this->mainHead = "Nazione";
+		
+		$this->getTabViewFields("nazioni");
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->clear()->select("nazioni.*,pages_nazioni.id_page_nazione")
+			->left("nazioni")->on("nazioni.iso_country_code = pages_nazioni.nazione")
+			->where(array(
+				"pages_nazioni.id_page"	=>	$clean['id'],
+			))
+			->orderBy("nazioni.titolo")->save();
+		
+		$this->tabella = $this->getNomeMenu();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		$this->append($data);
 	}
 	
 	public function regioni($id = 0)

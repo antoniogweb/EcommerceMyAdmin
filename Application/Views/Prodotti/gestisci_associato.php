@@ -81,3 +81,11 @@
 <?php } ?>
 
 <?php include($this->viewPath("gestisci_associato_lingue"));?>
+
+<?php if ($this->action == "nazioni" && v("attiva_limitazione_spedizione_nazioni")) { ?>
+
+<p>
+	<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/nazioni/main?id_page_sp=$id_page&partial=Y&cl_on_sv=Y&nobuttons=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi nazione");?></a>
+</p>
+
+<?php } ?>

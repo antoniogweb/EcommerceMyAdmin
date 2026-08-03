@@ -410,6 +410,40 @@ class NazioniModel extends GenericModel
 		}
     }
     
+    public function aggiungiaprodottoperspedizione($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_page_sp"]) && v("attiva_limitazione_spedizione_nazioni"))
+		{
+			$pn = new PagesnazioniModel();
+			
+			$pn->setValues(array(
+				"id_page"		=>	(int)$_GET["id_page_sp"],
+				"nazione"	=>	$record["iso_country_code"],
+			), "sanitizeDb");
+			
+			$pn->insert();
+		}
+    }
+    
+    public function aggiungiacategoriaperspedizione($id)
+    {
+		$record = $this->selectId((int)$id);
+		
+		if (!empty($record) && isset($_GET["id_c"]) && v("attiva_limitazione_spedizione_nazioni"))
+		{
+			$cn = new CategoriesnazioniModel();
+			
+			$cn->setValues(array(
+				"id_c"		=>	(int)$_GET["id_c"],
+				"nazione"	=>	$record["iso_country_code"],
+			), "sanitizeDb");
+			
+			$cn->insert();
+		}
+    }
+    
     public function elencoClientiDaCodice($codiceNazione)
     {
 		return $this->clear()->select("regusers.username")->inner(array("clienti"))->inner("regusers")->on("regusers_nazioni.id_user = regusers.id_user")->where(array(
@@ -480,4 +514,14 @@ class NazioniModel extends GenericModel
 	{
 		return in_array($nazione, NazioniModel::nazioniConProvince()) ? true : false;
 	}
+	
+	public function bulkaggiungiaprodottoperspedizione($record)
+    {
+		return "<i data-azione='aggiungiaprodottoperspedizione' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_al_prodotto_perspedizione fa fa-plus-circle text text-primary'></i>";
+    }
+    
+    public function bulkaggiungiacategoriaperspedizione($record)
+    {
+		return "<i data-azione='aggiungiacategoriaperspedizione' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_alla_categoria_perspedizione fa fa-plus-circle text text-primary'></i>";
+    }
 }

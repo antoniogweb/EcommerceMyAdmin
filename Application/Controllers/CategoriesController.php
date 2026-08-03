@@ -58,6 +58,7 @@ class CategoriesController extends BaseController
 		$this->model("ContenutitradottiModel");
 		$this->model("ContenutiModel");
 		$this->model("CategoriescaratteristicheModel");
+		$this->model("CategoriesnazioniModel");
 		
 		$this->setArgKeys(array(
 			'page:forceNat'=>1,
@@ -708,5 +709,56 @@ class CategoriesController extends BaseController
 			$this->responseCode(403);
 		
 		parent::immagini($id);
+	}
+	
+	public function nazioni($id = 0)
+	{
+		$this->_posizioni['nazioni'] = 'class="active"';
+		$data['posizioni'] = $this->_posizioni;
+		
+		$data['type'] = "nazioni";
+		
+		$this->shift(1);
+		
+		$this->s['admin']->check();
+		
+		$data['id'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_c";
+		
+		$this->modelName = "CategoriesnazioniModel";
+		$this->mainButtons = 'ldel';
+		$data["orderBy"] = "nazioni.titolo";
+		
+		$mainAction = "nazioni/".$clean['id'];
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainFields = array("nazioni.titolo");
+		$this->mainHead = "Nazione";
+		
+		$this->getTabViewFields("nazioni");
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->clear()->select("nazioni.*,categories_nazioni.id_c_nazione")
+			->left("nazioni")->on("nazioni.iso_country_code = categories_nazioni.nazione")
+			->where(array(
+				"categories_nazioni.id_c"	=>	$clean['id'],
+			))
+			->orderBy("nazioni.titolo")->save();
+		
+		$this->tabella = gtext("categoria");
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["CategoriesModel"]->where(array("id_c"=>$clean['id']))->field("title");
+		
+		$data["stepsAssociato"] = "categories_steps";
+		
+		$this->append($data);
 	}
 }

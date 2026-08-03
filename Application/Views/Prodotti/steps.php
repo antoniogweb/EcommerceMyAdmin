@@ -89,6 +89,9 @@
 	<?php if (v("abilita_visibilita_pagine")) { ?>
 	<li <?php echo $posizioni['lingue'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/lingue/$id_page".$viewStatusTutti;?>"><?php echo gtext("Lingue");?></a></li>
 	<?php } ?>
+	<?php if (v("attiva_limitazione_spedizione_nazioni")) { ?>
+	<li <?php echo $posizioni['nazioni'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/nazioni/$id_page".$viewStatusTutti;?>"><?php echo gtext("Nazioni spedizione");?></a></li>
+	<?php } ?>
 </ul>
 
 <?php } ?>

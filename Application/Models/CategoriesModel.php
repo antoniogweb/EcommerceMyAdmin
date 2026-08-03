@@ -167,6 +167,7 @@ class CategoriesModel extends HierarchicalModel {
 			'sitemap' => array("HAS_MANY", 'SitemapModel', 'id_c', null, "CASCADE"),
 			'caratteristiche' => array("HAS_MANY", 'CategoriescaratteristicheModel', 'id_c', null, "CASCADE"),
 			'immagini' => array("HAS_MANY", 'ImmaginiarchiviModel', 'id_c', null, "CASCADE"),
+			'nazioni' => array("HAS_MANY", 'CategoriesnazioniModel', 'id_c', null, "CASCADE"),
         );
     }
     

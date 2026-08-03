@@ -32,6 +32,8 @@ class NazioniController extends BaseController {
 		'attiva:sanitizeAll'=>'tutti',
 		'attiva_spedizione:sanitizeAll'=>'tutti',
 		'id_page:sanitizeAll'=>'tutti',
+		'id_page_sp:sanitizeAll'=>'tutti',
+		'id_c:sanitizeAll'=>'tutti',
 	);
 	
 	public $useEditor = true;
@@ -65,11 +67,22 @@ class NazioniController extends BaseController {
 		
 		$filtroTipo = array("tutti"=>"Tipo") + NazioniModel::$selectTipi;
 		
-		if ($this->viewArgs["id_page"] != "tutti")
+		if ($this->viewArgs["id_page"] != "tutti" || $this->viewArgs["id_page_sp"] != "tutti" || $this->viewArgs["id_c"] != "tutti")
 		{
 			$this->mainButtons = "";
 			$this->mainFields = array("[[ledit]];nazioni.titolo;","nazioni.iso_country_code");
 			$this->mainHead = "Titolo,Codice nazione";
+			
+			if ($this->viewArgs["id_page_sp"] != "tutti")
+			{
+				$this->mainFields[] = "bulkaggiungiaprodottoperspedizione";
+				$this->mainHead .= ",Aggiungi";
+			}
+			else if ($this->viewArgs["id_c"] != "tutti")
+			{
+				$this->mainFields[] = "bulkaggiungiacategoriaperspedizione";
+				$this->mainHead .= ",Aggiungi";
+			}
 			
 			$this->filters = array("titolo");
 		}
@@ -115,6 +128,28 @@ class NazioniController extends BaseController {
 			);
 			
 			$this->m[$this->modelName]->sWhere(array("nazioni.id_nazione not in (select id_nazione from pages_regioni where id_nazione is not null and id_page = ?)",array((int)$this->viewArgs["id_page"])));
+		}
+		
+		if ($this->viewArgs["id_page_sp"] != "tutti")
+		{
+			$this->bulkQueryActions = "aggiungiaprodottoperspedizione";
+			
+			$this->bulkActions = array(
+				"checkbox_nazioni_id_nazione"	=>	array("aggiungiaprodottoperspedizione","Aggiungi al prodotto"),
+			);
+			
+			$this->m[$this->modelName]->sWhere(array("nazioni.attiva_spedizione = 1 and nazioni.iso_country_code not in (select nazione from pages_nazioni where nazione is not null and id_page = ?)",array((int)$this->viewArgs["id_page_sp"])));
+		}
+		
+		if ($this->viewArgs["id_c"] != "tutti")
+		{
+			$this->bulkQueryActions = "aggiungiacategoriaperspedizione";
+			
+			$this->bulkActions = array(
+				"checkbox_nazioni_id_nazione"	=>	array("aggiungiacategoriaperspedizione","Aggiungi al prodotto"),
+			);
+			
+			$this->m[$this->modelName]->sWhere(array("nazioni.attiva_spedizione = 1 and nazioni.iso_country_code not in (select nazione from categories_nazioni where nazione is not null and id_c = ?)",array((int)$this->viewArgs["id_c"])));
 		}
 		
 		$this->getTabViewFields("main");

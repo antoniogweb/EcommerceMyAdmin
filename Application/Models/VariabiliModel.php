@@ -607,6 +607,7 @@ class VariabiliModel extends GenericModel {
 		"soglia_spedizioni_gratuite_diversa_per_ogni_nazione"	=>	0, // se impostata a 1, la soglia sopra la quale la spedizione è gratuita non viene più impostata sotto Preferenze > Impostazioni ma nel dettaglio della singola nazione
 		"mostra_solo_province_attive"	=>	0, // se impostato su 1, mostra solo le province attive
 		"gestisci_province_estere"		=>	1, // se impostato su 1, gestisce anche province fuori Italia
+		"attiva_limitazione_spedizione_nazioni"	=>	0, // se impostato su 1 sarà possibile da pannello limitare la spedizione del prodotto ad alcune specifiche nazioni (tabelle pages_nazioni e categories_nazioni)
 		## CORRIERI ##
 		"scegli_il_corriere_dalla_categoria_dei_prodotti"	=>	0, // se impostato ad 1, il corriere verrà scelto in funzione della categoria del prodotto (se viene trovata un'associazione)
 		"attiva_campo_ritiro_in_sede_su_corrieri"	=>	0, // se impostato ad 1, permette di selezionare se un corriere è un ritiro in sede
