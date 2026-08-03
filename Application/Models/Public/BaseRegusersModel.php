@@ -162,6 +162,9 @@ class BaseRegusersModel extends Model_Tree
 				}
 			}
 			
+			// Inserisci l'utente nei gruppi indicati nella variabile gruppi_aggiunti_automaticamente_alla_creazione_utente
+			$this->inserisciUtenteInGruppi($this->lId);
+			
 			return $res;
 		}
 		

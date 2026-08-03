@@ -771,4 +771,31 @@ trait CommonModel {
 		else
 			$this->addStrongCondition("both",'checkMatch|'.$espressioneRegolarePassword,$stringaErrore);
 	}
+	
+	// Inserisci l'utente nei gruppi indicati nella variabile gruppi_aggiunti_automaticamente_alla_creazione_utente
+	public function inserisciUtenteInGruppi($idUser)
+	{
+		if (v("gruppi_aggiunti_automaticamente_alla_creazione_utente"))
+		{
+			$rug = new RegusersgroupsModel();
+			$rg = new ReggroupsModel();
+			
+			$gruppi = explode(",",v("gruppi_aggiunti_automaticamente_alla_creazione_utente"));
+			
+			foreach ($gruppi as $idg)
+			{
+				$record = $rg->selectId((int)$idg);
+				
+				if (!empty($record))
+				{
+					$rug->setValues(array(
+						"id_user"	=>	(int)$idUser,
+						"id_group"	=>	(int)$idg,
+					));
+					
+					$rug->insert();
+				}
+			}
+		}
+	}
 }

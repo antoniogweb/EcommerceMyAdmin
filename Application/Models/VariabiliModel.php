@@ -302,7 +302,6 @@ class VariabiliModel extends GenericModel {
 		"elimina_emoticons_da_feed"	=>	1, // togli le emoticons dal feed
 		"attiva_reggroups_tipi"		=>	0, // attiva la possibilità di legare i gruppi ai tipi di contenuti in automatico
 		"marchio_rich_snippet"		=>	"", // il marchio del negozio, da usare solo se è un produttore diretto e non usa i marchi
-		"gruppi_inseriti_da_approvare_alla_registrazione"		=>	"", // alla registrazione, i seguenti gruppi temporanei verranno aggiunti, saranno da approvare (inserire gli id dei gruppi divisi da virgola)
 		"checkbox_css_path"			=>	"admin/Frontend/Public/Css/skins/minimal/minimal.css",
 		"prodotto_tutte_regioni_se_nessuna_regione"	=>	0, // nella ricerca di un prodotto per regione, se non ha alcuna regione/nazione allora compare in tutte le regioni/nazioni
 		"codice_js_ok_cookie"	=>	"", // codice JS da scrivere nel footer solo dopo aver accettato i cookie ti tracciamento
@@ -546,6 +545,8 @@ class VariabiliModel extends GenericModel {
 		"minuti_durata_link_conferma"	=>	10, // numero di MINUTI che è valido il link per la conferma dell'account
 		"hash_function_tokens_in_db"	=>	"", // hash function to hash unique tokens
 		"campi_aggiuntivi_esportazione_csv_utenti"	=>	"", // lista chiavi divise da virgola di RegusersModel::$sefinizioneCampiAggiuntiviInCss dei campi aggiuntivi da usare nell'esportazione CSV dei vlienti
+		"gruppi_inseriti_da_approvare_alla_registrazione"		=>	"", // alla registrazione, i seguenti gruppi temporanei verranno aggiunti, saranno da approvare (inserire gli id dei gruppi divisi da virgola)
+		"gruppi_aggiunti_automaticamente_alla_creazione_utente"	=>	"", // alla creazione utente, sia frontend che admin, il cliente verrà automaticamente inserito nei seguenti gruppi (inserire gli id dei gruppi divisi da virgola)
 		## LISTE REGALO ##
 		"attiva_liste_regalo"	=>	0, // se impostato a 0, permetti la creazione e la gestione di liste regalo
 		"nome_cookie_id_lista"	=>	"id_lista_regalo", // nome dell cookie che conterrà l'ID della lista regalo

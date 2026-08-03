@@ -175,6 +175,9 @@ class RegusersModel extends FormModel {
 		{
 			if (isset($_GET["id_nazione"]) && $_GET["id_nazione"] && is_numeric($_GET["id_nazione"]))
 				$this->aggiungianazione($this->lId);
+			
+			// Inserisci l'utente nei gruppi indicati nella variabile gruppi_aggiunti_automaticamente_alla_creazione_utente
+			$this->inserisciUtenteInGruppi($this->lId);
 		}
 		
 		$this->setBloccato();
