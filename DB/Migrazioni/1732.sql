@@ -1,0 +1,1 @@
+ALTER TABLE `righe` CHANGE `prezzo_fisso_intero` `prezzo_fisso_intero` DECIMAL(24,16) NOT NULL DEFAULT '0.00000000';

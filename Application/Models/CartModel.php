@@ -612,6 +612,8 @@ class CartModel extends GenericModel {
 			"cart_uid"	=>	$clean["cart_uid"],
 		))->send(false);
 		
+		$cifre = self::getCifreCalcolo();
+		
 		foreach ($righe as $r)
 		{
 // 			if ($r["price_ivato"] <= 0)
@@ -631,8 +633,8 @@ class CartModel extends GenericModel {
 				$nuovoPrezzoUnitarioInteroIvato = $r["prezzo_intero_ivato"];
 			}
 			
-			$nuovoPrezzoUnitario = number_format($nuovoPrezzoUnitarioIvato / (1 + ($aliquota / 100)), v("cifre_decimali"), ".", "");
-			$nuovoPrezzoUnitarioIntero = number_format($nuovoPrezzoUnitarioInteroIvato / (1 + ($aliquota / 100)), v("cifre_decimali"), ".", "");
+			$nuovoPrezzoUnitario = number_format($nuovoPrezzoUnitarioIvato / (1 + ($aliquota / 100)), $cifre, ".", "");
+			$nuovoPrezzoUnitarioIntero = number_format($nuovoPrezzoUnitarioInteroIvato / (1 + ($aliquota / 100)), $cifre, ".", "");
 			
 			if ($nuovoPrezzoUnitario != $r["price"] || $nuovoPrezzoUnitarioIntero != $r["prezzo_intero"])
 			{
