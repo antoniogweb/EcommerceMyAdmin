@@ -36,7 +36,7 @@
 	<div class="uk-text-danger uk-text-bold"><?php echo gtext("Non spedibile nella nazione selezionata");?></div>
 <?php } ?>
 
-<?php if (v("attiva_spedizione") && isset($_POST["nazione_spedizione"])) {
+<?php if (v("attiva_spedizione") && isset($_POST["nazione_spedizione"]) && v("attiva_limitazione_spedizione_nazioni")) {
 	$prodottiNonSpedibiliNellaNazione = CartModel::g(false)->prodottiNonSpedibili($_POST["nazione_spedizione"]);
 	
 	if (count($prodottiNonSpedibiliNellaNazione) > 0) {

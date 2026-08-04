@@ -1425,6 +1425,19 @@ class BaseOrdiniController extends BaseController
 				
 				$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$listaCorrieriNazione,"id_corriere|".gtext("<b>Non è possibile spedire nella nazione selezionata</b>"));
 			}
+			
+			if (v("attiva_spedizione") && isset($_POST["nazione_spedizione"]) && v("attiva_limitazione_spedizione_nazioni"))
+			{
+				$prodottiNonSpedibiliNellaNazione = $this->m('CartModel')->prodottiNonSpedibili($_POST["nazione_spedizione"]);
+				
+				if (count($prodottiNonSpedibiliNellaNazione) > 0)
+				{
+					$codiciNazioniAttiveSpedizioneCondizioniSpedizione = array_diff( $codiciSpedizioneAttivi, array($_POST["nazione_spedizione"]) );
+					$codiciNazioniAttiveSpedizioneCondizioniSpedizione = implode(",",$codiciNazioniAttiveSpedizioneCondizioniSpedizione);
+					
+					$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttiveSpedizioneCondizioniSpedizione,"nazione_spedizione|".gtext("I seguenti prodotti non possono essere spediti nella nazione selezionata:")." ".implode(",",$prodottiNonSpedibiliNellaNazione));
+				}
+			}
 		}
 		else
 		{
