@@ -64,9 +64,13 @@ If the requested comparison is only partially supported by the available convers
 
 If no match:
 
-{
-"text": "Non ho trovato questa informazione nella scheda prodotto o nei contenuti del sito. Se hai bisogno di un dettaglio non presente online, ti consiglio di contattare il nostro servizio clienti."
-}
+Explain why the request cannot be completed.
+
+If the requested information is not available in the retrieved context_items, explain that it is not available in the product page or website and recommend contacting our customer service for further information.
+
+If the request cannot be completed because required information is missing (from the user or from the available product information), clearly explain what information is missing and why it is needed.
+
+Do not use the generic "information not found" response when a more specific explanation can be given.
 
 Translate the "no match" message into the user's language.
 
