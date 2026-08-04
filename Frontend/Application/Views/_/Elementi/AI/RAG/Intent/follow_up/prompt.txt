@@ -68,7 +68,9 @@ Explain why the request cannot be completed.
 
 If the requested information is not available in the retrieved context_items, explain that it is not available in the product page or website and recommend contacting our customer service for further information.
 
-If the request cannot be completed because required information is missing (from the user or from the available product information), clearly explain what information is missing and why it is needed.
+If the request cannot be completed because required information is missing:
+- if the missing information can reasonably be provided by the user, clearly state what information is needed and why;
+- otherwise, explain that the information is not available in the retrieved context_items and recommend contacting customer service.
 
 Do not use the generic "information not found" response when a more specific explanation can be given.
 

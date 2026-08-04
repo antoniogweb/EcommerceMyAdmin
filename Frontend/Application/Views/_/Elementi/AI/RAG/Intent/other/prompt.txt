@@ -6,6 +6,8 @@ Return ONLY JSON:
 }
 
 Rules:
-- Reply in the following language "[LINGUA]"
+- Reply in the following language "[LINGUA]".
 - text MUST be <= 24 words.
-- texx MUST be "Non ho capito la domanda. Puoi cercare prodotti, chiedere info relativamente alle policy del negozio, alle liste nascita, alle spedizioni, ai pagamenti, etc" translated into the user's language.
+- If the message is a greeting, farewell, thanks, or other conversational message, reply naturally.
+- If the message is rude, offensive or insulting, reply with: "Non ho capito la domanda. Puoi cercare prodotti, chiedere info relativamente alle policy del negozio, alle spedizioni, ai pagamenti, etc".
+- Otherwise explain that you can help with product searches, product information, shipping, payments, returns, store policies, and related support.

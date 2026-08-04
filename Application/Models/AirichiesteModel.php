@@ -615,22 +615,25 @@ class AirichiesteModel extends GenericModel
 							"id_admin"			=>	(!App::$isFrontend) ? User::$id : 0,
 							"id_user"			=>	App::$isFrontend ? User::$id : 0,
 							"ruolo"				=>	"user",
-						));
-						
-						$airmModel->insert();
-						
-						$airmModel->sValues(array(
-							"messaggio"			=>	gtext(self::$fraseRichiestaTroppoLunga),
-							"id_ai_richiesta"	=>	(int)$id,
-							"id_admin"			=>	User::$id,
-							"ruolo"				=>	"assistant",
-							"risultato_richiesta"	=>	1,
 							"status"			=>	self::ERROR_STATUS,
 							"reason"			=>	"TOO_LONG_REQUEST",
-							"id_rif"			=>	(int)$airmModel->lId,
 						));
 						
-						$airmModel->insert();
+						if ($airmModel->insert())
+						{
+							$airmModel->sValues(array(
+								"messaggio"			=>	gtext(self::$fraseRichiestaTroppoLunga),
+								"id_ai_richiesta"	=>	(int)$id,
+								"id_admin"			=>	User::$id,
+								"ruolo"				=>	"assistant",
+								"risultato_richiesta"	=>	1,
+								"status"			=>	self::ERROR_STATUS,
+								"reason"			=>	"TOO_LONG_REQUEST",
+								"id_rif"			=>	(int)$airmModel->lId,
+							));
+							
+							$airmModel->insert();
+						}
 						
 						// $this->sendEvent([
 						// 	'type'	=>	'result',
@@ -658,69 +661,69 @@ class AirichiesteModel extends GenericModel
 					$messaggi[] = $messaggioElaborato;
 				}
 				
+				$okRouting = false;
+				
+				AirichiesteresponseModel::$tipo = "GENERICA";
+				
+				if ($isRag)
+				{
+					if (isset($intent) && $intent)
+					{
+						$okRouting = true;
+						
+						AirichiesteresponseModel::$tipo = strtoupper($intent);
+					}
+					
+					if ($okRouting)
+					{
+						if ($intent == "threshold_exceeded")
+							list($ris, $risposta) = array(1, gtext(self::$fraseTroppeRichieste));
+						else if ($intent == "threshold_exceeded_ip")
+							list($ris, $risposta) = array(1, gtext(self::$fraseTroppeRichiesteIp));
+						else if ($intent == "clarification")
+							list($ris, $risposta) = array(1, $messaggoRag);
+						else
+						{
+							list($ris, $risposta) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low");
+							
+							$risposta = stripTagsSicuro($risposta);
+							
+							$risposta = json_decode($risposta, true);
+							
+							$status = $risposta["status"] ?? "";
+							$reason = isset($risposta["reason"]) ? (string)$risposta["reason"] : "";
+							
+							if ($intent == "other")
+							{
+								$status = self::ERROR_STATUS;
+								$reason = "OUT_OF_SCOPE";
+							}
+							
+							$risposta = $this->elaboraRisposta($intent, $risposta, $record["lingua"]);
+						}
+					}
+					else
+						list($ris, $risposta) = array(0, gtext("Non sono riuscito a elaborare la richiesta. Riprova."));
+				}
+				else
+				{
+					list($ris, $risposta) = $this->richiesta($messaggi, $contesto, $istruzioni, null, true, "high");
+					
+					$risposta = stripTagsSicuro($risposta);
+				}
+				
 				$airmModel->sValues(array(
 					"messaggio"			=>	$messaggio,
 					"id_ai_richiesta"	=>	(int)$id,
 					"id_admin"			=>	(!App::$isFrontend) ? User::$id : 0,
 					"id_user"			=>	App::$isFrontend ? User::$id : 0,
 					"ruolo"				=>	"user",
+					"status"			=>	$status ?? "",
+					"reason"			=>	$reason ?? "",
 				));
 
 				if ($airmModel->insert())
 				{
-					$idRif = $airmModel->lId;
-					
-					$okRouting = false;
-					
-					AirichiesteresponseModel::$tipo = "GENERICA";
-					
-					if ($isRag)
-					{
-						if (isset($intent) && $intent)
-						{
-							$okRouting = true;
-							
-							AirichiesteresponseModel::$tipo = strtoupper($intent);
-						}
-						
-						if ($okRouting)
-						{
-							if ($intent == "threshold_exceeded")
-								list($ris, $risposta) = array(1, gtext(self::$fraseTroppeRichieste));
-							else if ($intent == "threshold_exceeded_ip")
-								list($ris, $risposta) = array(1, gtext(self::$fraseTroppeRichiesteIp));
-							else if ($intent == "clarification")
-								list($ris, $risposta) = array(1, $messaggoRag);
-							else
-							{
-								list($ris, $risposta) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low");
-								
-								$risposta = stripTagsSicuro($risposta);
-								
-								$risposta = json_decode($risposta, true);
-								
-								$status = $risposta["status"] ?? "";
-								$reason = isset($risposta["reason"]) ? (string)$risposta["reason"] : "";
-								
-								if ($intent == "other")
-								{
-									$status = self::ERROR_STATUS;
-									$reason = "OUT_OF_SCOPE";
-								}
-								
-								$risposta = $this->elaboraRisposta($intent, $risposta, $record["lingua"]);
-							}
-						}
-						else
-							list($ris, $risposta) = array(0, gtext("Non sono riuscito a elaborare la richiesta. Riprova."));
-					}
-					else
-					{
-						list($ris, $risposta) = $this->richiesta($messaggi, $contesto, $istruzioni, null, true, "high");
-						
-						$risposta = stripTagsSicuro($risposta);
-					}
-					
 					$airmModel->sValues(array(
 						"messaggio"			=>	$risposta,
 						"id_ai_richiesta"	=>	(int)$id,
@@ -729,7 +732,7 @@ class AirichiesteModel extends GenericModel
 						"risultato_richiesta"	=>	(int)$ris,
 						"status"			=>	$status ?? "",
 						"reason"			=>	$reason ?? "",
-						"id_rif"			=>	(int)$idRif,
+						"id_rif"			=>	(int)$airmModel->lId,
 					));
 					
 					$airmModel->insert();

@@ -119,6 +119,7 @@ FOLLOW-UP RULES:
 - Classify the result as follow_up if the user is asking about one or more products already presented in recent_chat, rather than requesting a new product search.
 - Do not classify a short reply as product_search merely because it contains a product name, SKU, brand, model, material, application, color, or another short entity. Classify it according to the expected final answer.
 - Do not classify as product_search when the completed request continues the current product discussion and no new product search is required.
+- A standalone greeting, farewell, thanks, compliment, apology, or similar conversational message is never a follow_up. Classify it as other unless the message also contains a request for product information, store information, or a follow-up question.
 
 RECENT CHAT
 if present, recent_chat contains the latest messages exchanged before the current user message.
