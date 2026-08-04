@@ -1268,8 +1268,12 @@ class AirichiesteModel extends GenericModel
 				
 				$istruzioni.= "\n".$promptStatus;
 				
+				$pModel = new PagesModel();
+				
 				foreach ($contents as $c)
 				{
+					$varianti = $pModel->selectAttributiJson((int)$c["id_page"]);
+					
 					$descrizione = $c["descrizione"]." ".$c["descrizione_2"]." ".$c["descrizione_3"]." ".$c["descrizione_4"];
 					
 					$lines = QueryAwareContextBuilder::extractRelevantSnippet($messaggio, stripTagsDecode($descrizione), 4);
@@ -1293,6 +1297,7 @@ class AirichiesteModel extends GenericModel
 						"price"		=>	$c["prezzo_pieno"],
 						"discounted_price"		=>	$c["prezzo_scontato"],
 						"brand"		=>	$c["marchio"],
+						"variants"	=>	$varianti,
 					);
 					
 					if (count($links) > 0 && $intent == "informational")

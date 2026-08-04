@@ -3133,6 +3133,22 @@ class PagesModel extends GenericModel {
 		return array($colonne, $lista_valori_attributi);
 	}
 	
+	public function selectAttributiJson($id_page)
+	{
+		$clean['id'] = (int)$id_page;
+		
+		list($colonne, $valori) = $this->selectAttributi($clean['id']);
+		
+		$jsonArray = array();
+		
+		foreach ($colonne as $col => $name)
+		{
+			$jsonArray[$name] = array_values($valori[$col]);
+		}
+		
+		return json_encode($jsonArray);
+	}
+	
 	public function selectPersonalizzazioni($id_page)
 	{
 		$pers = new PersonalizzazioniModel();
