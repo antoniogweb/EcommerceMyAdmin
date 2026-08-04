@@ -104,6 +104,9 @@ class ReggroupsController extends BaseController
 	
 	public function tipi($id = 0)
 	{
+		if (!v("attiva_reggroups_tipi"))
+			$this->responseCode(403);
+		
 		$this->_posizioni['tipi'] = 'class="active"';
 		
 // 		$data["orderBy"] = $this->orderBy = "id_order";
