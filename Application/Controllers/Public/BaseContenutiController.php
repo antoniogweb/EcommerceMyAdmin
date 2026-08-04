@@ -380,6 +380,10 @@ class BaseContenutiController extends BaseController
 					//tolgo la root
 					array_shift($par);
 					
+					//tolgo l'alias della sezione prodotti
+					if (!v("mantieni_alias_sezione_in_url_prodotti") && count($par) > 1 && isset($par[0]["categories"]["section"]) && $par[0]["categories"]["section"] == Parametri::$nomeSezioneProdotti)
+						array_shift($par);
+					
 					$parents[$id] = $par;
 					
 					//tolgo la pagina
@@ -1601,7 +1605,7 @@ class BaseContenutiController extends BaseController
 			
 			$data["meta_description"] = F::meta(mfield($marchioCorrente, "meta_description"));
 			$data["keywords"] = mfield($marchioCorrente, "keywords");
-			$data["title"] = mfield($marchioCorrente, "titolo");
+			$data["title"] = $this->aggiungiNomeNegozioATitle(F::meta(mfield($marchioCorrente, "titolo")));
 			$data["idMarchio"] = (int)$id;
 			
 			$this->append($data);

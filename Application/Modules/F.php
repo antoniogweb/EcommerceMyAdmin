@@ -85,13 +85,13 @@ class F
 	
 	public static function meta($string, $num = 999999)
 	{
-		$string = strip_tags(htmlentitydecode($string));
+		$string = stripTagsSicuro($string);
 		
 		if (eg_strlen($string) > $num)
 		{
 			$string = mb_substr($string,0,$num)."...";
 		}
-		return htmlspecialchars($string, ENT_COMPAT, "UTF-8");
+		return sanitizeHtmlLight($string);
 	}
 	
 	public static function jsonEncode($str)
