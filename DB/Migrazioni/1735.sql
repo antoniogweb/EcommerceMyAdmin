@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste_messaggi` add id_rif int UNSIGNED not null default 0;

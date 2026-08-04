@@ -79,9 +79,14 @@ lookup
 Everything else.
 
 CLARIFICATION RULES:
+Before classifying the request as clarification, reconstruct the complete current request using the current user message and recent_chat.
+
 Use intent "clarification" when the current request cannot be answered or processed without first obtaining additional information from the user.
 For recommendation requests, ask only for the single most important missing detail.
 After the user replies, evaluate the updated request again.
+Always reconstruct the complete user request using recent_chat before determining the missing information.
+Ask only for the single most important missing detail.
+Never ask the user to clarify a subject that is already established in recent_chat.
 If another essential detail is still missing, ask one new clarification question.
 Otherwise proceed with retrieval.
 
@@ -112,6 +117,7 @@ FOLLOW-UP RULES:
 - Classify the result as product_search if the completed request should return a list or selection of products.
 - Classify the result as follow_up if the user is asking about one or more products already presented in recent_chat, rather than requesting a new product search.
 - Do not classify a short reply as product_search merely because it contains a product name, SKU, brand, model, material, application, color, or another short entity. Classify it according to the expected final answer.
+- Do not classify as product_search when the completed request continues the current product discussion and no new product search is required.
 
 RECENT CHAT
 if present, recent_chat contains the latest messages exchanged before the current user message.

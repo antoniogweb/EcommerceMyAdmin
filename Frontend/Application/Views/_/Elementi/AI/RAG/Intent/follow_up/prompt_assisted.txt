@@ -1,6 +1,8 @@
 Return ONLY JSON:
 {
-"text": "string"
+"text": "string",
+"status": "string",
+"reason": "string|null"
 }
 
 Rules:

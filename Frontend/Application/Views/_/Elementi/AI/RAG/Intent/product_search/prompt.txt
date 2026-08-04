@@ -1,5 +1,5 @@
 Return ONLY JSON:
-{"intro_text":"string","items":[{"id":"string","title":"string","comment":"string"}]}
+{"intro_text":"string","items":[{"id":"string","title":"string","comment":"string"}],"status": "string","reason": "string|null"}
 
 Rules:
 - Reply in the following language "[LINGUA]"

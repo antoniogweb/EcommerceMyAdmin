@@ -26,6 +26,8 @@ require_once(LIBRARY."/Application/Modules/AI/Context/QueryAwareContextBuilder.p
 
 class AirichiesteModel extends GenericModel
 {
+	const ERROR_STATUS = 'FAILED';
+	
 	public static $fraseTroppeRichieste = "Il sistema sta ricevendo molte richieste in questo momento. Riprova tra un minuto.";
 	public static $fraseTroppeRichiesteIp = "Hai superato il limite di richieste per ora. Riprova tra un'ora.";
 	public static $fraseRichiestaTroppoLunga = "La richiesta è troppo lunga, riprovi con una domanda più corta";
@@ -523,7 +525,7 @@ class AirichiesteModel extends GenericModel
 		return $this->clear()->whereId((int)$id)->field("rag");
 	}
 	
-	public function recuperaMessaggi($idChat, $limit = 0)
+	public function recuperaMessaggi($idChat, $limit = 0, $skipFailed = false)
 	{
 		$messaggi = array();
 		
@@ -537,6 +539,12 @@ class AirichiesteModel extends GenericModel
 		
 		if ($limit)
 			$airmModel->limit((int)$limit);
+		
+		if ($skipFailed)
+			$airmModel->sWhere(array(
+				"(status != ? OR status = '')",
+				array(sanitizeAll(self::ERROR_STATUS))
+			));
 		
 		$res = $airmModel->send(false);
 		
@@ -617,6 +625,9 @@ class AirichiesteModel extends GenericModel
 							"id_admin"			=>	User::$id,
 							"ruolo"				=>	"assistant",
 							"risultato_richiesta"	=>	1,
+							"status"			=>	self::ERROR_STATUS,
+							"reason"			=>	"TOO_LONG_REQUEST",
+							"id_rif"			=>	(int)$airmModel->lId,
 						));
 						
 						$airmModel->insert();
@@ -640,7 +651,7 @@ class AirichiesteModel extends GenericModel
 					// ]);
 					
 					if ($intent == "follow_up")
-						$messaggi = $this->recuperaMessaggi($id, v("numero_messaggi_storico_chat_da_riportare"));
+						$messaggi = $this->recuperaMessaggi($id, v("numero_messaggi_storico_chat_da_riportare"), true);
 					
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggoRag);
 					
@@ -657,6 +668,8 @@ class AirichiesteModel extends GenericModel
 
 				if ($airmModel->insert())
 				{
+					$idRif = $airmModel->lId;
+					
 					$okRouting = false;
 					
 					AirichiesteresponseModel::$tipo = "GENERICA";
@@ -684,6 +697,17 @@ class AirichiesteModel extends GenericModel
 								
 								$risposta = stripTagsSicuro($risposta);
 								
+								$risposta = json_decode($risposta, true);
+								
+								$status = $risposta["status"] ?? "";
+								$reason = isset($risposta["reason"]) ? (string)$risposta["reason"] : "";
+								
+								if ($intent == "other")
+								{
+									$status = self::ERROR_STATUS;
+									$reason = "OUT_OF_SCOPE";
+								}
+								
 								$risposta = $this->elaboraRisposta($intent, $risposta, $record["lingua"]);
 							}
 						}
@@ -703,6 +727,9 @@ class AirichiesteModel extends GenericModel
 						"id_admin"			=>	User::$id,
 						"ruolo"				=>	"assistant",
 						"risultato_richiesta"	=>	(int)$ris,
+						"status"			=>	$status ?? "",
+						"reason"			=>	$reason ?? "",
+						"id_rif"			=>	(int)$idRif,
 					));
 					
 					$airmModel->insert();
@@ -735,15 +762,15 @@ class AirichiesteModel extends GenericModel
 			list($ris, $risposta) = $this->richiesta(array($messaggioElaborato), "", $istruzioni, $idModelloPredefinito, $okRouting);
 			
 			if (isset($intent) && $intent)
-				return $this->elaboraRisposta($intent, $risposta, $lingua);
+				return $this->elaboraRisposta($intent, json_decode($messaggio, true), $lingua);
 		}
 		
 		return "";
 	}
 	
-	public function elaboraRisposta($intent, $messaggio, $lingua = "it")
+	public function elaboraRisposta($intent, $messaggioArray, $lingua = "it")
 	{
-		$messaggioArray = json_decode($messaggio, true);
+		// $messaggioArray = json_decode($messaggio, true);
 		
 		$tpf = tpf("Elementi/AI/RAG/Intent/$intent/layout.txt");
 		
@@ -1226,12 +1253,20 @@ class AirichiesteModel extends GenericModel
 			
 			if (is_file($tpf))
 			{
+				// Prompt intent
 				ob_start();
 				include $tpf;
 				$istruzioni = ob_get_clean();
 				
 				$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
 				$istruzioni = str_replace("[LINGUA]", $lingua, $istruzioni);
+				
+				// prompt status
+				ob_start();
+				include tpf("Elementi/AI/RAG/Intent/prompt_status.txt");
+				$promptStatus = ob_get_clean();
+				
+				$istruzioni.= "\n".$promptStatus;
 				
 				foreach ($contents as $c)
 				{
@@ -1359,7 +1394,7 @@ class AirichiesteModel extends GenericModel
 			
 			$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
 			
-			$messaggi = $this->recuperaMessaggi(self::$idChat, v("numero_messaggi_storico_chat_da_riportare"));
+			$messaggi = $this->recuperaMessaggi(self::$idChat, v("numero_messaggi_storico_chat_da_riportare"), true);
 			
 			$contestoPrecedente = "";
 			

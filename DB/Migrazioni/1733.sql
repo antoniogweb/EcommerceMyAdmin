@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste_messaggi` add status varchar(100) not null default '';

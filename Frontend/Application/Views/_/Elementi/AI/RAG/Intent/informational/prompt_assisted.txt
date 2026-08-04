@@ -8,7 +8,9 @@ Return ONLY JSON:
 "comment":"string",
 "in_depth":[{"text":"string","url":"string","comment":"string"}]
 }
-]
+],
+"status": "string",
+"reason": "string|null"
 }
 
 Rules:

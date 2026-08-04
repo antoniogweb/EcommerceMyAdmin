@@ -13,7 +13,9 @@ Return ONLY JSON:
 }
 ]
 }
-]
+],
+"status": "string",
+"reason": "string|null"
 }
 
 Rules:
