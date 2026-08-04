@@ -2515,6 +2515,9 @@ class BaseContenutiController extends BaseController
 	
 	public function listaregalo($codice = "", $alias = "")
 	{
+		header("X-Robots-Tag: noindex, nofollow, noarchive");
+		header("Referrer-Policy: no-referrer");
+		
 		if (isset($_GET["codice_lista"]))
 			$codice = (string)$_GET["codice_lista"];
 		

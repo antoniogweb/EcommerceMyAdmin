@@ -23,6 +23,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+header("X-Robots-Tag: noindex, nofollow, noarchive");
+header("Referrer-Policy: no-referrer");
+
 if (!defined('EG')) die('Direct access not allowed!');
 
 // require_once(LIBRARY.'/External/PHPMailer-master/src/Exception.php');
