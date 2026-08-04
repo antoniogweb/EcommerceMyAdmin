@@ -420,6 +420,7 @@ function normalizzaPrezzo($prezzo): string
 
 function setPriceReverse($price, $numeroCifre = 2)
 {
+	$price = (string)$price;
 	$price = number_format((float)$price,$numeroCifre,".","");
 	return str_replace(".",",",$price);
 }
