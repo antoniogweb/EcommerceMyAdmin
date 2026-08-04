@@ -145,6 +145,8 @@ class PagesModel extends GenericModel {
 	
 	public static $idPagineInAcquisti = null;
 	
+	public static $idPagineSpedibiliInNazione = array();
+	
 	public function __construct() {
 		$this->_tables='pages';
 		$this->_idFields='id_page';
@@ -2299,7 +2301,7 @@ class PagesModel extends GenericModel {
 	public function getInAcquistiCrud($record)
 	{
 		if (!isset(self::$idPagineInAcquisti))
-			self::$idPagineInAcquisti = MagazzinoarticolicombinazioniModel::g(false)->clear()->toList("id_page")->send();
+			self::$idPagineInAcquisti = MagazzinoarticolicombinazioniModel::g(false)->clear()->select("id_page")->toList("id_page")->send();
 		
 		return in_array($record["pages"]["id_page"],self::$idPagineInAcquisti) ? "<i class='fa fa-check text text-success'></i>" : "<i class='fa fa-ban'></i>";
 	}
@@ -5010,5 +5012,94 @@ class PagesModel extends GenericModel {
 		{
 			self::$ordinamentoDefaultProdotti = (string)trim($_COOKIE["ord"]);
 		}
+	}
+	
+	// Restituisce l'elenco dei prodotti in $idsC (array di id_c) considerando l'inclusione o l'esclusione di marchi ($whereMarchi) e l'inclusione o l'esclusione di prodotti ($wherePagine)
+	public static function getElencoProdottiCategorie($idsC, $whereMarchi = array(), $wherePagine = array())
+	{
+		$c = new CategoriesModel();
+		$p = new PagesModel();
+		
+		$idPages = $arrayIdCategorie = array();
+		
+		foreach ($idsC as $idC)
+		{
+			if (in_array($idC, $arrayIdCategorie))
+				continue;
+			
+			$children = $c->children((int)$idC, true);
+			
+			if (count($children) > 0)
+				$arrayIdCategorie = array_merge($arrayIdCategorie, $children);
+			
+			$bindedValues = $children;
+			$bindedValues[] = (int)$idC;
+			
+			$pages = $p->clear()->select("id_page")->where(array(
+				"attivo" => "Y",
+				"principale"=>"Y",
+			))
+			->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues))
+			->aWhere($whereMarchi)
+			->aWhere($wherePagine)
+			->toList("id_page")->send();
+			
+			$idPages = array_merge($idPages, $pages);
+		}
+		
+		$idPages = array_unique($idPages);
+		
+		return $idPages;
+	}
+	
+	// Restituisce tutte le pagine con qualche nazione associata
+	public static function getIdPagineSpedibiliInNazione($nazione = "")
+	{
+		if (!isset(self::$idPagineSpedibiliInNazione[$nazione]))
+		{
+			$cn = new CategoriesnazioniModel();
+			$pn = new PagesnazioniModel();
+			
+			$cn->clear()->select("id_c")->toList("id_c");
+			
+			if ($nazione)
+				$cn->aWhere(array(
+					"nazione"	=>	sanitizeAll($nazione),
+				));
+			
+			$idCs = $cn->send();
+			$idCs = array_unique($idCs);
+			
+			$idPagineIncluseDaCategorie = PagesModel::getElencoProdottiCategorie($idCs);
+			
+			$pn->clear()->select("id_page")->toList("id_page");
+			
+			if ($nazione)
+				$pn->aWhere(array(
+					"nazione"	=>	sanitizeAll($nazione),
+				));
+			
+			$idPagesIncluse = $pn->send();
+			
+			$idPagesIncluse = array_merge($idPagesIncluse, $idPagineIncluseDaCategorie);
+			
+			self::$idPagineSpedibiliInNazione[$nazione] = array_unique($idPagesIncluse);
+		}
+		
+		return self::$idPagineSpedibiliInNazione[$nazione];
+	}
+	
+	// Restituisce true o false se $idPage è spedibile o meno in $nazione
+	public static function spedibileInNazione($nazione, $idPage)
+	{
+		$idPagineSpedibiliInNazione = self::getIdPagineSpedibiliInNazione();
+		
+		if (!in_array($idPage, $idPagineSpedibiliInNazione))
+			return true;
+		
+		$idPagineSpedibiliInNazione = self::getIdPagineSpedibiliInNazione($nazione);
+		
+		if (in_array($idPage, $idPagineSpedibiliInNazione))
+			return true;
 	}
 }

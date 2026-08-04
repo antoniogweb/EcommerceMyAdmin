@@ -36,6 +36,15 @@
 	<div class="uk-text-danger uk-text-bold"><?php echo gtext("Non spedibile nella nazione selezionata");?></div>
 <?php } ?>
 
+<?php if (v("attiva_spedizione") && isset($_POST["nazione_spedizione"])) {
+	$prodottiNonSpedibiliNellaNazione = CartModel::g(false)->prodottiNonSpedibili($_POST["nazione_spedizione"]);
+	
+	if (count($prodottiNonSpedibiliNellaNazione) > 0) {
+?>
+	<div class="uk-alert uk-alert-danger"><?php echo gtext("I seguenti prodotti non possono essere spediti nella nazione selezionata:");?><ul><li><?php echo implode("</li><li>",$prodottiNonSpedibiliNellaNazione);?></li></ul></div>
+	<?php } ?>
+<?php } ?>
+
 <?php if (User::$isPhone && !v("piattaforma_di_demo") && v("mostra_doppio_pulsante_acquista_mobile")) {
 include(tpf(ElementitemaModel::p("CHECKOUT_PULSANTE_ACQUISTA","", array(
 	"titolo"	=>	"Pulsante completa acquisto",

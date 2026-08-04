@@ -1,0 +1,1 @@
+ALTER TABLE `pages_nazioni` ADD INDEX `pages_nazioni_id_page` (`id_page`);

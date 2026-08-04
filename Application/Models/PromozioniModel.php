@@ -609,39 +609,41 @@ class PromozioniModel extends GenericModel {
 	// Restituisce l'elenco dei prodotti in $idsC (array di id_c) considerando l'inclusione o l'esclusione di marchi ($whereMarchi) e l'inclusione o l'esclusione di prodotti ($wherePagine)
 	protected function getElencoProdottiCategorie($idsC, $whereMarchi = array(), $wherePagine = array())
 	{
-		$c = new CategoriesModel();
-		$p = new PagesModel();
+		return PagesModel::getElencoProdottiCategorie($idsC, $whereMarchi, $wherePagine);
 		
-		$idPages = $arrayIdCategorie = array();
-		
-		foreach ($idsC as $idC)
-		{
-			if (in_array($idC, $arrayIdCategorie))
-				continue;
-			
-			$children = $c->children((int)$idC, true);
-			
-			if (count($children) > 0)
-				$arrayIdCategorie = array_merge($arrayIdCategorie, $children);
-			
-			$bindedValues = $children;
-			$bindedValues[] = (int)$idC;
-			
-			$pages = $p->clear()->select("id_page")->where(array(
-				"attivo" => "Y",
-				"principale"=>"Y",
-			))
-			->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues))
-			->aWhere($whereMarchi)
-			->aWhere($wherePagine)
-			->toList("id_page")->send();
-			
-			$idPages = array_merge($idPages, $pages);
-		}
-		
-		$idPages = array_unique($idPages);
-		
-		return $idPages;
+// 		$c = new CategoriesModel();
+// 		$p = new PagesModel();
+// 		
+// 		$idPages = $arrayIdCategorie = array();
+// 		
+// 		foreach ($idsC as $idC)
+// 		{
+// 			if (in_array($idC, $arrayIdCategorie))
+// 				continue;
+// 			
+// 			$children = $c->children((int)$idC, true);
+// 			
+// 			if (count($children) > 0)
+// 				$arrayIdCategorie = array_merge($arrayIdCategorie, $children);
+// 			
+// 			$bindedValues = $children;
+// 			$bindedValues[] = (int)$idC;
+// 			
+// 			$pages = $p->clear()->select("id_page")->where(array(
+// 				"attivo" => "Y",
+// 				"principale"=>"Y",
+// 			))
+// 			->sWhere(array("(pages.id_c in(".$p->placeholdersFromArray($children).") OR pages.id_page in (select id_page from pages_categories where id_c = ?))",$bindedValues))
+// 			->aWhere($whereMarchi)
+// 			->aWhere($wherePagine)
+// 			->toList("id_page")->send();
+// 			
+// 			$idPages = array_merge($idPages, $pages);
+// 		}
+// 		
+// 		$idPages = array_unique($idPages);
+// 		
+// 		return $idPages;
 	}
 	
 	// Estrae l'elenco di tuti i prodotti nella promozione

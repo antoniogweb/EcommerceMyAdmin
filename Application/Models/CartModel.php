@@ -1928,4 +1928,27 @@ class CartModel extends GenericModel {
 		
 		self::$checkCart = false;
 	}
+	
+	public function prodottiNonSpedibili($nazione)
+	{
+		$cart = $this->getRigheCart();
+		
+		$nonSpedibili = $nonSpedibiliTitolo = array();
+		
+		foreach ($cart as $c)
+		{
+			if (!PagesModel::spedibileInNazione($nazione, $c["id_page"]))
+				$nonSpedibili[] = (int)$c["id_page"];
+		}
+		
+		foreach ($nonSpedibili as $idPage)
+		{
+			$page = PagesModel::getPageDetails((int)$idPage);
+			
+			if (!empty($page))
+				$nonSpedibiliTitolo[] = field($page, "title");
+		}
+		
+		return $nonSpedibiliTitolo;
+	}
 }
