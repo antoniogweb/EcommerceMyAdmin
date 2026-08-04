@@ -114,6 +114,7 @@ FOLLOW-UP RULES:
 - A follow_up means that the user is continuing the previous conversation and the expected answer is primarily conversational or explanatory.
 - A follow_up may still introduce one or more new explicitly named subjects.
 - If the immediately previous assistant message is a clarification question and the current user message provides the requested missing information, combine the new information with recent_chat and re-evaluate the complete user request.
+- If the completed request asks for calculations, quantities, usage, suitability, compatibility, or other information about a product already established in recent_chat, classify it as follow_up.
 - Classify the result as product_search if the completed request should return a list or selection of products.
 - Classify the result as follow_up if the user is asking about one or more products already presented in recent_chat, rather than requesting a new product search.
 - Do not classify a short reply as product_search merely because it contains a product name, SKU, brand, model, material, application, color, or another short entity. Classify it according to the expected final answer.
@@ -150,6 +151,8 @@ FOLLOW-UP SUBJECT RULES:
 ENTITY EXTRACTION RULE:
 - Extract information explicitly present in the current user message.
 - For follow_up requests, subjects and entities may also be resolved from recent_chat when the user clearly refers to a previously identified product, SKU, model, brand, category, material, application, or other subject.
+- Product metadata (SKU, brand, price, attributes) must be extracted only if explicitly present in the current user message.
+- Never extract internal placeholders such as [IPAG_...] or [LPAG_...] as SKUs or product codes.
 - Do not infer information from general knowledge.
 - Do not invent specifications, uses, compatibility, dimensions, or technical characteristics.
 - If an entity cannot be identified from either the current message or recent_chat, return null or an empty array.
@@ -172,6 +175,8 @@ PRODUCT CODE / SKU RULES:
 - Do NOT put the product code in product_title unless it is clearly part of a natural product name.
 - Preserve the code exactly as written by the user, except trim surrounding punctuation.
 - If multiple product codes are present, return the most relevant one in SKU.value.
+- Extract SKU only if it is explicitly present in the current user message.
+- For follow_up requests, SKU may also be resolved from recent_chat.
 
 Set value fields to null if not present.
 If the message is related to products, product usage, product compatibility, brands, categories, materials, or product characteristics, NEVER use "other".
