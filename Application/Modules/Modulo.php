@@ -250,6 +250,10 @@ trait Modulo
 		
 		foreach ($res as $r)
 		{
+			// Elimino dal feed i prodotti non spedibili in quella nazione
+			if (v("attiva_limitazione_spedizione_nazioni") && $nazione != "W" && $nazione && !PagesModel::spedibileInNazione($nazione, $r["pages"]["id_page"]))
+				continue;
+			
 			$idC = isset($r["combinazioni"]["id_c"]) ? (int)$r["combinazioni"]["id_c"] : $p->getIdCombinazioneCanonical((int)$r["pages"]["id_page"]);
 			
 			$titoloCombinazione = $combinazioniLinkVeri ? " ".$comb->getTitoloCombinazione($r["combinazioni"]["id_c"]) : "";
