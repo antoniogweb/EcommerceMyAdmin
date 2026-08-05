@@ -714,7 +714,7 @@ class AirichiesteModel extends GenericModel
 							list($ris, $risposta) = array(1, $messaggoRag);
 						else
 						{
-							list($ris, $risposta) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low");
+							list($ris, $risposta) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low", array(), true);
 							
 							$risposta = stripTagsSicuro($risposta);
 							
@@ -1503,7 +1503,7 @@ class AirichiesteModel extends GenericModel
 		return false;
 	}
 	
-	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false, $reasoning = "low", $routingSchema = array())
+	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false, $reasoning = "low", $routingSchema = array(), $prenotaResponse = false)
 	{
 		if (!isset($idModello))
 			$idModello = AimodelliModel::g(false)->getModelloPredefinito();
@@ -1519,7 +1519,17 @@ class AirichiesteModel extends GenericModel
 		if (!$forza && !$this->checkRichiesta($messaggi))
 			list($res, $output) = array(0, gtext(self::$fraseRichiestaTroppoLunga));
 		else
+		{
+			if ($prenotaResponse)
+			{
+				$airrModel = new AirichiesteresponseModel();
+				$airrModel->db->beginTransaction();
+				AirichiesteresponseModel::$idLastInsert = $airrModel->aggiungi("", "");
+				$airrModel->db->commit();
+			}
+			
 			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni, $reasoning, $routingSchema);
+		}
 		
 		// echo $output."\n\n\n";
 		
