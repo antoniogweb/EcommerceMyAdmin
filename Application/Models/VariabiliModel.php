@@ -973,6 +973,8 @@ class VariabiliModel extends GenericModel {
 		"immagini_in_categorie_prodotti"	=>	0, // se sono visibili oppure no le immagini supplementari nelle categorie prodotti
 		"immagini_in_marchi"	=>	0, // se sono visibili oppure no le immagini supplementari neli marchi
 		"immagini_in_tag"		=>	0, // se sono visibili oppure no le immagini supplementari neli tag
+		### SECRET ##
+		"secret_key"			=>	"", // secret key usata come firma con hash_hmac sha256
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect
@@ -1004,6 +1006,7 @@ class VariabiliModel extends GenericModel {
 		"token_cron_log_tecnici",
 		"token_migrazioni_no_admin",
 		"token_cron_ai",
+		"secret_key",
 	);
 	
 	// Condizioni per il salvataggio in /variabili

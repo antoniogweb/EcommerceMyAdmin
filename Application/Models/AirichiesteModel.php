@@ -418,8 +418,11 @@ class AirichiesteModel extends GenericModel
 		User::$assistant_uid = "";
 		
 		if (
-			!isset($_COOKIE['assistant_uid'])
-			|| !ctype_alnum((string)$_COOKIE["assistant_uid"])
+			!isset($_COOKIE['assistant_uid']) 
+			|| !isset($_COOKIE['assistant_uid_sig'])
+			|| strlen((string)$_COOKIE["assistant_uid"]) !== 32 
+			|| !ctype_xdigit((string)$_COOKIE["assistant_uid"]) 
+			|| !ValueSigner::verify($_COOKIE['assistant_uid'], $_COOKIE['assistant_uid_sig'], v("secret_key"))
 		) {
 			return '';
 		}
@@ -431,7 +434,7 @@ class AirichiesteModel extends GenericModel
 	{
 		User::$assistant_uid = randomToken();
 		$time = time() + v("durata_cookie_chatbot");
-		Cookie::set("assistant_uid", User::$assistant_uid, $time, "/", true, 'Lax');
+		Cookie::set("assistant_uid", User::$assistant_uid, $time, "/", true, 'Lax', true, v("secret_key"));
 	}
 	
 	private function getChatFromAssistantUid()
@@ -515,6 +518,7 @@ class AirichiesteModel extends GenericModel
 	{
 		if (App::$isFrontend)
 		{
+			$this->values["id_admin"] = 0;
 			$this->values["id_user"] = User::$id;
 			$this->values["id_ai_modello"] = (int)AimodelliModel::g(false)->getModelloPredefinito();
 			$this->values["assistant_uid"] = isset(User::$assistant_uid) ? sanitizeAll(User::$assistant_uid) : "";
@@ -523,6 +527,7 @@ class AirichiesteModel extends GenericModel
 		else
 		{
 			$this->values["id_admin"] = User::$id;
+			$this->values["id_user"] = 0;
 			$this->values["zona"] = "Backend";
 		}
 		
@@ -591,7 +596,7 @@ class AirichiesteModel extends GenericModel
 		{
 			$messaggi[] = array(
 				"role"		=>	$r["ruolo"],
-				"content"	=>	preg_replace('/\s+/u',' ',strip_tags(htmlentitydecode($r["messaggio"]))),
+				"content"	=>	preg_replace('/\s+/u',' ',stripTagsSicuro($r["messaggio"])),
 			);
 		}
 		
@@ -625,18 +630,7 @@ class AirichiesteModel extends GenericModel
 				if (!$isRag)
 				{
 					$messaggi = $this->recuperaMessaggi($id);
-// 					$res = $airmModel->clear()->select("messaggio,ruolo")->where(array(
-// 						"id_ai_richiesta"	=>	(int)$id,
-// 					))->orderBy("data_creazione")->process()->send(false);
-// 					
-// 					foreach ($res as $r)
-// 					{
-// 						$messaggi[] = array(
-// 							"role"		=>	$r["ruolo"],
-// 							"content"	=>	htmlentitydecode($r["messaggio"]),
-// 						);
-// 					}
-
+					
 					$messaggioElaborato = AimodelliModel::getModulo((int)$record["id_ai_modello"], true)->setMessaggio($messaggio);
 					
 					$messaggi[] = $messaggioElaborato;

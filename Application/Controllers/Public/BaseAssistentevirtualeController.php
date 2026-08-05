@@ -59,6 +59,10 @@ class BaseAssistentevirtualeController extends BaseController
 		}
 		
 		$idChat = $this->m("AirichiesteModel")->getChat();
+		
+		if (!User::$assistant_uid)
+			$this->m("AirichiesteModel")->setAssistantUid();
+		
 		$data["messaggi"] = $this->m("AirichiestemessaggiModel")->getMessaggi((int)$idChat);
 		
 		$this->append($data);

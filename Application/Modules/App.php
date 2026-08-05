@@ -256,6 +256,14 @@ class App
 					"Durata"		=>	v("durata_cookie_chatbot"),
 					"usato"				=>	VariabiliModel::mostraAssistenteFrontend(),
 				),
+				"assistant_uid_sig"	=>	array(
+					"Fornitore"	=>	Parametri::$nomeNegozio,
+					gtext("Tipologia")	=>	gtext("Tecnici"),
+					gtext("Necessario")	=>	gtext("Sì"),
+					"Descrizione"=>	gtext("Utilizzato per salvare la firma del cookie assistant_uid"),
+					"Durata"		=>	v("durata_cookie_chatbot"),
+					"usato"				=>	VariabiliModel::mostraAssistenteFrontend(),
+				),
 			);
 			
 			if (v("attiva_modali"))
