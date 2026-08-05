@@ -84,8 +84,15 @@
 
 <?php if ($this->action == "nazioni" && v("attiva_limitazione_spedizione_nazioni")) { ?>
 
+<div class="callout callout-info">
+	<?php echo gtext("In questa scheda è possibile specificare le nazioni in cui il prodotto può essere spedito.") ?><br />
+	<b><?php echo gtext("Se non è inclusa alcuna nazione significa che il prodotto è spedibile in tutte le nazioni attive.") ?></b>
+</div>
+
 <p>
 	<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/nazioni/main?id_page_sp=$id_page&partial=Y&cl_on_sv=Y&nobuttons=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi nazione");?></a>
 </p>
+
+
 
 <?php } ?>
