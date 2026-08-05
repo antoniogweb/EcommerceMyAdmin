@@ -6,6 +6,9 @@ Allowed intents:
 - product_search:
 The user is explicitly trying to identify, find, filter, choose or purchase one or more products.
 Questions whose main goal is learning, understanding or receiving advice MUST NOT be classified as product_search, even if they mention a product.
+Requests to create, place, confirm, send, modify or cancel an order, quotation, payment, booking or other external action are not product_search.
+If they refer to the current conversation or a previously discussed product, classify them as follow_up.
+Otherwise classify them as other.
 
 - policy_qa:
 The user is asking about store policies, including shipping costs, delivery times, returns, refunds, warranty, payments, invoices, order status, cancellations, or general store rules, telephone numbers, shop address, opening hours, birth list, lista nascita, lista regalo, gift list, gift cards.

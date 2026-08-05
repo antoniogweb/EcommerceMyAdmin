@@ -1083,21 +1083,21 @@ class AirichiesteModel extends GenericModel
 			if ($brand)
 				$queryArray[] = (string)$brand;
 			
-			if (isset($routingJson["entities"]["attributes"]) && is_array($routingJson["entities"]["attributes"]))
-			{
-				foreach ($routingJson["entities"]["attributes"] as $attr)
-				{
-					if (isset($attr["value"]))
-					{
-						$words = explode(" ", $attr["value"]);
-						
-						foreach ($words as $word)
-						{
-							$queryArray[] = $word;
-						}
-					}
-				}
-			}
+// 			if (isset($routingJson["entities"]["attributes"]) && is_array($routingJson["entities"]["attributes"]))
+// 			{
+// 				foreach ($routingJson["entities"]["attributes"] as $attr)
+// 				{
+// 					if (isset($attr["value"]))
+// 					{
+// 						$words = explode(" ", $attr["value"]);
+// 						
+// 						foreach ($words as $word)
+// 						{
+// 							$queryArray[] = $word;
+// 						}
+// 					}
+// 				}
+// 			}
 			
 			$queryArray = array_unique($queryArray);
 			
