@@ -673,7 +673,7 @@ class AirichiesteModel extends GenericModel
 						return;
 					}
 					
-					$numeroProdotti = 10;
+					$numeroProdotti = (int)v("numero_massimo_prodotti_estratti");
 					
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
 					
@@ -1293,6 +1293,7 @@ class AirichiesteModel extends GenericModel
 				
 				$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
 				$istruzioni = str_replace("[LINGUA]", $lingua, $istruzioni);
+				$istruzioni = str_replace("[NUMERO_ITEM]", v("numero_massimo_prodotti_estratti"), $istruzioni);
 				
 				// prompt status
 				ob_start();

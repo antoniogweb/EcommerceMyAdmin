@@ -12,7 +12,7 @@ Rules:
 - You may still return clearly relevant alternatives explicitly supported by context_items.
 - If context_items are unrelated, weakly related, ambiguous, or insufficient to answer the question, treat it as no match.
 - Even if the answer seems obvious or commonly known, you MUST NOT answer unless explicitly supported by context_items.
-- Choose up to 10 items.
+- Choose up to [NUMERO_ITEM] items.
 
 comment rules:
 - MUST be <= 50 words.
