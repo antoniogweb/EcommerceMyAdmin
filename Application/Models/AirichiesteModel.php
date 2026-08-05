@@ -413,30 +413,78 @@ class AirichiesteModel extends GenericModel
 		}
 	}
 	
+	private function getAssistantUid()
+	{
+		User::$assistant_uid = "";
+		
+		if (
+			!isset($_COOKIE['assistant_uid'])
+			|| !ctype_alnum((string)$_COOKIE["assistant_uid"])
+		) {
+			return '';
+		}
+
+		User::$assistant_uid = sanitizeAll(stripTagsSicuro($_COOKIE['assistant_uid']));
+	}
+	
+	public function setAssistantUid()
+	{
+		User::$assistant_uid = randomToken();
+		$time = time() + v("durata_cookie_chatbot");
+		Cookie::set("assistant_uid", User::$assistant_uid, $time, "/", true, 'Lax');
+	}
+	
+	private function getChatFromAssistantUid()
+	{
+		return $this->clear()->where(array(
+			"assistant_uid"	=>	sanitizeAll(User::$assistant_uid),
+			"id_user"		=> 0,
+			"id_admin"		=>	0,
+		))->record();
+	}
+	
 	public function getChat($crea = false)
 	{
 		$idChat = 0;
 		
+		// Recupero il cookie del chatbot
+		$this->getAssistantUid();
+		
 		if (App::$isFrontend)
 		{
-			// Cerco la chat per id_user o cart_uid
-			$record = $this->clear()->where(array(
-				"OR"	=>	array(
-					"AND"	=>	array(
-						"id_user"	=>	(int)User::$id,
-						"ne"		=>	array(
-							"id_user"	=>	0,
-						),
-					),
-					"cart_uid"	=>	sanitizeAll(User::$cart_uid),
-					"ip"		=>	sanitizeAll(getIp()),
-				),
-			))->record();
+			$record = array();
+			
+			if (User::$id)
+			{
+				$record = $this->clear()->where(array(
+					"id_user"	=>	(int)User::$id,
+					"id_admin"	=>	0,
+				))->record();
+				
+				if (empty($record) && User::$assistant_uid)
+				{
+					$record = $this->getChatFromAssistantUid();
+					
+					if (!empty($record))
+					{
+						$this->sValues(array(
+							"id_user"	=>	(int)User::$id,
+						));
+						
+						$this->update((int)$record["id_ai_richiesta"]);
+					}
+				}
+			}
+			else if (User::$assistant_uid)
+				$record = $this->getChatFromAssistantUid();
 			
 			if (empty($record))
 			{
 				if ($crea)
 				{
+					if (!User::$assistant_uid)
+						$this->setAssistantUid();
+					
 					// La chat non esiste: la creo
 					$this->values = array();
 					$this->insert();
@@ -445,19 +493,7 @@ class AirichiesteModel extends GenericModel
 				}
 			}
 			else
-			{
 				$idChat = (int)$record["id_ai_richiesta"];
-				
-				// Controllo e in caso aggiungo id_user
-				if (User::$id && !$record["id_user"])
-				{
-					$this->sValues(array(
-						"id_user"	=>	(int)User::$id,
-					));
-					
-					$this->update((int)$idChat);
-				}
-			}
 		}
 		
 		return $idChat;
@@ -481,7 +517,7 @@ class AirichiesteModel extends GenericModel
 		{
 			$this->values["id_user"] = User::$id;
 			$this->values["id_ai_modello"] = (int)AimodelliModel::g(false)->getModelloPredefinito();
-			$this->values["cart_uid"] = isset(User::$cart_uid) ? sanitizeAll(User::$cart_uid) : "";
+			$this->values["assistant_uid"] = isset(User::$assistant_uid) ? sanitizeAll(User::$assistant_uid) : "";
 			$this->values["zona"] = "Frontend";
 		}
 		else
@@ -1269,7 +1305,7 @@ class AirichiesteModel extends GenericModel
 				include tpf("Elementi/AI/RAG/Intent/prompt_status.txt");
 				$promptStatus = ob_get_clean();
 				
-				$istruzioni.= "\n".$promptStatus;
+				$istruzioni.= "\n\n".$promptStatus;
 				
 				$pModel = new PagesModel();
 				
@@ -1401,6 +1437,14 @@ class AirichiesteModel extends GenericModel
 			$istruzioni = ob_get_clean();
 			
 			$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
+			
+			// prompt scope
+			ob_start();
+			include tpf("Elementi/AI/RAG/Routing/$zona/$ambito/prompt_routing_scope.txt");
+			$promptRoutingScope = ob_get_clean();
+			
+			if ($promptRoutingScope !== '')
+				$istruzioni.= "\n\n".$promptRoutingScope;
 			
 			$messaggi = $this->recuperaMessaggi(self::$idChat, v("numero_messaggi_storico_chat_da_riportare"), true);
 			

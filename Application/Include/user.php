@@ -32,6 +32,7 @@ class User
 	public static $cart_uid;
 	public static $tracking_uid = '';
 	public static $wishlist_uid;
+	public static $assistant_uid = '';
 	public static $coupon;
 	public static $groups = array();
 	public static $dettagli = array();

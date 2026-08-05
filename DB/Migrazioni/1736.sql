@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` CHANGE `cart_uid` `assistant_uid` CHAR(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;

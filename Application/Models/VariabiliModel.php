@@ -874,6 +874,7 @@ class VariabiliModel extends GenericModel {
 		"tipi_pagine_come_testo_base_policy_qa"	=>	"COOKIE,CONDIZIONI,PRIVACY,AZIENDA,CONTATTI,RESI,INFO_LEGALI,SPEDIZIONI,FILOSOFIA,PAGAMENTI,GARANZIA,ASSISTENZA,GUIDA_ACQUISTO,RICHIEDI_RESO,CONDIZIONI_FEEDBACK", // tipi di pagina che vengono passati al chatbot nel caso di intent = policy_qa
 		"numero_messaggi_storico_chat_da_riportare"	=>	10, // numero di messaggi che vengono riportati in routing etc per mantenere lo storico della conversazione. Comprende anche le risposte del chatbot
 		"prompt_assisted"			=>	0, // 0: risponde bloccato sul contesto. 1: può aggiungere conoscenza base legata al contesto.
+		"durata_cookie_chatbot"		=>	864000, // durata in secondi del cookie del chatbot. Tempo di default: 10 giorni
 		### CRON ##
 		"attiva_cron_web"			=>	0, // se impostato a 1, prmette di chiamare operazioni di CRON tramite call a URL
 		"token_comandi_cron_web"	=>	"", // token di sicurezza per chiamare comandi di CRON tramite call a URL (viene inizializzato in automatico se vuoto)

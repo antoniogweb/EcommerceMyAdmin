@@ -248,6 +248,14 @@ class App
 					"Durata"		=>	v("tempo_durata_cookie_ordinamento_prodotti"),
 					"usato"				=>	v("salva_ordinamento_prodotti"),
 				),
+				"assistant_uid"	=>	array(
+					"Fornitore"	=>	Parametri::$nomeNegozio,
+					gtext("Tipologia")	=>	gtext("Tecnici"),
+					gtext("Necessario")	=>	gtext("Sì"),
+					"Descrizione"=>	gtext("Utilizzato per salvare lo storico della chat con l'assistente virtuale"),
+					"Durata"		=>	v("durata_cookie_chatbot"),
+					"usato"				=>	VariabiliModel::mostraAssistenteFrontend(),
+				),
 			);
 			
 			if (v("attiva_modali"))
