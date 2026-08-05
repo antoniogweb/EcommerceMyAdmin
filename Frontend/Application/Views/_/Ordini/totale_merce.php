@@ -41,7 +41,7 @@
 	
 	if (count($prodottiNonSpedibiliNellaNazione) > 0) {
 ?>
-	<div class="uk-alert uk-alert-danger"><?php echo gtext("I seguenti prodotti non possono essere spediti nella nazione selezionata:");?><ul><li><?php echo implode("</li><li>",$prodottiNonSpedibiliNellaNazione);?></li></ul></div>
+	<div class="uk-alert uk-alert-danger uk-text-small"><?php echo gtext("I seguenti prodotti non possono essere spediti nella nazione selezionata. Per maggiori informazioni contattare il servizio clienti.");?><ul><li><?php echo implode("</li><li>",$prodottiNonSpedibiliNellaNazione);?></li></ul></div>
 	<?php } ?>
 <?php } ?>
 
