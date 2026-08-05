@@ -419,7 +419,7 @@ class AirichiesteModel extends GenericModel
 		
 		if (
 			!isset($_COOKIE['assistant_uid']) 
-			|| !isset($_COOKIE['assistant_uid_sig'])
+			|| !isset($_COOKIE['assistant_uid_sig']) 
 			|| strlen((string)$_COOKIE["assistant_uid"]) !== 32 
 			|| !ctype_xdigit((string)$_COOKIE["assistant_uid"]) 
 			|| !ValueSigner::verify($_COOKIE['assistant_uid'], $_COOKIE['assistant_uid_sig'], v("secret_key"))
