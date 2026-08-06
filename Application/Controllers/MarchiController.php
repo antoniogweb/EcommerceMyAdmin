@@ -55,6 +55,7 @@ class MarchiController extends BaseController
 		$this->tabella = gtext("famiglie",true);
 		
 		$this->model("ContenutitradottiModel");
+		$this->model("DocumentiModel");
 	}
 
 	public function main()
@@ -157,5 +158,13 @@ class MarchiController extends BaseController
 			$this->responseCode(403);
 		
 		parent::immagini($id);
+	}
+	
+	public function ordinadocumenti()
+	{
+		$this->modelName = "DocumentiModel";
+		$this->orderBy = "id_order";
+		
+		parent::ordina();
 	}
 }

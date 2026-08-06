@@ -411,6 +411,7 @@ class Route
 		'marchi,meta',
 		'marchi,immagini',
 		'marchi,documenti',
+		'marchi,ordinadocumenti',
 		
 		'combinazioni,main',
 		'combinazioni,form',

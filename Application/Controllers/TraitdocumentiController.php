@@ -26,6 +26,9 @@ trait TraitdocumentiController
 {
 	public function documenti($id = 0)
 	{
+		if ($this->documentiInMarchio && !v("attiva_documenti_in_marchi"))
+			$this->responseCode(403);
+		
 		$this->orderBy = "documenti.id_order";
 		
 		$this->_posizioni['documenti'] = 'class="active"';

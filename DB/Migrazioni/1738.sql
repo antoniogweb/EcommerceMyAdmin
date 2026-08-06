@@ -1,0 +1,1 @@
+ALTER TABLE `documenti` ADD INDEX documenti_id_marchio (id_marchio);
