@@ -242,6 +242,14 @@ class DocumentiController extends BaseController
 		$result = "KO";
 		$errore = "";
 		
+		if ((int)$this->viewArgs["id_marchio"] !== 0 && !v("attiva_documenti_in_marchi"))
+		{
+			echo json_encode(array(
+				"result"	=>	$result,
+				"errore"	=>	$errore,
+			));
+		}
+		
 		$erroreGenerico = gtext("Errore caricamento file: ");
 		$testoSuccesso = "";
 		

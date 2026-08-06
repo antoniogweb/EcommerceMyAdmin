@@ -162,6 +162,9 @@ class MarchiController extends BaseController
 	
 	public function ordinadocumenti()
 	{
+		if (!v("attiva_documenti_in_marchi"))
+			$this->responseCode(403);
+		
 		$this->modelName = "DocumentiModel";
 		$this->orderBy = "id_order";
 		
