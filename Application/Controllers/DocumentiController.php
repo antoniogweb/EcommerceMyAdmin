@@ -86,7 +86,12 @@ class DocumentiController extends BaseController
 			$this->m[$this->modelName]->setValue("id_page", $this->viewArgs["id_page"]);
 		
 		if ((int)$this->viewArgs["id_user"] !== 0)
+		{
+			if (!v("documenti_in_clienti"))
+				$this->responseCode(403);
+			
 			$this->m[$this->modelName]->setValue("id_user", (int)$this->viewArgs["id_user"]);
+		}
 		
 		if ((int)$this->viewArgs["id_marchio"] !== 0)
 		{
@@ -243,6 +248,16 @@ class DocumentiController extends BaseController
 		$errore = "";
 		
 		if ((int)$this->viewArgs["id_marchio"] !== 0 && !v("attiva_documenti_in_marchi"))
+		{
+			echo json_encode(array(
+				"result"	=>	$result,
+				"errore"	=>	$errore,
+			));
+			
+			return;
+		}
+		
+		if ((int)$this->viewArgs["id_user"] !== 0 && !v("documenti_in_clienti"))
 		{
 			echo json_encode(array(
 				"result"	=>	$result,

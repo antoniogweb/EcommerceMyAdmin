@@ -29,13 +29,17 @@ trait TraitdocumentiController
 		if ($this->documentiInMarchio && !v("attiva_documenti_in_marchi"))
 			$this->responseCode(403);
 		
+		if (!$this->documentiInPagina && !$this->documentiInMarchio && !v("documenti_in_clienti"))
+			$this->responseCode(403);
+		
 		$this->orderBy = "documenti.id_order";
 		
 		$this->_posizioni['documenti'] = 'class="active"';
 		
 		$this->ordinaAction = "ordinadocumenti";
 		
-// 		$data["orderBy"] = $this->orderBy = "id_order";
+		if (!$this->documentiInPagina && !$this->documentiInMarchio)
+			$data["orderBy"] = $this->orderBy = "id_order";
 		
 		$this->shift(1);
 		
