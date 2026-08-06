@@ -248,6 +248,8 @@ class DocumentiController extends BaseController
 				"result"	=>	$result,
 				"errore"	=>	$errore,
 			));
+			
+			return;
 		}
 		
 		$erroreGenerico = gtext("Errore caricamento file: ");
