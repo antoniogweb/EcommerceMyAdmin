@@ -33,7 +33,8 @@ class DocumentiController extends BaseController
 	public $argKeys = array(
 		'id_page:sanitizeAll'	=>	'tutti',
 		'compresso:forceInt'	=>	0,
-		'id_user:forceInt'	=>	0,
+		'id_user:forceInt'		=>	0,
+		'id_marchio:forceInt'	=>	0,
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -73,7 +74,7 @@ class DocumentiController extends BaseController
 		if (v("attiva_descrizione_in_documenti"))
 			$fields .= ",descrizione";
 		
-		if ($queryType == "update" && !$this->m[$this->modelName]->hasPage((int)$id) && !$this->m[$this->modelName]->hasUser((int)$id))
+		if ($queryType == "update" && !$this->m[$this->modelName]->hasPage((int)$id) && !$this->m[$this->modelName]->hasUser((int)$id) && !$this->m[$this->modelName]->hasMarchio((int)$id))
 			$fields .= ",id_page";
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
@@ -86,6 +87,14 @@ class DocumentiController extends BaseController
 		
 		if ((int)$this->viewArgs["id_user"] !== 0)
 			$this->m[$this->modelName]->setValue("id_user", (int)$this->viewArgs["id_user"]);
+		
+		if ((int)$this->viewArgs["id_marchio"] !== 0)
+		{
+			if (!v("attiva_documenti_in_marchi"))
+				$this->responseCode(403);
+			
+			$this->m[$this->modelName]->setValue("id_marchio", (int)$this->viewArgs["id_marchio"]);
+		}
 		
 		parent::form($queryType, $id);
 	}
@@ -189,7 +198,7 @@ class DocumentiController extends BaseController
 		
 		$data['menu'] = "";
 		
-		$data['uploadUrl'] = $this->baseUrl."/".$this->applicationUrl.$this->controller."/upload?id_page=".$this->viewArgs["id_page"]."&id_user=".$this->viewArgs["id_user"];
+		$data['uploadUrl'] = $this->baseUrl."/".$this->applicationUrl.$this->controller."/upload?id_page=".$this->viewArgs["id_page"]."&id_user=".$this->viewArgs["id_user"]."&id_marchio=".$this->viewArgs["id_marchio"];
 		
 		$this->append($data);
 		
@@ -206,7 +215,7 @@ class DocumentiController extends BaseController
 		$data['menu'] = "";
 		$data['caricaZip'] = true;
 		
-		$data['uploadUrl'] = $this->baseUrl."/".$this->applicationUrl.$this->controller."/upload?id_page=".$this->viewArgs["id_page"]."&compresso=1"."&id_user=".$this->viewArgs["id_user"];
+		$data['uploadUrl'] = $this->baseUrl."/".$this->applicationUrl.$this->controller."/upload?id_page=".$this->viewArgs["id_page"]."&compresso=1"."&id_user=".$this->viewArgs["id_user"]."&id_marchio=".$this->viewArgs["id_marchio"];
 		
 		$this->append($data);
 		
@@ -262,6 +271,9 @@ class DocumentiController extends BaseController
 			if ((int)$this->viewArgs["id_user"] !== 0)
 				$this->m("DocumentiModel")->setValue("id_user", (int)$this->viewArgs["id_user"]);
 			
+			if ((int)$this->viewArgs["id_marchio"] !== 0)
+				$this->m("DocumentiModel")->setValue("id_marchio", (int)$this->viewArgs["id_marchio"]);
+			
 			$this->m("DocumentiModel")->setValue("titolo", $this->m("DocumentiModel")->files->getNameWithoutFileExtension($_FILES["filename"]["name"]));
 			$this->m("DocumentiModel")->setValue("data_documento", date("Y-m-d"));
 			
@@ -284,7 +296,7 @@ class DocumentiController extends BaseController
 				$result = "OK";
 				
 				if ($compresso)
-					$this->m("DocumentiModel")->elaboraArchivio($lId, (int)$this->viewArgs["id_page"], (int)$this->viewArgs["id_user"]);
+					$this->m("DocumentiModel")->elaboraArchivio($lId, (int)$this->viewArgs["id_page"], (int)$this->viewArgs["id_user"], (int)$this->viewArgs["id_marchio"]);
 			}
 			else
 				$errore = $erroreGenerico.strip_tags($this->m("DocumentiModel")->notice);

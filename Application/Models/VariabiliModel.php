@@ -976,6 +976,8 @@ class VariabiliModel extends GenericModel {
 		"immagini_in_tag"		=>	0, // se sono visibili oppure no le immagini supplementari neli tag
 		### SECRET ##
 		"secret_key"			=>	"", // secret key usata come firma con hash_hmac sha256
+		### MARCHI ##
+		"attiva_documenti_in_marchi"	=>	0, // se impostato su 1, permette il caricamento dei documenti nei marchi
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

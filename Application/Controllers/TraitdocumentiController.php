@@ -149,6 +149,10 @@ trait TraitdocumentiController
 				$this->m[$this->modelName]->inner(array("page"))->aWhere(array(
 					"id_page"	=>	$clean['id'],
 				));
+			else if ($this->documentiInMarchio)
+				$this->m[$this->modelName]->inner(array("marchio"))->aWhere(array(
+					"id_marchio"	=>	$clean['id'],
+				));
 			else
 				$this->m[$this->modelName]->inner("regusers")->on("documenti.id_user = regusers.id_user")->aWhere(array(
 					"id_user"	=>	$clean['id'],

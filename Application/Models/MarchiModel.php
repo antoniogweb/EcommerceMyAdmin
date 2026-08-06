@@ -33,7 +33,9 @@ class MarchiModel extends GenericModel
 	public static $currentId = 0;
 	
 	public static $elencoAliasId = null;
-
+	
+	public $documentiModelAssociato = "DocumentiModel";
+	
 	public function __construct() {
 		$this->_tables='marchi';
 		$this->_idFields='id_marchio';
@@ -88,6 +90,7 @@ class MarchiModel extends GenericModel
         return array(
 			'pagine' => array("HAS_MANY", 'PagesModel', 'id_marchio', null, "RESTRICT", "L'elemento ha delle pagine collegate non può essere eliminato"),
 			'magazzino' => array("HAS_MANY", 'MagazzinoarticoliModel', 'id_marchio', null, "RESTRICT", "L'elemento ha degli articoli di magazzino collegati e non può essere eliminato"),
+			'documenti' => array("HAS_MANY", 'DocumentiModel', 'id_marchio', null, "RESTRICT", "L'elemento ha dei documenti associati e non può essere eliminato"),
 			'traduzioni' => array("HAS_MANY", 'ContenutitradottiModel', 'id_marchio', null, "CASCADE"),
 			'immagini' => array("HAS_MANY", 'ImmaginiarchiviModel', 'id_marchio', null, "CASCADE"),
         );

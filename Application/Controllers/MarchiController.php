@@ -24,11 +24,23 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class MarchiController extends BaseController
 {
+	use TraitdocumentiController;
+	
 	public $orderBy = "id_order";
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array('titolo:sanitizeAll'=>'tutti', 'nazione:sanitizeAll'=>'tutti');
+	public $mainMenuAssociati = "back";
+	public $documentiInPagina = false;
+	public $documentiInMarchio = true;
+	
+	public $argKeys = array(
+		'titolo:sanitizeAll'=>'tutti',
+		'nazione:sanitizeAll'=>'tutti',
+		'id_tipo_doc:sanitizeAll' => "tutti",
+		'titolo_documento:sanitizeAll' => "tutti",
+		'lingua_doc:sanitizeAll' => "tutti",
+	);
 	
 	public $sezionePannello = "ecommerce";
 	

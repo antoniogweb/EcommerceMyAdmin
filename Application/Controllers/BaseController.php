@@ -61,6 +61,7 @@ class BaseController extends Controller
 	public $loginController = "users";
 	public $formQueryActions = "insert,update";
 	public $documentiInPagina = true;
+	public $documentiInMarchio = false;
 	public $contenutiTradottiFields = null; // se definito, forza i campi gestiti su contenuti tradotti
 	public $limitInEsporta = null;
 	public $permettiEsportaJsonLibero = false;
