@@ -209,6 +209,15 @@ trait CommonModel {
 			if (PagesModel::isAttivaTrue($idPage) && PagesModel::isAttivaTrue($idProd))
 				$redirect = (int)$idPage."-".(int)$idProd;
 		}
+		else if (preg_match('/^iddoc\-([0-9]{1,10})$/',$redirect, $matches) && !$soloRedirectPermessi)
+		{
+			$idDoc = $matches[1];
+			
+			$redirect = '';
+			
+			if (DocumentiModel::g(false)->whereId((int)$idDoc)->rowNumber()) 
+				$redirect = "iddoc-".(int)$idDoc;
+		}
 		else
 		{
 			if (!in_array($redirect,$allowedRedirect))
@@ -229,6 +238,8 @@ trait CommonModel {
 				$urlRedirect = Url::getRoot().getUrlAlias((int)self::$redirect);
 			else if (preg_match('/^([0-9]{1,10})\-([0-9]{1,10})$/',self::$redirect, $matches))
 				$urlRedirect = Url::getRoot().getUrlAlias((int)$matches[1])."?".v("var_query_string_id_rif")."=".(int)$matches[2];
+			else if (preg_match('/^iddoc\-([0-9]{1,10})$/',self::$redirect, $matches))
+				$urlRedirect = Url::getRoot()."contenuti/documento/".(int)$matches[1];
 			else
 				$urlRedirect = Url::getRoot().self::$redirect;
 			
