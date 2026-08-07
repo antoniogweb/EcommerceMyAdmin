@@ -694,6 +694,15 @@ class AirichiesteModel extends GenericModel
 					
 					list($intent, $messaggoRag, $istruzioni) = $this->rag($messaggio, $record["zona"], $record["ambito"], $record["lingua"], $numeroProdotti);
 					
+					$contesto = "";
+					
+					$additionalContext = $this->recuperaAdditionalContext(self::$idChat);
+					
+					if (count($additionalContext) > 0)
+						$contesto = json_encode(array(
+							"additional_context" => $additionalContext,
+						));
+					
 					// $this->sendEvent([
 					// 	'type'	=>	'status',
 					// 	'phase'	=>	'understanding',
@@ -1176,9 +1185,92 @@ class AirichiesteModel extends GenericModel
 		return $contents;
 	}
 	
-	private function recuperaOrderContextERestituisci($orders)
+	private function tieniInContesto($contesto, $fields = array())
 	{
+		foreach ($contesto as $key => $value)
+		{
+			if ($key == "righe" || $key == "pagamenti")
+				continue;
+			
+			if (!in_array($key, $fields))
+				unset($contesto[$key]);
+		}
 		
+		return $contesto;
+	}
+	
+	private function recuperaAdditionalContext($idChat)
+	{
+		$arcfModel = new AirichiestecontestifrontendModel();
+		
+		$contesti = $arcfModel->clear()->where(array(
+			"id_ai_richiesta"	=>	(int)$idChat,
+		))->orderBy("id_ai_richiesta_contesto_frontend desc")->send(false);
+		
+		$arrayContestiAggiuntivi = array();
+		
+		if (count($contesti) > 0)
+		{
+			foreach ($contesti as $contesto)
+			{
+				$contesto["contesto"] = json_decode(htmlentitydecode($contesto["contesto"]), true);
+				$contesto["contesto"]["order_information"] = $this->tieniInContesto($contesto["contesto"]["order_information"], array("id_o", "data_creazione", "nome", "cognome", "ragione_sociale", "codice_fiscale", "indirizzo", "cap", "provincia", "dprovincia", "nazione", "citta", "telefono", "email", "pagamento", "total", "total_pieno", "tipo_cliente", "stato", "spedizione_ivato", "costo_pagamento_ivato", "codice_promozione", "nome_promozione", "usata_promozione", "valore_iva", "indirizzo_spedizione", "cap_spedizione", "provincia_spedizione", "nazione_spedizione", "citta_spedizione", "telefono_spedizione", "pec", "codice_destinatario", "data_pagamento", "fonte", "tipo_promozione", "prezzo_scontato_prodotti_ivato", "numero_prodotti"));
+				
+				$arrayContestiAggiuntivi[] = array(
+					"type"		=>	$contesto["tipo"],
+					"context"	=>	$contesto["contesto"],
+				);
+			}
+		}
+		
+		return $arrayContestiAggiuntivi;
+	}
+	
+	private function salvaOrderContext($orderLink)
+	{
+		preg_match_all('~(?:^|/)([a-f0-9]{32})(?=/|$|\?)~i', $orderLink, $matches);
+		
+		$cartUid = $matches[1][0] ?? null;
+		$adminToken = $matches[1][1] ?? null;
+		
+		if ($cartUid && $adminToken)
+		{
+			$oModel = new OrdiniModel();
+			$ordine = $oModel->clear()->where(array(
+				"cart_uid" 		=>	sanitizeAll((string)$cartUid),
+				"admin_token"	=>	sanitizeAll((string)$adminToken),
+			))->record();
+			
+			if (!empty($ordine))
+			{
+				$strutturaProdotti = GestionaliModel::getModuloPadre()->infoOrdine((int)$ordine["id_o"]);
+				
+				$arrayContextOrdine = array(
+					"order_id"	=>	(int)$ordine["id_o"],
+					"order_url"	=>	(string)$orderLink,
+					"order_information"	=>	$strutturaProdotti,
+				);
+				
+				$arcfModel = new AirichiestecontestifrontendModel();
+				
+				$arcfModel->del(null, array(
+					"id_ai_richiesta"	=>	(int)self::$idChat,
+					"tipo"				=>	"ORDER",
+				));
+				
+				$arcfModel->sValues(array(
+					"id_ai_richiesta"	=>	(int)self::$idChat,
+					"tipo"				=>	"ORDER",
+					"contesto"			=>	json_encode($arrayContextOrdine),
+				));
+				
+				$arcfModel->insert();
+				
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public function rag($messaggio, $zona = "Backend", $ambito = "Ecommerce", $lingua = "it", $numeroRisultati = 5)
@@ -1199,9 +1291,18 @@ class AirichiesteModel extends GenericModel
 			$operation = $routingJson["operation"] ?? "";
 			$order = $routingJson["order"] ?? array();
 			
-			if (count($order) > 0)
+			if (count($order) > 0 && ( (isset($order["order_id"]) && trim($order["order_id"]) ) || (isset($order["order_url"]) && trim($order["order_url"]) )))
 			{
-				print_r($order);
+				$intent = "translation";
+				
+				if (!isset($order["order_url"]) || !trim($order["order_url"]))
+					$replyToTranslate = gtext("Per motivi di sicurezza, dobbiamo verificare che tu sia il titolare dell’ordine. Inserisci il link esatto dell’ordine che hai ricevuto via email.");
+				else if (!preg_match('~/resoconto-acquisto/~i', (string)$order["order_url"]))
+					$replyToTranslate = gtext("Il link inserito non sembra essere un link valido dell’ordine. Inserisci il link esatto dell’ordine che hai ricevuto via email.");
+				else if (!$this->salvaOrderContext((string)$order["order_url"]))
+					$replyToTranslate = gtext("Il link inserito non sembra riferirsi ad un ordine esistente. Inserisci il link esatto dell’ordine che hai ricevuto via email.");
+				else
+					$intent = "follow_up";
 			}
 			
 			// if (count($subjects) > 0)
@@ -1302,10 +1403,6 @@ class AirichiesteModel extends GenericModel
 			// }
 			
 			// Se clarification restituisci la question secca
-			if ($intent === "translation")
-				return array($intent, $replyToTranslate, "");
-			
-			// Se clarification restituisci la question secca
 			if ($intent === "clarification")
 				return array($intent, $question, "");
 			
@@ -1338,6 +1435,10 @@ class AirichiesteModel extends GenericModel
 				$promptStatus = ob_get_clean();
 				
 				$istruzioni.= "\n\n".$promptStatus;
+				
+				// Se clarification restituisci la question secca
+				if ($intent === "translation")
+					return array($intent, $replyToTranslate, $istruzioni);
 				
 				$pModel = new PagesModel();
 				
@@ -1480,14 +1581,27 @@ class AirichiesteModel extends GenericModel
 			
 			$messaggi = $this->recuperaMessaggi(self::$idChat, v("numero_messaggi_storico_chat_da_riportare"), true);
 			
+			$additionalContext = $this->recuperaAdditionalContext(self::$idChat);
+			
+			$contestoPrecedenteArray = array();
 			$contestoPrecedente = "";
 			
 			if (count($messaggi) > 0)
 			{
-				$contestoPrecedente = json_encode(array(
+				$contestoPrecedenteArray[] = array(
 					"recent_chat" => $messaggi,
-				));
+				);
 			}
+			
+			if (count($additionalContext) > 0)
+			{
+				$contestoPrecedenteArray[] = array(
+					"additional_context" => $additionalContext,
+				);
+			}
+			
+			if (count($contestoPrecedenteArray) > 0)
+				$contestoPrecedente = json_encode($contestoPrecedenteArray);
 			
 			$messaggio = AimodelliModel::getModulo(AimodelliModel::g(false)->getModelloPredefinito(), true)->setMessaggio($messaggio);
 			

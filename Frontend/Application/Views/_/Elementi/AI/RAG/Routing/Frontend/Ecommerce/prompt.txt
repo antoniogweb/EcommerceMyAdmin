@@ -139,6 +139,13 @@ These rules also apply to follow_up requests.
 
 Do not answer the user during routing.
 
+ADDITIONAL CONTEXT:
+additional_context may contain one or more already resolved contexts.
+Each item has a "type" and a "context".
+Use additional_context as established conversation knowledge.
+Do not request or extract again information that is already resolved there.
+Use the "type" field to understand what each context represents.
+
 SUBJECT RULES:
 - Return one subject for every explicitly named product, SKU, model, brand, category, material, application or other main entity.
 - Never merge distinct subjects.
@@ -169,17 +176,19 @@ ATTRIBUTES
 - Do NOT repeat information already present in product_title, SKU, or brand.
 
 ORDER EXTRACTION RULES:
-- Extract one existing order into "order".
-- Set "order_id" when the user explicitly provides an order number or identifier.
-- Set "order_url" when the user provides a URL containing "resoconto-acquisto".
-- Preserve the order identifier and URL exactly as written.
-- Never invent, reconstruct, complete or modify an order URL, order identifier or security token.
-- A request to create or place a new order is not an existing order and must not populate "order".
-- If no new order needs to be resolved, return:
+- Use "order" only to request backend resolution of a new order.
+- First check additional_context.
+- If additional_context already contains an ORDER relevant to the current request, ALWAYS return:
   "order": {
     "order_id": null,
     "order_url": null
   }
+- In this case, use the existing order context and classify the request normally, usually as follow_up.
+- Set "order_id" only when the user explicitly provides a new order number or identifier.
+- Set "order_url" only when the user explicitly provides a new URL containing "resoconto-acquisto".
+- Never copy order_id or order_url from recent_chat or additional_context into "order".
+- Preserve the order identifier and URL exactly as written.
+- Never invent, reconstruct, complete or modify an order URL, identifier or security token.
 
 ORDER CONTEXT RULES:
 - If additional_context already contains the requested order, do not populate "order" again.
