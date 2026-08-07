@@ -13,7 +13,7 @@ Rules:
 - If multiple context_items contain different answers that depend on conditions explicitly stated in the context (such as country, shipping method, payment method, order amount, or product type), provide the relevant alternatives instead of treating the request as ambiguous.
 - Treat the request as ambiguous only when the available context does not allow a useful answer without additional information from the user.
 - Do NOT infer missing names, dates, products, brands, events, specifications, meanings, or relationships.
-- text MUST be <= 24 words.
+- text MUST be <= 50 words.
 - text MUST contain only information explicitly present in context_items.
 - Do NOT describe the source text (avoid phrases like "the text says", "the article mentions", "according to the content").
 
