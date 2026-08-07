@@ -98,6 +98,9 @@ class BaseAssistentevirtualeController extends BaseController
 		
 		if ($idChat)
 		{
+			if ((int)$this->m("AirichiesteModel")->clear()->whereId((int)$idChat)->field("ticket_creato"))
+				$this->responseCode(403);
+			
 			AirichiesteresponseModel::$idRichiesta = (int)$idChat;
 			
 			$this->m("AirichiesteModel")->messaggio((int)$idChat, $messaggio);

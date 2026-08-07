@@ -229,6 +229,34 @@ class AirichiesteModel extends GenericModel
 					'order_url',
 				],
 			],
+			'customer' => [
+				'type' => 'object',
+				'additionalProperties' => false,
+				'properties' => [
+					'email' => [
+						'type' => ['string', 'null'],
+					],
+					'phone' => [
+						'type' => ['string', 'null'],
+					],
+				],
+				'required' => [
+					'email',
+					'phone',
+				],
+			],
+			'ticket' => [
+				'type' => 'object',
+				'additionalProperties' => false,
+				'properties' => [
+					'requested' => [
+						'type' => 'boolean',
+					],
+				],
+				'required' => [
+					'requested',
+				],
+			],
 		],
 		'required' => [
 			'intent',
@@ -239,6 +267,8 @@ class AirichiesteModel extends GenericModel
 			'clarification_reason',
 			'question',
 			'order',
+			'customer',
+			'ticket',
 		],
 	];
 	
@@ -1290,8 +1320,11 @@ class AirichiesteModel extends GenericModel
 			$subjects = $routingJson["subjects"] ?? array();
 			$operation = $routingJson["operation"] ?? "";
 			$order = $routingJson["order"] ?? array();
+			$customer = $routingJson["customer"] ?? array();
+			$ticket = $routingJson["ticket"] ?? array();
 			
-			if (count($order) > 0 && ( (isset($order["order_id"]) && trim($order["order_id"]) ) || (isset($order["order_url"]) && trim($order["order_url"]) )))
+			// Estraggo l'ordine
+			if (count($order) > 0 && ( (isset($order["order_id"]) && trim((string)$order["order_id"]) ) || (isset($order["order_url"]) && trim((string)$order["order_url"]) )))
 			{
 				$intent = "translation";
 				
@@ -1303,6 +1336,79 @@ class AirichiesteModel extends GenericModel
 					$replyToTranslate = gtext("Il link inserito non sembra riferirsi ad un ordine esistente. Inserisci il link esatto dell’ordine che hai ricevuto via email.");
 				else
 					$intent = "follow_up";
+			}
+			
+			$mail = isset($customer["email"]) ? (string)$customer["email"] : "";
+			$telefono = isset($customer["phone"]) ? (string)$customer["phone"] : "";
+			
+			// Estraggo i dati del cliente
+			if ($mail || $telefono)
+			{
+				$intent = "translation";
+				
+				$erroreMail = $erroreTelefono = false;
+				
+				if ($mail && !checkMail($mail))
+					$erroreMail = true;
+				
+				if ($telefono && !preg_match('/^[0-9\s\+]+$/', $telefono))
+					$erroreTelefono = true;
+				
+				if ($erroreMail && $erroreTelefono)
+					$replyToTranslate = gtext("L'indirizzo email e il telefono inseriti non sembrano essere corretti. Controlla e riprova.");
+				else if ($erroreMail)
+					$replyToTranslate = gtext("L'indirizzo email inserito non sembra essere corretto. Controllalo e riprova.");
+				else if ($erroreTelefono)
+					$replyToTranslate = gtext("Il telefono inserito non sembra essere corretto. Controllalo e riprova.");
+				else
+					$intent = "follow_up";
+				
+				if (!$erroreMail || !$erroreTelefono)
+				{
+					$this->values = array();
+					
+					if (!$erroreMail)
+						$this->setValue("email", $mail);
+					
+					if (!$erroreTelefono)
+						$this->setValue("telefono", $telefono);
+					
+					$this->update((int)self::$idChat);
+				}
+			}
+			
+			// Estraggo i dati del ticket
+			if (isset($ticket["requested"]) && $ticket["requested"])
+			{
+				$this->sValues(array(
+					"ticket_richiesto"	=>	1,
+				));
+				
+				$this->update((int)self::$idChat);
+			}
+			
+			$chat = $this->selectId((int)self::$idChat);
+			
+			if ($chat["ticket_richiesto"] || $mail || $telefono || (isset($ticket["requested"]) && $ticket["requested"]))
+			{
+				$intent = "translation";
+				
+				if (!trim($chat["email"]) && !trim($chat["telefono"]))
+					$replyToTranslate = gtext("Per poter essere ricontattato, indica un indirizzo email e un numero di telefono.");
+				else if (!trim($chat["email"]))
+					$replyToTranslate = gtext("Per poter essere ricontattato, indica anche un indirizzo email.");
+				else if (!trim($chat["telefono"]))
+					$replyToTranslate = gtext("Per poter essere ricontattato, indica anche un numero di telefono");
+				else
+				{
+					$replyToTranslate = gtext("Il ticket è stato creato correttamente.")." ".gtext("Il negozio riceverà questa conversazione e verrai ricontattato dal servizio clienti.")." ".gtext("Ti abbiamo inviato una copia della chat via email come promemoria.")." ".gtext("Puoi chiudere questa chat oppure iniziarne una nuova.");
+					
+					$this->sValues(array(
+						"ticket_creato"	=>	1,
+					));
+					
+					$this->update((int)self::$idChat);
+				}
 			}
 			
 			// if (count($subjects) > 0)

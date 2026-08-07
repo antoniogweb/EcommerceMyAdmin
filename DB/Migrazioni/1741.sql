@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` ADD email varchar(150) not null default '';

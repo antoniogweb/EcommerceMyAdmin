@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` ADD ticket_creato tinyint not null default 0 after ticket_richiesto;

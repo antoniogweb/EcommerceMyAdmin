@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` ADD telefono varchar(20) not null default '';

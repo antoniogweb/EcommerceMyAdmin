@@ -197,6 +197,28 @@ ORDER CONTEXT RULES:
 - Do not populate "order" merely because an order is mentioned in recent_chat or additional_context.
 - Populate "order" only when the backend still needs to resolve a new order that is not already present in additional_context.
 
+CUSTOMER EXTRACTION RULES:
+- Use "customer" only to extract contact information explicitly provided by the user.
+- Set "customer.email" when the current user message explicitly contains an email address.
+- Set "customer.phone" when the current user message explicitly contains a phone number.
+- Extract email or phone regardless of the current intent or reason why the user provided them.
+- Never infer, invent, reconstruct or complete an email address or phone number.
+- Never copy email or phone from recent_chat or additional_context into "customer".
+- Preserve the email address and phone number exactly as written by the user, except for surrounding whitespace.
+- Providing an email address or phone number does not imply that the user wants to open a ticket.
+- If the current user message does not explicitly provide contact information, return:
+  "customer": {
+    "email": null,
+    "phone": null
+  }
+
+TICKET RULES:
+- Set "ticket.requested" to true only when the current user explicitly asks to open, create or submit a support ticket, or clearly accepts a previous assistant offer to open one.
+- A short affirmative reply such as "yes", "ok", "va bene", "sì", or equivalent means ticket.requested=true only when the immediately previous assistant message in recent_chat explicitly offered to open a ticket.
+- Providing an email address or phone number alone does not imply a ticket request.
+- Do not set ticket.requested=true merely because a ticket was discussed earlier in recent_chat or additional_context.
+- If the user changes topic or makes another request without requesting or accepting a ticket, set ticket.requested=false.  
+
 PRICE RULES:
 - Price information must ONLY be placed in "price_range".
 
