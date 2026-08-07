@@ -213,23 +213,20 @@ class AirichiesteModel extends GenericModel
 					],
 				],
 			],
-			'orders' => [
-				'type' => 'array',
-				'items' => [
-					'type' => 'object',
-					'additionalProperties' => false,
-					'properties' => [
-						'order_id' => [
-							'type' => ['string', 'null'],
-						],
-						'order_url' => [
-							'type' => ['string', 'null'],
-						],
+			'order' => [
+				'type' => 'object',
+				'additionalProperties' => false,
+				'properties' => [
+					'order_id' => [
+						'type' => ['string', 'null'],
 					],
-					'required' => [
-						'order_id',
-						'order_url',
+					'order_url' => [
+						'type' => ['string', 'null'],
 					],
+				],
+				'required' => [
+					'order_id',
+					'order_url',
 				],
 			],
 		],
@@ -241,7 +238,7 @@ class AirichiesteModel extends GenericModel
 			'subjects',
 			'clarification_reason',
 			'question',
-			'orders',
+			'order',
 		],
 	];
 	
@@ -1179,6 +1176,11 @@ class AirichiesteModel extends GenericModel
 		return $contents;
 	}
 	
+	private function recuperaOrderContextERestituisci($orders)
+	{
+		
+	}
+	
 	public function rag($messaggio, $zona = "Backend", $ambito = "Ecommerce", $lingua = "it", $numeroRisultati = 5)
 	{
 		list($res, $routing) = $this->routing($messaggio, $zona, $ambito);
@@ -1195,8 +1197,12 @@ class AirichiesteModel extends GenericModel
 			$intentConosciuto = false;
 			$subjects = $routingJson["subjects"] ?? array();
 			$operation = $routingJson["operation"] ?? "";
+			$order = $routingJson["order"] ?? array();
 			
-			// print_r($routingJson["orders"]);
+			if (count($order) > 0)
+			{
+				print_r($order);
+			}
 			
 			// if (count($subjects) > 0)
 			// 	$this->sendEvent([
@@ -1278,6 +1284,11 @@ class AirichiesteModel extends GenericModel
 							$intent = "other";
 						
 						break;
+					case "translation":
+						if (!isset($replyToTranslate))
+							$intent = "other";
+						
+						break;
 					case "other":
 						break;
 					case "threshold_exceeded":
@@ -1289,6 +1300,10 @@ class AirichiesteModel extends GenericModel
 						break;
 				}
 			// }
+			
+			// Se clarification restituisci la question secca
+			if ($intent === "translation")
+				return array($intent, $replyToTranslate, "");
 			
 			// Se clarification restituisci la question secca
 			if ($intent === "clarification")

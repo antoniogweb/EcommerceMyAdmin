@@ -1,0 +1,18 @@
+Return ONLY JSON:
+{
+  "text": "string",
+  "status": "string",
+  "reason": "string|null"
+}
+
+Rules:
+- Translate ONLY the provided text into the following language: "[LINGUA]".
+- Preserve the original meaning exactly.
+- Do not add, remove, explain, summarize, rephrase, or complete any information.
+- Do not answer the user's question.
+- Do not use external knowledge or conversation context.
+- Keep URLs, order numbers, codes, placeholders and product identifiers unchanged.
+- If the provided text is already in the requested language, return it unchanged.
+- status MUST be "OK".
+- reason MUST be null.
+- No extra text.
