@@ -24,11 +24,23 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class MarchiController extends BaseController
 {
+	use TraitdocumentiController;
+	
 	public $orderBy = "id_order";
 	
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array('titolo:sanitizeAll'=>'tutti', 'nazione:sanitizeAll'=>'tutti');
+	public $mainMenuAssociati = "back";
+	public $documentiInPagina = false;
+	public $documentiInMarchio = true;
+	
+	public $argKeys = array(
+		'titolo:sanitizeAll'=>'tutti',
+		'nazione:sanitizeAll'=>'tutti',
+		'id_tipo_doc:sanitizeAll' => "tutti",
+		'titolo_documento:sanitizeAll' => "tutti",
+		'lingua_doc:sanitizeAll' => "tutti",
+	);
 	
 	public $sezionePannello = "ecommerce";
 	
@@ -145,5 +157,18 @@ class MarchiController extends BaseController
 			$this->responseCode(403);
 		
 		parent::immagini($id);
+	}
+	
+	public function ordinadocumenti()
+	{
+		if (!v("attiva_documenti_in_marchi"))
+			$this->responseCode(403);
+		
+		$this->model("DocumentiModel");
+		
+		$this->modelName = "DocumentiModel";
+		$this->orderBy = "id_order";
+		
+		parent::ordina();
 	}
 }

@@ -8,6 +8,9 @@
 	<?php if (v("immagini_in_marchi") && ControllersModel::checkAccessoAlController(array("immaginiarchivi"))) { ?>
 	<li <?php echo $posizioni['immagini'];?>><a class="help_immagini" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/immagini/$id".$this->viewStatus;?>"><?php echo gtext("Immagini");?></a></li>
 	<?php } ?>
+	<?php if (v("attiva_documenti_in_marchi")) { ?>
+	<li <?php echo $posizioni['documenti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/documenti/$id".$this->viewStatus;?>"><?php echo gtext("Documenti");?></a></li>
+	<?php } ?>
 </ul>
 
 <?php } else { ?>

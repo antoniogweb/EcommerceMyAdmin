@@ -484,6 +484,19 @@ class RegusersController extends BaseController
 		$this->append($data);
 	}
 
+	public function ordinadocumenti()
+	{
+		if (!v("documenti_in_clienti"))
+			$this->responseCode(403);
+		
+		$this->model("DocumentiModel");
+		
+		$this->modelName = "DocumentiModel";
+		$this->orderBy = "id_order";
+		
+		parent::ordina();
+	}
+
 	public function ordini($id = 0)
 	{
 		$this->_posizioni[$this->action] = 'class="active"';

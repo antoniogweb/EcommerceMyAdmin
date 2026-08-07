@@ -90,6 +90,7 @@ class DocumentiModel extends GenericModel {
 			'tipo' => array("BELONGS_TO", 'TipidocumentoModel', 'id_tipo_doc',null,"CASCADE"),
 			'gruppi' => array("MANY_TO_MANY", 'ReggroupsModel', 'id_group', array("ReggroupsdocumentiModel","id_doc","id_group"), "CASCADE"),
 			'user' => array("BELONGS_TO", 'RegusersModel', 'id_user',null,"CASCADE"),
+			'marchio' => array("BELONGS_TO", 'MarchiModel', 'id_marchio',null,"CASCADE"),
         );
     }
     
@@ -230,6 +231,13 @@ class DocumentiModel extends GenericModel {
 		))->field("id_user");
     }
     
+    public function hasMarchio($id)
+    {
+		return (int)$this->clear()->where(array(
+			$this->_idFields	=>	(int)$id,
+		))->field("id_marchio");
+    }
+    
 	public function update($id = NULL, $whereClause = NULL)
 	{
 		if (v("attiva_reggroups_tipi"))
@@ -358,7 +366,7 @@ class DocumentiModel extends GenericModel {
 		return "<span class='text text-success text-bold'>".$str."</span>";
 	}
 	
-	public function elaboraArchivio($id, $idPage = 0, $idUser = 0)
+	public function elaboraArchivio($id, $idPage = 0, $idUser = 0, $idMarchio = 0)
 	{
 		$record = $this->selectId((int)$id);
 		
@@ -397,6 +405,7 @@ class DocumentiModel extends GenericModel {
 						"id_page"		=>	$idPage,
 						"id_archivio"	=>	$id,
 						"id_user"		=>	$idUser,
+						"id_marchio"	=>	$idMarchio,
 					));
 				}
 			}
@@ -483,6 +492,7 @@ class DocumentiModel extends GenericModel {
 		$idImport = isset($params["id_import"]) ? $params["id_import"] : 0;
 		$lingua = isset($params["lingua"]) ? $params["lingua"] : null;
 		$idUser = isset($params["id_user"]) ? (int)$params["id_user"] : 0;
+		$idMarchio = isset($params["id_marchio"]) ? (int)$params["id_marchio"] : 0;
 		
 		$okElaborazione = true;
 		
@@ -508,6 +518,7 @@ class DocumentiModel extends GenericModel {
 				"id_archivio"		=>	$idArchivio,
 				"id_import"			=>	$idImport,
 				"id_user"			=>	$idUser,
+				"id_marchio"		=>	$idMarchio,
 			));
 			
 			// Lingua

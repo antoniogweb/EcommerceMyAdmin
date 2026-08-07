@@ -120,6 +120,7 @@ class Route
 		'regusers,inviamailconfermaaccount',
 		'regusers,emailesistente',
 		'regusers,documenti',
+		'regusers,ordinadocumenti',
 		'regusers,download',
 		'regusers,inviamailaccountattivato',
 		
@@ -410,6 +411,8 @@ class Route
 		'marchi,ordina',
 		'marchi,meta',
 		'marchi,immagini',
+		'marchi,documenti',
+		'marchi,ordinadocumenti',
 		
 		'combinazioni,main',
 		'combinazioni,form',
