@@ -213,6 +213,25 @@ class AirichiesteModel extends GenericModel
 					],
 				],
 			],
+			'orders' => [
+				'type' => 'array',
+				'items' => [
+					'type' => 'object',
+					'additionalProperties' => false,
+					'properties' => [
+						'order_id' => [
+							'type' => ['string', 'null'],
+						],
+						'order_url' => [
+							'type' => ['string', 'null'],
+						],
+					],
+					'required' => [
+						'order_id',
+						'order_url',
+					],
+				],
+			],
 		],
 		'required' => [
 			'intent',
@@ -222,6 +241,7 @@ class AirichiesteModel extends GenericModel
 			'subjects',
 			'clarification_reason',
 			'question',
+			'orders',
 		],
 	];
 	
@@ -1175,6 +1195,8 @@ class AirichiesteModel extends GenericModel
 			$intentConosciuto = false;
 			$subjects = $routingJson["subjects"] ?? array();
 			$operation = $routingJson["operation"] ?? "";
+			
+			// print_r($routingJson["orders"]);
 			
 			// if (count($subjects) > 0)
 			// 	$this->sendEvent([

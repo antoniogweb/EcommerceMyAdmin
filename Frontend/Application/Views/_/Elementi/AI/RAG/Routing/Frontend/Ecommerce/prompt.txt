@@ -168,6 +168,22 @@ ATTRIBUTES
 - Include only product characteristics that help identify or retrieve the product.
 - Do NOT repeat information already present in product_title, SKU, or brand.
 
+ORDER EXTRACTION RULES:
+- Extract into "orders" every explicitly mentioned existing order.
+- Set "order_id" when the user explicitly provides an order number or identifier.
+- Set "order_url" when the user provides a URL containing "resoconto-acquisto".
+- Preserve order identifiers and URLs exactly as written.
+- Never invent, reconstruct, complete or modify an order URL, order identifier or security token.
+- A request to create or place a new order is not an existing order and must not populate "orders".
+- If no existing order identifier or order URL is present or contextually resolved, return "orders": [].
+
+ORDER CONTEXT RULES:
+- If additional_context already contains an order with the same order URL or order identifier, do not add it again to "orders".
+- When the requested order is already available in additional_context, classify the message normally using the existing conversation rules, usually as follow_up.
+- Use the order information in additional_context to resolve references such as "my order", "this order", "where is it", "when will it arrive", or equivalent expressions.
+- Do not populate "orders" merely because an order is mentioned in recent_chat or additional_context.
+- Populate "orders" only when the backend still needs to resolve a new order that is not already present in additional_context.
+
 PRICE RULES:
 - Price information must ONLY be placed in "price_range".
 
