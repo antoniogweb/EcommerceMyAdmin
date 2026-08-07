@@ -252,9 +252,13 @@ class AirichiesteModel extends GenericModel
 					'requested' => [
 						'type' => 'boolean',
 					],
+					'subject' => [
+						'type' => ['string', 'null'],
+					],
 				],
 				'required' => [
 					'requested',
+					'subject',
 				],
 			],
 		],
@@ -1341,12 +1345,12 @@ class AirichiesteModel extends GenericModel
 			$mail = isset($customer["email"]) ? (string)$customer["email"] : "";
 			$telefono = isset($customer["phone"]) ? (string)$customer["phone"] : "";
 			
+			$erroreMail = $erroreTelefono = false;
+
 			// Estraggo i dati del cliente
 			if ($mail || $telefono)
 			{
 				$intent = "translation";
-				
-				$erroreMail = $erroreTelefono = false;
 				
 				if ($mail && !checkMail($mail))
 					$erroreMail = true;
@@ -1363,18 +1367,16 @@ class AirichiesteModel extends GenericModel
 				else
 					$intent = "follow_up";
 				
-				if (!$erroreMail || !$erroreTelefono)
-				{
-					$this->values = array();
-					
-					if (!$erroreMail)
-						$this->setValue("email", $mail);
-					
-					if (!$erroreTelefono)
-						$this->setValue("telefono", $telefono);
-					
+				$this->values = array();
+				
+				if ($mail && !$erroreMail)
+					$this->setValue("email", $mail);
+				
+				if ($telefono && !$erroreTelefono)
+					$this->setValue("telefono", $telefono);
+				
+				if (!empty($this->values))
 					$this->update((int)self::$idChat);
-				}
 			}
 			
 			// Estraggo i dati del ticket
@@ -1382,6 +1384,7 @@ class AirichiesteModel extends GenericModel
 			{
 				$this->sValues(array(
 					"ticket_richiesto"	=>	1,
+					"oggetto_ticket"	=>	isset($ticket["subject"]) ? (string)$ticket["subject"] : "",
 				));
 				
 				$this->update((int)self::$idChat);
@@ -1389,7 +1392,14 @@ class AirichiesteModel extends GenericModel
 			
 			$chat = $this->selectId((int)self::$idChat);
 			
-			if ($chat["ticket_richiesto"] || $mail || $telefono || (isset($ticket["requested"]) && $ticket["requested"]))
+			if ( 
+				( 
+					($chat["ticket_richiesto"] && ($mail || $telefono)) || 
+					(isset($ticket["requested"]) && $ticket["requested"]) 
+				) 
+				&& !$erroreMail 
+				&& !$erroreTelefono
+			)
 			{
 				$intent = "translation";
 				
@@ -1669,6 +1679,8 @@ class AirichiesteModel extends GenericModel
 		// 	'text'	=>	gtext('Sto pensando...'),
 		// ]);
 		
+		$lingua = $this->getLinguaDefault();
+		
 		if (is_file($tpf))
 		{
 			ob_start();
@@ -1676,6 +1688,7 @@ class AirichiesteModel extends GenericModel
 			$istruzioni = ob_get_clean();
 			
 			$istruzioni = str_replace("[NOME NEGOZIO]", Parametri::$nomeNegozio, $istruzioni);
+			$istruzioni = str_replace("[LINGUA_DEFAULT]", $lingua, $istruzioni);
 			
 			// prompt scope
 			ob_start();
@@ -1730,15 +1743,15 @@ class AirichiesteModel extends GenericModel
 			{
 				$airrModel->db->commit();
 				
-				if (isset(Params::$lang))
-					$lingua = Params::$lang;
-				else
-				{
-					if (App::$isFrontend)
-						$lingua = v("lingua_default_frontend");
-					else
-						$lingua = v("default_backend_language");
-				}
+				// if (isset(Params::$lang))
+				// 	$lingua = Params::$lang;
+				// else
+				// {
+				// 	if (App::$isFrontend)
+				// 		$lingua = v("lingua_default_frontend");
+				// 	else
+				// 		$lingua = v("default_backend_language");
+				// }
 				
 				if ($superatoNumeroTotaleMinuto)
 					return array(1, '{"intent":"threshold_exceeded","confidence":1,"language":"'.$lingua.'"}');
@@ -1748,6 +1761,21 @@ class AirichiesteModel extends GenericModel
 		}
 		
 		return array("", "");
+	}
+	
+	private function getLinguaDefault()
+	{
+		if (isset(Params::$lang))
+			$lingua = Params::$lang;
+		else
+		{
+			if (App::$isFrontend)
+				$lingua = v("lingua_default_frontend");
+			else
+				$lingua = v("default_backend_language");
+		}
+		
+		return $lingua;
 	}
 	
 	public function checkRichiesta($messaggi)

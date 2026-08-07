@@ -13,6 +13,10 @@ Rules:
   text: "Non ho capito la domanda. Posso aiutarti con i prodotti e i servizi disponibili in questo negozio."
   status: "FAILED"
   reason: "OUT_OF_SCOPE"
+- If the user asks to open, create, or submit a support ticket without describing the reason for the request, return:
+  text: "Descrivi brevemente il problema o la richiesta per cui hai bisogno di assistenza."
+  status: "FAILED"
+  reason: "INSUFFICIENT_INFORMATION"
 - Otherwise return:
   text: "Questa richiesta non riguarda i prodotti o i servizi disponibili in questo negozio."
   status: "FAILED"

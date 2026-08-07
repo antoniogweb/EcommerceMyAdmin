@@ -1,0 +1,1 @@
+ALTER TABLE `ai_richieste` ADD oggetto_ticket varchar(255) not null default '';
