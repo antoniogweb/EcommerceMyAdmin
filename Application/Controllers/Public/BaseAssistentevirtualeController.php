@@ -90,6 +90,23 @@ class BaseAssistentevirtualeController extends BaseController
 		$this->redirect("virtual-assistant/");
 	}
 	
+// 	public function creaticket($idChat = 0)
+// 	{
+// 		$this->clean();
+// 		
+// 		$idChat = (int)$idChat;
+// 		
+// 		if (!$idChat)
+// 			$idChat = $this->m("AirichiesteModel")->getChat();
+// 		
+// 		if (!$idChat)
+// 			$this->responseCode(404);
+// 		
+// 		header('Content-type: application/json');
+// 		
+// 		echo json_encode($this->m("AirichiesteModel")->creaTicket((int)$idChat));
+// 	}
+	
 	public function messaggi()
 	{
 		$this->clean();

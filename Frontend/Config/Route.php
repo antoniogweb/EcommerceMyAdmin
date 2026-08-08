@@ -223,6 +223,7 @@ class Route
 		'cron,ai',
 		'assistentevirtuale,index',
 		'assistentevirtuale,nuovachat',
+		// 'assistentevirtuale,creaticket',
 		'assistentevirtuale,messaggi',
 		'assistentevirtuale,request',
 		'assistentevirtuale,status',
@@ -433,6 +434,7 @@ class Route
 		'virtual-assistant/messages/?'	=>	'assistentevirtuale/messaggi',
 		'virtual-assistant/request/?'	=>	'assistentevirtuale/request',
 		'virtual-assistant/new-chat/?'	=>	'assistentevirtuale/nuovachat',
+		// 'virtual-assistant/create-ticket/([0-9]+)/?'	=>	'assistentevirtuale/creaticket/${1}',
 		'virtual-assistant/?'		=>	'assistentevirtuale/index',
 		
 // 		'(.*)/(.*)/(.*)/(.*)/(.*)' 	=>	'contenuti/index/${1}/${2}/${3}/${4}/${5}',

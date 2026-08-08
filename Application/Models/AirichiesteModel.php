@@ -825,7 +825,13 @@ class AirichiesteModel extends GenericModel
 						"id_rif"			=>	(int)$airmModel->lId,
 					));
 					
-					$airmModel->insert();
+					if ($airmModel->insert())
+					{
+						$chat = $this->selectId((int)self::$idChat);
+						
+						if (!empty($chat) && (int)$chat["ticket_creato"])
+							$this->creaTicket((int)self::$idChat);
+					}
 				}
 			}
 		}
@@ -1832,5 +1838,62 @@ class AirichiesteModel extends GenericModel
 			ob_flush();
 
 		flush();
+	}
+	
+	public function creaTicket($idChat)
+	{
+		$chat = $this->selectId((int)$idChat);
+		
+		if (empty($chat))
+			return false;
+		
+		$messaggi = AirichiestemessaggiModel::g(false)->getMessaggi((int)$idChat);
+		
+		ob_start();
+		include tpf("Assistentevirtuale/storico.php");
+		$storicoHtml = ob_get_clean();
+		
+		$emailCliente = trim((string)$chat["email"]);
+		$emailNegozio = Parametri::$mailInvioOrdine;
+		
+		$variabiliMail = array(
+			"OGGETTO_TICKET"	=>	$chat["oggetto_ticket"],
+			"EMAIL"				=>	$chat["email"],
+			"TELEFONO"			=>	$chat["telefono"],
+			"STORICO"			=>	$storicoHtml,
+		);
+		
+		$inviataCliente = false;
+		
+		if ($emailCliente && checkMail($emailCliente))
+		{
+			$inviataCliente = MailordiniModel::inviaMail(array(
+				"emails"	=>	array($emailCliente),
+				"oggetto"	=>	"Il tuo ticket e' stato aperto",
+				"tipologia"	=>	"ASSISTENTE VIRTUALE CLIENTE",
+				"testo_path"	=>	"Elementi/Mail/AssistenteVirtuale/ticket_al_cliente.php",
+				"array_variabili_tema"	=>	$variabiliMail,
+				"id_user"	=>	(int)$chat["id_user"],
+				"tabella"	=>	"ai_richieste",
+				"id_elemento"	=>	(int)$idChat,
+			));
+		}
+		
+		$inviataNegozio = MailordiniModel::inviaMail(array(
+			"emails"	=>	array($emailNegozio),
+			"oggetto"	=>	"Nuovo ticket aperto tramite chatbot",
+			"tipologia"	=>	"ASSISTENTE VIRTUALE NEGOZIO",
+			"testo_path"	=>	"Elementi/Mail/AssistenteVirtuale/ticket_al_negozio.php",
+			"array_variabili_tema"	=>	$variabiliMail,
+			"reply_to"	=>	($emailCliente && checkMail($emailCliente)) ? $emailCliente : "",
+			"id_user"	=>	(int)$chat["id_user"],
+			"tabella"	=>	"ai_richieste",
+			"id_elemento"	=>	(int)$idChat,
+		));
+		
+		return array(
+			"cliente"	=>	$inviataCliente,
+			"negozio"	=>	$inviataNegozio,
+		);
 	}
 }
