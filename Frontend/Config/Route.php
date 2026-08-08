@@ -222,6 +222,7 @@ class Route
 		'cron,logtecnici',
 		'cron,ai',
 		'assistentevirtuale,index',
+		'assistentevirtuale,nuovachat',
 		'assistentevirtuale,messaggi',
 		'assistentevirtuale,request',
 		'assistentevirtuale,status',
@@ -431,6 +432,7 @@ class Route
 		'virtual-assistant/status/?'	=>	'assistentevirtuale/status',
 		'virtual-assistant/messages/?'	=>	'assistentevirtuale/messaggi',
 		'virtual-assistant/request/?'	=>	'assistentevirtuale/request',
+		'virtual-assistant/new-chat/?'	=>	'assistentevirtuale/nuovachat',
 		'virtual-assistant/?'		=>	'assistentevirtuale/index',
 		
 // 		'(.*)/(.*)/(.*)/(.*)/(.*)' 	=>	'contenuti/index/${1}/${2}/${3}/${4}/${5}',

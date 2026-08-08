@@ -72,11 +72,31 @@ class BaseAssistentevirtualeController extends BaseController
 		$this->load('index');
 	}
 	
+	public function nuovachat()
+	{
+		if (!User::$id)
+		{
+			unset($_COOKIE["assistant_uid"]);
+			unset($_COOKIE["assistant_uid_sig"]);
+			
+			Cookie::set("assistant_uid", "", time() - 3600, "/", true, 'Lax', true, v("secret_key"));
+			
+			$this->redirect("virtual-assistant/");
+		}
+		
+		$this->m("AirichiesteModel")->values = array();
+		$this->m("AirichiesteModel")->insert();
+		
+		$this->redirect("virtual-assistant/");
+	}
+	
 	public function messaggi()
 	{
 		$this->clean();
 		
 		$idChat = $this->m("AirichiesteModel")->getChat();
+		
+		$data["chat"] = $this->m("AirichiesteModel")->selectId((int)$idChat);
 		$data["messaggi"] = $this->m("AirichiestemessaggiModel")->getMessaggi((int)$idChat);
 		
 		$this->append($data);

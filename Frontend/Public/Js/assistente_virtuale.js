@@ -27,6 +27,19 @@ function scorriChatInBasso()
 	}, 500);
 }
 
+function aggiornaComposerAssistenteVirtuale()
+{
+	var status = $(".assistente_virtuale_chat_status").last();
+
+	if (!status.length)
+		return;
+
+	var ticketCreato = parseInt(status.data("ticket-creato"), 10) === 1;
+
+	$(".assistente_virtuale_composer_message").toggle(!ticketCreato);
+	$(".assistente_virtuale_composer_new_chat").toggle(ticketCreato);
+}
+
 function aggiornaChat()
 {
 	$.ajaxQueue({
@@ -36,6 +49,7 @@ function aggiornaChat()
 		dataType: "html",
 		success: function(content){
 			$(".chat_messages").html(content);
+			aggiornaComposerAssistenteVirtuale();
 			resetStatoAssistenteVirtuale();
 			
 			setTimeout(function() {

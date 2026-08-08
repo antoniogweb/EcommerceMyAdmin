@@ -494,7 +494,7 @@ class AirichiesteModel extends GenericModel
 			"assistant_uid"	=>	sanitizeAll(User::$assistant_uid),
 			"id_user"		=> 0,
 			"id_admin"		=>	0,
-		))->record();
+		))->orderBy("data_creazione desc,id_ai_richiesta desc")->record();
 	}
 	
 	public function getChat($crea = false)
@@ -513,7 +513,7 @@ class AirichiesteModel extends GenericModel
 				$record = $this->clear()->where(array(
 					"id_user"	=>	(int)User::$id,
 					"id_admin"	=>	0,
-				))->record();
+				))->orderBy("data_creazione desc,id_ai_richiesta desc")->record();
 				
 				if (empty($record) && User::$assistant_uid)
 				{

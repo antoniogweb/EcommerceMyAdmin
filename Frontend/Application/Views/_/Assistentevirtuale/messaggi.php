@@ -13,3 +13,5 @@
 		</div>
 	</div>
 <?php } ?>
+
+<span class="assistente_virtuale_chat_status uk-hidden" data-ticket-creato="<?php echo !empty($chat) ? (int)$chat["ticket_creato"] : 0;?>"></span>

@@ -14,20 +14,30 @@
 		<div class="assistente_virtuale_status uk-hidden uk-text-small uk-text-muted uk-padding-small"></div>
 	</div>
 	
+	<?php $ticketCreato = !empty($chat) && (int)$chat["ticket_creato"]; ?>
 	<div class="assistente_virtuale_composer uk-margin-remove-top">
-		<div class="uk-flex uk-flex-middle uk-grid-small" uk-grid>
-			<div class="uk-width-expand">
-				<input class="request_message uk-input" type="text" placeholder="<?php echo gtext("Scrivi un messaggio...");?>">
+		<div class="assistente_virtuale_composer_new_chat" style="<?php echo $ticketCreato ? "" : "display:none;";?>">
+			<div class="uk-flex uk-flex-center">
+				<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/virtual-assistant/new-chat/";?>">
+					<?php echo gtext("Nuova chat");?>
+				</a>
 			</div>
-			<div class="uk-width-auto" style="margin-top:0px !important;">
-				<button class="send_request_to_va uk-button uk-button-primary uk-flex uk-flex-center uk-flex-middle" type="button">
-					<span class="send_request_to_va_text"><?php echo gtext("Invia");?></span>
-					<span class="send_request_to_va_loader uk-hidden" aria-hidden="true">
-						<span></span>
-						<span></span>
-						<span></span>
-					</span>
-				</button>
+		</div>
+		<div class="assistente_virtuale_composer_message" style="<?php echo $ticketCreato ? "display:none;" : "";?>">
+			<div class="uk-flex uk-flex-middle uk-grid-small" uk-grid>
+				<div class="uk-width-expand">
+					<input class="request_message uk-input" type="text" placeholder="<?php echo gtext("Scrivi un messaggio...");?>">
+				</div>
+				<div class="uk-width-auto" style="margin-top:0px !important;">
+					<button class="send_request_to_va uk-button uk-button-primary uk-flex uk-flex-center uk-flex-middle" type="button">
+						<span class="send_request_to_va_text"><?php echo gtext("Invia");?></span>
+						<span class="send_request_to_va_loader uk-hidden" aria-hidden="true">
+							<span></span>
+							<span></span>
+							<span></span>
+						</span>
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
