@@ -33,7 +33,7 @@
 				</div>
 				<div class="uk-width-expand uk-text-left uk-margin-remove-top">
 					<span class="uk-text-small"><?php echo $elCart["email"] ? $elCart["email"] : gtext("-- non definita --");?></span>
-					<a title="<?php echo gtext("Modifica");?>" class="uk-position-right" href="<?php echo $this->baseUrl."/carrello/vedi";?>"><span uk-icon="icon: pencil"></span></a>
+					<a title="<?php echo gtextAttr("Modifica");?>" class="uk-position-right" href="<?php echo $this->baseUrl."/carrello/vedi";?>"><span uk-icon="icon: pencil"></span></a>
 				</div>
 			</div>
 			<div class="uk-grid uk-grid-small uk-child-width-expand@s uk-margin-remove-top uk-margin-remove-bottom" uk-grid="">

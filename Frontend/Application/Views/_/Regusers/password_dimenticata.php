@@ -19,13 +19,13 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 			<div class="uk-margin">
 				<label class="uk-form-label uk-text-bold"><?php echo gtext("Indirizzo e-mail");?> *</label>
 				<div class="uk-form-controls">
-					<input class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtext("Scrivi la tua e-mail", false)?>" />
+					<input class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi la tua e-mail", false)?>" />
 				</div>
 				
 				<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
 			</div>
 			
-			<input class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m" type="submit" name="invia" value="<?php echo gtext("Richiesta nuova password");?>" title="<?php echo gtext("Richiesta nuova password");?>" />
+			<input class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m" type="submit" name="invia" value="<?php echo gtextAttr("Richiesta nuova password");?>" title="<?php echo gtextAttr("Richiesta nuova password");?>" />
 		</form>
 	</div>
 </div>

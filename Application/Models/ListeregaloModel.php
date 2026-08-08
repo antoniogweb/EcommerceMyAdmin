@@ -722,6 +722,6 @@ class ListeregaloModel extends GenericModel
 			"id_lista_regalo"		=>	(int)$record["liste_regalo"]["id_lista_regalo"],
 			"richiesta"	=>	1,
 		))->rowNumber())
-			return "<i title='".gtext("Lista regal con richiesta di reso")."' class='text-danger fa fa-exclamation-circle'></i>";
+			return "<i title='".gtextAttr("Lista regal con richiesta di reso")."' class='text-danger fa fa-exclamation-circle'></i>";
 	}
 }

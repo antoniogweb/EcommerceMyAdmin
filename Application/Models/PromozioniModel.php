@@ -905,7 +905,7 @@ class PromozioniModel extends GenericModel {
 	
 	public function vedi($record)
 	{
-		return "<a title='".gtext("Dettaglio coupon")."' class='iframe action_iframe' href='".Url::getRoot()."promozioni/form/update/".$record["promozioni"]["id_p"]."?partial=Y&nobuttons=Y'>".$record["promozioni"]["titolo"]."</a>";
+		return "<a title='".gtextAttr("Dettaglio coupon")."' class='iframe action_iframe' href='".Url::getRoot()."promozioni/form/update/".$record["promozioni"]["id_p"]."?partial=Y&nobuttons=Y'>".$record["promozioni"]["titolo"]."</a>";
 	}
 	
 	public function getIdUtente($idPromo)
@@ -927,7 +927,7 @@ class PromozioniModel extends GenericModel {
 			
 			$label = $numeroInviate ? "info" : "default";
 			
-			$html .= " <span title='".gtext("Numero di volte che il coupon è stato inviato")."' class='label label-$label'>$numeroInviate</span>";
+			$html .= " <span title='".gtextAttr("Numero di volte che il coupon è stato inviato")."' class='label label-$label'>$numeroInviate</span>";
 		}
 		
 		return $html;

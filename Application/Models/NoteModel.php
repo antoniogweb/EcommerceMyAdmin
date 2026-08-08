@@ -293,10 +293,10 @@ class NoteModel extends GenericModel
 		if (!empty($ultimaNota))
 			$html .= "<div><small>".gtext("Ultima nota di")." <b>".$ultimaNota["adminusers"]["username"]."</b> ".gtext("del")." <b>".date("d/m/y H:i",strtotime($ultimaNota["note"]["data_creazione"]))."</b><br /><i>".$ultimaNota["note"]["testo"]."</i></small></div>";
 		
-		$html .= "<small><a class='iframe label label-info' title='".gtext("Aggiungi nota")."' href='".Url::getRoot()."note/form/insert/0?cl_on_sv=Y&partial=Y&nobuttons=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-plus-square-o'></i> ".gtext("Aggiungi nota")."</a></small>";
+		$html .= "<small><a class='iframe label label-info' title='".gtextAttr("Aggiungi nota")."' href='".Url::getRoot()."note/form/insert/0?cl_on_sv=Y&partial=Y&nobuttons=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-plus-square-o'></i> ".gtext("Aggiungi nota")."</a></small>";
 		
 		if (!empty($ultimaNota))
-			$html .= "<small style='margin-left:10px;'><a class='iframe label label-default' title='".gtext("Aggiungi nota")."' href='".Url::getRoot()."note/main?partial=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-list'></i> ".gtext("Tutte le note")."</a></small>";
+			$html .= "<small style='margin-left:10px;'><a class='iframe label label-default' title='".gtextAttr("Aggiungi nota")."' href='".Url::getRoot()."note/main?partial=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-list'></i> ".gtext("Tutte le note")."</a></small>";
 		
 		return $html;
     }

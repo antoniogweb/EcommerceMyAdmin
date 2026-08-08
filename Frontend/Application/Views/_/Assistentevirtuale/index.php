@@ -26,7 +26,7 @@
 		<div class="assistente_virtuale_composer_message" style="<?php echo $ticketCreato ? "display:none;" : "";?>">
 			<div class="uk-flex uk-flex-middle uk-grid-small" uk-grid>
 				<div class="uk-width-expand">
-					<input class="request_message uk-input" type="text" placeholder="<?php echo gtext("Scrivi un messaggio...");?>">
+					<input class="request_message uk-input" type="text" placeholder="<?php echo gtextAttr("Scrivi un messaggio...");?>">
 				</div>
 				<div class="uk-width-auto" style="margin-top:0px !important;">
 					<button class="send_request_to_va uk-button uk-button-primary uk-flex uk-flex-center uk-flex-middle" type="button">

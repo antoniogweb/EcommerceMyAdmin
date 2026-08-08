@@ -56,7 +56,7 @@ class GroupsModel extends GenericModel {
 	
 	public function bulkaggiungiauser($record)
     {
-		return "<i data-azione='aggiungiauser' title='".gtext("Aggiungi al gruppo")."' class='bulk_trigger help_trigger_aggiungi_a_user fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungiauser' title='".gtextAttr("Aggiungi al gruppo")."' class='bulk_trigger help_trigger_aggiungi_a_user fa fa-plus-circle text text-primary'></i>";
     }
     
     public function aggiungiauser($id)

@@ -13,15 +13,15 @@
 					<div class="uk-grid uk-grid-small" uk-grid>
 						<div>
 							<?php if ($invio["promozioni_invii"]["inviato"]) { ?>
-							<span title="<?php echo gtext("Il codice è stato inviato correttamente.");?>" class="uk-text-success" uk-icon="check"></span>
+							<span title="<?php echo gtextAttr("Il codice è stato inviato correttamente.");?>" class="uk-text-success" uk-icon="check"></span>
 							<?php } else { ?>
-							<span title="<?php echo gtext("Errore nell'invio del codice, si prega di riprovare.");?>" class="uk-text-danger" uk-icon="ban"></span>
+							<span title="<?php echo gtextAttr("Errore nell'invio del codice, si prega di riprovare.");?>" class="uk-text-danger" uk-icon="ban"></span>
 							<?php } ?>
 						</div>
 						<div class="uk-margin-remove-top">
 							<?php if ($invio["promozioni_invii"]["numero_tentativi"] < v("numero_massimo_tentativi_invio_link")) { ?>
 							<span class="spinner uk-hidden" uk-spinner="ratio: .70"></span>
-							<a class="invia_nuovamente_codice btn_submit_form" href="<?php echo $this->baseUrl."/promozioni/invianuovamentecodice/".$invio["promozioni_invii"]["id_promozione_invio"];?>"><span title="<?php echo gtext("Invia nuovamente il codice");?>" class="uk-margin-small-left" uk-icon="mail"></span></a>
+							<a class="invia_nuovamente_codice btn_submit_form" href="<?php echo $this->baseUrl."/promozioni/invianuovamentecodice/".$invio["promozioni_invii"]["id_promozione_invio"];?>"><span title="<?php echo gtextAttr("Invia nuovamente il codice");?>" class="uk-margin-small-left" uk-icon="mail"></span></a>
 							<?php } ?>
 						</div>
 					</div>

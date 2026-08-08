@@ -601,7 +601,7 @@ class SpedizioninegozioModel extends FormModel {
 			$titoloStato = !App::$isFrontend ? $this->getTitoloStato($sp["spedizioni_negozio"]["stato"]) : $this->getTitoloStatoFrontend($sp["spedizioni_negozio"]["stato"]);
 			$labelData = !App::$isFrontend ? 'Data' : 'Data spedizione';
 			
-			$html .= '<b title="'.gtext("Spedizione allo stato: ".$titoloStato).'" style="'.$this->getStile($sp["spedizioni_negozio"]["stato"]).'" class="'.$badgeClass.'"><i class="fa fa-truck"></i> '.$idLabel.$titoloStato.'</b>';
+			$html .= '<b title="'.gtextAttr("Spedizione allo stato: ".$titoloStato).'" style="'.$this->getStile($sp["spedizioni_negozio"]["stato"]).'" class="'.$badgeClass.'"><i class="fa fa-truck"></i> '.$idLabel.$titoloStato.'</b>';
 			
 			if (!App::$isFrontend)
 				$html .= '</a>';

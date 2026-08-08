@@ -25,9 +25,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			<img src='<?php echo $this->baseUrlSrc."/thumb/profilo/".$utenteProfilo["immagine"];?>'>
 		</div>
 		<div class="uk-margin">
-			<a class='uk-button uk-button-danger' title='<?php echo gtext("Cancella immagine");?>' href='<?php echo $this->baseUrl."/immagine-profilo";?>?deleteFoto=y'><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span> <?php echo gtext("Elimina immagine");?></a>
+			<a class='uk-button uk-button-danger' title='<?php echo gtextAttr("Cancella immagine");?>' href='<?php echo $this->baseUrl."/immagine-profilo";?>?deleteFoto=y'><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span> <?php echo gtext("Elimina immagine");?></a>
 			
-			<a class='uk-button uk-button-default' title='<?php echo gtext("Modifica immagine");?>' href='' uk-toggle="target: #form-modifica-immagine"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span> <?php echo gtext("Modifica immagine");?></a>
+			<a class='uk-button uk-button-default' title='<?php echo gtextAttr("Modifica immagine");?>' href='' uk-toggle="target: #form-modifica-immagine"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span> <?php echo gtext("Modifica immagine");?></a>
 		</div>
 	<?php } else { ?>
 		<div class="uk-alert uk-alert-primary">
@@ -45,7 +45,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			<div class="uk-margin" uk-margin>
 				<div uk-form-custom="target: true" class="class_immagine">
 					<input type="file" name="immagine" aria-label="Custom controls">
-					<input class="uk-input uk-form-width-medium" type="text" placeholder="<?php echo gtext("Seleziona il file");?>" aria-label="Custom controls" disabled>
+					<input class="uk-input uk-form-width-medium" type="text" placeholder="<?php echo gtextAttr("Seleziona il file");?>" aria-label="Custom controls" disabled>
 				</div>
 				
 				<span class="uk-margin">

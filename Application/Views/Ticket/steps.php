@@ -91,11 +91,11 @@
 								<tr>
 									<td><span style="<?php echo $stile;?>" class="label label-default"><?php echo $titoloStato;?></span></td>
 									<td class="text-right">
-										<a title="<?php echo gtext("Imposta")?>" class="make_spinner help_cambia_stato btn btn-default btn-xs" href="<?php echo $this->baseUrl."/ticket/setstato/".$recordTicket["ticket"]["id_ticket"]."/".$codiceStato.$this->viewStatus."&no_mail_stato";?>">
+										<a title="<?php echo gtextAttr("Imposta")?>" class="make_spinner help_cambia_stato btn btn-default btn-xs" href="<?php echo $this->baseUrl."/ticket/setstato/".$recordTicket["ticket"]["id_ticket"]."/".$codiceStato.$this->viewStatus."&no_mail_stato";?>">
 											<i class="fa fa-thumbs-up"></i>
 										</a>
 										
-										<a style="margin-left:5px;" title="<?php echo gtext("Imposta e manda mail")?>" class="make_spinner help_cambia_stato_mail btn btn-info btn-xs" href="<?php echo $this->baseUrl."/ticket/setstato/".$recordTicket["ticket"]["id_ticket"]."/".$codiceStato.$this->viewStatus;?>">
+										<a style="margin-left:5px;" title="<?php echo gtextAttr("Imposta e manda mail")?>" class="make_spinner help_cambia_stato_mail btn btn-info btn-xs" href="<?php echo $this->baseUrl."/ticket/setstato/".$recordTicket["ticket"]["id_ticket"]."/".$codiceStato.$this->viewStatus;?>">
 											<i class="fa fa-envelope-o"></i>
 										</a>
 									</td>

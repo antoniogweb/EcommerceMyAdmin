@@ -31,17 +31,17 @@
 						$attributiNome = "disabled";
 					?>
 					<div class="uk-margin"> 
-						<?php echo Html_Form::input("autore",FeedbackModel::gValue("autore"),"uk-input class_autore","autore","$attributiNome placeholder='".gtext("Il tuo nome*")."'");?>
+						<?php echo Html_Form::input("autore",FeedbackModel::gValue("autore"),"uk-input class_autore","autore","$attributiNome placeholder='".gtextAttr("Il tuo nome*")."'");?>
 					</div>
 					
 					<?php if (!User::$id) { ?>
 					<div class="uk-margin"> 
-						<?php echo Html_Form::input("email",FeedbackModel::gValue("email"),"uk-input class_email","email","placeholder='".gtext("Email*")."'");?>
+						<?php echo Html_Form::input("email",FeedbackModel::gValue("email"),"uk-input class_email","email","placeholder='".gtextAttr("Email*")."'");?>
 					</div>
 					<?php } ?>
 					
 					<div class="uk-margin">
-						<?php echo Html_Form::textarea("testo",FeedbackModel::gValue("testo"),"uk-textarea class_testo","testo","rows='5' placeholder='".gtext("Il tuo commento*")."'");?>
+						<?php echo Html_Form::textarea("testo",FeedbackModel::gValue("testo"),"uk-textarea class_testo","testo","rows='5' placeholder='".gtextAttr("Il tuo commento*")."'");?>
 					</div>
 					
 					<?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>

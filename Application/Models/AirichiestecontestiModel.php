@@ -75,9 +75,9 @@ class AirichiestecontestiModel extends GenericModel
 	public function bulksegnaimportante($record)
     {
 		if ($record["ai_richieste_contesti"]["importante"])
-			return "<i data-azione='settanonimportante' title='".gtext("Segna come NON importante")."' class='bulk_trigger help_trigger_rendi_non_importante fa fa-check text text-success'></i>";
+			return "<i data-azione='settanonimportante' title='".gtextAttr("Segna come NON importante")."' class='bulk_trigger help_trigger_rendi_non_importante fa fa-check text text-success'></i>";
 		else
-			return "<i data-azione='settaimportante' title='".gtext("Segna come importante")."' class='bulk_trigger help_trigger_rendi_importante fa fa-ban text'></i>";
+			return "<i data-azione='settaimportante' title='".gtextAttr("Segna come importante")."' class='bulk_trigger help_trigger_rendi_importante fa fa-ban text'></i>";
     }
 
     public function settanonimportante($id)

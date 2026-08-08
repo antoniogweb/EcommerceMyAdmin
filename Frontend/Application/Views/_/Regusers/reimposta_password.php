@@ -23,7 +23,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 				<div class="uk-margin">
 					<label class="uk-form-label uk-text-bold"><?php echo gtext("Password");?></label>
 					<div class="uk-form-controls uk-position-relative">
-						<?php echo Html_Form::password("password",$values['password'],"uk-input uk-width-1-2@s uk-width-1-1@m class_password ".VariabiliModel::classeHelpWizardPassword(),null,"placeholder='".gtext("Scrivi la nuova password", false)."'");?>
+						<?php echo Html_Form::password("password",$values['password'],"uk-input uk-width-1-2@s uk-width-1-1@m class_password ".VariabiliModel::classeHelpWizardPassword(),null,"placeholder='".gtextAttr("Scrivi la nuova password", false)."'");?>
 						<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 					</div>
 				</div>
@@ -31,12 +31,12 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 				<div class="uk-margin">
 					<label class="uk-form-label uk-text-bold"><?php echo gtext("Conferma password");?></label>
 					<div class="uk-form-controls uk-position-relative">
-						<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input uk-width-1-2@s uk-width-1-1@m class_confirmation ".VariabiliModel::classeHelpWizardPassword(),null,"placeholder='".gtext("Conferma la nuova password", false)."'");?>
+						<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input uk-width-1-2@s uk-width-1-1@m class_confirmation ".VariabiliModel::classeHelpWizardPassword(),null,"placeholder='".gtextAttr("Conferma la nuova password", false)."'");?>
 						<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 					</div>
 				</div>
 				
-				<input class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m" type="submit" name="invia" value="<?php echo gtext("Imposta la password");?>" title="<?php echo gtext("Imposta la password");?>" />
+				<input class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m" type="submit" name="invia" value="<?php echo gtextAttr("Imposta la password");?>" title="<?php echo gtextAttr("Imposta la password");?>" />
 			</fieldset>
 		</form>
 	</div>

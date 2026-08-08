@@ -18,7 +18,7 @@
 		<div class="<?php if (!User::$isPhone) { ?>uk-flex uk-flex-between<?php } ?>">
 			<button type="submit" class="submit_preferenze <?php echo v("cookies_save_pref")?>"><!--<span uk-icon="check"></span>--> <?php echo gtext("Approva selezionati");?></button>
 			<?php if (!isset($_COOKIE["ok_cookie"]) && !VariabiliModel::checkToken("var_query_string_no_cookie") && VariabiliModel::$usatiCookieTerzi) { ?>
-			<a class="<?php echo v("cookies_confirm_button");?>" title="<?php echo gtext("accetto", false);?>" href="<?php echo $this->baseUrl."/accept-cookies?".v("var_query_string_no_cookie")."=Y".(VariabiliModel::$usatiCookieTerzi ? "&all_cookie=Y" : "");?>">
+			<a class="<?php echo v("cookies_confirm_button");?>" title="<?php echo gtextAttr("accetto", false);?>" href="<?php echo $this->baseUrl."/accept-cookies?".v("var_query_string_no_cookie")."=Y".(VariabiliModel::$usatiCookieTerzi ? "&all_cookie=Y" : "");?>">
 				<?php echo gtext("Approva tutti");?>
 			</a>
 			<?php } ?>

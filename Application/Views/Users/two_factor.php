@@ -8,7 +8,7 @@
 		<br />
 		<?php $flash = flash("notice");?>
 		<?php echo $flash;?>
-		<input class="form-control" name='codice' type="text" autofocus="" placeholder="<?php echo gtext("Codice");?>">
+		<input class="form-control" name='codice' type="text" autofocus="" placeholder="<?php echo gtextAttr("Codice");?>">
 		<br />
 		<button class="btn btn-lg btn-primary btn-block make_spinner" type="submit"><i class="fa fa-check"></i> <?php echo gtext("Invia");?></button>
 		<br />

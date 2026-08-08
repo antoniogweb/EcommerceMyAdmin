@@ -16,12 +16,12 @@
 		<div class="uk-margin-remove-top first_of_grid uk-width-1-1 uk-width-2-3@m uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Dedica")?></label>
 		
-			<?php echo Html_Form::textarea("dedica",$values["dedica"],"uk-textarea class_dedica",null,"placeholder='".gtext("Scrivi qui la dedica..")."'");?>
+			<?php echo Html_Form::textarea("dedica",$values["dedica"],"uk-textarea class_dedica",null,"placeholder='".gtextAttr("Scrivi qui la dedica..")."'");?>
 		</div>
 		<div class="uk-margin-remove-top uk-width-1-1 uk-width-1-3@m uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Firma");?></label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::input("firma",$values['firma'],"uk-input class_firma",null,"placeholder='".gtext("Scrivi qui la firma..")."'");?>
+				<?php echo Html_Form::input("firma",$values['firma'],"uk-input class_firma",null,"placeholder='".gtextAttr("Scrivi qui la firma..")."'");?>
 			</div>
 		</div>
 	</div>

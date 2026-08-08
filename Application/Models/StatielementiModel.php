@@ -128,10 +128,10 @@ class StatielementiModel extends GenericModel
 		
 		$iconaModifica = !empty($ultimaStato) ? "pencil" : "plus";
 		
-		$html .= "<span style='margin-left:10px;'><a class='iframe badge' title='".gtext("Modifica stato")."' href='".Url::getRoot()."statielementi/form/insert/0?cl_on_sv=Y&partial=Y&nobuttons=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-$iconaModifica'></i></a></span>";
+		$html .= "<span style='margin-left:10px;'><a class='iframe badge' title='".gtextAttr("Modifica stato")."' href='".Url::getRoot()."statielementi/form/insert/0?cl_on_sv=Y&partial=Y&nobuttons=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-$iconaModifica'></i></a></span>";
 		
 		if (!empty($ultimaStato))
-			$html .= "<span style='margin-left:10px;'><a class='iframe label label-info' title='".gtext("Storico degli stati")."' href='".Url::getRoot()."statielementi/main?partial=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-clock-o'></i></a></span>";
+			$html .= "<span style='margin-left:10px;'><a class='iframe label label-info' title='".gtextAttr("Storico degli stati")."' href='".Url::getRoot()."statielementi/main?partial=Y&tabella=$tabellaRif&id_tabella=$idRif'><i class='fa fa-clock-o'></i></a></span>";
 		
 		return $html;
     }

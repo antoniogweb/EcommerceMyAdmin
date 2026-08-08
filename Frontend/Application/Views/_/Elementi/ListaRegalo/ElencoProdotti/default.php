@@ -96,7 +96,7 @@
 							<?php if ($numeroRimastiDaRegalare > 0) { ?>
 								<?php if (CombinazioniModel::acquistabile($p["liste_regalo_pages"]["id_c"]) && $acquistabile) { ?>
 								<div class="uk-button uk-button-primary uk-button-small spinner uk-hidden" uk-spinner="ratio: .70"></div>
-								<a id-lista="<?php echo $idListaRegalo;?>" rel="<?php echo $p["liste_regalo_pages"]["id_page"];?>" class="uk-button uk-button-primary uk-button-small aggiungi_al_carrello_lista" title="<?php echo gtext("Acquista il prodotto", false);?>" href="#"><?php echo gtext("Acquista", false);?></a>
+								<a id-lista="<?php echo $idListaRegalo;?>" rel="<?php echo $p["liste_regalo_pages"]["id_page"];?>" class="uk-button uk-button-primary uk-button-small aggiungi_al_carrello_lista" title="<?php echo gtextAttr("Acquista il prodotto", false);?>" href="#"><?php echo gtext("Acquista", false);?></a>
 								<?php } else { ?>
 									<span class="uk-text-secondary uk-text-small uk-text-bold"><?php echo gtext("Il prodotto non è più acquistabile");?></span>
 								<?php } ?>

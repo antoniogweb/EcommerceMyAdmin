@@ -19,7 +19,7 @@ $lista = ListeregaloModel::listeUtenteModel(0, $idLista)->record();?>
 			<dd class="uk-text-small"><?php echo gtext("Se si desidera consegnare personalmente i regali, si prega di passare a ritirarli in negozio.")?></dd>
 		</dl>
 		<?php if (!isset($ordine)) { ?>
-		<a title="<?php echo gtext("Disattiva l'acquisto nella lista.");?>"  class="uk-margin-small-top uk-button uk-button-small uk-button-danger disattiva_acquisto_lista" href="#"><?php echo gtext("Disattiva");?> <span uk-icon="icon: trash; ratio: 1"></span></a>
+		<a title="<?php echo gtextAttr("Disattiva l'acquisto nella lista.");?>"  class="uk-margin-small-top uk-button uk-button-small uk-button-danger disattiva_acquisto_lista" href="#"><?php echo gtext("Disattiva");?> <span uk-icon="icon: trash; ratio: 1"></span></a>
 		<?php } ?>
 	</div>
 	<?php } ?>

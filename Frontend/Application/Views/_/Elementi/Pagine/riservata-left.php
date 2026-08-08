@@ -28,7 +28,7 @@
 				<?php include(tpf("/Elementi/Riservata/Link/logout.php"));?>
 			<?php } else { ?>
 			<li class="uk-active">
-				<a href="<?php echo $this->baseUrl."/crea-account";?>" title="<?php echo gtext("Inserisci dati fatturazione", false);?>"><?php echo gtext("Inserisci dati fatturazione");?></a>
+				<a href="<?php echo $this->baseUrl."/crea-account";?>" title="<?php echo gtextAttr("Inserisci dati fatturazione", false);?>"><?php echo gtext("Inserisci dati fatturazione");?></a>
 			</li>
 			<?php } ?>
 		</ul>

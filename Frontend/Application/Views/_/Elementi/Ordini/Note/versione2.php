@@ -15,7 +15,7 @@
 	<div class="uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Nota d'acquisto")?></label>
 	
-		<?php echo Html_Form::textarea("note",$values["note"],"uk-textarea",null,"placeholder='".gtext("Scrivi qui una eventuale nota al tuo ordine..")."'");?>
+		<?php echo Html_Form::textarea("note",$values["note"],"uk-textarea",null,"placeholder='".gtextAttr("Scrivi qui una eventuale nota al tuo ordine..")."'");?>
 	</div>
 </div>
 

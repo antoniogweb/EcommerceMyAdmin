@@ -15,13 +15,13 @@
 					<div class="uk-margin">
 						<label class="uk-form-label uk-text-bold"><?php echo gtext("Codice inviato via e-mail");?> *</label>
 						<div class="uk-form-controls">
-							<input class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="codice" type="text" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtext("Scrivi qui il codice..", false) : "";?>" />
+							<input class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="codice" type="text" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtextAttr("Scrivi qui il codice..", false) : "";?>" />
 						</div>
 					</div>
 					
 					<div>
 						<div class="<?php echo $classePulsanteTwoFactor;?> uk-width-1-1 uk-width-1-2@s spinner uk-hidden" uk-spinner="ratio: .70"></div>
-						<input autocomplete="new-password" class="<?php echo $classePulsanteTwoFactor;?> uk-width-1-1 uk-width-1-2@s btn_submit_form" type="submit" name="login" value="<?php echo gtext("Invia");?>" />
+						<input autocomplete="new-password" class="<?php echo $classePulsanteTwoFactor;?> uk-width-1-1 uk-width-1-2@s btn_submit_form" type="submit" name="login" value="<?php echo gtextAttr("Invia");?>" />
 					</div>
 				</fieldset>
 			</form>

@@ -27,7 +27,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					<div class="uk-margin">
 						<label class="uk-form-label uk-text-bold"><?php echo gtext("Indirizzo e-mail");?> *</label>
 						<div class="uk-form-controls">
-							<input class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtext("Scrivi la tua e-mail", false)?>" />
+							<input class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi la tua e-mail", false)?>" />
 						</div>
 						
 						<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
@@ -35,7 +35,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 					
 					<div>
 						<div class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
-						<input class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m btn_submit_form" type="submit" name="invia" value="<?php echo gtext("Invia il codice di verifica account");?>" title="<?php echo gtext("Invia il codice di verifica account");?>" />
+						<input class="uk-button uk-button-secondary uk-width-1-2@s uk-width-1-1@m btn_submit_form" type="submit" name="invia" value="<?php echo gtextAttr("Invia il codice di verifica account");?>" title="<?php echo gtextAttr("Invia il codice di verifica account");?>" />
 					</div>
 				</fieldset>
 			</form>

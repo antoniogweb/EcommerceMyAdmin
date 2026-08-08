@@ -79,7 +79,7 @@
 		
 		<input id="userfile" name="userfile" type="file">
 	
-		<input class="file_submit" type="submit" name="uploadFileAction" value="<?php echo gtext("carica", false);?>">
+		<input class="file_submit" type="submit" name="uploadFileAction" value="<?php echo gtextAttr("carica", false);?>">
 		<input type="hidden" name="MAX_FILE_SIZE" value="10000">
 		<span class="loading_gif"><img src="<?php echo $this->baseUrlSrc."/Public/Img/Icons/loading4.gif";?>" /></span>
 	</form>
@@ -92,7 +92,7 @@
 	<form action='<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=createfolder";?>' method='POST'>
 		<b><?php echo gtext("Crea una cartella");?>:</b>
 		<input type="text" name="folderName" value="">
-		<input type="submit" name="uploadFileAction" value="<?php echo gtext("crea", false);?>">
+		<input type="submit" name="uploadFileAction" value="<?php echo gtextAttr("crea", false);?>">
 	</form>
 </div>
 <?php } ?>
@@ -194,7 +194,7 @@
 <?php if ($this->viewArgs['is_popup']) { ?>
 
 <div class="inserisci_button">
-	<input class="inserisci_button_submit" type="submit" name="inserisci" value="<?php echo gtext("Inserisci", false);?>" />
+	<input class="inserisci_button_submit" type="submit" name="inserisci" value="<?php echo gtextAttr("Inserisci", false);?>" />
 </div>
 
 <?php } ?>

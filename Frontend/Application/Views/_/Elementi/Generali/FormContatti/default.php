@@ -10,16 +10,16 @@
 		<fieldset class="uk-fieldset">
 			<div uk-grid class="uk-margin uk-grid"> 
 				<div class="uk-width-1-2@m uk-width-1-2@s">
-					<?php echo Html_Form::input("nome",Form::gValue("nome"),"uk-input class_nome","nome","placeholder='".gtext("Nome*")."'");?>
+					<?php echo Html_Form::input("nome",Form::gValue("nome"),"uk-input class_nome","nome","placeholder='".gtextAttr("Nome*")."'");?>
 				</div>
 				
 				<div class="uk-width-1-2@m uk-width-1-2@s">
-					<?php echo Html_Form::input("email",Form::gValue("email"),"uk-input class_email","email","placeholder='".gtext("Email*")."'");?>
+					<?php echo Html_Form::input("email",Form::gValue("email"),"uk-input class_email","email","placeholder='".gtextAttr("Email*")."'");?>
 				</div>
 			</div>
 
 			<div class="uk-margin">
-				<?php echo Html_Form::textarea("messaggio",Form::gValue("messaggio"),"uk-textarea class_messaggio","messaggio","rows='5' placeholder='".gtext("Messaggio*")."'");?>
+				<?php echo Html_Form::textarea("messaggio",Form::gValue("messaggio"),"uk-textarea class_messaggio","messaggio","rows='5' placeholder='".gtextAttr("Messaggio*")."'");?>
 			</div>
 			
 			<?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>

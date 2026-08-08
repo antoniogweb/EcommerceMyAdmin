@@ -187,7 +187,7 @@ class OrdiniacquistopdfModel extends GenericModel
     
     public function linkPdfCrud($record)
     {
-		return '<a target="_blank" title="'.gtext("Vedi PDF").'" href="'.Url::getRoot().$this->applicationUrl.$this->controller."/stampapdf/0/".$record["ordini_acquisto_pdf"]["id_ordine_acquisto_pdf"].'"><i class="fa fa-file-pdf-o"></i></a>';
+		return '<a target="_blank" title="'.gtextAttr("Vedi PDF").'" href="'.Url::getRoot().$this->applicationUrl.$this->controller."/stampapdf/0/".$record["ordini_acquisto_pdf"]["id_ordine_acquisto_pdf"].'"><i class="fa fa-file-pdf-o"></i></a>';
     }
     
     public function deletable($id)

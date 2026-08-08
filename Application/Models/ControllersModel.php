@@ -73,7 +73,7 @@ class ControllersModel extends GenericModel
 	
 	public function bulkaggiungiagruppo($record)
     {
-		return "<i data-azione='aggiungiagruppo' title='".gtext("Aggiungi al gruppo")."' class='bulk_trigger help_trigger_aggiungi_al_gruppo fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungiagruppo' title='".gtextAttr("Aggiungi al gruppo")."' class='bulk_trigger help_trigger_aggiungi_al_gruppo fa fa-plus-circle text text-primary'></i>";
     }
     
     public function aggiungiagruppo($id)

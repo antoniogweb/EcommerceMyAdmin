@@ -10,8 +10,8 @@
 	
 		<?php echo Html_Form::select("id_lingua","",$listaLingue,"form-control",null,"yes");?>
 		
-		<input class="submit_file btn btn-success btn-sm" type="submit" name="includi" value="<?php echo gtext("Includi lingua")?>">
-		<input class="submit_file btn btn-warning btn-sm" type="submit" name="escludi" value="<?php echo gtext("Escludi lingua")?>">
+		<input class="submit_file btn btn-success btn-sm" type="submit" name="includi" value="<?php echo gtextAttr("Includi lingua")?>">
+		<input class="submit_file btn btn-warning btn-sm" type="submit" name="escludi" value="<?php echo gtextAttr("Escludi lingua")?>">
 		
 	</form>
 	<br />

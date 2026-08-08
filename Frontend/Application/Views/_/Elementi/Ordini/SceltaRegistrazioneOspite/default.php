@@ -12,7 +12,7 @@
 		<div class="first_of_grid uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
 			<div class="uk-form-controls uk-position-relative">
-				<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password' placeholder='".gtext("Password", false)."'");?>
+				<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password' placeholder='".gtextAttr("Password", false)."'");?>
 				<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 			</div>
 		</div>
@@ -20,7 +20,7 @@
 		<div class="uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Conferma password");?> *</label>
 			<div class="uk-form-controls uk-position-relative">
-				<?php echo Html_Form::password("confirmation",$regusers_values['confirmation'],"uk-input class_confirmation ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password' placeholder='".gtext("Conferma password", false)."'");?>
+				<?php echo Html_Form::password("confirmation",$regusers_values['confirmation'],"uk-input class_confirmation ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password' placeholder='".gtextAttr("Conferma password", false)."'");?>
 				<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 			</div>
 		</div>

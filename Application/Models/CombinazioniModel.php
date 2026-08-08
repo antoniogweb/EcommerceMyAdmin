@@ -1153,9 +1153,9 @@ class CombinazioniModel extends GenericModel {
 	public function acquistabileCrudText($record)
 	{
 		if ($record["combinazioni"]["acquistabile"])
-			return "<a class='ajlink text text-success' title='".gtext("Rendi il prodotto NON acquistabile")."' href='".Url::getRoot()."combinazioni/modificaacquistabile/".$record["combinazioni"]["id_c"]."/0'><i class='fa fa-check'></i></a>";
+			return "<a class='ajlink text text-success' title='".gtextAttr("Rendi il prodotto NON acquistabile")."' href='".Url::getRoot()."combinazioni/modificaacquistabile/".$record["combinazioni"]["id_c"]."/0'><i class='fa fa-check'></i></a>";
 		else
-			return "<a class='ajlink text text-danger' title='".gtext("Rendi il prodotto acquistabile")."' href='".Url::getRoot()."combinazioni/modificaacquistabile/".$record["combinazioni"]["id_c"]."/1'><i class='fa fa-ban'></i></a>";
+			return "<a class='ajlink text text-danger' title='".gtextAttr("Rendi il prodotto acquistabile")."' href='".Url::getRoot()."combinazioni/modificaacquistabile/".$record["combinazioni"]["id_c"]."/1'><i class='fa fa-ban'></i></a>";
 	}
 	
 	public function canonical($record)
@@ -1163,7 +1163,7 @@ class CombinazioniModel extends GenericModel {
 		if ($record["combinazioni"]["canonical"])
 			return "<i class='fa fa-check text text-success'></i>";
 		else
-			return "<a class='ajlink text text-muted' title='".gtext("Rendi il prodotto canonical")."' href='".Url::getRoot()."combinazioni/rendicanonical/".$record["combinazioni"]["id_c"]."'><i class='fa fa-ban'></i></a>";
+			return "<a class='ajlink text text-muted' title='".gtextAttr("Rendi il prodotto canonical")."' href='".Url::getRoot()."combinazioni/rendicanonical/".$record["combinazioni"]["id_c"]."'><i class='fa fa-ban'></i></a>";
 	}
 	
 	public function rendicanonical($idC)
@@ -1197,12 +1197,12 @@ class CombinazioniModel extends GenericModel {
 	
 	public function bulkaggiungialistaregalo($record)
     {
-		return "<i data-azione='aggiungialistaregalo' title='".gtext("Aggiungi alla lista regalo")."' class='bulk_trigger help_trigger_aggiungi_a_lista_regalo fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungialistaregalo' title='".gtextAttr("Aggiungi alla lista regalo")."' class='bulk_trigger help_trigger_aggiungi_a_lista_regalo fa fa-plus-circle text text-primary'></i>";
     }
     
     public function bulkaggiungiaordine($record)
     {
-		return "<i data-azione='aggiungiaordine' title='".gtext("Aggiungi ad ordine")."' class='bulk_trigger help_trigger_aggiungi_a_ordine fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungiaordine' title='".gtextAttr("Aggiungi ad ordine")."' class='bulk_trigger help_trigger_aggiungi_a_ordine fa fa-plus-circle text text-primary'></i>";
     }
     
     public function aggiungialistaregalo($id)
@@ -1535,7 +1535,7 @@ class CombinazioniModel extends GenericModel {
 		if ($cmModel->clear()->where(array(
 			"id_c"	=>	(int)$record["combinazioni"]["id_c"],
 		))->rowNumber())
-			return "<a title='".gtext("Elenco movimentazioni prodotto")."' class='iframe' href='".Url::getRoot()."combinazionimovimenti/main?partial=Y&id_c=".(int)$record["combinazioni"]["id_c"]."'><i class='fa fa-history'></i></a>";
+			return "<a title='".gtextAttr("Elenco movimentazioni prodotto")."' class='iframe' href='".Url::getRoot()."combinazionimovimenti/main?partial=Y&id_c=".(int)$record["combinazioni"]["id_c"]."'><i class='fa fa-history'></i></a>";
 		
 		return "";
 	}

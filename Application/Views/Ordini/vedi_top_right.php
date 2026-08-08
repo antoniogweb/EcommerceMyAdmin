@@ -55,12 +55,12 @@
 				<tr>
 					<td><span class="label label-<?php echo labelStatoOrdine($statoSucc["codice"]);?>"><?php echo statoOrdine($statoSucc["codice"]);?></span></td>
 					<td class="text-right">
-						<a title="<?php echo gtext("Imposta")?>" class="make_spinner help_cambia_stato btn btn-default btn-xs" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/setstato/".$ordine["id_o"]."/".$statoSucc["codice"].$this->viewStatus."&no_mail_stato";?>">
+						<a title="<?php echo gtextAttr("Imposta")?>" class="make_spinner help_cambia_stato btn btn-default btn-xs" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/setstato/".$ordine["id_o"]."/".$statoSucc["codice"].$this->viewStatus."&no_mail_stato";?>">
 							<i class="fa fa-thumbs-up"></i>
 						</a>
 						
 						<?php if ($statoSucc["manda_mail_al_cambio_stato"] && ($statoSucc["codice"] == "pending" || !F::blank($statoSucc["descrizione"]) || file_exists(tpf("/Ordini/mail-".$statoSucc["codice"].".php")))) { ?>
-						<a style="margin-left:5px;" title="<?php echo gtext("Imposta e manda mail")?>" class="make_spinner help_cambia_stato_mail btn btn-info btn-xs" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/setstato/".$ordine["id_o"]."/".$statoSucc["codice"].$this->viewStatus;?>">
+						<a style="margin-left:5px;" title="<?php echo gtextAttr("Imposta e manda mail")?>" class="make_spinner help_cambia_stato_mail btn btn-info btn-xs" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/setstato/".$ordine["id_o"]."/".$statoSucc["codice"].$this->viewStatus;?>">
 							<i class="fa fa-envelope-o"></i>
 						</a>
 						<?php } ?>
@@ -99,7 +99,7 @@
 					<td><?php echo OrdiniModel::getTipoMail($mailFatt["tipo"]);?><br /><i><b><?php echo $mailFatt["oggetto"];?></b></i></td>
 					<td>
 						<?php if ($mailFatt["tabella"] == "orders_pdf" && $mailFatt["id_elemento"]) { ?>
-						<a target="_blank" title="<?php echo gtext("Vedi PDF");?>" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/stampapdf/0/".$mailFatt["id_elemento"];?>"><i class="fa fa-file-pdf-o"></i></a>
+						<a target="_blank" title="<?php echo gtextAttr("Vedi PDF");?>" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/stampapdf/0/".$mailFatt["id_elemento"];?>"><i class="fa fa-file-pdf-o"></i></a>
 						<?php } ?>
 					</td>
 					<td><i style="font-size:18px;" class="text text-<?php if ($mailFatt["inviata"]) { ?>success<?php } else { ?>danger<?php } ?> fa <?php if ($mailFatt["inviata"]) { ?>fa-check-circle<?php } else { ?>fa-ban<?php } ?>"></i></td>

@@ -56,11 +56,11 @@ $(document).ready(function(){
 						<td><?php echo gtext("Stato");?>:</td>
 						<td>
 							<?php if ($spedizione["spedizioni_negozio"]["data_spedizione"] != date("Y-m-d") && in_array($spedizione["spedizioni_negozio"]["stato"], SpedizioninegozioModel::statiSpedizioniApribili())) { ?>
-							<a style="margin-left:10px;" href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."/1".$this->viewStatus;?>" confirm-message="<?php echo gtext("Attenzione, la spedizione non verrà cancellata nei server del corriere. Se possibile, procedere aprendo la spedizione normalmente.")?>" class="pull-right text text-danger confirm make_spinner_confirm" title="<?php echo gtext("Forza allo stato aperto");?>"><i class="fa fa-unlock"></i></a>
+							<a style="margin-left:10px;" href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."/1".$this->viewStatus;?>" confirm-message="<?php echo gtextAttr("Attenzione, la spedizione non verrà cancellata nei server del corriere. Se possibile, procedere aprendo la spedizione normalmente.")?>" class="pull-right text text-danger confirm make_spinner_confirm" title="<?php echo gtextAttr("Forza allo stato aperto");?>"><i class="fa fa-unlock"></i></a>
 							<?php } ?>
 							
 							<?php if (in_array($spedizione["spedizioni_negozio"]["stato"], SpedizioninegozioModel::statiSpedizioniAnnullabili())) { ?>
-							<a style="background:#f56954;" href="<?php echo $this->baseUrl."/spedizioninegozio/annulla/".(int)$id.$this->viewStatus;?>" confirm-message="<?php echo gtext("Attenzione, la spedizione non verrà eliminata. Sarà annullata e sarà possibile ricrearla partendo dall'ordine.")?>" class="badge pull-right confirm make_spinner_confirm" title="<?php echo gtext("Imposta la spedizione come annullata");?>"><i class="fa fa-ban"></i></a>
+							<a style="background:#f56954;" href="<?php echo $this->baseUrl."/spedizioninegozio/annulla/".(int)$id.$this->viewStatus;?>" confirm-message="<?php echo gtextAttr("Attenzione, la spedizione non verrà eliminata. Sarà annullata e sarà possibile ricrearla partendo dall'ordine.")?>" class="badge pull-right confirm make_spinner_confirm" title="<?php echo gtextAttr("Imposta la spedizione come annullata");?>"><i class="fa fa-ban"></i></a>
 							<?php } ?>
 							
 							<span style="<?php echo $stile;?>" class="label label-default"><?php echo $titoloStato;?></span>
@@ -96,13 +96,13 @@ $(document).ready(function(){
 				<?php } ?>
 				
 				<?php if ($statoSpedizione == "A" && $modulo->metodo("prenotaSpedizione")) { ?>
-				<a title="<?php echo gtext("Setta la spedizione a PRONTA PER L'INVIO con")?> <?php echo SpedizionieriModel::g(false)->titolo($spedizione["spedizioni_negozio"]["id_spedizioniere"]);?>" href="<?php echo $this->baseUrl."/spedizioninegozio/prontadainviare/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="pull-right btn btn-info make_spinner"><i class="fa fa-paper-plane"></i> <?php echo gtext("PRENOTA");?></a>
+				<a title="<?php echo gtextAttr("Setta la spedizione a PRONTA PER L'INVIO con")?> <?php echo SpedizionieriModel::g(false)->titolo($spedizione["spedizioni_negozio"]["id_spedizioniere"]);?>" href="<?php echo $this->baseUrl."/spedizioninegozio/prontadainviare/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="pull-right btn btn-info make_spinner"><i class="fa fa-paper-plane"></i> <?php echo gtext("PRENOTA");?></a>
 				<?php } else if ($statoSpedizione == "I") { ?>
 					<?php if (SpedizioninegozioModel::g(false)->idLetteraDiVettura((int)$id)) { ?>
-					<a style="margin-left:5px;" title="<?php echo gtext("Riporta la spedizione allo stato APERTO")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/conferma/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="pull-right btn bg-purple make_spinner"><i class="fa fa-check"></i> <?php echo gtext("CONFERMA");?></a>
+					<a style="margin-left:5px;" title="<?php echo gtextAttr("Riporta la spedizione allo stato APERTO")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/conferma/".(int)$id."?partial=".$this->viewArgs["partial"];?>" class="pull-right btn bg-purple make_spinner"><i class="fa fa-check"></i> <?php echo gtext("CONFERMA");?></a>
 					<?php } ?>
 					
-					<a title="<?php echo gtext("Riporta la spedizione allo stato APERTO")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."?partial=".$this->viewArgs["partial"];?>" confirm-message="<?php echo gtext("Attenzione, quando andrai a prenotare nuovamente la spedizione dovrai ristampare le etichette.")?>" class="confirm pull-right btn btn-default make_spinner_confirm"><i class="fa fa-unlock"></i> <?php echo gtext("APRI");?></a>
+					<a title="<?php echo gtextAttr("Riporta la spedizione allo stato APERTO")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."?partial=".$this->viewArgs["partial"];?>" confirm-message="<?php echo gtextAttr("Attenzione, quando andrai a prenotare nuovamente la spedizione dovrai ristampare le etichette.")?>" class="confirm pull-right btn btn-default make_spinner_confirm"><i class="fa fa-unlock"></i> <?php echo gtext("APRI");?></a>
 				<?php } ?>
 			</div>
 			<div class="col-lg-6">
@@ -168,7 +168,7 @@ $(document).ready(function(){
 					<tr>
 						<td><?php echo gtext("Costo stimato (IVA esclusa)");?>:</td>
 						<td>
-							<a style="margin-left:5px;" title="<?php echo gtext("Richiedi costo stimato")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/richiedicosto/".(int)$id.$this->viewStatus;?>" class="pull-right badge make_spinner"><i class="fa fa-refresh"></i> <?php echo gtext("Richiedi costo");?></a>
+							<a style="margin-left:5px;" title="<?php echo gtextAttr("Richiedi costo stimato")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/richiedicosto/".(int)$id.$this->viewStatus;?>" class="pull-right badge make_spinner"><i class="fa fa-refresh"></i> <?php echo gtext("Richiedi costo");?></a>
 							
 							<?php echo setPriceReverse($spedizione["spedizioni_negozio"]["costo_stimato"]);?><br />
 							

@@ -5,7 +5,7 @@
 		
 		<div class="uk-margin">
 			<div class="uk-form-controls">
-				<input class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="il_coupon" type="text" placeholder="<?php echo gtext("Codice promozione", false)?>" />
+				<input class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="il_coupon" type="text" placeholder="<?php echo gtextAttr("Codice promozione", false)?>" />
 			</div>
 		</div>
 		

@@ -19,7 +19,7 @@
 				<div class="uk-form-controls"><?php echo Html_Form::select("id_page",0,$prodotti,"form-control class_id_page",null,"yes");?></div>
 				<br />
 				<label class="uk-form-label"><?php echo gtext("Scrivi il numero seriale del prodotto");?></label>
-				<div class="uk-form-controls"><?php echo Html_Form::input("numero_seriale","","form-control class_numero_seriale",null,"placeholder='".gtext("Numero seriale", false)."'");?></div>
+				<div class="uk-form-controls"><?php echo Html_Form::input("numero_seriale","","form-control class_numero_seriale",null,"placeholder='".gtextAttr("Numero seriale", false)."'");?></div>
 				
 	<!-- 			<br /> -->
 				
@@ -35,7 +35,7 @@
 							<td><img style="max-width:60px;" src="<?php echo $this->baseUrlSrc."/thumb/immagineinlistaprodotti/".$p["pages"]["id_page"]."/".$p["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>"></td>
 							<td><?php echo field($p, "title");?><br /><?php echo gtext("N.Seriale");?>: <b><?php echo $p["ticket_pages"]["numero_seriale"] ? $p["ticket_pages"]["numero_seriale"] : "--" ;?></b></td>
 							<td class="text-right">
-								<a id-page="<?php echo (int)$p["pages"]["id_page"];?>" class="text_16 elimina_dal_tiket make_spinner text text-danger" title="<?php echo gtext("Elimina il prodotto dal ticket",false);?>" href="<?php echo $this->baseUrl."/ticket/rimuoviprodotto/$id/".$ticket["ticket_uid"];?>"><i class="fa fa-trash"></i></a>
+								<a id-page="<?php echo (int)$p["pages"]["id_page"];?>" class="text_16 elimina_dal_tiket make_spinner text text-danger" title="<?php echo gtextAttr("Elimina il prodotto dal ticket",false);?>" href="<?php echo $this->baseUrl."/ticket/rimuoviprodotto/$id/".$ticket["ticket_uid"];?>"><i class="fa fa-trash"></i></a>
 							</td>
 						</tr>
 						<?php } ?>
@@ -44,7 +44,7 @@
 				<?php } ?>
 				
 				<?php if ($mostra_tendina_prodotti) { ?>
-				<br /><a href="<?php echo $this->baseUrl."/ticket/aggiungiprodotto/$id/".$ticket["ticket_uid"];?>" title="<?php echo gtext("Aggiungi il prodotto al ticket")?>" class="btn btn-primary aggiungi_al_ticket"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi prodotto al ticket");?></a>
+				<br /><a href="<?php echo $this->baseUrl."/ticket/aggiungiprodotto/$id/".$ticket["ticket_uid"];?>" title="<?php echo gtextAttr("Aggiungi il prodotto al ticket")?>" class="btn btn-primary aggiungi_al_ticket"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi prodotto al ticket");?></a>
 				<?php } ?>
 			</div>
 			

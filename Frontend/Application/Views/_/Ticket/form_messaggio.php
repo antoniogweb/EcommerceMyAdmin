@@ -7,14 +7,14 @@
 	</div>
 	
 	<div class="uk-form-controls">
-		<?php echo Html_Form::textarea("descrizione","","uk-textarea class_descrizione",null,"maxlength='".v("numero_massimo_caratteri_ticket")."' rows='4' placeholder='".gtext("Messaggio", false)." (".gtext("massimo")." ".v("numero_massimo_caratteri_ticket")." ".gtext("caratteri").")"."'");?>
+		<?php echo Html_Form::textarea("descrizione","","uk-textarea class_descrizione",null,"maxlength='".v("numero_massimo_caratteri_ticket")."' rows='4' placeholder='".gtextAttr("Messaggio", false)." (".gtextAttr("massimo")." ".v("numero_massimo_caratteri_ticket")." ".gtextAttr("caratteri").")"."'");?>
 	</div>
 	
 	<div class="uk-margin-top uk-text-italic uk-text-meta"><?php echo gtext("Carica un'immagine (opzionale)")?></div>
 	<div class="" uk-margin>
 		<div uk-form-custom="target: true" class="uk-margin-remove">
 			<input type="file" aria-label="Custom controls" name="filename">
-			<input class="uk-input uk-form-width-medium uk-text-primary" type="text" placeholder="<?php echo gtext("Seleziona il file");?>" aria-label="Custom controls" disabled>
+			<input class="uk-input uk-form-width-medium uk-text-primary" type="text" placeholder="<?php echo gtextAttr("Seleziona il file");?>" aria-label="Custom controls" disabled>
 		</div>
 	</div>
 	

@@ -5,9 +5,9 @@
 	<?php } else { ?>
 	<div>
 		<form class="form-inline ajax_submit" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl."/attributivalori/form/insert/0?id_a=$id";?>' method='POST'>
-			<?php echo Html_Form::input("titolo","","form-control auto","titolo",'autocomplete="off" placeholder="'.gtext("Valore").'"');?>
+			<?php echo Html_Form::input("titolo","","form-control auto","titolo",'autocomplete="off" placeholder="'.gtextAttr("Valore").'"');?>
 			<input type="hidden" name="insertAction" value="insertAction" />
-			<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="<?php echo gtext("Aggiungi");?>">
+			<input class="submit_file btn btn-primary" type="submit" name="insertAction" value="<?php echo gtextAttr("Aggiungi");?>">
 		</form>
 		<br />
 	</div>

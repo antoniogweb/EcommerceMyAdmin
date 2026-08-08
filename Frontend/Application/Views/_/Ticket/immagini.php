@@ -32,7 +32,7 @@
 			<?php if ($isBozza) { ?>
 			<div class="uk-position-top-right" style="background-color:#FFF;padding:5px;">
 				<span class="uk-text-danger spinner uk-hidden" uk-spinner="ratio: .70"></span>
-				<a tipo="<?php echo strtolower($file["tipo"]);?>" title="<?php echo gtext("Elimina il file");?>" class="btn_submit_form elimina_immagine_ticket uk-text-danger" href="<?php echo $this->baseUrl."/ticket/eliminafile/$idFile/$idTicket/$ticketUid" ?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/close.svg");?></span></a>
+				<a tipo="<?php echo strtolower($file["tipo"]);?>" title="<?php echo gtextAttr("Elimina il file");?>" class="btn_submit_form elimina_immagine_ticket uk-text-danger" href="<?php echo $this->baseUrl."/ticket/eliminafile/$idFile/$idTicket/$ticketUid" ?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/close.svg");?></span></a>
 			</div>
 			<?php } ?>
 		</div>
@@ -45,7 +45,7 @@
 	<div class="upload_ticket_alert"></div>
 	<div uk-form-custom="target: true" class="uk-margin-remove">
 		<input type="file" aria-label="Custom controls" name="<?php echo strtolower($tipo);?>">
-		<input class="uk-input uk-form-width-medium uk-text-primary" type="text" placeholder="<?php echo gtext("Seleziona il file");?>" aria-label="Custom controls" disabled>
+		<input class="uk-input uk-form-width-medium uk-text-primary" type="text" placeholder="<?php echo gtextAttr("Seleziona il file");?>" aria-label="Custom controls" disabled>
 	</div>
 	<span>
 		<span class="uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></span>

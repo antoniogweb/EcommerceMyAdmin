@@ -8,26 +8,26 @@
 	<div class="box_entry_dati first_of_grid tr_ragione_sociale uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Ragione sociale");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("ragione_sociale",$values['ragione_sociale'],"uk-input class_ragione_sociale",null,'placeholder="'.gtext("Ragione sociale", false).'"');?>
+			<?php echo Html_Form::input("ragione_sociale",$values['ragione_sociale'],"uk-input class_ragione_sociale",null,'placeholder="'.gtextAttr("Ragione sociale", false).'"');?>
 		</div>
 	</div>
 	<div class="box_entry_dati tr_nome uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Nome");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("nome",$values['nome'],"uk-input class_nome",null,"placeholder='".gtext("Nome", false)."'");?>
+			<?php echo Html_Form::input("nome",$values['nome'],"uk-input class_nome",null,"placeholder='".gtextAttr("Nome", false)."'");?>
 		</div>
 	</div>
 	<div class="box_entry_dati tr_cognome uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Cognome");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("cognome",$values['cognome'],"uk-input class_cognome",null,"placeholder='".gtext("Cognome", false)."'");?>
+			<?php echo Html_Form::input("cognome",$values['cognome'],"uk-input class_cognome",null,"placeholder='".gtextAttr("Cognome", false)."'");?>
 		</div>
 	</div>
 
 	<div class="box_entry_dati tr_p_iva uk-margin uk-margin-remove-bottom box_p_iva">
 		<label class="uk-form-label"><?php echo gtext("Partita iva");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("p_iva",$values['p_iva'],"uk-input class_p_iva",null,"placeholder='".gtext("Partita iva", false)."'");?>
+			<?php echo Html_Form::input("p_iva",$values['p_iva'],"uk-input class_p_iva",null,"placeholder='".gtextAttr("Partita iva", false)."'");?>
 		</div>
 	</div>
 
@@ -35,7 +35,7 @@
 	<div class="box_entry_dati uk-margin uk-margin-remove-bottom nascondi_fuori_italia campo_codice_fiscale">
 		<label class="uk-form-label"><?php echo gtext("Codice fiscale");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("codice_fiscale",$values['codice_fiscale'],"uk-input class_codice_fiscale",null,"placeholder='".gtext("Codice fiscale", false)."'");?>
+			<?php echo Html_Form::input("codice_fiscale",$values['codice_fiscale'],"uk-input class_codice_fiscale",null,"placeholder='".gtextAttr("Codice fiscale", false)."'");?>
 		</div>
 	</div>
 	<?php } ?>
@@ -61,7 +61,7 @@
 				</div>
 
 				<div class="box_select_dprovincia">
-					<?php echo Html_Form::input("dprovincia",$values['dprovincia'],"uk-input class_dprovincia",null,"placeholder='".gtext("Provincia", false)."'");?>
+					<?php echo Html_Form::input("dprovincia",$values['dprovincia'],"uk-input class_dprovincia",null,"placeholder='".gtextAttr("Provincia", false)."'");?>
 				</div>
 			</div>
 		</div>
@@ -69,19 +69,19 @@
 		<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Città");?> *</label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::input("citta",$values['citta'],"uk-input class_citta",null,"placeholder='".gtext("Città", false)."'");?>
+				<?php echo Html_Form::input("citta",$values['citta'],"uk-input class_citta",null,"placeholder='".gtextAttr("Città", false)."'");?>
 			</div>
 		</div>
 		<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Indirizzo");?> *</label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::input("indirizzo",$values['indirizzo'],"uk-input class_indirizzo",null,"placeholder='".gtext("Indirizzo", false)."'");?>
+				<?php echo Html_Form::input("indirizzo",$values['indirizzo'],"uk-input class_indirizzo",null,"placeholder='".gtextAttr("Indirizzo", false)."'");?>
 			</div>
 		</div>
 		<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Cap");?> <span class="nascondi_fuori_italia_inline">*</span></label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::input("cap",$values['cap'],"uk-input class_cap",null,"placeholder='".gtext("Cap", false)."'");?>
+				<?php echo Html_Form::input("cap",$values['cap'],"uk-input class_cap",null,"placeholder='".gtextAttr("Cap", false)."'");?>
 			</div>
 		</div>
 	<?php } else { ?>
@@ -96,7 +96,7 @@
 	<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Telefono");?> <?php echo GenericModel::asterisco("telefono", $this->controller, $tipoAzione);?></label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("telefono",$values['telefono'],"uk-input class_telefono",null,"placeholder='".gtext("Telefono", false)."'");?>
+			<?php echo Html_Form::input("telefono",$values['telefono'],"uk-input class_telefono",null,"placeholder='".gtextAttr("Telefono", false)."'");?>
 		</div>
 	</div>
 	
@@ -110,7 +110,7 @@
 	<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Email");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("username",$values['username'],"uk-input class_username",null,"placeholder='".gtext("Email", false)."'");?>
+			<?php echo Html_Form::input("username",$values['username'],"uk-input class_username",null,"placeholder='".gtextAttr("Email", false)."'");?>
 		</div>
 	</div>
 
@@ -120,7 +120,7 @@
 		<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Conferma email");?> *</label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::input("conferma_username",$values['conferma_username'],"uk-input class_conferma_username",null,"placeholder='".gtext("Conferma email", false)."'");?>
+				<?php echo Html_Form::input("conferma_username",$values['conferma_username'],"uk-input class_conferma_username",null,"placeholder='".gtextAttr("Conferma email", false)."'");?>
 			</div>
 		</div>
 		<?php } ?>
@@ -129,7 +129,7 @@
 			<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 				<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
 				<div class="uk-form-controls uk-position-relative">
-					<?php echo Html_Form::password("password",$values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password'  placeholder='".gtext("Password", false)."'");?>
+					<?php echo Html_Form::password("password",$values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password'  placeholder='".gtextAttr("Password", false)."'");?>
 					<?php include tpf("Elementi/mostra_nascondi_password.php");?>
 				</div>
 			</div>
@@ -138,7 +138,7 @@
 			<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 				<label class="uk-form-label"><?php echo gtext("Conferma password");?> *</label>
 				<div class="uk-form-controls uk-position-relative">
-					<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password'  placeholder='".gtext("Conferma password", false)."'");?>
+					<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password'  placeholder='".gtextAttr("Conferma password", false)."'");?>
 					<?php include tpf("Elementi/mostra_nascondi_password.php");?>
 				</div>
 			</div>
@@ -153,14 +153,14 @@
 	<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Email");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("email",$values['email'],"uk-input class_email",null,"autocomplete='new-password' placeholder='".gtext("Email", false)."'");?>
+			<?php echo Html_Form::input("email",$values['email'],"uk-input class_email",null,"autocomplete='new-password' placeholder='".gtextAttr("Email", false)."'");?>
 		</div>
 	</div>
 	<?php if (v("account_attiva_conferma_username")) { ?>
 	<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Conferma email");?> *</label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("conferma_email",$values['conferma_email'],"uk-input class_conferma_email",null,"autocomplete='new-password' placeholder='".gtext("Conferma email", false)."'");?>
+			<?php echo Html_Form::input("conferma_email",$values['conferma_email'],"uk-input class_conferma_email",null,"autocomplete='new-password' placeholder='".gtextAttr("Conferma email", false)."'");?>
 		</div>
 	</div>
 	<?php } ?>
@@ -169,7 +169,7 @@
 	<div class="box_entry_dati first_of_grid uk-margin uk-margin-remove-bottom">
 		<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
 		<div class="uk-form-controls uk-position-relative">
-			<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password' placeholder='".gtext("Password", false)."'");?>
+			<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password' placeholder='".gtextAttr("Password", false)."'");?>
 			<?php include tpf("Elementi/mostra_nascondi_password.php");?>
 		</div>
 	</div>
@@ -198,13 +198,13 @@
 		<div class="box_entry_dati first_of_grid uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Pec");?></label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::input("pec",$values['pec'],"uk-input class_pec",null,"placeholder='".gtext("Pec", false)."'");?>
+				<?php echo Html_Form::input("pec",$values['pec'],"uk-input class_pec",null,"placeholder='".gtextAttr("Pec", false)."'");?>
 			</div>
 		</div>
 		<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 			<label class="uk-form-label"><?php echo gtext("Codice destinatario");?></label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::input("codice_destinatario",$values['codice_destinatario'],"uk-input class_codice_destinatario",null,"placeholder='".gtext("Codice destinatario", false)."'");?>
+				<?php echo Html_Form::input("codice_destinatario",$values['codice_destinatario'],"uk-input class_codice_destinatario",null,"placeholder='".gtextAttr("Codice destinatario", false)."'");?>
 			</div>
 		</div>
 	</div>

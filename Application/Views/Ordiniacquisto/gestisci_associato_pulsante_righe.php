@@ -8,6 +8,6 @@
 </span>
 
 <?php if (!isset($nascontiPulsanteAggiungiRiga)) { ?>
-<button url-aggiungi="magazzinoarticoli/main" class="submit_file btn btn-success btn-sm aggiungi_articolo_a_ordine_acquisto" type="submit" name="insertAction" value="<?php echo gtext("Aggiungi articolo")?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi articolo");?></button>
+<button url-aggiungi="magazzinoarticoli/main" class="submit_file btn btn-success btn-sm aggiungi_articolo_a_ordine_acquisto" type="submit" name="insertAction" value="<?php echo gtextAttr("Aggiungi articolo")?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi articolo");?></button>
 <input type="hidden" name="insertAction" value="Aggiungi" />
 <?php } ?>

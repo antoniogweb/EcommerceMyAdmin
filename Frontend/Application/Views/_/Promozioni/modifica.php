@@ -35,9 +35,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-margin">
 		<div class="<?php echo v("classe_pulsanti_submit");?> spinner uk-hidden" uk-spinner="ratio: .70"></div>
 		<?php if ($id === 0) { ?>
-		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form" type="submit" name="insertAction" value="<?php echo gtext("Salva", false);?>" />
+		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form" type="submit" name="insertAction" value="<?php echo gtextAttr("Salva", false);?>" />
 		<?php } else { ?>
-		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form" type="submit" name="updateAction" value="<?php echo gtext("Salva", false);?>" />
+		<input class="<?php echo v("classe_pulsanti_submit");?> btn_submit_form" type="submit" name="updateAction" value="<?php echo gtextAttr("Salva", false);?>" />
 		<?php } ?>
 	</div>
 	

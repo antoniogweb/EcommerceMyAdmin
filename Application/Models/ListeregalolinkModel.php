@@ -151,7 +151,7 @@ class ListeregalolinkModel extends GenericModel
     public function invia($record)
     {
 		if ($record["liste_regalo_link"]["numero_tentativi"] < 10)
-			return '<a title="'.gtext("Invia nuovamente il link all'indirizzo e-mail indicato nella riga.").'" class="ajlink" href="'.Url::getRoot().'listeregalolink/invia/'.$record["liste_regalo_link"]["id_lista_regalo_link"].'"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+			return '<a title="'.gtextAttr("Invia nuovamente il link all'indirizzo e-mail indicato nella riga.").'" class="ajlink" href="'.Url::getRoot().'listeregalolink/invia/'.$record["liste_regalo_link"]["id_lista_regalo_link"].'"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
 		
 		return "";
     }

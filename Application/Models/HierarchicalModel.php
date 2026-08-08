@@ -273,8 +273,10 @@ class HierarchicalModel extends GenericModel {
 		if (is_array($neighbours[$index]))
 		{
 			$protocol = Params::$useHttps ? "https" : "http";
+			$up = sanitizeHtmlLight($this->strings->gtext('up'));
+			$moveUp = sanitizeHtmlLight($this->strings->gtext('move up'));
 			
-			return '<form class="listItemForm" method="POST" action="'.$protocol.'://'.DOMAIN_NAME.'/'.self::$controllerName.'/'.self::$actionName.self::$viewStatus.'"><input type="image" value="'.$this->strings->gtext('up').'" src="'.$protocol.'://'.DOMAIN_NAME.'/Public/Img/Icons/elementary_2_5/up.png" title="'.$this->strings->gtext('move up').'"><input type="hidden" value="'.$this->strings->gtext('up').'" name="moveupAction"><input type="hidden" value="'.$clean["id"].'" name="'.$this->_idFields.'"></form>';
+			return '<form class="listItemForm" method="POST" action="'.$protocol.'://'.DOMAIN_NAME.'/'.self::$controllerName.'/'.self::$actionName.self::$viewStatus.'"><input type="image" value="'.$up.'" src="'.$protocol.'://'.DOMAIN_NAME.'/Public/Img/Icons/elementary_2_5/up.png" title="'.$moveUp.'"><input type="hidden" value="'.$up.'" name="moveupAction"><input type="hidden" value="'.$clean["id"].'" name="'.$this->_idFields.'"></form>';
 		}
 	}
 		
@@ -290,8 +292,10 @@ class HierarchicalModel extends GenericModel {
 		if (is_array($neighbours[$index]))
 		{
 			$protocol = Params::$useHttps ? "https" : "http";
+			$down = sanitizeHtmlLight($this->strings->gtext('down'));
+			$moveDown = sanitizeHtmlLight($this->strings->gtext('move down'));
 			
-			return '<form class="listItemForm" method="POST" action="'.$protocol.'://'.DOMAIN_NAME.'/'.self::$controllerName.'/'.self::$actionName.self::$viewStatus.'"><input type="image" value="'.$this->strings->gtext('down').'" src="'.$protocol.'://'.DOMAIN_NAME.'/Public/Img/Icons/elementary_2_5/down.png" title="'.$this->strings->gtext('move down').'"><input type="hidden" value="'.$this->strings->gtext('down').'" name="movedownAction"><input type="hidden" value="'.$clean["id"].'" name="'.$this->_idFields.'"></form>';
+			return '<form class="listItemForm" method="POST" action="'.$protocol.'://'.DOMAIN_NAME.'/'.self::$controllerName.'/'.self::$actionName.self::$viewStatus.'"><input type="image" value="'.$down.'" src="'.$protocol.'://'.DOMAIN_NAME.'/Public/Img/Icons/elementary_2_5/down.png" title="'.$moveDown.'"><input type="hidden" value="'.$down.'" name="movedownAction"><input type="hidden" value="'.$clean["id"].'" name="'.$this->_idFields.'"></form>';
 		}
 	}
 	

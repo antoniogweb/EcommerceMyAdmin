@@ -61,12 +61,12 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Telefono");?>:</span> <?php echo $indirizzo["spedizioni"]["telefono_spedizione"];?>
 			</div>
 			<div class="uk-first-column uk-text-left uk-text-right@m">
-				<a class="td_edit" title="<?php echo gtext("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/gestisci-spedizione/".$indirizzo["spedizioni"]["id_spedizione"];?>">
+				<a class="td_edit" title="<?php echo gtextAttr("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/gestisci-spedizione/".$indirizzo["spedizioni"]["id_spedizione"];?>">
 					<span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span>
 				</a>
 				
 				<?php if (v("permetti_modifica_account")) { ?>
-				<a class="uk-margin-left uk-text-bold td_edit uk-text-danger" title="<?php echo gtext("Elimina",false);?>" href="<?php echo $this->baseUrl."/riservata/indirizzi?del=".$indirizzo["spedizioni"]["id_spedizione"];?><?php echo $csrf_token_query_string;?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a>
+				<a class="uk-margin-left uk-text-bold td_edit uk-text-danger" title="<?php echo gtextAttr("Elimina",false);?>" href="<?php echo $this->baseUrl."/riservata/indirizzi?del=".$indirizzo["spedizioni"]["id_spedizione"];?><?php echo $csrf_token_query_string;?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a>
 				<?php } ?>
 			</div>
 		</div>

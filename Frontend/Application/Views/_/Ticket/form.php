@@ -29,12 +29,12 @@
 			
 			<label class="uk-form-label"><?php echo gtext("Oggetto della richiesta");?> *</label>
 			<div class="uk-form-controls uk-margin-bottom">
-				<?php echo Html_Form::input("oggetto",$values['oggetto'],"uk-input class_oggetto",null,"placeholder='".gtext("Oggetto della richiesta", false)."'");?>
+				<?php echo Html_Form::input("oggetto",$values['oggetto'],"uk-input class_oggetto",null,"placeholder='".gtextAttr("Oggetto della richiesta", false)."'");?>
 			</div>
 			
 			<label class="uk-form-label"><?php echo gtext("Descrizione");?> (<?php echo gtext("massimo")." ".v("numero_massimo_caratteri_ticket")." ".gtext("caratteri")?>) *</label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::textarea("descrizione",$values['descrizione'],"uk-textarea class_descrizione",null,"maxlength='".v("numero_massimo_caratteri_ticket")."' rows='4' placeholder='".gtext("Descrizione", false)."'");?>
+				<?php echo Html_Form::textarea("descrizione",$values['descrizione'],"uk-textarea class_descrizione",null,"maxlength='".v("numero_massimo_caratteri_ticket")."' rows='4' placeholder='".gtextAttr("Descrizione", false)."'");?>
 			</div>
 			
 			<?php /*include (tpf("Elementi/Pagine/campo-captcha.php"));*/?>

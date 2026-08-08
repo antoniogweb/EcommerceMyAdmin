@@ -34,7 +34,7 @@
 	<i class="fa fa-user bg-aqua"></i>
 	<div class="timeline-item">
 		<div class="timeline-body">
-			<?php echo Html_Form::textarea("messaggio", AirichiestemessaggiModel::g()->getMessaggioDefault($id), "form-control testo_nuovo_messaggio_ai", null, "rows='4' placeholder='".gtext("Scrivi qui la tua richiesta..")."'");?>
+			<?php echo Html_Form::textarea("messaggio", AirichiestemessaggiModel::g()->getMessaggioDefault($id), "form-control testo_nuovo_messaggio_ai", null, "rows='4' placeholder='".gtextAttr("Scrivi qui la tua richiesta..")."'");?>
 
 			<button id-richiesta="<?php echo $id;?>" style="margin-top:10px;" class="btn btn-success btn-block invia_nuovo_messaggio_ai">
 				<i class="fa fa-send"></i>

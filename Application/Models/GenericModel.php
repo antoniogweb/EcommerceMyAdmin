@@ -1422,12 +1422,12 @@ class GenericModel extends Model_Tree
     
     public function bulkaggiungiacategoria($record)
     {
-		return "<i data-azione='aggiungiacategoria' title='".gtext("Aggiungi a categoria")."' class='bulk_trigger help_trigger_aggiungi_a_categoria fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungiacategoria' title='".gtextAttr("Aggiungi a categoria")."' class='bulk_trigger help_trigger_aggiungi_a_categoria fa fa-plus-circle text text-primary'></i>";
     }
     
     public function bulkaggiungiaprodotto($record)
     {
-		return "<i data-azione='aggiungiaprodotto' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_al_prodotto fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungiaprodotto' title='".gtextAttr("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_al_prodotto fa fa-plus-circle text text-primary'></i>";
     }
     
     public function cleanDateTime($record)
@@ -1846,7 +1846,7 @@ class GenericModel extends Model_Tree
 				$html = RegusersModel::getNominativo($utente);
 				
 				if (ControllersModel::checkAccessoAlController(array("regusers")))
-					$html .= " <a title='".gtext("Dettagli agente")."' href='".Url::getRoot()."regusers/form/update/".(int)$record[$this->_tables][$this->nomeCampoIdUser]."?partial=Y&nobuttons=Y&agente=1' class='iframe label label-info text-bold'><i class='fa fa-user'></i></a>";
+					$html .= " <a title='".gtextAttr("Dettagli agente")."' href='".Url::getRoot()."regusers/form/update/".(int)$record[$this->_tables][$this->nomeCampoIdUser]."?partial=Y&nobuttons=Y&agente=1' class='iframe label label-info text-bold'><i class='fa fa-user'></i></a>";
 				
 				return $html;
 			}

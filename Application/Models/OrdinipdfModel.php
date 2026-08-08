@@ -178,7 +178,7 @@ class OrdinipdfModel extends GenericModel
     
     public function linkPdfCrud($record)
     {
-		return '<a target="_blank" title="'.gtext("Vedi PDF").'" href="'.Url::getRoot().$this->applicationUrl.$this->controller."/stampapdf/0/".$record["orders_pdf"]["id_o_pdf"].'"><i class="fa fa-file-pdf-o"></i></a>';
+		return '<a target="_blank" title="'.gtextAttr("Vedi PDF").'" href="'.Url::getRoot().$this->applicationUrl.$this->controller."/stampapdf/0/".$record["orders_pdf"]["id_o_pdf"].'"><i class="fa fa-file-pdf-o"></i></a>';
     }
     
     public function deletable($id)

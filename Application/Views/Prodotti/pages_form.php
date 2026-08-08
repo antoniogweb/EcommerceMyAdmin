@@ -136,7 +136,7 @@
 									<div class="submit_entry">
 										<span class="submit_entry_Salva">
 											<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo gtext("Salva");?></button>
-											<input type="hidden" value="<?php echo gtext("Salva");?>" name="<?php echo $type;?>Action">
+											<input type="hidden" value="<?php echo gtextAttr("Salva");?>" name="<?php echo $type;?>Action">
 										</span>
 									</div>
 								</div>
@@ -278,9 +278,9 @@
 										$linkFeedFacebook = Domain::$name . "/$linguaNazioneUrl/". FeedModel::getModulo("FACEBOOK")->getFeedUrl()."?id_page=$id_page";
 									?>
 									
-									<a class="label label-info" title="<?php echo gtext("Controlla il feed Facebook");?>" target="_blank" href="<?php echo $linkFeedFacebook;?>"><i class="fa fa-facebook"></i> <?php echo gtext("Facebook feed del prodotto");?></a>
+									<a class="label label-info" title="<?php echo gtextAttr("Controlla il feed Facebook");?>" target="_blank" href="<?php echo $linkFeedFacebook;?>"><i class="fa fa-facebook"></i> <?php echo gtext("Facebook feed del prodotto");?></a>
 									
-									<a class="label label-info" title="<?php echo gtext("Controlla il feed Google");?>" target="_blank" href="<?php echo $linkFeedGoogle;?>"><i class="fa fa-google"></i> <?php echo gtext("Google feed del prodotto");?></a>
+									<a class="label label-info" title="<?php echo gtextAttr("Controlla il feed Google");?>" target="_blank" href="<?php echo $linkFeedGoogle;?>"><i class="fa fa-google"></i> <?php echo gtext("Google feed del prodotto");?></a>
 								</p>
 							</div>
 						</div>

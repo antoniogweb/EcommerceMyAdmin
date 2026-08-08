@@ -69,7 +69,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		</div>
 	</div>
 	
-	<input class="uk-button uk-button-primary" type="submit" name="updateAction" value="<?php echo gtext("Modifica dati", false);?>" />
+	<input class="uk-button uk-button-primary" type="submit" name="updateAction" value="<?php echo gtextAttr("Modifica dati", false);?>" />
 	
 	<a class="uk-button uk-button-default" href="<?php echo $this->baseUrl."/gestisci-spedizione/0?cart_uid=".$ordine["cart_uid"]."&admin_token=".$ordine["admin_token"];?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi un nuovo indirizzo");?></a>
 </form>

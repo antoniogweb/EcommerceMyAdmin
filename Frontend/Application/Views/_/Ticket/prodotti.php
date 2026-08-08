@@ -13,11 +13,11 @@ if (!isset($eliminaButton))
 				<div class="uk-form-controls uk-margin-bottom"><?php echo Html_Form::select("id_page",0,$prodotti,"uk-select class_id_page",null,"yes");?></div>
 				
 				<label class="uk-form-label"><?php echo gtext("Scrivi il numero seriale del prodotto");?></label>
-				<div class="uk-form-controls"><?php echo Html_Form::input("numero_seriale","","uk-input class_numero_seriale",null,"placeholder='".gtext("Numero seriale", false)."'");?></div>
+				<div class="uk-form-controls"><?php echo Html_Form::input("numero_seriale","","uk-input class_numero_seriale",null,"placeholder='".gtextAttr("Numero seriale", false)."'");?></div>
 			</div>
 			<div class="uk-width-1-4 uk-text-right">
 				<div class="uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></div>
-				<a href="<?php echo $this->baseUrl."/ticket/aggiungiprodotto/$idTicket/$ticketUid"?>" title="<?php echo gtext("Aggiungi il prodotto al ticket")?>" class="uk-button uk-button-primary aggiungi_al_ticket"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></a>
+				<a href="<?php echo $this->baseUrl."/ticket/aggiungiprodotto/$idTicket/$ticketUid"?>" title="<?php echo gtextAttr("Aggiungi il prodotto al ticket")?>" class="uk-button uk-button-primary aggiungi_al_ticket"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></a>
 			</div>
 		</div>
 	</div>
@@ -35,7 +35,7 @@ if (!isset($eliminaButton))
 				<?php if ($eliminaButton) { ?>
 				<td class="uk-text-right">
 					<div class="uk-margin-left uk-text-bold td_edit uk-text-danger spinner uk-hidden" uk-spinner="ratio: .70"></div>
-					<a id-page="<?php echo (int)$p["pages"]["id_page"];?>" class="btn_submit_form elimina_dal_tiket uk-margin-left uk-text-bold td_edit uk-text-danger" title="<?php echo gtext("Elimina il prodotto dal ticket",false);?>" href="<?php echo $this->baseUrl."/ticket/rimuoviprodotto/$idTicket/$ticketUid";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a>
+					<a id-page="<?php echo (int)$p["pages"]["id_page"];?>" class="btn_submit_form elimina_dal_tiket uk-margin-left uk-text-bold td_edit uk-text-danger" title="<?php echo gtextAttr("Elimina il prodotto dal ticket",false);?>" href="<?php echo $this->baseUrl."/ticket/rimuoviprodotto/$idTicket/$ticketUid";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a>
 				</td>
 				<?php } ?>
 			</tr>

@@ -1681,7 +1681,7 @@ class OrdiniModel extends FormModel
 			$numeroDaEvadere = $this->righeAncoraDaEvadere((int)$record["orders"]["id_o"]);
 			
 			if ($numeroDaEvadere <= 0)
-				return "<i title='".gtext("Tutte le righe sono state evase")."' class='fa fa-thumbs-up text-success'></i>";
+				return "<i title='".gtextAttr("Tutte le righe sono state evase")."' class='fa fa-thumbs-up text-success'></i>";
 		}
 		
 		return "";
@@ -1689,7 +1689,7 @@ class OrdiniModel extends FormModel
 	
 	public function vedi($record, $queryString = "?partial=Y&nobuttons=Y")
 	{
-		return "<a title='".gtext("Dettaglio ordine")."' class='iframe action_iframe' href='".Url::getRoot()."ordini/vedi/".$record["orders"]["id_o"]."$queryString'>".$record["orders"]["id_o"]."</a>";
+		return "<a title='".gtextAttr("Dettaglio ordine")."' class='iframe action_iframe' href='".Url::getRoot()."ordini/vedi/".$record["orders"]["id_o"]."$queryString'>".$record["orders"]["id_o"]."</a>";
 	}
 	
 	public function vediFull($record, $queryString = "?partial=Y&nobuttons=Y")
@@ -2711,7 +2711,7 @@ class OrdiniModel extends FormModel
 			"id_o"		=>	(int)$record["orders"]["id_o"],
 			"richiesta"	=>	1,
 		))->rowNumber())
-			return "<i title='".gtext("Ordine con richiesta di reso")."' class='text-danger fa fa-exclamation-circle'></i>";
+			return "<i title='".gtextAttr("Ordine con richiesta di reso")."' class='text-danger fa fa-exclamation-circle'></i>";
 	}
 	
 	public function infoGatewayCrud($record)

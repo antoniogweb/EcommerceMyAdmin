@@ -13,15 +13,15 @@
 					<div class="uk-grid uk-grid-small" uk-grid>
 						<div>
 							<?php if ($link["liste_regalo_link"]["inviato"]) { ?>
-							<span title="<?php echo gtext("Il link è stato inviato correttamente.");?>" class="uk-text-success" uk-icon="check"></span>
+							<span title="<?php echo gtextAttr("Il link è stato inviato correttamente.");?>" class="uk-text-success" uk-icon="check"></span>
 							<?php } else { ?>
-							<span title="<?php echo gtext("Errore nell'invio del link, si prega di riprovare.");?>" class="uk-text-danger" uk-icon="ban"></span>
+							<span title="<?php echo gtextAttr("Errore nell'invio del link, si prega di riprovare.");?>" class="uk-text-danger" uk-icon="ban"></span>
 							<?php } ?>
 						</div>
 						<div class="uk-margin-remove-top">
 							<?php if ($link["liste_regalo_link"]["numero_tentativi"] < v("numero_massimo_tentativi_invio_link")) { ?>
 							<span class="spinner uk-hidden" uk-spinner="ratio: .70"></span>
-							<a class="invia_nuovamente_link btn_submit_form" href="<?php echo $this->baseUrl."/listeregalo/invianuovamentelink/".$link["liste_regalo_link"]["id_lista_regalo_link"]."?csrf_token=".$csrf_token;?>"><span title="<?php echo gtext("Invia nuovamente il link");?>" class="uk-margin-small-left" uk-icon="mail"></span></a>
+							<a class="invia_nuovamente_link btn_submit_form" href="<?php echo $this->baseUrl."/listeregalo/invianuovamentelink/".$link["liste_regalo_link"]["id_lista_regalo_link"]."?csrf_token=".$csrf_token;?>"><span title="<?php echo gtextAttr("Invia nuovamente il link");?>" class="uk-margin-small-left" uk-icon="mail"></span></a>
 							<?php } ?>
 						</div>
 					</div>

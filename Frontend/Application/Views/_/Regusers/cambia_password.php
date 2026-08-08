@@ -46,7 +46,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	
 	<?php include(tpf("Elementi/Pagine/campo-csrf.php")); ?>
 	
-	<input class="uk-button uk-button-secondary" type="submit" name="updateAction" value="<?php echo gtext("Modifica password", false);?>" title="<?php echo gtext("Modifica password", false);?>" />
+	<input class="uk-button uk-button-secondary" type="submit" name="updateAction" value="<?php echo gtextAttr("Modifica password", false);?>" title="<?php echo gtextAttr("Modifica password", false);?>" />
 </form>
 
 <?php

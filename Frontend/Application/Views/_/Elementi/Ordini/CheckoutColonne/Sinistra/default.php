@@ -131,7 +131,7 @@ if (isset($_POST['invia']))
 			<div class="uk-width-2-3">
 				<div class="">
 					<div class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></div>
-					<input class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary btn_completa_acquisto" type="submit" name="invia" value="<?php echo gtext("Conferma e paga", false);?>" />
+					<input class="uk-width-1-1 uk-width-auto@s uk-button uk-button-primary btn_completa_acquisto" type="submit" name="invia" value="<?php echo gtextAttr("Conferma e paga", false);?>" />
 				</div>
 			</div>
 			<div class="uk-width-expand uk-text-right">

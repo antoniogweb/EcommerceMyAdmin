@@ -279,7 +279,7 @@ class MagazzinoarticoliModel extends GenericModel
 	
 	public function bulkaggiungiaordine($record)
     {
-		return "<i data-azione='aggiungiaordine' title='".gtext("Aggiungi all'ordine")."' class='bulk_trigger help_trigger_aggiungi_ad_ordine_acquisto fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungiaordine' title='".gtextAttr("Aggiungi all'ordine")."' class='bulk_trigger help_trigger_aggiungi_ad_ordine_acquisto fa fa-plus-circle text text-primary'></i>";
     }
     
     

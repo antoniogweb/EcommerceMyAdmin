@@ -45,7 +45,7 @@
 									<div class="submit_entry" style="display:none;">
 										<span class="submit_entry_Salva">
 											<button id="<?php echo $type;?>Action" class="btn btn-success" name="<?php echo $type;?>Action" type="submit"><?php echo gtext("Salva", false);?></button>
-											<input type="hidden" value="<?php echo gtext("Salva", false);?>" name="<?php echo $type;?>Action">
+											<input type="hidden" value="<?php echo gtextAttr("Salva", false);?>" name="<?php echo $type;?>Action">
 										</span>
 									</div>
 								</div>

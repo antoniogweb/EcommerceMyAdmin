@@ -43,6 +43,11 @@ function getLinguaIso()
 	return Params::$lang ? Params::$lang : Params::$defaultFrontEndLanguage;
 }
 
+function gtextAttr($string, $edit = true, $function = "none", $contesto = null, $gestibile = 1, $applicativo = "")
+{
+	return sanitizeHtmlLight(gtext($string, $edit, $function, $contesto, $gestibile, $applicativo));
+}
+
 //get the text in the right language
 // Output sicuro per testo HTML e attributi testuali.
 // Le callback sono responsabilita' del template: non devono decodificare entita' o reintrodurre HTML.

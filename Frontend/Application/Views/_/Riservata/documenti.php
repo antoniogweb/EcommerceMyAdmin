@@ -49,7 +49,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Ordine");?>:</span> <a href="<?php echo $this->baseUrl."/resoconto-acquisto/".$documento["orders"]["id_o"]."/".$documento["orders"]["cart_uid"]."/".$documento["orders"]["admin_token"];?>?n=y">#<?php echo $documento["orders"]["id_o"];?> <?php echo gtext("del");?> <?php echo date("d/m/Y H:i", strtotime($documento["orders"]["data_creazione"]))?></a>
 			</div>
 			<div class="uk-first-column uk-text-left uk-text-right@m">
-				<a target="_blank" class="td_edit" title="<?php echo gtext("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/contenuti/documento/".$documento["documenti"]["id_doc"];?>">
+				<a target="_blank" class="td_edit" title="<?php echo gtextAttr("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/contenuti/documento/".$documento["documenti"]["id_doc"];?>">
 					<span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/download.svg");?></span>
 				</a>
 			</div>

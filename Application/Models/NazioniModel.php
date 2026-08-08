@@ -517,11 +517,11 @@ class NazioniModel extends GenericModel
 	
 	public function bulkaggiungiaprodottoperspedizione($record)
     {
-		return "<i data-azione='aggiungiaprodottoperspedizione' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_al_prodotto_perspedizione fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungiaprodottoperspedizione' title='".gtextAttr("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_al_prodotto_perspedizione fa fa-plus-circle text text-primary'></i>";
     }
     
     public function bulkaggiungiacategoriaperspedizione($record)
     {
-		return "<i data-azione='aggiungiacategoriaperspedizione' title='".gtext("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_alla_categoria_perspedizione fa fa-plus-circle text text-primary'></i>";
+		return "<i data-azione='aggiungiacategoriaperspedizione' title='".gtextAttr("Aggiungi al prodotto")."' class='bulk_trigger help_trigger_aggiungi_alla_categoria_perspedizione fa fa-plus-circle text text-primary'></i>";
     }
 }
