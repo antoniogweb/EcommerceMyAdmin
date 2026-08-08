@@ -82,7 +82,7 @@ $(window).load(function() {
 		autoStart: true,
 		preStepCallback: function(e, tip)
 		{
-			$(".joyride-next-tip").text("<?php echo gtext("Successivo")?>");
+			$(".joyride-next-tip").text("<?php echo sanitizeJs(gtextPlain("Successivo"))?>");
 		},
 		postRideCallback: function(e)
 		{

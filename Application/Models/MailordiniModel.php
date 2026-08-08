@@ -282,7 +282,7 @@ class MailordiniModel extends GenericModel
 			$tradModel->ottieniTraduzioni();
 			
 			if ($traduciOggetto)
-				$oggetto = gtext($oggetto, false);
+				$oggetto = gtextPlain($oggetto, false);
 			
 			$oggetto = str_replace("[ID_ORDINE]",$idO, $oggetto);
 			$oggetto = str_replace("[NUMERO_DOCUMENTO]",$numeroDocumento, $oggetto);
@@ -347,7 +347,7 @@ class MailordiniModel extends GenericModel
 			$tradModel = new TraduzioniModel();
 			$tradModel->ottieniTraduzioni();
 			
-			$mail->AltBody = gtext("Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML");
+			$mail->AltBody = gtextPlain("Per vedere questo messaggio si prega di usare un client di posta compatibile con l'HTML");
 			$mail->MsgHTML($testo);
 			
 // 			$mail->SMTPDebug = 2;

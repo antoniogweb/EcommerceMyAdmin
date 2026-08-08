@@ -1267,7 +1267,7 @@ class OrdiniModel extends FormModel
 				self::setStatiOrdine();
 				self::setPagamenti();
 				
-				$oggetto = gtext($oggetto, false);
+				$oggetto = gtextPlain($oggetto, false);
 				$oggetto = str_replace("[ID_ORDINE]",$clean["id_o"], $oggetto);
 				
 				// Segnaposti

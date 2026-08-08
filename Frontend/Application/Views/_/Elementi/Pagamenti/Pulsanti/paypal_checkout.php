@@ -57,11 +57,11 @@ window.paypal
           return actions.restart();
         } else if (errorDetail) {
           // (2) Other non-recoverable errors -> Show a failure message
-          throw new Error("<?php echo gtext("Errore nel pagamento, si prega di contattare il negozio.");?>");
+          throw new Error("<?php echo sanitizeJs(gtextPlain("Errore nel pagamento, si prega di contattare il negozio."));?>");
         } else if (!orderData.purchase_units) {
-          throw new Error("<?php echo gtext("Errore nel pagamento, si prega di contattare il negozio.");?>");
+          throw new Error("<?php echo sanitizeJs(gtextPlain("Errore nel pagamento, si prega di contattare il negozio."));?>");
         } else {
-			resultMessage("<?php echo gtext("Transazione avvenuta con successo");?>", true);
+			resultMessage("<?php echo sanitizeJs(gtextPlain("Transazione avvenuta con successo"));?>", true);
 			location.href = "<?php echo Url::getRoot()."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=Y&echo_result";
         }
       } catch (error) {

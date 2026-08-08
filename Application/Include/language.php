@@ -45,7 +45,12 @@ function getLinguaIso()
 
 function gtextAttr($string, $edit = true, $function = "none", $contesto = null, $gestibile = 1, $applicativo = "")
 {
-	return sanitizeHtmlLight(gtext($string, $edit, $function, $contesto, $gestibile, $applicativo));
+	return gtext($string, $edit, $function, $contesto, $gestibile, $applicativo);
+}
+
+function gtextPlain($string, $edit = true, $function = "none", $contesto = null, $gestibile = 1, $applicativo = "")
+{
+	return htmlentitydecode(gtext($string, $edit, $function, $contesto, $gestibile, $applicativo));
 }
 
 //get the text in the right language
@@ -68,7 +73,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 		}
 		else
 		{
-			return call_user_func($function,stripTagsSicuro(Lang::$i18n[$tempLang][$string]));
+			return call_user_func($function,sanitizeHtmlLight(stripTagsSicuro(Lang::$i18n[$tempLang][$string])));
 // 			return Lang::$i18n[$tempLang][$string];
 		}
 	}
@@ -96,7 +101,7 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 // 			
 // 		}
 		
-		return call_user_func($function,stripTagsSicuro($string));
+		return call_user_func($function,sanitizeHtmlLight(stripTagsSicuro($string)));
 		
 // 		return $string;
 	}
