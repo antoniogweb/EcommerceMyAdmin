@@ -237,9 +237,9 @@ class GoogleMerchant extends Feed
 			$itemTagName = $this->params["node_tag_name"];
 			
 			$xmlArray["channel"] = array(
-				"title"	=>	gtext(htmlentitydecode(ImpostazioniModel::$valori["title_home_page"])),
+				"title"	=>	gtextPlain(htmlentitydecode(ImpostazioniModel::$valori["title_home_page"])),
 				"link"	=>	Url::getRoot(),
-				"description"	=>	gtext(htmlentitydecode(ImpostazioniModel::$valori["meta_description"])),
+				"description"	=>	gtextPlain(htmlentitydecode(ImpostazioniModel::$valori["meta_description"])),
 				"$itemTagName"	=>	$prodotti,
 			);
 			

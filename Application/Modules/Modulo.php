@@ -350,7 +350,7 @@ trait Modulo
 				"data_scadenza_promo"	=>	$now->format("Y-m-d"),
 				"prezzo_scontato"	=> number_format($prezzoFinaleIvato,2,".",""),
 				"spese_spedizione"	=>	number_format($speseSpedizione * (1 + ($ivaSpedizione / 100)),2,".",""),
-				"nome_corriere"	=>	gtext($nomeCorriere),
+				"nome_corriere"	=>	gtextPlain($nomeCorriere),
 				"marchio"	=>	$r["marchi"]["titolo"],
 				"peso"		=>	$r["pages"]["peso"],
 				"giacenza"	=>	PagesModel::disponibilita($r["pages"]["id_page"],$idC,$forzaValoreMassimoInFeed),
