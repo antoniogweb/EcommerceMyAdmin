@@ -487,4 +487,25 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	function aggiornaVisibilitaBloccoCreaOrdineAcquistoDaOrdinare()
+	{
+		var blocco = $(".blocco_crea_ordine_acquisto_da_ordinare");
+		var selectFornitore = $("select[name='id_fornitore_ordine']");
+		
+		if (!blocco.length || !selectFornitore.length)
+			return;
+		
+		blocco.toggle($(".checkbox_righe_id_r:checked").length > 0);
+	}
+	
+	aggiornaVisibilitaBloccoCreaOrdineAcquistoDaOrdinare();
+	
+	$("body").on("change", ".checkbox_righe_id_r", function(){
+		aggiornaVisibilitaBloccoCreaOrdineAcquistoDaOrdinare();
+	});
+	
+	$("body").on("click", ".bulk_select_checkbox", function(){
+		setTimeout(aggiornaVisibilitaBloccoCreaOrdineAcquistoDaOrdinare, 0);
+	});
 });
