@@ -310,7 +310,7 @@ class OrdiniacquistoController extends BaseController
 			$this->responseCode(403);
 	}
 	
-	public function inviapdf($id)
+	public function inviapdf($id, $idContatto = 0)
 	{
 		$this->checkCsrf(true);
 		
@@ -318,7 +318,7 @@ class OrdiniacquistoController extends BaseController
 		
 		$this->clean();
 		
-		if ($this->m("OrdiniacquistopdfModel")->inviaPdf($id))
+		if ($this->m("OrdiniacquistopdfModel")->inviaPdf($id, $idContatto))
 			flash("notice", "<div class='alert alert-success'>".gtext("Email inviata correttamente")."</div>");
 		
 		$this->redirect($this->applicationUrl.$this->controller."/form/update/".(int)$id.$this->viewStatus);

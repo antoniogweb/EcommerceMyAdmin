@@ -55,7 +55,7 @@ class OrdiniacquistopdfModel extends GenericModel
 		return parent::insert();
 	}
     
-    public function generaPdf($id, $salva = true, $invia = false)
+    public function generaPdf($id, $salva = true, $invia = false, $idContatto = 0)
     {
 		createFolderFull(self::getMediaPath(), LIBRARY);
 		
@@ -99,6 +99,7 @@ class OrdiniacquistopdfModel extends GenericModel
 			"corrente"	=>	1,
 			"inviato"	=>	$invia ? 1 : 0,
 			"data_creazione"	=>	self::$dataCreazione,
+			"id_fornitore_contatto"	=>	(int)$idContatto,
 		);
 		
 		$this->sValues($values);
@@ -129,31 +130,39 @@ class OrdiniacquistopdfModel extends GenericModel
 			return $this->generaPdf((int)$id);
     }
     
-    public function inviaPdf($id)
+    public function inviaPdf($id, $idContatto = 0)
     {
 		$oModel = new OrdiniacquistoModel();
+		$cModel = new FornitoricontattiModel();
 		
 		$ordine = $oModel->selectId((int)$id);
 		
 		if (empty($ordine))
 			$this->responseCode(403);
 		
-		if ($ordine["email_amministrativa"] && checkMail(htmlentitydecode($ordine["email_amministrativa"])))
+		$contatto = $cModel->selectId((int)$idContatto);
+		
+		if ((int)$idContatto && empty($contatto))
+			$this->responseCode(403);
+		
+		$email = !empty($contatto) ? $contatto["email"] : $ordine["email_amministrativa"];
+		
+		if ($email && checkMail(htmlentitydecode($email)))
 		{
-			$values = $this->generaPdf($ordine["id_ordine_acquisto"], true, true);
+			$values = $this->generaPdf($ordine["id_ordine_acquisto"], true, true, $idContatto);
 			
 			$folder = LIBRARY . "/".self::getMediaPath();
 			
 			if (is_array($values) && !empty($values) && isset($values["id_ordine_acquisto_pdf"]) && $values["id_ordine_acquisto_pdf"] && is_file($folder."/".$values["filename"]))
 			{
-				$email_amministrativa = htmlentitydecode($ordine["email_amministrativa"]);
+				$email = htmlentitydecode($email);
 				
 				$nomeFile = v("filename_pdf_ordine_acquisto");
 				
 				$nomeFile = str_replace("[ID_ORDINE]",$ordine["numero_ordine"], $nomeFile);
 				
 				return MailordiniModel::inviaMail(array(
-					"emails"	=>	array($email_amministrativa),
+					"emails"	=>	array($email),
 					"oggetto"	=>	v("oggetto_pdf_ordine"),
 					"numero_documento"		=>	(int)$ordine["numero_ordine"],
 					"tipologia"	=>	"ORDINE_ACQUISTO",
@@ -197,9 +206,16 @@ class OrdiniacquistopdfModel extends GenericModel
 	
 	public function inviatoCrud($record)
 	{
-		if ($record["ordini_acquisto_pdf"]["inviato"])
-			return "<i class='verde fa fa-check'></i>";
+		$return = "";
 		
-		return "";
+		if ($record["ordini_acquisto_pdf"]["inviato"])
+			$return = "<i class='verde fa fa-check'></i>";
+		
+		$mail = MailordiniModel::g()->estraiRigaTabellaIdRef("ordini_acquisto_pdf", $record["ordini_acquisto_pdf"]["id_ordine_acquisto_pdf"]);
+		
+		if (count($mail) > 0)
+			$return .= " ". $mail[0]["email"];
+		
+		return $return;
 	}
 }

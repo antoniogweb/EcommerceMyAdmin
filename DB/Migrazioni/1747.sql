@@ -1,0 +1,1 @@
+alter table ordini_acquisto_pdf add id_fornitore_contatto INT UNSIGNED NOT NULL default 0;
