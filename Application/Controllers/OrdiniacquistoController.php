@@ -290,6 +290,8 @@ class OrdiniacquistoController extends BaseController
 	
 	public function stampapdf($id = 0, $idPdf = 0)
 	{
+		$this->checkCsrf(true);
+		
 		$this->clean();
 		
 		$values = $this->m("OrdiniacquistopdfModel")->generaORestituisciPdfOrdine($id, $idPdf);
@@ -310,6 +312,8 @@ class OrdiniacquistoController extends BaseController
 	
 	public function inviapdf($id)
 	{
+		$this->checkCsrf(true);
+		
 		$this->shift(1);
 		
 		$this->clean();

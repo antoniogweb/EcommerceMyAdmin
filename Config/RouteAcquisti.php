@@ -29,6 +29,8 @@ class RouteAcquisti
 		'fornitori,form',
 		'fornitori,listino',
 		'fornitori,import',
+		'fornitori,contatti',
+		'fornitoricontatti,form',
 		'fornitoriimport,form',
 		'fornitoriimport,elabora',
 		'fornitoriimport,documento',

@@ -173,4 +173,39 @@ class FornitoriController extends BaseController
 		
 		$this->append($data);
 	}
+	
+	public function contatti($id = 0)
+	{
+		$this->model("FornitoricontattiModel");
+		
+		$this->_posizioni['contatti'] = 'class="active"';
+		
+		$this->shift(1);
+		
+		$clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_fornitori";
+		
+		$this->mainButtons = "ldel";
+		
+		$this->modelName = "FornitoricontattiModel";
+		
+		$this->m[$this->modelName]->updateTable('del');
+		
+		$this->mainFields = array("fornitori_contatti.nome", "fornitori_contatti.cognome", "fornitori_contatti.telefono", "fornitori_contatti.email");
+		$this->mainHead = "Nome,Cognome,Telefono,Email";
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back','mainAction'=>"contatti/".$clean['id'],'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->clear()->where(array(
+			"id_fornitore"	=>	$clean['id'],
+		))->orderBy("fornitori_contatti.nome")->convert()->save();
+		
+		$this->tabella = "fornitori";
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m("FornitoriModel")->titolo($clean['id']);
+		
+		$this->append($data);
+	}
 }

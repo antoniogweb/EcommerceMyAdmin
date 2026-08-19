@@ -35,10 +35,6 @@ if (!isset(Helper_Menu::$htmlLinks["elabora_import"]))
 
 class FornitoriimportController extends BaseController
 {
-	// public $filters = array("ragione_sociale");
-	
-	// public $orderBy = "ragione_sociale";
-	
 	public $argKeys = array(
 		'id_fornitore_insert:sanitizeAll'=>'tutti'
 	);
