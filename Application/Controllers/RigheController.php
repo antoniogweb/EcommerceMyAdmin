@@ -214,22 +214,22 @@ class RigheController extends BaseController
 				));
 			
 			if ($this->viewArgs["id_marchio"] != "tutti")
-			{
-				$this->addBulkActions = true;
-				
-				$this->colProperties = array(
-					array(
-						'width'	=>	'60px',
-					),
-					array(
-						'width'	=>	'90px',
-					),
-				);
-				
 				$this->m[$this->modelName]->aWhere(array(
 					"pages.id_marchio"	=>	(int)$this->viewArgs["id_marchio"],
 				));
-			}
+			
+			$this->addBulkActions = true;
+			
+			$this->colProperties = array(
+				array(
+					'width'	=>	'60px',
+				),
+				array(
+					'width'	=>	'90px',
+				),
+			);
+			
+			$this->bulkActions = array();
 		}
 		
 		$this->m[$this->modelName]->save();
