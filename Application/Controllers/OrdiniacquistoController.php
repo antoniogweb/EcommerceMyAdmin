@@ -310,6 +310,20 @@ class OrdiniacquistoController extends BaseController
 			$this->responseCode(403);
 	}
 	
+	public function inviapdfselezionecontatto($id)
+	{
+		$ordine = $this->m("OrdiniacquistoModel")->selectId((int)$id);
+		
+		if (empty($ordine))
+			$this->responseCode(403);
+		
+		$data["idOrdineAcquisto"] = (int)$id;
+		$data["contatti"] = array(0 => $ordine["ragione_sociale"] ." ".$ordine["email_amministrativa"]) + $this->m("FornitoricontattiModel")->selectContatti($ordine["id_fornitore"]);
+		
+		$this->append($data);
+		$this->load("seleziona_contatto");
+	}
+	
 	public function inviapdf($id, $idContatto = 0)
 	{
 		$this->checkCsrf(true);

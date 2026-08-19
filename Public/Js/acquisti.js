@@ -8,6 +8,38 @@ $(document).ready(function(){
 		location.href = url;
 	});
 	
+	$( "body" ).on( "click", ".invia_pdf_ordine_acquisto_contatto", function(e){
+		
+		e.preventDefault();
+		
+		var that = $(this);
+		var idContatto = $(".select_id_fornitore_contatto_invia_pdf").val();
+		var urlInviaPdf = that.attr("url-invia-pdf");
+		var csrf = that.attr("csrf");
+		
+		if (idContatto != "")
+		{
+			makeSpinner(that);
+			
+			url = urlInviaPdf + "/" + idContatto + "?csrf=" + csrf;
+			
+			$.ajaxQueue({
+				url: url,
+				cache:false,
+				async: true,
+				dataType: "html",
+				success: function(content){
+					
+					if (window.parent && typeof window.parent.closeModal === "function")
+						window.parent.closeModal();
+					
+				}
+			});
+		}
+		else
+			alert("Attenzione, si prega di selezionare un contatto");
+	});
+	
 	$("body").on("click", ".save_articoli", function(e){
 		
 		e.preventDefault();

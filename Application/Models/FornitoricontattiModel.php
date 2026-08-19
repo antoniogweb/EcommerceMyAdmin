@@ -41,4 +41,20 @@ class FornitoricontattiModel extends GenericModel
 			'fornitore' => array("BELONGS_TO", 'FornitoriModel', 'id_fornitore',null,"RESTRICT", "Si prega di selezionare il fornitore"),
 		);
     }
+    
+    public function selectContatti($idFornitore)
+	{
+		$contatti = $this->clear()->where(array(
+			"id_fornitore"	=>	(int)$idFornitore,
+		))->send(false);
+		
+		$selectArray = array();
+		
+		foreach ($contatti as $c)
+		{
+			$selectArray[$c["id_fornitore_contatto"]] = $c["nome"] . " " . $c["cognome"] . " " . $c["email"];
+		}
+		
+		return $selectArray;
+	}
 }
