@@ -43,7 +43,7 @@ class NotificheModel extends GenericModel {
 		
 		if ($migrationNum > (int)v("db_version") && ControllersModel::checkAccessoAlController(array("cron")))
 			$notifiche[] = array(
-				"testo"	=>	gtext("Attenzione, aggiorna il database!"),
+				"testo"	=>	gtextPlain("Attenzione, aggiorna il database!"),
 				"link"	=>	Url::getRoot()."cron/migrazioni/".v("codice_cron"),
 				"icona"	=>	"fa-database",
 				"class"	=>	"text-yellow",
@@ -51,7 +51,7 @@ class NotificheModel extends GenericModel {
 		
 		if (v("piattaforma_in_sviluppo") && ControllersModel::checkAccessoAlController(array("impostazioni")))
 			$notifiche[] = array(
-				"testo"	=>	gtext("Indicizzazione non attiva."),
+				"testo"	=>	gtextPlain("Indicizzazione non attiva."),
 				"link"	=>	Url::getRoot()."impostazioni/ecommerce/1",
 				"icona"	=>	"fa-warning",
 				"class"	=>	"text-yellow",
@@ -59,7 +59,7 @@ class NotificheModel extends GenericModel {
 		
 		if (v("permetti_gestione_sitemap") && !SitemapModel::g(false)->rowNumber() && ControllersModel::checkAccessoAlController(array("sitemap")))
 			$notifiche[] = array(
-				"testo"	=>	gtext("Sitemap vuota!"),
+				"testo"	=>	gtextPlain("Sitemap vuota!"),
 				"link"	=>	Url::getRoot()."sitemap/main",
 				"icona"	=>	"fa-map-o",
 				"class"	=>	"text-yellow",
@@ -74,7 +74,7 @@ class NotificheModel extends GenericModel {
 				$stringaRigheSingPlu = singPlu($numeroDaCollegare, "riga", "righe");
 				
 				$notifiche[] = array(
-					"testo"	=>	(int)$numeroDaCollegare." ".gtext("$stringaRigheSingPlu ordine acquisto da collegare"),
+					"testo"	=>	(int)$numeroDaCollegare." ".gtextPlain("$stringaRigheSingPlu ordine acquisto da collegare"),
 					"link"	=>	Url::getRoot()."ordiniacquistorighe/main",
 					"icona"	=>	"fa-archive",
 					"class"	=>	"text-yellow",
@@ -86,7 +86,7 @@ class NotificheModel extends GenericModel {
 		{
 			if (!v("tempo_log_permanenti_giorni") && LogModel::numeroLogPermanenti())
 				$notifiche[] = array(
-					"testo"	=>	gtext("Impostare un tempo massimo per i log della piattaforma. Variabile tempo_log_permanenti_giorni"),
+					"testo"	=>	gtextPlain("Impostare un tempo massimo per i log della piattaforma. Variabile tempo_log_permanenti_giorni"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -94,7 +94,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("tempo_log_gateway_response") && OrdiniresponseModel::numeroLog())
 				$notifiche[] = array(
-					"testo"	=>	gtext("Impostare un tempo massimo per i log contententi gli esiti dei pagamenti. Variabile tempo_log_gateway_response"),
+					"testo"	=>	gtextPlain("Impostare un tempo massimo per i log contententi gli esiti dei pagamenti. Variabile tempo_log_gateway_response"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -102,7 +102,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("svuota_file_cookie_carrello_dopo_x_minuti") && v("ecommerce_attivo"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Salvare i cookie dei carrelli su file. Variabile svuota_file_cookie_carrello_dopo_x_minuti"),
+					"testo"	=>	gtextPlain("Salvare i cookie dei carrelli su file. Variabile svuota_file_cookie_carrello_dopo_x_minuti"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -110,7 +110,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("attiva_check_ip"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare il check IP sui form. Variabile attiva_check_ip. Impostare i limiti con le variabili limite_ip_chiave_contemporanee, limite_ip_chiave_minuto e limite_ip_chiave_orario"),
+					"testo"	=>	gtextPlain("Attivare il check IP sui form. Variabile attiva_check_ip. Impostare i limiti con le variabili limite_ip_chiave_contemporanee, limite_ip_chiave_minuto e limite_ip_chiave_orario"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -118,7 +118,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!VariabiliModel::checkNumeroMailInviate())
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare un numero massimo di email inviabili in un ora e/o in un giorno. Variabili max_numero_email_ora e max_numero_email_giorno"),
+					"testo"	=>	gtextPlain("Attivare un numero massimo di email inviabili in un ora e/o in un giorno. Variabili max_numero_email_ora e max_numero_email_giorno"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -126,7 +126,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("check_accesso_admin_token_ordine_frontend_da"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare il doppio token per poter vedere il dettaglio dell'ordine in modalità anonima. Variabile check_accesso_admin_token_ordine_frontend_da."),
+					"testo"	=>	gtextPlain("Attivare il doppio token per poter vedere il dettaglio dell'ordine in modalità anonima. Variabile check_accesso_admin_token_ordine_frontend_da."),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -134,7 +134,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("attiva_waf"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare il WAF. Variabile attiva_waf."),
+					"testo"	=>	gtextPlain("Attivare il WAF. Variabile attiva_waf."),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -142,7 +142,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("attiva_controllo_robustezza_password"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare il controllo sulla robustezza della password. Variabile attiva_controllo_robustezza_password."),
+					"testo"	=>	gtextPlain("Attivare il controllo sulla robustezza della password. Variabile attiva_controllo_robustezza_password."),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -150,7 +150,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("attiva_autenticazione_due_fattori_admin"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare l'autenticazione a due fattori lato admin. Variabile attiva_autenticazione_due_fattori_admin."),
+					"testo"	=>	gtextPlain("Attivare l'autenticazione a due fattori lato admin. Variabile attiva_autenticazione_due_fattori_admin."),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -158,7 +158,7 @@ class NotificheModel extends GenericModel {
 			
 			if (v("attiva_area_riservata") && !v("attiva_autenticazione_due_fattori_front"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare l'autenticazione a due fattori lato frontend. Variabile attiva_autenticazione_due_fattori_front."),
+					"testo"	=>	gtextPlain("Attivare l'autenticazione a due fattori lato frontend. Variabile attiva_autenticazione_due_fattori_front."),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -166,7 +166,7 @@ class NotificheModel extends GenericModel {
 			
 			if ((v("attiva_autenticazione_due_fattori_front") || v("attiva_autenticazione_due_fattori_admin")) && (!defined('AES_KEY') || !defined('MAC_KEY')))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Definire le chiavi AES e MAC per la cifratura del codice a 2 fattori"),
+					"testo"	=>	gtextPlain("Definire le chiavi AES e MAC per la cifratura del codice a 2 fattori"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -174,7 +174,7 @@ class NotificheModel extends GenericModel {
 			
 			if ((v("attiva_autenticazione_due_fattori_front") || v("attiva_autenticazione_due_fattori_admin")) && v("autenticazione_due_fattori_usa_id_user"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Non usare l'ID user nel cookie dei due fattori. Variabile autenticazione_due_fattori_usa_id_user"),
+					"testo"	=>	gtextPlain("Non usare l'ID user nel cookie dei due fattori. Variabile autenticazione_due_fattori_usa_id_user"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -182,7 +182,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("hash_function_tokens_in_db"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare l'hash 256 per gli access token nel DB. Variabile hash_function_tokens_in_db = sha256."),
+					"testo"	=>	gtextPlain("Attivare l'hash 256 per gli access token nel DB. Variabile hash_function_tokens_in_db = sha256."),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -190,7 +190,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!ImpostazioniModel::$valori["smtp_verify_tls"])
 				$notifiche[] = array(
-					"testo"	=>	gtext("Verificare l'autenticità del server SMTP e del certificato. Impostazione smtp_verify_tls"),
+					"testo"	=>	gtextPlain("Verificare l'autenticità del server SMTP e del certificato. Impostazione smtp_verify_tls"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -198,7 +198,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("carica_header_security"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare gli header di sicurezza X-Content-Type-Options, X-Frame-Options e Strict-Transport-Security. Variabile carica_header_security"),
+					"testo"	=>	gtextPlain("Attivare gli header di sicurezza X-Content-Type-Options, X-Frame-Options e Strict-Transport-Security. Variabile carica_header_security"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -206,7 +206,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("carica_header_csp") || v("carica_header_csp_report_only"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare l' header di sicurezza CSP e in modalità non Report Only. Variabile carica_header_csp e carica_header_csp_report_only"),
+					"testo"	=>	gtextPlain("Attivare l' header di sicurezza CSP e in modalità non Report Only. Variabile carica_header_csp e carica_header_csp_report_only"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -214,7 +214,7 @@ class NotificheModel extends GenericModel {
 			
 			if (!v("attiva_csrf_form"))
 				$notifiche[] = array(
-					"testo"	=>	gtext("Attivare controllo CSRF nei form. Variabile attiva_csrf_form"),
+					"testo"	=>	gtextPlain("Attivare controllo CSRF nei form. Variabile attiva_csrf_form"),
 					"link"	=>	"",
 					"icona"	=>	"fa-file-text-o",
 					"class"	=>	"text-yellow",
@@ -229,44 +229,6 @@ class NotificheModel extends GenericModel {
 		self::segnaEseguite();
 		
 		$notifiche = self::getNotificheStatiche();
-		
-// 		$notifiche = array();
-// 		
-// 		$files = scandir(ROOT."/DB/Migrazioni", SCANDIR_SORT_DESCENDING);
-// 		$ultimaMigrazione = $files[0];
-// 		$migrationNum = (int)basename($ultimaMigrazione, '.sql');
-// 		
-// 		if ($migrationNum > (int)v("db_version") && ControllersModel::checkAccessoAlController(array("cron")))
-// 			$notifiche[] = array(
-// 				"testo"	=>	gtext("Attenzione, aggiorna il database!"),
-// 				"link"	=>	Url::getRoot()."cron/migrazioni/".v("codice_cron"),
-// 				"icona"	=>	"fa-database",
-// 				"class"	=>	"text-yellow",
-// 			);
-// 		
-// 		if (v("piattaforma_in_sviluppo") && ControllersModel::checkAccessoAlController(array("impostazioni")))
-// 			$notifiche[] = array(
-// 				"testo"	=>	gtext("Indicizzazione non attiva."),
-// 				"link"	=>	Url::getRoot()."impostazioni/ecommerce/1",
-// 				"icona"	=>	"fa-warning",
-// 				"class"	=>	"text-yellow",
-// 			);
-// 		
-// 		if (v("permetti_gestione_sitemap") && !SitemapModel::g(false)->rowNumber() && ControllersModel::checkAccessoAlController(array("sitemap")))
-// 			$notifiche[] = array(
-// 				"testo"	=>	gtext("Sitemap vuota!"),
-// 				"link"	=>	Url::getRoot()."sitemap/main",
-// 				"icona"	=>	"fa-map-o",
-// 				"class"	=>	"text-yellow",
-// 			);
-		
-		// if (!v("tempo_log_permanenti_giorni") && LogModel::numeroLogPermanenti())
-		// 	$notifiche[] = array(
-		// 		"testo"	=>	gtext("Impostare un tempo massimo<br /> per i log della piattaforma"),
-		// 		"link"	=>	"",
-		// 		"icona"	=>	"fa-file-text-o",
-		// 		"class"	=>	"text-yellow",
-		// 	);
 		
 		$n = new NotificheModel();
 		$res = $n->clear()->where(array(
