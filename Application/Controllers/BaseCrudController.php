@@ -231,7 +231,7 @@ trait BaseCrudController
 
 		if ($this->addBulkActions && !isset($_GET["esporta_xls"]))
 		{
-			if (!isset($this->bulkActions) or !is_array($this->bulkActions))
+			if (!isset($this->bulkActions) || !is_array($this->bulkActions))
 			{
 				$this->scaffold->itemList->setBulkActions(array(
 					"checkbox_".$table."_".$primaryKey	=>	array("del",gtext("Elimina selezionati"),"confirm"),

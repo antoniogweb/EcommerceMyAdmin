@@ -305,4 +305,29 @@ class MarchiModel extends GenericModel
 		
 		return $pModel->clear()->whereId((int)$idPage)->field("title");
 	}
+	
+	public static function idMarchiDaordinare()
+	{
+		$idRs = OrdiniModel::idRigheDaOrdinare();
+		
+		$righeModel = new RigheModel();
+		
+		return $righeModel->clear()
+			->select("pages.id_marchio")
+			->inner("pages")->on("pages.id_page = righe.id_page")
+			->aWhere(array(
+				"in"	=>	array(
+					"righe.id_r"	=>	forceIntDeep($idRs),
+				),
+			))->toList("pages.id_marchio")->send();
+	}
+	
+	public function marchiConProdottiDaOrdinare()
+	{
+		return $this->clear()->where(array(
+			"in"	=>	array(
+				"id_marchio"	=>	forceIntDeep(self::idMarchiDaordinare())
+			)
+		))->toList($this->_idFields,$this->campoTitolo)->orderBy($this->campoTitolo)->send();
+	}
 }

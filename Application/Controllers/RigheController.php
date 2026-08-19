@@ -136,11 +136,11 @@ class RigheController extends BaseController
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>$recordsPerPage, 'mainMenu'=>$mainMenu, 'mainAction'=>'daordinare');
 		
-		$this->mainFields = array("immagineCrud", "righe.title", "righe.attributi", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", $daOrdinareCrud, "ordinataCrud", "ricevutaCrud");
-		$this->mainHead = "Immagine,Prodotto,Variante,Codice,Prezzo,Prezzo scontato,Quantità acquistata,Quantità da ordinare,Quantità ordinata,Quantità ricevuta";
+		$this->mainFields = array("immagineCrud", "righe.title", "righe.attributi", "marchi.titolo", "righe.codice", "righe.price_ivato", "righe.prezzo_finale_ivato", "righe.quantity", $daOrdinareCrud, "ordinataCrud", "ricevutaCrud");
+		$this->mainHead = "Immagine,Prodotto,Variante,Marchio,Codice,Prezzo,Prezzo scontato,Quantità acquistata,Quantità da ordinare,Quantità ordinata,Quantità ricevuta";
 		
 		$this->m[$this->modelName]->clear()
-				->select("orders.id_o,orders.stato,orders.sezionale,orders.numero_documento,orders.data_creazione,righe.*")
+				->select("orders.id_o,orders.stato,orders.sezionale,orders.numero_documento,orders.data_creazione,righe.*,marchi.titolo")
 				->inner("orders")->on("righe.id_o = orders.id_o")
 				->where(array(
 					"orders.id_o"	=>	$this->viewArgs["id_o_da_ordinare"],
@@ -154,7 +154,9 @@ class RigheController extends BaseController
 				"gt"	=>	array(
 					"qta_da_ordinare"	=>	0,
 				),
-			));
+			))
+			->inner("pages")->on("pages.id_page = righe.id_page")
+			->left("marchi")->on("pages.id_marchio = marchi.id_marchio");
 			
 			$this->clean();
 			$this->sezionePannello = "acquisti";
@@ -175,6 +177,8 @@ class RigheController extends BaseController
 			);
 			
 			$this->filters = array(array("da_ordinare",null,$filtroDaOrdinare), "cerca_prodotto", "riferimento");
+			
+			$this->filters[] = array("id_marchio",null,array("tutti"=>gtext("Marchio")) + $this->m("MarchiModel")->marchiConProdottiDaOrdinare());
 			
 			if ($this->viewArgs["da_ordinare"] != "tutti")
 			{
@@ -208,6 +212,24 @@ class RigheController extends BaseController
 						"orders.numero_documento"	=>	$this->viewArgs["riferimento"],
 					)
 				));
+			
+			if ($this->viewArgs["id_marchio"] != "tutti")
+			{
+				$this->addBulkActions = true;
+				
+				$this->colProperties = array(
+					array(
+						'width'	=>	'60px',
+					),
+					array(
+						'width'	=>	'90px',
+					),
+				);
+				
+				$this->m[$this->modelName]->aWhere(array(
+					"pages.id_marchio"	=>	(int)$this->viewArgs["id_marchio"],
+				));
+			}
 		}
 		
 		$this->m[$this->modelName]->save();

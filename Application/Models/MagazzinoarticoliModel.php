@@ -367,7 +367,8 @@ class MagazzinoarticoliModel extends GenericModel
 	
 	public function codiceCrud($record)
 	{
-		if (!isset($_GET["esporta"]))
+		// if (!isset($_GET["esporta"]))
+		if (false)
 		{
 			$html = "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("SKU").":</b> <input id-articolo='".$record["magazzino_articoli"]["id_articolo"]."' style='max-width:140px;display:inline;' class='form-control class_combinazione class_combinazione_".$record["magazzino_articoli"]["id_articolo"]."' name='codice' value='".$record["magazzino_articoli"]["codice"]."' /></div>";
 			

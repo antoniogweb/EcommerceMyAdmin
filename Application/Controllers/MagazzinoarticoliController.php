@@ -136,7 +136,7 @@ class MagazzinoarticoliController extends BaseController
 			),
 		);
 		
-		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'save_articoli');
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>30, 'mainMenu'=>'');
 		
 		$this->m[$this->modelName]->select("magazzino_articoli.*,categories.title,marchi.titolo,pages.id_page,pages.attivo,combinazioni.acquistabile,combinazioni.id_c,combinazioni.codice,pages.title")
 			->left(array("combinazioni"))
@@ -246,6 +246,8 @@ class MagazzinoarticoliController extends BaseController
 	
 	public function salva()
 	{
+		$this->responseCode(403);
+		
 		$arrayIdsErrore = [];
 		
 		Params::$setValuesConditionsFromDbTableStruct = false;
