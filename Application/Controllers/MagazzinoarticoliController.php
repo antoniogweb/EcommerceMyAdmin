@@ -84,6 +84,9 @@ class MagazzinoarticoliController extends BaseController
 			$this->orderBy = "pages.attivo desc,pages.title";
 		}
 		
+		$this->mainButtons = 'ldel';
+		$this->queryActions = '';
+		
 		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","titoloCrud","varianteCrud","marchi.titolo","codiceCrud","combinazioni.codice","attivoCrud","acquistabileCrud","prezzoCrud","sconto1Crud","sconto2Crud","quantitaCrud","magazzino_articoli.aliquota_iva");
 		$this->mainHead = "Immagine,Categoria ecommerce,Articolo,Variante,Marchio,Codice,Codice Web,Vis. Web,Acq. Web,Prezzo,Sconto 1,Sconto 2,Ultima Qta.,Iva";
 		
@@ -201,7 +204,6 @@ class MagazzinoarticoliController extends BaseController
 		if ($this->viewArgs["id_ordine_acquisto"] != "tutti" || $this->viewArgs["id_ordine_acquisto_ricezione"] != "tutti")
 		{
 			$this->mainButtons = '';
-			$this->queryActions = '';
 			
 			if ($this->viewArgs["id_ordine_acquisto"] != "tutti")
 			{
@@ -230,8 +232,7 @@ class MagazzinoarticoliController extends BaseController
 	
 	public function form($queryType = 'insert', $id = 0)
 	{
-		if ($queryType != "update")
-			$this->responseCode(403);
+		$this->responseCode(403);
 		
 		$this->shift(2);
 		
