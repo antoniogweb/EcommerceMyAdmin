@@ -235,8 +235,6 @@ class OrdiniacquistoController extends BaseController
 				}
 			}
 		}
-		else
-			echo $this->m[$this->modelName]->notice;
 	}
 	
 	public function righe($id = 0)

@@ -12,7 +12,7 @@ $fornitori = array(0 => gtext("Seleziona un fornitore")) + FornitoriModel::g()->
 		<div class="form-group">
 			<?php echo Html_Form::select("id_fornitore_ordine", "", $fornitori, "form-control", null, "yes");?>
 		</div>
-		<button type="button" class="btn btn-success crea_ordine_acquisto_da_ordinare">
+		<button type="button" class="btn btn-success crea_ordine_acquisto_da_ordinare" data-url="<?php echo $this->baseUrl."/".$this->applicationUrl."ordiniacquisto/crea";?>">
 			<i class="fa fa-plus"></i> <?php echo gtext("Crea ordine");?>
 		</button>
 	</div>

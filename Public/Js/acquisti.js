@@ -516,6 +516,7 @@ $(document).ready(function(){
 		var that = $(this);
 		var idFornitore = $("select[name='id_fornitore_ordine']").val();
 		var righeOrdineVenidta = [];
+		var url = that.attr("data-url");
 		
 		$(".checkbox_righe_id_r:checked").each(function(){
 			var idRiga = $(this).attr("data-primary-key");
@@ -539,7 +540,7 @@ $(document).ready(function(){
 		that.find("i").removeClass("fa-plus").addClass("fa-spinner").addClass("fa-spin");
 		
 		$.ajaxQueue({
-			url: baseUrl + "/" + applicationName + "ordiniacquisto/crea",
+			url: url,
 			cache:false,
 			async: true,
 			dataType: "html",
