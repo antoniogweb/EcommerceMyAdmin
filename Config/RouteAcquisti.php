@@ -36,6 +36,7 @@ class RouteAcquisti
 		'fornitoriimport,documento',
 		'ordiniacquisto,main',
 		'ordiniacquisto,form',
+		'ordiniacquisto,crea',
 		'ordiniacquisto,righe',
 		'ordiniacquisto,inviipdf',
 		'ordiniacquisto,storicostati',

@@ -84,10 +84,10 @@ class OrdiniacquistorigheModel extends GenericModel
 		return false;
 	}
 	
-	public function update($id = null, $where = null)
-	{
-		return parent::update($id, $where);
-	}
+	// public function update($id = null, $where = null)
+	// {
+	// 	return parent::update($id, $where);
+	// }
 	
 	public function primaImmagineCarrelloCrud($record)
     {

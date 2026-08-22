@@ -310,7 +310,7 @@ class MagazzinoarticoliModel extends GenericModel
 		}
     }
     
-    public function aggiungiaordine($id)
+    public function aggiungiaordine($id, $supplValues = array())
     {
 		$record = $this->selectId((int)$id);
 		
@@ -332,7 +332,10 @@ class MagazzinoarticoliModel extends GenericModel
 				
 				$oarModel = new OrdiniacquistorigheModel();
 				
+				// Cerco l'ultima quantità ordinata
 				$ultimaQuantita = $this->getUltimaQuantita((int)$id);
+				
+				$quantita = $ultimaQuantita ? $ultimaQuantita : 1;
 				
 				$recordPage = $pagesModel->clear()->select("id_page,id_marchio")->whereId((int)$recordWeb["id_page"])->record();
 				
@@ -345,7 +348,7 @@ class MagazzinoarticoliModel extends GenericModel
 					"prezzo"		=>	$this->getUltimoPrezzo((int)$id),
 					"sconto_1"		=>	$this->getUltimoSconto1((int)$id),
 					"sconto_2"		=>	$this->getUltimoSconto2((int)$id),
-					"quantita"		=>	$ultimaQuantita ? $this->getUltimaQuantita((int)$id) : 1,
+					"quantita"		=>	$quantita,
 					"omaggio"		=>	0,
 					"id_iva"		=>	$record["id_iva"],
 					"aliquota_iva"	=>	$record["aliquota_iva"],
@@ -354,6 +357,12 @@ class MagazzinoarticoliModel extends GenericModel
 					"id_page"		=>	$recordWeb["id_page"] ?? 0,
 					"attributi"		=>	isset($recordWeb["id_c"]) ? strip_tags($combModel->getStringa($recordWeb["id_c"], "<br />")) : "",
 				), "sanitizeDb");
+				
+				// Valori supplementari
+				foreach ($supplValues as $k => $v)
+				{
+					$oarModel->setValue($k, $v);
+				}
 				
 				$oarModel->insert();
 			}

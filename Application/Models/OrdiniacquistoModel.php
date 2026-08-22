@@ -34,6 +34,8 @@ class OrdiniacquistoModel extends GenericModel
 	
 	public $urlOrdineAcquistoRicezioni = "ordiniacquistoricezioni";
 	
+	public $formFields = 'id_fornitore,data_ordine,numero_ordine,ragione_sociale,email,email_amministrativa,pec,codice_fiscale,p_iva,telefono,telefono_2,indirizzo,numero_civico,nazione,provincia,comune,cap,localita,referente,telefono_referente,cellulare_referente,email_referente,id_ordine_acquisto_stato';
+	
 	public function __construct() {
 		$this->_tables = 'ordini_acquisto';
 		$this->_idFields = 'id_ordine_acquisto';
