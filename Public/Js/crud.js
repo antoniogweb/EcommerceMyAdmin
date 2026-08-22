@@ -101,7 +101,7 @@ $(document).ready(function(){
 
 	});
 	
-	$(".list_filter_form select").change(function(){
+	$("body").on("change", ".list_filter_form select", function() {
 		
 		$(this).parents(".list_filter_form").submit();
 		

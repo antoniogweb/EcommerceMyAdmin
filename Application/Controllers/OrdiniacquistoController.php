@@ -211,7 +211,7 @@ class OrdiniacquistoController extends BaseController
 				
 				if (!empty($riga) && (int)$riga["qta_da_ordinare"] > 0)
 				{
-					$qtaOrdinata = $this->m("RigheModel")->prodottiOrdinati((int)$riga["id_c"]);
+					$qtaOrdinata = $this->m("RigheModel")->prodottiOrdinati((int)$idR);
 					
 					$qtaDaOrdinare = (int)$riga["qta_da_ordinare"] - (int)$qtaOrdinata;
 					
