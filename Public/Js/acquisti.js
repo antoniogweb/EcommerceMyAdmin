@@ -508,4 +508,57 @@ $(document).ready(function(){
 	$("body").on("click", ".bulk_select_checkbox", function(){
 		setTimeout(aggiornaVisibilitaBloccoCreaOrdineAcquistoDaOrdinare, 0);
 	});
+	
+	$("body").on("click", ".crea_ordine_acquisto_da_ordinare", function(e){
+		
+		e.preventDefault();
+		
+		var that = $(this);
+		var idFornitore = $("select[name='id_fornitore_ordine']").val();
+		var righeOrdineVenidta = [];
+		
+		$(".checkbox_righe_id_r:checked").each(function(){
+			var idRiga = $(this).attr("data-primary-key");
+			
+			if (idRiga)
+				righeOrdineVenidta.push(idRiga);
+		});
+		
+		if (idFornitore == 0 || idFornitore == "")
+		{
+			alert("Attenzione, si prega di selezionare un fornitore");
+			return;
+		}
+		
+		if (righeOrdineVenidta.length == 0)
+		{
+			alert("Attenzione, si prega di selezionare almeno una riga");
+			return;
+		}
+		
+		that.find("i").removeClass("fa-plus").addClass("fa-spinner").addClass("fa-spin");
+		
+		$.ajaxQueue({
+			url: baseUrl + "/" + applicationName + "ordiniacquisto/crea",
+			cache:false,
+			async: true,
+			dataType: "html",
+			type: "POST",
+			data: {
+				csrf: csrf_token,
+				id_fornitore: idFornitore,
+				righeOrdineVenidta: righeOrdineVenidta.join(",")
+			},
+			success: function(content){
+				
+				aggiornaParziale(applicationControllerAction + viewStatus + "&ajax_partial_load");
+				
+			},
+			error: function(){
+				
+				that.find("i").removeClass("fa-spin").removeClass("fa-spinner").addClass("fa-plus");
+				
+			}
+		});
+	});
 });

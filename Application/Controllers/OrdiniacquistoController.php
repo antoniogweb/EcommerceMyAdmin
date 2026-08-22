@@ -166,6 +166,8 @@ class OrdiniacquistoController extends BaseController
 	
 	public function crea()
 	{
+		$this->clean();
+		
 		$this->checkCsrf(true, "POST");
 		
 		$clean["idFornitore"] = $this->request->post("id_fornitore", 0, "forceInt");
@@ -175,61 +177,66 @@ class OrdiniacquistoController extends BaseController
 		if (empty($fornitore))
 			$this->responseCode(403);
 		
+		$righeOrdineVenidta = $this->request->post("righeOrdineVenidta","");
+		
+		if (!trim($righeOrdineVenidta))
+			$this->responseCode(403);
+		
 		$fields = explode(",", $this->m[$this->modelName]->formFields);
 		
-		$this->m[$this->modelName]->values = array();
+		$this->m[$this->modelName]->sValues(array(
+			"numero_ordine"	=>	$this->m($this->modelName)->getNumero(),
+			"data_ordine"	=>	date("Y-m-d"),
+			"id_ordine_acquisto_stato"	=>	(int)OrdiniacquistostatiModel::getIdStatoPending(),
+		));
 		
 		foreach ($fields as $field)
 		{
-			$this->m[$this->modelName]->setvalue($field, $fornitore[$field] ?? "", "sanitizeDb");
+			if (isset($fornitore[$field]) && !isset($this->m[$this->modelName]->values[$field]))
+				$this->m[$this->modelName]->setValue($field, $fornitore[$field], "sanitizeDb");
 		}
-		
-		$this->m[$this->modelName]->setvalue("numero_ordine", $this->m($this->modelName)->getNumero());
 		
 		// Creo l'ordine di acquisto
 		if ($this->m[$this->modelName]->insert())
 		{
 			$idOrdineAcquisto = $_GET["id_ordine_acquisto"] = (int)$this->m[$this->modelName]->lId;
 			
-			$righeOrdineVenidta = $this->request->post("righeOrdineVenidta","");
-			
 			// Aggiungo le righe
-			if ($righeOrdineVenidta)
+			$idRs = explode(",", $righeOrdineVenidta);
+			
+			foreach ($idRs as $idR)
 			{
-				$idRs = explode(",", $righeOrdineVenidta);
+				// Cerco la riga dell'ordine di vendita
+				$riga = $this->m("RigheModel")->whereId((int)$idR)->record();
 				
-				foreach ($idRs as $idR)
+				if (!empty($riga) && (int)$riga["qta_da_ordinare"] > 0)
 				{
-					// Cerco la riga dell'ordine di vendita
-					$riga = $this->m("RigheModel")->whereId((int)$idR)->record();
+					$qtaOrdinata = $this->m("RigheModel")->prodottiOrdinati((int)$riga["id_c"]);
 					
-					if (!empty($riga) && (int)$riga["qta_da_ordinare"] > 0)
+					$qtaDaOrdinare = (int)$riga["qta_da_ordinare"] - (int)$qtaOrdinata;
+					
+					if ($qtaDaOrdinare <= 0)
+						continue;
+					
+					// Cerco l'articolo
+					$idArticolo = $this->m("MagazzinoarticolicombinazioniModel")->where(array(
+						"id_c"	=>	(int)$riga["id_c"],
+					))->field("id_articolo");
+					
+					if ($idArticolo)
 					{
-						$qtaOrdinata = $this->m("RigheModel")->prodottiOrdinati((int)$riga["id_c"]);
+						$supplValues = array(
+							"quantita"	=>	(int)$qtaDaOrdinare,
+							"id_r"		=>	(int)$idR,
+						);
 						
-						$qtaDaOrdinare = (int)$riga["qta_da_ordinare"] - (int)$qtaOrdinata;
-						
-						if ($qtaDaOrdinare <= 0)
-							continue;
-						
-						// Cerco l'articolo
-						$idArticolo = $this->m("MagazzinoarticolicombinazioniModel")->where(array(
-							"id_c"	=>	(int)$riga["id_c"],
-						))->field("id_articolo");
-						
-						if ($idArticolo)
-						{
-							$supplValues = array(
-								"quantita"	=>	(int)$qtaDaOrdinare,
-								"id_r"		=>	(int)$idR,
-							);
-							
-							$this->m("MagazzinoarticoliModel")->aggiungiaordine((int)$idArticolo, $supplValues);
-						}
+						$this->m("MagazzinoarticoliModel")->aggiungiaordine((int)$idArticolo, $supplValues);
 					}
 				}
 			}
 		}
+		else
+			echo $this->m[$this->modelName]->notice;
 	}
 	
 	public function righe($id = 0)
