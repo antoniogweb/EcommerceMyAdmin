@@ -455,4 +455,18 @@ class OrdiniacquistoModel extends GenericModel
 		
 		return implode("<br />", $htmlArray);
 	}
+	
+	public static function getSelectContatti($idOrdine)
+	{
+		$ordine = OrdiniacquistoModel::g(false)->selectId((int)$idOrdine);
+		
+		$contatti = array();
+		
+		if (isset($ordine["email_amministrativa"]) && checkMail($ordine["email_amministrativa"]))
+			$contatti += array(0 => $ordine["ragione_sociale"] ." ".$ordine["email_amministrativa"]);
+		
+		$contatti += FornitoricontattiModel::g(false)->selectContatti($ordine["id_fornitore"]);
+		
+		return $contatti;
+	}
 }

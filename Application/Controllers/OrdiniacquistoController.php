@@ -43,6 +43,7 @@ class OrdiniacquistoController extends BaseController
 	public $orderBy = "ragione_sociale";
 	public $pulsantiMenuRighe = "";
 	public $modelNameRighe = "OrdiniacquistorigheModel";
+	public $menuLinksReport = "";
 	
 	public $argKeys = array(
 		'numero_ordine_acquisto:sanitizeAll'=>'tutti',
@@ -391,7 +392,8 @@ class OrdiniacquistoController extends BaseController
 			$this->responseCode(403);
 		
 		$data["idOrdineAcquisto"] = (int)$id;
-		$data["contatti"] = array(0 => $ordine["ragione_sociale"] ." ".$ordine["email_amministrativa"]) + $this->m("FornitoricontattiModel")->selectContatti($ordine["id_fornitore"]);
+		
+		$data["contatti"] = OrdiniacquistoModel::getSelectContatti($id);
 		
 		$this->append($data);
 		$this->load("seleziona_contatto");

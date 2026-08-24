@@ -186,17 +186,12 @@ class OrdiniacquistopdfModel extends GenericModel
     // Elimina tutti i file fisici dei PDF che non sono presenti nella tabella ordini_acquisto_pdf
     public function eliminaPdfNonInviati()
     {
-// 		$this->files->setBase(LIBRARY."/".self::getMediaPath());
-// 		$list = $this->clear()->select("filename")->toList("filename")->send();
-// 		$list[] = "index.html";
-// 		$list[] = ".htaccess";
-// 		
-// 		$this->files->removeFilesNotInTheList($list);
+		
     }
     
     public function linkPdfCrud($record)
     {
-		return '<a target="_blank" title="'.gtextAttr("Vedi PDF").'" href="'.Url::getRoot().$this->applicationUrl.$this->controller."/stampapdf/0/".$record["ordini_acquisto_pdf"]["id_ordine_acquisto_pdf"].'"><i class="fa fa-file-pdf-o"></i></a>';
+		return '<a target="_blank" title="'.gtextAttr("Vedi PDF").'" href="'.Url::getRoot().$this->applicationUrl.$this->controller."/stampapdf/0/".$record["ordini_acquisto_pdf"]["id_ordine_acquisto_pdf"].'?csrf='.User::$csrfToken.'"><i class="fa fa-file-pdf-o"></i></a>';
     }
     
     public function deletable($id)
