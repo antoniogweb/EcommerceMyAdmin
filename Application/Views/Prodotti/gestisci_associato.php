@@ -93,6 +93,22 @@
 	<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/nazioni/main?id_page_sp=$id_page&partial=Y&cl_on_sv=Y&nobuttons=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi nazione");?></a>
 </p>
 
+<?php } ?>
 
+<?php if ($this->action == "articoli" && v("attiva_modulo_acquisti")) { ?>
+
+<form action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/".$this->action."/$id_page".$this->viewStatus;?>' method='POST'>
+	<span style="display:inline-block;" select2="/magazzinoarticoli/main/1?esporta_json&formato_json=select2">
+		<?php echo Html_Form::select("id_articolo_","",array("0" => gtext("Seleziona articolo")),"select_articolo_ordine_acquisto","","yes", "style='min-width:400px;' url-combinazione='magazzinoarticoli/main'");?>
+	</span>
+
+	<span style="display:inline-block;" select2="">
+		<?php echo Html_Form::select("id_articolo","",array("0" => gtext("Seleziona variante")),"form-control select_combinazione_ordine_acquisto","","yes", "style='min-width:200px;'");?>
+	</span>
+	
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	<input type="hidden" name="insertAction" value="Aggiungi" />
+</form>
+<br />
 
 <?php } ?>

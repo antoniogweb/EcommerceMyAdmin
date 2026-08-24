@@ -92,6 +92,9 @@
 	<?php if (v("attiva_limitazione_spedizione_nazioni")) { ?>
 	<li <?php echo $posizioni['nazioni'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/nazioni/$id_page".$viewStatusTutti;?>"><?php echo gtext("Nazioni spedizione");?></a></li>
 	<?php } ?>
+	<?php if (v("attiva_modulo_acquisti")) { ?>
+	<li <?php echo $posizioni['articoli'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/articoli/$id_page".$viewStatusTutti;?>"><?php echo gtext("Distinta");?></a></li>
+	<?php } ?>
 </ul>
 
 <?php } ?>

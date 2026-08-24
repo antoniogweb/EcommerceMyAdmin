@@ -1,0 +1,1 @@
+alter table pages_articoli add quantita int not null default 1;

@@ -1215,7 +1215,7 @@ class PagesController extends BaseController
 		
 		$this->m['CorrelatiModel']->values['accessorio'] = (int)$accessori;
 		
-		$this->m['CorrelatiModel']->updateTable('insert,del');
+		$this->m['CorrelatiModel']->updateTable('insert');
 		
 // 		$mainAction = "$action/".$clean['id'];
 // 		
@@ -2522,6 +2522,74 @@ class PagesController extends BaseController
 		$this->append($data);
 	}
 	
+	public function articoli($id = 0)
+	{
+		if (!v("attiva_modulo_acquisti"))
+			$this->responseCode(403);
+		
+		$this->model("PagesarticoliModel");
+		
+		$this->_posizioni['articoli'] = 'class="active"';
+		$data['posizioni'] = $this->_posizioni;
+		
+		$data['type'] = "articoli";
+		
+		$this->shift(1);
+		
+		$this->s['admin']->check();
+		
+		$data['id_page'] = $clean['id'] = $this->id = (int)$id;
+		$this->id_name = "id_page";
+		
+		$this->m[$this->modelName]->checkPrincipale($clean['id']);
+		
+		if (!$this->m[$this->modelName]->modificaPaginaPermessa($clean['id']))
+			die("non permesso");
+		
+		$this->modelName = "PagesarticoliModel";
+		
+		$this->m[$this->modelName]->setFields('id_articolo','sanitizeAll');
+		
+		$this->m[$this->modelName]->setValue('id_page', $clean['id']);
+
+		$this->m[$this->modelName]->addValuesCondition("both",'checkIsNotStrings|0',"id_articolo|".gtext("Si prega di selezionare una variante"));
+		$this->m[$this->modelName]->updateTable('insert');
+		
+		$this->mainButtons = 'ldel';
+		$data["orderBy"] = "";
+		
+		$mainAction = "articoli/".$clean['id'];
+		
+		$this->colProperties = array(
+			array(
+				'width'	=>	'60px',
+			),
+		);
+		
+		$this->mainFields = array("pages.title", "variantiCrud");
+		$this->mainHead = "Titolo,Variante";
+		
+		$this->getTabViewFields("articoli");
+		
+		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
+		
+		$this->m[$this->modelName]->clear()->select("pages.title,pages_articoli.*,magazzino_articoli_combinazioni.id_c")
+			->left("magazzino_articoli_combinazioni")->on("magazzino_articoli_combinazioni.id_articolo = pages_articoli.id_articolo")
+			->left("pages")->on("pages.id_page = magazzino_articoli_combinazioni.id_page")
+			->where(array(
+				"pages_articoli.id_page"	=>	$clean['id'],
+			))
+			->save();
+		
+		$this->tabella = $this->getNomeMenu();
+		
+		parent::main();
+		
+		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
+		
+		$this->append($data);
+	}
+	
 	public function updatevalue()
 	{
 		$this->s['admin']->check();
@@ -2783,117 +2851,117 @@ class PagesController extends BaseController
 	public function esportaprodotti()
 	{
 		die();
-		$this->clean();
-		
-		$clean["idShop"] = $this->m["CategoriesModel"]->getShopCategoryId();
-		
-		$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idShop"]);
-		
-		$pagine = $this->m["PagesModel"]->clear()->select("categories.*,pages.*,c2.*")->inner("categories")->on("pages.id_c = categories.id_c")->left("categories as c2")->on("c2.id_c = categories.id_p")->where(array(
-			"pages.principale"	=>	"Y",
-			"in" => array("-id_c" => $childrenProdotti),
-		))->orderBy("c2.title,categories.title,pages.title")->send();
-		
-		$strutturaCSV = array();
-		
-		$listaAttributiValori = $this->m["AttributivaloriModel"]->clear()->toList("id_av","titolo")->send();
-		
-		$listaAttributiValori = htmlentitydecodeDeep($listaAttributiValori);
-		
-		foreach ($pagine as $p)
-		{
-			$p["pages"] = htmlentitydecodeDeep($p["pages"]);
-			$p["categories"] = htmlentitydecodeDeep($p["categories"]);
-			
-			$clean['id'] = (int)$p["pages"]["id_page"];
-			
-			$rigaCSVStandard = array(
-				"CATEGORIA 1"	=>	$p["c2"]["title"],
-				"CATEGORIA 2"	=>	$p["categories"]["title"],
-				"TITOLO"	=>	$p["pages"]["title"],
-				"DESCRIZIONE"	=>	strip_tags($p["pages"]["description"]),
-// 				"DETTAGLI"	=>	strip_tags($p["pages"]["dettagli"]),
-				"IN PROMOZIONE"	=>	$p["pages"]["in_promozione"],
-				"PROMOZIONE"	=>	$p["pages"]["in_promozione"] == "Y" ? $p["pages"]["prezzo_promozione"] . "%" : 0,
-				"PROMOZIONE_DAL"	=>	$p["pages"]["dal"] != "0000-00-00" ? date("d/m/Y",strtotime($p["pages"]["dal"])) : "",
-				"PROMOZIONE_AL"	=>	$p["pages"]["al"] != "0000-00-00" ? date("d/m/Y",strtotime($p["pages"]["al"])) : "",
-				"IN EVIDENZA"	=>	$p["pages"]["in_evidenza"],
-			);
-			
-			$colonne = $this->m["PagesattributiModel"]->getNomiColonne($clean['id']);
-			
-			$this->m['CombinazioniModel']->creaColonne($clean['id']);
-			
-			$result = $this->m['CombinazioniModel']->clear()->where(array('id_page'=>$clean['id']))->orderBy("id_order")->send();
-			
-			if (count($result) > 0)
-			{
-				foreach ($result as $r)
-				{
-					$rigaCSV = $rigaCSVStandard;
-					
-					$combinazione = $r["combinazioni"];
-					
-					$indice = 1;
-					
-					foreach (array("col_1","col_2") as $colName)
-					{
-						if (isset($colonne[$colName]))
-						{
-							$rigaCSV["VARIANTE $indice"] = strtoupper($colonne[$colName]);
-							$rigaCSV["VALORE $indice"] = isset($listaAttributiValori[$combinazione[$colName]]) ? $listaAttributiValori[$combinazione[$colName]] : "--";
-						}
-						else
-						{
-							$rigaCSV["VARIANTE $indice"] = "--";
-							$rigaCSV["VALORE $indice"] = "--";
-						}
-						
-						$indice++;
-					}
-					
-					$rigaCSV["CODICE"] = $combinazione["codice"];
-// 					$rigaCSV["CONFEZIONE"] = $combinazione["confezione"];
-					$rigaCSV["PESO"] = $combinazione["peso"];
-					$rigaCSV["PREZZO"] = $combinazione["price"];
-					
-					$strutturaCSV[] = $rigaCSV;
-				}
-			}
-			else
-			{
-				$rigaCSV = $rigaCSVStandard;
-				
-				$rigaCSV["VARIANTE 1"] = "--";
-				$rigaCSV["VALORE 1"] = "--";
-				$rigaCSV["VARIANTE 2"] = "--";
-				$rigaCSV["VALORE 2"] = "--";
-				$rigaCSV["CODICE"] = $p["pages"]["codice"];
-// 				$rigaCSV["CONFEZIONE"] = $p["pages"]["confezione"];
-				$rigaCSV["PESO"] = $p["pages"]["peso"];
-				$rigaCSV["PREZZO"] = $p["pages"]["price"];
-				
-				$strutturaCSV[] = $rigaCSV;
-			}
-			
-// 			print_r($this->m['CombinazioniModel']->colonne);
-// 			print_r($colonne);
-// 			print_r($result);
-		}
-		
-		if (count($strutturaCSV) > 0)
-		{
-			$html = "<tr><td>".implode("</td><td>", array_keys($strutturaCSV[0]))."</td></tr>";
-			
-			foreach ($strutturaCSV as $rigaCSV)
-			{
-				$html .= "<tr><td>".implode("</td><td>", array_values($rigaCSV))."</td></tr>";
-			}
-			
-			header('Content-disposition: attachment; filename='.date("Y-m-d_H_i_s")."_esportazione_prodotti.xls");
-			header('Content-Type: application/vnd.ms-excel');
-			
-			echo "<table>$html</table>";
-		}
+// 		$this->clean();
+// 		
+// 		$clean["idShop"] = $this->m["CategoriesModel"]->getShopCategoryId();
+// 		
+// 		$childrenProdotti = $this->m["CategoriesModel"]->children($clean["idShop"]);
+// 		
+// 		$pagine = $this->m["PagesModel"]->clear()->select("categories.*,pages.*,c2.*")->inner("categories")->on("pages.id_c = categories.id_c")->left("categories as c2")->on("c2.id_c = categories.id_p")->where(array(
+// 			"pages.principale"	=>	"Y",
+// 			"in" => array("-id_c" => $childrenProdotti),
+// 		))->orderBy("c2.title,categories.title,pages.title")->send();
+// 		
+// 		$strutturaCSV = array();
+// 		
+// 		$listaAttributiValori = $this->m["AttributivaloriModel"]->clear()->toList("id_av","titolo")->send();
+// 		
+// 		$listaAttributiValori = htmlentitydecodeDeep($listaAttributiValori);
+// 		
+// 		foreach ($pagine as $p)
+// 		{
+// 			$p["pages"] = htmlentitydecodeDeep($p["pages"]);
+// 			$p["categories"] = htmlentitydecodeDeep($p["categories"]);
+// 			
+// 			$clean['id'] = (int)$p["pages"]["id_page"];
+// 			
+// 			$rigaCSVStandard = array(
+// 				"CATEGORIA 1"	=>	$p["c2"]["title"],
+// 				"CATEGORIA 2"	=>	$p["categories"]["title"],
+// 				"TITOLO"	=>	$p["pages"]["title"],
+// 				"DESCRIZIONE"	=>	strip_tags($p["pages"]["description"]),
+// // 				"DETTAGLI"	=>	strip_tags($p["pages"]["dettagli"]),
+// 				"IN PROMOZIONE"	=>	$p["pages"]["in_promozione"],
+// 				"PROMOZIONE"	=>	$p["pages"]["in_promozione"] == "Y" ? $p["pages"]["prezzo_promozione"] . "%" : 0,
+// 				"PROMOZIONE_DAL"	=>	$p["pages"]["dal"] != "0000-00-00" ? date("d/m/Y",strtotime($p["pages"]["dal"])) : "",
+// 				"PROMOZIONE_AL"	=>	$p["pages"]["al"] != "0000-00-00" ? date("d/m/Y",strtotime($p["pages"]["al"])) : "",
+// 				"IN EVIDENZA"	=>	$p["pages"]["in_evidenza"],
+// 			);
+// 			
+// 			$colonne = $this->m["PagesattributiModel"]->getNomiColonne($clean['id']);
+// 			
+// 			$this->m['CombinazioniModel']->creaColonne($clean['id']);
+// 			
+// 			$result = $this->m['CombinazioniModel']->clear()->where(array('id_page'=>$clean['id']))->orderBy("id_order")->send();
+// 			
+// 			if (count($result) > 0)
+// 			{
+// 				foreach ($result as $r)
+// 				{
+// 					$rigaCSV = $rigaCSVStandard;
+// 					
+// 					$combinazione = $r["combinazioni"];
+// 					
+// 					$indice = 1;
+// 					
+// 					foreach (array("col_1","col_2") as $colName)
+// 					{
+// 						if (isset($colonne[$colName]))
+// 						{
+// 							$rigaCSV["VARIANTE $indice"] = strtoupper($colonne[$colName]);
+// 							$rigaCSV["VALORE $indice"] = isset($listaAttributiValori[$combinazione[$colName]]) ? $listaAttributiValori[$combinazione[$colName]] : "--";
+// 						}
+// 						else
+// 						{
+// 							$rigaCSV["VARIANTE $indice"] = "--";
+// 							$rigaCSV["VALORE $indice"] = "--";
+// 						}
+// 						
+// 						$indice++;
+// 					}
+// 					
+// 					$rigaCSV["CODICE"] = $combinazione["codice"];
+// // 					$rigaCSV["CONFEZIONE"] = $combinazione["confezione"];
+// 					$rigaCSV["PESO"] = $combinazione["peso"];
+// 					$rigaCSV["PREZZO"] = $combinazione["price"];
+// 					
+// 					$strutturaCSV[] = $rigaCSV;
+// 				}
+// 			}
+// 			else
+// 			{
+// 				$rigaCSV = $rigaCSVStandard;
+// 				
+// 				$rigaCSV["VARIANTE 1"] = "--";
+// 				$rigaCSV["VALORE 1"] = "--";
+// 				$rigaCSV["VARIANTE 2"] = "--";
+// 				$rigaCSV["VALORE 2"] = "--";
+// 				$rigaCSV["CODICE"] = $p["pages"]["codice"];
+// // 				$rigaCSV["CONFEZIONE"] = $p["pages"]["confezione"];
+// 				$rigaCSV["PESO"] = $p["pages"]["peso"];
+// 				$rigaCSV["PREZZO"] = $p["pages"]["price"];
+// 				
+// 				$strutturaCSV[] = $rigaCSV;
+// 			}
+// 			
+// // 			print_r($this->m['CombinazioniModel']->colonne);
+// // 			print_r($colonne);
+// // 			print_r($result);
+// 		}
+// 		
+// 		if (count($strutturaCSV) > 0)
+// 		{
+// 			$html = "<tr><td>".implode("</td><td>", array_keys($strutturaCSV[0]))."</td></tr>";
+// 			
+// 			foreach ($strutturaCSV as $rigaCSV)
+// 			{
+// 				$html .= "<tr><td>".implode("</td><td>", array_values($rigaCSV))."</td></tr>";
+// 			}
+// 			
+// 			header('Content-disposition: attachment; filename='.date("Y-m-d_H_i_s")."_esportazione_prodotti.xls");
+// 			header('Content-Type: application/vnd.ms-excel');
+// 			
+// 			echo "<table>$html</table>";
+// 		}
 	}
 }

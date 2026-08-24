@@ -212,6 +212,7 @@ class Route
 		'prodotti,categorie',
 		'prodotti,inviaadacquisti',
 		'prodotti,nazioni',
+		'prodotti,articoli',
 		
 		'testi,main',
 		'testi,form',
