@@ -239,66 +239,66 @@ class MagazzinoarticoliController extends BaseController
 	{
 		$this->responseCode(403);
 		
-		$this->shift(2);
-		
-		$this->_posizioni['main'] = 'class="active"';
-		
-		$fields =  'titolo,codice,gtin,id_iva';
-		
-		$this->m[$this->modelName]->setValuesFromPost($fields);
-		
-		parent::form($queryType, $id);
+// 		$this->shift(2);
+// 		
+// 		$this->_posizioni['main'] = 'class="active"';
+// 		
+// 		$fields =  'titolo,codice,gtin,id_iva';
+// 		
+// 		$this->m[$this->modelName]->setValuesFromPost($fields);
+// 		
+// 		parent::form($queryType, $id);
 	}
 	
 	public function salva()
 	{
 		$this->responseCode(403);
 		
-		$arrayIdsErrore = [];
-		
-		Params::$setValuesConditionsFromDbTableStruct = false;
-		CombinazioniModel::$aggiornaAliasAdInserimento = false;
-		
-		$this->checkCsrf(true, "POST");
-		
-		if (v("usa_transactions"))
-			$this->m[$this->modelName]->db->beginTransaction();
-		
-		$this->clean();
-		
-		$valori = $this->request->post("valori","[]");
-		
-		$valori = json_decode($valori, true);
-		
-		$arrayIdPage = array();
-		
-		foreach ($valori as $v)
-		{
-			if (v("usa_transactions"))
-				$record = $this->m[$this->modelName]->clear()->whereId((int)$v["id_articolo"])->forUpdate()->record();
-			else
-				$record = $this->m[$this->modelName]->selectId((int)$v["id_articolo"]);
-			
-			$this->m[$this->modelName]->setValues(array(
-				"codice"	=>	$v["codice"] ?? '',
-				"gtin"		=>	$v["gtin"] ?? '',
-				"mpn"		=>	$v["mpn"] ?? '',
-			));
-
-			if (!empty($record))
-			{
-				if (!$this->m[$this->modelName]->update((int)$record["id_articolo"]))
-					$arrayIdsErrore[] = $v["id_articolo"];
-			}
-			else
-			{
-				$arrayIdsErrore[] = $v["id_articolo"];
-			}
-		}
-		
-		if (v("usa_transactions"))
-			$this->m[$this->modelName]->db->commit();
-		
-		echo json_encode($arrayIdsErrore);
+// 		$arrayIdsErrore = [];
+// 		
+// 		Params::$setValuesConditionsFromDbTableStruct = false;
+// 		CombinazioniModel::$aggiornaAliasAdInserimento = false;
+// 		
+// 		$this->checkCsrf(true, "POST");
+// 		
+// 		if (v("usa_transactions"))
+// 			$this->m[$this->modelName]->db->beginTransaction();
+// 		
+// 		$this->clean();
+// 		
+// 		$valori = $this->request->post("valori","[]");
+// 		
+// 		$valori = json_decode($valori, true);
+// 		
+// 		$arrayIdPage = array();
+// 		
+// 		foreach ($valori as $v)
+// 		{
+// 			if (v("usa_transactions"))
+// 				$record = $this->m[$this->modelName]->clear()->whereId((int)$v["id_articolo"])->forUpdate()->record();
+// 			else
+// 				$record = $this->m[$this->modelName]->selectId((int)$v["id_articolo"]);
+// 			
+// 			$this->m[$this->modelName]->setValues(array(
+// 				"codice"	=>	$v["codice"] ?? '',
+// 				"gtin"		=>	$v["gtin"] ?? '',
+// 				"mpn"		=>	$v["mpn"] ?? '',
+// 			));
+// 
+// 			if (!empty($record))
+// 			{
+// 				if (!$this->m[$this->modelName]->update((int)$record["id_articolo"]))
+// 					$arrayIdsErrore[] = $v["id_articolo"];
+// 			}
+// 			else
+// 			{
+// 				$arrayIdsErrore[] = $v["id_articolo"];
+// 			}
+// 		}
+// 		
+// 		if (v("usa_transactions"))
+// 			$this->m[$this->modelName]->db->commit();
+// 		
+// 		echo json_encode($arrayIdsErrore);
 	}
 }
