@@ -87,8 +87,8 @@ class MagazzinoarticoliController extends BaseController
 		$this->mainButtons = 'ldel';
 		$this->queryActions = '';
 		
-		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","titoloCrud","varianteCrud","marchi.titolo","codiceCrud","combinazioni.codice","attivoCrud","acquistabileCrud","prezzoCrud","sconto1Crud","sconto2Crud","quantitaCrud","magazzino_articoli.aliquota_iva");
-		$this->mainHead = "Immagine,Categoria ecommerce,Articolo,Variante,Marchio,Codice,Codice Web,Vis. Web,Acq. Web,Prezzo,Sconto 1,Sconto 2,Ultima Qta.,Iva";
+		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","titoloCrud","varianteCrud","marchi.titolo","codiceCrud","combinazioni.codice","attivoCrud","acquistabileCrud","listinoCrud","prezzoCrud","sconto1Crud","sconto2Crud","quantitaCrud","magazzino_articoli.aliquota_iva");
+		$this->mainHead = "Immagine,Categoria ecommerce,Articolo,Variante,Marchio,Codice,Codice Web,Vis. Web,Acq. Web,Listino,Ultimo prezzo,Sconto 1,Sconto 2,Ultima Qta.,Iva";
 		
 		if ($this->viewArgs["id_ordine_acquisto"] != "tutti")
 		{

@@ -196,9 +196,17 @@ class OrdiniacquistorigheModel extends GenericModel
 			return "";
 		
 		$prezzo = $record["ordini_acquisto_righe"]["prezzo"];
+		$prezzoListino = MagazzinoarticoliModel::g(false)->getPrezzoListino($record["ordini_acquisto_righe"]["gtin"]);
+		$prezzoListinoHtml = "";
+		
+		if ($prezzoListino)
+		{
+			$prezzoListino = setPriceReverse($prezzoListino);
+			$prezzoListinoHtml = "<div style='margin-top:5px;'><i>".gtext("List").": <b>$prezzoListino €</b></i></div>";
+		}
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
-			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='width:90px;' class='form-control prezzo_pieno_riga_ordine' name='prezzo' value='".$prezzo."' />";
+			return "<input id-riga='".$record["ordini_acquisto_righe"]["id_ordine_acquisto_riga"]."' style='width:90px;' class='form-control prezzo_pieno_riga_ordine' name='prezzo' value='".$prezzo."' />".$prezzoListinoHtml;
 		else
 			return $prezzo;
 	}

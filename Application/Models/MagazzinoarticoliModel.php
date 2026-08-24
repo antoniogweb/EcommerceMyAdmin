@@ -512,4 +512,23 @@ class MagazzinoarticoliModel extends GenericModel
 	{
 		return $this->getUltimaQuantita($record["magazzino_articoli"]["id_articolo"]);
 	}
+	
+	public function getPrezzoListino($gtin)
+	{
+		$mal = new MagazzinoarticolilistiniModel();
+		
+		return $mal->clear()->where(array(
+			"gtin"	=>	sanitizeAll($gtin),
+		))->field("prezzo");
+	}
+	
+	public function listinoCrud($record)
+	{
+		$prezzoListino = $this->getPrezzoListino($record["magazzino_articoli"]["gtin"]);
+		
+		if ($prezzoListino)
+			return setPriceReverse($prezzoListino)." €";
+		
+		return "";
+	}
 }
