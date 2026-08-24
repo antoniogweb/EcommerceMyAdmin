@@ -307,6 +307,21 @@ class PagesModel extends GenericModel {
 		include(LIBRARY . "/Application/Views/Prodotti/inviaadacquisti.php");
 		$contentInviaAdAcquisti = ob_get_clean();
 		
+		if (!PagesarticoliModel::g(false)->where(array("id_page"=>(int)$id))->rowNumber())
+			$wrapOkAcquisti = array(
+				null,
+				null,
+				"<div class='form_notice'>".gtext("Se impostato su sì, verrà importato nel magazzino acquisti")."</div>",
+				$contentInviaAdAcquisti
+			);
+		else
+			$wrapOkAcquisti = array(
+				null,
+				null,
+				null,
+				"<div class='text text-danger'>".gtext("Il prodotto ha una distina e non verrà mai importato negli acquisti")."</div>",
+			);
+		
 		$this->formStruct = array
 		(
 			'entries' 	=> 	array(
@@ -455,12 +470,7 @@ class PagesModel extends GenericModel {
 					'labelString'=>	"Permetti l'importazione negli acquisti?",
 					'options'	=>	array(0 => gtext('no'),1 => gtext('sì')),
 					'reverse' => 'yes',
-					'wrap'		=>	array(
-						null,
-						null,
-						"<div class='form_notice'>".gtext("Se impostato su sì, verrà importato nel magazzino acquisti")."</div>",
-						$contentInviaAdAcquisti
-					),
+					'wrap'		=>	$wrapOkAcquisti,
 				),
 				'prodotto_rappresentativo'	=>	array(
 					'type'		=>	'Select',

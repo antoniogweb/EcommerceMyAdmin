@@ -85,7 +85,7 @@ class MagazzinoarticoliController extends BaseController
 		}
 		
 		$this->mainButtons = 'ldel';
-		$this->queryActions = '';
+		$this->queryActions = 'del';
 		
 		$this->mainFields = array("primaImmagineCarrelloCrud","categories.title","titoloCrud","varianteCrud","marchi.titolo","codiceCrud","combinazioni.codice","attivoCrud","acquistabileCrud","listinoCrud","prezzoCrud","sconto1Crud","sconto2Crud","quantitaCrud","magazzino_articoli.aliquota_iva");
 		$this->mainHead = "Immagine,Categoria ecommerce,Articolo,Variante,Marchio,Codice,Codice Web,Vis. Web,Acq. Web,Listino,Ultimo prezzo,Sconto 1,Sconto 2,Ultima Qta.,Iva";
@@ -162,6 +162,7 @@ class MagazzinoarticoliController extends BaseController
 					"pages.id_marchio"	=>	$this->viewArgs['id_marchio'],
 					"combinazioni.acquistabile"	=>	$this->viewArgs['acquistabile'],
 				))
+			->sWhere("NOT EXISTS ( select 1 from pages_articoli where pages.id_page = pages_articoli.id_page)")
 			->orderBy($this->orderBy)->convert();
 		
 		if ($this->viewArgs["q"] != "tutti")
@@ -204,6 +205,7 @@ class MagazzinoarticoliController extends BaseController
 		if ($this->viewArgs["id_ordine_acquisto"] != "tutti" || $this->viewArgs["id_ordine_acquisto_ricezione"] != "tutti")
 		{
 			$this->mainButtons = '';
+			$this->queryActions = '';
 			
 			if ($this->viewArgs["id_ordine_acquisto"] != "tutti")
 			{
