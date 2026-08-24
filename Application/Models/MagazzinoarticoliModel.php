@@ -44,6 +44,7 @@ class MagazzinoarticoliModel extends GenericModel
 	public function relations() {
 		return array(
 			'righe_ordine'	=>	array("HAS_MANY", 'OrdiniacquistorigheModel', 'id_articolo', null, "RESTRICT", "L'articolo ha degli ordini di acquisto collegati e non può essere eliminato"),
+			'righe_ricezione'	=>	array("HAS_MANY", 'OrdiniacquistoricezionirigheModel', 'id_articolo', null, "RESTRICT", "L'articolo ha delle ricezioni collegate e non può essere eliminato"),
 			'combinazioni' => array("HAS_MANY", 'MagazzinoarticolicombinazioniModel', 'id_articolo', null, "CASCADE"),
 			'marchio' => array("BELONGS_TO", 'MarchiModel', 'id_marchio',null,"CASCADE"),
 		);
@@ -192,6 +193,55 @@ class MagazzinoarticoliModel extends GenericModel
 		
 		if (v("usa_transactions"))
 			$this->db->commit();
+	}
+	
+	public function pulisciArticoliProdottiComposti($log = null)
+	{
+		$articoli = $this->clear()
+			->select("distinct magazzino_articoli.id_articolo,magazzino_articoli.titolo,magazzino_articoli_combinazioni.id_page")
+			->inner("magazzino_articoli_combinazioni")->on("magazzino_articoli.id_articolo = magazzino_articoli_combinazioni.id_articolo")
+			->sWhere("EXISTS ( select 1 from pages_articoli where pages_articoli.id_page = magazzino_articoli_combinazioni.id_page )")
+			->orderBy("magazzino_articoli.id_articolo")
+			->send();
+		
+		$risultato = array(
+			"trovati"	=>	count($articoli),
+			"eliminati"	=>	0,
+			"saltati"	=>	0,
+		);
+		
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
+		
+		foreach ($articoli as $record)
+		{
+			$idArticolo = (int)$record["magazzino_articoli"]["id_articolo"];
+			$idPage = (int)$record["magazzino_articoli_combinazioni"]["id_page"];
+			$titolo = htmlentitydecode($record["magazzino_articoli"]["titolo"]);
+			
+			if ($this->del($idArticolo))
+			{
+				$risultato["eliminati"]++;
+				
+				if ($log)
+					$log->writeString("Articolo eliminato: $titolo, ID Articolo: $idArticolo, ID Pagina composta: $idPage");
+			}
+			else
+			{
+				$risultato["saltati"]++;
+				
+				if ($log)
+					$log->writeString("Articolo NON eliminato: $titolo, ID Articolo: $idArticolo, ID Pagina composta: $idPage. ".$this->notice);
+			}
+		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
+		
+		if ($log)
+			$log->writeString("Pulizia articoli prodotti composti: trovati ".$risultato["trovati"].", eliminati ".$risultato["eliminati"].", saltati ".$risultato["saltati"]);
+		
+		return $risultato;
 	}
 	
 	public function titoloCrud($record)

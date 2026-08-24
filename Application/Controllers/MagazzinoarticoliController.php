@@ -230,6 +230,9 @@ class MagazzinoarticoliController extends BaseController
 		$this->m[$this->modelName]->save();
 		
 		parent::main();
+		
+		$data["orderBy"] = "";
+		$this->append($data);
 	}
 	
 	public function form($queryType = 'insert', $id = 0)

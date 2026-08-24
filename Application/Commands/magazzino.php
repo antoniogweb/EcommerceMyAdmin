@@ -62,3 +62,16 @@ if ($params["azione"] == "importa-articoli-da-ecommerce")
 	
 	$log->writeString("FINE IMPORT DA ECOMMERCE");
 }
+
+if ($params["azione"] == "pulisci-articoli-prodotti-composti")
+{
+	$log->writeString("INIZIO PULIZIA ARTICOLI PRODOTTI COMPOSTI");
+	
+	$risultato = MagazzinoarticoliModel::g()->pulisciArticoliProdottiComposti($log);
+	
+	echo "Articoli trovati: ".$risultato["trovati"]."\n";
+	echo "Articoli eliminati: ".$risultato["eliminati"]."\n";
+	echo "Articoli saltati: ".$risultato["saltati"]."\n";
+	
+	$log->writeString("FINE PULIZIA ARTICOLI PRODOTTI COMPOSTI");
+}
