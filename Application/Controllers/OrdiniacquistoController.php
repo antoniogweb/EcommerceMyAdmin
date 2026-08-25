@@ -225,7 +225,7 @@ class OrdiniacquistoController extends BaseController
 						
 						$qtaOrdinata = $this->m("RigheModel")->articoliOrdinati((int)$idR, (int)$idArticolo);
 						
-						$qtaDaOrdinare = (int)$riga["qta_da_ordinare"] - (int)$qtaOrdinata;
+						$qtaDaOrdinare = (int)$rigaDaOrdinare["qta_da_ordinare"] - (int)$qtaOrdinata;
 						
 						if ($qtaDaOrdinare <= 0)
 							continue;
