@@ -33,6 +33,14 @@ class OrdiniperiodiresoController extends BaseController
 	
 	public $tabella = "periodi di reso";
 	
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		if (!v("attiva_richiesta_reso_online"))
+			$this->responseCode(403);
+	}
+	
 	public function main()
 	{
 		$this->shift();

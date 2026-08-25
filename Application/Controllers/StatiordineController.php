@@ -76,8 +76,11 @@ class StatiordineController extends BaseController
 			$this->mainHead .= ',Spedito';
 		}
 		
-		$this->mainFields[] = 'okResoCrud';
-		$this->mainHead .= ',Permetti reso';
+		if (v("attiva_richiesta_reso_online"))
+		{
+			$this->mainFields[] = 'okResoCrud';
+			$this->mainHead .= ',Permetti reso';
+		}
 		
 		$this->m[$this->modelName]->clear()->orderBy("id_order")->convert()->save();
 		
@@ -86,7 +89,10 @@ class StatiordineController extends BaseController
 
 	public function form($queryType = 'insert', $id = 0)
 	{
-		$fields = 'titolo,classe,codice,pagato,rimborsato,manda_mail_al_cambio_stato,descrizione,permetti_reso,setta_data_reso_giorni';
+		$fields = 'titolo,classe,codice,pagato,rimborsato,manda_mail_al_cambio_stato,descrizione';
+		
+		if (v("attiva_richiesta_reso_online"))
+			$fields .= ",permetti_reso,setta_data_reso_giorni";
 		
 		if (v("attiva_gestione_stati_pending"))
 			$fields .= ",stato_pending";

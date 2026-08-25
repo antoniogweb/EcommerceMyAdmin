@@ -89,31 +89,33 @@
 	</tr>
 	<?php } ?>
 	<?php
-	$tabellaPeriodiReso = OrdiniModel::g(false)->gTabellaPeriodiReso($ordine["id_o"]);
-	$permettiReso = StatiordineModel::g(false)->permettiReso($ordine["stato"]);
-	if (count($tabellaPeriodiReso) > 0 || $permettiReso) { ?>
-		<tr>
-			<td><?php echo gtext("Periodi reso");?>:</td>
-			<td>
-				<?php foreach ($tabellaPeriodiReso as $i => $pr) { ?>
-					<div class="box-reso">
-						<a href="<?php echo $this->baseUrl."/ordiniperiodireso/form/update/".$pr["id_o_periodo_reso"];?>?partial=Y&nobuttons=Y" class="iframe pull-right"><i class="fa fa-pencil"></i></a>
-						<?php if (!$pr["richiesta"]) { ?>
-						<a style="margin-right:10px;" href="<?php echo $this->baseUrl."/ordiniperiodireso/main/?id_o_periodo_reso=".$pr["id_o_periodo_reso"]."&delAction=Y&csrf=".User::$csrfToken;?>" class="ajlink pull-right text-danger"><i class="fa fa-trash"></i></a>
-						<?php } ?>
-						<?php if ($pr["id_spedizione_negozio"]) { ?>
-						<?php echo gtext("Spedizione")." <b>".$pr["id_spedizione_negozio"]; ?></b> - 
-						<?php } ?>
-						Consegna merce: <b><?php echo smartDate($pr["data_inizio"], v("default_date_format"));?></b> - Fine reso: <b><?php echo smartDate($pr["data_fine"], v("default_date_format"));?></b>
-						<?php if ($pr["richiesta"]) { ?>
-						<br /><span class="text text-danger text-bold"><i class="fa fa-exclamation-circle"></i> <?php echo gtext("Richiesta di reso effettuata in data")?> <?php echo smartDate($pr["data_richiesta"], v("default_date_format")." H:i");?><br /><?php echo gtext("Identificativo richiesta");?>: <?php echo $pr["id_o_periodo_reso"];?></span>
-						<?php } ?>
-					</div>
-				<?php } ?>
-				<?php if ($permettiReso) { ?>
-				<a class="iframe label label-info" href="<?php echo $this->baseUrl."/ordiniperiodireso/form/insert/0";?>?partial=Y&id_o=<?php echo $ordine["id_o"];?>&nobuttons=Y"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi periodo")?></a>
-				<?php } ?>
-			</td>
-		</tr>
+	if (v("attiva_richiesta_reso_online")) { 
+		$tabellaPeriodiReso = OrdiniModel::g(false)->gTabellaPeriodiReso($ordine["id_o"]);
+		$permettiReso = StatiordineModel::g(false)->permettiReso($ordine["stato"]);
+		if (count($tabellaPeriodiReso) > 0 || $permettiReso) { ?>
+			<tr>
+				<td><?php echo gtext("Periodi reso");?>:</td>
+				<td>
+					<?php foreach ($tabellaPeriodiReso as $i => $pr) { ?>
+						<div class="box-reso">
+							<a href="<?php echo $this->baseUrl."/ordiniperiodireso/form/update/".$pr["id_o_periodo_reso"];?>?partial=Y&nobuttons=Y" class="iframe pull-right"><i class="fa fa-pencil"></i></a>
+							<?php if (!$pr["richiesta"]) { ?>
+							<a style="margin-right:10px;" href="<?php echo $this->baseUrl."/ordiniperiodireso/main/?id_o_periodo_reso=".$pr["id_o_periodo_reso"]."&delAction=Y&csrf=".User::$csrfToken;?>" class="ajlink pull-right text-danger"><i class="fa fa-trash"></i></a>
+							<?php } ?>
+							<?php if ($pr["id_spedizione_negozio"]) { ?>
+							<?php echo gtext("Spedizione")." <b>".$pr["id_spedizione_negozio"]; ?></b> - 
+							<?php } ?>
+							Consegna merce: <b><?php echo smartDate($pr["data_inizio"], v("default_date_format"));?></b> - Fine reso: <b><?php echo smartDate($pr["data_fine"], v("default_date_format"));?></b>
+							<?php if ($pr["richiesta"]) { ?>
+							<br /><span class="text text-danger text-bold"><i class="fa fa-exclamation-circle"></i> <?php echo gtext("Richiesta di reso effettuata in data")?> <?php echo smartDate($pr["data_richiesta"], v("default_date_format")." H:i");?><br /><?php echo gtext("Identificativo richiesta");?>: <?php echo $pr["id_o_periodo_reso"];?></span>
+							<?php } ?>
+						</div>
+					<?php } ?>
+					<?php if ($permettiReso) { ?>
+					<a class="iframe label label-info" href="<?php echo $this->baseUrl."/ordiniperiodireso/form/insert/0";?>?partial=Y&id_o=<?php echo $ordine["id_o"];?>&nobuttons=Y"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi periodo")?></a>
+					<?php } ?>
+				</td>
+			</tr>
+		<?php } ?>
 	<?php } ?>
 </table>

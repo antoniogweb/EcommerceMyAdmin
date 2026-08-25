@@ -680,6 +680,7 @@ class VariabiliModel extends GenericModel {
 		"mail_aggiuntive_invio_ordine_negozio"	=>	"", //elenco di email AGGIUNTIVE, divise da virgola, a cui mandare la mail di ordine avvenuto (si tratta della mail che arriva al negozio). L'ordine verrà comunque mandato anche alla mail indicata nelle impostazioni dell'ecommerce.
 		"stati_a_cui_permettere_scarido_pdf_ordine"	=>	"", // elenco stati, divisi da virgola, ai quali il cliente può scaricare il PDF dell'ordine
 		"attiva_gestione_stati_pending"	=>	0, // attiva la gestione degli stati pending
+		"attiva_richiesta_reso_online"	=>	1, // se impostato su 1 attiva la richiesta del reso online, dalla pagina dell'ordine
 		## PAGAMENTI ##
 		"check_ipn_al_ritorno_carta"	=>	0, // se impostata su 1, fa il check ipn al ritorno sul sito (controlla che non sia già stato fatto). Solo per pagamento con carta di credito
 		"setta_lingua_e_nazione__da_ordine_in_pagina_ringraziamento"	=>	0, // se impostato su 1, la pagina di atterraggio dell'ordine verranno settati la lingua e la nazione dell'ordine (sovrascrivendo lingua e nazione dell'URL)

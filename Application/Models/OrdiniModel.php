@@ -248,6 +248,9 @@ class OrdiniModel extends FormModel
 	
 	public function gTabellaPeriodiReso($idO)
 	{
+		if (!v("attiva_richiesta_reso_online"))
+			return array();
+		
 		$oprModel = new OrdiniperiodiresoModel();
 		
 		$periodiManuali = $oprModel->clear()->where(array(
