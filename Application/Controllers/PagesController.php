@@ -2564,18 +2564,22 @@ class PagesController extends BaseController
 			array(
 				'width'	=>	'60px',
 			),
+			array(
+				'width'	=>	'100px',
+			),
 		);
 		
-		$this->mainFields = array("pages.title", "variantiCrud");
-		$this->mainHead = "Titolo,Variante";
+		$this->mainFields = array("primaImmagineCarrelloCrud", "pages.title", "variantiCrud", "combinazioni.codice");
+		$this->mainHead = "Immagine,Titolo,Variante,Codice";
 		
 		$this->getTabViewFields("articoli");
 		
 		$this->scaffoldParams = array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>2000000,'mainMenu'=>'back,copia','mainAction'=>$mainAction,'pageVariable'=>'page_fgl');
 		
-		$this->m[$this->modelName]->clear()->select("pages.title,pages_articoli.*,magazzino_articoli_combinazioni.id_c")
+		$this->m[$this->modelName]->clear()->select("pages.title,pages_articoli.*,magazzino_articoli_combinazioni.id_c,combinazioni.codice,combinazioni.id_page,combinazioni.id_c")
 			->left("magazzino_articoli_combinazioni")->on("magazzino_articoli_combinazioni.id_articolo = pages_articoli.id_articolo")
 			->left("pages")->on("pages.id_page = magazzino_articoli_combinazioni.id_page")
+			->left("combinazioni")->on("combinazioni.id_c = magazzino_articoli_combinazioni.id_c")
 			->where(array(
 				"pages_articoli.id_page"	=>	$clean['id'],
 			))

@@ -4882,6 +4882,16 @@ class PagesModel extends GenericModel {
 		return $immagine;
 	}
 	
+	public static function tagImmagineCarrello($idPage, $idC, $immagineCombinazione = null)
+	{
+		$immagine = self::immagineCarrello($idPage, $idC, $immagineCombinazione);
+		
+		if ($immagine)
+			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagine."' />";
+		
+		return "";
+	}
+	
 	public function codiceCanonical($idPage)
 	{
 		$c = new CombinazioniModel();

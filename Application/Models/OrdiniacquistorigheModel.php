@@ -94,12 +94,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		if (!$record["ordini_acquisto_righe"]["id_page"])
 			return "";
 		
-		$immagine = ProdottiModel::immagineCarrello($record["ordini_acquisto_righe"]["id_page"], $record["ordini_acquisto_righe"]["id_c"]);
-		
-		if ($immagine)
-			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagine."' />";
-		
-		return "";
+		return ProdottiModel::tagImmagineCarrello($record["ordini_acquisto_righe"]["id_page"], $record["ordini_acquisto_righe"]["id_c"]);
     }
     
     public function prodottoCrud($record)

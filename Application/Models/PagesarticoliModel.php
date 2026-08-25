@@ -46,4 +46,9 @@ class PagesarticoliModel extends GenericModel
 	{
 		return CombinazioniModel::g()->getStringa($record["magazzino_articoli_combinazioni"]["id_c"], "<br />");
 	}
+	
+	public function primaImmagineCarrelloCrud($record)
+    {
+		return ProdottiModel::tagImmagineCarrello($record["combinazioni"]["id_page"], $record["combinazioni"]["id_c"]);
+    }
 }
