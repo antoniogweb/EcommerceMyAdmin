@@ -430,6 +430,9 @@ class BaseListeregaloController extends BaseController
 	
 	public function resolista($id = 0, $idPr = 0)
 	{
+		if (!v("attiva_richiesta_reso_online"))
+			$this->responseCode(403);
+		
 		$clean["id"] = $data["id"] = $data["idListaRegalo"] = (int)$id;
 		
 		$this->checkLista($id);

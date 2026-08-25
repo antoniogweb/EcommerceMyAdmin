@@ -514,6 +514,9 @@ class BaseOrdiniController extends BaseController
 	
 	public function resoordine($id_o = 0, $cart_uid = 0, $admin_token = "token", $id_p = 0)
 	{
+		if (!v("attiva_richiesta_reso_online"))
+			$this->responseCode(403);
+		
 		$clean["cart_uid"] = sanitizeAll($cart_uid);
 		$clean["admin_token"] = $data["admin_token"] = sanitizeAll($admin_token);
 		$clean["id_o"] = (int)$id_o;
