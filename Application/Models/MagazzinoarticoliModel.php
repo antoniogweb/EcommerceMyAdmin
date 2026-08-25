@@ -384,9 +384,10 @@ class MagazzinoarticoliModel extends GenericModel
 				$oarModel = new OrdiniacquistorigheModel();
 				
 				// Cerco l'ultima quantità ordinata
-				$ultimaQuantita = $this->getUltimaQuantita((int)$id);
-				
-				$quantita = $ultimaQuantita ? $ultimaQuantita : 1;
+// 				$ultimaQuantita = $this->getUltimaQuantita((int)$id);
+// 				
+// 				$quantita = $ultimaQuantita ? $ultimaQuantita : 1;
+				$quantita = 1;
 				
 				$recordPage = $pagesModel->clear()->select("id_page,id_marchio")->whereId((int)$recordWeb["id_page"])->record();
 				
