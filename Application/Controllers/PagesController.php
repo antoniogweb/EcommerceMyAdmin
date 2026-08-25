@@ -95,6 +95,7 @@ class PagesController extends BaseController
 		'comb_acq:sanitizeAll'=>'1',
 		'q:sanitizeAll'=>'tutti',
 		'ok_acq:sanitizeAll'=>'tutti',
+		'dist:sanitizeAll'=>'tutti',
 	);
 	
 	protected $_posizioni = array(
@@ -493,6 +494,13 @@ class PagesController extends BaseController
 			$stringaExists = (int)$this->viewArgs['ok_acq'] ? "" : "NOT";
 			
 			$this->scaffold->model->sWhere(" $stringaExists EXISTS ( select 1 from magazzino_articoli_combinazioni where magazzino_articoli_combinazioni.id_page = pages.id_page)");
+		}
+		
+		if (strcmp($this->viewArgs['dist'],'tutti') !== 0)
+		{
+			$stringaExists = (int)$this->viewArgs['dist'] ? "" : "NOT";
+			
+			$this->scaffold->model->sWhere(" $stringaExists EXISTS ( select 1 from pages_articoli where pages_articoli.id_page = pages.id_page)");
 		}
 		
 		$this->scaffold->update('moveup,movedown');

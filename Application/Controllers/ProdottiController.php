@@ -29,6 +29,13 @@ Helper_List::$filtersFormLayout["filters"]["ok_acq"] = array(
 	),
 );
 
+Helper_List::$filtersFormLayout["filters"]["dist"] = array(
+	"type"	=>	"select",
+	"attributes"	=>	array(
+		"class"	=>	"form-control",
+	),
+);
+
 class ProdottiController extends PagesController {
 
 	public $voceMenu = "prodotti";
@@ -118,6 +125,10 @@ class ProdottiController extends PagesController {
 			$this->tableFields[] = 'getInAcquistiCrud';
 			$this->head .= ',In acq.?';
 			$this->filters[] = array("ok_acq",null,array("tutti" => gtext("Tutti")) + gtextDeep(SlideModel::$attivoSiNo));
+			
+			$this->tableFields[] = 'getDistintaCrud';
+			$this->head .= ',Dist.?';
+			$this->filters[] = array("dist",null,array("tutti" => gtext("Tutti")) + gtextDeep(SlideModel::$attivoSiNo));
 		}
 		
 		$data["tabella"] = "prodotti";

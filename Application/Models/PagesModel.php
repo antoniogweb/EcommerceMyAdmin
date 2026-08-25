@@ -143,7 +143,8 @@ class PagesModel extends GenericModel {
 	
 	public static $ordinamentiProdottiPermessi = array("tutti", "az", "za", "crescente", "decrescente", "pr", "mr", "piuvenduto");
 	
-	public static $idPagineInAcquisti = null;
+	public static $idPagineInAcquisti = null; // elenco pagine in acquisto
+	public static $idPagineConDistinta = null; // elenco pagine con distinta base
 	
 	public static $idPagineSpedibiliInNazione = array();
 	
@@ -2316,6 +2317,14 @@ class PagesModel extends GenericModel {
 		return in_array($record["pages"]["id_page"],self::$idPagineInAcquisti) ? "<i class='fa fa-check text text-success'></i>" : "<i class='fa fa-ban'></i>";
 	}
 	
+	public function getDistintaCrud($record)
+	{
+		if (!isset(self::$idPagineConDistinta))
+			self::$idPagineConDistinta = PagesarticoliModel::g(false)->clear()->select("id_page")->toList("id_page")->send();
+		
+		return in_array($record["pages"]["id_page"],self::$idPagineConDistinta) ? "<i class='fa fa-check text text-success'></i>" : "<i class='fa fa-ban'></i>";
+	}
+
 	public function getThumb($id_page)
 	{
 		$im = new ImmaginiModel();
