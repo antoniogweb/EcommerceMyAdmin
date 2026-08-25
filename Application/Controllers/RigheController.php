@@ -52,7 +52,12 @@ class RigheController extends BaseController
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
 	{
 		if ($action == "elenco" || $action == "daordinare")
+		{
 			$this->sezionePannello = "ecommerce";
+			
+			if ($action == "daordinare" && isset($_GET["id_o_da_ordinare"]) && $_GET["id_o_da_ordinare"] == "tutti")
+				$this->sezionePannello = "acquisti";
+		}
 		
 		parent::__construct($model, $controller, $queryString, $application, $action);
 	}

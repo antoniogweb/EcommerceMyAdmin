@@ -212,20 +212,24 @@ class OrdiniacquistoController extends BaseController
 				
 				if (!empty($riga) && (int)$riga["qta_da_ordinare"] > 0)
 				{
-					$qtaOrdinata = $this->m("RigheModel")->prodottiOrdinati((int)$idR);
+					$righeDaOrdinare = $this->m("RighedaordinareModel")->where(array(
+						"id_r"	=>	(int)$idR,
+					))->send(false);
 					
-					$qtaDaOrdinare = (int)$riga["qta_da_ordinare"] - (int)$qtaOrdinata;
-					
-					if ($qtaDaOrdinare <= 0)
-						continue;
-					
-					// Cerco l'articolo
-					$idArticolo = $this->m("MagazzinoarticolicombinazioniModel")->where(array(
-						"id_c"	=>	(int)$riga["id_c"],
-					))->field("id_articolo");
-					
-					if ($idArticolo)
+					foreach ($righeDaOrdinare as $rigaDaOrdinare)
 					{
+						$idArticolo = $rigaDaOrdinare["id_articolo"];
+						
+						if (!$idArticolo)
+							continue;
+						
+						$qtaOrdinata = $this->m("RigheModel")->articoliOrdinati((int)$idR, (int)$idArticolo);
+						
+						$qtaDaOrdinare = (int)$riga["qta_da_ordinare"] - (int)$qtaOrdinata;
+						
+						if ($qtaDaOrdinare <= 0)
+							continue;
+						
 						$supplValues = array(
 							"quantita"	=>	(int)$qtaDaOrdinare,
 							"id_r"		=>	(int)$idR,

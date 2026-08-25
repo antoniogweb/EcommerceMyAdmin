@@ -191,7 +191,6 @@ class OrdiniModel extends FormModel
 			return self::$idRigheDaOrdinare;
 		
 		$model = self::righeDaOrdinareClause();
-		
 		$table = $model->table();
 		
 		self::$idRigheDaOrdinare = $model->select("$table.id_r,$table.qta_da_ordinare,rr.quantita,rr.id_ordine_acquisto_riga")->toList("$table.id_r")->send();
@@ -205,13 +204,9 @@ class OrdiniModel extends FormModel
 		$model = self::righeDaOrdinareClause($idc, $idO, $mostraGeneriche, $escludiIdOrdineAcquisto);
 		$table = $model->table();
 		
-		$res = $model
+		return $model
 			->select("$table.id_r,$table.title,$table.codice,$table.attributi_backend,$table.qta_da_ordinare,sum(rr.quantita) as QTA_ORDINATA,rr.id_ordine_acquisto_riga,orders.numero_documento,orders.data_documento,orders.sezionale,orders.id_o")
 			->send();
-		
-		// echo $model->getQuery();
-		
-		return $res;
 	}
 	
 	public function gTabellaPeriodiResoIdSpedizione($idO)
