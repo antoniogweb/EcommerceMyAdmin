@@ -142,6 +142,8 @@ class RigheController extends BaseController
 		$this->m[$this->modelName]->clear()
 				->select("orders.id_o,orders.stato,orders.sezionale,orders.numero_documento,orders.data_creazione,righe.*,marchi.titolo")
 				->inner("orders")->on("righe.id_o = orders.id_o")
+				->inner("pages")->on("pages.id_page = righe.id_page")
+				->left("marchi")->on("pages.id_marchio = marchi.id_marchio")
 				->where(array(
 					"orders.id_o"	=>	$this->viewArgs["id_o_da_ordinare"],
 					"id_riga_tipologia"	=>	0,
@@ -154,9 +156,7 @@ class RigheController extends BaseController
 				"gt"	=>	array(
 					"qta_da_ordinare"	=>	0,
 				),
-			))
-			->inner("pages")->on("pages.id_page = righe.id_page")
-			->left("marchi")->on("pages.id_marchio = marchi.id_marchio");
+			));
 			
 			$this->clean();
 			$this->sezionePannello = "acquisti";
