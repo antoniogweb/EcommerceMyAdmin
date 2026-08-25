@@ -140,6 +140,9 @@ class OrdiniperiodiresoModel extends GenericModel
 	
 	public function richiedi($id)
 	{
+		if (!v("attiva_richiesta_reso_online"))
+			return false;
+		
 		$record = $this->selectId((int)$id);
 		
 		if (empty($record))
