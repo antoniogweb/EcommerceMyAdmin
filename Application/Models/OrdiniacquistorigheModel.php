@@ -280,7 +280,7 @@ class OrdiniacquistorigheModel extends GenericModel
 	{
 		$sigla = $o["orders"]["sezionale"] ? $o["orders"]["sezionale"].": ".$o["orders"]["numero_documento"] : "O:".$o["orders"]["id_o"];
 		
-		return $sigla." - SKU: ".$o["righe"]["codice"]." ".$o["righe"]["title"]." ".strip_tags($o["righe"]["attributi_backend"]);
+		return $sigla." - SKU: ".($o["righe"]["codice"] ?? $o["righe_da_ordinare"]["codice"])." ".($o["righe"]["title"] ?? $o["righe_da_ordinare"]["title"])." ".strip_tags($o["righe"]["attributi_backend"] ?? $o["righe_da_ordinare"]["attributi_backend"]);
 	}
 	
 	public function riferimentoRigaCrud($record)
@@ -301,7 +301,7 @@ class OrdiniacquistorigheModel extends GenericModel
 		
 		if (OrdiniacquistoModel::g()->isBozza($record["ordini_acquisto_righe"]["id_ordine_acquisto"]))
 		{
-			$opzioni = OrdiniModel::righeDaOrdinare($record["ordini_acquisto_righe"]["id_c"], 0, true);
+			$opzioni = OrdiniModel::righeDaOrdinare($record["ordini_acquisto_righe"]["id_c"], 0, true, (int)$record["ordini_acquisto_righe"]["id_ordine_acquisto"]);
 			
 			$arraySelect = array(0 => "--");
 			
@@ -310,8 +310,8 @@ class OrdiniacquistorigheModel extends GenericModel
 			
 			foreach ($opzioni as $o)
 			{
-				if (!isset($arraySelect[$o["righe"]["id_r"]]))
-					$arraySelect[$o["righe"]["id_r"]] = $this->getTitoloRigaDaOrdinare($o);
+				if (!isset($arraySelect[$o["righe_da_ordinare"]["id_r"]]))
+					$arraySelect[$o["righe_da_ordinare"]["id_r"]] = $this->getTitoloRigaDaOrdinare($o);
 			}
 			
 			return '<span style="display:inline-block;width:250px;" select2="">'.Html_Form::select("id_r", $record["ordini_acquisto_righe"]["id_r"], $arraySelect,"form-control select_id_r_riga_acquisto", null, "yes")."<span>";

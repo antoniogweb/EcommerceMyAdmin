@@ -143,19 +143,22 @@ class OrdiniModel extends FormModel
 		return $res;
 	}
 	
-	public static function righeDaOrdinareClause($idc = 0, $idO = 0, $mostraGeneriche = false)
+	public static function righeDaOrdinareClause($idc = 0, $idO = 0, $mostraGeneriche = false, $escludiIdOrdineAcquisto = null)
 	{
-		$rModel = new RigheModel();
+		$rModel = new RighedaordinareModel();
+		
+		$table = $rModel->table();
+		$escludiOrdineAcquistoWhere = $escludiIdOrdineAcquisto !== null ? " and ordini_acquisto.id_ordine_acquisto != ".(int)$escludiIdOrdineAcquisto : "";
 		
 		$rModel->clear()
-			->inner("orders")->on("orders.id_o = righe.id_o")
-			->left("(select id_ordine_acquisto_riga,id_r,quantita from ordini_acquisto_righe inner join ordini_acquisto on ordini_acquisto.id_ordine_acquisto = ordini_acquisto_righe.id_ordine_acquisto inner join ordini_acquisto_stati on ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto.id_ordine_acquisto_stato and ordini_acquisto_stati.annullato = 0) as rr")->on("rr.id_r = righe.id_r")
-			->sWhere("righe.gift_card = 0 and righe.prodotto_digitale = 0 and righe.prodotto_crediti = 0 and righe.id_riga_tipologia = 0 and righe.qta_da_ordinare > 0")
-			->groupBy("righe.id_r HAVING (righe.qta_da_ordinare > sum(rr.quantita) or rr.id_ordine_acquisto_riga IS NULL)");
+			->inner("orders")->on("orders.id_o = $table.id_o")
+			->left("(select id_ordine_acquisto_riga,id_r,id_articolo,quantita from ordini_acquisto_righe inner join ordini_acquisto on ordini_acquisto.id_ordine_acquisto = ordini_acquisto_righe.id_ordine_acquisto inner join ordini_acquisto_stati on ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto.id_ordine_acquisto_stato and ordini_acquisto_stati.annullato = 0 $escludiOrdineAcquistoWhere) as rr")->on("rr.id_r = $table.id_r and rr.id_articolo = $table.id_articolo")
+			->sWhere("$table.qta_da_ordinare > 0")
+			->groupBy("$table.id_r,$table.id_articolo HAVING ($table.qta_da_ordinare > sum(rr.quantita) or rr.id_ordine_acquisto_riga IS NULL)");
 		
 		if ($idO)
 			$rModel->aWhere(array(
-				"righe.id_o"	=>	(int)$idO,
+				"$table.id_o"	=>	(int)$idO,
 			));
 		
 		$idCs = array();
@@ -174,7 +177,7 @@ class OrdiniModel extends FormModel
 		if (count($idCs) > 0)
 			$rModel->aWhere(array(
 				"in"	=>	array(
-					"righe.id_c"	=>	$idCs,
+					"$table.id_c"	=>	$idCs,
 				),
 				
 			));
@@ -182,22 +185,33 @@ class OrdiniModel extends FormModel
 		return $rModel;
 	}
 	
-	public static function idRigheDaOrdinare($idc = 0, $idO = 0, $mostraGeneriche = false)
+	public static function idRigheDaOrdinare()
 	{
 		if (isset(self::$idRigheDaOrdinare))
 			return self::$idRigheDaOrdinare;
 		
-		self::$idRigheDaOrdinare = self::righeDaOrdinareClause()->select("righe.id_r,righe.qta_da_ordinare,rr.quantita,rr.id_ordine_acquisto_riga")->toList("righe.id_r")->send();
+		$model = self::righeDaOrdinareClause();
+		
+		$table = $model->table();
+		
+		self::$idRigheDaOrdinare = $model->select("$table.id_r,$table.qta_da_ordinare,rr.quantita,rr.id_ordine_acquisto_riga")->toList("$table.id_r")->send();
 		
 		return self::$idRigheDaOrdinare;
 	}
 	
 	// Restituisce le righe segnate da ordine ma ancora da ordinare
-	public static function righeDaOrdinare($idc = 0, $idO = 0, $mostraGeneriche = false)
+	public static function righeDaOrdinare($idc = 0, $idO = 0, $mostraGeneriche = false, $escludiIdOrdineAcquisto = null)
 	{
-		return self::righeDaOrdinareClause($idc, $idO, $mostraGeneriche)
-			->select("righe.id_r,righe.title,righe.codice,righe.attributi_backend,righe.qta_da_ordinare,sum(rr.quantita) as QTA_ORDINATA,rr.id_ordine_acquisto_riga,orders.numero_documento,orders.data_documento,orders.sezionale,orders.id_o")
+		$model = self::righeDaOrdinareClause($idc, $idO, $mostraGeneriche, $escludiIdOrdineAcquisto);
+		$table = $model->table();
+		
+		$res = $model
+			->select("$table.id_r,$table.title,$table.codice,$table.attributi_backend,$table.qta_da_ordinare,sum(rr.quantita) as QTA_ORDINATA,rr.id_ordine_acquisto_riga,orders.numero_documento,orders.data_documento,orders.sezionale,orders.id_o")
 			->send();
+		
+		// echo $model->getQuery();
+		
+		return $res;
 	}
 	
 	public function gTabellaPeriodiResoIdSpedizione($idO)
