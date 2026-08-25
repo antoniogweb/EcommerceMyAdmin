@@ -691,6 +691,9 @@ class OrdiniModel extends FormModel
 	
 	public function setDataReso($id = 0)
 	{
+		if (!v("attiva_richiesta_reso_online"))
+			return;
+		
 		$record = $this->clear()->select("stato")->whereId((int)$id)->record();
 		
 		if (!empty($record) && isset($this->values["stato"]) && $this->values["stato"] != $record["stato"])

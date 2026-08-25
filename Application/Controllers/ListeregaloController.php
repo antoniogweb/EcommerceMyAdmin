@@ -421,6 +421,9 @@ class ListeregaloController extends BaseController
 	
 	public function resi($id = 0)
 	{
+		if (!v("attiva_richiesta_reso_online"))
+			$this->responseCode(403);
+		
 		$this->_posizioni['resi'] = 'class="active"';
 		
 		$this->shift(1);
