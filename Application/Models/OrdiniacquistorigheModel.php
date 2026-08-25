@@ -138,7 +138,9 @@ class OrdiniacquistorigheModel extends GenericModel
     
     public function ordineCrud($record)
 	{
-		return "<a href='".Url::getRoot()."ordiniacquisto/righe/".$record["ordini_acquisto_righe"]["id_ordine_acquisto"]."' target='_blank'>".$record["ordini_acquisto_righe"]["id_ordine_acquisto"]."</a>";
+		$numeroOrdineAcquisto = OrdiniacquistoModel::g()->whereId((int)$record["ordini_acquisto_righe"]["id_ordine_acquisto"])->field("numero_ordine");
+		
+		return "<a href='".Url::getRoot()."ordiniacquisto/righe/".$record["ordini_acquisto_righe"]["id_ordine_acquisto"]."' target='_blank'>".$numeroOrdineAcquisto."</a>";
 	}
     
     public function attributiCrud($record)

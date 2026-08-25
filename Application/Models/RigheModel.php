@@ -428,20 +428,25 @@ class RigheModel extends GenericModel
 	
 	public function ordinataCrud($record)
 	{
-		$res = $this->getClauseRigheOrdinate($record["righe"]["id_r"])->select("ordini_acquisto.id_ordine_acquisto,ordini_acquisto.data_ordine,ordini_acquisto.numero_ordine,sum(ordini_acquisto_righe.quantita) as SOMMA")->groupBy("ordini_acquisto.id_ordine_acquisto")->send();
+		$idR = (int)$record["righe"]["id_r"];
+		$res = $this->getClauseRigheOrdinate($idR)->select("ordini_acquisto.id_ordine_acquisto,ordini_acquisto.data_ordine,ordini_acquisto.numero_ordine,sum(ordini_acquisto_righe.quantita) as SOMMA")->groupBy("ordini_acquisto.id_ordine_acquisto")->send();
+		$isComposto = $this->rigaProdottoComposto($idR);
 		
-		$numeroOrdinati = $this->prodottiOrdinati($record["righe"]["id_r"]);
+		$numeroTotaleOrdinati = $this->prodottiOrdinati($idR);
 		
 		$html = "";
 		
 		foreach ($res as $r)
 		{
+			$idOrdineAcquisto = (int)$r["ordini_acquisto"]["id_ordine_acquisto"];
+			$quantita = $isComposto ? $this->prodottiCompostiOrdinati($idR, $idOrdineAcquisto) : (int)$r["aggregate"]["SOMMA"];
+			
 			$html .= "<div class='well-small'>";
-			$label = $this->getLabel($record["righe"]["qta_da_ordinare"], (int)$numeroOrdinati, "");
+			$label = $this->getLabel($record["righe"]["qta_da_ordinare"], $numeroTotaleOrdinati, "");
 			
-			$link = v("mostra_modulo_acquisti") ? "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquisto."/righe/".$r["ordini_acquisto"]["id_ordine_acquisto"]."'><b>".$r["ordini_acquisto"]["numero_ordine"]."</b></a>" : "<b>".$r["ordini_acquisto"]["numero_ordine"]."</b>";
+			$link = v("mostra_modulo_acquisti") ? "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquisto."/righe/".$idOrdineAcquisto."'><b>".$r["ordini_acquisto"]["numero_ordine"]."</b></a>" : "<b>".$r["ordini_acquisto"]["numero_ordine"]."</b>";
 			
-			$html .= gtext("O.A."). " ".$link." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
+			$html .= gtext("O.A."). " ".$link." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".$quantita."</b>";
 			$html .= "</div>";
 		}
 		
@@ -450,20 +455,25 @@ class RigheModel extends GenericModel
 	
 	public function ricevutaCrud($record)
 	{
-		$res = $this->getClauseRigheRicevute($record["righe"]["id_r"])->select("ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione,ordini_acquisto_ricezioni.data_ricezione_merce,ordini_acquisto_ricezioni.numero_documento_trasporto,sum(ordini_acquisto_ricezioni_righe.quantita) as SOMMA")->groupBy("ordini_acquisto_ricezioni_righe.id_ordine_acquisto_ricezione")->send();
+		$idR = (int)$record["righe"]["id_r"];
+		$res = $this->getClauseRigheRicevute($idR)->select("ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione,ordini_acquisto_ricezioni.data_ricezione_merce,ordini_acquisto_ricezioni.numero_documento_trasporto,sum(ordini_acquisto_ricezioni_righe.quantita) as SOMMA")->groupBy("ordini_acquisto_ricezioni_righe.id_ordine_acquisto_ricezione")->send();
+		$isComposto = $this->rigaProdottoComposto($idR);
 		
-		$numeroOrdinati = $this->prodottiArrivati($record["righe"]["id_r"]);
+		$numeroTotaleArrivati = $this->prodottiArrivati($idR);
 		
 		$html = "";
 		
 		foreach ($res as $r)
 		{
+			$idOrdineAcquistoRicezione = (int)$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"];
+			$quantita = $isComposto ? $this->prodottiCompostiArrivati($idR, $idOrdineAcquistoRicezione) : (int)$r["aggregate"]["SOMMA"];
+			
 			$html .= "<div class='well-small'>";
-			$label = $this->getLabel($record["righe"]["qta_da_ordinare"], (int)$numeroOrdinati, "");
+			$label = $this->getLabel($record["righe"]["qta_da_ordinare"], $numeroTotaleArrivati, "");
 			
-			$link = v("mostra_modulo_acquisti") ? "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezione."/righe/".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."'><b>".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."</b></a>" : "<b>".$r["ordini_acquisto_ricezioni"]["id_ordine_acquisto_ricezione"]."</b>";
+			$link = v("mostra_modulo_acquisti") ? "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezione."/righe/".$idOrdineAcquistoRicezione."'><b>".$idOrdineAcquistoRicezione."</b></a>" : "<b>".$idOrdineAcquistoRicezione."</b>";
 			
-			$temp = gtext("Ric.")." ".$link." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".(int)$r["aggregate"]["SOMMA"]."</b>";
+			$temp = gtext("Ric.")." ".$link." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".$quantita."</b>";
 			
 			if ($r["ordini_acquisto_ricezioni"]["numero_documento_trasporto"])
 				$temp .= "<br />DDT: <b>".$r["ordini_acquisto_ricezioni"]["numero_documento_trasporto"]."</b>";
@@ -491,6 +501,9 @@ class RigheModel extends GenericModel
 	
 	public function prodottiOrdinati($idR)
 	{
+		if ($this->rigaProdottoComposto($idR))
+			return $this->prodottiCompostiOrdinati($idR);
+		
 		$oarModel = new OrdiniacquistorigheModel();
 		
 		$res = $this->getClauseRigheOrdinate($idR)->select("sum(ordini_acquisto_righe.quantita) as SOMMA")->send();
@@ -515,9 +528,78 @@ class RigheModel extends GenericModel
 	
 	public function prodottiArrivati($idR)
 	{
+		if ($this->rigaProdottoComposto($idR))
+			return $this->prodottiCompostiArrivati($idR);
+		
 		$oarModel = new OrdiniacquistorigheModel();
 		
 		$res = $this->getClauseRigheRicevute($idR)->select("sum(ordini_acquisto_ricezioni_righe.quantita) as SOMMA")->send();
+		
+		if (count($res) > 0)
+			return (int)$res[0]["aggregate"]["SOMMA"];
+		
+		return 0;
+	}
+	
+	protected function rigaProdottoComposto($idR)
+	{
+		$riga = $this->clear()->select("id_page")->whereId((int)$idR)->record();
+		
+		if (empty($riga))
+			return false;
+		
+		return (bool)PagesarticoliModel::g(false)->where(array(
+			"id_page"	=>	(int)$riga["id_page"],
+		))->rowNumber();
+	}
+	
+	protected function prodottiCompostiOrdinati($idR, $idOrdineAcquisto = 0)
+	{
+		$rdoModel = new RighedaordinareModel();
+		$table = $rdoModel->table();
+		
+		$idOrdineAcquistoWhere = $idOrdineAcquisto ? "where ordini_acquisto.id_ordine_acquisto = ".(int)$idOrdineAcquisto : "";
+		
+		$res = $rdoModel->clear()
+			->select("min(floor(coalesce(rr.quantita, 0) / $table.quantita_articolo)) as SOMMA")
+			->left("(
+				select ordini_acquisto_righe.id_r,ordini_acquisto_righe.id_articolo,sum(ordini_acquisto_righe.quantita) as quantita
+				from ordini_acquisto_righe
+				inner join ordini_acquisto on ordini_acquisto.id_ordine_acquisto = ordini_acquisto_righe.id_ordine_acquisto
+				inner join ordini_acquisto_stati on ordini_acquisto_stati.id_ordine_acquisto_stato = ordini_acquisto.id_ordine_acquisto_stato and ordini_acquisto_stati.annullato = 0
+				$idOrdineAcquistoWhere
+				group by ordini_acquisto_righe.id_r,ordini_acquisto_righe.id_articolo
+			) as rr")->on("rr.id_r = $table.id_r and rr.id_articolo = $table.id_articolo")
+			->where(array(
+				"$table.id_r"	=>	(int)$idR,
+			))->send();
+		
+		if (count($res) > 0)
+			return (int)$res[0]["aggregate"]["SOMMA"];
+		
+		return 0;
+	}
+	
+	protected function prodottiCompostiArrivati($idR, $idOrdineAcquistoRicezione = 0)
+	{
+		$rdoModel = new RighedaordinareModel();
+		$table = $rdoModel->table();
+		
+		$idOrdineAcquistoRicezioneWhere = $idOrdineAcquistoRicezione ? "where ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione = ".(int)$idOrdineAcquistoRicezione : "";
+		
+		$res = $rdoModel->clear()
+			->select("min(floor(coalesce(rr.quantita, 0) / $table.quantita_articolo)) as SOMMA")
+			->left("(
+				select ordini_acquisto_righe.id_r,ordini_acquisto_righe.id_articolo,sum(ordini_acquisto_ricezioni_righe.quantita) as quantita
+				from ordini_acquisto_righe
+				inner join ordini_acquisto_ricezioni_righe on ordini_acquisto_ricezioni_righe.id_ordine_acquisto_riga = ordini_acquisto_righe.id_ordine_acquisto_riga
+				inner join ordini_acquisto_ricezioni on ordini_acquisto_ricezioni.id_ordine_acquisto_ricezione = ordini_acquisto_ricezioni_righe.id_ordine_acquisto_ricezione
+				$idOrdineAcquistoRicezioneWhere
+				group by ordini_acquisto_righe.id_r,ordini_acquisto_righe.id_articolo
+			) as rr")->on("rr.id_r = $table.id_r and rr.id_articolo = $table.id_articolo")
+			->where(array(
+				"$table.id_r"	=>	(int)$idR,
+			))->send();
 		
 		if (count($res) > 0)
 			return (int)$res[0]["aggregate"]["SOMMA"];
