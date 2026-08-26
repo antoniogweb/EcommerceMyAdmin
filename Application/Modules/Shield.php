@@ -239,28 +239,6 @@ class Shield
 		}
 	}
 	
-// 	public static function creaCapctaDDOS($numero = 120)
-// 	{
-// 		if (!is_dir(LIBRARY."/Logs/CaptchaDDOS"))
-// 		{
-// 			createFolderFull("Logs/CaptchaDDOS", LIBRARY, false);
-// 			createFolderFull("Logs/CaptchaDDOS/Img", LIBRARY, false, false);
-// 			
-// 			$captcha = new Image_Gd_Captcha(array(
-// 				"boxWidth"	=>	200,
-// 				"fontPath"	=>	LIBRARY."/External/Fonts/FreeFont/FreeMono.ttf",
-// 				"boxHeight"	=>	60,
-// 				"charHeight"=>	22,
-// 			));
-// 			
-// 			for ($i = 0; $i < $numero; $i++)
-// 			{
-// 				$captcha->setString(generateString(6));
-// 				$captcha->render(LIBRARY."/Logs/CaptchaDDOS/Img/");
-// 			}
-// 		}
-// 	}
-	
 	public static function waf()
 	{
 		$ip = getIp();
