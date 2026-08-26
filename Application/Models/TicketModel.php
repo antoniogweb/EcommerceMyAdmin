@@ -431,7 +431,7 @@ class TicketModel extends GenericModel
 		if ($record["ticket"]["stato"] == "C")
 			return "";
 		
-		$htmlCampanella = "<i title='".gtext("Da gestire")."' class='fa fa-bell text text-warning'></i>";
+		$htmlCampanella = "<i title='".gtextAttr("Da gestire")."' class='fa fa-bell text text-warning'></i>";
 		
 		if ($record["ticket"]["stato"] == "A")
 			return $htmlCampanella;

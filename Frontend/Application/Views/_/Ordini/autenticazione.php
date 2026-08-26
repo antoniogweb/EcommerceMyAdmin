@@ -74,7 +74,7 @@ if (!User::$isMobile)
 				
 				<div>
 					<div class="uk-button uk-button-primary uk-width-1-1 spinner uk-hidden" uk-spinner="ratio: .70"></div>
-					<input autocomplete="new-password" class="uk-button uk-button-primary uk-width-1-1 btn_submit_form" type="submit" name="login" value="<?php echo !User::$isPhone ? gtextAttr("Procedi inserendo i tuoi dati") : gtext("Procedi inserendo i tuoi dati");?>" />
+					<input autocomplete="new-password" class="uk-button uk-button-primary uk-width-1-1 btn_submit_form" type="submit" name="login" value="<?php echo gtextAttr("Procedi inserendo i tuoi dati");?>" />
 				</div>
 			</fieldset>
 		</form>

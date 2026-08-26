@@ -921,7 +921,7 @@ class PromozioniModel extends GenericModel {
 		{
 			$utente = RegusersModel::g()->selectId((int)$record["promozioni"]["id_user"]);
 			
-			$html = "<a title='".gtext("Invia il codice coupon")."' class='ajlink' href='".Url::getRoot()."promozioni/inviacouponalcliente/".$record["promozioni"]["id_p"]."'><i class='fa fa-envelope'></i></a>";
+			$html = "<a title='".gtextAttr("Invia il codice coupon")."' class='ajlink' href='".Url::getRoot()."promozioni/inviacouponalcliente/".$record["promozioni"]["id_p"]."'><i class='fa fa-envelope'></i></a>";
 			
 			$numeroInviate = MailordiniModel::numeroInviate("promozioni", $record["promozioni"]["id_p"], $utente["username"]);
 			
