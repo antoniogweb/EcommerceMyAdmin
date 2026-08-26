@@ -22,7 +22,7 @@
 		<div class="uk-width-expand">
 			<hr class="uk-divider-icon uk-margin-medium-top uk-margin-medium-bottom">
 			<h2 id="fragment-checkout-conferma" class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>">
-				<span uk-icon="icon:check;ratio:1" class="uk-margin-right uk-hidden@m <?php echo v("classi_icona_checkout")?>"></span><?php echo gtext("Conferma acquisto");?>
+				<span uk-icon="icon:check;ratio:1" class="uk-margin-right uk-hidden@m <?php echo v("classi_icona_checkout")?>"></span><?php echo gtextPlain("Conferma acquisto");?>
 			</h2>
 			
 			<?php include(tpf(ElementitemaModel::p("CHECKOUT_BOTTOM","", array(

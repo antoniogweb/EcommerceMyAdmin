@@ -26,14 +26,14 @@
 
 <?php if (v("prezzi_ivati_in_carrello") && isset(IvaModel::$titoloAliquotaEstera) && !IvaModel::$nascondiAliquotaEstera && CartModel::scorporaIvaPrezzoEstero()) { ?>
 <div class="uk-grid-small uk-grid" uk-grid="">
-	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtext("Di cui IVA")?><br />
-	(<?php echo gtext(IvaModel::$titoloAliquotaEstera);?>)</span></div>
+	<div class="uk-width-expand uk-text-muted uk-first-column"><?php echo gtextPlain("Di cui IVA")?><br />
+	(<?php echo gtextPlain(IvaModel::$titoloAliquotaEstera);?>)</span></div>
 	<div><?php echo getIva();?> €</div>
 </div>
 <?php } ?>
 
 <?php if (v("attiva_spedizione") && isset($_POST["id_corriere"]) && isset($_POST["nazione_spedizione"]) && !spedibile($_POST["id_corriere"], $_POST["nazione_spedizione"])) { ?>
-	<div class="uk-text-danger uk-text-bold"><?php echo gtext("Non spedibile nella nazione selezionata");?></div>
+	<div class="uk-text-danger uk-text-bold"><?php echo gtextPlain("Non spedibile nella nazione selezionata");?></div>
 <?php } ?>
 
 <?php if (v("attiva_spedizione") && isset($_POST["nazione_spedizione"]) && v("attiva_limitazione_spedizione_nazioni")) {
@@ -41,7 +41,7 @@
 	
 	if (count($prodottiNonSpedibiliNellaNazione) > 0) {
 ?>
-	<div class="uk-alert uk-alert-danger uk-text-small"><?php echo gtext("I seguenti prodotti non possono essere spediti nella nazione selezionata. Per maggiori informazioni contattare il servizio clienti.");?><ul><li><?php echo implode("</li><li>",$prodottiNonSpedibiliNellaNazione);?></li></ul></div>
+	<div class="uk-alert uk-alert-danger uk-text-small"><?php echo gtextPlain("I seguenti prodotti non possono essere spediti nella nazione selezionata. Per maggiori informazioni contattare il servizio clienti.");?><ul><li><?php echo implode("</li><li>",$prodottiNonSpedibiliNellaNazione);?></li></ul></div>
 	<?php } ?>
 <?php } ?>
 

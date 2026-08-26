@@ -7,7 +7,7 @@
 			<div class="pulsante_paypal"><br /><?php echo $pulsantePaypal;?></div>
 		<?php } ?>
 	<?php } else { ?>
-		<h2 class="uk-heading-bullet"><?php echo gtext("Dettagli pagamento:");?></h2>
-		<p><?php echo gtext("Pagamento tramite paypal ancora da eseguire");?></p>
+		<h2 class="uk-heading-bullet"><?php echo gtextPlain("Dettagli pagamento:");?></h2>
+		<p><?php echo gtextPlain("Pagamento tramite paypal ancora da eseguire");?></p>
 	<?php } ?>
 <?php } ?>

@@ -6,8 +6,8 @@
 			<span>Slide</span>
 		</a>
 		<ul class="treeview-menu">
-			<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_slide");?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
-			<li><a href="<?php echo $this->baseUrl."/".v("url_inserisci_slide");?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></li>
+			<li><a href="<?php echo $this->baseUrl."/".v("url_elenco_slide");?>"><i class="fa fa-list"></i> <?php echo gtextPlain("Lista");?></a></li>
+			<li><a href="<?php echo $this->baseUrl."/".v("url_inserisci_slide");?>"><i class="fa fa-plus-circle"></i> <?php echo gtextPlain("Aggiungi");?></a></li>
 		</ul>
 	</li>
 <?php } ?>

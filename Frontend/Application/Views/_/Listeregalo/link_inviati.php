@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if (count($link_lista) > 0) { ?>
-	<div class="uk-margin-bottom uk-text-small uk-text-emphasis"><?php echo gtext("Persone a cui hai inviato il link");?>:</div>
+	<div class="uk-margin-bottom uk-text-small uk-text-emphasis"><?php echo gtextPlain("Persone a cui hai inviato il link");?>:</div>
 	
 	<?php foreach ($link_lista as $link) { ?>
 	<div class="uk-grid uk-grid-medium uk-width-1-1 uk-width-2-3@s uk-margin-small-top uk-text-small uk-flex uk-flex-middle" uk-grid>
@@ -32,5 +32,5 @@
 	<?php } ?>
 	
 <?php } else { ?>
-	<span class="uk-text-small"><?php echo gtext("Non hai ancora inviato il link ad alcun indirizzo e-mail")?></span>
+	<span class="uk-text-small"><?php echo gtextPlain("Non hai ancora inviato il link ad alcun indirizzo e-mail")?></span>
 <?php } ?>

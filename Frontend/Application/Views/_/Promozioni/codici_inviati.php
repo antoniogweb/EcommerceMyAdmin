@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if (count($invii_codice) > 0) { ?>
-	<div class="uk-margin-bottom uk-text-small uk-text-emphasis"><?php echo gtext("Persone a cui hai inviato il codice");?>:</div>
+	<div class="uk-margin-bottom uk-text-small uk-text-emphasis"><?php echo gtextPlain("Persone a cui hai inviato il codice");?>:</div>
 	
 	<?php foreach ($invii_codice as $invio) { ?>
 	<div class="uk-grid uk-grid-medium uk-width-1-1 uk-width-2-3@s uk-margin-small-top uk-text-small uk-flex uk-flex-middle" uk-grid>
@@ -32,5 +32,5 @@
 	<?php } ?>
 	
 <?php } else { ?>
-	<span class="uk-text-small"><?php echo gtext("Non hai ancora inviato il codice ad alcun indirizzo e-mail")?></span>
+	<span class="uk-text-small"><?php echo gtextPlain("Non hai ancora inviato il codice ad alcun indirizzo e-mail")?></span>
 <?php } ?>

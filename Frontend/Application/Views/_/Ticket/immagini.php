@@ -25,7 +25,7 @@
 				<?php if (!$daElaborare) { ?>
 				</a>
 				<?php } else { ?>
-				<span class="uk-text-italic uk-text-small">(<?php echo gtext("in elaborazione");?> <span uk-icon="icon: clock;ratio: 0.7"></span>)</span>
+				<span class="uk-text-italic uk-text-small">(<?php echo gtextPlain("in elaborazione");?> <span uk-icon="icon: clock;ratio: 0.7"></span>)</span>
 				<?php } ?>
 			</div>
 			<?php } ?>
@@ -49,9 +49,9 @@
 	</div>
 	<span>
 		<span class="uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></span>
-		<a href="#" class="uk-button uk-button-primary upload_immagine_ticket"><?php echo gtext("Carica");?></a>
+		<a href="#" class="uk-button uk-button-primary upload_immagine_ticket"><?php echo gtextPlain("Carica");?></a>
 	</span>
 	<progress class="uk-progress uk-hidden js-progressbar" value="50" max="100"></progress>
-	<div style="text-transform:lowercase;" class="box-label-elaborazione uk-text-meta uk-text-italic uk-text-small uk-hidden" value="50" max="100"><span class="spinner" uk-spinner="ratio: .60"></span> <?php echo gtext("attendere, file in elaborazione..");?></div>
+	<div style="text-transform:lowercase;" class="box-label-elaborazione uk-text-meta uk-text-italic uk-text-small uk-hidden" value="50" max="100"><span class="spinner" uk-spinner="ratio: .60"></span> <?php echo gtextPlain("attendere, file in elaborazione..");?></div>
 </div>
 <?php } ?>

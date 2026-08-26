@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <section class="content-header">
-	<h1><?php echo gtext("Seleziona il contatto a cui inviare l'ordine di acquisto");?></h1>
+	<h1><?php echo gtextPlain("Seleziona il contatto a cui inviare l'ordine di acquisto");?></h1>
 </section>
 
 <!-- Main content -->
@@ -19,7 +19,7 @@
 								url-invia-pdf="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/inviapdf/".(int)$idOrdineAcquisto;?>"
 								csrf="<?php echo User::$csrfToken;?>"
 							>
-								<i class="fa fa-envelope"></i> <?php echo gtext("Invia");?>
+								<i class="fa fa-envelope"></i> <?php echo gtextPlain("Invia");?>
 							</button>
 						</span>
 					</div>

@@ -7,7 +7,7 @@
 <div class="uk-container blocco_checkout">
 	<div id="payment" class="">
 		<h2 class="<?php echo v("classi_titoli_checkout");?>">
-			<?php echo $htmlIcona;?><?php echo gtext("Metodo di pagamento");?>
+			<?php echo $htmlIcona;?><?php echo gtextPlain("Metodo di pagamento");?>
 		</h2>
 		<div class="payment_methods modalita_pagamento class_pagamento bx_pagamenti">
 			<?php foreach (OrdiniModel::$pagamenti as $codPag => $descPag) { ?>

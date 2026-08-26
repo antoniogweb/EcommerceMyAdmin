@@ -3,10 +3,10 @@
 <li class="<?php echo tm($tm, "pixel");?> treeview">
 	<a href="#">
 		<i class="fa fa-dot-circle-o"></i>
-		<span><?php echo gtext("Gestione pixel")?></span>
+		<span><?php echo gtextPlain("Gestione pixel")?></span>
 	</a>
 	<ul class="treeview-menu">
-		<li><a href="<?php echo $this->baseUrl."/pixel/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+		<li><a href="<?php echo $this->baseUrl."/pixel/main";?>"><i class="fa fa-list"></i> <?php echo gtextPlain("Lista")?></a></li>
 	</ul>
 </li>
 <?php } ?>

@@ -13,33 +13,33 @@
 			<div class="col-lg-6">
 				<table style="margin-bottom:5px !important;" class="table table-striped">
 					<tr>
-						<td><?php echo gtext("Stato");?>:</td>
+						<td><?php echo gtextPlain("Stato");?>:</td>
 						<td>
 							<span style="<?php echo $stile;?>" class="label label-default"><?php echo $titoloStato;?></span>
 						</td>
 					</tr>
 					<tr>
-						<td><?php echo gtext("Data invio");?>:</td>
+						<td><?php echo gtextPlain("Data invio");?>:</td>
 						<td>
 							<b><?php echo date("d-m-Y H:i",$recordTicket["ticket"]["stato"] == "B" ? strtotime($recordTicket["ticket"]["data_creazione"]) : strtotime($recordTicket["ticket"]["data_invio"]));?></b>
 						</td>
 					</tr>
 					<tr>
-						<td><?php echo gtext("Fonte ticket");?>:</td>
+						<td><?php echo gtextPlain("Fonte ticket");?>:</td>
 						<td>
 							<b><?php echo $recordTicket["ticket"]["id_admin"] ? gtext("Backend") : "Web";?></b>
 							
 							<?php if ($recordTicket["ticket"]["id_admin"]) { ?>
-							(<?php echo gtext("creato da");?>: <i><?php echo $recordTicket["adminusers"]["username"];?></i>)
+							(<?php echo gtextPlain("creato da");?>: <i><?php echo $recordTicket["adminusers"]["username"];?></i>)
 							<?php } else { ?>
-							(<?php echo gtext("creato in autonomia dal cliente");?>)
+							(<?php echo gtextPlain("creato in autonomia dal cliente");?>)
 							<?php } ?>
 						</td>
 					</tr>
 					<tr>
-						<td><?php echo gtext("Cliente");?>:</td>
+						<td><?php echo gtextPlain("Cliente");?>:</td>
 						<td>
-							<a class="iframe label label-info pull-right" href="<?php echo $this->baseUrl."/regusers/form/update/".$recordTicket["regusers"]["id_user"];?>?partial=Y&nobuttons=Y"><i class="fa fa-user"></i> <?php echo gtext("dettagli cliente");?></a>
+							<a class="iframe label label-info pull-right" href="<?php echo $this->baseUrl."/regusers/form/update/".$recordTicket["regusers"]["id_user"];?>?partial=Y&nobuttons=Y"><i class="fa fa-user"></i> <?php echo gtextPlain("dettagli cliente");?></a>
 							<b><?php echo $nominativoCliente;?></b> (<?php echo $recordTicket["regusers"]["username"];?>)
 						</td>
 					</tr>
@@ -47,7 +47,7 @@
 						$ordine = OrdiniModel::g()->whereId((int)$recordTicket["ticket"]["id_o"])->first();
 					?>
 					<tr>
-						<td><?php echo gtext("Ordine");?>:</td>
+						<td><?php echo gtextPlain("Ordine");?>:</td>
 						<td>
 							<a class="label label-<?php echo OrdiniModel::getLabelStato($ordine["orders"]["stato"]);?>" target="_blank" href="<?php echo $this->baseUrl."/ordini/vedi/".(int)$ordine["orders"]["id_o"];?>">#<?php echo (int)$ordine["orders"]["id_o"];?></a>
 						</td>
@@ -57,7 +57,7 @@
 						$lista = ListeregaloModel::g()->whereId((int)$recordTicket["ticket"]["id_lista_regalo"])->record();
 					?>
 					<tr>
-						<td><?php echo gtext("Lista regalo");?>:</td>
+						<td><?php echo gtextPlain("Lista regalo");?>:</td>
 						<td>
 							<a class="badge" target="_blank" href="<?php echo $this->baseUrl."/listeregalo/form/update/".(int)$lista["id_lista_regalo"];?>"><?php echo $lista["titolo"];?> <i class="fa fa-arrow-right"></i></a>
 						</td>
@@ -72,10 +72,10 @@
 						<?php if (count($stati) > 0) { ?>
 						<table class="table no-margin">
 							<tr>
-								<th><?php echo gtext("Modifica lo stato del ticket")?></th>
+								<th><?php echo gtextPlain("Modifica lo stato del ticket")?></th>
 								<th>
 									<a class="pull-right" data-toggle="collapse" href="#collapseStati" role="button" aria-expanded="false" aria-controls="collapseStati">
-										<?php echo gtext("Mostra stati");?>
+										<?php echo gtextPlain("Mostra stati");?>
 									</a>
 								</th>
 							</tr>
@@ -112,8 +112,8 @@
 </div>
 
 <ul class="nav_dettaglio nav nav-tabs">
-	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtext("Dettagli");?></a></li>
-	<li <?php echo $posizioni['immagini'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/immagini/$id".$this->viewStatus;?>"><?php echo gtext("Immagini e video");?></a></li>
+	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtextPlain("Dettagli");?></a></li>
+	<li <?php echo $posizioni['immagini'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/immagini/$id".$this->viewStatus;?>"><?php echo gtextPlain("Immagini e video");?></a></li>
 </ul>
 
 <div style="clear:left;"></div>

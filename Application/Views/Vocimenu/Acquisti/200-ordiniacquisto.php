@@ -2,15 +2,15 @@
 <li class="<?php echo tm($tm, array("ordiniacquisto","ordiniacquistorighe"));?> treeview help_ordini_acquisto">
 	<a href="#">
 		<i class="fa fa-book"></i>
-		<span><?php echo gtext("Ordini acquisto"); ?></span>
+		<span><?php echo gtextPlain("Ordini acquisto"); ?></span>
 	</a>
 	<ul class="treeview-menu">
-		<li><a href="<?php echo $this->baseUrl."/ordiniacquisto/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi ordine"); ?></a></li>
-		<li <?php if ($this->controller == "ordiniacquisto") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/ordiniacquisto/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista ordini"); ?></a></li>
+		<li><a href="<?php echo $this->baseUrl."/ordiniacquisto/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtextPlain("Aggiungi ordine"); ?></a></li>
+		<li <?php if ($this->controller == "ordiniacquisto") { ?>class="active"<?php } ?>><a href="<?php echo $this->baseUrl."/ordiniacquisto/main/1";?>"><i class="fa fa-list"></i> <?php echo gtextPlain("Lista ordini"); ?></a></li>
 		<li <?php if ($this->controller == "ordiniacquistorighe") { ?>class="active"<?php } ?>>
 			<a href="<?php echo $this->baseUrl."/ordiniacquistorighe/main/1";?>">
 				<i class="fa fa-list"></i>
-				<?php echo gtext("Lista righe aquisto"); ?>
+				<?php echo gtextPlain("Lista righe aquisto"); ?>
 				<?php
 				$numeroDaCollegare = OrdiniacquistorigheModel::numeroNonCollegate();
 				

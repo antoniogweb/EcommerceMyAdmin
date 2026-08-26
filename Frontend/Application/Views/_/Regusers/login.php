@@ -1,11 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Accedi")	=>	"",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Accedi")	=>	"",
 );
 
-$titoloPagina = gtext("Accedi");
+$titoloPagina = gtextPlain("Accedi");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 

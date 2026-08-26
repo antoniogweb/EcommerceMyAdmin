@@ -8,7 +8,7 @@
 			</div>
 			<div class="uk-width-expand uk-text-left">
 				<div class="uk-margin">
-					<label class="uk-form-label"><?php echo gtext("Email");?></label>
+					<label class="uk-form-label"><?php echo gtextPlain("Email");?></label>
 					<div class="uk-form-controls">
 						<div class="uk-grid uk-grid-column-small" uk-grid>
 							<div class="uk-margin uk-margin-remove-bottom uk-width-1-1 uk-width-2-3@m">
@@ -20,13 +20,13 @@
 								</div>
 							</div>
 							<div class="uk-width-1-1 uk-width-1-3@m uk-text-meta uk-margin-remove-top">
-								<?php echo gtext("Scrivi qui l'email della persona a cui vuoi regalare la gift card");?>
+								<?php echo gtextPlain("Scrivi qui l'email della persona a cui vuoi regalare la gift card");?>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="uk-margin">
-					<label class="uk-form-label"><?php echo gtext("Testo della dedica e firma");?></label>
+					<label class="uk-form-label"><?php echo gtextPlain("Testo della dedica e firma");?></label>
 					<div class="uk-form-controls">
 						<?php
 						$classeInput = (CartelementiModel::evidenzia($pageView) && !CartelementiModel::isOkField($elCart["id_cart_elemento"], "testo")) ? "uk-form-danger" : "";

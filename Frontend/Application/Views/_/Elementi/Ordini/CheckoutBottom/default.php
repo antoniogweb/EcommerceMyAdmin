@@ -24,9 +24,9 @@ if (!v("disattiva_antispam_checkout")) {
 <div class="uk-margin">
 	<?php $idCondizioni = PagineModel::gTipoPagina("CONDIZIONI"); ?>
 	<?php if ($idCondizioni) { ?>
-	<div class="condizioni_privacy uk-margin uk-text-muted uk-text-small"><?php echo gtext("Ho letto e accettato i");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idCondizioni);?>"><?php echo gtext("termini e condizioni di vendita");?></a></div>
+	<div class="condizioni_privacy uk-margin uk-text-muted uk-text-small"><?php echo gtextPlain("Ho letto e accettato i");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idCondizioni);?>"><?php echo gtextPlain("termini e condizioni di vendita");?></a></div>
 	<?php } else { ?>
-	<div class="uk-alert uk-alert-danger"><?php echo gtext("Attenzione, definire le condizioni di vendita");?></div>
+	<div class="uk-alert uk-alert-danger"><?php echo gtextPlain("Attenzione, definire le condizioni di vendita");?></div>
 	<?php } ?>
 	
 	<div class="class_accetto">
@@ -36,7 +36,7 @@ if (!v("disattiva_antispam_checkout")) {
 
 <?php if (v("piattaforma_di_demo")) { ?>
 <div class="uk-text-center uk-alert-danger uk-margin-remove" uk-alert>
-	<?php echo gtext("Attenzione, questa è una piattaforma di demo e non è possibile completare l'acquisto.");?>
+	<?php echo gtextPlain("Attenzione, questa è una piattaforma di demo e non è possibile completare l'acquisto.");?>
 	<button class="uk-alert-close" type="button" uk-close></button>
 </div>
 <?php } else {

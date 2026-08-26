@@ -1,13 +1,13 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
-	gtext("Liste nascita / regalo") => $this->baseUrl."/liste-regalo/",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Area riservata")	=>	$this->baseUrl."/area-riservata",
+	gtextPlain("Liste nascita / regalo") => $this->baseUrl."/liste-regalo/",
 	$lista["titolo"]	=>	"",
 );
 
-$titoloPagina = gtext("Lista")." ".$lista["titolo"];
+$titoloPagina = gtextPlain("Lista")." ".$lista["titolo"];
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -19,18 +19,18 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <div class="uk-width-1-1 uk-flex uk-flex-top uk-grid" uk-grid>
     <div class="uk-width-1-1 uk-width-1-3@m uk-text-small">
-        <?php echo gtext("Codice della lista");?>: <span class="uk-label uk-text-lowercase"><?php echo $lista["codice"];?></span><br />
-        <?php echo gtext("La lista è");?>: <b><?php echo $lista["attivo"] == "Y" ? "<span class='uk-text-success'>".gtext("Attiva")."</span>" : "<span class='uk-text-danger'>".gtext("Disattiva")."</span>";?></b><br />
-        <?php echo gtext("Data scadenza");?>: <b><?php echo smartDate($lista["data_scadenza"]);?></b> <?php if (ListeregaloModel::scaduta($lista["id_lista_regalo"])) { ?>(<span class="uk-text-danger"><?php echo gtext("scaduta");?></span>)<?php } ?>
+        <?php echo gtextPlain("Codice della lista");?>: <span class="uk-label uk-text-lowercase"><?php echo $lista["codice"];?></span><br />
+        <?php echo gtextPlain("La lista è");?>: <b><?php echo $lista["attivo"] == "Y" ? "<span class='uk-text-success'>".gtextPlain("Attiva")."</span>" : "<span class='uk-text-danger'>".gtextPlain("Disattiva")."</span>";?></b><br />
+        <?php echo gtextPlain("Data scadenza");?>: <b><?php echo smartDate($lista["data_scadenza"]);?></b> <?php if (ListeregaloModel::scaduta($lista["id_lista_regalo"])) { ?>(<span class="uk-text-danger"><?php echo gtextPlain("scaduta");?></span>)<?php } ?>
     </div>
     <div class="uk-width-1-1 uk-width-2-3@m">
 		<ul class="uk-subnav uk-subnav-divider uk-flex-right@s">
-			<li><a href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["id_lista_regalo"];?>" class="uk-button uk-button-link"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span> <?php echo gtext("Modifica dati");?></a></li>
+			<li><a href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["id_lista_regalo"];?>" class="uk-button uk-button-link"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span> <?php echo gtextPlain("Modifica dati");?></a></li>
 			
 			<?php if (ListeregaloModel::attiva($lista["id_lista_regalo"])) { ?>
-			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" share-text="<?php echo gtext("Lista regalo");?>" share-title="<?php echo $lista["titolo"];?>" class="share-link uk-button uk-button-link"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/social.svg");?></span> <?php echo gtext("Condividi");?></a></li>
+			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" share-text="<?php echo gtextPlain("Lista regalo");?>" share-title="<?php echo $lista["titolo"];?>" class="share-link uk-button uk-button-link"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/social.svg");?></span> <?php echo gtextPlain("Condividi");?></a></li>
 			
-			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" class="uk-button uk-button-link"><?php echo gtext("Vai alla lista");?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-right.svg");?></span></a></li>
+			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" class="uk-button uk-button-link"><?php echo gtextPlain("Vai alla lista");?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-right.svg");?></span></a></li>
 			<?php } ?>
 		</ul>
     </div>
@@ -40,9 +40,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <div class="uk-margin-large-top">
 	<ul class="uk-subnav uk-subnav-pill tab_lista">
-		<li><a class="link_prodotti" href="#prodotti-lista"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/tag.svg");?></span> <?php echo gtext("Prodotti");?></a></li>
-        <li><a href="#regali-lista"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/cuore.svg");?></span> <?php echo gtext("Regali");?></a></li>
-        <li><a class="link_lista" href="#link-lista"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/link.svg");?></span> <?php echo gtext("Invia link");?></a></li>
+		<li><a class="link_prodotti" href="#prodotti-lista"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/tag.svg");?></span> <?php echo gtextPlain("Prodotti");?></a></li>
+        <li><a href="#regali-lista"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/cuore.svg");?></span> <?php echo gtextPlain("Regali");?></a></li>
+        <li><a class="link_lista" href="#link-lista"><span class="uk-margin-small-right uk-visible@s uk-icon"><?php include tpf("Elementi/Icone/Svg/link.svg");?></span> <?php echo gtextPlain("Invia link");?></a></li>
 	</ul>
 	
 	<div class="tab_lista_box">

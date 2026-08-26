@@ -3,7 +3,7 @@
 <div class='row'>
 	<form id-ticket="<?php echo $id;?>" id="ancora_form" class="formClass no-check-modifiche" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?><?php if ($isBozza) { ?>#ancora_form<?php } ?>" enctype="multipart/form-data">
 		<div class='col-md-4'>
-			<h4 class="text-bold" style="padding-bottom:10px;"><?php echo gtext("Dati generali ticket");?></h4>
+			<h4 class="text-bold" style="padding-bottom:10px;"><?php echo gtextPlain("Dati generali ticket");?></h4>
 			
 			<?php if (isset($form["id_user"])) { ?>
 				<?php echo $form["id_user"];?>
@@ -15,10 +15,10 @@
 				<?php echo $form["id_lista_regalo"] ?? "";?>
 				
 				<?php if ($mostra_tendina_prodotti) { ?>
-				<label class="uk-form-label"><?php echo gtext("Seleziona il prodotto");?> *</label>
+				<label class="uk-form-label"><?php echo gtextPlain("Seleziona il prodotto");?> *</label>
 				<div class="uk-form-controls"><?php echo Html_Form::select("id_page",0,$prodotti,"form-control class_id_page",null,"yes");?></div>
 				<br />
-				<label class="uk-form-label"><?php echo gtext("Scrivi il numero seriale del prodotto");?></label>
+				<label class="uk-form-label"><?php echo gtextPlain("Scrivi il numero seriale del prodotto");?></label>
 				<div class="uk-form-controls"><?php echo Html_Form::input("numero_seriale","","form-control class_numero_seriale",null,"placeholder='".gtextAttr("Numero seriale", false)."'");?></div>
 				
 	<!-- 			<br /> -->
@@ -33,7 +33,7 @@
 						<?php foreach ($prodottiInseriti as $p) { ?>
 						<tr class="ordini_table_row uk-text-small">
 							<td><img style="max-width:60px;" src="<?php echo $this->baseUrlSrc."/thumb/immagineinlistaprodotti/".$p["pages"]["id_page"]."/".$p["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>"></td>
-							<td><?php echo field($p, "title");?><br /><?php echo gtext("N.Seriale");?>: <b><?php echo $p["ticket_pages"]["numero_seriale"] ? $p["ticket_pages"]["numero_seriale"] : "--" ;?></b></td>
+							<td><?php echo field($p, "title");?><br /><?php echo gtextPlain("N.Seriale");?>: <b><?php echo $p["ticket_pages"]["numero_seriale"] ? $p["ticket_pages"]["numero_seriale"] : "--" ;?></b></td>
 							<td class="text-right">
 								<a id-page="<?php echo (int)$p["pages"]["id_page"];?>" class="text_16 elimina_dal_tiket make_spinner text text-danger" title="<?php echo gtextAttr("Elimina il prodotto dal ticket",false);?>" href="<?php echo $this->baseUrl."/ticket/rimuoviprodotto/$id/".$ticket["ticket_uid"];?>"><i class="fa fa-trash"></i></a>
 							</td>
@@ -62,7 +62,7 @@
 		</div>
 		<div class='col-md-8'>
 			<?php if ($recordTicket["ticket"]["stato"] != "B") { ?>
-			<h4 class="text-bold" style="padding-bottom:10px;"><?php echo gtext("Messaggi");?></h4>
+			<h4 class="text-bold" style="padding-bottom:10px;"><?php echo gtextPlain("Messaggi");?></h4>
 			
 			<?php foreach ($messaggi as $m) {
 				$scrittoDa = $m["ticket_messaggi"]["id_user"] ? $nominativoCliente : $m["adminusers"]["username"];
@@ -72,7 +72,7 @@
 					<span class="username" style="margin-left:0px !important;">
 						<b style="color:#3c8dbc;"><?php echo $scrittoDa;?></b>
 					</span>
-					<span class="description" style="margin-left:0px !important;"><?php echo gtext("Scritto in data");?> <?php echo date("d-m-Y H:i", strtotime($m["ticket_messaggi"]["data_creazione"]));?></span>
+					<span class="description" style="margin-left:0px !important;"><?php echo gtextPlain("Scritto in data");?> <?php echo date("d-m-Y H:i", strtotime($m["ticket_messaggi"]["data_creazione"]));?></span>
 					</div>
 
 					<div style="width:50%;" <?php if (!$m["ticket_messaggi"]["id_user"]) { ?>class="well pull-right"<?php } ?>>
@@ -93,7 +93,7 @@
 								<?php } else {
 									$daElaborare = TicketfileModel::daElaborare($m["ticket_messaggi"]["filename"]);
 								?>
-									<?php echo gtext("file allegato");?>:
+									<?php echo gtextPlain("file allegato");?>:
 									<?php if (!$daElaborare) { ?>
 									<a target="_blank" href="<?php echo Domain::$publicUrl."/ticket/scarica/".$m["ticket_messaggi"]["filename"];?>">
 									<?php } ?>
@@ -101,12 +101,12 @@
 									<?php if (!$daElaborare) { ?>
 									</a>
 									<?php } else { ?>
-									<span class="uk-text-italic uk-text-small">(<?php echo gtext("in elaborazione");?> <span uk-icon="icon: clock;ratio: 0.7"></span>)</span>
+									<span class="uk-text-italic uk-text-small">(<?php echo gtextPlain("in elaborazione");?> <span uk-icon="icon: clock;ratio: 0.7"></span>)</span>
 									<?php } ?>
 								<?php } ?>
 							</div>
 						<?php } else { ?>
-						<?php echo gtext("File video eliminato a causa di problemi nella compressione.")?>
+						<?php echo gtextPlain("File video eliminato a causa di problemi nella compressione.")?>
 						<?php } ?>
 					<?php } ?>
 					
@@ -114,7 +114,7 @@
 				</div>
 			<?php } ?>
 			<hr />
-			<a href="<?php echo $this->baseUrl."/ticketmessaggi/form/insert?cl_on_sv=Y&partial=Y&nobuttons=Y&id_ticket=".(int)$id;?>" class="iframe btn btn-primary pull-right"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi messaggio");?></a>
+			<a href="<?php echo $this->baseUrl."/ticketmessaggi/form/insert?cl_on_sv=Y&partial=Y&nobuttons=Y&id_ticket=".(int)$id;?>" class="iframe btn btn-primary pull-right"><i class="fa fa-plus"></i> <?php echo gtextPlain("Aggiungi messaggio");?></a>
 			<?php } ?>
 		</div>
 	</form>

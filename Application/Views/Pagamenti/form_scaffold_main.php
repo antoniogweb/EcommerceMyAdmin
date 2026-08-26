@@ -45,7 +45,7 @@ $().ready(function() {
 			<?php if (isset($contenutiTradotti) && count($contenutiTradotti) > 0 && count(BaseController::$traduzioni) > 0) { ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<?php echo gtext("Traduzioni");?>
+					<?php echo gtextPlain("Traduzioni");?>
 				</div>
 				<div class="panel-body">
 					<?php
@@ -59,7 +59,7 @@ $().ready(function() {
 			<?php if (isset($record["codice"]) && OrdiniModel::conPagamentoOnline(array("pagamento"=>$record["codice"]))) { ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<?php echo gtext("Parametri carta");?>
+					<?php echo gtextPlain("Parametri carta");?>
 				</div>
 				<div class="panel-body">
 					<?php echo $form["gateway_pagamento"] ?? "";?>

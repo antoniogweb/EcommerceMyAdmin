@@ -21,10 +21,10 @@
 				<img src="<?php echo $this->baseUrl.'/thumb/archivio/'.$records[$i]['immagini_archivi']['immagine']."/".rand(1,999999);?>">
 			</div>
 			<div class="col-md-10">
-				<b><?php echo gtext("Nome file");?></b>: <?php echo $records[$i]['immagini_archivi']['immagine'] ? $records[$i]['immagini_archivi']['immagine'] : "--";?><br />
-				<b><?php echo gtext("Alt tag");?></b>: <?php echo $records[$i]['immagini_archivi']['alt_tag'] ? $records[$i]['immagini_archivi']['alt_tag'] : "--";?>
+				<b><?php echo gtextPlain("Nome file");?></b>: <?php echo $records[$i]['immagini_archivi']['immagine'] ? $records[$i]['immagini_archivi']['immagine'] : "--";?><br />
+				<b><?php echo gtextPlain("Alt tag");?></b>: <?php echo $records[$i]['immagini_archivi']['alt_tag'] ? $records[$i]['immagini_archivi']['alt_tag'] : "--";?>
 				<?php if ($records[$i]['immagini_archivi']['id_immagine_tipologia']) { ?>
-				<br /><b><?php echo gtext("Tipologia");?></b>: <?php echo ImmaginitipologieModel::sTitolo($records[$i]['immagini_archivi']['id_immagine_tipologia']);?>
+				<br /><b><?php echo gtextPlain("Tipologia");?></b>: <?php echo ImmaginitipologieModel::sTitolo($records[$i]['immagini_archivi']['id_immagine_tipologia']);?>
 				<?php } ?>
 			</div>
 		</div>

@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="two_factor_form">
-	<h4 class=""><?php echo gtext("Per completare la verifica digita nel campo sottostante il codice a ".v("autenticazione_due_fattori_numero_cifre_front")." cifre");?><br /><?php echo gtext("che è stato inviato all'indirizzo");?><b> <?php echo partiallyHideEmail($user["username"]);?></b></h4>
+	<h4 class=""><?php echo gtextPlain("Per completare la verifica digita nel campo sottostante il codice a ".v("autenticazione_due_fattori_numero_cifre_front")." cifre");?><br /><?php echo gtextPlain("che è stato inviato all'indirizzo");?><b> <?php echo partiallyHideEmail($user["username"]);?></b></h4>
 	<br />
 	<div class="uk-child-width-1-3@m uk-text-center uk-flex uk-flex-center">
 		<div>
@@ -13,7 +13,7 @@
 				<?php echo $flash;?>
 				<fieldset class="uk-fieldset">
 					<div class="uk-margin">
-						<label class="uk-form-label uk-text-bold"><?php echo gtext("Codice inviato via e-mail");?> *</label>
+						<label class="uk-form-label uk-text-bold"><?php echo gtextPlain("Codice inviato via e-mail");?> *</label>
 						<div class="uk-form-controls">
 							<input class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="codice" type="text" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtextAttr("Scrivi qui il codice..", false) : "";?>" />
 						</div>
@@ -24,13 +24,13 @@
 						<input autocomplete="new-password" class="<?php echo $classePulsanteTwoFactor;?> uk-width-1-1 uk-width-1-2@s btn_submit_form" type="submit" name="login" value="<?php echo gtextAttr("Invia");?>" />
 					</div>
 					<div class="uk-margin-top">
-						<a class="uk-button uk-button-default uk-width-1-1 uk-width-1-2@s" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/login";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-left.svg");?></span> <?php echo gtext("Torna");?></a>
+						<a class="uk-button uk-button-default uk-width-1-1 uk-width-1-2@s" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/login";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-left.svg");?></span> <?php echo gtextPlain("Torna");?></a>
 					</div>
 				</fieldset>
 			</form>
 			
 			<?php if ($sessioneTwo["numero_invii_codice"] < (int)v("autenticazione_due_fattori_numero_massimo_invii_codice_front")) { ?>
-			<br /><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/twofactorsendmail/".RegusersModel::$redirectQueryString;?>"><?php echo gtext("Invia nuovamente il codice a ".v("autenticazione_due_fattori_numero_cifre_front")." cifre");?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/mail.svg");?></span></a>
+			<br /><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/twofactorsendmail/".RegusersModel::$redirectQueryString;?>"><?php echo gtextPlain("Invia nuovamente il codice a ".v("autenticazione_due_fattori_numero_cifre_front")." cifre");?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/mail.svg");?></span></a>
 			<?php } ?>
 		</div>
 	</div>

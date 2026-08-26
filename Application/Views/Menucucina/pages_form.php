@@ -57,7 +57,7 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Visibilità");?>
+								<?php echo gtextPlain("Visibilità");?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["attivo"];?>
@@ -77,7 +77,7 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Traduzioni");?>
+								<?php echo gtextPlain("Traduzioni");?>
 							</div>
 							<div class="panel-body">
 								<?php include($this->viewPath("pages_traduzioni"));?>

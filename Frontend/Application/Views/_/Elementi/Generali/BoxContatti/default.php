@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="uk-background-muted uk-padding uk-margin">
 
-	<h2 class="uk-text-bold"><?php echo gtext("Contattaci")?></h2>
+	<h2 class="uk-text-bold"><?php echo gtextPlain("Contattaci")?></h2>
 	
 	<?php if (v("email_aziendale")) { ?>
 	<div class="uk-margin-bottom">

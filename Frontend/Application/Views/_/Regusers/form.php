@@ -3,21 +3,21 @@
 if (strcmp($this->action,"modify") !== 0)
 {
 	$breadcrumb = array(
-		gtext("Home") 		=> $this->baseUrl,
-		gtext("Crea un account")	=>	"",
+		gtextPlain("Home") 		=> $this->baseUrl,
+		gtextPlain("Crea un account")	=>	"",
 	);
 	
-	$titoloPagina = gtext("Crea un account");
+	$titoloPagina = gtextPlain("Crea un account");
 }
 else
 {
 	$breadcrumb = array(
-		gtext("Home") 		=> $this->baseUrl,
-		gtext("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
-		gtext("Modifica account")	=>	"",
+		gtextPlain("Home") 		=> $this->baseUrl,
+		gtextPlain("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
+		gtextPlain("Modifica account")	=>	"",
 	);
 	
-	$titoloPagina = gtext("Modifica account");
+	$titoloPagina = gtextPlain("Modifica account");
 }
 
 include(tpf("/Elementi/Pagine/page_top.php"));

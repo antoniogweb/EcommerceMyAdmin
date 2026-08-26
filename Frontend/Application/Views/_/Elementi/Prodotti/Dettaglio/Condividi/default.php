@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php echo gtext("Condividi")?>:
+<?php echo gtextPlain("Condividi")?>:
 <a class="bo-social-facebook" href="http://www.facebook.com/sharer.php?u=<?php echo $this->baseUrl."/$urlAlias";?>&title=<?php echo field($p, "title");?>" target="_blank" title="<?php echo gtextAttr("Condividi su Facebook");?>">
 	<span uk-icon="icon: facebook"></span>
 </a>

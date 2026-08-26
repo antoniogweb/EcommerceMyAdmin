@@ -1,12 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
-	gtext("Ordini collegati ai miei codici coupon") => "",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
+	gtextPlain("Ordini collegati ai miei codici coupon") => "",
 );
 
-$titoloPagina = gtext("Ordini collegati ai miei codici coupon");
+$titoloPagina = gtextPlain("Ordini collegati ai miei codici coupon");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -19,14 +19,14 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<table class="uk-table uk-table-divider uk-table-hover" cellspacing="0">
 		<thead>
 			<tr class="ordini_head">
-				<th><?php echo gtext("Ordine");?></th>
-				<th><?php echo gtext("Cliente");?></th>
-				<th><?php echo gtext("Data");?></th>
-				<th><?php echo gtext("Stato");?></th>
-				<th><?php echo gtext("Coupon");?></th>
-				<th><?php echo gtext("Totale (€)");?></th>
+				<th><?php echo gtextPlain("Ordine");?></th>
+				<th><?php echo gtextPlain("Cliente");?></th>
+				<th><?php echo gtextPlain("Data");?></th>
+				<th><?php echo gtextPlain("Stato");?></th>
+				<th><?php echo gtextPlain("Coupon");?></th>
+				<th><?php echo gtextPlain("Totale (€)");?></th>
 				<?php if (v("fatture_attive")) { ?>
-				<th width="3%"><?php echo gtext("Fattura");?></th>
+				<th width="3%"><?php echo gtextPlain("Fattura");?></th>
 				<?php } ?>
 			</tr>
 		</thead>
@@ -46,7 +46,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	</table>
 </div>
 <?php } else { ?>
-<p><?php echo gtext("Non hai alcun ordine collegato ai tuoi codici coupon.");?></p>
+<p><?php echo gtextPlain("Non hai alcun ordine collegato ai tuoi codici coupon.");?></p>
 <?php } ?>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

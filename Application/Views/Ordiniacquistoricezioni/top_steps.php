@@ -4,31 +4,31 @@
 	<div class="panel-heading">
 		<div class="pull-right pulsanti_genera_invia_pdf">
 			<?php if ($ricezione["chiuso"]) { ?>
-				<a class="pull-right btn btn-xs btn-<?php echo OrdiniacquistoricezioniModel::$stati["aperto"]["label"];?> btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/chiudi/".$ricezione["id_ordine_acquisto_ricezione"];?>/0"><i class="fa fa-unlock"></i> <?php echo gtext(OrdiniacquistoricezioniModel::$stati["chiuso"]["azione"]);?></a>
+				<a class="pull-right btn btn-xs btn-<?php echo OrdiniacquistoricezioniModel::$stati["aperto"]["label"];?> btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/chiudi/".$ricezione["id_ordine_acquisto_ricezione"];?>/0"><i class="fa fa-unlock"></i> <?php echo gtextPlain(OrdiniacquistoricezioniModel::$stati["chiuso"]["azione"]);?></a>
 			<?php } else if (OrdiniacquistoricezioniModel::haRighe((int)$ricezione["id_ordine_acquisto_ricezione"])) { ?>
-				<a class="pull-right btn btn-xs btn-<?php echo OrdiniacquistoricezioniModel::$stati["chiuso"]["label"];?> btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/chiudi/".$ricezione["id_ordine_acquisto_ricezione"];?>/1"><i class="fa fa-lock"></i> <?php echo gtext(OrdiniacquistoricezioniModel::$stati["aperto"]["azione"]);?></a>
+				<a class="pull-right btn btn-xs btn-<?php echo OrdiniacquistoricezioniModel::$stati["chiuso"]["label"];?> btn-rounded make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/chiudi/".$ricezione["id_ordine_acquisto_ricezione"];?>/1"><i class="fa fa-lock"></i> <?php echo gtextPlain(OrdiniacquistoricezioniModel::$stati["aperto"]["azione"]);?></a>
 			<?php } ?>
 		</div>
-		<?php echo gtext("N° Ricezione");?> #<b><?php echo $ricezione["id_ordine_acquisto_ricezione"];?></b></b>
+		<?php echo gtextPlain("N° Ricezione");?> #<b><?php echo $ricezione["id_ordine_acquisto_ricezione"];?></b></b>
 	</div>
 	<div class="text-left panel-body">
 		<div class="row">
 			<div class="col-lg-6">
 				<table class="table table-striped" style="margin-bottom:0px;">
 					<tr>
-						<td><?php echo gtext("N° Ricezione");?>:</td>
+						<td><?php echo gtextPlain("N° Ricezione");?>:</td>
 						<td><b>#<?php echo $ricezione["id_ordine_acquisto_ricezione"];?></b></td>
 					</tr>
 					<tr>
-						<td><?php echo gtext("Numero DDT");?>:</td>
+						<td><?php echo gtextPlain("Numero DDT");?>:</td>
 						<td><b><?php echo $ricezione["numero_documento_trasporto"];?></b></td>
 					</tr>
 					<tr>
-						<td><?php echo gtext("Data ricezione");?>:</td>
+						<td><?php echo gtextPlain("Data ricezione");?>:</td>
 						<td><b><?php echo F::getDateInCorrectFormat(strtotime($ricezione["data_ricezione_merce"]));?></b></td>
 					</tr>
 					<tr>
-						<td><?php echo gtext("Stato ricezione");?>:</td>
+						<td><?php echo gtextPlain("Stato ricezione");?>:</td>
 						<td><b><?php echo OrdiniacquistoricezioniModel::g()->statoLabelCrud(array("ordini_acquisto_ricezioni"=>$ricezione));?></b></td>
 					</tr>
 				</table>
@@ -39,10 +39,10 @@
 				<table class="table table-striped" style="margin-bottom:0px;">
 					
 					<tr>
-						<td><?php echo gtext("Ordini di acquisto").":";?></td>
+						<td><?php echo gtextPlain("Ordini di acquisto").":";?></td>
 						<td>
 							<?php foreach ($ordiniAcquisto as $ordine) { ?>
-							<?php echo gtext("N°");?> <a target="_blank" href="<?php echo $this->baseUrl."/$urlOrdineAcquisto/form/update/".$ordine["ordini_acquisto"]["id_ordine_acquisto"];?>"><b><?php echo $ordine["ordini_acquisto"]["numero_ordine"];?></b></a> <?php echo gtext("del");?> <b><?php echo smartDate($ordine["ordini_acquisto"]["data_ordine"], v("default_date_format"));?></b>
+							<?php echo gtextPlain("N°");?> <a target="_blank" href="<?php echo $this->baseUrl."/$urlOrdineAcquisto/form/update/".$ordine["ordini_acquisto"]["id_ordine_acquisto"];?>"><b><?php echo $ordine["ordini_acquisto"]["numero_ordine"];?></b></a> <?php echo gtextPlain("del");?> <b><?php echo smartDate($ordine["ordini_acquisto"]["data_ordine"], v("default_date_format"));?></b>
 							<br />
 							<?php } ?>
 						</td>

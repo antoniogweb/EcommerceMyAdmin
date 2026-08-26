@@ -1,12 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
-	gtext("Modifica l'immagine del profilo")	=>	"",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Area riservata")	=>	$this->baseUrl."/area-riservata",
+	gtextPlain("Modifica l'immagine del profilo")	=>	"",
 );
 
-$titoloPagina = gtext("Modifica l'immagine del profilo");
+$titoloPagina = gtextPlain("Modifica l'immagine del profilo");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -31,7 +31,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		</div>
 	<?php } else { ?>
 		<div class="uk-alert uk-alert-primary">
-			<?php echo gtext("Non hai caricato alcuna immagine");?>
+			<?php echo gtextPlain("Non hai caricato alcuna immagine");?>
 		</div>
 	<?php } ?>
 	</div>
@@ -40,7 +40,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	
 	<div id="form-modifica-immagine" class="uk-background-muted uk-padding" <?php if (strcmp($utenteProfilo["immagine"],"") !== 0 && !$notice) { ?>hidden<?php } ?>>
 		<form  class="form_profilo" action="<?php echo $this->baseUrl."/immagine-profilo#form-modifica-immagine";?>" method="POST" enctype="multipart/form-data">
-			<h3><?php echo gtext("Carica l'immagine");?></h3>
+			<h3><?php echo gtextPlain("Carica l'immagine");?></h3>
 			
 			<div class="uk-margin" uk-margin>
 				<div uk-form-custom="target: true" class="class_immagine">
@@ -50,7 +50,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				
 				<span class="uk-margin">
 					<span class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-auto@m spinner uk-hidden" uk-spinner="ratio: .70"></span>
-					<button class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-auto@m btn_submit_form" type="submit" name="updateAction"><?php echo gtext("Invia immagine");?></button>
+					<button class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-auto@m btn_submit_form" type="submit" name="updateAction"><?php echo gtextPlain("Invia immagine");?></button>
 				</span>
 			</div>
 		</form>

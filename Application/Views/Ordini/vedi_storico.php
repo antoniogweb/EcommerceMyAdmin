@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <section class="content-header">
-	<h1><?php echo gtext("Storico delle modifiche agli stati dell'ordine");?></h1>
+	<h1><?php echo gtextPlain("Storico delle modifiche agli stati dell'ordine");?></h1>
 </section>
 
 <!-- Main content -->
@@ -13,13 +13,13 @@
 					<table class="table">
 						<tr>
 							<th>
-								<?php echo gtext("Data ora");?>
+								<?php echo gtextPlain("Data ora");?>
 							</th>
 							<th>
-								<?php echo gtext("Stato");?>
+								<?php echo gtextPlain("Stato");?>
 							</th>
 							<th>
-								<?php echo gtext("Utente admin");?>
+								<?php echo gtextPlain("Utente admin");?>
 							</th>
 						</tr>
 						<tbody>

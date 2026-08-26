@@ -2,7 +2,7 @@
 
 <div class="panel panel-info">
 	<div class="panel-heading">
-		<?php echo gtext("Categoria");?>
+		<?php echo gtextPlain("Categoria");?>
 	</div>
 	<div class="panel-body">
 		<?php echo $form["id_c"];?>

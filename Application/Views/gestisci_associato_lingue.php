@@ -1,9 +1,9 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if ($this->action == "lingue") { ?>
 	<div class="callout callout-info">
-		<?php echo gtext("In questa scheda vengono definite le lingue in cui il prodotto/pagina è visibile.") ?>
-		<?php echo gtext("È possibile includere o escludere lingue.") ?>
-		<b><?php echo gtext("Se non è inclusa alcuna lingua significa che il prodotto/pagina è visibile in tutte le lingue.") ?></b>
+		<?php echo gtextPlain("In questa scheda vengono definite le lingue in cui il prodotto/pagina è visibile.") ?>
+		<?php echo gtextPlain("È possibile includere o escludere lingue.") ?>
+		<b><?php echo gtextPlain("Se non è inclusa alcuna lingua significa che il prodotto/pagina è visibile in tutte le lingue.") ?></b>
 	</div>
 	<?php if (count($listaLingue) > 0) { ?>
 	<form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/lingue/$id_page".$this->viewStatus;?>' method='POST'>

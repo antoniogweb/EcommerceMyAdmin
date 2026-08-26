@@ -3,7 +3,7 @@
 <?php include(ROOT."/Application/Views/categories_ordina_js.php"); ?>
 
 <section class="content-header">
-	<h1><?php echo gtext($titoloMenu);?></h1>
+	<h1><?php echo gtextPlain($titoloMenu);?></h1>
 </section>
 
 <!-- Main content -->

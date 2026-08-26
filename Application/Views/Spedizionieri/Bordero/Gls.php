@@ -52,27 +52,27 @@ table.corpo td table td
 </style>
 </head>
 <body>
-	<div style="font-size:22px;"><?php echo gtext("General Logistic Systems Italy S.p.A.");?>
-		<p style="text-align:center;"><?php echo gtext("Distinta spedizioni del");?> <?php echo date("d/m/Y H:i:s",strtotime($data));?></p>
+	<div style="font-size:22px;"><?php echo gtextPlain("General Logistic Systems Italy S.p.A.");?>
+		<p style="text-align:center;"><?php echo gtextPlain("Distinta spedizioni del");?> <?php echo date("d/m/Y H:i:s",strtotime($data));?></p>
 		<div>
-			<?php echo gtext("Sede di appartenenza");?>: <?php echo $this->getParam("codice_sede");?><br />
-			<?php echo gtext("Codice cliente");?>: <?php echo $this->getParam("codice_cliente");?> - <?php echo $nomeCliente;?>
+			<?php echo gtextPlain("Sede di appartenenza");?>: <?php echo $this->getParam("codice_sede");?><br />
+			<?php echo gtextPlain("Codice cliente");?>: <?php echo $this->getParam("codice_cliente");?> - <?php echo $nomeCliente;?>
 		</div>
 	</div>
-	<p style="font-size:16px;"><?php echo gtext("Contratto mittente");?>: <?php echo $codiceContratto;?> - <?php echo $nomeCliente;?></p>
+	<p style="font-size:16px;"><?php echo gtextPlain("Contratto mittente");?>: <?php echo $codiceContratto;?> - <?php echo $nomeCliente;?></p>
 	
 	<table class="corpo" style="width:297mm;">
 		<tr class="header_tabella">
-			<th><?php echo gtext("Data");?></th>
-			<th><?php echo gtext("N° Sped.");?></th>
-			<th><?php echo gtext("Destinatario");?></th>
-			<th><?php echo gtext("Località");?></th>
-			<th><?php echo gtext("Indirizzo");?></th>
-			<th><?php echo gtext("Prov");?></th>
-			<th><?php echo gtext("ZipCode");?></th>
-			<th><?php echo gtext("Colli");?></th>
-			<th><?php echo gtext("Peso");?></th>
-			<th><?php echo gtext("BDA");?></th>
+			<th><?php echo gtextPlain("Data");?></th>
+			<th><?php echo gtextPlain("N° Sped.");?></th>
+			<th><?php echo gtextPlain("Destinatario");?></th>
+			<th><?php echo gtextPlain("Località");?></th>
+			<th><?php echo gtextPlain("Indirizzo");?></th>
+			<th><?php echo gtextPlain("Prov");?></th>
+			<th><?php echo gtextPlain("ZipCode");?></th>
+			<th><?php echo gtextPlain("Colli");?></th>
+			<th><?php echo gtextPlain("Peso");?></th>
+			<th><?php echo gtextPlain("BDA");?></th>
 		</tr>
 		<?php
 		$spnModel = new SpedizioninegozioModel();
@@ -141,18 +141,18 @@ table.corpo td table td
 	
 	<div style="font-size:18px;">
 	<br />
-	<?php echo gtext("Totale spedizioni");?>: <?php echo $numeroSpedizioni;?><br />
-	<?php echo gtext("Totale colli");?>: <?php echo $numeroColliTotali;?><br />
-	<?php echo gtext("Totale peso reale");?>: <?php echo number_format($pesoTotale,1,",",".");?><br />
-	<?php echo gtext("Totale peso volume");?>: 0<br />
-	<?php echo gtext("Totale spedizioni in contrassegno");?>: <?php echo $numeroContrassegno;?> <?php echo gtext("con valore complessivo di");?> <?php echo number_format($totaleContrassegno,2,",",".");?> <?php echo gtext("Euro");?>.<br />
-	<?php echo gtext("Totale spedizioni in Porto Franco");?>: <?php echo $numeroSpedizioni;?><br />
-	<?php echo gtext("Totale spedizioni in Porto Assegnato");?>: 0<br />
-	<?php echo gtext("Totale spedizioni con assicurazione integrativa 10/10");?>: <?php echo $numeroAssicurazione1010;?><br />
-	<?php echo gtext("Totale spedizioni con assicurazione integrativa ALL-IN");?>: <?php echo $numeroAssicurazioneALLIN;?><br />
+	<?php echo gtextPlain("Totale spedizioni");?>: <?php echo $numeroSpedizioni;?><br />
+	<?php echo gtextPlain("Totale colli");?>: <?php echo $numeroColliTotali;?><br />
+	<?php echo gtextPlain("Totale peso reale");?>: <?php echo number_format($pesoTotale,1,",",".");?><br />
+	<?php echo gtextPlain("Totale peso volume");?>: 0<br />
+	<?php echo gtextPlain("Totale spedizioni in contrassegno");?>: <?php echo $numeroContrassegno;?> <?php echo gtextPlain("con valore complessivo di");?> <?php echo number_format($totaleContrassegno,2,",",".");?> <?php echo gtextPlain("Euro");?>.<br />
+	<?php echo gtextPlain("Totale spedizioni in Porto Franco");?>: <?php echo $numeroSpedizioni;?><br />
+	<?php echo gtextPlain("Totale spedizioni in Porto Assegnato");?>: 0<br />
+	<?php echo gtextPlain("Totale spedizioni con assicurazione integrativa 10/10");?>: <?php echo $numeroAssicurazione1010;?><br />
+	<?php echo gtextPlain("Totale spedizioni con assicurazione integrativa ALL-IN");?>: <?php echo $numeroAssicurazioneALLIN;?><br />
 	<br />
 	<?php if ($presentiAccessori) { ?>
-	<?php echo gtext("Sono presenti spedizioni con servizi Sprinter che prevedono un costo aggiuntivo.");?>
+	<?php echo gtextPlain("Sono presenti spedizioni con servizi Sprinter che prevedono un costo aggiuntivo.");?>
 	<?php } ?>
 	</div>
 </body>

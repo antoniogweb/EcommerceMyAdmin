@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <section class="content-header">
-	<h1><?php echo gtext("Carica i cookie")?></h1>
+	<h1><?php echo gtextPlain("Carica i cookie")?></h1>
 </section>
 
 <!-- Main content -->

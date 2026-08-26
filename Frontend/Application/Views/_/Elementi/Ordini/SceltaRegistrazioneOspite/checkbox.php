@@ -2,7 +2,7 @@
 <?php $ospite = ($values["registrato"] == "Y") ? "N" : "Y";?>
 <div class="uk-grid uk-grid-small uk-child-width-1-1 uk-margin-top" uk-grid>
 	<div class="uk-width-1-1 uk-width-1-2@m ">
-	<!-- 	<h2 class="<?php echo v("classi_titoli_checkout");?>"><span uk-icon="icon:user;ratio:1.2" class="uk-margin-right"></span><?php echo gtext("Creazione account");?></h2> -->
+	<!-- 	<h2 class="<?php echo v("classi_titoli_checkout");?>"><span uk-icon="icon:user;ratio:1.2" class="uk-margin-right"></span><?php echo gtextPlain("Creazione account");?></h2> -->
 
 		<div class=" uk-width-1-1 ">
 			<div class="uk-flex uk-flex-middle">
@@ -10,7 +10,7 @@
 					<?php echo Html_Form::checkbox("registrato_checkbox",$ospite,"Y","checkbox_registrato",null);?>
 				</div>
 				<div class="uk-margin-left uk-text-small uk-text-emphasis">
-					<?php echo gtext("Continua come ospite (non creare un account)");?>
+					<?php echo gtextPlain("Continua come ospite (non creare un account)");?>
 				</div>
 			</div>
 		</div>
@@ -20,7 +20,7 @@
 		<div class="uk-grid uk-grid-large uk-child-width-1-1" uk-grid>
 			<?php if (!v("genera_e_invia_password")) { ?>
 				<div class="table_password first_of_grid uk-margin uk-margin-remove-bottom">
-					<label class="uk-form-label"><?php echo gtext("Password");?> *</label>
+					<label class="uk-form-label"><?php echo gtextPlain("Password");?> *</label>
 					<div class="uk-form-controls uk-position-relative">
 						<?php echo Html_Form::password("password",$regusers_values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password' placeholder='".gtextAttr("Password", false)."'");?>
 						<?php include tpf("Elementi/mostra_nascondi_password.php")?>
@@ -28,7 +28,7 @@
 				</div>
 				<?php if (v("account_attiva_conferma_password")) { ?>
 				<div class="table_password uk-margin uk-margin-remove-bottom">
-					<label class="uk-form-label"><?php echo gtext("Conferma password");?> *</label>
+					<label class="uk-form-label"><?php echo gtextPlain("Conferma password");?> *</label>
 					<div class="uk-form-controls uk-position-relative">
 						<?php echo Html_Form::password("confirmation",$regusers_values['confirmation'],"uk-input class_confirmation ".VariabiliModel::classeHelpWizardPassword(),null,"autocomplete='new-password' placeholder='".gtextAttr("Conferma password", false)."'");?>
 						<?php include tpf("Elementi/mostra_nascondi_password.php")?>

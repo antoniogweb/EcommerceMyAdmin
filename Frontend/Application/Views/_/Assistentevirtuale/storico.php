@@ -2,10 +2,10 @@
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;border-collapse:collapse;margin:0;">
 	<tr>
 		<td style="padding:0;">
-			<h2 style="margin:0 0 14px;font-size:18px;line-height:24px;font-weight:bold;color:#111827;"><?php echo gtext("Storico chat assistente virtuale");?></h2>
+			<h2 style="margin:0 0 14px;font-size:18px;line-height:24px;font-weight:bold;color:#111827;"><?php echo gtextPlain("Storico chat assistente virtuale");?></h2>
 			<?php if (!empty($chat)) { ?>
 				<p style="margin:0 0 18px;font-size:13px;line-height:18px;color:#52616f;">
-					<?php echo gtext("Chat");?> #<?php echo (int)$chat["id_ai_richiesta"];?>
+					<?php echo gtextPlain("Chat");?> #<?php echo (int)$chat["id_ai_richiesta"];?>
 					<?php if (isset($chat["data_creazione"]) && trim($chat["data_creazione"])) { ?>
 						 - <?php echo $chat["data_creazione"];?>
 					<?php } ?>
@@ -43,7 +43,7 @@
 					</table>
 				<?php } ?>
 			<?php } else { ?>
-				<p style="margin:0;font-size:14px;line-height:21px;color:#52616f;"><?php echo gtext("Non ci sono messaggi in questa chat.");?></p>
+				<p style="margin:0;font-size:14px;line-height:21px;color:#52616f;"><?php echo gtextPlain("Non ci sono messaggi in questa chat.");?></p>
 			<?php } ?>
 		</td>
 	</tr>

@@ -36,5 +36,5 @@
 		<?php } ?>
 	</div>
 <?php } else { ?>
-	<p><?php echo gtext("Non ci sono prodotti nel carrello");?></p>
+	<p><?php echo gtextPlain("Non ci sono prodotti nel carrello");?></p>
 <?php } ?>

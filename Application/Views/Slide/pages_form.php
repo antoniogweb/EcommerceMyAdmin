@@ -56,7 +56,7 @@
 						
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Pulsante nella slide (call to action)")?>
+								<?php echo gtextPlain("Pulsante nella slide (call to action)")?>
 							</div>
 							<div class="panel-body">
 								<div class='row'>

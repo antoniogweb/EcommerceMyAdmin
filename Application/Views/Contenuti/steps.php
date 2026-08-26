@@ -4,7 +4,7 @@
 
 <ul class="nav_dettaglio nav nav-tabs">
 	<?php if ($this->action == "figli" && v("attiva_contenuti_figli") && $this->viewArgs["id_tipo_figlio"] != "tutti" && isset($recordTipo["tipo"]) && $recordTipo["tipo"] == "FASCIA") { ?>
-	<li <?php echo $posizioni['figli'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/figli/$id".$this->viewStatus;?>"><?php echo gtext("Elementi");?></a></li>
+	<li <?php echo $posizioni['figli'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/figli/$id".$this->viewStatus;?>"><?php echo gtextPlain("Elementi");?></a></li>
 	<?php } else { ?>
 	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>">Dettagli</a></li>
 	<?php } ?>

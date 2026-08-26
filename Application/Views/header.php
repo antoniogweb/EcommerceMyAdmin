@@ -33,16 +33,16 @@
 	<script>
 	jQuery(function($){
 		$.datepicker.regional['it'] = {
-			closeText: '<?php echo gtext("Chiudi");?>',
-			prevText: '&#x3c;<?php echo gtext("Prec");?>',
-			nextText: '<?php echo gtext("Succ");?>&#x3e;',
-			currentText: '<?php echo gtext("Oggi");?>',
-			monthNames: ['<?php echo gtext("Gennaio");?>','<?php echo gtext("Febbraio");?>','<?php echo gtext("Marzo");?>','<?php echo gtext("Aprile");?>','<?php echo gtext("Maggio");?>','<?php echo gtext("Giugno");?>','<?php echo gtext("Luglio");?>','<?php echo gtext("Agosto");?>','<?php echo gtext("Settembre");?>','<?php echo gtext("Ottobre");?>','<?php echo gtext("Novembre");?>','<?php echo gtext("Dicembre");?>'],
+			closeText: '<?php echo gtextPlain("Chiudi");?>',
+			prevText: '&#x3c;<?php echo gtextPlain("Prec");?>',
+			nextText: '<?php echo gtextPlain("Succ");?>&#x3e;',
+			currentText: '<?php echo gtextPlain("Oggi");?>',
+			monthNames: ['<?php echo gtextPlain("Gennaio");?>','<?php echo gtextPlain("Febbraio");?>','<?php echo gtextPlain("Marzo");?>','<?php echo gtextPlain("Aprile");?>','<?php echo gtextPlain("Maggio");?>','<?php echo gtextPlain("Giugno");?>','<?php echo gtextPlain("Luglio");?>','<?php echo gtextPlain("Agosto");?>','<?php echo gtextPlain("Settembre");?>','<?php echo gtextPlain("Ottobre");?>','<?php echo gtextPlain("Novembre");?>','<?php echo gtextPlain("Dicembre");?>'],
 			monthNamesShort: ['Gen','Feb','Mar','Apr','Mag','Giu',
 				'Lug','Ago','Set','Ott','Nov','Dic'],
 			dayNames: ['Domenica','Luned&#236','Marted&#236','Mercoled&#236','Gioved&#236','Venerd&#236','Sabato'],
 			dayNamesShort: ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
-			dayNamesMin: ['<?php echo gtext("Do");?>','<?php echo gtext("Lu");?>','<?php echo gtext("Ma");?>','<?php echo gtext("Me");?>','<?php echo gtext("Gi");?>','<?php echo gtext("Ve");?>','<?php echo gtext("Sa");?>'],
+			dayNamesMin: ['<?php echo gtextPlain("Do");?>','<?php echo gtextPlain("Lu");?>','<?php echo gtextPlain("Ma");?>','<?php echo gtextPlain("Me");?>','<?php echo gtextPlain("Gi");?>','<?php echo gtextPlain("Ve");?>','<?php echo gtextPlain("Sa");?>'],
 			weekHeader: 'Sm',
 			dateFormat: 'dd/mm/yy',
 			firstDay: 1,
@@ -166,10 +166,10 @@
 					<ul class="nav navbar-nav navbar-right">
 						<?php if (LingueModel::permettiCambioLinguaBackend() && count(Params::$frontEndLanguages) > 1) { ?>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-flag"></i> <?php if (!User::$isMobile) { ?><?php echo gtext(LingueModel::titoloLinguaCorrente());?><?php } ?><span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-flag"></i> <?php if (!User::$isMobile) { ?><?php echo gtextPlain(LingueModel::titoloLinguaCorrente());?><?php } ?><span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<?php foreach (LingueModel::$lingueBackend as $codiceLingua => $titoloLingua) { ?>
-								<li><a href="<?php echo $this->baseUrlSrc."/$codiceLingua/panel/main";?>"><?php echo gtext($titoloLingua)?></a></li>
+								<li><a href="<?php echo $this->baseUrlSrc."/$codiceLingua/panel/main";?>"><?php echo gtextPlain($titoloLingua)?></a></li>
 								<?php } ?>
 							</ul>
 						</li>
@@ -199,8 +199,8 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?php if (!User::$isMobile) { ?><?php echo User::$name;?> <?php } ?><span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="<?php echo $this->baseUrl.'/password/form';?>"><span class="glyphicon glyphicon-cog"></span> <?php echo gtext("Modifica password")?></a></li>
-								<li><a href="<?php echo $this->baseUrl.'/users/logout';?>"><span class="glyphicon glyphicon-off"></span> <?php echo gtext("Esci")?></a></li>
+								<li><a href="<?php echo $this->baseUrl.'/password/form';?>"><span class="glyphicon glyphicon-cog"></span> <?php echo gtextPlain("Modifica password")?></a></li>
+								<li><a href="<?php echo $this->baseUrl.'/users/logout';?>"><span class="glyphicon glyphicon-off"></span> <?php echo gtextPlain("Esci")?></a></li>
 							</ul>
 						</li>
 					</ul>
@@ -221,7 +221,7 @@
 									?>
 									<a <?php echo $pannello["attributi_link"] ?? "";?> href="<?php echo $this->baseUrl.'/'.$linkPannello;?>"><i class="fa <?php echo $pannello["icona"];?>"></i>
 										<?php if (!User::$isMobile) { ?>
-										<?php echo gtext($pannello["titolo"])?>
+										<?php echo gtextPlain($pannello["titolo"])?>
 										<?php } ?>
 									</a>
 								<?php } ?>

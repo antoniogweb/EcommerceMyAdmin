@@ -17,7 +17,7 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 		</div>
 		<div class="uk-width-1-1">
 			<h2 class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>">
-				<span class="uk-icon uk-margin-right uk-hidden@m <?php echo v("classi_icona_checkout")?>"><?php include tpf("Elementi/Icone/Svg/user.svg");?></span><?php echo gtext("Dati di fatturazione");?>
+				<span class="uk-icon uk-margin-right uk-hidden@m <?php echo v("classi_icona_checkout")?>"><?php include tpf("Elementi/Icone/Svg/user.svg");?></span><?php echo gtextPlain("Dati di fatturazione");?>
 			</h2>
 
 			<div class="blocco_checkout">
@@ -42,7 +42,7 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 		</div>
 		<div class="uk-width-expand">
 			<h2 class="<?php echo v("classi_titoli_checkout_spedizione");?>">
-				<span uk-icon="icon:location;ratio:1" class="uk-margin-right uk-hidden@m <?php echo v("classi_icona_checkout")?>"></span><?php echo gtext("Indirizzo di spedizione");?>
+				<span uk-icon="icon:location;ratio:1" class="uk-margin-right uk-hidden@m <?php echo v("classi_icona_checkout")?>"></span><?php echo gtextPlain("Indirizzo di spedizione");?>
 			</h2>
 			
 			<div class="blocco_checkout">
@@ -107,7 +107,7 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 			<span uk-icon="icon:check;ratio:1" class="uk-icon-button <?php echo v("classi_icona_checkout")?>"></span>
 		</div>
 		<div class="uk-width-expand">
-			<h2 id="fragment-checkout-conferma" class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>"><?php echo gtext("Note e conferma acquisto");?></h2>
+			<h2 id="fragment-checkout-conferma" class="uk-margin-remove-top <?php echo v("classi_titoli_checkout");?>"><?php echo gtextPlain("Note e conferma acquisto");?></h2>
 			
 			<?php include(tpf(ElementitemaModel::p("CHECKOUT_BOTTOM","", array(
 					"titolo"	=>	"Parte inferiore del checkout",

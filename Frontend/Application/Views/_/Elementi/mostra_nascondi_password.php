@@ -8,21 +8,21 @@
 		<div class="uk-position-top-right uk-padding-small">
 			<a title="<?php echo gtextAttr("Chiudi avviso");?>" rel="nofollow" class="chiudi_wizard_password" href="#" uk-icon="icon: close"></a>
 		</div>
-		<?php echo gtext("La password deve contenere:");?>
+		<?php echo gtextPlain("La password deve contenere:");?>
 		<span class="avviso_numero_caratteri uk-text-danger">
-			<?php echo gtext("almeno ".VariabiliModel::getNumeroCaratteriPassword()." caratteri,");?>
+			<?php echo gtextPlain("almeno ".VariabiliModel::getNumeroCaratteriPassword()." caratteri,");?>
 		</span>
 		<span class="avviso_caratteri_minuscoli uk-text-danger">
-			<?php echo gtext("minuscole,");?>
+			<?php echo gtextPlain("minuscole,");?>
 		</span>
 		<span class="avviso_caratteri_maiuscoli uk-text-danger">
-			<?php echo gtext("maiuscole,");?>
+			<?php echo gtextPlain("maiuscole,");?>
 		</span>
 		<span class="avviso_caratteri_numerici uk-text-danger">
-			<?php echo gtext("almeno un numero,");?>
+			<?php echo gtextPlain("almeno un numero,");?>
 		</span>
 		<span class="avviso_caratteri_speciali uk-text-danger">
-			<?php echo gtext("almeno un carattere speciale tra");?> <?php echo v("password_regular_expression_caratteri_speciali");?>
+			<?php echo gtextPlain("almeno un carattere speciale tra");?> <?php echo v("password_regular_expression_caratteri_speciali");?>
 		</span>
 	</div>
 </div>

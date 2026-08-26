@@ -4,7 +4,7 @@
     <div class="uk-modal-dialog uk-margin-auto-vertical">
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <div class="uk-modal-body">
-            <p><?php echo gtext("Il prodotto è stato aggiunto alla lista!");?></p>
+            <p><?php echo gtextPlain("Il prodotto è stato aggiunto alla lista!");?></p>
         </div>
     </div>
 </div>

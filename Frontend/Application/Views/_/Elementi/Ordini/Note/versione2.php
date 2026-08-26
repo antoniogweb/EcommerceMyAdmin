@@ -6,14 +6,14 @@
 			<?php echo Html_Form::checkbox("con_note_check",$values["con_note"],1,"",null);?>
 		</div>
 		<div class="uk-margin-left uk-text-small">
-			<?php echo gtext("Aggiungi una nota all'ordine");?>
+			<?php echo gtextPlain("Aggiungi una nota all'ordine");?>
 		</div>
 	</div>
 </div>
 
 <div class="box_note uk-margin-medium-bottom">
 	<div class="uk-margin uk-margin-remove-bottom">
-		<label class="uk-form-label"><?php echo gtext("Nota d'acquisto")?></label>
+		<label class="uk-form-label"><?php echo gtextPlain("Nota d'acquisto")?></label>
 	
 		<?php echo Html_Form::textarea("note",$values["note"],"uk-textarea",null,"placeholder='".gtextAttr("Scrivi qui una eventuale nota al tuo ordine..")."'");?>
 	</div>

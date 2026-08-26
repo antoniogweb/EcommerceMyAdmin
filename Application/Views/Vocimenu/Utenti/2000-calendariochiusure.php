@@ -3,10 +3,10 @@
 <li class="<?php echo tm($tm, "calendariochiusure");?> treeview">
 	<a href="#">
 		<i class="fa fa-calendar"></i>
-		<span><?php echo gtext("Calendario chiusure")?></span>
+		<span><?php echo gtextPlain("Calendario chiusure")?></span>
 	</a>
 	<ul class="treeview-menu">
-		<li><a href="<?php echo $this->baseUrl."/calendariochiusure/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Elenco giorni")?></a></li>
+		<li><a href="<?php echo $this->baseUrl."/calendariochiusure/main";?>"><i class="fa fa-list"></i> <?php echo gtextPlain("Elenco giorni")?></a></li>
 	</ul>
 </li>
 <?php } ?>

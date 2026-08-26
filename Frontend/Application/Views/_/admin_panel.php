@@ -78,14 +78,14 @@
 		</div>
 		<aside id="right-col" class="">
 			<div class="uk-padding-small">
-				<a href="<?php echo $currentUrl;?>" class="uk-button uk-button-default uk-width-1-1"><?php echo gtext("Esci modalità edit")?> <span uk-icon="sign-out"></span></a>
+				<a href="<?php echo $currentUrl;?>" class="uk-button uk-button-default uk-width-1-1"><?php echo gtextPlain("Esci modalità edit")?> <span uk-icon="sign-out"></span></a>
 				
 				<ul uk-accordion>
 					<li v-if="abilitaGestioneTemi && tendinaTemi.length > 0" class="">
-						<a class="uk-accordion-title" href="#"><?php echo gtext("Gestione tema");?></a>
+						<a class="uk-accordion-title" href="#"><?php echo gtextPlain("Gestione tema");?></a>
 						<div class="uk-accordion-content">
 							<div v-if="aggiungiTema">
-								<div class="uk-text-meta"><?php echo gtext("Tema corrente");?></div>
+								<div class="uk-text-meta"><?php echo gtextPlain("Tema corrente");?></div>
 								<select v-model="temaSelezionato" class="uk-margin-remove uk-select uk-margin-small" v-on:change="cambiaTema()">
 									<option  v-for="(tema, index) in tendinaTemi" v-bind:value="tema.nome">{{tema.nome}}</option>
 								</select>
@@ -102,16 +102,16 @@
 						</div>
 					</li>
 					<li v-if="abilitaGestioneVarianti && varianti.length > 0" class="">
-						<a class="uk-accordion-title" href="#"><?php echo gtext("Varianti pagina");?></a>
+						<a class="uk-accordion-title" href="#"><?php echo gtextPlain("Varianti pagina");?></a>
 						<div class="uk-accordion-content">
 							<variante-item v-for="variante in varianti" v-bind:variante="variante" v-bind:idelemento="idElemento" v-bind:tipoelemento="tipoElemento"></variante-item>
 							<div v-if="abilitaGestioneVarianti && varianti.length > 0" class="uk-margin-small">
-								<a href="#" @click.prevent="resettaTema()" class="uk-button uk-button-danger uk-width-1-1"><?php echo gtext("Resetta varianti")?></a>
+								<a href="#" @click.prevent="resettaTema()" class="uk-button uk-button-danger uk-width-1-1"><?php echo gtextPlain("Resetta varianti")?></a>
 							</div>
 						</div>
 					</li>
 					<li v-show="mostraFasce" class="uk-open">
-						<a class="uk-accordion-title" href="#"><?php echo gtext("Fasce pagina");?></a>
+						<a class="uk-accordion-title" href="#"><?php echo gtextPlain("Fasce pagina");?></a>
 						<div class="uk-accordion-content">
 							<table class="uk-table uk-table-divider uk-table-striped uk-table-small">
 								<tbody class="sortable" uk-sortable="handle: .uk-sortable-handle">
@@ -133,12 +133,12 @@
 								</tbody>
 							</table>
 							<div v-if="fasce.length == 0" class="uk-margin uk-alert uk-alert-primary">
-								<?php echo gtext("Nessuna fascia presente");?>
+								<?php echo gtextPlain("Nessuna fascia presente");?>
 							</div>
 							<?php if (!v("aggiunta_fasce_frontend_nuovo")) { ?>
-							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> <?php echo gtext("Nuova fascia");?></a>
+							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> <?php echo gtextPlain("Nuova fascia");?></a>
 							<?php } else { ?>
-							<a @click.prevent="preparaAggiungiDialog()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> <?php echo gtext("Nuova fascia");?></a>
+							<a @click.prevent="preparaAggiungiDialog()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> <?php echo gtextPlain("Nuova fascia");?></a>
 							<?php } ?>
 							<div v-if="!aggiungi">
 								<input v-bind:class="oggettoErroreTitolo" v-model="titoloNuovaFascia" class="uk-input" placeholder="Titolo fascia nuova fascia"/>
@@ -157,7 +157,7 @@
 				<div class=" uk-modal-dialog uk-modal-body uk-width-auto">
 					<button class="uk-modal-close-full uk-close large" type="button" uk-close></button>
 					<div class="uk-modal-header">
-						<h2 class="uk-modal-title"><?php echo gtext("Seleziona la fascia");?></h2>
+						<h2 class="uk-modal-title"><?php echo gtextPlain("Seleziona la fascia");?></h2>
 					</div>
 
 					<div class="uk-modal-body" uk-overflow-auto>

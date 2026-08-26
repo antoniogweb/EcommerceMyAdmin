@@ -1,12 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
-	gtext("Notifiche") => "",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
+	gtextPlain("Notifiche") => "",
 );
 
-$titoloPagina = gtext("Notifiche");
+$titoloPagina = gtextPlain("Notifiche");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -29,7 +29,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 		<?php echo Html_Form::select("id_page",$this->viewArgs["id_page"],$pagineDaLeggere,"uk-input",null,'yes','placeholder="'.gtextAttr("Prodotto").'"');?>
 	</div>
 	<div class="uk-width-1-5@s">
-		<button type="submit" class="uk-button uk-button-primary uk-width-1-1"><?php echo gtext("Filtra");?></button>
+		<button type="submit" class="uk-button uk-button-primary uk-width-1-1"><?php echo gtextPlain("Filtra");?></button>
 	</div>
 </form>
 
@@ -37,19 +37,19 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-visible@m">
 		<div class="uk-text-small uk-text-meta uk-text-uppercase uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
-				<?php echo gtext("Data");?>
+				<?php echo gtextPlain("Data");?>
 			</div>
 			<div class="uk-first-column uk-text-left">
-				<?php echo gtext("Categoria");?>
+				<?php echo gtextPlain("Categoria");?>
 			</div>
 			<div class="uk-first-column uk-text-left">
-				<?php echo gtext("Prodotto");?>
+				<?php echo gtextPlain("Prodotto");?>
 			</div>
 			<div class="uk-first-column uk-text-left">
-				<?php echo gtext("Tipo documento");?>
+				<?php echo gtextPlain("Tipo documento");?>
 			</div>
 			<div class="uk-first-column uk-text-right">
-				<?php echo gtext("Documento");?>
+				<?php echo gtextPlain("Documento");?>
 			</div>
 		</div>
 	</div>
@@ -58,26 +58,26 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div>
 		<div class="uk-text-small uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Data");?>:</span> <?php echo date("d/m/Y", strtotime($notifica["documenti"]["data_file_upload"]));?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Data");?>:</span> <?php echo date("d/m/Y", strtotime($notifica["documenti"]["data_file_upload"]));?>
 			</div>
 			<div class="uk-first-column uk-text-left">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Categoria");?>:</span> <?php echo genericField($notifica, "title", "categories", "categorie_tradotte");?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Categoria");?>:</span> <?php echo genericField($notifica, "title", "categories", "categorie_tradotte");?>
 			</div>
 			<div class="uk-first-column uk-text-left">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Prodotto");?>:</span> <?php echo genericField($notifica, "title", "pages", "pagine_tradotte");?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Prodotto");?>:</span> <?php echo genericField($notifica, "title", "pages", "pagine_tradotte");?>
 			</div>
 			<div class="uk-first-column uk-text-left">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Tipo documento");?>:</span> <?php echo $notifica["tipi_documento"]["titolo"];?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Tipo documento");?>:</span> <?php echo $notifica["tipi_documento"]["titolo"];?>
 			</div>
 			<div class="uk-first-column uk-text-right">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Documento");?>:</span> <a target="_blank" href="<?php echo $this->baseUrl."/contenuti/documento/".$notifica["documenti"]["id_doc"];?>"><?php echo genericField($notifica, "titolo", "documenti", "documenti_tradotti");?></a>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Documento");?>:</span> <a target="_blank" href="<?php echo $this->baseUrl."/contenuti/documento/".$notifica["documenti"]["id_doc"];?>"><?php echo genericField($notifica, "titolo", "documenti", "documenti_tradotti");?></a>
 			</div>
 		</div>
 	</div>
 	<hr>
 	<?php } ?>
 <?php } else { ?>
-<p><?php echo gtext("Non hai alcuna notifica da leggere");?></p>
+<p><?php echo gtextPlain("Non hai alcuna notifica da leggere");?></p>
 <?php } ?>
 
 <?php 

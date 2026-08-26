@@ -1,0 +1,911 @@
+Application/Views/Slide/pages_form.php:130	$labelBlocco = gtext("Immagine");
+Application/Views/Slide/pages_form.php:137	$labelBlocco = gtext("Immagine per mobile");
+Application/Views/Slide/pages_form.php:146	$labelBlocco = gtext("Immagine 3");
+Application/Views/Partner/pages_form_immagini.php:10	$labelBlocco = gtext("Immagine 2");
+Application/Views/Ordiniacquisto/gestisci_associato_pulsante_righe.php:3	<?php echo Html_Form::select("id_articolo","",array("0" => gtext("Seleziona articolo")),"select_articolo_ordine_acquisto","","yes", "style='min-width:400px;' url-combinazione='magazzinoarticoli/main'");?>
+Application/Views/Ordiniacquisto/gestisci_associato_pulsante_righe.php:7	<?php echo Html_Form::select("id_c","",array("0" => gtext("Seleziona variante")),"form-control select_combinazione_ordine_acquisto","","yes", "style='min-width:200px;'");?>
+Application/Views/categories_form.php:7	<h1><?php if (strcmp($type,"update") === 0) { echo gtext("Gestione")." $tabella: ".$titoloPagina; } else { echo gtext("Inserimento nuova categoria");}?></h1>
+Application/Views/Ordiniacquistoricezioni/gestisci_associato_pulsante_righe.php:7	<?php echo Html_Form::select("id_ordine_acquisto_riga","",array("0" => gtext("Seleziona riga ordine")),"form-control select_riga_ordine_acquisto_da_ricevere","","yes", "style='min-width:200px;'");?>
+Application/Views/Prodotti/gestisci_associato.php:102	<?php echo Html_Form::select("id_articolo_","",array("0" => gtext("Seleziona articolo")),"select_articolo_ordine_acquisto","","yes", "style='min-width:400px;' url-combinazione='magazzinoarticoli/main'");?>
+Application/Views/Prodotti/gestisci_associato.php:106	<?php echo Html_Form::select("id_articolo","",array("0" => gtext("Seleziona variante")),"form-control select_combinazione_ordine_acquisto","","yes", "style='min-width:200px;'");?>
+Application/Views/Prodotti/pages_form.php:296	$labelBlocco = gtext("Immagine 2");
+Application/Views/Prodotti/pages_form.php:305	$labelBlocco = gtext("Immagine 3");
+Application/Views/Ordini/vedi_righe_prodotti.php:42	echo "<br />------------<br /><b>".gtext("Codici delle Gift Card legate alla righa d'ordine").":</b>";
+Application/Views/Ordini/ElementiTop/nazione_navigazione.php:7	<td><?php echo v("attiva_ip_location") ? gtext("Lingua / Nazione navigazione / Nazione spedizione") : gtext("Lingua / Nazione URL / Nazione spedizione");?>:</td>
+Application/Views/Ordini/vedi_response.php:14	<h2><?php echo $r["risultato_transazione"] ? gtext("Transazione avvenuta correttamente") : "<span class='text text-danger'>".gtext("Transazione NON avvenuta correttamente")."</span>";?></h2>
+Application/Views/Ordini/gestisci_associato.php:27	<?php echo Html_Form::select("id_page","",array("0" => gtext("Seleziona articolo")),"select_articolo_ordine","","yes", "style='min-width:400px;'");?>
+Application/Views/Ordini/gestisci_associato.php:31	<?php echo Html_Form::select("id_c","",array("0" => gtext("Seleziona variante")),"form-control select_combinazione_ordine","","yes", "style='min-width:200px;'");?>
+Application/Views/Ticket/form_scaffold_main.php:56	<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo $isBozza ? gtext("Salva e invia il ticket") : gtext("Salva il ticket");?></button>
+Application/Views/Ticket/steps.php:30	<b><?php echo $recordTicket["ticket"]["id_admin"] ? gtext("Backend") : "Web";?></b>
+Application/Views/pages_form_immagine.php:4	$labelBlocco = gtext("Immagine");
+Application/Views/pages_form_immagine.php:8	$labelPulsante = gtext("SELEZIONA IMMAGINE");
+Application/Views/pages_attributi.php:93	echo gtext("Non è possibile aggiungere o eliminare varianti a questo prodotto in quanto ha già ordini o movimentazioni $stringaLista");?></div>
+Application/Views/Righe/daordinare_filtri.php:7	$fornitori = array(0 => gtext("Seleziona un fornitore")) + FornitoriModel::g()->clear()->select("id_fornitore,ragione_sociale")->orderBy("ragione_sociale")->toList("id_fornitore", "ragione_sociale")->send();
+Application/Views/Pagine/pages_form.php:93	$labelBlocco = gtext("Immagine sfondo");
+Application/Strings/Lang/It/Generic.php:61	return gtext($this->translations[$string], false);
+Application/Strings/Lang/It/Generic.php:64	return gtext($string);
+Application/Strings/Lang/It/DbCondStrings.php:31	return "<div class='alert alert-danger'>".gtext("Il valore del campo")." <i>". getFieldLabel($field) ."</i> ".gtext("è già presente. Per favore scegline un altro.")."</div>\n".$this->getHiddenAlertElement($field);
+Application/Strings/Lang/It/Formats/From/Mysql.php:70	return gtext("Sì");
+Application/Strings/Lang/It/Formats/From/Mysql.php:72	return gtext("No");
+Application/Strings/Lang/It/ValCondStrings.php:38	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Si prega di riempire il campo")." ". gtext(getFieldLabel($element)) ."</i></div>".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:44	return "<div class='".Params::$errorStringClassName."'>".gtext("Sia prega di controllare che i campi")." <i>".gtext(getFieldLabel($element))."</i> abbiamo lo stesso valore</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:50	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia una stringa di soli caratteri alfabetici</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:56	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia una stringa di soli caratteri alfanumerici</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:62	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia una stringa di soli numeri decimali</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:68	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia un indirizzo e-mail</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:74	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia un numero</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:80	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia un numero intero</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:86	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> ".gtext("sia una data")."</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:92	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> non sia composto da più di $maxLength caratteri</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:98	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> non sia uguale ad uno dei seguenti valori: $stringList</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:104	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia uguale ad uno dei seguenti valori: $stringList</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:110	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> soddisfi la seguente espressione regolare: $regExp</div>\n".$this->getHiddenAlertElement($element);
+Application/Strings/Lang/It/ValCondStrings.php:120	return "<div class='".Params::$errorStringClassName."'><i>".gtext("Sia prega di controllare che il campo")." ".gtext(getFieldLabel($element))."</i> sia un numero decimale (numero massimo di cifre intere:$I, numero massimo di cifre decimali:$D)</div>\n".$this->getHiddenAlertElement($element);
+Application/Apps/Acquisti/Views/header.php:246	<strong><?php echo (int)$numeroDaCollegare." ".gtext("$stringaRigheSingPlu ordine acquisto da collegare");?></strong>
+Application/Apps/Acquisti/Views/header.php:256	<strong><?php echo (int)$numeroDaOrdinare." ".gtext("$stringaRigheSingPluOrdinare ordine vendita da ordinare");?></strong>
+Application/Apps/Acquisti/Views/Righeacquisti/daordinare_filtri.php:7	$fornitori = array(0 => gtext("Seleziona un fornitore")) + FornitoriModel::g()->clear()->select("id_fornitore,ragione_sociale")->orderBy("ragione_sociale")->toList("id_fornitore", "ragione_sociale")->send();
+Application/Apps/Acquisti/Views/Ordiniacquistoricezioniacquisti/gestisci_associato_pulsante_righe.php:7	<?php echo Html_Form::select("id_ordine_acquisto_riga","",array("0" => gtext("Seleziona riga ordine")),"form-control select_riga_ordine_acquisto_da_ricevere","","yes", "style='min-width:200px;'");?>
+Application/Apps/Acquisti/Views/Ordiniacquistoacquisti/gestisci_associato_pulsante_righe.php:4	<?php echo Html_Form::select("id_articolo","",array("0" => gtext("Seleziona articolo")),"select_articolo_ordine_acquisto","","yes", "style='min-width:400px;' url-combinazione='acquisti/magazzinoarticoliacquisti/main'");?>
+Application/Apps/Acquisti/Views/Ordiniacquistoacquisti/gestisci_associato_pulsante_righe.php:8	<?php echo Html_Form::select("id_c","",array("0" => gtext("Seleziona variante")),"form-control select_combinazione_ordine_acquisto","","yes", "style='min-width:200px;'");?>
+Application/Apps/Statistiche/Models/StatistichegraficiModel.php:60	0	=>	gtext("Affiancate"),
+Application/Apps/Statistiche/Models/StatistichegraficiModel.php:61	1	=>	gtext("Sormontate"),
+Application/Apps/Impegni/Views/Ordiniimpegni/vedi_response.php:14	<h2><?php echo $r["risultato_transazione"] ? gtext("Transazione avvenuta correttamente") : "<span class='text text-danger'>".gtext("Transazione NON avvenuta correttamente")."</span>";?></h2>
+Application/Apps/Impegni/Views/Ordiniimpegni/vedi.php:144	echo "<br />------------<br /><b>".gtext("Codici delle Gift Card legate alla righa d'ordine").":</b>";
+Application/Include/language.php:48	return gtext($string, $edit, $function, $contesto, $gestibile, $applicativo);
+Application/Include/language.php:53	return htmlentitydecode(gtext($string, $edit, $function, $contesto, $gestibile, $applicativo));
+Application/Include/language.php:117	return gtext($string, true, "none", null, 1, $applicativo);
+Application/Include/functions.php:29	return v("attiva_gestione_stati_ordine") ? OrdiniModel::$stati[$type] : gtext(OrdiniModel::$stati[$type]);
+Application/Include/functions.php:61	return gtext("Nessuno", false);
+Application/Include/functions.php:241	$output = gtext('sì');
+Application/Include/functions.php:244	$output = gtext('no');
+Application/Include/functions.php:257	$output = gtext('sì');
+Application/Include/functions.php:260	$output = gtext('no');
+Application/Include/functions.php:276	return gtext("sì");
+Application/Include/functions.php:278	return gtext("no");
+Application/Modules/Spedizionieri/Brt.php:556	return gtext("ID collo cliente");
+Application/Modules/Spedizionieri/FedEx.php:71	"<div class='form_notice'>".gtext("Se più di uno, divedere i codici da virgola, senza spazi")."(Ex: 123456789,987654321)</div>"
+Application/Modules/Spedizioniere.php:198	$spedizione->notice = "<div class='alert alert-danger'>".gtext($notice)."</div>";
+Application/Modules/Spedizioniere.php:232	return gtext("Numero spedizione corriere");
+Application/Modules/ModelliAI/ChatGPT35Turbo.php:113	return array(0, gtext("Errore generico"));
+Application/Modules/GatewayPagamento/Klarna.php:168	"page_title"		=>	gtext("Completa il tuo acquisto"),
+Application/Modules/GatewayPagamento/Nexi.php:110	'descrizione' => gtext("Ordine")." ".$this->ordine["id_o"],
+Application/Modules/GatewayPagamento/Sella.php:132	'shopTransactionId' => gtext("Ordine")." ".$this->ordine["id_o"]." ".gtext("del")." ".date("d/m/Y H:i"),
+Application/Modules/GatewayPagamento/Satispay.php:125	'external_code' => gtext("Ordine")." ".$this->ordine["id_o"],
+Application/Modules/GatewayPagamento/PaypalCheckout.php:145	$messaggio = gtext(vsprintf("Attenzione, discrepanza nel dovuto dell'ordine %s, si prega di controllare i log",array($this->ordine["id_o"])));
+Application/Modules/GatewayPagamento/PaypalCheckout.php:148	$messaggio = gtext(vsprintf("Attenzione, il pagamento dell'ordine %s non è andato a buon fine, si prega di controllare i log",array($this->ordine["id_o"])));
+Application/Modules/GatewayPagamento/PaypalCheckout.php:265	"description"	=>	gtext("Non è possibile iniziare il pagamento tramite PayPal. Si prega di contattare il negozio."),
+Application/Modules/Gestionale.php:79	return "<span class='text text-success text-bold'>".sprintf(gtext("Ordine %s inviato a"), $ordine["id_o"])." ".$this->titolo()."</span>";
+Application/Modules/Gestionale.php:84	return "<span class='text text-danger text-bold'>".sprintf(gtext("Errore nell'invio dell'ordine %s inviato a"), $ordine["id_o"])." ".$this->titolo()."</span><pre>".$ordine["errore_gestionale"]."</pre>";
+Application/Modules/Gestionale.php:92	$html .= "<a style='margin-left:10px;' class='label label-danger' href='".Url::getRoot()."gestionali/annullainvio/ordine/".$ordine["id_o"]."'><i class='fa fa-trash'></i> ".gtext($testo)." ".$this->titolo()."</a>";
+Application/Modules/Gestionale.php:102	$html .= "<a class='label label-primary' href='".Url::getRoot()."gestionali/invia/ordine/".$ordine["id_o"]."'>".gtext($testo)." ".$this->titolo()."</a>";
+Application/Modules/Gestionale.php:164	$arrayErrori[] = array(sprintf(gtext("Campo %s non presente"),$campo));
+Application/Modules/Gestionale.php:276	"titolo"	=>	count($ripartizioni) > 1 ? gtext("Spedizione Iva") . " " . setPriceReverse($ripartizione["aliquota_iva"])."%" : gtext("Spedizione"),
+Application/Modules/Gestionale.php:293	"titolo"	=>	count($ripartizioni) > 1 ? gtext("Pagamento Iva") . " " . setPriceReverse($ripartizione["aliquota_iva"])."%" : gtext("Pagamento"),
+Application/Modules/Gestionale.php:311	"titolo"	=>	count($ripartizioni) > 1 ? gtext("Sconto crediti") . " " . setPriceReverse($ripartizione["aliquota_iva"])."%" : gtext("Sconto crediti"),
+Application/Modules/Gestionale.php:320	// 	"titolo"	=>	gtext("Sconto crediti"),
+Application/Modules/Gestionale.php:354	"titolo"	=>	count($ripartizioni) > 1 ? gtext("Coupon") . " " . setPriceReverse($ripartizione["aliquota_iva"])."%" : gtext("Coupon"),
+Application/Modules/Gestionale.php:363	// 	"titolo"	=>	gtext("Coupon"),
+Application/Modules/App.php:141	"Descrizione"=>	gtext("Utilizzato, previo consenso, per collegare le pagine prodotto visualizzate e suggerire prodotti visti anche da altri utenti con interessi simili."),
+Application/Modules/App.php:159	"Descrizione"=>	gtext("Utilizzato per il mantenimento della lista dei desideri"),
+Application/Modules/App.php:167	"Descrizione"=>	gtext("Utilizzato per il mantenimento degli articoli nel carrello e per la gestione tecnica del processo d’acquisto"),
+Application/Modules/App.php:175	"Descrizione"=>	gtext("Utilizzato per mantenere la sessioni dei contatti verificati"),
+Application/Modules/App.php:183	"Descrizione"=>	gtext("Utilizzato per permettere al cliente di usare all'acquisto il codice coupon"),
+Application/Modules/App.php:191	"Descrizione"=>	gtext("Utilizzato per salvare le preferenze sui cookie"),
+Application/Modules/App.php:199	"Descrizione"=>	gtext("Utilizzato per salvare le preferenze sui cookie"),
+Application/Modules/App.php:207	"Descrizione"=>	gtext("Utilizzato per il mantenimento della sessione"),
+Application/Modules/App.php:215	"Descrizione"=>	gtext("Utilizzato per il mantenimento della sessione utente"),
+Application/Modules/App.php:223	"Descrizione"=>	gtext("Utilizzato per il mantenimento della sessione utente"),
+Application/Modules/App.php:231	// 	"Descrizione"=>	gtext("Utilizzato per il mantenimento della sessione utente"),
+Application/Modules/App.php:239	"Descrizione"=>	gtext("Utilizzato per le statistiche di visualizzazione delle pagine, non vengono salvati dati sensibili come IP o altre informazioni."),
+Application/Modules/App.php:247	"Descrizione"=>	gtext("Utilizzato per salvare l'ordinamento di visualizzazione dei prodotti."),
+Application/Modules/App.php:255	"Descrizione"=>	gtext("Utilizzato per salvare lo storico della chat con l'assistente virtuale"),
+Application/Modules/App.php:263	"Descrizione"=>	gtext("Utilizzato per salvare la firma del cookie assistant_uid"),
+Application/Modules/App.php:284	"Descrizione"	=>	gtext("Utilizzato per il funzionamento dei popup informativi in home page"),
+Application/Modules/Gestionali/FattureInCloud.php:75	return "<span class='text text-success text-bold'>".sprintf(gtext("Fattura %s inviata a"), $numero)." ".$this->titolo()."</span><br />".$this->descInviaAlGestionale($ordine, "Invia nuovamente a");
+Application/Modules/Gestionali/FattureInCloud.php:77	return "<span class='text text-danger text-bold'>".sprintf(gtext("Fattura assente nel gestionale ma segnata come inviata a"))." ".$this->titolo()."?!?</span>";
+Application/Modules/Gestionali/FattureInCloud.php:165	return $this->impostaErrori($ordine["id_o"], array(gtext("Fattura mancante")));
+Application/Modules/Gestionali/FattureInCloud.php:177	return $this->impostaErrori($ordine["id_o"], array(gtext("Codice IVA gestionale mancante per iva"." ".$riga["iva"]."%")));
+Application/Models/StatiordineModel.php:89	"options"	=>	self::$attivoSiNo + array("-1"=>gtext("Neutro")),
+Application/Models/StatiordineModel.php:109	"<div class='form_notice'>".gtext("Se settato su sì, gli ordini che avranno questo stato potranno essere spediti.")."</div>"
+Application/Models/StatiordineModel.php:121	"<div class='form_notice'>".gtext("Se settato su sì, alla prenotazione di una spedizone, gli ordini collegati verranno impostati a questo stato. Può esserci un solo stato ordine con il campo In spedizione impostato su sì.")."</div>"
+Application/Models/StatiordineModel.php:133	"<div class='form_notice'>".gtext("Se settato su sì, alla conferma di una spedizone, gli ordini collegati verranno impostati a questo stato. Può esserci un solo stato ordine con il campo Spedito impostato su sì.")."</div>"
+Application/Models/StatiordineModel.php:145	"<div class='form_notice'>".gtext("Se settato su sì, e se siamo all'interno del periodo di reso, quanto l'ordine è in questo stato il cliente vedrà, nella pagina dell'ordine, un pulsante per richiedere il reso")."</div>"
+Application/Models/StatiordineModel.php:191	return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+Application/Models/CaratteristicheModel.php:70	"<div class='form_notice'>".gtext("Rappresenta il nome della caratteristica. Ex: colore, taglia, forma")."</div>",
+Application/Models/CaratteristicheModel.php:98	"<div class='form_notice'>".gtext("Quando si filtra nella sezione prodotti per tale caratteristica, nell'URL della pagina verrà usato l'alias indicato. Viene creato in automatico se lasciato vuoto.")."</div>",
+Application/Models/CaratteristicheModel.php:106	"<div class='form_notice'>".gtext("Se si imposta su sì, la carratteristica apparirà come filtro nella sezione prodotti dell'ecommerce")."</div>",
+Application/Models/PromozionipagineModel.php:60	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento è già stato associato")."</div>";
+Application/Models/PromozionipagineModel.php:78	$this->notice = "<div class='alert alert-danger'>".gtext($fraseErrore)."</div>";
+Application/Models/PromozionipagineModel.php:83	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento non esiste")."</div>";
+Application/Models/AttributivaloriModel.php:90	"<div class='form_notice'>".gtext("Rappresenta il valore della variante. Ex: rosso, XL, cuore")."</div>",
+Application/Models/AttributivaloriModel.php:98	"<div class='form_notice'>".gtext("Viene usato nell'URL del prodotto. Viene creato in automatico se lasciato vuoto.")."</div>",
+Application/Models/AttributivaloriModel.php:106	"<div class='form_notice'>".gtext("Inserire il codice esadecimale del colore con il cancelletto davanti. Ex: #000000 per il colore nero")."</div>",
+Application/Models/RicerchesinonimiModel.php:49	"<div class='form_notice'>".gtext("Inserirli uno dopo l'altro divisi da una virgola.")."</div>"
+Application/Models/UsersModel.php:54	$this->addStrongCondition("both",'checkAlphaNum',"username|".gtext("L'username deve essere una stringa alfanumerica").'<div style="display:none;" rel="hidden_alert_notice">username</div>');
+Application/Models/UsersModel.php:56	$this->addSoftCondition("both",'checkEqual',"password,confirmation|".gtext("Le due password non coincidono").self::evidenziaPassword());
+Application/Models/SociModel.php:31	$this->formStruct["entries"]["url"]["labelString"] = gtext("Link sito web");
+Application/Models/SociModel.php:32	$this->formStruct["entries"]["email_contatto_evento"]["labelString"] = gtext("Email");
+Application/Models/SociModel.php:33	$this->formStruct["entries"]["telefono_contatto_evento"]["labelString"] = gtext("Telefono");
+Application/Models/SociModel.php:34	$this->formStruct["entries"]["indirizzo_localita_evento"]["labelString"] = gtext("Indirizzo");
+Application/Models/SociModel.php:35	$this->formStruct["entries"]["localita_evento"]["labelString"] = gtext("Località");
+Application/Models/AttributiModel.php:69	'options'	=>	array(0 => gtext("Seleziona")) + TipologieattributiModel::g()->orderBy("id_order")->toList("id_tipologia_attributo", "titolo")->send(),
+Application/Models/ListeregaloModel.php:52	$linkAggiungi = (empty($record)) ? "<a class='iframe link_aggiungi' href='".Url::getRoot()."regusers/form/insert/0?partial=Y&nobuttons=Y'><i class='fa fa-plus-square-o'></i> ".gtext("Crea nuovo")."</a>" : "";
+Application/Models/ListeregaloModel.php:82	"<div class='form_notice'>".gtext("Verrà creato in automatico")."</div>"
+Application/Models/ListeregaloModel.php:94	"<div class='form_notice'>".gtext("Serve per il calcolo dell'IVA sugli ordini legati a questa lista")."</div>"
+Application/Models/ListeregaloModel.php:454	$html .= "<b>".gtext("Titolo").":</b> ".$res["liste_regalo"]["titolo"];
+Application/Models/ListeregaloModel.php:457	$html .= " <a target='_blank' href='".Url::getRoot()."listeregalo/form/update/".(int)$idLista."' class='label label-primary text-bold'>".gtext("vai alla lista")." <i class='fa fa-arrow-right'></i></a>";
+Application/Models/ListeregaloModel.php:459	$html .= "$tag<b>".gtext("Tipo").":</b> ".$res["liste_regalo_tipi"]["titolo"];
+Application/Models/ListeregaloModel.php:460	$html .= "$tag<b>".gtext("Creatore lista").":</b> ".self::getNominativo($res["regusers"])." (".$res["liste_regalo"]["email"].") ";
+Application/Models/ListeregaloModel.php:463	$html .= "<a href='".Url::getRoot()."regusers/form/update/".(int)$res["regusers"]["id_user"]."?partial=Y&nobuttons=Y' class='iframe label label-info text-bold'><i class='fa fa-user'></i> ".gtext("dettagli utente")."</a>";
+Application/Models/TestiModel.php:131	"0"	=>	gtext("No"),
+Application/Models/TestiModel.php:132	"1"	=>	gtext("Sì"),
+Application/Models/IntegrazioniloginModel.php:63	"<div class='form_notice'>".gtext("Il colore, in esadecimale (compreso di #), dello sfondo del pulsante")."</div>"
+Application/Models/IntegrazioniloginModel.php:79	"<a style='margin-left:30px;' class='make_spinner' href='".Url::getRoot()."integrazionilogin/ottieniaccesstoken/".$record["codice"]."'><i class='fa fa-refresh'></i> ".gtext("Ottieni Facebook Login Access Token")."</a>"
+Application/Models/IntegrazioniloginModel.php:87	"<a style='margin-left:30px;' class='make_spinner' href='".Url::getRoot()."integrazionilogin/ottieniinstagramaccesstoken/".$record["codice"]."'><i class='fa fa-refresh'></i> ".gtext("Ottieni Instagram Access Token")."</a>"
+Application/Models/IntegrazioniloginModel.php:96	return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+Application/Models/EventiretargetingModel.php:120	return gtext(self::$scattaDopoOre[$record["eventi_retargeting"]["scatta_dopo_ore"]]);
+Application/Models/SegnapostoModel.php:149	$wrap .= "<div><b>[$pl]</b>: ".gtext($titolo)."</div>";
+Application/Models/OrdiniacquistorigheModel.php:202	$prezzoListinoHtml = "<div style='margin-top:5px;'><i>".gtext("List").": <b>$prezzoListino €</b></i></div>";
+Application/Models/TicketfileModel.php:150	return gtext("File eliminato");
+Application/Models/TicketfileModel.php:163	return gtext("File eliminato");
+Application/Models/TicketfileModel.php:172	return $record["ticket_file"]["clean_filename"]." (<i>".gtext("in elaborazione")."</i>)";
+Application/Models/TickettipologieModel.php:48	$spiegazioneListe = v("attiva_liste_regalo") ? "<br />".gtext("Con la tipologia LISTA REGALO, il cliente dovrà selezionare la lista regalo per cui richiede assistenza e poi uno o più prodotti di quella lista.") : "";
+Application/Models/TickettipologieModel.php:62	"<div class='form_notice'>".gtext("Con la tipologia ORDINE, il cliente dovrà selezionare l'ordine per cui richiede assistenza e poi uno o più prodotti di quell'ordine.")."<br />".gtext("Con la tipologia PRODOTTO, il cliente dovrà selezionare un prodotto per cui richiede assistenza.").$spiegazioneListe."<br />".gtext("Con la tipologia GENERICO, il cliente nondovrà selezionare alcun prodotto, ordine o lista regalo.")."</div>"
+Application/Models/AlimenticatModel.php:38	$this->formStruct["entries"]["colore_testo_in_slide"]["labelString"] = gtext("Colore");
+Application/Models/FormModel.php:36	$linkAggiungi = ""; //"<a class='iframe link_aggiungi' href='".Url::getRoot()."regusers/form/insert/0?partial=Y&nobuttons=Y'><i class='fa fa-plus-square-o'></i> ".gtext("Crea nuovo")."</a>";
+Application/Models/FormModel.php:38	$arrayAnonimo = (v("permetti_acquisto_anonimo") || ($id && !$idUser)) ? array("0" => gtext("-- nessun cliente selezionato --")) : array();
+Application/Models/FormModel.php:42	$opzioniIdSpedizione = array("0" => gtext("-- nessun indirizzo selezionato --")) + $this->getTendinaIndirizzi($idUser);
+Application/Models/FormModel.php:283	"<div class='form_notice'>".gtext("Sono note inserite dal cliente o che il cliente può vedere nella pagina dell'ordine.")."</div>"
+Application/Models/FormModel.php:291	"<div class='form_notice'>".gtext("Sono note visibili solo dal backend (il cliente non le vedrà mai).")."</div>"
+Application/Models/FormModel.php:305	"<div class='form_notice'>".gtext("Se impostato su sì, si attiverà una nuova scheda per la gestione dei codici coupon dell'agente.")."</div>"
+Application/Models/FormModel.php:346	"<div class='form_notice'>".gtext("Se impostato su sì, i prezzi saranno IVA inclusa.")."</div>"
+Application/Models/FormModel.php:352	"options"	=>	array("" => "Seleziona", "M" => gtext("Maschio"), "F" => gtext("Femmina")),
+Application/Models/FormModel.php:369	return array("0" => gtext("-- seleziona --")) + $cModel->clear()->where(array(
+Application/Models/FormModel.php:395	return array("0" => gtext("-- Seleziona --")) + $cl->clear()->select("id_classe,concat(titolo,' (',sconto,' %)') as label")->orderBy("sconto")->toList("id_classe","aggregate.label")->send();
+Application/Models/FormModel.php:452	return array("0" => gtext("-- Seleziona --")) + $selectTendina;
+Application/Models/ApplicazioniModel.php:50	return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+Application/Models/TraduzionicorrezioniModel.php:38	0 => gtext('Intero testo'),
+Application/Models/TraduzionicorrezioniModel.php:39	2 => gtext('Porzione di testo'),
+Application/Models/TraduzionicorrezioniModel.php:62	"<div class='form_notice'>".gtext("Se impostato 'Intero testo' viene usata questa traduzione nel caso il testo da tradurre sia esattamente uguale a quello impostato.")."<br />".gtext("Se impostato 'Porzione di testo' viene usata questa traduzione ogni volta che si trova la porzione di testo indicata nel testo da tradurre.")."</div>"
+Application/Models/TraduzionicorrezioniModel.php:78	return gtext(LingueModel::g()->clear()->select("titolo")->where(array(
+Application/Models/TraduzionicorrezioniModel.php:116	return gtext(self::$tipoCorrezione[$idTipo]);
+Application/Models/GenericModel.php:639	$default = $empty ? array("W"	=>	"Tutte le nazioni") : array("0"	=>	gtext("Seleziona"));
+Application/Models/GenericModel.php:738	$temp[$codice] = $prefisso.strtoupper(gtext($descrizione));
+Application/Models/GenericModel.php:749	return strtoupper(gtext(LingueModel::$valori[$record[$this->_tables]["lingua"]]));
+Application/Models/GenericModel.php:751	return strtoupper(gtext($record[$this->_tables]["lingua"]));
+Application/Models/GenericModel.php:944	return array("0"=>gtext("-- NON IMPOSTATO --")) + $c->buildSelect(null, false);
+Application/Models/GenericModel.php:949	return array("0"=>gtext("-- NON IMPOSTATO --")) + $this->clear()->select("pages.id_page,pages.title")->addWhereAttivo()->orderBy("title")->toList("id_page","title")->send();
+Application/Models/GenericModel.php:1048	$this->notice = "<div class='alert alert-danger'>".gtext("Questo contenuto è già stato associato a questo gruppo")."</div>";
+Application/Models/GenericModel.php:1058	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento non esiste")."</div>";
+Application/Models/GenericModel.php:1104	$select += array(0 => gtext("-- NON IMPOSTATO --"));
+Application/Models/GenericModel.php:1407	return "<span class='text text-success text-bold'>".gtext("Includi")."</span>";
+Application/Models/GenericModel.php:1409	return "<span class='text text-danger text-bold'>".gtext("Escludi")."</span>";
+Application/Models/GenericModel.php:1602	"tutti"	=>	gtext("Visibilità"),
+Application/Models/GenericModel.php:1603	"Y"		=>	gtext("Pubblicato"),
+Application/Models/GenericModel.php:1604	"N"		=>	gtext("Non pubblicato"),
+Application/Models/GenericModel.php:1611	"0"		=>	gtext("Elementi presenti"),
+Application/Models/GenericModel.php:1612	"1"		=>	gtext("Cestino"),
+Application/Models/PagamentiModel.php:121	"<div class='form_notice'>".gtext("Il costo del pagamento verrà aggiunto al totale dell'ordine.")."</div>"
+Application/Models/PagamentiModel.php:129	"<div class='form_notice'>".gtext("Il costo del pagamento verrà aggiunto al totale dell'ordine.")."</div>"
+Application/Models/PagamentiModel.php:144	"<div class='form_notice'>".gtext("Questo testo apparirà nella pagina di resoconto e nella mail al cliente una volta che l'ordine sarà confermato.")."</div>"
+Application/Models/PagamentiModel.php:180	"<div class='form_notice'>".gtext("Nel caso si scelga PayPal Standard, i campi Pagamento di test, CLIENT ID e SECRET non avranno effetto, la configurazione del pagamento andrà fatta sotto Preferenze > Impostazioni > Account Business Paypal.")."</div>"
+Application/Models/PagamentiModel.php:243	return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+Application/Models/CommessiModel.php:54	return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+Application/Models/MarchiModel.php:126	"<div class='form_notice'>".gtext("Verrà evidenziato nel sito (in home, nei menù, etc), in funzione del tema")."</div>"
+Application/Models/MarchiModel.php:136	"<div class='form_notice'>".gtext("Se viene indicato come nuovo nel sito, in funzione del tema")."</div>"
+Application/Models/IntegrazioninewsletterModel.php:70	"<div class='form_notice'>".gtext("Codice libero che servirà per distingue i contatti aggiunti a Sendpulse tramite il sito")." ".Parametri::$nomeNegozio."</div>"
+Application/Models/IntegrazioninewsletterModel.php:99	// 		return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+Application/Models/SpedizioninegozioserviziModel.php:55	$this->notice = '<div class="alert alert-danger">'.gtext("Attenzione, il servizio selezionato è già stato inserito").'</div><div style="display:none;" rel="hidden_alert_notice">codice</div>';
+Application/Models/ReggroupscategoriesModel.php:54	$this->notice = "<div class='alert alert-danger'>".gtext("Questo gruppo è già stato associato a questa categoria")."</div>";
+Application/Models/ReggroupscategoriesModel.php:75	$this->notice = "<div class='alert alert-danger'>".gtext("Non puoi associare questo gruppo")."</div>";
+Application/Models/ReggroupscategoriesModel.php:81	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento non esiste")."</div>";
+Application/Models/DocumentiModel.php:104	"options"	=>	array("tutte" => gtext("TUTTE")) + $this->selectLingua(),
+Application/Models/DocumentiModel.php:364	$str = str_replace("TUTTE", gtext("TUTTE"), $str);
+Application/Models/CrudModel.php:49	return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+Application/Models/SitemapModel.php:257	return gtext("HOME PAGE");
+Application/Models/CombinazioniModel.php:1010	return $record["pages"]["attivo"] == "Y" ? gtext("Sì") : gtext("No");
+Application/Models/CombinazioniModel.php:1025	return gtext("SKU").": <b>".$record["combinazioni"]["codice"]."</b><br />\n".gtext("GTIN").": ".$record["combinazioni"]["gtin"]."<br />\n".gtext("MPN").": ".$record["combinazioni"]["mpn"];
+Application/Models/CombinazioniModel.php:1032	$html = "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("SKU").":</b> <input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:140px;display:inline;' class='form-control class_combinazione class_combinazione_".$record["combinazioni"]["id_c"]."' name='codice' value='".$record["combinazioni"]["codice"]."' /></div>";
+Application/Models/CombinazioniModel.php:1034	$html .= "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("GTIN").":</b> <input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:140px;display:inline;' class='form-control' name='gtin' value='".$record["combinazioni"]["gtin"]."' /></div>";
+Application/Models/CombinazioniModel.php:1036	$html .= "<div style='min-width:180px;'><b style='width:36px;display:inline-block;'>".gtext("MPN").":</b> <input id-page='".$record["combinazioni"]["id_page"]."' id-c='".$record["combinazioni"]["id_c"]."' style='max-width:140px;display:inline;' class='form-control' name='mpn' value='".$record["combinazioni"]["mpn"]."' /></div>";
+Application/Models/CombinazioniModel.php:1148	$html .= "<a class='iframe label label-primary' href='".Url::getRoot()."prodotti/immagini/".$record["combinazioni"]["id_page"]."?partial=Y&nobuttons=Y&id_cmb=".$record["combinazioni"]["id_c"]."'><small>".gtext("Gestisci")." <i class='fa fa-pencil'></i></small></a>";
+Application/Models/CombinazioniModel.php:1641	$stringa = $stringa ? $stringa : gtext("Variante: --");
+Application/Models/NazioniModel.php:100	"<div class='form_notice'>".gtext("Usata nel caso venga superata la soglia annuale di vendite in Unione Europea")."</div>"
+Application/Models/NazioniModel.php:108	"<div class='form_notice'>".gtext("Soglia sotto alla quale si può applicare l'IVA italiana anche per vendite all'estero")."</div>"
+Application/Models/NazioniModel.php:116	"<div class='form_notice'>".gtext("Una soglia a 0,00 significa che la spedizione non è mai gratuita per questa nazione")."</div>"
+Application/Models/NazioniModel.php:126	"<div class='form_notice'>".gtext("Verrà evidenziata nel sito (in home, nei menù, etc), in funzione del tema")."</div>"
+Application/Models/NazioniModel.php:137	"<div class='form_notice'>".gtext("Al cambio nazione nel tema (se impostato), il link verso questa nazione avrà questa lingua")."</div>"
+Application/Models/PromozioniinviiModel.php:70	$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, il codice è già stato inviato all'indirizzo email indicato.")."</div><div class='evidenzia'>class_email</div>";
+Application/Models/PagesModel.php:315	"<div class='form_notice'>".gtext("Se impostato su sì, verrà importato nel magazzino acquisti")."</div>",
+Application/Models/PagesModel.php:323	"<div class='text text-danger'>".gtext("Il prodotto ha una distina e non verrà mai importato negli acquisti")."</div>",
+Application/Models/PagesModel.php:338	"<div class='form_notice'>".gtext("Se lasciato vuoto userà il titolo della pagina")."</div>"
+Application/Models/PagesModel.php:346	"<div class='form_notice'>".gtext("Incollare il codice di condivisione di Youtube, Vimeo o altri portali")."</div>"
+Application/Models/PagesModel.php:357	"<div class='form_notice'>".gtext("Latitudine e longitudine divise da virgola.")."</div>"
+Application/Models/PagesModel.php:366	"<div class='form_notice'>".gtext("Indica l'URL che avrà la pagina/prodotto nel sito. Se lasciato vuoto, viene generato in automatico dal titolo")."</div>"
+Application/Models/PagesModel.php:391	'labelString'=>	gtext('famiglia',false,"ucfirst"),
+Application/Models/PagesModel.php:431	"<div class='form_notice'>".gtext("Se compare nel sito")."</div>"
+Application/Models/PagesModel.php:443	"<div class='form_notice'>".gtext("Se è settato come prodotto di test, non sarà indicizzato né presente nella categoria di riferimento, ma potrà comunque essere visualizzato conoscendo l'URL diretto")."</div>"
+Application/Models/PagesModel.php:454	"<div class='form_notice'>".gtext("Verrà evidenziato nel sito (in home, nei menù, etc), in funzione del tema")."</div>"
+Application/Models/PagesModel.php:465	"<div class='form_notice'>".gtext("Se viene indicato come nuovo nel sito, in funzione del tema")."</div>"
+Application/Models/PagesModel.php:472	'options'	=>	array(0 => gtext('no'),1 => gtext('sì')),
+Application/Models/PagesModel.php:480	'options'	=>	array(0 => gtext('no'),1 => gtext('sì')),
+Application/Models/PagesModel.php:485	"<div class='form_notice'>".gtext("Se viene indicato come rappresentativo, sarà il prodotto estratto quando serve mostrare un solo prodotto per quella categoria")."</div>"
+Application/Models/PagesModel.php:597	"<div class='form_notice'>".gtext("Se settato su no, il prodotto non è acquistabile e viene nascosto nel frontend.<br />Può solo essere aggiunto come accessorio.")."</div>"
+Application/Models/PagesModel.php:604	"<div class='form_notice'>".gtext("Se settato su sì, il prodotto viene sempre aggiunto come accessorio alla creazione di qualsiasi nuovo prodotto.")."</div>"
+Application/Models/PagesModel.php:616	"<div class='form_notice'>".gtext("Se è il prodotto canonical")."</div>"
+Application/Models/PagesModel.php:649	"<div class='form_notice'>".gtext("Indica il tema grafico che avrà il popup. È possibile scegliere tra quelli definiti nel tema.")."</div>"
+Application/Models/PagesModel.php:657	-1	=>	gtext("Mostra ogni volta che il cliente torna in home page"),
+Application/Models/PagesModel.php:658	0	=>	gtext("Mostra nuovamente ogni volta che il cliente chiude il browser"),
+Application/Models/PagesModel.php:659	1	=>	gtext("Mostra nuovamente dopo 1 giorno"),
+Application/Models/PagesModel.php:660	2	=>	gtext("Mostra nuovamente dopo 2 giorni"),
+Application/Models/PagesModel.php:661	3	=>	gtext("Mostra nuovamente dopo 3 giorni"),
+Application/Models/PagesModel.php:662	4	=>	gtext("Mostra nuovamente dopo 4 giorni"),
+Application/Models/PagesModel.php:663	5	=>	gtext("Mostra nuovamente dopo 5 giorni"),
+Application/Models/PagesModel.php:664	6	=>	gtext("Mostra nuovamente dopo 6 giorni"),
+Application/Models/PagesModel.php:665	7	=>	gtext("Mostra nuovamente dopo 1 settimana"),
+Application/Models/PagesModel.php:666	14	=>	gtext("Mostra nuovamente dopo 2 settimane"),
+Application/Models/PagesModel.php:667	21	=>	gtext("Mostra nuovamente dopo 3 settimane"),
+Application/Models/PagesModel.php:668	28	=>	gtext("Mostra nuovamente dopo 4 settimane"),
+Application/Models/PagesModel.php:669	30	=>	gtext("Mostra nuovamente dopo 30 giorni"),
+Application/Models/PagesModel.php:670	60	=>	gtext("Mostra nuovamente dopo 60 giorni"),
+Application/Models/PagesModel.php:671	120	=>	gtext("Mostra nuovamente dopo 120 giorni"),
+Application/Models/PagesModel.php:672	180	=>	gtext("Mostra nuovamente dopo 6 mesi"),
+Application/Models/PagesModel.php:673	360	=>	gtext("Mostra nuovamente dopo 1 anno"),
+Application/Models/PagesModel.php:679	"<div class='form_notice'>".gtext("Indica il tempo dopo il quale il popup verrà nuovamente mostrato.")."</div>"
+Application/Models/PagesModel.php:690	"<div class='form_notice'>".gtext("Indica il tema dopo il quale il popup verrà aperto")."</div>"
+Application/Models/PagesModel.php:702	"<div class='form_notice'>".gtext($testoLasciareVuotoSeNonPresente)."</div>"
+Application/Models/PagesModel.php:710	"<div class='form_notice'>".gtext("Codice del prodottore.")." ".gtext($testoLasciareVuotoSeNonPresente)."</div>"
+Application/Models/PagesModel.php:730	"<div class='form_notice'>".gtext("Margine in % del prodotto.")." ".gtext("Se lasciato a 0, prenderà il margine della prima categoria di appartenenza avente un margine maggiore di 0.")."</div>"
+Application/Models/PagesModel.php:744	"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
+Application/Models/PagesModel.php:751	"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
+Application/Models/PagesModel.php:758	"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
+Application/Models/PagesModel.php:765	"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
+Application/Models/PagesModel.php:772	"<div class='form_notice'>".gtext(self::$testoLabelSocial)."</div>"
+Application/Models/PagesModel.php:780	"<div class='form_notice'>".gtext("Specificare un indirizzo email per riga.")."<br /><b>".gtext("Se lasciato vuoto, la mail verrà inviata all'indirizzo specificato nelle impostazioni.")."</b></div>"
+Application/Models/PagesModel.php:802	"<div class='form_notice'>".gtext("Se settato su no, non verranno caricati l'header e il footer del sito")."</div>"
+Application/Models/PagesModel.php:814	"<div class='form_notice'>".gtext("Se settato su sì, al primo accesso verrà creato l'HTML della pagina che verrà riproposto ai successivi accessi.")."</div>"
+Application/Models/PagesModel.php:826	"<div class='form_notice'>".gtext("Se impostato su sì, l'assistente virtuale AI risponderà usando queste informazioni nel caso di richiesta generica")."</div>"
+Application/Models/PagesModel.php:3545	"g:section_name"	=>	tcarfield($rc, "titolo") ? htmlentitydecode(tcarfield($rc, "titolo")) : gtext("Generale"),
+Application/Models/PagesModel.php:3592	return gtext(self::$tipiPagina[$record["pages"]["tipo_pagina"]]);
+Application/Models/PagesModel.php:3996	$str .= gtext("TUTTE");
+Application/Models/PagesModel.php:4033	$str .= gtext("TUTTE");
+Application/Models/ContenutiModel.php:142	"options"	=>	array("tutte" => gtext("TUTTE")) + $this->selectLingua(),
+Application/Models/ContenutiModel.php:333	return array("0"=>gtext("-- NON IMPOSTATO --")) + $p->clear()->select("id_page,title")->orderBy("title")->toList("id_page","title")->send();
+Application/Models/ContenutiModel.php:349	return gtext("No");
+Application/Models/ContenutiModel.php:351	return gtext("Sì");
+Application/Models/PromozionimarchiModel.php:61	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento è già stato associato")."</div>";
+Application/Models/PromozionimarchiModel.php:79	$this->notice = "<div class='alert alert-danger'>".gtext($fraseErrore)."</div>";
+Application/Models/PromozionimarchiModel.php:84	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento non esiste")."</div>";
+Application/Models/StatielementiModel.php:127	$html .= "<div><small>".gtext("Impostato da")." <b>".$ultimaStato["adminusers"]["username"]."</b> ".gtext("il")." <b>".date("d/m/y H:i",strtotime($ultimaStato["stati_elementi"]["data_creazione"]))."</b></small></div><span style='background-color:".$ultimaStato["opzioni"]["valore"]." !important;' class='label label-info'>".$ultimaStato["opzioni"]["titolo"]."</span>";
+Application/Models/ReggroupsModel.php:63	"<div class='form_notice'>".gtext("Se impostato su sì, ogni volta che il cliente verrà aggiunto o rimosso dal gruppo, verrà contemporaneamente iscritto o disiscritto dalla newsletter.")."<br />".gtext("Importante: solo se il collegamento con la newsletter lo permette.")."</div>"
+Application/Models/ReggroupsModel.php:75	"<div class='form_notice'>".gtext("Se settato su sì, sarà possibile impostare l'accesso ad un documento solo per utenti appartenenti a questo gruppo")."</div>"
+Application/Models/Public/BaseRegusersModel.php:63	$this->_resultString->string["executed"] = "<div class='".v("alert_success_class")."'>".gtext("operazione eseguita!")."</div>\n";
+Application/Models/Public/BaseRegusersModel.php:234	$this->addStrongCondition("both",'checkMatch|/^[a-zA-Z0-9\_'.v("password_regular_expression_caratteri_speciali").']+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>".gtext("Tutte le lettere, maiuscole o minuscole")." (a, A, b, B, ...)</li><li>".gtext("Tutti i numeri")." (0,1,2,...)</li><li>".gtext("I seguenti caratteri").": <b>_".v("password_regular_expression_caratteri_speciali")."</b></li></ul>$evidenzia");
+Application/Models/Public/BaseRegusersModel.php:241	$this->addStrongCondition("both",'checkEqual',"password,confirmation|<b>".gtext("Le due password non coincidono")."</b>$evidenzia");
+Application/Models/Public/BaseRegusersModel.php:246	// $this->addStrongCondition("both",'checkMatch|/^[a-zA-Z0-9\_'.v("password_regular_expression_caratteri_speciali").']+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>".gtext("Tutte le lettere, maiuscole o minuscole")." (a, A, b, B, ...)</li><li>".gtext("Tutti i numeri")." (0,1,2,...)</li><li>".gtext("I seguenti caratteri").": <b>_".v("password_regular_expression_caratteri_speciali")."</b></li></ul>$evidenzia");
+Application/Models/Public/BaseRegusersModel.php:381	$this->addStrongCondition("both",'checkMail',"username|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>").$evidenziaEmail);
+Application/Models/Public/BaseRegusersModel.php:385	$this->addSoftCondition("both",'checkMail',"pec|".gtext("Si prega di ricontrollare <b>l'indirizzo Pec</b>").$evidenziaPec);
+Application/Models/Public/BaseRegusersModel.php:389	$this->addSoftCondition("both",'checkLength|7',"codice_destinatario|".gtext("Si prega di ricontrollare <b>il Codice Destinatario</b>").$evidenziaCD);
+Application/Models/Public/BaseRegusersModel.php:397	$this->addStrongCondition("both",'checkMail',"conferma_username|".gtext("Si prega di ricontrollare il campo <b>conferma dell'indirizzo Email</b>").$evidenziaConfermaUSer);
+Application/Models/Public/BaseRegusersModel.php:401	$this->addStrongCondition("both",'checkEqual',"username,conferma_username|<b>".gtext("I due indirizzi email non corrispondono")."</b>$evidenziaEqual");
+Application/Models/Public/BaseRegusersModel.php:406	$this->addStrongCondition("both",'checkIsStrings|accetto',"accetto|<b>".gtext("Si prega di accettare le condizioni di privacy")."</b>$evidenziaAccetto");
+Application/Models/Public/BaseRegusersModel.php:412	$this->addStrongCondition("both",'checkIsStrings|accetto',"accetto_2|<b>".gtext("Si prega di accettare le condizioni aggiuntive")."</b>$evidenziaAccetto2");
+Application/Models/Public/BaseRegusersModel.php:417	$this->addStrongCondition("both",'checkIsStrings|'.OrdiniModel::getPagamentiPermessi($_POST["nazione"]),"pagamento|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
+Application/Models/Public/BaseRegusersModel.php:419	$this->addStrongCondition("both",'checkIsStrings|'.TipiclientiModel::getListaTipi(),"tipo_cliente|<b>".gtext("Si prega di indicare se siete un privato o un'azienda")."</b>");
+Application/Models/Public/BaseRegusersModel.php:428	$erroreUtenteGiaPresente = "username|".gtext("Il suo account è già presente nel nostro sistema ma non è attivo perché non è mai stata completata la verifica dell'indirizzo e-mail.")."<br />".gtext("Proceda con la conferma del proprio account al seguente")." <a href='".Url::getRoot()."account-verification'>".gtext("indirizzo web")."</a>$evidenziaE";
+Application/Models/Public/BaseRegusersModel.php:430	$erroreUtenteGiaPresente = "username|".gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.<br />Se non ricorda la password può impostarne una nuova al seguente")." <a href='".Url::getRoot()."password-dimenticata'>".gtext("indirizzo web")."</a>$evidenziaE";
+Application/Models/Public/BaseRegusersModel.php:438	"checkUnique"		=>	"username|".gtext("La sua E-Mail è già presente nel nostro database, significa che è già registrato nel nostro sistema.<br /> Se non ricorda la password può impostarne una nuova."),
+Application/Models/Public/BaseRegusersModel.php:444	"checkUniqueCompl"		=>	"username|".gtext("Questa E-Mail è già usata da un altro utente e non può quindi essere scelta").$evidenziaEU,
+Application/Models/Public/BaseRegusersModel.php:452	$this->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttive,"nazione|".gtext("<b>Si prega di selezionare una nazione tra quelle permesse</b>"));
+Application/Models/Public/BaseRegusersModel.php:460	$this->addStrongCondition("both",'checkEqual',"password,confirmation|<b>".gtext("Le due password non coincidono")."</b>".$evidenziaP);
+Application/Models/Public/BaseRegusersModel.php:470	// $this->addStrongCondition("both",'checkMatch|/^[a-zA-Z0-9\_\-\!\,\.]+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>".gtext("Tutte le lettere, maiuscole o minuscole")." (a, A, b, B, ...)</li><li>".gtext("Tutti i numeri")." (0,1,2,...)</li><li>".gtext("I seguenti caratteri").": <b>_ - ! , .</b></li></ul>$evidenziaPC");
+Application/Models/Public/BaseRegusersModel.php:475	$this->addSoftCondition("both","checkMatch|/^[0-9\s\+]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."$evidenziaT");
+Application/Models/Public/BaseRegusersModel.php:481	$this->addSoftCondition("both","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche").$evidenziaCAP);
+Application/Models/Public/BaseRegusersModel.php:486	$this->addSoftCondition("both","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>").$evidenziaCF);
+Application/Models/Public/BaseRegusersModel.php:490	$this->addSoftCondition("both","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva").$evidenziaPIVA);
+Application/Models/RegusersgroupsModel.php:54	$this->notice = "<div class='alert alert-danger'>".gtext("Questo utente è già stato associato a questo gruppo")."</div>";
+Application/Models/RegusersgroupsModel.php:78	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento non esiste")."</div>";
+Application/Models/CalendariochiusureModel.php:99	$this->errore = gtext("Attenzione, non è impossibile impostare un intervallo maggiore di 120 giorni");
+Application/Models/CalendariochiusureModel.php:119	$this->errore = gtext("Attenzione, controllare che la data di inizio non sia nel passato e che sia precedente alla data di fine");
+Application/Models/CalendariochiusureModel.php:122	$this->errore = gtext("Attenzione, controllare le date di inizio e fine");
+Application/Models/RigheModel.php:449	$html .= gtext("O.A."). " ".$link." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".$quantita."</b>";
+Application/Models/RigheModel.php:476	$temp = gtext("Ric.")." ".$link." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".$quantita."</b>";
+Application/Models/RigheModel.php:641	$html .= "<br />".gtext("O").":<b class='$label'>".$numeroOrdinati."</b>";
+Application/Models/RigheModel.php:643	$html .= " | ".gtext("R").":<b class='$labelRicevuti'>".$this->prodottiArrivati($idR)."</b>";
+Application/Models/CorrelatiModel.php:54	$this->notice = "<div class='alert alert-danger'>".gtext("Non puoi associare l'elemento stesso")."</div>";
+Application/Models/CorrelatiModel.php:66	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento è già stato collegato alla pagina")."</div>";
+Application/Models/CorrelatiModel.php:78	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento non esiste")."</div>";
+Application/Models/SpedizioninegozioinviiModel.php:145	return '<span class="label label-success"><i class="fa fa-thumbs-up"></i> '.gtext("Elaborato").'</span>';
+Application/Models/SpedizioninegozioinviiModel.php:147	return '<span class="label label-default"><i class="fa fa-clock-o"></i> '.gtext("In coda di elaborazione").'</span>';
+Application/Models/RicetteModel.php:31	$this->formStruct["entries"]["description"]["labelString"] = gtext("Ingredienti");
+Application/Models/RicetteModel.php:32	$this->formStruct["entries"]["descrizione_2"]["labelString"] = gtext("Procedimento");
+Application/Models/MotoriricercaModel.php:57	"<div class='form_notice'>".gtext("Attivando questo motore di ricerca verranno disattivati gli altri")."</div>"
+Application/Models/MotoriricercaModel.php:81	"<div class='form_notice'>".gtext('Il limite massimo di ricerche in cache viene considerato "nel tempo di cache", ad esempio 1 ora.')."<br />".gtext("Da proporzionare al tempo di cache.")."</div>"
+Application/Models/OrdiniacquistoModel.php:67	"options"	=>	array(0	=>	gtext("Seleziona")) + FornitoriModel::g()->filtroFornitore(),
+Application/Models/OrdiniacquistoModel.php:93	$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione il numero dell'ordine è già esistente nell'anno impostato.")."</div>".'<div style="display:none;" rel="hidden_alert_notice">numero_ordine</div>';
+Application/Models/OrdiniacquistoModel.php:108	$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione, l'ordine non può più essere annullato né messo in bozza perché ha delle ricezioni collegate.")."</div>".'<div style="display:none;" rel="hidden_alert_notice">id_ordine_acquisto_stato</div>';
+Application/Models/OrdiniacquistoModel.php:122	$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione il numero dell'ordine è già esistente nell'anno impostato.")."</div>".'<div style="display:none;" rel="hidden_alert_notice">numero_ordine</div>';
+Application/Models/OrdiniacquistoModel.php:406	$tendina[$o["id_ordine_acquisto"]] = "Ordine N° ".$o["numero_ordine"]." ".gtext("del")." ".smartDate($o["data_ordine"],v("default_date_format"))." - ".gtext("Fornitore").": ".$o["ragione_sociale"];
+Application/Models/OrdiniacquistoModel.php:453	$htmlArray[] = "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezioni."/righe/$idRicezione'><b>".$idRicezione."</b></a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"], v("default_date_format"))."</b>";
+Application/Models/PromozionicategorieModel.php:60	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento è già stato associato")."</div>";
+Application/Models/PromozionicategorieModel.php:78	$this->notice = "<div class='alert alert-danger'>".gtext($fraseErrore)."</div>";
+Application/Models/PromozionicategorieModel.php:83	$this->notice = "<div class='alert alert-danger'>".gtext("Questo elemento non esiste")."</div>";
+Application/Models/RegusersModel.php:101	$this->addStrongCondition("both",'checkMail',"username|".gtext("Si prega di ricontrollare il campo Email")."<div rel='hidden_alert_notice' style='display:none;'>username</div>");
+Application/Models/RegusersModel.php:103	$this->addSoftCondition("both",'checkEqual',"password,confirmation|".gtext("Le due password non coincidono")."<div rel='hidden_alert_notice' style='display:none;'>password</div><div rel='hidden_alert_notice' style='display:none;'>confirmation</div>");
+Application/Models/RegusersModel.php:105	$this->addDatabaseCondition("both",'checkUnique',"username|".gtext("Il valore del campo Email è già usato da un altro cliente, si prega di sceglierne un altro")."<div rel='hidden_alert_notice' style='display:none;'>username</div>");
+Application/Models/RegusersModel.php:300	return $record["regusers"]["agente"] ? gtext("Sì") : gtext("No");
+Application/Models/ProvinceModel.php:59	return array(""=>gtext("Seleziona")) + $this->send();
+Application/Models/VariabiliModel.php:1056	$this->addSoftCondition("update",$rule,$variable."|".gtext($error).$errorSuffix);
+Application/Models/VariabiliModel.php:1147	"1"	=>	gtext("Sì"),
+Application/Models/VariabiliModel.php:1148	"0"	=>	gtext("No"),
+Application/Models/VariabiliModel.php:1179	"<div class='form_notice'>".gtext("Inizia con il seguente codice Google")."<br />&lt;!-- Google Tag Manager --&gt;</div>"
+Application/Models/VariabiliModel.php:1188	"<div class='form_notice'>".gtext("Inizia con il seguente codice Google")."<br />&lt;!-- Google Tag Manager (noscript) --&gt;</div>"
+Application/Models/VariabiliModel.php:1197	"<div class='form_notice'>".gtext("Inizia con il seguente codice Google")."<br />&lt;!-- Google tag (gtag.js) - XXX --&gt;</div>"
+Application/Models/VariabiliModel.php:1228	"<div class='form_notice'>".gtext("Il codice dell'account Merchant di Google, presente nel pannello Merchant")."</div>",
+Application/Models/VariabiliModel.php:1235	"<div class='form_notice'>".gtext("Il valore del campo send_to ottenuto dal codice di conversione di Google Ads")."</div>",
+Application/Models/VariabiliModel.php:1244	"<div class='form_notice'>".gtext("Verranno attivati solo se il cliente approva tutti i cookie.")."</div>",
+Application/Models/VariabiliModel.php:1248	'labelString'	=>	gtext('Versione di Google Analytics usata'),
+Application/Models/CorrieriModel.php:63	"<div class='form_notice'>".gtext("Se impostato su sì, gli ordini con questo corriere verranno impostati come ordini senza spedizione")."</div>"
+Application/Models/CorrieriModel.php:73	"<div class='form_notice'>".gtext("Selezionare lo stato a cui impostare l'ordine dopo il pagamento se viene selezionato questo corriere ")."</div>"
+Application/Models/CorrieriModel.php:199	return $record["corrieri"]["visibile"] ? gtext("Sì") : gtext("No");
+Application/Models/PagesattributiModel.php:96	// 			$this->notice = "<div class='alert'>".gtext("Non è possibile aggiungere una variante ad un prodotto che ha già ordini")."</div>";
+Application/Models/PagesattributiModel.php:104	$this->notice = "<div class='alert'>".gtext("Questo attributo è già stato associato")."</div>";
+Application/Models/MenuModel.php:69	$opzioniVoceMenu["marchio"] = gtext("Marchio");
+Application/Models/MenuModel.php:72	$opzioniVoceMenu["tag"] = gtext("Tag");
+Application/Models/MenuModel.php:140	'labelString'=>	gtext("Marchio"),
+Application/Models/MenuModel.php:152	'labelString'=>	gtext("Tag"),
+Application/Models/CombinazionilistiniModel.php:65	return array("W" => gtext("Mondo")) + $nModel->clear()->select("iso_country_code,titolo")->where(array(
+Application/Models/CaratteristichevaloriModel.php:91	"<div class='form_notice'>".gtext("Rappresenta il valore della caratteristica. Ex: rosso, XL, cuore")."</div>",
+Application/Models/CaratteristichevaloriModel.php:99	"<div class='form_notice'>".gtext("Rappresenta un valore aggiuntivo per specificare meglio la caratteristica. Non è supportato da tutti i temi.")."</div>",
+Application/Models/CaratteristichevaloriModel.php:117	"<div class='form_notice'>".gtext("Quando si filtra nella sezione prodotti per tale caratteristica, nell'URL della pagina verrà usato l'alias indicato. Viene creato in automatico se lasciato vuoto.")."</div>",
+Application/Models/CaratteristichevaloriModel.php:125	"<div class='form_notice'>".gtext("Inserire il codice esadecimale del colore con il cancelletto davanti. Ex: #000000 per il colore nero")."</div>",
+Application/Models/ProdottiModel.php:76	"<div class='form_notice'>".gtext("Se impostato su Sì, non sarà prevista la spedizione per tale prodotto.")."</div>"
+Application/Models/ProdottiModel.php:89	"<div class='form_notice'>".gtext("Se impostato su Sì, alla conclusione dell'ordine verro assegnati al clienti tanti CREDITI quanti indicati nel campo inferiore Numero Crediti.")."</div>"
+Application/Models/ProdottiModel.php:98	"<div class='form_notice'>".gtext("Il numero di crediti che verranno assegnati al cliente dopo aver concluso l'ordine.")."</div>"
+Application/Models/ProdottiModel.php:128	$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione, il codice inserito è già usato da un altro prodotto")."</div><div style='display:none;' rel='hidden_alert_notice'>codice</div>";
+Application/Models/AirichiestecontestiModel.php:70	$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione, il numero massimo di pagina che si possono usare come contesto è")." ".$numeroMassimoContesti."</a>";
+Application/Models/AirichiesteModel.php:308	'labelString'=>	gtext('Modello di AI'),
+Application/Models/AirichiesteModel.php:315	'labelString'=>	gtext('Parla di questa categoria'),
+Application/Models/AirichiesteModel.php:326	'labelString'=>	gtext('Parla di questa pagina'),
+Application/Models/AirichiesteModel.php:337	'labelString'=>	gtext("Parla di questo marchio"),
+Application/Models/AirichiesteModel.php:399	return gtext("Parla di").": <i>".implode("</i> - <i>", $titolo)."</i>";
+Application/Models/AirichiesteModel.php:596	$this->notice = '<div class="alert alert-danger">'.gtext("Si prega di selezionare una categoria, un marchio o una pagina").'</div>';
+Application/Models/AirichiesteModel.php:694	"messaggio"			=>	gtext("[Messaggio troppo lungo]"),
+Application/Models/AirichiesteModel.php:706	"messaggio"			=>	gtext(self::$fraseRichiestaTroppoLunga),
+Application/Models/AirichiesteModel.php:770	list($ris, $risposta) = array(1, gtext(self::$fraseTroppeRichieste));
+Application/Models/AirichiesteModel.php:772	list($ris, $risposta) = array(1, gtext(self::$fraseTroppeRichiesteIp));
+Application/Models/AirichiesteModel.php:796	list($ris, $risposta) = array(0, gtext("Non sono riuscito a elaborare la richiesta. Riprova."));
+Application/Models/AirichiesteModel.php:856	return gtext(self::$fraseTroppeRichieste);
+Application/Models/AirichiesteModel.php:858	return gtext(self::$fraseTroppeRichiesteIp);
+Application/Models/AirichiesteModel.php:946	$inDepthHtml = "<p><b>".gtext("Per approfondire:")."</b></p><ul class='uk-list'>".implode("\n", $linksArray)."</ul>";
+Application/Models/AirichiesteModel.php:1342	$replyToTranslate = gtext("Per motivi di sicurezza, dobbiamo verificare che tu sia il titolare dell’ordine. Inserisci il link esatto dell’ordine che hai ricevuto via email.");
+Application/Models/AirichiesteModel.php:1344	$replyToTranslate = gtext("Il link inserito non sembra essere un link valido dell’ordine. Inserisci il link esatto dell’ordine che hai ricevuto via email.");
+Application/Models/AirichiesteModel.php:1346	$replyToTranslate = gtext("Il link inserito non sembra riferirsi ad un ordine esistente. Inserisci il link esatto dell’ordine che hai ricevuto via email.");
+Application/Models/AirichiesteModel.php:1368	$replyToTranslate = gtext("L'indirizzo email e il telefono inseriti non sembrano essere corretti. Controlla e riprova.");
+Application/Models/AirichiesteModel.php:1370	$replyToTranslate = gtext("L'indirizzo email inserito non sembra essere corretto. Controllalo e riprova.");
+Application/Models/AirichiesteModel.php:1372	$replyToTranslate = gtext("Il telefono inserito non sembra essere corretto. Controllalo e riprova.");
+Application/Models/AirichiesteModel.php:1413	$replyToTranslate = gtext("Per poter essere ricontattato, indica un indirizzo email e un numero di telefono.");
+Application/Models/AirichiesteModel.php:1415	$replyToTranslate = gtext("Per poter essere ricontattato, indica anche un indirizzo email.");
+Application/Models/AirichiesteModel.php:1417	$replyToTranslate = gtext("Per poter essere ricontattato, indica anche un numero di telefono");
+Application/Models/AirichiesteModel.php:1420	$replyToTranslate = gtext("Il ticket è stato creato correttamente.")." ".gtext("Il negozio riceverà questa conversazione e verrai ricontattato dal servizio clienti.")." ".gtext("Ti abbiamo inviato una copia della chat via email come promemoria.")." ".gtext("Puoi chiudere questa chat oppure iniziarne una nuova.");
+Application/Models/AirichiesteModel.php:1811	list($res, $output) = array(0, gtext(self::$fraseRichiestaTroppoLunga));
+Application/Models/OrdiniacquistoricezioniModel.php:152	$htmlArray[] = "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquisto."/form/update/$idOrdine'><b>".$idOrdine."</b></a> ".gtext("del")." <b>".smartDate($r["ordini_acquisto"]["data_ordine"], v("default_date_format"))."</b>";
+Application/Models/OrdiniacquistoricezioniModel.php:206	return "<span class='label label-".self::$stati["chiuso"]["label"]."'>".gtext(self::$stati["chiuso"]["text"])."</span>";
+Application/Models/OrdiniacquistoricezioniModel.php:208	return "<span class='label label-".self::$stati["aperto"]["label"]."'>".gtext(self::$stati["aperto"]["text"])."</span>";
+Application/Models/HierarchicalModel.php:276	$up = sanitizeHtmlLight($this->strings->gtext('up'));
+Application/Models/HierarchicalModel.php:277	$moveUp = sanitizeHtmlLight($this->strings->gtext('move up'));
+Application/Models/HierarchicalModel.php:295	$down = sanitizeHtmlLight($this->strings->gtext('down'));
+Application/Models/HierarchicalModel.php:296	$moveDown = sanitizeHtmlLight($this->strings->gtext('move down'));
+Application/Models/ImpostazioniModel.php:74	'labelString'=>	gtext("Nome sito/ecommerce"),
+Application/Models/ImpostazioniModel.php:78	"<div class='form_notice'>".gtext("È il nome che apparirà nelle comunicazioni al cliente, comprese le mail, e nella barra del browser")."</div>",
+Application/Models/ImpostazioniModel.php:82	'labelString'=>	gtext("Meta tag 'title' della home"),
+Application/Models/ImpostazioniModel.php:86	"<div class='form_notice'>".gtext("È il titolo della home page del sito visto dai motori di ricerca")."</div>",
+Application/Models/ImpostazioniModel.php:90	'labelString'=>	gtext("Descrizione per motori di ricerca"),
+Application/Models/ImpostazioniModel.php:94	"<div class='form_notice'>".gtext("È la descrizione della home page vista dai motori di ricerca")."</div>",
+Application/Models/ImpostazioniModel.php:98	'labelString'=>	gtext("Parole chiave (divise da virgola)"),
+Application/Models/ImpostazioniModel.php:102	"<div class='form_notice'>".gtext("Parole chiave della home page")."</div>",
+Application/Models/ImpostazioniModel.php:106	'labelString'=>	gtext("Iva di default"),
+Application/Models/ImpostazioniModel.php:110	"<div class='form_notice'>".gtext("Aliquota IVA che viene usata quando non specificata diversamente (ad esempio in singoli prodotti)")."</div>",
+Application/Models/ImpostazioniModel.php:144	"<div class='form_notice'>".gtext("Compilare solo se si impostano le porte 465 o 587")."</div>",
+Application/Models/ImpostazioniModel.php:159	"<div class='form_notice'>".gtext("Verifica l'identità del server SMTP e il certificato")."</div>",
+Application/Models/ImpostazioniModel.php:169	'labelString'=>	gtext("Campo copia nascosta"),
+Application/Models/ImpostazioniModel.php:173	"<div class='form_notice'>".gtext("Se riempito con una singola mail, tutte le mail di sistema verranno inviate in copia nascosta a quella mail")."</div>",
+Application/Models/ImpostazioniModel.php:177	'labelString'=>	gtext("Usa SMTP esterno nelle mail di sistema"),
+Application/Models/ImpostazioniModel.php:181	"<div class='form_notice'>".gtext("Se utilizzare l'SMTP del server o un SMTP esterno")."</div>",
+Application/Models/ImpostazioniModel.php:185	'labelString'=>	gtext("HOST del servizio SMTP esterno"),
+Application/Models/ImpostazioniModel.php:189	"<div class='form_notice'>".gtext("Compilare solo se il campo 'Usa SMTP esterno nelle mail di sistema' è stato impostato a sì")."</div>",
+Application/Models/ImpostazioniModel.php:193	'labelString'=>	gtext("Porta usata per il servizio esterno SMTP"),
+Application/Models/ImpostazioniModel.php:197	"<div class='form_notice'>".gtext("Compilare solo se il campo 'Usa SMTP esterno nelle mail di sistema' è stato impostato a sì")."</div>",
+Application/Models/ImpostazioniModel.php:201	'labelString'=>	gtext("Utente usato per il servizio esterno SMTP"),
+Application/Models/ImpostazioniModel.php:205	"<div class='form_notice'>".gtext("Compilare solo se il campo 'Usa SMTP esterno nelle mail di sistema' è stato impostato a sì")."</div>",
+Application/Models/ImpostazioniModel.php:211	'labelString'=>	gtext("Password usata per il servizio esterno SMTP"),
+Application/Models/ImpostazioniModel.php:215	"<div class='form_notice'>".gtext("Compilare solo se il campo 'Usa SMTP esterno nelle mail di sistema' è stato impostato a sì")."</div>",
+Application/Models/ImpostazioniModel.php:219	'labelString'=>	gtext("Usa il sistema di pagamento di test di Paypal (Sandbox)"),
+Application/Models/ImpostazioniModel.php:223	"<div class='form_notice'>".gtext("Il servizio Sandbox di Paypal permette di simulare l'esperienza di acquisto del cliente senza che avventa un reale scambio di denaro")."</div>",
+Application/Models/ImpostazioniModel.php:227	'labelString'=>	gtext("Account Business Paypal (questo è il vero account)"),
+Application/Models/ImpostazioniModel.php:231	"<div class='form_notice'>".gtext("Deve essere l'indirizzo email principale impostato nel vostro account Paypal Business")."</div>",
+Application/Models/ImpostazioniModel.php:235	'labelString'=>	gtext("Account Paypal di test"),
+Application/Models/ImpostazioniModel.php:239	"<div class='form_notice'>".gtext("Inserite un indirizzo Paypal del venditore di test (creato nella piattaforma Sandbox)")."</div>",
+Application/Models/ImpostazioniModel.php:243	'labelString'=>	gtext("Spese di spedizione gratuite sopra euro"),
+Application/Models/ImpostazioniModel.php:247	"<div class='form_notice'>".gtext("Inserire 0 se si vuole che le spese di spedizione non siano mai gratuite")."</div>",
+Application/Models/ImpostazioniModel.php:251	'labelString'=>	gtext("ID della lista Mailchimp da collegare"),
+Application/Models/ImpostazioniModel.php:255	"<div class='form_notice'>".gtext("È l'ID della lista Mailchimp. È presente nel pannello di gestione di Mailchimp, nei parametri di configurazione della lista")."</div>",
+Application/Models/ImpostazioniModel.php:259	'labelString'=>	gtext("Chiave di sicurezza Mailchimp"),
+Application/Models/ImpostazioniModel.php:263	"<div class='form_notice'>".gtext("Questo parametro va creato nel pannello di Mailchimp, se non già presente")."</div>",
+Application/Models/CommonModel.php:40	$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."</div><span class='evidenzia'>class_codice_fiscale</span>".$this->notice;
+Application/Models/CommonModel.php:72	$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."</div><span class='evidenzia'>class_p_iva</span>".$this->notice;
+Application/Models/CommonModel.php:344	$stringaImporta = v("usa_transactions") ? " <a target='_blank' href='".Url::getRoot()."opzioni/importacategoriegoogle'>".gtext("Importa codici")."</a>" : "";
+Application/Models/CommonModel.php:350	"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." $stringaImporta</div>"
+Application/Models/CommonModel.php:356	"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".v("url_codici_categorie_google")."'>".gtext("Vedi i codici")."</a></div>"
+Application/Models/IvaModel.php:100	"<div class='form_notice'>".gtext("Solo per casistiche EXTRA Italia: non viene mostrata al cliente, anche se usata")."</div>"
+Application/Models/IvaModel.php:112	"<div class='form_notice'>".gtext("Se deve essere usata come aliquota iva per la spedizione")."</div>"
+Application/Models/IvaModel.php:291	return $record[$this->_tables]["nascondi"] ? gtext("Sì") : gtext("No");
+Application/Models/MenuadminModel.php:165	return gtext("Lista");
+Application/Models/MenuadminModel.php:168	return gtext("Aggiungi");
+Application/Models/NotificheModel.php:260	"testo"	=>	gtext(htmlentitydecode($r["titolo"])),
+Application/Models/CaptchaModel.php:52	"<div class='form_notice'>".gtext("Attivando questo sistema antispam verranno disattivati gli altri")."</div>"
+Application/Models/CaptchaModel.php:60	"<div class='form_notice'><b>".gtext("Usato nel FORM CONTATTI e nel FORM DI ISCRIZIONE ALLA NEWSLETTER").":</b><br />".gtext("Campo nascosto invisibile ai clienti che, se riempito, bloccherà l'invio del form.")."<br />".gtext("Essendo nascosto, solo i bot riempiranno il campo, mentre gli utenti reali no.")."</div>"
+Application/Models/CaptchaModel.php:68	"<div class='form_notice'><b>".gtext("Usato nel FORM DI REGISTRAZIONE e nel FORM AL CHECKOUT").":</b><br />".gtext("Campo nascosto invisibile ai clienti che, se riempito, bloccherà l'invio del form.")."<br />".gtext("Essendo nascosto, solo i bot riempiranno il campo, mentre gli utenti reali no.")."</div>"
+Application/Models/CategoriesModel.php:179	"<div class='form_notice'>".gtext("Inserisci il codice tassonomico di Google.")." <a target='_blank' href='".Url::getRoot()."opzioni/importacategoriegoogle'>".gtext("Importa codici")."</a></div>"
+Application/Models/CategoriesModel.php:241	"<div class='form_notice'>".gtext("Margine in % di tutti i prodotti della categoria.")." ".gtext("Se un prodotto ha un suo margine specificio, verrà usato il margine del prodotto.")."</div>"
+Application/Models/CategoriesModel.php:262	"<div class='form_notice'>".gtext("Se lasciato vuoto userà il titolo della categoria")."</div>"
+Application/Models/CategoriesModel.php:553	$this->notice = "<div class='alert alert-danger'>".gtext("Non è possibile eliminare questa categoria")."</div>";
+Application/Models/TemplateemailModel.php:59	"<div class='form_notice'>".gtext("Se può essere utilizzata dal sistema")."</div>"
+Application/Models/StoriaModel.php:31	$this->formStruct["entries"]["sottotitolo"]["labelString"] = gtext("Periodo");
+Application/Models/NoteModel.php:294	$html .= "<div><small>".gtext("Ultima nota di")." <b>".$ultimaNota["adminusers"]["username"]."</b> ".gtext("del")." <b>".date("d/m/y H:i",strtotime($ultimaNota["note"]["data_creazione"]))."</b><br /><i>".$ultimaNota["note"]["testo"]."</i></small></div>";
+Application/Models/NoteModel.php:314	$htmlArray[] = gtext("Email inviata a")." ".$email["email"]." ".gtext("in data")." ".F::getDateAndTimeInCorrectFormat(strtotime($email["data_creazione"]));
+Application/Models/TraduttoriModel.php:90	"<div class='form_notice'>".gtext("Attivando questo traduttore verranno disattivati gli altri")."</div>"
+Application/Models/IntegrazioniModel.php:69	return $record[$this->_tables]["attivo"] ? gtext("Sì") : gtext("No");
+Application/Models/IntegrazioniModel.php:111	$arrayPulsanti[] = "<a class='btn btn-info' href='".Url::getRoot()."integrazioni/invia/".$i["integrazioni"]["id_integrazione"]."/".strtolower($sezione)."/$idElemento'><i class='fa fa-paper-plane-o'></i> ".gtext("Invia a")." ".$i["integrazioni"]["titolo"]."</a>";
+Application/Models/AimodelliModel.php:64	"<div class='form_notice'>".gtext("Impostandolo come predefinito, gli altri modelli dello stesso tipo non saranno più predefiniti.")."</div>"
+Application/Models/PromozioniModel.php:49	"1"	=>	gtext("Includi"),
+Application/Models/PromozioniModel.php:50	"0"	=>	gtext("Escludi"),
+Application/Models/PromozioniModel.php:104	"<div class='form_notice'>".gtext("Numero massimo di utilizzi totale, considerando anche clienti diversi (diversi indirizzi email)")."</div>"
+Application/Models/PromozioniModel.php:112	"<div class='form_notice'>".gtext("Se impostato a 0, non viene considerato un numero massimo di utilizzo per singola mail.")."</div>"
+Application/Models/PromozioniModel.php:140	"<div class='form_notice'>".gtext("Verrà applicato solo se il totale del carrello sarà maggiore o uguale alla cifra indicata (spese di spedizione escluse).")."</div>"
+Application/Models/PromozioniModel.php:152	"<div class='form_notice'>".gtext("Se la nazione viene lasciata vuota, tale coupon ha validità in TUTTE LE NAZIONI")."</div>"
+Application/Models/PromozioniModel.php:211	$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: non è possibile uno sconto percentuale maggiore del 100%")."</div>";
+Application/Models/PromozioniModel.php:217	$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: il codice promozione è già presente, si prega di selezionarne un altro")."</div>";
+Application/Models/PromozioniModel.php:223	$this->notice = "<div class='alert alert-danger'>".gtext("Si prega di ricontrollare il formato delle date di validità della promozione")."</div>";
+Application/Models/PromozioniModel.php:263	$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: non è possibile uno sconto percentuale maggiore del 100%")."</div>";
+Application/Models/PromozioniModel.php:269	$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione: il codice promozione è già presente, si prega di selezionarne un altro")."</div>";
+Application/Models/PromozioniModel.php:275	$this->notice = "<div class='alert alert-danger'>".gtext("Si prega di ricontrollare il formato delle date di validità della promozione")."</div>";
+Application/Models/SediModel.php:31	$this->formStruct["entries"]["title"]["labelString"] = gtext("Rag. Soc.");
+Application/Models/SediModel.php:32	$this->formStruct["entries"]["email_contatto_evento"]["labelString"] = gtext("Email");
+Application/Models/SediModel.php:33	$this->formStruct["entries"]["telefono_contatto_evento"]["labelString"] = gtext("Telefono");
+Application/Models/SediModel.php:34	$this->formStruct["entries"]["indirizzo_localita_evento"]["labelString"] = gtext("Indirizzo");
+Application/Models/SediModel.php:35	$this->formStruct["entries"]["localita_evento"]["labelString"] = gtext("Località");
+Application/Models/SediModel.php:36	$this->formStruct["entries"]["id_c"]["labelString"] = gtext("Tipologia");
+Application/Models/TicketModel.php:85	"options"	=>	array(0	=>	gtext("Seleziona")) + $this->getTendinaOrdini($idUser),
+Application/Models/TicketModel.php:92	"options"	=>	array(0	=>	gtext("Seleziona")) + $this->getTendinaListe($idUser),
+Application/Models/TicketModel.php:109	$this->addStrongCondition("update",'checkIsNotStrings|0',"id_o|".gtext("Si prega di selezionare un ordine").'<div class="evidenzia">class_id_o</div>');
+Application/Models/TicketModel.php:112	$this->addStrongCondition("update",'checkIsNotStrings|0',"id_lista_regalo|".gtext("Si prega di selezionare una lista regalo").'<div class="evidenzia">class_id_lista_regalo</div>');
+Application/Models/TicketModel.php:186	$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di indicare per quale prodotto si sta chiedendo assistenza.")."</div>".'<div class="evidenzia">box_prodotti_inner</div>';
+Application/Models/TicketModel.php:318	$select[$r["id_o"]] = gtext("Ordine")." #".$r["id_o"]." ".gtext("del")." ".date("d-m-Y", strtotime($r["data_creazione"]));
+Application/Models/TicketModel.php:332	$select[$r["id_lista_regalo"]] = gtext("Lista")." ".$r["titolo"]." (".gtext("codice")." ".$r["codice"].") ".gtext("del")." ".date("d-m-Y", strtotime($r["data_creazione"]));
+Application/Models/TicketModel.php:399	return gtext("Lista")." ".$r["titolo"]." (".gtext("codice")." ".$r["codice"].") ".gtext("del")." ".date("d-m-Y", strtotime($r["data_creazione"]));
+Application/Models/MagazzinoarticoliModel.php:297	return ($record["combinazioni"]["acquistabile"] && $record["pages"]["attivo"] == "Y") ? gtext("Sì") : gtext("No");
+Application/Models/MagazzinoarticoliModel.php:426	return gtext("SKU").": <b>".$record["magazzino_articoli"]["codice"]."</b><br />\n".gtext("GTIN").": ".$record["magazzino_articoli"]["gtin"]."<br />\n".gtext("MPN").": ".$record["magazzino_articoli"]["mpn"];
+Application/Models/MagazzinoarticoliModel.php:434	$html = "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("SKU").":</b> <input id-articolo='".$record["magazzino_articoli"]["id_articolo"]."' style='max-width:140px;display:inline;' class='form-control class_combinazione class_combinazione_".$record["magazzino_articoli"]["id_articolo"]."' name='codice' value='".$record["magazzino_articoli"]["codice"]."' /></div>";
+Application/Models/MagazzinoarticoliModel.php:436	$html .= "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("GTIN").":</b> <input id-articolo='".$record["magazzino_articoli"]["id_articolo"]."' style='max-width:140px;display:inline;' class='form-control' name='gtin' value='".$record["magazzino_articoli"]["gtin"]."' /></div>";
+Application/Models/MagazzinoarticoliModel.php:438	$html .= "<div style='min-width:180px;margin-bottom:5px;'><b style='width:36px;display:inline-block;'>".gtext("MPN").":</b> <input id-articolo='".$record["magazzino_articoli"]["id_articolo"]."' style='max-width:140px;display:inline;' class='form-control' name='mpn' value='".$record["magazzino_articoli"]["mpn"]."' /></div>";
+Application/Models/OrdiniModel.php:373	$titoloPag = v("attiva_gestione_stati_ordine") ? sofield($stato, "titolo") : gtext($stato["stati_ordine"]["titolo"], false);
+Application/Models/OrdiniModel.php:442	$titoloPag = v("attiva_gestione_pagamenti") ? pfield($pag, "titolo") : gtext($pag["pagamenti"]["titolo"], false);
+Application/Models/OrdiniModel.php:536	"pending"	=>	gtext("Ordine ricevuto", false),
+Application/Models/OrdiniModel.php:537	"completed"	=>	gtext("Ordine pagato e in lavorazione", false),
+Application/Models/OrdiniModel.php:538	"closed"	=>	gtext("Ordine completato e spedito", false),
+Application/Models/OrdiniModel.php:539	"deleted"	=>	gtext("Ordine annullato", false),
+Application/Models/OrdiniModel.php:556	// 				self::$pagamenti[$k] = gtext($v, false);
+Application/Models/OrdiniModel.php:1685	return "<span class='text-primary'><b>".gtext("Richiesta")."</b></span>";
+Application/Models/OrdiniModel.php:2627	return gtext("Titolo").": ". $lista["titolo"]."<br />".gtext("Codice").": <b>".$lista["codice"]."</b>";
+Application/Models/OrdiniModel.php:2681	return "<i class='fa fa-check text text-success'></i> <small>".gtext("Inviata il")." ".date("d/m/Y H:i", strtotime($dedica["data_creazione"]))."</small>";
+Application/Models/OrdiniModel.php:2970	$html .= "<div><b>".gtext("P").":</b> <b class='text-success'>".date($formato,strtotime($record[$this->_tables]["data_pagamento"]))."</b></div>";
+Application/Models/OrdiniModel.php:2973	$html .= "<div><b>".gtext("R").":</b> <b class='text-danger'>".date($formato,strtotime($record[$this->_tables]["data_rimborso"]))."</b></div>";
+Application/Models/OrdiniModel.php:3159	$templateTitleLingua = gtext($template);
+Application/Models/FornitoriimportModel.php:148	return array(0 => gtext("Default"));
+Application/Models/SpedizioninegozioeventiModel.php:88	$html .= ' <span class="label label-danger"><i class="fa fa-exclamation-triangle"></i> '.gtext("Errore invio").'</span>';
+Application/Models/SpedizioninegozioeventiModel.php:96	return gtext("Notifica inviata all'indirizzo email")." <b>".$record["eventi_retargeting_elemento"]["email"]."</b> ".gtext("in data")." <b>".date("d-m-Y H:i", strtotime($record["eventi_retargeting_elemento"]["data_creazione"]))."</b>";
+Application/Models/SpedizioninegozioModel.php:435	return "<b>".$record["spedizioni_negozio_invii"]["id_spedizione_negozio_invio"]."</b> ".gtext("del")." ".smartDate($record["spedizioni_negozio_invii"]["data_spedizione"]);
+Application/Models/SpedizioninegozioModel.php:443	return gtext(self::LABEL_CONSEGNATA);
+Application/Models/SpedizioninegozioModel.php:497	$arrayRighe[$r["id_r"]] = gtext("Ordine")." #".(int)$idO." - ".$r["title"]." ".strip_tags($r["attributi"]);
+Application/Models/SpedizioninegozioModel.php:595	$html .= '<a href="'.Url::getRoot()."spedizioninegozio/form/update/".$sp["spedizioni_negozio"]["id_spedizione_negozio"].'" target="_blank" class="pull-right label label-primary text-bold">'.gtext("dettagli").' <i class="fa fa-arrow-right"></i></a>';
+Application/Models/SpedizioninegozioModel.php:610	$html .= '<br /><span class="label label-danger"><i class="fa fa-exclamation-triangle"></i> '.gtext("Errore invio").'</span>';
+Application/Models/SpedizioninegozioModel.php:612	$html .= '<br />'.gtext($labelData).': <b>'.smartDate($sp["spedizioni_negozio"]["data_spedizione"]).'</b>';
+Application/Models/SpedizioninegozioModel.php:615	$html .= '<br />'.gtext("Spedizioniere").': <b>'.$sp["spedizionieri"]["titolo"].'</b>';
+Application/Models/SpedizioninegozioModel.php:628	$html .= '<br /><a target="_blank" href="'.$modulo->getUrlTracking((int)$sp["spedizioni_negozio"]["id_spedizione_negozio"]).'">'.gtext("Vai al tracking").'</a>';
+Application/Models/SpedizioninegozioModel.php:631	$html .= '<br />(<i style="font-size:12px;">'.gtext("Il tracking della spedizione potrebbe essere disponibile da domani")."</i>)";
+Application/Models/SpedizioninegozioModel.php:697	$html .= '<br /><span class="label label-danger"><i class="fa fa-exclamation-triangle"></i> '.gtext("Errore invio").'</span>';
+Application/Models/SpedizioninegozioModel.php:714	$this->addSoftCondition("update",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>").'<div style="display:none;" rel="hidden_alert_notice">email</div>');
+Application/Models/SpedizioninegozioModel.php:912	$this->notice = "<div class='alert alert-danger'>".gtext("Attenzione, inserire almeno un collo di peso maggiore di 0 kg. Controllare inoltre che nessun collo abbia peso 0kg")."</div>";
+Application/Models/RegioniModel.php:76	return gtext("Custom");
+Application/Models/RegioniModel.php:78	return gtext("Di sistema");
+Application/Models/ListeregalolinkModel.php:70	$this->notice = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, il link è già stato inviato all'indirizzo email indicato.")."</div><div class='evidenzia'>class_email</div>";
+Application/Controllers/SpedizioninegozioController.php:73	$this->tabella = gtext("spedizioni negozio",true);
+Application/Controllers/BaseCrudController.php:73	return "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>";
+Application/Controllers/BaseCrudController.php:150	flash("notice","<div class='$alertClass'>".gtext("Attenzione, si è verificato un errore. Si prega di contattare.")."</div>");
+Application/Controllers/BaseCrudController.php:182	$data["title"] = gtext("Gestione") . " " . gtext($data["tabella"]);
+Application/Controllers/BaseCrudController.php:237	"checkbox_".$table."_".$primaryKey	=>	array("del",gtext("Elimina selezionati"),"confirm"),
+Application/Controllers/BaseCrudController.php:251	$this->scaffold->mainMenu->links['add']['title'] = gtext('inserisci un nuovo elemento');
+Application/Controllers/TraduzionicorrezioniController.php:52	$this->filters = array("parola_tradotta_da_correggere",array("lingua",null,array("tutti" => gtext("Lingua")) + gtextDeep(LingueModel::getSelectLingueNonPrincipali())));
+Application/Controllers/MagazzinoarticoliController.php:108	"tutti"		=>	gtext("Marchio"),
+Application/Controllers/MagazzinoarticoliController.php:112	"tutti"		=>	gtext("Attivo / Non attivo"),
+Application/Controllers/MagazzinoarticoliController.php:113	"Y"	=>	gtext("Attivo"),
+Application/Controllers/MagazzinoarticoliController.php:114	"N"	=>	gtext("Non attivo"),
+Application/Controllers/MagazzinoarticoliController.php:118	"tutti"		=>	gtext("Acquistabile / Non acquistabile"),
+Application/Controllers/MagazzinoarticoliController.php:119	"1"	=>	gtext("Acquistabile"),
+Application/Controllers/MagazzinoarticoliController.php:120	"0"	=>	gtext("Non acquistabile"),
+Application/Controllers/RuoliController.php:44	$this->tabella = gtext("ruoli",true);
+Application/Controllers/SpedizioninegoziorigheController.php:41	$this->tabella = gtext("spedizioni negozio",true);
+Application/Controllers/RegusersController.php:152	$filtri[] = array("codice_app",null,array("tutti"=>gtext("Fonte account"),"sito"=>gtext("Sito web")) + $this->m["IntegrazioniloginModel"]->toList("codice", "titolo")->send());
+Application/Controllers/RegusersController.php:164	$filtri[] = array("deleted",null,array("tutti" => gtext("Stato cliente"), "no" => gtext("Clienti in anagrafica"), "yes" => gtext("Clienti eliminati")));
+Application/Controllers/RegusersController.php:646	flash("notice", "<div class='alert alert-success'>".gtext("La mail con le istruzioni per il recupero della password è stata inviata correttamente.")."</div>");
+Application/Controllers/RegusersController.php:648	flash("notice", "<div class='alert alert-danger'>".gtext("Errore nell'invio della mail.")."</div>");
+Application/Controllers/RegusersController.php:666	flash("notice", "<div class='alert alert-success'>".gtext("La mail con le istruzioni per la conferma dell'account è stata inviata correttamente.")."</div>");
+Application/Controllers/RegusersController.php:668	flash("notice", "<div class='alert alert-danger'>".gtext("Errore nell'invio della mail.")."</div>");
+Application/Controllers/RegusersgroupstempController.php:41	$this->tabella = gtext("gruppi da approvare",true);
+Application/Controllers/BaseController.php:169	$data["title"] = gtext("Pannello di controllo");
+Application/Controllers/BaseController.php:414	$data["titoloRecord"] = gtext("inserimento nuovo elemento");
+Application/Controllers/BaseController.php:607	$stringaTitolo = (!showreport()) ? gtext("Gestione") : gtext("Visualizzazione");
+Application/Controllers/BaseController.php:608	$data["title"] = $stringaTitolo . " " . gtext($data["tabella"]) . ": " . $data["titoloRecord"];
+Application/Controllers/BaseController.php:967	$data["tabella"] = gtext($this->tabella);
+Application/Controllers/OrdiniacquistoController.php:132	$filtroStato = array("tutti"	=>	gtext("Stato")) + OrdiniacquistostatiModel::g()->selectStati();
+Application/Controllers/OrdiniacquistoController.php:415	flash("notice", "<div class='alert alert-success'>".gtext("Email inviata correttamente")."</div>");
+Application/Controllers/ProdottiController.php:81	$filtroMarchio = array("tutti" => gtext("Tutti")) + $this->m["MarchiModel"]->filtro();
+Application/Controllers/ProdottiController.php:91	$filtroTag = array("tutti" => gtext("Tutti")) + $this->m["TagModel"]->filtro();
+Application/Controllers/ProdottiController.php:103	$fNaz = array("id_naz",null,array("tutti" => gtext("Tutti")) + $this->m["NazioniModel"]->filtro());
+Application/Controllers/ProdottiController.php:107	$fReg = array("id_reg",null,array("tutti" => gtext("Tutti")) + $this->m["RegioniModel"]->filtro());
+Application/Controllers/ProdottiController.php:127	$this->filters[] = array("ok_acq",null,array("tutti" => gtext("Tutti")) + gtextDeep(SlideModel::$attivoSiNo));
+Application/Controllers/ProdottiController.php:131	$this->filters[] = array("dist",null,array("tutti" => gtext("Tutti")) + gtextDeep(SlideModel::$attivoSiNo));
+Application/Controllers/ProdottiController.php:154	$data["avviso_combinazioni"] = "<div class='callout callout-info'>".gtext("Il prodotto ha delle varianti.")."<br />".gtext("I campi prezzo, codice, peso e giacenza devono essere modificati nella scheda 'Varianti', tramite il pulsante 'Gestisci combinazioni'")."</div>";
+Application/Controllers/DocumentiController.php:270	$erroreGenerico = gtext("Errore caricamento file: ");
+Application/Controllers/DocumentiController.php:275	$testoSuccesso = gtext("File")." ".sanitizeHtml($_FILES["filename"]["name"])." ".gtext("correttamente caricato");
+Application/Controllers/CaratteristichevaloriController.php:61	$filtroCaratteristica = array("tutti" => gtext("Caratteristica")) + $this->m[$this->modelName]->selectCaratteristica(true, "caratteristiche.titolo");
+Application/Controllers/CaratteristichevaloriController.php:108	"checkbox_caratteristiche_valori_id_cv"	=>	array("aggiungiaprodotto",gtext("Aggiungi al prodotto")),
+Application/Controllers/TestiController.php:70	$filtroLingua = array("tutti" => gtext("LINGUA")) + $this->m[$this->modelName]->selectLingua();
+Application/Controllers/TestiController.php:71	$filtroTipo = array("tutti" => gtext("TIPO")) + array(
+Application/Controllers/TestiController.php:72	"TESTO"		=>	gtext("Testo"),
+Application/Controllers/TestiController.php:73	"IMMAGINE"	=>	gtext("Immagine"),
+Application/Controllers/TestiController.php:74	"LINK"		=>	gtext("Link"),
+Application/Controllers/TestiController.php:75	"VIDEO"		=>	gtext("Video"),
+Application/Controllers/OrdiniacquistorigheController.php:101	"tutti"		=>	gtext("Filtro da ricevere"),
+Application/Controllers/OrdiniacquistorigheController.php:103	"D"	=>	gtext("Da ricevere"),
+Application/Controllers/OrdiniacquistorigheController.php:104	"R"		=>	gtext("Ricevuti"),
+Application/Controllers/PasswordController.php:39	$this->m['UsersModel']->strongConditions['update'] = array('checkEqual'=>"password,confirmation|".gtext("Le due password non coincidono").UsersModel::evidenziaPassword());
+Application/Controllers/PasswordController.php:73	$data['notice'] = "<div class='alert alert-danger'>".gtext("Vecchia password sbagliata")."</div>\n";
+Application/Controllers/Public/BasePromozioniController.php:57	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista coupon"));
+Application/Controllers/Public/BasePromozioniController.php:87	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestione coupon"));
+Application/Controllers/Public/BasePromozioniController.php:122	$notice = gtext("Errore nell'invio");
+Application/Controllers/Public/BasePromozioniController.php:129	$notice = gtext("Link correttamente inviato");
+Application/Controllers/Public/BasePromozioniController.php:156	$this->m('PromozioniinviiModel')->addStrongCondition("both",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo email</b>")."<div class='evidenzia'>class_email</div>");
+Application/Controllers/Public/BasePromozioniController.php:165	$notice = "<div class='".v("alert_success_class")."'>".gtext("Il codice del coupon è stato correttamente inviato alla mail indicata")."</div>";
+Application/Controllers/Public/BasePromozioniController.php:167	$notice = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, errore nell'invio della mail. Si prega di riprovare.")."</div>";
+Application/Controllers/Public/BasePromozioniController.php:170	$notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('PromozioniinviiModel')->notice;
+Application/Controllers/Public/BasePromozioniController.php:224	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('PromozioniModel')->notice;
+Application/Controllers/Public/BasePaypalController.php:69	"description"	=>	gtext("Ordine non esistente. Si prega di conttare il negozio"),
+Application/Controllers/Public/BasePagineController.php:68	"checkbox_pages_id_page"	=>	array("ripristina",gtext("Ripristina elementi selezionati"), "confirm"),
+Application/Controllers/Public/BaseMotoriricercaController.php:86	"label"	=>	gtext(AirichiesteModel::$fraseTroppeRichieste),
+Application/Controllers/Public/BaseContenutiController.php:2126	$data["title"] = Parametri::$nomeNegozio . " - ".gtext("Cerca");
+Application/Controllers/Public/BaseContenutiController.php:2230	$data["breadcrumb"] = $this->breadcrumbHtml = gtext("promozioni");
+Application/Controllers/Public/BaseContenutiController.php:2547	$data["title"] = Parametri::$nomeNegozio . " - ".gtext("lista")." ".$lista["liste_regalo"]["titolo"];
+Application/Controllers/Public/BaseHomeController.php:39	$data['title'] = gtext(htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]));
+Application/Controllers/Public/BaseRegusersController.php:61	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Login'));
+Application/Controllers/Public/BaseRegusersController.php:96	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Login'));
+Application/Controllers/Public/BaseRegusersController.php:168	$data['notice'] = '<div class="'.v("alert_error_class").'">'.gtext('E-Mail o Password sbagliati').'</div>';
+Application/Controllers/Public/BaseRegusersController.php:177	$data['notice'] = '<div class="'.v("alert_error_class").'">'.gtext('Devi aspettare 5 secondi prima di poter tentare nuovamente il login').'</div>';
+Application/Controllers/Public/BaseRegusersController.php:256	flash("notice","<div class='".v("alert_success_class")."'>".gtext("Il codice di autenticazione a due fattori è stato inviato all'indirizzo email indicato.")."</div>");
+Application/Controllers/Public/BaseRegusersController.php:262	flash("notice","<div class='".v("alert_error_class")."'>".gtext("Attenzione, non è stato possibile inviare il codice di autenticazione a due fattori. Si prega di riprovare.")."</div>");
+Application/Controllers/Public/BaseRegusersController.php:293	flash("notice","<div class='".v("alert_error_class")."'>".gtext("Attenzione, il codice non è corretto, si prega di riprovare")."</div>");
+Application/Controllers/Public/BaseRegusersController.php:575	$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("richiedi l'invio del link di conferma dell'account");
+Application/Controllers/Public/BaseRegusersController.php:638	$error = gtext("Siamo spiacenti, non esiste alcun utente da confermare corrispondente all'email da lei inserita");
+Application/Controllers/Public/BaseRegusersController.php:645	$error = gtext("Si prega di ricontrollare l'indirizzo e-mail");
+Application/Controllers/Public/BaseRegusersController.php:668	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("richiedi una nuova password"));
+Application/Controllers/Public/BaseRegusersController.php:750	// 								$error = gtext("Siamo spiacenti, non esiste alcun utente attivo corrispondente all'email da lei inserita");
+Application/Controllers/Public/BaseRegusersController.php:757	$error = gtext("Si prega di ricontrollare l'indirizzo e-mail");
+Application/Controllers/Public/BaseRegusersController.php:769	// 					$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Errore nel tentativo di recupero della password, per favore riprova più tardi")."</div>";
+Application/Controllers/Public/BaseRegusersController.php:906	flash("notice", "<div class='".v("alert_success_class")."'>".gtext("Il codice di verifica è stato inviato all'indirizzo email indicato.")."</div>");
+Application/Controllers/Public/BaseRegusersController.php:923	$data['title'] = Parametri::$nomeNegozio . ' - ' . gtext("Conferma registrazione");
+Application/Controllers/Public/BaseRegusersController.php:976	flash("notice","<div class='".v("alert_error_class")."'>".gtext("Attenzione, il codice non è corretto, si prega di riprovare")."</div>");
+Application/Controllers/Public/BaseRegusersController.php:1013	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Imposta nuova password"));
+Application/Controllers/Public/BaseRegusersController.php:1094	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica password"));
+Application/Controllers/Public/BaseRegusersController.php:1122	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('RegusersModel')->notice;
+Application/Controllers/Public/BaseRegusersController.php:1127	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Vecchia password sbagliata")."</div><span class='evidenzia'>class_old</span>\n";
+Application/Controllers/Public/BaseRegusersController.php:1129	$this->m('RegusersModel')->addError("old",gtext("Vecchia password sbagliata"));
+Application/Controllers/Public/BaseRegusersController.php:1187	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica immagine profilo"));
+Application/Controllers/Public/BaseRegusersController.php:1214	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di selezionare un file")."</div>".'<div class="evidenzia">class_immagine</div>';
+Application/Controllers/Public/BaseRegusersController.php:1240	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica account"));
+Application/Controllers/Public/BaseRegusersController.php:1304	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('RegusersModel')->notice;
+Application/Controllers/Public/BaseRegusersController.php:1386	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestisci spedizione", false));
+Application/Controllers/Public/BaseRegusersController.php:1432	$this->m('SpedizioniModel')->addStrongCondition("both",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
+Application/Controllers/Public/BaseRegusersController.php:1455	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('SpedizioniModel')->notice;
+Application/Controllers/Public/BaseRegusersController.php:1479	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("registrati"));
+Application/Controllers/Public/BaseOrdiniController.php:49	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Gestione ordine'));
+Application/Controllers/Public/BaseOrdiniController.php:411	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Modifica resoconto ordine"));
+Application/Controllers/Public/BaseOrdiniController.php:434	$this->m('OrdiniModel')->addStrongCondition("update",'checkIsStrings|'.OrdiniModel::getPagamentiPermessi($res[0]["orders"]["nazione_spedizione"]),"pagamento|".gtext("<b>Si prega di selezionare il pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
+Application/Controllers/Public/BaseOrdiniController.php:436	$this->m('OrdiniModel')->addStrongCondition("update",'checkIsStrings|'.implode(",",array_keys($data["tendinaIndirizzi"])),"id_spedizione|".gtext("<b>Si prega di selezionare l'indirizzo</b>")."<div class='evidenzia'>class_id_spedizione</div>");
+Application/Controllers/Public/BaseOrdiniController.php:452	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, non è stato possibile cambiare i dati di spedizione. Contattare il negozio")."</div>";
+Application/Controllers/Public/BaseOrdiniController.php:585	Pdf::output("", gtext("pdf_ordine_").$clean["id_o"].".pdf", array(), "I", $content);
+Application/Controllers/Public/BaseOrdiniController.php:592	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Resoconto ordine"));
+Application/Controllers/Public/BaseOrdiniController.php:763	flash("stato_modificato", "<div class='uk-text-center uk-text-bold ".v("alert_success_class")."'>".gtext("L'ordine è stato annullato")."</div>");
+Application/Controllers/Public/BaseOrdiniController.php:960	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Grazie per l'acquisto"));
+Application/Controllers/Public/BaseOrdiniController.php:1033	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Grazie per l'acquisto"));
+Application/Controllers/Public/BaseOrdiniController.php:1111	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Grazie per l'acquisto"));
+Application/Controllers/Public/BaseOrdiniController.php:1232	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Checkout'));
+Application/Controllers/Public/BaseOrdiniController.php:1377	$this->m('OrdiniModel')->addSoftCondition("both",'checkMail',"pec|".gtext("Si prega di ricontrollare <b>l'indirizzo Pec</b>")."<div class='evidenzia'>class_pec</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1379	$this->m('OrdiniModel')->addSoftCondition("both",'checkLength|7',"codice_destinatario|".gtext("Si prega di ricontrollare <b>il Codice Destinatario</b>")."<div class='evidenzia'>class_codice_destinatario</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1381	$this->m('OrdiniModel')->addStrongCondition("insert",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>")."<div class='evidenzia'>class_email</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1385	$this->m('OrdiniModel')->addStrongCondition("insert",'checkMail',"conferma_email|".gtext("Si prega di ricontrollare il campo <b>conferma dell'indirizzo Email</b>")."<div class='evidenzia'>class_conferma_email</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1387	$this->m('OrdiniModel')->addStrongCondition("insert",'checkEqual',"email,conferma_email|".gtext("<b>I due indirizzi email non corrispondono</b>")."<div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1390	$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|accetto',"accetto|".gtext("<b>Si prega di accettare le condizioni di vendita</b>")."<div class='evidenzia'>class_accetto</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1393	$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.OrdiniModel::getPagamentiPermessi($_POST["nazione_spedizione"]),"pagamento|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>")."<div class='evidenzia'>class_pagamento</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1395	// 		$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|privato,azienda,libero_professionista',"tipo_cliente|".gtext("<b>Si prega di scegliere la modalità di pagamento</b>"));
+Application/Controllers/Public/BaseOrdiniController.php:1397	$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.TipiclientiModel::getListaTipi(),"tipo_cliente|".gtext("<b>Si prega di scegliere uno dei tipi cliente ammessi</b>"));
+Application/Controllers/Public/BaseOrdiniController.php:1399	$this->m('OrdiniModel')->addSoftCondition("insert",'checkLength|255',"note|<b>".gtext("Le note non possono superare i 255 caratteri")."</b><div class='evidenzia'>class_note</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1401	$this->m('OrdiniModel')->addSoftCondition("insert",'checkLength|255',"indirizzo_spedizione|".gtext("<b>L'indirizzo di spedizione non può superare i 255 caratteri</b>")."<div class='evidenzia'>class_indirizzo_spedizione</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1403	$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9\s\+]+$/","telefono|".gtext("Si prega di controllare che il campo <b>telefono</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_telefono</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1407	// 			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1410	$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","codice_fiscale|".gtext("Si prega di controllare il campo <b>Codice Fiscale</b>")."<div class='evidenzia'>class_codice_fiscale</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1412	$this->m('OrdiniModel')->addSoftCondition("insert","checkMatch|/^[0-9a-zA-Z]+$/","p_iva|".gtext("Si prega di controllare il campo <b>Partita Iva</b>")."<div class='evidenzia'>class_p_iva</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1417	// 			$this->m('OrdiniModel')->addStrongCondition("insert","checkMatch|/^[0-9]+$/","cap_spedizione|".gtext("Si prega di controllare che il campo <b>cap</b> contenga solo cifre numeriche")."<div class='evidenzia'>class_cap_spedizione</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1422	$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttive,"nazione|".gtext("<b>Si prega di selezionare una nazione tra quelle permesse</b>"));
+Application/Controllers/Public/BaseOrdiniController.php:1426	$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttiveSpedizione,"nazione_spedizione|".gtext("<b>Si prega di selezionare una nazione di spedizione tra quelle permesse</b>"));
+Application/Controllers/Public/BaseOrdiniController.php:1432	$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$listaCorrieriNazione,"id_corriere|".gtext("<b>Non è possibile spedire nella nazione selezionata</b>"));
+Application/Controllers/Public/BaseOrdiniController.php:1444	$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|'.$codiciNazioniAttiveSpedizioneCondizioniSpedizione,"nazione_spedizione|".gtext("I seguenti prodotti non possono essere spediti nella nazione selezionata. Per maggiori informazioni contattare il servizio clienti.")." ".implode(",",$prodottiNonSpedibiliNellaNazione));
+Application/Controllers/Public/BaseOrdiniController.php:1450	$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|accetto',"accetto|".gtext("<b>Si prega di accettare le condizioni di vendita</b>")."<div class='evidenzia'>class_accetto</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1466	$this->m('OrdiniModel')->addStrongCondition("insert",'checkIsStrings|Y,N',"registrato|<b>".gtext("Si prega di indicare se volete continuare come utente ospite oppure creare un account", false)."</b><div class='evidenzia'>class_registrato</div>");
+Application/Controllers/Public/BaseOrdiniController.php:1479	$alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di completare l'acquisto come utente ospite.", false) : "";
+Application/Controllers/Public/BaseOrdiniController.php:1490	"checkUnique"		=>	"username|".gtext("Il suo account è già presente nel nostro sistema ma non è attivo perché non è mai stata completata la verifica dell'indirizzo e-mail.",false)."<br />".gtext("Può procedere con la conferma del proprio account al seguente",false)." <a href='".Url::getRoot()."account-verification'>".gtext("indirizzo web", false)."</a> ".$alertAnonimo."<span class='evidenzia'>class_username</span><div class='evidenzia'>class_email</div><div class='evidenzia'>class_conferma_email</div>",
+Application/Controllers/Public/BaseOrdiniController.php:1498	$this->m('RegusersModel')->addStrongCondition("insert",'checkEqual',"password,confirmation|<b>".gtext("Le due password non coincidono")."</b><span class='evidenzia'>class_password</span><span class='evidenzia'>class_confirmation</span>");
+Application/Controllers/Public/BaseOrdiniController.php:1507	// $this->m('RegusersModel')->addStrongCondition("insert",'checkMatch|/^[a-zA-Z0-9\_\-\!\,\.]+$/',"password|".gtext("Solo i seguenti caratteri sono permessi per la password").":<ul><li>Tutte le lettere, maiuscole o minuscole (a, A, b, B, ...)</li><li>Tutti i numeri (0,1,2,...)</li><li>I seguenti caratteri: <b>_ - ! , .</b></li></ul><span class='evidenzia'>class_password</span>");
+Application/Controllers/Public/BaseOrdiniController.php:1859	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('OrdiniModel')->notice;
+Application/Controllers/Public/BaseOrdiniController.php:1870	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('RegusersModel')->notice;
+Application/Controllers/Public/BaseOrdiniController.php:1881	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('OrdiniModel')->notice;
+Application/Controllers/Public/BaseRiservataController.php:50	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Area riservata"));
+Application/Controllers/Public/BaseRiservataController.php:68	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista ordini effettuati"));
+Application/Controllers/Public/BaseRiservataController.php:84	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista ordini collegati ai miei codici coupon"));
+Application/Controllers/Public/BaseRiservataController.php:103	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista coupon"));
+Application/Controllers/Public/BaseRiservataController.php:122	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Dettaglio coupon"));
+Application/Controllers/Public/BaseRiservataController.php:147	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista indirizzi di spedizione"));
+Application/Controllers/Public/BaseRiservataController.php:195	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Condizioni di privacy"));
+Application/Controllers/Public/BaseRiservataController.php:204	flash("noticecookies","<div class='".v("alert_success_class")."'>".gtext("Approvazione all'utilizzo di cookies revocata correttamente.")."</div><br /><br />");
+Application/Controllers/Public/BaseRiservataController.php:225	$data["notice"] = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, password non corretta.")."</div><div class='evidenzia'>class_password</div>";
+Application/Controllers/Public/BaseRiservataController.php:242	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Biblioteca documenti"));
+Application/Controllers/Public/BaseRiservataController.php:261	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Documenti riservati"));
+Application/Controllers/Public/BaseRiservataController.php:280	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestione crediti"));
+Application/Controllers/Public/BaseRiservataController.php:309	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestione notifiche"));
+Application/Controllers/Public/BaseRiservataController.php:334	$data['categorieDaLeggere'] = array(0 => gtext("Seleziona")) + $this->m("DocumentiModel")->clear()->restore()->categorieConDocumentiDaLeggere();
+Application/Controllers/Public/BaseRiservataController.php:335	$data['pagineDaLeggere'] = array(0 => gtext("Seleziona")) + $this->m("DocumentiModel")->clear()->restore()->pagineConDocumentiDaLeggere();
+Application/Controllers/Public/BaseBaseController.php:156	RegioniModel::$nAlias = gtext(v("label_nazione_url"));
+Application/Controllers/Public/BaseBaseController.php:157	RegioniModel::$rAlias = gtext(v("label_regione_url"));
+Application/Controllers/Public/BaseBaseController.php:161	"error" => "<div class='".v("alert_error_class")."'>".gtext("Errore: verificare i permessi del file/directory")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:162	"executed"	=>	"<div class='".v("alert_success_class")."'>".gtext("Operazione eseguita!")."</div>",
+Application/Controllers/Public/BaseBaseController.php:163	"not-child" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è una sotto directory della directory base")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:164	"not-dir" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è una directory")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:165	"not-empty" => "<div class='".v("alert_error_class")."'>".gtext("La cartella selezionata non è vuota")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:166	"no-folder-specified" => "<div class='".v("alert_error_class")."'>".gtext("Non è stata specificata alcuna cartella")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:167	"no-file-specified" => "<div class='".v("alert_error_class")."'>".gtext("Non è stato specificato alcun file")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:168	"not-writable" => "<div class='".v("alert_error_class")."'>".gtext("La cartella non è scrivibile")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:169	"not-writable-file" => "<div class='".v("alert_error_class")."'>".gtext("Il file non è scrivibile")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:170	"dir-exists" => "<div class='".v("alert_error_class")."'>".gtext("Esiste già una directory con lo stesso nome")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:171	"no-upload-file" => "<div class='".v("alert_error_class")."'>".gtext("Non c'è alcun file di cui fare l'upload")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:172	"size-over" => "<div class='".v("alert_error_class")."'>".gtext("La dimensione del file è troppo grande")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:173	"not-allowed-ext" => "<div class='".v("alert_error_class")."'>".gtext("L'estensione del file che vuoi caricare non è consentita")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:174	"not-allowed-mime-type" => "<div class='".v("alert_error_class")."'>".gtext("Il tipo MIME del file che vuoi caricare non è consentito")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:175	"file-exists" => "<div class='".v("alert_error_class")."'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
+Application/Controllers/Public/BaseBaseController.php:570	// $data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttive();
+Application/Controllers/Public/BaseBaseController.php:571	// $data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttiveSpedizione();
+Application/Controllers/Public/BaseBaseController.php:603	$data["title"] =  gtext(htmlentitydecode(ImpostazioniModel::$valori["title_home_page"]));
+Application/Controllers/Public/BaseBaseController.php:635	$data["selectNazioni"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttive();
+Application/Controllers/Public/BaseBaseController.php:636	$data["selectNazioniSpedizione"] = array(""	=>	gtext("Seleziona",true)) + $this->m("NazioniModel")->selectNazioniAttiveSpedizione();
+Application/Controllers/Public/BaseBaseController.php:740	$aliasStatoProdotto = gtext(v("alias_stato_prodotto"), true, "none", null, 0);
+Application/Controllers/Public/BaseBaseController.php:744	gtext(v("alias_valore_tipo_in_evidenza"), true, "none", null, 0),
+Application/Controllers/Public/BaseBaseController.php:745	gtext(v("valore_tipo_in_evidenza"), true, "none", null, 0),
+Application/Controllers/Public/BaseBaseController.php:749	$aliasStatoProdotto = gtext(v("alias_stato_prodotto_nuovo"), true, "none", null, 0);
+Application/Controllers/Public/BaseBaseController.php:753	gtext(v("alias_valore_tipo_nuovo"), true, "none", null, 0),
+Application/Controllers/Public/BaseBaseController.php:754	gtext(v("valore_tipo_nuovo"), true, "none", null, 0),
+Application/Controllers/Public/BaseBaseController.php:758	$aliasStatoProdotto = gtext(v("alias_stato_prodotto_promo"), true, "none", null, 0);
+Application/Controllers/Public/BaseBaseController.php:762	gtext(v("alias_valore_tipo_promo"), true, "none", null, 0),
+Application/Controllers/Public/BaseBaseController.php:763	gtext(v("valore_tipo_promo"), true, "none", null, 0),
+Application/Controllers/Public/BaseBaseController.php:770	$aliasFasciaPrezzo = gtext(v("alias_fascia_prezzo"), true, "none", null, 0);
+Application/Controllers/Public/BaseBaseController.php:991	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('RegusersModel')->notice;
+Application/Controllers/Public/BaseBaseController.php:996	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('RegusersModel')->notice;
+Application/Controllers/Public/BaseBaseController.php:1114	'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
+Application/Controllers/Public/BaseBaseController.php:1115	'checkIsStrings|1,2,3,4,5'		=>	'voto|'.gtext("Si prega di scegliere un punteggio").'<div class="evidenzia">class_voto</div>',
+Application/Controllers/Public/BaseBaseController.php:1219	Output::setBodyValue("Notice", "<div class='".v("alert_success_class")."'>".gtext("Il vostro messaggio è stato correttamente inviato")."</div>");
+Application/Controllers/Public/BaseBaseController.php:1234	$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("Hai già aggiunto una valutazione a questa pagina")."</div>";
+Application/Controllers/Public/BaseBaseController.php:1254	// 					$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
+Application/Controllers/Public/BaseBaseController.php:1431	'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
+Application/Controllers/Public/BaseBaseController.php:1524	Output::setBodyValue("Notice", "<div class='".v("alert_success_class")."'>".gtext("Il vostro messaggio è stato correttamente inviato")."</div>");
+Application/Controllers/Public/BaseBaseController.php:1527	$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
+Application/Controllers/Public/BaseBaseController.php:1535	$erroriValidazione = "<div class='".v("alert_error_class")."'>".gtext(v("testo_errori_form"))."</div>".$this->m('ContattiModel')->notice;
+Application/Controllers/Public/BaseBaseController.php:1543	$erroriValidazione = "<div class='".v("alert_error_class")."'>".gtext(v("testo_errori_form"))."</div>".$this->m('ContattiModel')->notice;
+Application/Controllers/Public/BaseBaseController.php:1555	// 				$erroreInvio = "<div class='".v("alert_error_class")."'>".gtext("errore nell'invio del messaggio, per favore riprova più tardi")."</div>";
+Application/Controllers/Public/BaseListeregaloController.php:59	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Liste regalo"));
+Application/Controllers/Public/BaseListeregaloController.php:109	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Gestisci la tua lista"));
+Application/Controllers/Public/BaseListeregaloController.php:221	$notice = gtext("Errore nell'invio");
+Application/Controllers/Public/BaseListeregaloController.php:231	$notice = gtext("Link correttamente inviato");
+Application/Controllers/Public/BaseListeregaloController.php:261	$this->m('ListeregalolinkModel')->addStrongCondition("both",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo email</b>")."<div class='evidenzia'>class_email</div>");
+Application/Controllers/Public/BaseListeregaloController.php:270	$notice = "<div class='".v("alert_success_class")."'>".gtext("Il link è stato correttamente inviato alla mail indicata")."</div>";
+Application/Controllers/Public/BaseListeregaloController.php:272	$notice = "<div class='".v("alert_error_class")."'>".gtext("Attenzione, errore nell'invio della mail. Si prega di riprovare.")."</div>";
+Application/Controllers/Public/BaseListeregaloController.php:275	$notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('ListeregalolinkModel')->notice;
+Application/Controllers/Public/BaseListeregaloController.php:351	$this->m('ListeregaloModel')->addStrongCondition("both",'checkIsStrings|'.implode(",",array_keys($data["selectTipi"])),"id_lista_tipo|".gtext("<b>Si prega di selezionare il tipo della lista</b>"));
+Application/Controllers/Public/BaseListeregaloController.php:367	$data['notice'] = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi evidenziati")."</div>".$this->m('ListeregaloModel')->notice;
+Application/Controllers/Public/BaseListeregaloController.php:387	"errore"	=>	gtext("Il negozio è offline, ci scusiamo per il disguido."),
+Application/Controllers/Public/BaseListeregaloController.php:394	"errore"	=>	gtext("Lista inesistente"),
+Application/Controllers/Public/BaseListeregaloController.php:417	$errore = gtext("Attenzione, non è possibile inserire nella lista questo prodotto", false);
+Application/Controllers/Public/BaseListeregaloController.php:422	// 			$errore = gtext("Attenzione, non è possibile inserire nella lista questo prodotto", false);
+Application/Controllers/Public/BaseListeregaloController.php:462	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Fai un reso dei prodotti della tua lista"));
+Application/Controllers/Public/BaseAssistentevirtualeController.php:171	$output = gtext("Sto pensando...");
+Application/Controllers/Public/BaseAssistentevirtualeController.php:174	$output = gtext("Sto recuperando le informazioni...");
+Application/Controllers/Public/BaseAssistentevirtualeController.php:177	$output = gtext("Preparo la risposta...");
+Application/Controllers/Public/BaseCartController.php:40	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext('Carrello'));
+Application/Controllers/Public/BaseCartController.php:111	"errore"	=>	gtext("Il negozio è offline, ci scusiamo per il disguido."),
+Application/Controllers/Public/BaseCartController.php:225	$errore = gtext("Attenzione, hai già inserito nel carrello tutti i pezzi presenti a magazzino", false);
+Application/Controllers/Public/BaseCartController.php:303	$errore = gtext("Si prega di selezionare la variante", false);
+Application/Controllers/Public/BaseCartController.php:309	$errore = gtext("Attenzione, prodotto esaurito", false);
+Application/Controllers/Public/BaseCartController.php:311	$errore = gtext("Attenzione, è rimasto un solo prodotto in magazzino", false);
+Application/Controllers/Public/BaseCartController.php:314	$errore = gtext("Attenzione, sono rimasti solo [N] prodotti in magazzino", false);
+Application/Controllers/Public/BaseCartController.php:321	$errore = gtext("Attenzione, non è possibile inserire nel carrello più di [N] gift card", false);
+Application/Controllers/Public/BaseCartController.php:327	$errore = gtext("Si prega di indicare una quantità maggiore di zero", false);
+Application/Controllers/Public/BaseCartController.php:332	$errore = gtext("Hai nel carrello dei prodotti legati ad una lista nascita. Per poter inserire altri prodotti devi prima completare l'ordine della lista nascita oppure svuotare il carrello.", false);
+Application/Controllers/Public/BaseTicketController.php:187	echo "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('TicketmessaggiModel')->notice;
+Application/Controllers/Public/BaseTicketController.php:258	flash("notice", "<div class='".v("alert_success_class")."'>".gtext("Il ticket è stato creato con successo!")."</div>");
+Application/Controllers/Public/BaseTicketController.php:265	$this->m('TicketModel')->notice = "<div class='".v("alert_error_class")."'>".gtext("Si prega di controllare i campi segnati in rosso")."</div>".$this->m('TicketModel')->notice;
+Application/Controllers/Public/BaseTicketController.php:275	$data['ordini'] = array(0 => gtext("Seleziona")) + $this->m('TicketModel')->getTendinaOrdini($ticket["id_user"]);
+Application/Controllers/Public/BaseTicketController.php:276	$data['listeRegalo'] = array(0 => gtext("Seleziona")) + $this->m('TicketModel')->getTendinaListe($ticket["id_user"]);
+Application/Controllers/Public/BaseTicketController.php:289	$data['prodotti'] = array(0 => gtext("Seleziona")) + $this->m('TicketModel')->getTendinaProdotti($ticket["id_user"], $idO, $idLista);
+Application/Controllers/Public/BaseTicketController.php:292	$data['prodotti'] = array(0 => gtext("Seleziona"));
+Application/Controllers/Public/BaseTicketController.php:468	$result = "<div class='".v("alert_error_class")."'>".gtext("Hai superato il numero massimo di file di questo tipo")."</div>";
+Application/Controllers/Public/BasePublicCrudController.php:97	$data["titoloRecord"] = gtext("inserimento nuovo elemento");
+Application/Controllers/Public/BaseWishlistController.php:41	$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista dei dsideri"));
+Application/Controllers/ReggroupsController.php:44	$this->tabella = gtext("gruppi",true);
+Application/Controllers/PagesController.php:905	$this->scaffold->model->notice = "<div class='alert alert-success'>".gtext("operazione eseguita!")."</div>\n";
+Application/Controllers/PagesController.php:1745	$filtroLingua = array("tutti" => gtext("VEDI TUTTO")) + $this->m[$this->modelName]->selectLingua();
+Application/Controllers/PagesController.php:1746	$filtroTipo = array("tutti" => gtext("VEDI TUTTO")) + $this->m[$this->modelName]->selectTipo("GENERICO");
+Application/Controllers/PagesController.php:1919	// 			flash("notice","<div class='alert alert-success'>".gtext("Pulizia avvenuta")."</div>");
+Application/Controllers/PagesController.php:1926	// 		$filtroLingua = array("tutti" => gtext("VEDI TUTTO")) + array("tutte" => gtext("TUTTE LE LINGUE")) + $this->m[$this->modelName]->selectLingua();
+Application/Controllers/PagesController.php:1927	// 		$filtroTipoDoc = array("tutti" => gtext("VEDI TUTTO")) + $this->m[$this->modelName]->selectTipo("ecludi ");
+Application/Controllers/PagesController.php:2029	// // 		$this->tabella = gtext("prodotti");
+Application/Controllers/PagesController.php:2164	flash("notice",wrap(gtext("Indicare una caratteristica"),array(
+Application/Controllers/PagesController.php:2169	flash("notice",wrap(gtext("Indicare un valore"),array(
+Application/Controllers/PagesController.php:2211	flash("notice",wrap(gtext("Operazione eseguita"),array(
+Application/Controllers/PagesController.php:2563	$this->m[$this->modelName]->addValuesCondition("both",'checkIsNotStrings|0',"id_articolo|".gtext("Si prega di selezionare una variante"));
+Application/Controllers/PagesController.php:2817	$errorString = gtext("Errore nel caricamento del file");
+Application/Controllers/PagesController.php:2823	$errorString = gtext("File non esistente");
+Application/Controllers/PagesController.php:2829	$errorString = gtext("Il MIME TYPE del file")."<i> ".sanitizeHtml($_FILES['Filedata']['name'])."</i> ".gtext("non è permesso");
+Application/Controllers/PagesController.php:2833	$errorString = gtext("L'estensione del file")."<i> ".sanitizeHtml($_FILES['Filedata']['name'])."</i> ".gtext("non è permessa");
+Application/Controllers/PagesController.php:2839	$errorString = gtext("La dimensione del file è superiore a ".number_format(Parametri::$maxUploadSize/1000000,0,",",".")."MB");
+Application/Controllers/PagesController.php:2845	$errorString = gtext("Non è stato caricato alcun file");
+Application/Controllers/PagesController.php:2852	$errorString = gtext("Pagina non esistente");
+Application/Controllers/UploadController.php:146	$data['notice'] = "<div class='executed'>".gtext("Operazione eseguita")."</div>";
+Application/Controllers/AirichiesteController.php:201	"checkbox_ai_richieste_contesti_id_ai_richiesta_contesto"	=>	array("del",gtext("Elimina selezionati"),"confirm"),
+Application/Controllers/CronController.php:47	$data["titoloPagina"] = gtext("Esito migrazioni");
+Application/Controllers/CombinazioniController.php:315	"tutti"		=>	gtext("Marchio"),
+Application/Controllers/CombinazioniController.php:320	"tutti"		=>	gtext("Stato giacenza"),
+Application/Controllers/CombinazioniController.php:321	"0"	=>	gtext("Esaurito"),
+Application/Controllers/CombinazioniController.php:322	"1"	=>	gtext("Non esaurito"),
+Application/Controllers/CombinazioniController.php:327	"tutti"		=>	gtext("Attivo / Non attivo"),
+Application/Controllers/CombinazioniController.php:328	"Y"	=>	gtext("Attivo"),
+Application/Controllers/CombinazioniController.php:329	"N"	=>	gtext("Non attivo"),
+Application/Controllers/CombinazioniController.php:333	"tutti"		=>	gtext("Acquistabile / Non acquistabile"),
+Application/Controllers/CombinazioniController.php:334	"1"	=>	gtext("Acquistabile"),
+Application/Controllers/CombinazioniController.php:335	"0"	=>	gtext("Non acquistabile"),
+Application/Controllers/UsersController.php:274	flash("notice","<div class='alert alert-danger'>".gtext("Attenzione, il codice non è corretto, si prega di riprovare")."</div>");
+Application/Controllers/UsersController.php:321	$this->m[$this->modelName]->addStrongCondition("both",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo E-mail</b>").'<div style="display:none;" rel="hidden_alert_notice">email</div>');
+Application/Controllers/CategoriesController.php:317	$data["tabella"] = gtext("categoria");
+Application/Controllers/CategoriesController.php:432	$data["tabella"] = gtext("categoria");
+Application/Controllers/CategoriesController.php:468	$data["tabella"] = gtext("categoria");
+Application/Controllers/CategoriesController.php:610	$data["tabella"] = gtext("categoria");
+Application/Controllers/CategoriesController.php:681	$this->tabella = gtext("categoria");
+Application/Controllers/CategoriesController.php:754	$this->tabella = gtext("categoria");
+Application/Controllers/GroupsController.php:42	$this->tabella = gtext("gruppi amministratori",true);
+Application/Controllers/TipiaziendaController.php:41	$this->tabella = gtext("tipi di azienda",true);
+Application/Controllers/RigheController.php:178	"tutti"		=>	gtext("Filtro da ordinare"),
+Application/Controllers/RigheController.php:180	"D"	=>	gtext("Da ordinare"),
+Application/Controllers/RigheController.php:181	"O"		=>	gtext("Ordinati"),
+Application/Controllers/RigheController.php:186	$this->filters[] = array("id_marchio",null,array("tutti"=>gtext("Marchio")) + $this->m("MarchiModel")->marchiConProdottiDaOrdinare());
+Application/Controllers/RigheController.php:287	$this->filters[] = array("id_marchio",null,array("tutti"=>gtext("Marchio")) + $this->m("MarchiModel")->filtro());
+Application/Controllers/TipicontenutoController.php:59	$this->filters = array(null, "titolo", array("tipo",null,array("tutti"=>gtext("Tipo")) + gtextDeep(TipicontenutoModel::$tipi)));
+Application/Controllers/TicketController.php:228	$data["clienti"] = array(0	=>	gtext("Nuovo cliente")) + $this->m("TicketModel")->selectUtenti(0, v("utilizza_ricerca_ajax_su_select_2_clienti"));
+Application/Controllers/TicketController.php:286	$data['prodotti'] = array(0 => gtext("Seleziona")) + $this->m('TicketModel')->getTendinaProdotti($ticket["id_user"], $idO, $idLista);
+Application/Controllers/TicketController.php:289	$data['prodotti'] = array(0 => gtext("Seleziona"));
+Application/Controllers/InitController.php:64	"error" => "<div class='alert'>".gtext("Errore: verificare i permessi del file/directory")."</div>\n",
+Application/Controllers/InitController.php:65	"executed"	=>	"<div class='alert alert-success'>".gtext("Operazione eseguita!")."</div>",
+Application/Controllers/InitController.php:66	"not-child" => "<div class='alert'>".gtext("La cartella selezionata non è una sotto directory della directory base")."</div>\n",
+Application/Controllers/InitController.php:67	"not-dir" => "<div class='alert'>".gtext("La cartella selezionata non è una directory")."</div>\n",
+Application/Controllers/InitController.php:68	"not-empty" => "<div class='alert'>".gtext("La cartella selezionata non è vuota")."</div>\n",
+Application/Controllers/InitController.php:69	"no-folder-specified" => "<div class='alert'>".gtext("Non è stata specificata alcuna cartella")."</div>\n",
+Application/Controllers/InitController.php:70	"no-file-specified" => "<div class='alert'>".gtext("Non è stato specificato alcun file")."</div>\n",
+Application/Controllers/InitController.php:71	"not-writable" => "<div class='alert'>".gtext("La cartella non è scrivibile")."</div>\n",
+Application/Controllers/InitController.php:72	"not-writable-file" => "<div class='alert'>".gtext("Il file non è scrivibile")."</div>\n",
+Application/Controllers/InitController.php:73	"dir-exists" => "<div class='alert'>".gtext("Esiste già una directory con lo stesso nome")."</div>\n",
+Application/Controllers/InitController.php:74	"no-upload-file" => "<div class='alert'>".gtext("Non c'è alcun file di cui fare l'upload")."</div>\n",
+Application/Controllers/InitController.php:75	"size-over" => "<div class='alert'>".gtext("La dimensione del file è troppo grande")."</div>\n",
+Application/Controllers/InitController.php:76	"not-allowed-ext" => "<div class='alert'>".gtext("L'estensione del file che vuoi caricare non è consentita")."</div>\n",
+Application/Controllers/InitController.php:77	"not-allowed-mime-type" => "<div class='alert'>".gtext("Il tipo MIME del file che vuoi caricare non è consentito")."</div>\n",
+Application/Controllers/InitController.php:78	"file-exists" => "<div class='alert'>".gtext("Esiste già un file con lo stesso nome")."</div>\n",
+Application/Controllers/InitController.php:82	"error" => "<div class='alert'>".gtext("Errore nella query: contatta l'amministratore!")."</div>\n",
+Application/Controllers/InitController.php:83	"executed"	=>	"<div class='alert alert-success'>".gtext("Operazione eseguita!")."</div>",
+Application/Controllers/InitController.php:84	"not-allowed-ext" => "<div class='alert alert-danger'>".gtext("L'estensione del file che vuoi caricare non è consentita")."</div>\n",
+Application/Controllers/InitController.php:85	"not-allowed-mime-type" => "<div class='alert alert-danger'>".gtext("Il tipo MIME del file che vuoi caricare non è consentito")."</div>\n",
+Application/Controllers/InitController.php:108	Form_Form::$defaultEntryAttributes["submitHtml"] = "<i class='fa fa-save'></i> ".gtext("Salva");
+Application/Controllers/TraitdocumentiController.php:60	flash("notice","<div class='alert alert-success'>".gtext("Pulizia avvenuta")."</div>");
+Application/Controllers/TraitdocumentiController.php:69	$filtroLingua = array("tutti" => gtext("VEDI TUTTO")) + array("tutte" => gtext("TUTTE LE LINGUE")) + $selectLingue;
+Application/Controllers/TraitdocumentiController.php:70	$filtroTipoDoc = array("tutti" => gtext("VEDI TUTTO")) + $this->m[$this->modelName]->selectTipo("ecludi ");
+Application/Controllers/TraitdocumentiController.php:186	// 		$this->tabella = gtext("prodotti");
+Application/Controllers/OrdiniacquistoricezioniController.php:189	$data["ordiniDaRicevere"] = array(0 => gtext("Seleziona ordine acquisto")) + OrdiniacquistoModel::ordiniDaRicevereSelect();
+Application/Controllers/IntegrazioniController.php:106	flash("notice","<div class='alert alert-success'>".gtext($result["notice"])."</div>");
+Application/Controllers/IntegrazioniController.php:111	flash("notice","<div class='alert alert-danger'>".gtext($result["notice"])."</div>");
+Application/Controllers/IntegrazioniController.php:115	flash("notice","<div class='alert alert-danger'>".gtext("Elemento già inviato a")." ".$integrazione["titolo"]."</div>");
+Application/Controllers/ListeregaloController.php:66	SlideModel::$YN["tutti"] = gtext("Attiva / NON attiva");
+Application/Controllers/ListeregaloController.php:117	$this->filters[] = array("reso",null,array("tutti" => "Richiesta reso sì/no") + array("1" => gtext("Con richiesta reso"), "0" => gtext("Senza richiesta reso")));
+Application/Controllers/MagazzinoarticolilistiniController.php:89	"tutti"		=>	gtext("Fornitore"),
+Application/Controllers/OpzioniController.php:132	$esito = "<div class='alert alert-danger'>".gtext("Nonè stato possibile importare alcune categorie di Google.")."</div>";
+Application/Controllers/OpzioniController.php:133	$esito .= "<div>".gtext("Elenco categorie non importate")."</div>";
+Application/Controllers/OpzioniController.php:140	$data["esitoMigrazioni"] = "<div class='alert alert-success'>".gtext("Operazione eseguita con successo")."</div>";
+Application/Controllers/OpzioniController.php:142	$data["titoloPagina"] = gtext("Importazione categorie Google");
+Application/Controllers/OrdiniController.php:487	"tutti"	=>	gtext("Tipo ordine"),
+Application/Controllers/OrdiniController.php:488	"W"		=>	gtext("Ordini WEB"),
+Application/Controllers/OrdiniController.php:489	"B"		=>	gtext("Ordini Backend"),
+Application/Controllers/OrdiniController.php:494	"tutti"	=>	gtext("Fatturazione"),
+Application/Controllers/OrdiniController.php:495	"F"		=>	gtext("Fatturati"),
+Application/Controllers/OrdiniController.php:496	"N"		=>	gtext("NON fatturato"),
+Application/Controllers/OrdiniController.php:502	"tutti"	=>	gtext("Gestionale"),
+Application/Controllers/OrdiniController.php:503	"I"		=>	gtext("Inviato"),
+Application/Controllers/OrdiniController.php:504	"N"		=>	gtext("NON inviato"),
+Application/Controllers/OrdiniController.php:529	$this->filters[] = array("reso",null,array("tutti" => "Richiesta reso sì/no") + array("1" => gtext("Con richiesta reso"), "0" => gtext("Senza richiesta reso")));
+Application/Controllers/OrdiniController.php:543	$this->m[$this->modelName]->addSoftCondition("both",'checkMail',"email|".gtext("Si prega di ricontrollare <b>l'indirizzo Email</b>").'<div rel="hidden_alert_notice" style="display:none;">email</div>');
+Application/Controllers/OrdiniController.php:1065	flash("notice", "<div class='alert alert-success'>".gtext("Email inviata correttamente")."</div>");
+Application/Controllers/MarchiController.php:55	$this->tabella = gtext("famiglie",true);
+Application/Controllers/TagController.php:48	$this->tabella = gtext("Tag / Linee",true);
+Application/Controllers/ImpostazioniController.php:99	$data["titoloRecord"] = gtext("Impostazioni pubblicazione");
+Application/Controllers/SpedizioninegozioinviiController.php:55	$this->tabella = gtext("borderò spedizioni",true);
+Frontend/Application/Views/_/Wishlist/main.php:9	$descrizioneNoProdotti = gtext("La tua lista dei desideri è vuota");
+Frontend/Application/Views/_/Cart/Colonne/quantita.php:12	<?php if (User::$isMobile) { echo gtext("Qta").":"; } ?> <?php echo $p["cart"]["quantity"];?>
+Frontend/Application/Views/_/Cart/main_avvisi_superiori.php:13	<div class="<?php echo v("alert_error_class");?>"><?php echo str_replace("[N]",v("numero_massimo_gift_card"),gtext("Attenzione, non è possibile inserire nel carrello più di [N] gift card"));?></div>
+Frontend/Application/Views/_/Contenuti/promozione.php:8	$descrizioneNoProdotti = gtext("Non è presente alcun articolo");
+Frontend/Application/Views/_/Contenuti/category.php:3	$descrizioneNoProdotti = gtext("Non è presente alcun articolo");
+Frontend/Application/Views/_/Contenuti/lista-regalo.php:5	gtext("Lista ").$lista["liste_regalo"]["titolo"] 	=> "",
+Frontend/Application/Views/_/Contenuti/lista-regalo.php:9	$sottotitoloPagina = gtext("Lista")." ".gtext(strtolower($lista["liste_regalo_tipi"]["titolo"]));
+Frontend/Application/Views/_/Assistentevirtuale/storico.php:21	$label = $isUser ? gtext("Cliente") : gtext("Assistente virtuale");
+Frontend/Application/Views/_/Regusers/modifica_spedizione.php:16	$testoFinale = v("permetti_modifica_account") ? gtext("Modifica l'indirizzo di spedizione") : gtext("Dettagli indirizzo di spedizione");
+Frontend/Application/Views/_/Regusers/form_accetto.php:11	<?php echo Html_Form::radio("accetto",$values['accetto'],array("<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("NON ACCETTO")."</span><span style='margin-right:20px;'></span>" => "non_accetto", "<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("ACCETTO")."</span>" => "accetto"),"radio_2");?>
+Frontend/Application/Views/_/Regusers/form_accetto.php:24	<?php echo Html_Form::radio("accetto_2",$values['accetto_2'],array("<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("NON ACCETTO")."</span><span style='margin-right:20px;'></span>" => "non_accetto", "<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("ACCETTO")."</span>" => "accetto"),"radio_2");?>
+Frontend/Application/Views/_/Promozioni/modifica.php:9	$breadcrumb[gtext("Modifica la descrizione")] = "";
+Frontend/Application/Views/_/Elementi/FormRegistrazioneCheckout/scelta_tipo.php:17	$tipoCliente["<span style='margin-left:8px;'></span>".gtext($titoloTipo)."<span style='margin-right:20px;'></span>$divisoreTipoCliente"] = $codiceTipo;
+Frontend/Application/Views/_/Elementi/FormRegistrazioneCheckout/UtenteGiaPresente/login_anonimo.php:3	$alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di completare l'acquisto come utente ospite.", false) : "";?>
+Frontend/Application/Views/_/Elementi/FormRegistrazioneCheckout/UtenteGiaPresente/default.php:3	$alertAnonimo = v("permetti_acquisto_anonimo") ? gtext("oppure decidere di completare l'acquisto come utente ospite.", false) : "";
+Frontend/Application/Views/_/Elementi/FormRegistrazioneCheckout/UtenteGiaPresente/default.php:5	echo gtext("La sua E-Mail è già presente nel nostro sistema, significa che è già registrato nel nostro sito web.",false)?> <br />
+Frontend/Application/Views/_/Elementi/Generali/Pagetop/default.php:30	<div><?php echo $numProdotti." ".singPlu($numProdotti, gtext("prodotto"), gtext("prodotti"))?></div>
+Frontend/Application/Views/_/Elementi/Generali/Captcha/default.php:2	<?php echo "<div class='".v("alert_error_class")."'>".gtext("Sembra che ci sia un problema con la verifica dell'antispam (CAPTCHA).")."<br />".gtext("Assicuratevi di avere Javascript attivo nel browser.")."<br />".gtext("Provate inoltre a non utilizzare la compilazione automatica suggerita dal browser.")."<br />".gtext("Nel caso stiate utilizzando un dispositivo Apple (iPhone/iPad/Mac) con sistema operativo iOS 16, disabilitate la verifica automatica dei CAPTCHA nelle impostazioni.")."<br />".gtext("Nel caso la problematica continuasse contattate il negozio al")." <b>".v("telefono_aziendale")."</b> ".gtext("o tramite l'indirizzo email")." <b>".v("email_aziendale")."</b></div>";?>
+Frontend/Application/Views/_/Elementi/Prodotti/Dettaglio/Prezzo/default.php:52	<br /><?php echo $abs_diff." ".gtext("giorni rimasti!")?>
+Frontend/Application/Views/_/Elementi/Prodotti/Dettaglio/ModaleSceltaLista/default.php:10	<?php echo Html_Form::select("id_lista","",array("0" => gtext("Seleziona la lista regalo")) + $liste_regalo,"uk-select class_id_lista_tipo",null,"yes");?>
+Frontend/Application/Views/_/Elementi/Prodotti/Dettaglio/ModaleSceltaLista/default.php:17	$TestoPulsanteAggiungiAllaLista = gtext("Aggiungi");
+Frontend/Application/Views/_/Elementi/Prodotti/Shop/FiltriAttivi/default.php:6	echo gtext("Filtri attivi").": ";
+Frontend/Application/Views/_/Elementi/Prodotti/Shop/VariabiliProdotto/default.php:31	$stringaDa = (!$hasSoloCombinations || VariabiliModel::combinazioniLinkVeri()) ? "" : gtext("da");
+Frontend/Application/Views/_/Elementi/Prodotti/Shop/Ordinamento/default___filtri.php:272	<?php $filtriUrlAltriFiltri = AltriFiltri::getArrayUrlCaratteristiche(AltriFiltri::$altriFiltriTipi["fascia-prezzo"], gtext("da")."-[DA]-".gtext("a")."-[A]");?>
+Frontend/Application/Views/_/Elementi/Prodotti/Shop/Top/default.php:13	$descrizioneNoProdotti = gtext("Non è presente alcun articolo");
+Frontend/Application/Views/_/Elementi/Prodotti/Shop/Top/default.php:80	<?php echo isset($descrizioneNoProdotti) ? $descrizioneNoProdotti : gtext("Nessun elemento trovato");?>
+Frontend/Application/Views/_/Elementi/GDPR/servizio_generico_bloccato.php:2	<h3><?php echo $servizioBloccato." ".gtext("è stato bloccato per le tue impostazioni sulla privacy")?></h3>
+Frontend/Application/Views/_/Elementi/Ordini/CheckoutBottom/default.php:33	<?php echo Html_Form::radio("accetto",$values['accetto'],array("<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("NON ACCETTO")."</span><span style='margin-right:20px;'></span>" => "non_accetto", "<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("ACCETTO")."</span>" => "accetto"),"radio_2");?>
+Frontend/Application/Views/_/Elementi/Ordini/DatiFatturazione/default.php:34	<?php echo User::$dettagli["fattura"] ? gtext("Voglio ricevere la fattura") : gtext("Voglio ricevere lo scontrino fiscale");?>
+Frontend/Application/Views/_/Elementi/Ordini/resoconto_acquisto_dettagli_reso.php:6	<?php if ($pr["id_spedizione_negozio"]) { echo " - ". gtext("merce consegnata il")." ".smartDate($pr["data_inizio"], v("default_date_format"));} ?>
+Frontend/Application/Views/_/Elementi/Ordini/Resoconto/Reso/default.php:42	<?php if ($periodo["id_spedizione_negozio"]) { echo " - ". gtext("merce consegnata il")." ".smartDate($periodo["data_inizio"], v("default_date_format"));} ?>
+Frontend/Application/Views/_/Elementi/Ordini/Resoconto/Reso/default.php:53	<?php if ($periodo["id_spedizione_negozio"]) { echo " - ". gtext("merce consegnata il")." ".smartDate($periodo["data_inizio"], v("default_date_format"));} ?>
+Frontend/Application/Views/_/Elementi/admin.php:15	<div class="sideslider-tab"> <?php /*echo gtext("Configura");*/?> <i class='fa fa-cogs'></i></div>
+Frontend/Application/Views/_/Elementi/breadcrumb.php:23	echo "<li><a href='".$this->baseUrl."'>".gtext("Home")."</a></li>" .  $breadcrumb;
+Frontend/Application/Views/_/Elementi/Sezioni/Progetti/Elenco/Top/default.php:24	<?php echo isset($descrizioneNoProdotti) ? $descrizioneNoProdotti : gtext("Nessun elemento trovato");?>
+Frontend/Application/Views/_/Elementi/Sezioni/Servizi/Elenco/Top/default.php:24	<?php echo isset($descrizioneNoProdotti) ? $descrizioneNoProdotti : gtext("Nessun elemento trovato");?>
+Frontend/Application/Views/_/Elementi/Sezioni/Blog/Elenco/Top/default.php:24	<?php echo isset($descrizioneNoProdotti) ? $descrizioneNoProdotti : gtext("Nessun elemento trovato");?>
+Frontend/Application/Views/_/Elementi/Sezioni/Eventi/Elenco/Top/default.php:24	<?php echo isset($descrizioneNoProdotti) ? $descrizioneNoProdotti : gtext("Nessun elemento trovato");?>
+Frontend/Application/Views/_/Elementi/Captcha/Errore/notice-random.php:5	<?php echo "<div class='".v("alert_error_class")."'>".gtext("Si prega di verificare il codice antispam (CAPTCHA) mostrato sotto.")."</div>";?><div class="evidenzia"><?php echo $params["campo_nascosto"];?></div>
+Frontend/Application/Views/_/Elementi/Captcha/Errore/notice-hcaptcha.php:5	<?php echo "<div class='".v("alert_error_class")."'>".gtext("Si prega di verificare il codice antispam (hCaptcha) mostrato sotto.")."</div>";?><span class='evidenzia'>h-captcha</span>
+Frontend/Application/Views/_/Elementi/Captcha/Errore/notice.php:3	echo "<div class='".v("alert_error_class")."'>".gtext("errore, per favore riprova più tardi")."</div>";
+Frontend/Application/Views/_/Elementi/Captcha/Errore/notice-recaptchatre.php:4	echo "<div class='".v("alert_error_class")."'>".gtext("Sembra che ci sia un problema con la verifica dell'antispam (CAPTCHA).")."<br />".gtext("Per favore inserisci il codice mostrato nell'immagine sottostante e invia nuovamente il form");?></div>
+Frontend/Application/Views/_/Listeregalo/modifica.php:11	$breadcrumb[gtext("Crea la tua lista")] = "";
+Frontend/Application/Views/_/Listeregalo/modifica.php:17	$breadcrumb[gtext("Modifica la tua lista")] = "";
+Frontend/Application/Views/_/Listeregalo/modifica.php:83	"M"	=>	gtext("Maschio"),
+Frontend/Application/Views/_/Listeregalo/modifica.php:84	"F"	=>	gtext("Femmina"),
+Frontend/Application/Views/_/Ordini/modifica_ordine.php:10	gtext("Modifica ordine")." ".$ordine["id_o"] => "",
+Frontend/Application/Views/_/Ordini/modifica_ordine.php:18	gtext("Modifica ordine")." ".$ordine["id_o"] => "",
+Frontend/Application/Views/_/Ordini/totale_elementi.php:35	<span class="uk-text-small"><?php echo $elCart["email"] ? $elCart["email"] : gtext("-- non definita --");?></span>
+Frontend/Application/Views/_/Ordini/resoconto_prodotto_gift_card.php:21	<?php echo PromozioniModel::g()->isActiveCoupon($promo["codice"],null,false) ? "<span class='uk-label uk-label-success'>".gtext("Attivo")."</span>" : "<span class='uk-label uk-label-warning'>".gtext("Non attivo")."</span>";?>

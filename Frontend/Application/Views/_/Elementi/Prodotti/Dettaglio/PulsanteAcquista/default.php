@@ -6,6 +6,6 @@ $classePulsanteAcquista = isset($classePulsanteAcquista) ? $classePulsanteAcquis
 <?php if (!idCarrelloEsistente() && !ProdottiModel::isGiftCart((int)$p["pages"]["id_page"])) { ?>
 <div class="<?php echo $classeDivPulsanteAcquista;?>">
 	<div class="<?php echo $classePulsanteAcquista;?> spinner uk-hidden" uk-spinner="ratio: .70"></div>
-	<button id="acquista" class="<?php echo $classePulsanteAcquista;?> acquista_prodotto"><?php echo gtext("Acquista ora");?></button>
+	<button id="acquista" class="<?php echo $classePulsanteAcquista;?> acquista_prodotto"><?php echo gtextPlain("Acquista ora");?></button>
 </div>
 <?php } ?>

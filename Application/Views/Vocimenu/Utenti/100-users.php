@@ -2,14 +2,14 @@
 <li class="<?php echo tm($tm, array("users","groups"));?> treeview">
 	<a href="#">
 		<i class="fa fa-user-circle-o"></i>
-		<span><?php echo gtext("Amministratori");?></span>
+		<span><?php echo gtextPlain("Amministratori");?></span>
 	</a>
 	<ul class="treeview-menu">
-		<li><a href="<?php echo $this->baseUrl."/users/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi utente");?></a></li>
-		<li class="<?php echo tm($tm, array("users"));?>"><a href="<?php echo $this->baseUrl."/users/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista utenti");?></a></li>
+		<li><a href="<?php echo $this->baseUrl."/users/form/insert/0";?>"><i class="fa fa-plus-circle"></i> <?php echo gtextPlain("Aggiungi utente");?></a></li>
+		<li class="<?php echo tm($tm, array("users"));?>"><a href="<?php echo $this->baseUrl."/users/main/1";?>"><i class="fa fa-list"></i> <?php echo gtextPlain("Lista utenti");?></a></li>
 		<?php if (v("attiva_gruppi_admin")) { ?>
-		<li class="dropdown-header"><?php echo gtext("Gruppi");?></li>
-		<li class="<?php echo tm($tm, array("groups"));?>"><a href="<?php echo $this->baseUrl."/groups/main/1";?>"><i class="fa fa-group"></i> <?php echo gtext("Lista gruppi");?></a></li>
+		<li class="dropdown-header"><?php echo gtextPlain("Gruppi");?></li>
+		<li class="<?php echo tm($tm, array("groups"));?>"><a href="<?php echo $this->baseUrl."/groups/main/1";?>"><i class="fa fa-group"></i> <?php echo gtextPlain("Lista gruppi");?></a></li>
 		<?php } ?>
 	</ul>
 </li>

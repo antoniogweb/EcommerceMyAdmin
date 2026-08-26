@@ -5,17 +5,17 @@
 		<div class="modal-content">
 			<!--<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title"><?php echo gtext("Anagrafica cliente esistente")?></h4>
+				<h4 class="modal-title"><?php echo gtextPlain("Anagrafica cliente esistente")?></h4>
 			</div>-->
 			<div class="modal-body">
-				<h3 class="titolo_avviso_cliente_presente"><?php echo gtext("Attenzione, l'indirizzo email [INDIRIZZO_EMAIL] che hai inserito nella testata dell'ordine è già presente nel database dei clienti.");?></h3>
-				<?php echo gtext("Questo significa che il cliente è già presente nel database.");?><br /><br />
-				<?php echo gtext("Premi il pulsante");?> <b><?php echo gtext("Importa dati cliente da anagrafica");?></b> <?php echo gtext("se vuoi che i dati del cliente vengano caricati dall'anagrafica cliente ed inseriti nell'ordine corrente.")?><br /><br />
-				<?php echo gtext("Premi il pulsante");?> <b><?php echo gtext("Continua e sovrascrivi dati cliente");?></b> <?php echo gtext("se vuoi continuare inserendo i dati del cliente. Nel momento in cui salverai l'ordine, l'anagrafica cliente verrà sovrascritta con i dati che hai inserito nella testata dell'ordine.")?><br />
+				<h3 class="titolo_avviso_cliente_presente"><?php echo gtextPlain("Attenzione, l'indirizzo email [INDIRIZZO_EMAIL] che hai inserito nella testata dell'ordine è già presente nel database dei clienti.");?></h3>
+				<?php echo gtextPlain("Questo significa che il cliente è già presente nel database.");?><br /><br />
+				<?php echo gtextPlain("Premi il pulsante");?> <b><?php echo gtextPlain("Importa dati cliente da anagrafica");?></b> <?php echo gtextPlain("se vuoi che i dati del cliente vengano caricati dall'anagrafica cliente ed inseriti nell'ordine corrente.")?><br /><br />
+				<?php echo gtextPlain("Premi il pulsante");?> <b><?php echo gtextPlain("Continua e sovrascrivi dati cliente");?></b> <?php echo gtextPlain("se vuoi continuare inserendo i dati del cliente. Nel momento in cui salverai l'ordine, l'anagrafica cliente verrà sovrascritta con i dati che hai inserito nella testata dell'ordine.")?><br />
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-info importa_dati_anagrafica" data-dismiss="modal"><i class="fa fa-upload"></i> <?php echo gtext("Importa dati cliente da anagrafica");?></button>
-				<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-save"></i> <?php echo gtext("Continua e sovrascrivi dati cliente");?></button>
+				<button type="button" class="btn btn-info importa_dati_anagrafica" data-dismiss="modal"><i class="fa fa-upload"></i> <?php echo gtextPlain("Importa dati cliente da anagrafica");?></button>
+				<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-save"></i> <?php echo gtextPlain("Continua e sovrascrivi dati cliente");?></button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

@@ -53,7 +53,7 @@ $(document).ready(function(){
 			<div class="col-lg-6">
 				<table style="margin-bottom:5px !important;" class="table table-striped">
 					<tr>
-						<td><?php echo gtext("Stato");?>:</td>
+						<td><?php echo gtextPlain("Stato");?>:</td>
 						<td>
 							<?php if ($spedizione["spedizioni_negozio"]["data_spedizione"] != date("Y-m-d") && in_array($spedizione["spedizioni_negozio"]["stato"], SpedizioninegozioModel::statiSpedizioniApribili())) { ?>
 							<a style="margin-left:10px;" href="<?php echo $this->baseUrl."/spedizioninegozio/apri/".(int)$id."/1".$this->viewStatus;?>" confirm-message="<?php echo gtextAttr("Attenzione, la spedizione non verrà cancellata nei server del corriere. Se possibile, procedere aprendo la spedizione normalmente.")?>" class="pull-right text text-danger confirm make_spinner_confirm" title="<?php echo gtextAttr("Forza allo stato aperto");?>"><i class="fa fa-unlock"></i></a>
@@ -67,32 +67,32 @@ $(document).ready(function(){
 						</td>
 					</tr>
 					<tr>
-						<td><?php echo gtext("Spedizioniere");?>:</td>
+						<td><?php echo gtextPlain("Spedizioniere");?>:</td>
 						<td><b><?php echo $spedizione["spedizionieri"]["titolo"];?></b></td>
 					</tr>
 					<tr>
-						<td><?php echo gtext("Data spedizione");?>:</td>
+						<td><?php echo gtextPlain("Data spedizione");?>:</td>
 						<td><b><?php echo smartDate($spedizione["spedizioni_negozio"]["data_spedizione"],"d/m/Y");?></b></td>
 					</tr>
 					<?php if ($spedizione["spedizioni_negozio"]["data_consegna"]) { ?>
 					<tr>
-						<td><?php echo gtext("Data consegna");?>:</td>
+						<td><?php echo gtextPlain("Data consegna");?>:</td>
 						<td><b><?php echo smartDate($spedizione["spedizioni_negozio"]["data_consegna"],"d/m/Y H:i");?></b></td>
 					</tr>
 					<?php } ?>
 					<tr>
-						<td><?php echo gtext("ID Spedizione");?>:</td>
+						<td><?php echo gtextPlain("ID Spedizione");?>:</td>
 						<td><b><?php echo $spedizione["spedizioni_negozio"]["id_spedizione_negozio"];?></b></td>
 					</tr>
 				</table>
 				
 				<?php $statoSpedizione = SpedizioninegozioModel::getStato($id);?>
 				<?php if ($statoSpedizione != "A" && $modulo->metodo("zpl") && !$spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
-				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/zpl/".(int)$id;?>" class="pull-right btn btn-info print_zpl"><i class="fa fa-file-text-o"></i> <?php echo gtext("ZPL");?></a>
+				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/zpl/".(int)$id;?>" class="pull-right btn btn-info print_zpl"><i class="fa fa-file-text-o"></i> <?php echo gtextPlain("ZPL");?></a>
 				<?php } ?>
 				
 				<?php if ($statoSpedizione != "A" && $modulo->metodo("segnacollo") && !$spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
-				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/segnacollo/".(int)$id;?>" class="pull-right btn btn-primary"><i class="fa fa-file-pdf-o"></i> <?php echo gtext("PDF");?></a>
+				<a style="margin-left:5px;" target="_blank" href="<?php echo $this->baseUrl."/spedizioninegozio/segnacollo/".(int)$id;?>" class="pull-right btn btn-primary"><i class="fa fa-file-pdf-o"></i> <?php echo gtextPlain("PDF");?></a>
 				<?php } ?>
 				
 				<?php if ($statoSpedizione == "A" && $modulo->metodo("prenotaSpedizione")) { ?>
@@ -115,28 +115,28 @@ $(document).ready(function(){
 					<?php } ?>
 					<?php if ($statoSpedizione != "A" && $spedizione["spedizioni_negozio"]["id_spedizioniere_lettera_vettura"]) { ?>
 					<tr>
-						<td><?php echo gtext("Lettera di vettura");?>:</td>
-						<td><a target="_blank" class="badge bg-purple" href="<?php echo $this->baseUrl."/spedizioninegozio/letteradivettura/".(int)$id;?>"><?php echo gtext("Scarica");?> <i class="fa fa-download"></i></a></td>
+						<td><?php echo gtextPlain("Lettera di vettura");?>:</td>
+						<td><a target="_blank" class="badge bg-purple" href="<?php echo $this->baseUrl."/spedizioninegozio/letteradivettura/".(int)$id;?>"><?php echo gtextPlain("Scarica");?> <i class="fa fa-download"></i></a></td>
 					</tr>
 					<?php } ?>
 					<?php if (!SpedizioninegozioModel::aperto((int)$id) && $modulo->metodo("getUrlTracking")) { ?>
 					<tr>
-						<td><?php echo gtext("URL tracking");?>:</td>
-						<td><a target="_blank" href="<?php echo $modulo->getUrlTracking((int)$id);?>"><?php echo gtext("Pagina del tracking")?> <i class="fa fa-arrow-right"></i></a></td>
+						<td><?php echo gtextPlain("URL tracking");?>:</td>
+						<td><a target="_blank" href="<?php echo $modulo->getUrlTracking((int)$id);?>"><?php echo gtextPlain("Pagina del tracking")?> <i class="fa fa-arrow-right"></i></a></td>
 					</tr>
 					<?php } ?>
 					<?php if (in_array($statoSpedizione, SpedizioninegozioModel::statiSpedizioniInviate())) { ?>
 					<tr>
-						<td><?php echo gtext("Label spedizioniere");?>:</td>
+						<td><?php echo gtextPlain("Label spedizioniere");?>:</td>
 						<td>
-							<a href="<?php echo $this->baseUrl."/spedizioninegozio/controllaspedizioni/".(int)$id."/1";?>" class="ajlink pull-right btn btn-info btn-xs"><i class="fa fa-refresh"></i> <?php echo gtext("Aggiorna");?></a>
+							<a href="<?php echo $this->baseUrl."/spedizioninegozio/controllaspedizioni/".(int)$id."/1";?>" class="ajlink pull-right btn btn-info btn-xs"><i class="fa fa-refresh"></i> <?php echo gtextPlain("Aggiorna");?></a>
 							<i><?php echo $spedizione["spedizioni_negozio"]["label_spedizioniere"];?></i>
 						</td>
 					</tr>
 					<?php } ?>
 					<?php if (count($ordini) > 0 && $ordini[0]["orders"]["id_o"]) { ?>
 					<tr>
-						<td><?php echo gtext("Ordini");?>:</td>
+						<td><?php echo gtextPlain("Ordini");?>:</td>
 						<td>
 							<?php foreach ($ordini as $ordine) { ?>
 							<a class="label label-<?php echo OrdiniModel::getLabelStato($ordine["orders"]["stato"]);?>" target="_blank" href="<?php echo $this->baseUrl."/ordini/vedi/".(int)$ordine["orders"]["id_o"];?>">#<?php echo (int)$ordine["orders"]["id_o"];?></a>
@@ -146,27 +146,27 @@ $(document).ready(function(){
 					<?php } ?>
 					<?php if ($spedizione["spedizioni_negozio"]["id_lista_regalo"]) { ?>
 					<tr>
-						<td><?php echo gtext("Lista regalo");?>:</td>
+						<td><?php echo gtextPlain("Lista regalo");?>:</td>
 						<td>
 							<?php echo ListeregaloModel::specchietto($spedizione["spedizioni_negozio"]["id_lista_regalo"]);?>
 						</td>
 					</tr>
 					<?php } ?>
 					<tr>
-						<td><?php echo gtext("Colli");?>:</td>
+						<td><?php echo gtextPlain("Colli");?>:</td>
 						<td>
-							<?php echo gtext("Peso totale");?>: <b><?php echo setPriceReverse($pesoTotale);?> kg</b><br />
-							<?php echo gtext("Numero colli");?>: <b><?php echo $numeroColli;?></b><br />
+							<?php echo gtextPlain("Peso totale");?>: <b><?php echo setPriceReverse($pesoTotale);?> kg</b><br />
+							<?php echo gtextPlain("Numero colli");?>: <b><?php echo $numeroColli;?></b><br />
 							<?php if (!$checkColli) { ?>
 								<div class="text text-danger text-bold">
-									<i class="fa fa-exclamation-triangle"></i> <?php echo gtext("Attenzione, inserire almeno un collo di peso maggiore di 0 kg.")."<br />".gtext("Controllare inoltre che nessun collo abbia peso 0kg.")?>
+									<i class="fa fa-exclamation-triangle"></i> <?php echo gtextPlain("Attenzione, inserire almeno un collo di peso maggiore di 0 kg.")."<br />".gtextPlain("Controllare inoltre che nessun collo abbia peso 0kg.")?>
 								</div>
 							<?php } ?>
 						</td>
 					</tr>
 					<?php if ($modulo->permettiRichiestaSpese() && $modulo->metodo("richiediCosto")) { ?>
 					<tr>
-						<td><?php echo gtext("Costo stimato (IVA esclusa)");?>:</td>
+						<td><?php echo gtextPlain("Costo stimato (IVA esclusa)");?>:</td>
 						<td>
 							<a style="margin-left:5px;" title="<?php echo gtextAttr("Richiedi costo stimato")?>" href="<?php echo $this->baseUrl."/spedizioninegozio/richiedicosto/".(int)$id.$this->viewStatus;?>" class="pull-right badge make_spinner"><i class="fa fa-refresh"></i> <?php echo gtext("Richiedi costo");?></a>
 							
@@ -183,30 +183,30 @@ $(document).ready(function(){
 
 <?php if ($spedizione["spedizioni_negozio"]["errore_invio"]) { ?>
 <div class="alert alert-danger">
-	<i class="fa fa-exclamation-triangle"></i> <i><?php echo gtext("Errori invio");?>: <?php echo sanitizeHtml($spedizione["spedizioni_negozio"]["errore_invio"]);?></i>
+	<i class="fa fa-exclamation-triangle"></i> <i><?php echo gtextPlain("Errori invio");?>: <?php echo sanitizeHtml($spedizione["spedizioni_negozio"]["errore_invio"]);?></i>
 	<?php if ($spedizione["spedizioni_negozio"]["stato"] == "I" && $spedizione["spedizioni_negozio"]["id_spedizione_negozio_invio"]) { ?>
-	<a style="margin:10px;display:inline-block;" class="alert alert-warning make_spinner" href="<?php echo $this->baseUrl."/spedizioninegozio/confermaspedizioni/".$spedizione["spedizioni_negozio"]["id_spedizione_negozio"]."/".$spedizione["spedizioni_negozio"]["id_spedizione_negozio_invio"];?>"><i class="fa fa-check"></i> <?php echo gtext("Riprova invio manualmente")?></a>
+	<a style="margin:10px;display:inline-block;" class="alert alert-warning make_spinner" href="<?php echo $this->baseUrl."/spedizioninegozio/confermaspedizioni/".$spedizione["spedizioni_negozio"]["id_spedizione_negozio"]."/".$spedizione["spedizioni_negozio"]["id_spedizione_negozio_invio"];?>"><i class="fa fa-check"></i> <?php echo gtextPlain("Riprova invio manualmente")?></a>
 	<?php } ?>
 </div>
 <?php } ?>
 
 <?php if ($spedizione["spedizioni_negozio"]["warning_invio"]) { ?>
 <div class="alert alert-warning">
-	<i class="fa fa-exclamation-triangle"></i> <i><?php echo gtext("Alert corriere");?>: <?php echo sanitizeHtml($spedizione["spedizioni_negozio"]["warning_invio"]);?></i>
+	<i class="fa fa-exclamation-triangle"></i> <i><?php echo gtextPlain("Alert corriere");?>: <?php echo sanitizeHtml($spedizione["spedizioni_negozio"]["warning_invio"]);?></i>
 </div>
 <?php } ?>
 
 <ul class="nav_dettaglio nav nav-tabs">
-	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtext("Dettagli");?></a></li>
-	<li <?php echo $posizioni['colli'];?>><a <?php if (!$checkColli) { ?>style="background-color:red !important;color:#FFF !important;"<?php } ?>href="<?php echo $this->baseUrl."/".$this->controller."/colli/$id".$this->viewStatus;?>"><?php echo gtext("Colli");?></a></li>
+	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtextPlain("Dettagli");?></a></li>
+	<li <?php echo $posizioni['colli'];?>><a <?php if (!$checkColli) { ?>style="background-color:red !important;color:#FFF !important;"<?php } ?>href="<?php echo $this->baseUrl."/".$this->controller."/colli/$id".$this->viewStatus;?>"><?php echo gtextPlain("Colli");?></a></li>
 	<?php if (count(SpedizioninegozioModel::getElencoServizi((int)$id)) > 0) { ?>
-	<li <?php echo $posizioni['servizi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/servizi/$id".$this->viewStatus;?>"><?php echo gtext("Servizi aggiuntivi");?></a></li>
+	<li <?php echo $posizioni['servizi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/servizi/$id".$this->viewStatus;?>"><?php echo gtextPlain("Servizi aggiuntivi");?></a></li>
 	<?php } ?>
 	<?php if (SpedizioninegozioModel::legataAdOrdineOLista((int)$id)) { ?>
-	<li <?php echo $posizioni['righe'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/righe/$id".$this->viewStatus;?>"><?php echo gtext("Righe ordine");?></a></li>
+	<li <?php echo $posizioni['righe'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/righe/$id".$this->viewStatus;?>"><?php echo gtextPlain("Righe ordine");?></a></li>
 	<?php } ?>
-	<li <?php echo $posizioni['eventi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/eventi/$id".$this->viewStatus;?>"><?php echo gtext("Cronologia eventi");?></a></li>
-	<li <?php echo $posizioni['info'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/info/$id".$this->viewStatus;?>"><?php echo gtext("Cronologia chiamate API");?></a></li>
+	<li <?php echo $posizioni['eventi'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/eventi/$id".$this->viewStatus;?>"><?php echo gtextPlain("Cronologia eventi");?></a></li>
+	<li <?php echo $posizioni['info'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/info/$id".$this->viewStatus;?>"><?php echo gtextPlain("Cronologia chiamate API");?></a></li>
 </ul>
 
 <div style="clear:left;"></div>

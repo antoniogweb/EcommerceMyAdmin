@@ -5,12 +5,12 @@
 		<div class="uk-container blocco_checkout">
 			<div class="box_corrieri">
 				<h2 class="<?php echo v("classi_titoli_checkout");?>">
-					<span uk-icon="icon:clock;ratio:1" class="uk-margin-right uk-hidden@m"></span><?php echo gtext("Modalità di consegna");?>
+					<span uk-icon="icon:clock;ratio:1" class="uk-margin-right uk-hidden@m"></span><?php echo gtextPlain("Modalità di consegna");?>
 				</h2>
 				
 				<?php foreach ($corrieri as $corriere) { ?>
 				<div class="uk-padding-small <?php if ($values["id_corriere"] == $corriere["id_corriere"]) { ?>spedizione_selezionata<?php } ?> radio_corriere_select radio_corriere corriere_<?php echo $corriere["id_corriere"];?>">
-					<?php echo Html_Form::radio("id_corriere",$values["id_corriere"],$corriere["id_corriere"],"imposta_corriere","none");?><span class="uk-margin-left"><?php echo gtext($corriere["titolo"]);?></span>
+					<?php echo Html_Form::radio("id_corriere",$values["id_corriere"],$corriere["id_corriere"],"imposta_corriere","none");?><span class="uk-margin-left"><?php echo gtextPlain($corriere["titolo"]);?></span>
 				</div>
 				<?php } ?>
 			</div>

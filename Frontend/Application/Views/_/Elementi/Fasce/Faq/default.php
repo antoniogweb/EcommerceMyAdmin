@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="uk-container uk-container-small uk-margin-medium-bottom uk-background-default uk-padding-medium">
-    <h3 class="uk-margin-remove uk-text-large uk-text-bold uk-text-center uk-text-uppercase"><?php echo gtext("FAQ");?></h3>
+    <h3 class="uk-margin-remove uk-text-large uk-text-bold uk-text-center uk-text-uppercase"><?php echo gtextPlain("FAQ");?></h3>
 
     <ul class="uk-list uk-list-divider" uk-accordion="multiple: true">
 		<?php foreach ($pages as $p) { ?>

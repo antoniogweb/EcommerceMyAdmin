@@ -26,7 +26,7 @@
 			
 			<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
 				<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
-				<label><?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtext("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("privacy policy");?></a></span></label>
+				<label><?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("privacy policy");?></a></span></label>
 			</div>
 			
 			<?php echo Html_Form::hidden("invia","invia");?>
@@ -36,7 +36,7 @@
 			
 			<div class="uk-margin">
 				<div class="uk-button uk-button-secondary spinner uk-hidden" uk-spinner="ratio: .70"></div>
-				<button type='submit' class="uk-button uk-button-secondary btn_submit_form"><?php echo gtext('Invia',false);?></button>
+				<button type='submit' class="uk-button uk-button-secondary btn_submit_form"><?php echo gtextPlain('Invia',false);?></button>
 			</div>
 		</fieldset>
 	</form>

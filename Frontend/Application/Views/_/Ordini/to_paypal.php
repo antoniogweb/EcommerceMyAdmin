@@ -23,8 +23,8 @@
 	<?php if (v("mostra_pagina_intermedia_paypal")) { ?>
 		<div style="text-align:center;margin-top:20px;">
 			<div style="padding:20px;font-size:14px;">
-				<?php echo gtext("Stai per essere reindirizzato al sito di Paypal per il pagamento.");?><br /><br />
-				<?php echo gtext("Se non vieni reindirizzato entro 10 secondi, premi il pulsante per pagare.")?>
+				<?php echo gtextPlain("Stai per essere reindirizzato al sito di Paypal per il pagamento.");?><br /><br />
+				<?php echo gtextPlain("Se non vieni reindirizzato entro 10 secondi, premi il pulsante per pagare.")?>
 			</div>
 			
 			<?php echo $pulsantePaypal;?>

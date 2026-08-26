@@ -8,7 +8,7 @@ include($this->viewPath("header"));
 		<section class="sidebar">
 		<?php if (User::$logged and strcmp($this->action,'logout') !== 0) { ?>
 		<ul class="sidebar-menu">
-			<li class="header"><?php echo gtext("MENÙ GENSTIONE ACQUISTI");?></li>
+			<li class="header"><?php echo gtextPlain("MENÙ GENSTIONE ACQUISTI");?></li>
 			<?php $vociMenu = App::caricaMenu("acquisti");?>
 			<?php foreach ($vociMenu as $pathVoce) {
 				include($pathVoce);

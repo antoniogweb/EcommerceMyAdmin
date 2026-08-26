@@ -5,7 +5,7 @@
 			<?php echo $pulsantePaga;?>
 		</div>
 	<?php } else { ?>
-		<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dettagli pagamento:");?></h2>
-		<p><?php echo gtext("Pagamento tramite Klarna ancora da eseguire");?></p>
+		<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtextPlain("Dettagli pagamento:");?></h2>
+		<p><?php echo gtextPlain("Pagamento tramite Klarna ancora da eseguire");?></p>
 	<?php } ?>
 <?php } ?>

@@ -38,7 +38,7 @@
 
 			<button id-richiesta="<?php echo $id;?>" style="margin-top:10px;" class="btn btn-success btn-block invia_nuovo_messaggio_ai">
 				<i class="fa fa-send"></i>
-				<?php echo gtext("Invia");?>
+				<?php echo gtextPlain("Invia");?>
 			</button>
 		</div>
 	</div>

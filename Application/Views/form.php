@@ -46,7 +46,7 @@
 
 <?php if (!showreport()) { ?>
 <section class="content-header">
-	<h1><?php if (!showreport()) { ?><?php echo gtext("Gestione");?><?php } else { ?><?php echo gtext("Visualizzazione");?><?php } ?> <?php echo gtext($tabella);?>: <?php echo $titoloRecord;?></h1>
+	<h1><?php if (!showreport()) { ?><?php echo gtextPlain("Gestione");?><?php } else { ?><?php echo gtextPlain("Visualizzazione");?><?php } ?> <?php echo gtextPlain($tabella);?>: <?php echo $titoloRecord;?></h1>
 </section>
 <?php } ?>
 

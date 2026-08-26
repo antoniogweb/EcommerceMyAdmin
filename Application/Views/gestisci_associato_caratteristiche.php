@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<a class="btn btn-success iframe help_aggiungi_caratteristiche <?php if (!v("nuova_modalita_caratteristiche") || $aggiuntaLibera) { ?>pull-right<?php } ?>" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&cl_on_sv=Y&id_tipo_car=".$this->viewArgs["id_tipo_car"];?>"><i class="fa fa-pencil"></i> <?php echo gtext("Gestisci caratteristiche");?></a>
+<a class="btn btn-success iframe help_aggiungi_caratteristiche <?php if (!v("nuova_modalita_caratteristiche") || $aggiuntaLibera) { ?>pull-right<?php } ?>" href="<?php echo $this->baseUrl."/caratteristichevalori/main?id_page=$id_page&partial=Y&cl_on_sv=Y&id_tipo_car=".$this->viewArgs["id_tipo_car"];?>"><i class="fa fa-pencil"></i> <?php echo gtextPlain("Gestisci caratteristiche");?></a>
 
 <?php if (v("nuova_modalita_caratteristiche")) { ?>
 <!-- 	<p><a class="btn btn-primary iframe pull-right" href="<?php echo $this->baseUrl."/caratteristiche/main?partial=Y"?>"><i class="fa fa-edit"></i> Gestione caratteristiche</a> -->
@@ -76,7 +76,7 @@
 		</div>
 		<?php echo Html_Form::select("id_cv","",$listaCarattVal,"lista_caratt_valori form_select form-control",null,"yes");?>
 		<input class="hidden_caratt" type="hidden" name="id_car" value="" />
-		<button class="btn btn-primary make_spinner" name="insertAction" type="submit"><i class="fa fa-plus"></i> <?php echo gtext("Salva");?></button>
+		<button class="btn btn-primary make_spinner" name="insertAction" type="submit"><i class="fa fa-plus"></i> <?php echo gtextPlain("Salva");?></button>
 		<input type="hidden" value="Salva" name="<?php echo $type;?>Action">
 	</form><br />
 <?php } ?>

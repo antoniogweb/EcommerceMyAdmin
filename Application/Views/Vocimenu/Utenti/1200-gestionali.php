@@ -3,10 +3,10 @@
 <li class="<?php echo tm($tm, "gestionali");?> treeview">
 	<a href="#">
 		<i class="fa fa-database"></i>
-		<span><?php echo gtext("Integrazione gestionali")?></span>
+		<span><?php echo gtextPlain("Integrazione gestionali")?></span>
 	</a>
 	<ul class="treeview-menu">
-		<li><a href="<?php echo $this->baseUrl."/gestionali/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+		<li><a href="<?php echo $this->baseUrl."/gestionali/main";?>"><i class="fa fa-list"></i> <?php echo gtextPlain("Lista")?></a></li>
 	</ul>
 </li>
 <?php } ?>

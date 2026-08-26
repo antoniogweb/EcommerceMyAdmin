@@ -34,12 +34,12 @@
 					<?php include($this->viewPath("gestisci_associato_pulsante_righe"));?>
 				</form>
 				<?php } else { ?>
-<!-- 				<p><a class="<?php if (!partial()) { ?>iframe<?php } ?> btn btn-success" href="<?php echo $this->baseUrl."/combinazioni/main";?>?partial=Y<?php if (!partial()) { ?>&nobuttons=Y<?php } ?>&id_ordine=<?php echo $id;?><?php echo $queryListaRegalo;?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi articoli")?></a></p> -->
+<!-- 				<p><a class="<?php if (!partial()) { ?>iframe<?php } ?> btn btn-success" href="<?php echo $this->baseUrl."/combinazioni/main";?>?partial=Y<?php if (!partial()) { ?>&nobuttons=Y<?php } ?>&id_ordine=<?php echo $id;?><?php echo $queryListaRegalo;?>"><i class="fa fa-plus"></i> <?php echo gtextPlain("Aggiungi articoli")?></a></p> -->
 				<?php } ?>
 			</div>
 			<br />
 		<?php } else { ?>
-		<div class="callout callout-info"><?php echo gtext("Le righe dell'ordine non sono modificabili in quanto l'ordine non è più ad uno dei seguenti stati");?>: <b><?php echo StatiordineModel::getTitoliStati(v("stati_ordine_editabile_ed_eliminabile"));?></b></div>
+		<div class="callout callout-info"><?php echo gtextPlain("Le righe dell'ordine non sono modificabili in quanto l'ordine non è più ad uno dei seguenti stati");?>: <b><?php echo StatiordineModel::getTitoliStati(v("stati_ordine_editabile_ed_eliminabile"));?></b></div>
 		<?php } ?>
 	<?php } ?>
 <?php } ?>

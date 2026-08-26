@@ -6,7 +6,7 @@
 			<?php echo Html_Form::checkbox("spedizione_come_fatturazione",$values["spedisci_dati_fatturazione"],"Y","imposta_fatt","none");?>
 		</div>
 		<div class="uk-margin-left uk-text-small">
-			<?php echo gtext("Coincide con i dati di fatturazione");?>
+			<?php echo gtextPlain("Coincide con i dati di fatturazione");?>
 		</div>
 	</div>
 </div>

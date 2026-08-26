@@ -4,7 +4,7 @@ $ultimiServizi = ServiziModel::getElementiFascia();
 if (isset($ultimiServizi) && count($ultimiServizi) > 0) { ?>
 <section class="uk-section uk-section-muted">
 	<article class="uk-container">
-		<h1 class="uk-text-bold uk-margin-medium"><?php echo gtext("I nostri servizi");?></h1>
+		<h1 class="uk-text-bold uk-margin-medium"><?php echo gtextPlain("I nostri servizi");?></h1>
 		<div data-uk-slider="velocity: 5" class="uk-slider">
 			<div class="uk-position-relative">
 				<div class="uk-slider-container">

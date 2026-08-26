@@ -3,22 +3,22 @@
 if ($id === 0)
 {
 	$breadcrumb = array(
-		gtext("Home") 		=> $this->baseUrl,
-		gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
-		gtext("Indirizzi di spedizione") => $this->baseUrl."/riservata/indirizzi",
-		gtext("Aggiungi un indirizzo di spedizione") => "",
+		gtextPlain("Home") 		=> $this->baseUrl,
+		gtextPlain("Area riservata")	=>	$this->baseUrl."/area-riservata",
+		gtextPlain("Indirizzi di spedizione") => $this->baseUrl."/riservata/indirizzi",
+		gtextPlain("Aggiungi un indirizzo di spedizione") => "",
 	);
 	
-	$titoloPagina = gtext("Aggiungi un indirizzo di spedizione");
+	$titoloPagina = gtextPlain("Aggiungi un indirizzo di spedizione");
 }
 else
 {
 	$testoFinale = v("permetti_modifica_account") ? gtext("Modifica l'indirizzo di spedizione") : gtext("Dettagli indirizzo di spedizione");
 	
 	$breadcrumb = array(
-		gtext("Home") 		=> $this->baseUrl,
-		gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
-		gtext("Indirizzi di spedizione") => $this->baseUrl."/riservata/indirizzi",
+		gtextPlain("Home") 		=> $this->baseUrl,
+		gtextPlain("Area riservata")	=>	$this->baseUrl."/area-riservata",
+		gtextPlain("Indirizzi di spedizione") => $this->baseUrl."/riservata/indirizzi",
 		$testoFinale => "",
 	);
 	

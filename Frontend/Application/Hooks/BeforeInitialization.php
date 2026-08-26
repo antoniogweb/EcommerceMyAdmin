@@ -44,19 +44,19 @@ Helper_Menu::$htmlLinks = array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
 		"attributes" => 'class="uk-button uk-button-primary uk-button-small"',
-		'text'	=>	gtext("Torna"),
+		'text'	=>	gtextPlain("Torna"),
 		"classIconBefore"	=>	'<span uk-icon="icon: arrow-left"></span>',
 	),
 	"add" => array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
 		"attributes" => 'class="uk-button uk-button-primary uk-button-small"',
-		'text'	=>	gtext("Nuovo"),
+		'text'	=>	gtextPlain("Nuovo"),
 		"classIconBefore"	=>	'<span uk-icon="icon: plus"></span>',
 	),
 	'save'	=>	array(
 		'title'	=>	gtext("Salva"),
-		'text'	=>	gtext("Salva"),
+		'text'	=>	gtextPlain("Salva"),
 		'url'	=>	'main',
 		"htmlBefore" => '',
 		"htmlAfter" => '',
@@ -67,7 +67,7 @@ Helper_Menu::$htmlLinks = array(
 		"htmlBefore" => '',
 		"htmlAfter" => '',
 		"attributes" => 'role="button" class="uk-button uk-button-default uk-button-small"',
-		'text'	=>	gtext("Duplica"),
+		'text'	=>	gtextPlain("Duplica"),
 		"classIconBefore"	=>	'<span uk-icon="icon: copy"></span>',
 	),
 );
@@ -100,7 +100,7 @@ Helper_List::$filtersFormLayout = array(
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(
-		"text"	=>	'<span class="uk-margin-small-right" uk-icon="icon: search"></span>'.gtext("Filtra"),
+		"text"	=>	'<span class="uk-margin-small-right" uk-icon="icon: search"></span>'.gtextPlain("Filtra"),
 		"attributes"	=>	array(
 			"class"	=>	"uk-button uk-button-small uk-button-secondary"
 		),

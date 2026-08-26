@@ -424,7 +424,7 @@ class PagesModel extends GenericModel {
 					'type'		=>	'Select',
 					'labelString'=>	'Pubblicato?',
 					'entryClass'	=>	'form_input_text help_attivo',
-					'options'	=>	array(gtext('sì')=>'Y',gtext('no')=>'N'),
+					'options'	=>	array(gtextPlain('sì')=>'Y',gtextPlain('no')=>'N'),
 					'wrap'		=>	array(
 						null,
 						null,
@@ -447,7 +447,7 @@ class PagesModel extends GenericModel {
 					'type'		=>	'Select',
 					'entryClass'	=>	'form_input_text help_evidenza',
 					'labelString'=>	'In evidenza?',
-					'options'	=>	array(gtext('no')=>'N',gtext('sì')=>'Y'),
+					'options'	=>	array(gtextPlain('no')=>'N',gtextPlain('sì')=>'Y'),
 					'wrap'		=>	array(
 						null,
 						null,
@@ -458,7 +458,7 @@ class PagesModel extends GenericModel {
 					'type'		=>	'Select',
 					'entryClass'	=>	'form_input_text help_nuovo',
 					'labelString'=>	'Prodotto marcato come nuovo?',
-					'options'	=>	array(gtext('no')=>'N',gtext('sì')=>'Y'),
+					'options'	=>	array(gtextPlain('no')=>'N',gtextPlain('sì')=>'Y'),
 					'wrap'		=>	array(
 						null,
 						null,
@@ -493,7 +493,7 @@ class PagesModel extends GenericModel {
 				'in_promozione'	=>	array(
 					'type'		=>	'Select',
 					'labelString'=>	'In promozione?',
-					'options'	=>	array(gtext('no')=>'N',gtext('sì')=>'Y'),
+					'options'	=>	array(gtextPlain('no')=>'N',gtextPlain('sì')=>'Y'),
 					'className'	=>	'in_promozione form-control',
 					'entryClass'	=>	'form_input_text form_input_text_promozione',
 				),

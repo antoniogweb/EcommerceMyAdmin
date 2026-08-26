@@ -59,39 +59,39 @@ table.corpo td table td
 <body>
 	<table style="width:297mm;font-size:16px;">
 		<tr>
-			<td style="width:99mm;"><b><?php echo gtext("Mittente");?> <?php echo $codiceCliente;?> <?php echo $this->params["ragione_sociale_cliente"];?></b></td>
-			<td style="width:99mm;text-align:center;"><b><?php echo gtext("Borderò BRT");?></b> <b><?php echo gtext("del");?></b> <?php echo date("d/m/Y H:i",strtotime($data));?> </td>
-			<td style="width:99mm;text-align:right;"><b><?php echo gtext("Data stampa");?></b>&nbsp;&nbsp;&nbsp;<?php echo date("d/m/Y H:i");?></td>
+			<td style="width:99mm;"><b><?php echo gtextPlain("Mittente");?> <?php echo $codiceCliente;?> <?php echo $this->params["ragione_sociale_cliente"];?></b></td>
+			<td style="width:99mm;text-align:center;"><b><?php echo gtextPlain("Borderò BRT");?></b> <b><?php echo gtextPlain("del");?></b> <?php echo date("d/m/Y H:i",strtotime($data));?> </td>
+			<td style="width:99mm;text-align:right;"><b><?php echo gtextPlain("Data stampa");?></b>&nbsp;&nbsp;&nbsp;<?php echo date("d/m/Y H:i");?></td>
 		</tr>
 	</table>
 	<br />
 	<hr />
 	<table class="corpo" style="width:297mm;">
 		<tr class="header_tabella">
-			<th style="width:65mm;"><?php echo gtext("Destinatario");?></th>
+			<th style="width:65mm;"><?php echo gtextPlain("Destinatario");?></th>
 			<th style="width:23mm;"></th>
 			<th style="width:65mm;">
-				<?php echo gtext("Indirizzo");?>
+				<?php echo gtextPlain("Indirizzo");?>
 			</th>
 			<th>
-				<?php echo gtext("Rif. Numerico");?>
+				<?php echo gtextPlain("Rif. Numerico");?>
 			</th>
-			<th align="center"><?php echo gtext("Cod");?></th>
-			<th><?php echo gtext("Importo");?></th>
-			<th><?php echo gtext("T.I.");?></th>
-			<th><?php echo gtext("Importo");?></th>
-			<th align="center"><?php echo gtext("Colli");?></th>
-			<th align="center"><?php echo gtext("Peso");?></th>
-			<th><?php echo gtext("MC Pallet");?></th>
+			<th align="center"><?php echo gtextPlain("Cod");?></th>
+			<th><?php echo gtextPlain("Importo");?></th>
+			<th><?php echo gtextPlain("T.I.");?></th>
+			<th><?php echo gtextPlain("Importo");?></th>
+			<th align="center"><?php echo gtextPlain("Colli");?></th>
+			<th align="center"><?php echo gtextPlain("Peso");?></th>
+			<th><?php echo gtextPlain("MC Pallet");?></th>
 			<th>
-				<?php echo gtext("Segnacolli");?>
+				<?php echo gtextPlain("Segnacolli");?>
 			</th>
 		</tr>
 		<tr class="header_tabella header_tabella_2">
 			<th></th>
 			<th></th>
 			<th style="width:65mm;">
-				<?php echo gtext("CAP");?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo gtext("Località");?>
+				<?php echo gtextPlain("CAP");?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo gtextPlain("Località");?>
 			</th>
 			<th>
 				Riferimento
@@ -104,7 +104,7 @@ table.corpo td table td
 			<th></th>
 			<th></th>
 			<th>
-				<?php echo gtext("Dal");?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo gtext("Al");?>
+				<?php echo gtextPlain("Dal");?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo gtextPlain("Al");?>
 			</th>
 		</tr>
 		<?php
@@ -155,7 +155,7 @@ table.corpo td table td
 		</tr>
 		<tr class="riga_corpo_tabella riga_corpo_tabella_2">
 			<td align="right">
-				<?php echo gtext("Tipo Servizio");?> <b><?php echo $spedizione["tipo_servizio"] ? $spedizione["tipo_servizio"] : "C";?></b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<?php echo gtextPlain("Tipo Servizio");?> <b><?php echo $spedizione["tipo_servizio"] ? $spedizione["tipo_servizio"] : "C";?></b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			</td>
 			
 			<td>Cod.Tar. <b><?php echo $spedizione["codice_tariffa"];?></b>&nbsp;&nbsp;&nbsp;</td>
@@ -185,7 +185,7 @@ table.corpo td table td
 			<td align="center" class="border_bottom"><b><?php echo $numeroColliTotali;?></b></td>
 			<td align="center" class="border_bottom"><b><?php echo number_format($pesoTotale,1,",",".");?></b></td>
 			<td class="border_bottom"></td>
-			<td style="text-align:right;" class="border_bottom"><b><?php echo gtext("Spedizioni");?>: <?php echo count($spedizioni);?></b></td>
+			<td style="text-align:right;" class="border_bottom"><b><?php echo gtextPlain("Spedizioni");?>: <?php echo count($spedizioni);?></b></td>
 		</tr>
 	</table>
 	

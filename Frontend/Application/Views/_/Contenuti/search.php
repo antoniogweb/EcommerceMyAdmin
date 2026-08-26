@@ -1,10 +1,10 @@
 <?php if (!defined('EG')) die('Direct access not allowed!');
 
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Cerca")	=>	"",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Cerca")	=>	"",
 );
 
-$titoloPagina = gtext("Risultati della ricerca")." $s";
+$titoloPagina = gtextPlain("Risultati della ricerca")." $s";
 
 include(tpf("/Contenuti/prodotti.php"));

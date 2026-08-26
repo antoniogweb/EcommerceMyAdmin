@@ -5,8 +5,8 @@
 	if (count($promozioni) > 0) { ?>
 		<table width="100%" class="uk-table uk-table-divider uk-table-hover uk-table-small uk-table-justify" cellspacing="0">
 			<tr>
-				<th style="text-align:left;"><?php echo gtext("Codice Gift Card");?></th>
-				<th style="text-align:left;"><?php echo gtext("Stato");?></th>
+				<th style="text-align:left;"><?php echo gtextPlain("Codice Gift Card");?></th>
+				<th style="text-align:left;"><?php echo gtextPlain("Stato");?></th>
 			</tr>
 			<?php foreach ($promozioni as $promo) { ?>
 			<tr>
@@ -14,13 +14,13 @@
 					<span class="uk-text uk-text-primary"><?php echo $promo["codice"];?></span>
 					<?php $inviataA = EventiretargetingelementiModel::getElemento($promo["id_p"], "promozioni"); ?>
 					<?php if (!empty($inviataA)) { ?>
-					<br /><span class="uk-text-meta"><?php echo gtext("Inviato a");?>:</span> <span class="uk-text-small"><?php echo $inviataA["email"];?></span>
+					<br /><span class="uk-text-meta"><?php echo gtextPlain("Inviato a");?>:</span> <span class="uk-text-small"><?php echo $inviataA["email"];?></span>
 					<?php } ?>
 				</td>
 				<td>
 					<?php echo PromozioniModel::g()->isActiveCoupon($promo["codice"],null,false) ? "<span class='uk-label uk-label-success'>".gtext("Attivo")."</span>" : "<span class='uk-label uk-label-warning'>".gtext("Non attivo")."</span>";?>
 					<?php if (PromozioniModel::gNumeroEuroRimasti($promo["id_p"]) <= 0) { ?>
-					<br /><span class="uk-text-meta"><?php echo gtext("Credito esaurito");?></span>
+					<br /><span class="uk-text-meta"><?php echo gtextPlain("Credito esaurito");?></span>
 					<?php } ?>
 				</td>
 			</tr>
@@ -32,15 +32,15 @@
 		if (count($elementiRiga) > 0) { ?>
 			<table width="100%" class="uk-table uk-table-divider uk-table-hover uk-table-small uk-table-justify" cellspacing="0">
 				<tr>
-					<th style="text-align:left;font-size:13px;"><?php echo gtext("Da inviare a");?></th>
-					<th style="text-align:left;font-size:13px;"><?php echo gtext("Dedica e firma");?></th>
+					<th style="text-align:left;font-size:13px;"><?php echo gtextPlain("Da inviare a");?></th>
+					<th style="text-align:left;font-size:13px;"><?php echo gtextPlain("Dedica e firma");?></th>
 				</tr>
 			<?php foreach ($elementiRiga as $el) { ?>
 			<tr>
 				<td style="text-align:left;font-size:13px;">
 					<?php echo $el["email"];?>
 					<?php if ($tipoOutput == "web" && !OrdiniModel::g()->isPagato($p["righe"]["id_o"])) { ?>
-					<div class="uk-text-italic">(<?php echo gtext("Il codice della gift card verrà inviato alla mail indicata non appena il pagamento dell'ordine verrà effettuato.")?>)</div>
+					<div class="uk-text-italic">(<?php echo gtextPlain("Il codice della gift card verrà inviato alla mail indicata non appena il pagamento dell'ordine verrà effettuato.")?>)</div>
 					<?php } ?>
 				</td>
 				<td style="text-align:left;font-size:13px;">

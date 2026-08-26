@@ -5,31 +5,31 @@
 		<div class="uk-visible@m">
 			<div class="uk-text-emphasis uk-text-meta uk-grid-small uk-child-width-1-1 uk-child-width-1-5 uk-flex-middle uk-grid" uk-grid="">
 				<div class="uk-first-column uk-text-center">
-					<?php echo gtext("Prodotto");?>
+					<?php echo gtextPlain("Prodotto");?>
 				</div>
 				<div class="uk-width-expand">
 					<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center uk-grid" uk-grid="">
 						<div class="uk-first-column">
-							<?php echo gtext("Descrizione");?>
+							<?php echo gtextPlain("Descrizione");?>
 						</div>
 						<?php if (!$regalati) { ?>
 						<div>
-							<?php echo gtext("Quantità desiderata");?>
+							<?php echo gtextPlain("Quantità desiderata");?>
 						</div>
 						<?php } ?>
 						<div>
-							<?php echo gtext("Regalati");?>
+							<?php echo gtextPlain("Regalati");?>
 						</div>
 						<div>
-							<?php echo gtext("Rimasti");?>
+							<?php echo gtextPlain("Rimasti");?>
 						</div>
 						<?php if (!$regalati) { ?>
 						<div>
-							<?php echo gtext("Elimina");?>
+							<?php echo gtextPlain("Elimina");?>
 						</div>
 						<?php } else { ?>
 						<div>
-							<?php echo gtext("Regalato da");?>
+							<?php echo gtextPlain("Regalato da");?>
 						</div>
 						<?php } ?>
 					</div>
@@ -72,7 +72,7 @@
 							<div class="uk-text-meta"><?php echo $attributi;?></div>
 							<?php } ?>
 							<?php if (!CombinazioniModel::acquistabile($p["liste_regalo_pages"]["id_c"]) || !$acquistabile) { ?>
-							<br /><span class="uk-text-warning"><?php echo gtext("Il prodotto non è più acquistabile");?></span>
+							<br /><span class="uk-text-warning"><?php echo gtextPlain("Il prodotto non è più acquistabile");?></span>
 							<?php } ?>
 						</div>
 						<?php if (!$regalati) { ?>
@@ -94,10 +94,10 @@
 						</div>
 						<?php } ?>
 						<div class="uk-text-small">
-							<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalati");?>:</span> <?php echo $numeroRegalati;?>
+							<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Regalati");?>:</span> <?php echo $numeroRegalati;?>
 						</div>
 						<div class="uk-text-small">
-							<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Rimasti");?>:</span> <?php echo ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);?>
+							<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Rimasti");?>:</span> <?php echo ListeregaloModel::numeroRimastiDaRegalare($idListaRegalo, $p["liste_regalo_pages"]["id_c"]);?>
 						</div>
 						<?php if (!$regalati) { ?>
 						<div class="uk-visible@m">
@@ -107,7 +107,7 @@
 						</div>
 						<?php } else { ?>
 						<div class="uk-text-small">
-							<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Regalato da");?>:</span> <br />
+							<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Regalato da");?>:</span> <br />
 							<?php
 							$daStampare = array();
 							foreach ($ordini as $o) {
@@ -128,9 +128,9 @@
 	</div>
 <?php } else { ?>
 	<?php if (!$regalati) { ?>
-	<?php echo gtext("Non hai ancora aggiunto alcun prodotto alla lista.");?><br />
-	<?php echo gtext("Sfoglia i prodotti nelle categorie oppure cerca i tuoi prodotti tramite la ricerca.");?> <?php echo gtext("Clicca sul prodotto scelto. Nella pagina di dettaglio del prodotto troverai il tasto");?> <span class="uk-text-secondary"><?php echo gtext("Aggiungi alla lista");?></span>.
+	<?php echo gtextPlain("Non hai ancora aggiunto alcun prodotto alla lista.");?><br />
+	<?php echo gtextPlain("Sfoglia i prodotti nelle categorie oppure cerca i tuoi prodotti tramite la ricerca.");?> <?php echo gtextPlain("Clicca sul prodotto scelto. Nella pagina di dettaglio del prodotto troverai il tasto");?> <span class="uk-text-secondary"><?php echo gtextPlain("Aggiungi alla lista");?></span>.
 	<?php } else { ?>
-	<?php echo gtext("Non hai ancora ricevuto alcun regalo nella lista.");?>
+	<?php echo gtextPlain("Non hai ancora ricevuto alcun regalo nella lista.");?>
 	<?php } ?>
 <?php } ?>

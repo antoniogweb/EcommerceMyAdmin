@@ -740,7 +740,7 @@ class AirichiesteModel extends GenericModel
 					// $this->sendEvent([
 					// 	'type'	=>	'status',
 					// 	'phase'	=>	'understanding',
-					// 	'text'	=>	gtext('Preparo la risposta...'),
+					// 	'text'	=>	gtextPlain('Preparo la risposta...'),
 					// ]);
 					
 					if ($intent == "follow_up")
@@ -1431,7 +1431,7 @@ class AirichiesteModel extends GenericModel
 			// 	$this->sendEvent([
 			// 		'type'	=>	'status',
 			// 		'phase'	=>	'understanding',
-			// 		'text'	=>	gtext('Sto recuperando le informazioni...'),
+			// 		'text'	=>	gtextPlain('Sto recuperando le informazioni...'),
 			// 	]);
 			
 			if ($linguaRouting && LingueModel::checkLinguaAttiva((string)$linguaRouting))
@@ -1682,7 +1682,7 @@ class AirichiesteModel extends GenericModel
 		// $this->sendEvent([
 		// 	'type'	=>	'status',
 		// 	'phase'	=>	'understanding',
-		// 	'text'	=>	gtext('Sto pensando...'),
+		// 	'text'	=>	gtextPlain('Sto pensando...'),
 		// ]);
 		
 		$lingua = $this->getLinguaDefault();

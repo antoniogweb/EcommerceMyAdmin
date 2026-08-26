@@ -6,7 +6,7 @@
 
 	<?php echo Html_Form::input("peso","","form-control",null,"placeholder='".gtextAttr("Peso..")."'");?>
 	
-	<button class="submit_file btn btn-success btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-plus-square-o"></i> <?php echo gtext("Aggiungi collo");?></button>
+	<button class="submit_file btn btn-success btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-plus-square-o"></i> <?php echo gtextPlain("Aggiungi collo");?></button>
 	<input type="hidden" name="insertAction" value="Aggiungi" />
 	
 </form>

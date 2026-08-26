@@ -2,7 +2,7 @@
 
 <?php if (!empty($record_evento)) { ?>
 <section class="content-header">
-	<h1><?php echo gtext("Dettaglio trasmissione")?> <?php echo $record_evento["spedizioni_negozio_info"]["codice_info"];?></h1>
+	<h1><?php echo gtextPlain("Dettaglio trasmissione")?> <?php echo $record_evento["spedizioni_negozio_info"]["codice_info"];?></h1>
 </section>
 
 <!-- Main content -->

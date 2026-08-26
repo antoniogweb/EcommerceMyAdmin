@@ -3,7 +3,7 @@
 <div class="box_coupon">
 	<div class="uk-margin">
 		<div class="uk-text-small">
-			<?php echo gtext("Possiedi il codice di una promozione attiva?");?> <a href="#" class="showcoupon"><?php echo gtext("Aggiungi il tuo codice all'ordine");?></a>	
+			<?php echo gtextPlain("Possiedi il codice di una promozione attiva?");?> <a href="#" class="showcoupon"><?php echo gtextPlain("Aggiungi il tuo codice all'ordine");?></a>	
 		</div>
 	</div>
 

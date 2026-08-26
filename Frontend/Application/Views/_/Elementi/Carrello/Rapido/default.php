@@ -3,7 +3,7 @@
 	<header class="uk-card-header">
 		<div class="uk-grid-small uk-flex-1" uk-grid>
 			<div class="uk-width-expand ajax-cart-title">
-				<?php echo gtext("Carrello");?>
+				<?php echo gtextPlain("Carrello");?>
 			</div>
 			<button style="margin-top:-7px;" class="uk-offcanvas-close" type="button" uk-close></button>
 		</div>
@@ -56,7 +56,7 @@
 			<?php } ?>
 		</ul>
 		<?php } else { ?>
-		<p><?php echo gtext("Il carrello è vuoto")?></p>
+		<p><?php echo gtextPlain("Il carrello è vuoto")?></p>
 		<?php } ?>
 		<div style="display:none;" class="ajax_cart_num_prod"><?php echo $prodInCart;?></div>
 	</div>
@@ -65,15 +65,15 @@
 	?>
 	<footer class="uk-card-footer">
 		<div class="uk-grid-small uk-grid" uk-grid>
-			<div class="uk-width-expand uk-text-muted uk-h4"><?php echo gtext("Subtotale");?></div>
+			<div class="uk-width-expand uk-text-muted uk-h4"><?php echo gtextPlain("Subtotale");?></div>
 			<div class="uk-margin-remove-top uk-h4 uk-text-bolder"><?php echo getSubTotal(v("prezzi_ivati_in_carrello"));?> €</div>
 		</div>
 		<div class="uk-grid-small uk-child-width-1-1 <?php if (!$haErrori) { ?>uk-child-width-1-2@m<?php } ?> uk-margin-small" uk-grid>
 			<?php if (!$haErrori) { ?>
-				<div><a class="<?php echo v("classe_pulsanti_carrello");?> uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/carrello/vedi"?>"><?php echo gtext("Carrello");?></a></div>
-				<div><a class="<?php echo v("classe_pulsanti_submit");?> uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/".VariabiliModel::paginaAutenticazione();?>"><?php echo gtext("Checkout");?></a></div>
+				<div><a class="<?php echo v("classe_pulsanti_carrello");?> uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/carrello/vedi"?>"><?php echo gtextPlain("Carrello");?></a></div>
+				<div><a class="<?php echo v("classe_pulsanti_submit");?> uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/".VariabiliModel::paginaAutenticazione();?>"><?php echo gtextPlain("Checkout");?></a></div>
 			<?php } else { ?>
-				<div><a class="<?php echo v("classe_pulsanti_carrello");?> uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/carrello/vedi"?>"><?php echo gtext("Vai al carrello");?> <span uk-icon="arrow-right"></span></a></div>
+				<div><a class="<?php echo v("classe_pulsanti_carrello");?> uk-margin-small uk-width-1-1" href="<?php echo $this->baseUrl."/carrello/vedi"?>"><?php echo gtextPlain("Vai al carrello");?> <span uk-icon="arrow-right"></span></a></div>
 			<?php } ?>
 		</div>
 	</footer>

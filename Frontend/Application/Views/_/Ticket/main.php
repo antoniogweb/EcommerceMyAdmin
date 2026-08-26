@@ -1,12 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
-	gtext("Ticket assistenza") => "",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Area riservata")	=>	$this->baseUrl."/area-riservata",
+	gtextPlain("Ticket assistenza") => "",
 );
 
-$titoloPagina = gtext("Ticket assistenza");
+$titoloPagina = gtextPlain("Ticket assistenza");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -18,16 +18,16 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-visible@m">
 		<div class="uk-text-meta uk-text-uppercase uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
-				<?php echo gtext("Data crezione");?>
+				<?php echo gtextPlain("Data crezione");?>
 			</div>
 			<div class="uk-first-column">
 				<?php echo gtext("Oggetto");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Tipologia");?>
+				<?php echo gtextPlain("Tipologia");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Stato");?>
+				<?php echo gtextPlain("Stato");?>
 			</div>
 			<div class="uk-first-column"></div>
 		</div>
@@ -37,16 +37,16 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div>
 		<div class="uk-text-small uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Data crezione");?>:</span> <?php echo date("d-m-Y H:i", $t["ticket"]["stato"] == "B" ? strtotime($t["ticket"]["data_creazione"]) : strtotime($t["ticket"]["data_invio"]));?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Data crezione");?>:</span> <?php echo date("d-m-Y H:i", $t["ticket"]["stato"] == "B" ? strtotime($t["ticket"]["data_creazione"]) : strtotime($t["ticket"]["data_invio"]));?>
 			</div>
 			<div class="uk-first-column">
 				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Oggetto");?>:</span> <?php echo $t["ticket"]["oggetto"];?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Tipologia");?>:</span> <?php echo $t["ticket_tipologie"]["titolo"];?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Tipologia");?>:</span> <?php echo $t["ticket_tipologie"]["titolo"];?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Stato");?>:</span> <span class="uk-label" style="<?php echo TicketModel::getStile($t["ticket"]["stato"]);?>"><?php echo TicketModel::getTitoloStato($t["ticket"]["stato"]);?></span>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Stato");?>:</span> <span class="uk-label" style="<?php echo TicketModel::getStile($t["ticket"]["stato"]);?>"><?php echo TicketModel::getTitoloStato($t["ticket"]["stato"]);?></span>
 			</div>
 			<div class="uk-first-column uk-text-left uk-text-right@m">
 				<a class="td_edit" title="<?php echo gtextAttr("Vai al dettaglio",false);?>" class="" href="<?php echo $this->baseUrl."/ticket/view/".$t["ticket"]["id_ticket"]."/".$t["ticket"]["ticket_uid"];?>">
@@ -61,15 +61,15 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<hr>
 	<?php } ?>
 <?php } else { ?>
-<p><?php echo gtext("Non hai creato alcuna richiesta di assistenza.");?></p>
+<p><?php echo gtextPlain("Non hai creato alcuna richiesta di assistenza.");?></p>
 <?php } ?>
 <?php if (count($tipologie) > 0) { ?>
 	<?php if ($numeroAperti < v("numero_massimo_ticket_aperti")) { ?>
 	<div class="uk-margin">
-		<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/ticket/add/";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></span> <?php echo gtext("Crea un ticket di assistenza");?></a>
+		<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/ticket/add/";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></span> <?php echo gtextPlain("Crea un ticket di assistenza");?></a>
 	</div>
 	<?php } else { ?>
-	<div class="uk-alert uk-alert-primary"><?php echo gtext("Hai raggiunto il numero massimo di ticket aperti, per poter creare un nuovo ticket devi attendere che qualcuno dei tuoi ticket venga chiuso dal negozio.")?></div>
+	<div class="uk-alert uk-alert-primary"><?php echo gtextPlain("Hai raggiunto il numero massimo di ticket aperti, per poter creare un nuovo ticket devi attendere che qualcuno dei tuoi ticket venga chiuso dal negozio.")?></div>
 	<?php } ?>
 <?php } ?>
 <?php

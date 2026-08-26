@@ -5,7 +5,7 @@
 	$combDaImportare = MagazzinoarticoliModel::combinazioniDaImportare((int)$id);
 ?>
 	<?php if (count($combDaImportare) > 0) { ?>
-		<div class="text-warning"><?php echo gtext("Numero combinazioni da inviare ad acquisti:")." <b>".count($combDaImportare)."</b>";?></div>
+		<div class="text-warning"><?php echo gtextPlain("Numero combinazioni da inviare ad acquisti:")." <b>".count($combDaImportare)."</b>";?></div>
 	<?php } ?>
-	<a class="label label-success ajlink" href="<?php echo Url::getRoot()."prodotti/inviaadacquisti/".(int)$id;?>"><i class='fa fa-send'></i> <?php echo gtext("Invia ad acquisti");?></a>
+	<a class="label label-success ajlink" href="<?php echo Url::getRoot()."prodotti/inviaadacquisti/".(int)$id;?>"><i class='fa fa-send'></i> <?php echo gtextPlain("Invia ad acquisti");?></a>
 <?php } ?>

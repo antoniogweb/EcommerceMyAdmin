@@ -3,8 +3,8 @@
 <div class="">
 	<div class="uk-margin">
 		<div class="uk-text-small">
-			<?php echo gtext("Hai già un account?");?> <a class="showlogin show_form_login_checkout" href="#"><?php echo gtext("Clicca qui per accedere");?></a><br />
-			<?php echo gtext("Altrimenti continua pure inserendo i tuoi dati.");?>
+			<?php echo gtextPlain("Hai già un account?");?> <a class="showlogin show_form_login_checkout" href="#"><?php echo gtextPlain("Clicca qui per accedere");?></a><br />
+			<?php echo gtextPlain("Altrimenti continua pure inserendo i tuoi dati.");?>
 		</div>
 	</div>
 	

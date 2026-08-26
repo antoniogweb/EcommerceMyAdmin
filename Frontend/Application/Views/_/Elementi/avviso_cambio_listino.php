@@ -3,8 +3,8 @@
 <div id="modal-listini" class="modal-listini-open" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title"><?php echo gtext("Carrello aggiornato");?></h2>
-        <p><?php echo gtext("Il carrello è stato aggiornato secondo il mercato di riferimento selezionato.");?></p>
+        <h2 class="uk-modal-title"><?php echo gtextPlain("Carrello aggiornato");?></h2>
+        <p><?php echo gtextPlain("Il carrello è stato aggiornato secondo il mercato di riferimento selezionato.");?></p>
     </div>
 </div>
 <?php } ?>

@@ -4,7 +4,7 @@
 	<div class="uk-light uk-container-expand" id="testimonial"> 
 		<div class="uk-container uk-container-xsmall">
 			<div class="uk-overflow-hidden">
-				<h2 class="uk-text-center uk-text-bold uk-margin-remove-top"><?php echo gtext("Testimonial");?></h2>
+				<h2 class="uk-text-center uk-text-bold uk-margin-remove-top"><?php echo gtextPlain("Testimonial");?></h2>
 				
 				<div class="uk-slider" uk-slider>
 

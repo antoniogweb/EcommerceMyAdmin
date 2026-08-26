@@ -1,9 +1,9 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="condizioni_privacy uk-margin uk-text-muted uk-text-small">
-	<?php echo gtext("Ho letto e accettato le");?>
+	<?php echo gtextPlain("Ho letto e accettato le");?>
 	<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
 	<?php if ($idPrivacy) { ?>
-	<a class="uk-text-secondary" href="<?php echo getUrlPagina($idPrivacy);?>"><?php echo gtext("condizioni di privacy");?></a>
+	<a class="uk-text-secondary" href="<?php echo getUrlPagina($idPrivacy);?>"><?php echo gtextPlain("condizioni di privacy");?></a>
 	<?php } ?>
 </div>
 
@@ -13,10 +13,10 @@
 
 <?php if (v("attiva_accetto_2")) { ?>
 <div class="condizioni_privacy uk-margin uk-text-muted uk-text-small">
-	<?php echo gtext("Ho letto e accettato le");?>
+	<?php echo gtextPlain("Ho letto e accettato le");?>
 	<?php $idPrivacy = PagineModel::gTipoPagina("CONDIZIONI_AGG"); ?>
 	<?php if ($idPrivacy) { ?>
-	<a class="uk-text-secondary" href="<?php echo getUrlPagina($idPrivacy);?>"><?php echo gtext("condizioni aggiuntive");?></a>
+	<a class="uk-text-secondary" href="<?php echo getUrlPagina($idPrivacy);?>"><?php echo gtextPlain("condizioni aggiuntive");?></a>
 	<?php } ?>
 </div>
 

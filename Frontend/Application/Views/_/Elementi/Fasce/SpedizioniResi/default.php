@@ -9,7 +9,7 @@
 						<h2 class="uk-text-bold uk-margin-small"><?php echo t("Spedizioni gratuite sopra i xxx€");?></h2>
 						<h3 class="uk-text-default uk-text-muted uk-margin-remove"><?php echo t("testo_spedizioni_gratuite_sopra_euro")?></h3>
 						<?php if (isset($tipiPagina["SPEDIZIONI"])) { ?>
-						<a href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["SPEDIZIONI"]);?>" uk-link><?php echo gtext("Maggiori informazioni");?></a>
+						<a href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["SPEDIZIONI"]);?>" uk-link><?php echo gtextPlain("Maggiori informazioni");?></a>
 						<?php } ?>
 					</div>             
 				</div>
@@ -24,7 +24,7 @@
 						<h2 class="uk-text-bold uk-margin-small"><?php echo t("Entro 2-4 gg. lavorativi spediamo il tuo pacco");?></h2>
 						<h3 class="uk-text-default uk-text-muted uk-margin-remove"><?php echo t("testo_tempo_spedizione")?></h3>
 						<?php if (isset($tipiPagina["SPEDIZIONI"])) { ?>
-						<a href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["SPEDIZIONI"]);?>" uk-link><?php echo gtext("Maggiori informazioni");?></a>
+						<a href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["SPEDIZIONI"]);?>" uk-link><?php echo gtextPlain("Maggiori informazioni");?></a>
 						<?php } ?>
 					</div>             
 				</div>
@@ -39,7 +39,7 @@
 						<h2 class="uk-text-bold uk-margin-small"><?php echo t("I nostri resi facili");?></h2>
 						<h3 class="uk-text-default uk-text-muted uk-margin-remove"><?php echo t("testo_resi_facili")?></h3>
 						<?php if (isset($tipiPagina["RESI"])) { ?>
-						<a href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["RESI"]);?>" uk-link><?php echo gtext("Maggiori informazioni");?></a>
+						<a href="<?php echo $this->baseUrl."/".getUrlAlias($tipiPagina["RESI"]);?>" uk-link><?php echo gtextPlain("Maggiori informazioni");?></a>
 						<?php } ?>
 					</div>             
 				</div>

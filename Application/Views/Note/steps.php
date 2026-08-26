@@ -20,15 +20,15 @@ $(document).ready(function(){
 				<div class="col-lg-6">
 					<table style="margin-bottom:5px !important;" class="table table-striped">
 						<tr>
-							<td><?php echo gtext("Totale");?>:</td>
+							<td><?php echo gtextPlain("Totale");?>:</td>
 							<td><b><?php echo setPriceReverse($euroTotali);?> €</b></td>
 						</tr>
 						<tr>
-							<td><?php echo gtext("Usato");?>:</td>
+							<td><?php echo gtextPlain("Usato");?>:</td>
 							<td><b><?php echo setPriceReverse($euroUsati);?> €</b></td>
 						</tr>
 						<tr>
-							<td><?php echo gtext("Rimasto");?>:</td>
+							<td><?php echo gtextPlain("Rimasto");?>:</td>
 							<td><b><?php echo setPriceReverse($euroRimasti);?> €</b></td>
 						</tr>
 					</table>

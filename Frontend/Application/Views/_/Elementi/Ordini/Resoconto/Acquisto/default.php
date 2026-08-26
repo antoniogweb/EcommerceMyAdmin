@@ -5,7 +5,7 @@ if (!isset($baseUrl))
 	$baseUrl = $this->baseUrl."/";
 ?>
 <?php if (strcmp($tipoOutput,"mail_al_negozio") === 0 || strcmp($tipoOutput,"mail_al_cliente") === 0) { ?>
-<h1><?php echo gtext("Resoconto dell'ordine");?></h1>
+<h1><?php echo gtextPlain("Resoconto dell'ordine");?></h1>
 <?php } ?>
 
 <?php if (strcmp($tipoOutput,"web") === 0) { ?>
@@ -31,7 +31,7 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 
 <?php include(tpf("Ordini/resoconto_pagamento.php"));?>
 
-<h2 class="uk-heading-bullet"><?php echo gtext("Dettagli ordine", false); ?>:</h2>
+<h2 class="uk-heading-bullet"><?php echo gtextPlain("Dettagli ordine", false); ?>:</h2>
 
 <?php include(tpf("Ordini/resoconto_prodotti.php"));?>
 
@@ -50,12 +50,12 @@ include(tpf(ElementitemaModel::p("RESOCONTO_REGALO","", array(
 ?>
 
 <?php if (trim($ordine["note"])) { ?>
-<h2 class="uk-heading-bullet"><?php echo gtext("Note d'acquisto");?></h2>
+<h2 class="uk-heading-bullet"><?php echo gtextPlain("Note d'acquisto");?></h2>
 <?php echo nl2br($ordine["note"]);?>
 <br /><br />
 <?php } ?>
 
-<h2 class="uk-heading-bullet"><?php echo gtext("Dati di fatturazione", false); ?></h2>
+<h2 class="uk-heading-bullet"><?php echo gtextPlain("Dati di fatturazione", false); ?></h2>
 
 <?php
 include(tpf(ElementitemaModel::p("RESOCONTO_FATTURAZIONE","", array(
@@ -65,7 +65,7 @@ include(tpf(ElementitemaModel::p("RESOCONTO_FATTURAZIONE","", array(
 ?>
 
 <?php if ($ordine["da_spedire"] && ($ordine["indirizzo_spedizione"] || $ordine["citta_spedizione"])) { ?>
-<h2 class="uk-heading-bullet"><?php echo gtext("Dati di spedizione", false); ?></h2>
+<h2 class="uk-heading-bullet"><?php echo gtextPlain("Dati di spedizione", false); ?></h2>
 
 <?php
 include(tpf(ElementitemaModel::p("RESOCONTO_SPEDIZIONE","", array(
@@ -76,7 +76,7 @@ include(tpf(ElementitemaModel::p("RESOCONTO_SPEDIZIONE","", array(
 <?php } ?>
 <br /><br />
 <?php if (strcmp($tipoOutput,"mail_al_cliente") === 0 ) { ?>
-<p><?php echo gtext("Può controllare in qualsiasi momento i dettagli dell'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=y"><?php echo gtext("seguente indirizzo web", false); ?></a>.</p>
+<p><?php echo gtextPlain("Può controllare in qualsiasi momento i dettagli dell'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=y"><?php echo gtextPlain("seguente indirizzo web", false); ?></a>.</p>
 <?php } ?>
 
 <?php

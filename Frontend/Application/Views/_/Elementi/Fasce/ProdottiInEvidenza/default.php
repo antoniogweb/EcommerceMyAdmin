@@ -3,11 +3,11 @@
 <div class="uk-section uk-text-center">
 	<div class="uk-container">
 		<div class=" uk-margin-large-bottom">
-			<h2 class="uk-text-bold uk-margin-remove-top uk-margin-remove-bottom"><span><?php echo gtext("Prodotti in evidenza"); ?></span></h2>
+			<h2 class="uk-text-bold uk-margin-remove-top uk-margin-remove-bottom"><span><?php echo gtextPlain("Prodotti in evidenza"); ?></span></h2>
 			<div class="uk-child-width-1-3@m uk-text-center uk-grid" uk-grid>
 				<div></div>
 				<div>
-					<div class="uk-text-small"><?php echo gtext("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");?></div>
+					<div class="uk-text-small"><?php echo gtextPlain("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");?></div>
 				</div>
 				<div></div>
 			</div>
@@ -32,7 +32,7 @@
 			<ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
 
 		</div>
-		<a class="uk-button uk-button-default uk-margin" href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($idShop);?>"><?php echo gtext("Vedi tutti");?></a>
+		<a class="uk-button uk-button-default uk-margin" href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($idShop);?>"><?php echo gtextPlain("Vedi tutti");?></a>
 	</div>
 </div>
 <?php } ?> 

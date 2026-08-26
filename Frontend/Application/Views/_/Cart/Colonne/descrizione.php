@@ -10,7 +10,7 @@
 
 <?php if ($p["cart"]["attributi"] && !$p["cart"]["id_p"] && $p["cart"]["prodotto_attivo"] && !VariabiliModel::combinazioniLinkVeri() && v("mostra_pulsante_modifica_se_ha_combinazioni")) { ?>
 	<div class="uk-margin">
-		<a class="uk-text-meta" href="<?php echo $this->baseUrl."/".$urlAliasProdotto."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtext("Modifica");?></a>
+		<a class="uk-text-meta" href="<?php echo $this->baseUrl."/".$urlAliasProdotto."?id_cart=".$p["cart"]["id_cart"];?>"><?php echo gtextPlain("Modifica");?></a>
 	</div>
 <?php } ?>
 <?php include(tpf("Cart/main_testo_disponibilita.php"));?>

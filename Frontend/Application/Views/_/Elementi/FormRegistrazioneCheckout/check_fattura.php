@@ -6,7 +6,7 @@
 			<?php echo Html_Form::checkbox('fattura',$values['fattura'],'1','uk-checkbox');?>
 		</div>
 		<div class="uk-margin-left uk-text-small">
-			<?php echo gtext("Mi serve la fattura");?>
+			<?php echo gtextPlain("Mi serve la fattura");?>
 		</div>
 	</div>
 </div>

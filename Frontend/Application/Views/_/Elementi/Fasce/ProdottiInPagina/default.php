@@ -33,7 +33,7 @@
 			<ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
 
 		</div>
-		<a class="uk-button uk-button-default uk-margin" href="<?php echo $this->baseUrl."/".getCategoryUrlAlias(CategoriesModel::$idShop);?>"><?php echo gtext("Vedi tutti");?></a>
+		<a class="uk-button uk-button-default uk-margin" href="<?php echo $this->baseUrl."/".getCategoryUrlAlias(CategoriesModel::$idShop);?>"><?php echo gtextPlain("Vedi tutti");?></a>
 	</div>
 </div>
 <?php } ?>

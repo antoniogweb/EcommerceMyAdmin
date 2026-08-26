@@ -13,6 +13,6 @@ $urlAliasCategoria = getCategoryUrlAlias($p["categories"]["id_c"]);
 	<div class="uk-card-body">
 		<h4 class="uk-margin-small-bottom uk-text-bold"><?php echo field($p, "title");?></h4>
 		<div class="uk-text-small"><?php echo field($p, "sottotitolo");?></div>
-		<a class="uk-button uk-button-text uk-text-bold uk-margin-small" href="<?php echo $this->baseUrl."/".$urlAlias;?>"><?php echo gtext("Leggi tutto");?></a>
+		<a class="uk-button uk-button-text uk-text-bold uk-margin-small" href="<?php echo $this->baseUrl."/".$urlAlias;?>"><?php echo gtextPlain("Leggi tutto");?></a>
 	</div>
 </div>

@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <section class="content-header">
-	<h1><?php echo gtext("Scelta tema");?></h1>
+	<h1><?php echo gtextPlain("Scelta tema");?></h1>
 </section>
 
 <!-- Main content -->
@@ -20,12 +20,12 @@
 					<?php if (v("theme_folder") == $tema["nome"]) { ?>
 					<button href="<?php echo $this->baseUrl."/impostazioni/attivatema/".$tema["nome"];?>" type="button" class="pull-right btn btn-success ajlink" id="sendEmail">
 						<i class="fa fa-check"></i>
-						<?php echo gtext("Tema attivo");?>
+						<?php echo gtextPlain("Tema attivo");?>
 					</button>
 					<?php } else { ?>
 					<button href="<?php echo $this->baseUrl."/impostazioni/attivatema/".$tema["nome"];?>" type="button" class="pull-right btn btn-default ajlink" id="sendEmail">
 						<i class="fa fa-check"></i>
-						<?php echo gtext("Attiva");?>
+						<?php echo gtextPlain("Attiva");?>
 					</button>
 					<?php } ?>
                 </div>

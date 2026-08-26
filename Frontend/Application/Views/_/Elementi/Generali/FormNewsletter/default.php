@@ -12,7 +12,7 @@
 			
 			<div class="uk-width-1-4@m uk-width-1-4@s">
 				<div class="uk-button uk-button-secondary uk-text-bold uk-width-expandy spinner uk-hidden" uk-spinner="ratio: .70"></div>
-				<button type='submit' class="uk-button uk-button-secondary uk-text-bold uk-width-expand btn_submit_form"><?php echo gtext("Iscriviti");?></button>
+				<button type='submit' class="uk-button uk-button-secondary uk-text-bold uk-width-expand btn_submit_form"><?php echo gtextPlain("Iscriviti");?></button>
 			</div>
         </div>
         
@@ -26,7 +26,7 @@
         <?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
         <br />
         <div class="class_accetto">
-			<?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtext("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("privacy policy");?></a></span>
+			<?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("privacy policy");?></a></span>
 		</div>
     </form>
 </div> 

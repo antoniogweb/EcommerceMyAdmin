@@ -2,7 +2,7 @@
 
 <div class="panel panel-info">
 	<div class="panel-heading">
-		<?php echo gtext("Contatti + Social");?>
+		<?php echo gtextPlain("Contatti + Social");?>
 	</div>
 	<div class="panel-body">
 		<div class='row'>

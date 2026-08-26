@@ -1,12 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
-	gtext("Liste nascita / regalo") => "",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Area riservata")	=>	$this->baseUrl."/area-riservata",
+	gtextPlain("Liste nascita / regalo") => "",
 );
 
-$titoloPagina = gtext("Liste nascita / regalo");
+$titoloPagina = gtextPlain("Liste nascita / regalo");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -19,20 +19,20 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <div class="uk-visible@m">
 	<div class="uk-text-small uk-text-meta uk-grid-collapse uk-child-width-expand@s uk-text-center@s <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="">
 		<div class="uk-first-column uk-text-left">
-			<?php echo gtext("Nome");?>
+			<?php echo gtextPlain("Nome");?>
 		</div>
 		<div>
-			<?php echo gtext("Quantità");?>
+			<?php echo gtextPlain("Quantità");?>
 		</div>
-		<div><?php echo gtext("Visualizzazioni");?></div>
-		<div><?php echo gtext("Creazione");?></div>
-		<div><?php echo gtext("Scadenza");?></div>
-		<div><?php echo gtext("Tipo");?></div>
+		<div><?php echo gtextPlain("Visualizzazioni");?></div>
+		<div><?php echo gtextPlain("Creazione");?></div>
+		<div><?php echo gtextPlain("Scadenza");?></div>
+		<div><?php echo gtextPlain("Tipo");?></div>
 		<div class="uk-width-1-5@m">
 			<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-5 uk-child-width-1-3@m uk-child-width-expand@s uk-grid" uk-grid="">
-				<div class="uk-text-center@s"><?php echo gtext("Link");?></div>
-				<div class="uk-text-center@s"><?php echo gtext("Gestisci");?></div>
-				<div class="uk-text-center@s"><?php echo gtext("Disattiva");?></div>
+				<div class="uk-text-center@s"><?php echo gtextPlain("Link");?></div>
+				<div class="uk-text-center@s"><?php echo gtextPlain("Gestisci");?></div>
+				<div class="uk-text-center@s"><?php echo gtextPlain("Disattiva");?></div>
 			</div>
 		</div>
 	</div>
@@ -43,19 +43,19 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 <div class="uk-text-small uk-grid-collapse uk-child-width-expand@s uk-text-center@s <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="">
 	<div class="uk-first-column uk-text-left">
-		<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Nome");?>:</span> <?php echo $lista["liste_regalo"]["titolo"];?>
+		<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Nome");?>:</span> <?php echo $lista["liste_regalo"]["titolo"];?>
 	</div>
 	<div>
-		<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Quantità");?>:</span> <?php echo ListeregaloModel::numeroProdotti($lista["liste_regalo"]["id_lista_regalo"]);?>
+		<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Quantità");?>:</span> <?php echo ListeregaloModel::numeroProdotti($lista["liste_regalo"]["id_lista_regalo"]);?>
 	</div>
-	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtext("Visualizzazioni");?>:</span></div>
-	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtext("Creazione");?>:</span> <?php echo smartDate($lista["liste_regalo"]["data_creazione"]);?></div>
-	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtext("Scadenza");?>:</span>
+	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Visualizzazioni");?>:</span></div>
+	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Creazione");?>:</span> <?php echo smartDate($lista["liste_regalo"]["data_creazione"]);?></div>
+	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Scadenza");?>:</span>
 		<?php if ($listaScaduta) { ?><span class="uk-text-danger"><?php } else { ?><span><?php } ?> 
 		<?php echo smartDate($lista["liste_regalo"]["data_scadenza"]);?>
 		</span>
 	</div>
-	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtext("Tipo");?>:</span> <?php echo gtext($lista["liste_regalo_tipi"]["titolo"]);?></div>
+	<div><span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Tipo");?>:</span> <?php echo gtextPlain($lista["liste_regalo_tipi"]["titolo"]);?></div>
 	<div class="uk-width-1-5@m">
 		<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-5 uk-child-width-1-3@m uk-child-width-expand@s uk-grid" uk-grid="">
 			<div class="uk-text-center@s">
@@ -78,11 +78,11 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <?php } ?>
 
 <?php } else { ?>
-<p><?php echo gtext("Non hai ancora creato alcuna lista nascita / regalo.");?></p>
+<p><?php echo gtextPlain("Non hai ancora creato alcuna lista nascita / regalo.");?></p>
 <?php } ?>
 
 <div class="uk-margin">
-	<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/listeregalo/modifica/0";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></span> <?php echo gtext("Crea lista nascita / regalo");?></a>
+	<a class="uk-button uk-button-primary" href="<?php echo $this->baseUrl."/listeregalo/modifica/0";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span></span> <?php echo gtextPlain("Crea lista nascita / regalo");?></a>
 </div>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

@@ -2,13 +2,13 @@
 <form autocomplete="new-password" action="<?php echo $this->baseUrl."/regusers/login";?>" data-toggle="validator" method="POST">
 	<fieldset class="uk-fieldset">
 		<div class="uk-margin">
-			<label class="uk-form-label"><?php echo gtext("e-mail")?> *</label>
+			<label class="uk-form-label"><?php echo gtextPlain("e-mail")?> *</label>
 			<div class="uk-form-controls">
 				<input class="uk-input " autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtextAttr("Indirizzo e-mail", false)?>" />
 			</div>
 		</div>
 		<div class="uk-margin">
-			<label class="uk-form-label"><?php echo gtext("password")?> *</label>
+			<label class="uk-form-label"><?php echo gtextPlain("password")?> *</label>
 			<div class="uk-form-controls">
 				<input class="uk-input " autocomplete="new-password" name="password" type="password" placeholder="<?php echo gtextAttr("Password", false)?>" />
 			</div>

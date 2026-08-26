@@ -2,19 +2,19 @@
 
 <?php if ($this->action == "scaglioni" && v("scaglioni_in_prodotti")) { ?>
 
-<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/scaglioni/form/insert";?>?partial=Y&nobuttons=Y&id_page=<?php echo $id_page;?>"><?php echo gtext("Aggiungi scaglione");?></a></p>
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/scaglioni/form/insert";?>?partial=Y&nobuttons=Y&id_page=<?php echo $id_page;?>"><?php echo gtextPlain("Aggiungi scaglione");?></a></p>
 
 <?php } ?>
 
 <?php if ($this->action === "contenuti") { ?>
 
-<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/contenuti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><?php echo gtext("Aggiungi fascia");?></a></p>
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/contenuti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><?php echo gtextPlain("Aggiungi fascia");?></a></p>
 
 <?php } ?>
 
 <?php if ($this->action === "documenti" && v("documenti_in_prodotti")) { ?>
 
-<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/documenti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-plus-circle"></i> <?php echo gtext("Aggiungi");?></a></p>
+<p><a class="iframe btn btn-success" href="<?php echo $this->baseUrl."/documenti/form/insert";?>?partial=Y&nobuttons=N&id_page=<?php echo $id_page;?>"><i class="fa fa-plus-circle"></i> <?php echo gtextPlain("Aggiungi");?></a></p>
 
 <?php } ?>
 
@@ -31,7 +31,7 @@
 	<?php echo Html_Form::select("id_pers","",$lista,"form-control help_tendina_personalizzazioni",null,"yes");?>
 	
 <!-- 	<input class="submit_file btn btn-primary btn-sm" type="submit" name="insertAction" value="Aggiungi"> -->
-	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtextPlain("Aggiungi");?></button>
 	<input type="hidden" name="insertAction" value="Aggiungi" />
 	
 </form>
@@ -44,7 +44,7 @@
 
 	<?php echo Html_Form::select("id_c","",$lista,"form-control help_tendina_categorie",null,"yes");?>
 	
-	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtextPlain("Aggiungi");?></button>
 	<input type="hidden" name="insertAction" value="Aggiungi" />
 </form>
 
@@ -73,9 +73,9 @@
 <?php if ($this->action == "regioni" && v("attiva_localizzazione_prodotto")) { ?>
 
 <p>
-	<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/regioni/main?id_page=$id_page&partial=Y&cl_on_sv=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi regione");?></a>
+	<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/regioni/main?id_page=$id_page&partial=Y&cl_on_sv=Y";?>"><i class="fa fa-plus"></i> <?php echo gtextPlain("Aggiungi regione");?></a>
 	
-	<a class="btn btn-info iframe" href="<?php echo $this->baseUrl."/nazioni/main?id_page=$id_page&partial=Y&cl_on_sv=Y&nobuttons=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi nazione");?></a>
+	<a class="btn btn-info iframe" href="<?php echo $this->baseUrl."/nazioni/main?id_page=$id_page&partial=Y&cl_on_sv=Y&nobuttons=Y";?>"><i class="fa fa-plus"></i> <?php echo gtextPlain("Aggiungi nazione");?></a>
 </p>
 
 <?php } ?>
@@ -85,12 +85,12 @@
 <?php if ($this->action == "nazioni" && v("attiva_limitazione_spedizione_nazioni")) { ?>
 
 <div class="callout callout-info">
-	<?php echo gtext("In questa scheda è possibile specificare le nazioni in cui il prodotto può essere spedito.") ?><br />
-	<b><?php echo gtext("Se non è inclusa alcuna nazione significa che il prodotto è spedibile in tutte le nazioni attive.") ?></b>
+	<?php echo gtextPlain("In questa scheda è possibile specificare le nazioni in cui il prodotto può essere spedito.") ?><br />
+	<b><?php echo gtextPlain("Se non è inclusa alcuna nazione significa che il prodotto è spedibile in tutte le nazioni attive.") ?></b>
 </div>
 
 <p>
-	<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/nazioni/main?id_page_sp=$id_page&partial=Y&cl_on_sv=Y&nobuttons=Y";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi nazione");?></a>
+	<a class="btn btn-success iframe" href="<?php echo $this->baseUrl."/nazioni/main?id_page_sp=$id_page&partial=Y&cl_on_sv=Y&nobuttons=Y";?>"><i class="fa fa-plus"></i> <?php echo gtextPlain("Aggiungi nazione");?></a>
 </p>
 
 <?php } ?>
@@ -106,7 +106,7 @@
 		<?php echo Html_Form::select("id_articolo","",array("0" => gtext("Seleziona variante")),"form-control select_combinazione_ordine_acquisto","","yes", "style='min-width:200px;'");?>
 	</span>
 	
-	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-save"></i> <?php echo gtextPlain("Aggiungi");?></button>
 	<input type="hidden" name="insertAction" value="Aggiungi" />
 </form>
 <br />

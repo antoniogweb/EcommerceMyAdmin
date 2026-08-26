@@ -32,7 +32,7 @@
 
 								<?php echo $avviso_combinazioni; ?>
 								<?php if (v("mantieni_listini_esteri_sincronizzati_se_non_modificati") && ProdottiModel::g(false)->listinoModificato((int)$id_page))  { ?>
-									<div class='callout callout-warning'><?php echo gtext("Attenzione, il prodotto ha i listini esteri differenti da quello italiano. Verificare nella scheda Varianti");?></div>
+									<div class='callout callout-warning'><?php echo gtextPlain("Attenzione, il prodotto ha i listini esteri differenti da quello italiano. Verificare nella scheda Varianti");?></div>
 								<?php } ?>
 								<!-- show the table -->
 								<div class='scaffold_form'>
@@ -135,7 +135,7 @@
 									
 									<div class="submit_entry">
 										<span class="submit_entry_Salva">
-											<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo gtext("Salva");?></button>
+											<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit"><i class="fa fa-save"></i> <?php echo gtextPlain("Salva");?></button>
 											<input type="hidden" value="<?php echo gtextAttr("Salva");?>" name="<?php echo $type;?>Action">
 										</span>
 									</div>
@@ -152,7 +152,7 @@
 						<?php if ((isset($form["acquisto_diretto"]) || v("accessori_in_prodotti")) && v("ecommerce_attivo")) { ?>
 							<div class="panel panel-info help_accessori">
 								<div class="panel-heading">
-									<?php echo gtext("Opzioni acquisto");?>
+									<?php echo gtextPlain("Opzioni acquisto");?>
 								</div>
 								<div class="panel-body">
 									<?php if (isset($form["acquistabile"])) { ?>
@@ -173,7 +173,7 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Visibilità");?>
+								<?php echo gtextPlain("Visibilità");?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["attivo"];?>
@@ -207,7 +207,7 @@
 					
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Traduzioni");?>
+								<?php echo gtextPlain("Traduzioni");?>
 							</div>
 							<div class="panel-body">
 								<?php include($this->viewPath("pages_traduzioni"));?>
@@ -219,7 +219,7 @@
 						<?php if (v("attiva_prodotti_digitali") || v("attiva_crediti")) { ?>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Prodotti digitali");?>
+								<?php echo gtextPlain("Prodotti digitali");?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["prodotto_digitale"] ?? "";?>
@@ -234,7 +234,7 @@
 						
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Categoria");?><?php if (v("usa_marchi")) { ?> / <?php echo gtext("famiglie",true,"ucfirst");?><?php } ?>
+								<?php echo gtextPlain("Categoria");?><?php if (v("usa_marchi")) { ?> / <?php echo gtextPlain("famiglie",true,"ucfirst");?><?php } ?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["id_c"];?>
@@ -248,7 +248,7 @@
 						<?php if (v("attiva_strumenti_merchant_google")) { ?>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Informazioni per adv (Google / Facebook)")?>
+								<?php echo gtextPlain("Informazioni per adv (Google / Facebook)")?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["codice_categoria_prodotto_google"];?>

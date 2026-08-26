@@ -95,7 +95,7 @@
 						
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Social");?>
+								<?php echo gtextPlain("Social");?>
 							</div>
 							<div class="panel-body">
 								<div class='col-md-4'>

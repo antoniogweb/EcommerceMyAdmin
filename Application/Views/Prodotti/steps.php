@@ -12,31 +12,31 @@
 	$temp["pcorr_sec"] = "tutti";
 	$viewStatusTutti = Url::createUrl($temp);
 	?>
-	<li <?php echo $posizioni['main'];?>><a class="help_dettagli" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/$id_page".$viewStatusTutti;?>"><?php echo gtext("Dettagli");?></a></li>
+	<li <?php echo $posizioni['main'];?>><a class="help_dettagli" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Dettagli");?></a></li>
 	<?php if (v("attiva_categorie_in_prodotto")) { ?>
-	<li <?php echo $posizioni['categorie'];?>><a class="help_dettagli" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/categorie/$id_page".$viewStatusTutti;?>"><?php echo gtext("Categorie");?></a></li>
+	<li <?php echo $posizioni['categorie'];?>><a class="help_dettagli" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/categorie/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Categorie");?></a></li>
 	<?php } ?>
 	<?php if (v("contenuti_in_prodotti")) { ?>
-	<li <?php echo $posizioni['testi'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/testi/$id_page".$viewStatusTutti;?>"><?php echo gtext("Contenuti");?></a></a></li>
+	<li <?php echo $posizioni['testi'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/testi/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Contenuti");?></a></a></li>
 	<?php } ?>
 	<?php if (v("fasce_in_prodotti")) { ?>
-	<li <?php echo $posizioni['contenuti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/contenuti/$id_page".$viewStatusTutti;?>"><?php echo gtext("Fasce");?></a></li>
+	<li <?php echo $posizioni['contenuti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/contenuti/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Fasce");?></a></li>
 	<?php } ?>
 	<?php if (v("scaglioni_in_prodotti")) { ?>
-	<li <?php echo $posizioni['scaglioni'];?> ><a class="help_scaglioni" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/scaglioni/$id_page".$viewStatusTutti;?>"><?php echo gtext("Sconti quantità");?></a></li>
+	<li <?php echo $posizioni['scaglioni'];?> ><a class="help_scaglioni" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/scaglioni/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Sconti quantità");?></a></li>
 	<?php } ?>
 	
-	<li <?php echo $posizioni['meta'];?> ><a class="help_meta" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/meta/$id_page".$viewStatusTutti;?>"><?php echo gtext("Meta");?></a></li>
-	<li <?php echo $posizioni['immagini'];?> ><a class="help_immagini" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/immagini/$id_page".$viewStatusTutti;?>"><?php echo gtext("Immagini");?></a></li>
+	<li <?php echo $posizioni['meta'];?> ><a class="help_meta" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/meta/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Meta");?></a></li>
+	<li <?php echo $posizioni['immagini'];?> ><a class="help_immagini" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/immagini/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Immagini");?></a></li>
 	<?php if (v("correlati_in_prodotti") && !$isGiftCard) { ?>
-	<li <?php echo $posizioni['prod_corr'];?> ><a class="help_correlati" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/correlati/$id_page".$viewStatusTutti;?>"><?php echo gtext("Prodotti correlati");?></a></li>
+	<li <?php echo $posizioni['prod_corr'];?> ><a class="help_correlati" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/correlati/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Prodotti correlati");?></a></li>
 	<?php } ?>
 	<?php if (v("accessori_in_prodotti") && !$isGiftCard) { ?>
-	<li <?php echo $posizioni['accessori'];?>><a class="help_accessori" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/accessori/$id_page".$viewStatusTutti;?>"><?php echo gtext("Accessori");?></a></li>
+	<li <?php echo $posizioni['accessori'];?>><a class="help_accessori" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/accessori/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Accessori");?></a></li>
 	<?php } ?>
 	<?php if (v("caratteristiche_in_prodotti")) { ?>
 		<?php if (!v("caratteristiche_in_tab_separate")) { ?>
-		<li <?php echo $posizioni['caratteristiche'];?>><a class="help_caratteristiche" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caratteristiche/$id_page".$viewStatusTutti;?>"><?php echo gtext("Caratteristiche");?></a></li>
+		<li <?php echo $posizioni['caratteristiche'];?>><a class="help_caratteristiche" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caratteristiche/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Caratteristiche");?></a></li>
 		<?php } else {
 			foreach ($tabCaratteristiche as $idTipoCar => $titoloCar)
 			{
@@ -51,16 +51,16 @@
 		} ?>
 	<?php } ?>
 	<?php if (v("combinazioni_in_prodotti") && !$isGiftCard) { ?>
-	<li <?php echo $posizioni['attributi'];?>><a class="help_varianti" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$viewStatusTutti;?>"><?php echo gtext("Varianti");?></a></li>
+	<li <?php echo $posizioni['attributi'];?>><a class="help_varianti" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/attributi/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Varianti");?></a></li>
 	<?php } ?>
 	<?php if (v("attiva_personalizzazioni")) { ?>
-	<li <?php echo $posizioni['personalizzazioni'];?>><a class="help_personalizzazioni" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/personalizzazioni/$id_page".$viewStatusTutti;?>"><?php echo gtext("Personalizzazioni");?></a></li>
+	<li <?php echo $posizioni['personalizzazioni'];?>><a class="help_personalizzazioni" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/personalizzazioni/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Personalizzazioni");?></a></li>
 	<?php } ?>
 	<?php if (v("usa_tag") && v("tag_in_prodotti") && !$isGiftCard) { ?>
-	<li <?php echo $posizioni['tag'];?>><a class="help_tag_prodotto" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/tag/$id_page".$viewStatusTutti;?>"><?php echo gtext("Tag");?></a></li>
+	<li <?php echo $posizioni['tag'];?>><a class="help_tag_prodotto" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/tag/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Tag");?></a></li>
 	<?php } ?>
 	<?php if (v("documenti_in_prodotti") && !$isGiftCard) { ?>
-	<li <?php echo $posizioni['documenti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/documenti/$id_page".$viewStatusTutti;?>"><?php echo gtext("Documenti");?></a></li>
+	<li <?php echo $posizioni['documenti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/documenti/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Documenti");?></a></li>
 	<?php } ?>
 	<?php foreach ($tabContenuti as $idTipoCont => $titoloTipo) {
 		$temp = $this->viewArgs;
@@ -84,16 +84,16 @@
 	<li <?php echo $posizioni['feedback'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/feedback/$id_page".$viewStatusTutti;?>"><?php echo gtext("Feedback");?></a></li>
 	<?php } ?>
 	<?php if (v("attiva_localizzazione_prodotto")) { ?>
-	<li <?php echo $posizioni['regioni'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/regioni/$id_page".$viewStatusTutti;?>"><?php echo gtext("Regioni");?></a></li>
+	<li <?php echo $posizioni['regioni'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/regioni/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Regioni");?></a></li>
 	<?php } ?>
 	<?php if (v("abilita_visibilita_pagine")) { ?>
-	<li <?php echo $posizioni['lingue'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/lingue/$id_page".$viewStatusTutti;?>"><?php echo gtext("Lingue");?></a></li>
+	<li <?php echo $posizioni['lingue'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/lingue/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Lingue");?></a></li>
 	<?php } ?>
 	<?php if (v("attiva_limitazione_spedizione_nazioni")) { ?>
-	<li <?php echo $posizioni['nazioni'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/nazioni/$id_page".$viewStatusTutti;?>"><?php echo gtext("Nazioni spedizione");?></a></li>
+	<li <?php echo $posizioni['nazioni'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/nazioni/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Nazioni spedizione");?></a></li>
 	<?php } ?>
 	<?php if (v("attiva_modulo_acquisti")) { ?>
-	<li <?php echo $posizioni['articoli'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/articoli/$id_page".$viewStatusTutti;?>"><?php echo gtext("Distinta");?></a></li>
+	<li <?php echo $posizioni['articoli'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/articoli/$id_page".$viewStatusTutti;?>"><?php echo gtextPlain("Distinta");?></a></li>
 	<?php } ?>
 </ul>
 

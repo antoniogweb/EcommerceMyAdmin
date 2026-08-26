@@ -8,10 +8,10 @@
 					<nav style="overflow-x:auto;" class="nav-scroll">
 						<ul class="uk-flex uk-flex-left uk-flex-nowrap uk-subnav uk-subnav-pill" uk-switcher="connect: .js-tabs;">
 							<?php foreach ($contenuti_tab as $tab => $aa) { ?>
-							<li aria-expanded="true" class="uk-active"><a href=""><?php echo gtext($tab);?></a></li>
+							<li aria-expanded="true" class="uk-active"><a href=""><?php echo gtextPlain($tab);?></a></li>
 							<?php } ?>
 							<?php if (count($caratteristiche) > 0) { ?>
-							<li aria-expanded="false" class=""><a href=""><?php echo gtext("Caratteristiche");?></a></li>
+							<li aria-expanded="false" class=""><a href=""><?php echo gtextPlain("Caratteristiche");?></a></li>
 							<?php } ?>
 							<?php if (v("abilita_feedback")) { ?>
 							<li id="tab-feedback" aria-expanded="false" class=""><a href=""><?php echo gtext("Valutazioni clienti");?></a></li>
@@ -33,7 +33,7 @@
 						<?php } ?>
 						<?php if (count($caratteristiche) > 0) { ?>
 						<section class="uk-text-left">
-							<h2 class="uk-text-lead uk-text-uppercase uk-margin-medium-bottom"><?php echo gtext("Caratteristiche");?></h2>
+							<h2 class="uk-text-lead uk-text-uppercase uk-margin-medium-bottom"><?php echo gtextPlain("Caratteristiche");?></h2>
 							<table class="uk-text-left uk-table uk-table-divider uk-table-justify uk-table-responsive">
 								<tbody>
 									<?php foreach ($caratteristiche as $car) { ?>

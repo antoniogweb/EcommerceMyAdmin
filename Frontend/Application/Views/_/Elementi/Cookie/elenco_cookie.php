@@ -2,16 +2,16 @@
 
 <?php $cookieTecnici = App::getCookieTecnici(); ?>
 
-<h3><?php echo gtext("Elenco dei cookie tecnici (necessari)");?></h3>
+<h3><?php echo gtextPlain("Elenco dei cookie tecnici (necessari)");?></h3>
 
 <div class="uk-overflow-auto">
 	<table class="uk-table uk-table-striped uk-margin-bottom">
 		<thead>
 			<tr>
-				<td><?php echo gtext("Nome");?></td>
-				<td><?php echo gtext("Durata");?></td>
-				<td><?php echo gtext("Proprietario");?></td>
-				<td><?php echo gtext("Descrizione");?></td>
+				<td><?php echo gtextPlain("Nome");?></td>
+				<td><?php echo gtextPlain("Durata");?></td>
+				<td><?php echo gtextPlain("Proprietario");?></td>
+				<td><?php echo gtextPlain("Descrizione");?></td>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,16 +31,16 @@
 </div>
 
 <?php if (count($cookieProfilazione) > 0 || count($cookies) > 0) { ?>
-<h3><?php echo gtext("Elenco dei cookie di profilazione a fini statistici e di marketing");?></h3>
+<h3><?php echo gtextPlain("Elenco dei cookie di profilazione a fini statistici e di marketing");?></h3>
 
 <div class="uk-overflow-auto">
 	<table class="uk-table uk-table-striped uk-margin-bottom">
 		<thead>
 			<tr>
-				<td><?php echo gtext("Nome");?></td>
-				<td><?php echo gtext("Durata");?></td>
-				<td><?php echo gtext("Proprietario");?></td>
-				<td><?php echo gtext("Descrizione");?></td>
+				<td><?php echo gtextPlain("Nome");?></td>
+				<td><?php echo gtextPlain("Durata");?></td>
+				<td><?php echo gtextPlain("Proprietario");?></td>
+				<td><?php echo gtextPlain("Descrizione");?></td>
 			</tr>
 		</thead>
 		<tbody>
@@ -55,9 +55,9 @@
 			<?php foreach ($cookies as $c) { ?>
 			<tr>
 				<td><?php echo $c["titolo"];?></td>
-				<td><?php echo gtext($c["durata"]);?></td>
+				<td><?php echo gtextPlain($c["durata"]);?></td>
 				<td><?php echo CookiearchivioModel::getProprietario($c["servizio"]);?></td>
-				<td><?php echo gtext($c["note"]);?></td>
+				<td><?php echo gtextPlain($c["note"]);?></td>
 			</tr>
 			<?php } ?>
 		</tbody>

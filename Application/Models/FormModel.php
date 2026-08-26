@@ -53,7 +53,7 @@ class FormModel extends GenericModel {
 					'type'		=>	'Select',
 					'labelString'=>	'Utente attivo',
 					'className'	=>	'for_print form-control',
-					'options'	=>	array(gtext('sì')=>'0',gtext('no')=>'1'),
+					'options'	=>	array(gtextPlain('sì')=>'0',gtextPlain('no')=>'1'),
 				),
 				'stato'		=>	array(
 					'type'		=>	'Select',

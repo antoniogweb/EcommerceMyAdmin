@@ -24,9 +24,9 @@
 					<button id="<?php echo $type;?>Action" class="btn btn-success make_spinner" name="<?php echo $type;?>Action" type="submit">
 						<i class="fa fa-save"></i>
 						<?php if ($this->viewArgs["procedi"]) { ?>
-						<?php echo gtext("Salva");?>
+						<?php echo gtextPlain("Salva");?>
 						<?php } else { ?>
-						<?php echo gtext("Procedi");?> <i class="fa fa-arrow-right"></i>
+						<?php echo gtextPlain("Procedi");?> <i class="fa fa-arrow-right"></i>
 						<?php } ?>
 					</button>
 					<input type="hidden" value="Salva" name="<?php echo $type;?>Action">

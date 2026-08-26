@@ -3,21 +3,21 @@
 if (User::$logged)
 {
 	$breadcrumb = array(
-		gtext("Home") 		=> $this->baseUrl,
-		gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
-		gtext("Ticket assistenza") => $this->baseUrl."/ticket/",
-		gtext("Dettaglio ticket") => "",
+		gtextPlain("Home") 		=> $this->baseUrl,
+		gtextPlain("Area riservata")	=>	$this->baseUrl."/area-riservata",
+		gtextPlain("Ticket assistenza") => $this->baseUrl."/ticket/",
+		gtextPlain("Dettaglio ticket") => "",
 	);
 }
 else
 {
 	$breadcrumb = array(
-		gtext("Home") 		=> $this->baseUrl,
-		gtext("Dettaglio ticket") => "",
+		gtextPlain("Home") 		=> $this->baseUrl,
+		gtextPlain("Dettaglio ticket") => "",
 	);
 }
 
-$titoloPagina = gtext("Ticket assistenza");
+$titoloPagina = gtextPlain("Ticket assistenza");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 

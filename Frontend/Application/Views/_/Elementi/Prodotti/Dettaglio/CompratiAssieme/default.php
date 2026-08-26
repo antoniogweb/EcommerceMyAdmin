@@ -2,8 +2,8 @@
 <?php if (isset($prodotti_comprati_assieme) && count($prodotti_comprati_assieme) > 0) { ?>
 <div class="uk-section">
 	<div class="uk-container">
-		<div class="uk-text-uppercase uk-text-small"><?php echo gtext("Guarda anche"); ?></div>
-		<h2 class="uk-text-uppercase uk-text-lead uk-margin-remove-top uk-margin-large-bottom"><?php echo gtext("Spesso comprato assieme a"); ?></h2>
+		<div class="uk-text-uppercase uk-text-small"><?php echo gtextPlain("Guarda anche"); ?></div>
+		<h2 class="uk-text-uppercase uk-text-lead uk-margin-remove-top uk-margin-large-bottom"><?php echo gtextPlain("Spesso comprato assieme a"); ?></h2>
 		<br />
 		<div class="uk-slider-container-offset" uk-slider>
 

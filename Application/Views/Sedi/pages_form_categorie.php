@@ -6,7 +6,7 @@ if (v("attiva_categorie_sedi"))
 ?>
 <div class="panel panel-info">
 	<div class="panel-heading">
-		<?php echo gtext("Social");?>
+		<?php echo gtextPlain("Social");?>
 	</div>
 	<div class="panel-body">
 		<?php echo $form["link_pagina_facebook"];?>

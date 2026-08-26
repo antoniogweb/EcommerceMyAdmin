@@ -7,90 +7,90 @@ if (isset($_SESSION['result']))
 	if (strcmp($_SESSION['result'],'send_mail_to_change_password') === 0)
 	{
 		$breadcrumb = array(
-			gtext("Home") 		=> $this->baseUrl,
-			gtext("Accedi")	=>	$this->baseUrl."/regusers/login",
-			gtext("Richiesta nuova password")	=>	$this->baseUrl."/password-dimenticata",
-			gtext("Invio mail per cambio password")	=>	"",
+			gtextPlain("Home") 		=> $this->baseUrl,
+			gtextPlain("Accedi")	=>	$this->baseUrl."/regusers/login",
+			gtextPlain("Richiesta nuova password")	=>	$this->baseUrl."/password-dimenticata",
+			gtextPlain("Invio mail per cambio password")	=>	"",
 		);
 		
-		$titoloPagina = gtext("Impostazione nuova password");
+		$titoloPagina = gtextPlain("Impostazione nuova password");
 	}
 	else if (strcmp($_SESSION['result'],'password_cambiata') === 0)
 	{
 		$breadcrumb = array(
-			gtext("Home") 		=> $this->baseUrl,
-			gtext("Accedi")	=>	$this->baseUrl."/regusers/login",
-			gtext("Richiesta nuova password")	=>	$this->baseUrl."/password-dimenticata",
-			gtext("Password cambiata")	=>	"",
+			gtextPlain("Home") 		=> $this->baseUrl,
+			gtextPlain("Accedi")	=>	$this->baseUrl."/regusers/login",
+			gtextPlain("Richiesta nuova password")	=>	$this->baseUrl."/password-dimenticata",
+			gtextPlain("Password cambiata")	=>	"",
 		);
 		
-		$titoloPagina = gtext("Password cambiata");
+		$titoloPagina = gtextPlain("Password cambiata");
 	}
 	else if (strcmp($_SESSION['result'],'utente_creato') === 0 || strcmp($_SESSION['result'],'agente_creato') === 0)
 	{
 		$titoloNotice = isset($_SESSION["conferma_utente"]) ? "Conferma account" : "Account creato";
 		
 		$breadcrumb = array(
-			gtext("Home") 		=> $this->baseUrl,
-			gtext($titoloNotice)	=>	"",
+			gtextPlain("Home") 		=> $this->baseUrl,
+			gtextPlain($titoloNotice)	=>	"",
 		);
 		
-		$titoloPagina = gtext($titoloNotice);
+		$titoloPagina = gtextPlain($titoloNotice);
 	}
 	else if (strcmp($_SESSION['result'],'account_confermato') === 0)
 	{
 		$breadcrumb = array(
-			gtext("Home") 		=> $this->baseUrl,
-			gtext("Account verificato")	=>	"",
+			gtextPlain("Home") 		=> $this->baseUrl,
+			gtextPlain("Account verificato")	=>	"",
 		);
 		
-		$titoloPagina = gtext("Account verificato");
+		$titoloPagina = gtextPlain("Account verificato");
 	}
 	else if (strcmp($_SESSION['result'],'invalid_token') === 0)
 	{
 		$breadcrumb = array(
-			gtext("Home") 		=> $this->baseUrl,
-			gtext("Link scaduto")	=>	"",
+			gtextPlain("Home") 		=> $this->baseUrl,
+			gtextPlain("Link scaduto")	=>	"",
 		);
 		
-		$titoloPagina = gtext("Link scaduto");
+		$titoloPagina = gtextPlain("Link scaduto");
 	}
 	else if (strcmp($_SESSION['result'],'error') === 0)
 	{
 		$breadcrumb = array(
-			gtext("Home") 		=> $this->baseUrl,
-			gtext("Errore")	=>	"",
+			gtextPlain("Home") 		=> $this->baseUrl,
+			gtextPlain("Errore")	=>	"",
 		);
 		
-		$titoloPagina = gtext("Errore");
+		$titoloPagina = gtextPlain("Errore");
 	}
 	else if (strcmp($_SESSION['result'],'account_rinnovato') === 0)
 	{
 		$breadcrumb = array(
-			gtext("Home") 		=> $this->baseUrl,
-			gtext("Account rinnovato")	=>	"",
+			gtextPlain("Home") 		=> $this->baseUrl,
+			gtextPlain("Account rinnovato")	=>	"",
 		);
 		
-		$titoloPagina = gtext("Account rinnovato");
+		$titoloPagina = gtextPlain("Account rinnovato");
 	}
 	else if (strcmp($_SESSION['result'],'pausa_LOGIN') === 0 || strcmp($_SESSION['result'],'pausa_RECUPERO_PASSWORD') === 0)
 	{
 		$breadcrumb = array(
-			gtext("Home") 		=> $this->baseUrl,
-			gtext("Accesso piattaforma in pausa")	=>	"",
+			gtextPlain("Home") 		=> $this->baseUrl,
+			gtextPlain("Accesso piattaforma in pausa")	=>	"",
 		);
 		
-		$titoloPagina = gtext("Accesso piattaforma in pausa");
+		$titoloPagina = gtextPlain("Accesso piattaforma in pausa");
 	}
 }
 else
 {
 	$breadcrumb = array(
-		gtext("Home") 		=> $this->baseUrl,
-		gtext("Notifiche")	=>	"",
+		gtextPlain("Home") 		=> $this->baseUrl,
+		gtextPlain("Notifiche")	=>	"",
 	);
 	
-	$titoloPagina = gtext("Notifiche");
+	$titoloPagina = gtextPlain("Notifiche");
 }
 
 include(tpf("/Elementi/Pagine/page_top.php"));
@@ -98,13 +98,13 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 <div class="notice_box">
 	<?php if (isset($_SESSION['result'])) { ?>
 		<?php if (strcmp($_SESSION['result'],'send_mail_to_change_password') === 0) { ?>
-			<p><?php echo gtext("Le è stata inviata una mail con un link. Segua tale link se vuole impostare una nuova password");?>.</p>
+			<p><?php echo gtextPlain("Le è stata inviata una mail con un link. Segua tale link se vuole impostare una nuova password");?>.</p>
 			<?php include(tpf("/Elementi/Registrazione/vai_alla_home.php")); ?>
 		<?php } else if (strcmp($_SESSION['result'],'error') === 0) { ?>
-			<p><?php echo gtext("Si è verificato un errore durante il processo, riprovi più tardi o contatti l'amministratore del sito");?>.</p>
+			<p><?php echo gtextPlain("Si è verificato un errore durante il processo, riprovi più tardi o contatti l'amministratore del sito");?>.</p>
 			<?php include(tpf("/Elementi/Registrazione/vai_alla_home.php")); ?>
 		<?php } else if (strcmp($_SESSION['result'],'invalid_token') === 0) { ?>
-			<p><?php echo gtext("Il link è scaduto");?>.</p>
+			<p><?php echo gtextPlain("Il link è scaduto");?>.</p>
 			<?php include(tpf("/Elementi/Registrazione/vai_alla_home.php")); ?>
 		<?php } else if (strcmp($_SESSION['result'],'password_cambiata') === 0) { ?>
 			<?php include(tpf("/Elementi/Registrazione/Resoconto/password_cambiata.php")); ?>

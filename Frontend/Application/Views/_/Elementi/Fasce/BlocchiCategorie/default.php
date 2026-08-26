@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (isset($elencoCategorieFull) && count($elencoCategorieFull) > 0) { ?>
 <div class="uk-container uk-container-medium">
-    <h2 class="uk-margin-medium-top uk-margin-medium-bottom uk-text-large uk-text-bold uk-text-uppercase uk-text-center"><?php echo gtext("Categorie prodotti"); ?></h2>
+    <h2 class="uk-margin-medium-top uk-margin-medium-bottom uk-text-large uk-text-bold uk-text-uppercase uk-text-center"><?php echo gtextPlain("Categorie prodotti"); ?></h2>
 
     <div class="uk-width-1-1 uk-margin-large-bottom">
        <div class="uk-child-width-1-2@s uk-child-width-1-4@m uk-grid-small uk-grid-match uk-text-center" uk-grid> 
@@ -12,7 +12,7 @@
 				<div class="uk-position-center uk-h4 uk-margin-remove uk-text-bold uk-text-uppercase uk-text-center"><?php echo cfield($c, "title");?></div>
 
 				<div class="uk-transition-slide-bottom uk-position-bottom uk-overlay uk-overlay-default">
-					<p class="uk-h4 uk-margin-remove uk-text-bold uk-text-uppercase"><?php echo gtext("Vai al dettaglio");?></p>
+					<p class="uk-h4 uk-margin-remove uk-text-bold uk-text-uppercase"><?php echo gtextPlain("Vai al dettaglio");?></p>
 				</div>
 			</a>
 			<?php } ?>

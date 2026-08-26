@@ -19,7 +19,7 @@
 				?>
 				<ul class="uk-nav-default uk-nav-parent-icon uk-list-divider" uk-nav>
 					<li class="<?php if ($id_categoria == $idShop) { ?>uk-active<?php } ?>">
-						<a href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($idShop);?>"><?php echo gtext("Shop");?></a>
+						<a href="<?php echo $this->baseUrl."/".getCategoryUrlAlias($idShop);?>"><?php echo gtextPlain("Shop");?></a>
 					</li>
 					<?php foreach ($elencoCategorieFull as $c) {
 						$figlie = categorieFiglie($c["categories"]["id_c"]);

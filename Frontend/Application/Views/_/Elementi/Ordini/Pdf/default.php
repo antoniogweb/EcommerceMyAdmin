@@ -273,21 +273,21 @@
 			<div class="box_header">
 				<div class="box_header_item box_header_item_linea">
 					<div class="nero medio"><b><?php echo $ordine["id_o"];?></b></div>
-					<div class="grigio piccolo"><?php echo gtext("numero ordine");?></div>
+					<div class="grigio piccolo"><?php echo gtextPlain("numero ordine");?></div>
 				</div>
 				<div class="box_header_item box_header_item_linea">
 					<div class="nero medio"><b><?php echo date("d/m/Y", strtotime($ordine["data_creazione"]));?></b></div>
-					<div class="grigio piccolo"><?php echo gtext("data ordine");?></div>
+					<div class="grigio piccolo"><?php echo gtextPlain("data ordine");?></div>
 				</div>
 				<?php if (v("mostra_modalita_spedizione_in_resoconto")) { ?>
 				<div style="height:10mm;" class="box_header_item">
 					<div class="nero piccolo">
 						<?php $modalitaSpedizione = CorrieriModel::g()->where(array("id_corriere"=>(int)$ordine["id_corriere"]))->field("titolo");?>
 						<?php if ($modalitaSpedizione) { ?>
-							<?php echo gtext($modalitaSpedizione);?>
+							<?php echo gtextPlain($modalitaSpedizione);?>
 						<?php } ?>
 					</div>
-					<div class="grigio piccolo"><?php echo gtext("consegna");?></div>
+					<div class="grigio piccolo"><?php echo gtextPlain("consegna");?></div>
 				</div>
 				<?php } ?>
 			</div>
@@ -301,20 +301,20 @@
 			<?php echo $ordine["indirizzo"] ? htmlentitydecode($ordine["indirizzo"]) : "&nbsp;";?>
 		</div>
 		<div class="testata_item testata_item_linea testata_item_right">
-			<b><?php echo gtext("Tel");?>:</b> <?php echo $ordine["telefono"];?>
+			<b><?php echo gtextPlain("Tel");?>:</b> <?php echo $ordine["telefono"];?>
 		</div>
 		<div class="testata_item testata_item_left">
-			<b><?php echo gtext("Località");?>:</b> <?php echo $ordine["citta"];?>
+			<b><?php echo gtextPlain("Località");?>:</b> <?php echo $ordine["citta"];?>
 			<?php if ($ordine["provincia"]) { ?>(<?php echo $ordine["provincia"];?>)<?php } ?>
 			<?php if ($ordine["cap"]) { ?>, <?php echo $ordine["cap"];?><?php } ?>
 		</div>
 		<div class="testata_item testata_item_right">
-			<b><?php echo gtext("Email");?>:</b> <?php echo $ordine["email"];?>
+			<b><?php echo gtextPlain("Email");?>:</b> <?php echo $ordine["email"];?>
 		</div>
 	</div>
 	<div class="testata">
 		<div style="height:10mm;" class="testata_item">
-			<b><?php echo gtext("Spedizione");?>:</b>
+			<b><?php echo gtextPlain("Spedizione");?>:</b>
 			<?php if ($ordine["da_spedire"] && ($ordine["indirizzo_spedizione"] || $ordine["citta_spedizione"])) { ?>
 				<span class="uk-text-emphasis"><?php if ($ordine["indirizzo_spedizione"]) { ?><?php echo $ordine["indirizzo_spedizione"];?>
 				<?php echo $ordine["cap_spedizione"];?>, <?php echo $ordine["citta_spedizione"];?> (<?php echo $ordine["nazione_spedizione"] == "IT" ? $ordine["provincia_spedizione"] : $ordine["dprovincia_spedizione"];?>)<?php } ?>
@@ -323,10 +323,10 @@
 				<?php } ?>
 				
 				<?php if (trim($ordine["telefono_spedizione"])) { ?>
-					<span class="uk-text-emphasis"><?php echo gtext("Tel");?>:</span> <?php echo $ordine["telefono_spedizione"];?><br />
+					<span class="uk-text-emphasis"><?php echo gtextPlain("Tel");?>:</span> <?php echo $ordine["telefono_spedizione"];?><br />
 				<?php } ?>
 				<?php if (trim($ordine["destinatario_spedizione"])) { ?>
-					<span class="uk-text-emphasis"><b><?php echo gtext("Destinatario");?>:</b></span> <?php echo $ordine["destinatario_spedizione"];?><br />
+					<span class="uk-text-emphasis"><b><?php echo gtextPlain("Destinatario");?>:</b></span> <?php echo $ordine["destinatario_spedizione"];?><br />
 				<?php } ?>
 			<?php } ?>
 		</div>
@@ -335,20 +335,20 @@
 		<div class="corpo_intestazione">
 			<div class="corpo_left">
 				<div class="corpo_codice">
-					<?php echo gtext("Cod. Articolo");?>
+					<?php echo gtextPlain("Cod. Articolo");?>
 				</div>
 				<div class="corpo_descrizione">
-					<?php echo gtext("Descrizione");?>
+					<?php echo gtextPlain("Descrizione");?>
 				</div>
 				<div class="corpo_um">
-					<?php echo gtext("UM");?>
+					<?php echo gtextPlain("UM");?>
 				</div>
 				<div class="corpo_qta">
-					<?php echo gtext("Q.tà");?>
+					<?php echo gtextPlain("Q.tà");?>
 				</div>
 			</div>
 			<div class="corpo_right">
-				<div class="text-center"><?php echo gtext("Importo");?></div>
+				<div class="text-center"><?php echo gtextPlain("Importo");?></div>
 			</div>
 		</div>
 		<div class="corpo_righe">
@@ -366,11 +366,11 @@
 
 <htmlpagefooter name="myFooter1" >
 	<div class="bottom_righe">
-		<b><?php echo gtext("Testo generico footer");?></b>
+		<b><?php echo gtextPlain("Testo generico footer");?></b>
 	</div>
 	<div class="footer">
 		<div class="footer_left">
-			<div class="footer_text" style="margin-top:3mm;"><b><?php echo gtext("Ha accettato le condizioni della privacy e le condizioni di vendita consultabili nel nosto sito web.");?></b></div>
+			<div class="footer_text" style="margin-top:3mm;"><b><?php echo gtextPlain("Ha accettato le condizioni della privacy e le condizioni di vendita consultabili nel nosto sito web.");?></b></div>
 		</div>
 		<div class="footer_right" >
 			<div class="box_footer" style="height:50mm;">
@@ -408,7 +408,7 @@
 			<?php } ?>
 		</div>
 		<div class="corpo_um" corpo_riga_dinamica>
-			<?php echo gtext("PZ");?>
+			<?php echo gtextPlain("PZ");?>
 		</div>
 		<div class="corpo_qta corpo_riga_dinamica">
 			<?php echo $riga["quantity"];?>

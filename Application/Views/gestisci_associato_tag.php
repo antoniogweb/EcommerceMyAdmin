@@ -13,8 +13,8 @@
 <?php } ?>
 
 <p>
-<a class="pull-right btn btn-primary btn-sm iframe" href="<?php echo $this->baseUrl."/tag/main?partial=Y";?>"><i class="fa fa-pencil"></i> <?php echo gtext("Gestisci tag");?></a>
+<a class="pull-right btn btn-primary btn-sm iframe" href="<?php echo $this->baseUrl."/tag/main?partial=Y";?>"><i class="fa fa-pencil"></i> <?php echo gtextPlain("Gestisci tag");?></a>
 
-<a class="btn btn-success btn-sm iframe" href="<?php echo $this->baseUrl."/tag/main?partial=Y&cl_on_sv=Y&id_page=$id_page";?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi tag");?></a></p>
+<a class="btn btn-success btn-sm iframe" href="<?php echo $this->baseUrl."/tag/main?partial=Y&cl_on_sv=Y&id_page=$id_page";?>"><i class="fa fa-plus"></i> <?php echo gtextPlain("Aggiungi tag");?></a></p>
 
 <?php } ?>

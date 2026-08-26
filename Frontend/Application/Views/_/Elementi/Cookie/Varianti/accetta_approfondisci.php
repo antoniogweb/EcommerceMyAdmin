@@ -4,15 +4,15 @@
 	<a class="<?php echo v("cookies_confirm_button");?>" title="<?php echo gtextAttr("accetto", false);?>" href="<?php echo $this->baseUrl."/accept-cookies?".v("var_query_string_no_cookie")."=Y".(VariabiliModel::$usatiCookieTerzi ? "&all_cookie=Y" : "");?>">
 		<span uk-icon="icon: check"></span>
 		<?php if (VariabiliModel::$usatiCookieTerzi) { ?>
-		<?php echo gtext("Accetta");?>
+		<?php echo gtextPlain("Accetta");?>
 		<?php } else { ?>
-		<?php echo gtext("Chiudi");?>
+		<?php echo gtextPlain("Chiudi");?>
 		<?php } ?>
 	</a>
 	<?php if (VariabiliModel::$usatiCookieTerzi) { ?>
 	<a style="" class="preferenze_cookies <?php echo v("cookies_preferenze_button");?>" title="<?php echo gtextAttr("personalizza", false);?>" href="#">
 		<span uk-icon="icon: cog"></span>
-		<?php echo gtext("Preferenze");?>
+		<?php echo gtextPlain("Preferenze");?>
 	</a>
 	<?php } ?>
 </div>

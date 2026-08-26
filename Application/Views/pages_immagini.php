@@ -158,7 +158,7 @@ $(document).ready(function(){
 								<form action='' method='POST' enctype="multipart/form-data">
 									<span class="btn btn-success fileinput-button">
 										<i class="fa fa-plus-circle"></i>
-										<span><?php echo gtext("SELEZIONA LE IMMAGINI");?></span>
+										<span><?php echo gtextPlain("SELEZIONA LE IMMAGINI");?></span>
 										<!-- The file input field used as target for the file upload widget -->
 										<input id="userfile" type="file" name="Filedata" multiple>
 									</span>

@@ -165,7 +165,7 @@ class ApplicazioniModel extends GenericModel {
 			RoutineaggiornamentoModel::esegui();
 			
 			$esitoMigrazioni = ob_get_clean();
-			$titoloPagina = gtext("Esito migrazioni applicazione")." ".$record["titolo"];
+			$titoloPagina = gtextPlain("Esito migrazioni applicazione")." ".$record["titolo"];
 			
 			fwrite($hand,date("Y-m-d H:i:s")." STOP MIGRAZIONI\n");
 			fwrite($hand,"\n");

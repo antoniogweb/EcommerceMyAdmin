@@ -3,16 +3,16 @@
 	<table width="100%" class="uk-table uk-table-divider uk-table-hover" cellspacing="0">
 		<thead>
 			<tr class="cart_head">
-				<th colspan="2" align="left" class="nome_prodotto row_left"><?php echo gtext("Prodotto", false); ?></th>
+				<th colspan="2" align="left" class="nome_prodotto row_left"><?php echo gtextPlain("Prodotto", false); ?></th>
 				<?php if (v("mostra_codice_in_carrello")) { ?>
-				<th align="left" class="nome_prodotto"><?php echo gtext("Codice", false); ?></th>
+				<th align="left" class="nome_prodotto"><?php echo gtextPlain("Codice", false); ?></th>
 				<?php } ?>
 				<?php if (v("attiva_prezzo_fisso")) { ?>
-				<th align="left" class="prezzo_prodotto"><?php echo gtext("Prezzo fisso", false); ?> <?php if (!v("prezzi_ivati_in_carrello")) { ?> <?php echo gtext("(Iva esclusa)", false); ?><?php } ?></th>
+				<th align="left" class="prezzo_prodotto"><?php echo gtextPlain("Prezzo fisso", false); ?> <?php if (!v("prezzi_ivati_in_carrello")) { ?> <?php echo gtextPlain("(Iva esclusa)", false); ?><?php } ?></th>
 				<?php } ?>
-				<th align="left" class="prezzo_prodotto"><?php echo gtext("Prezzo", false); ?> <?php if (!v("prezzi_ivati_in_carrello")) { ?> <?php echo gtext("(Iva esclusa)", false); ?><?php } ?></th>
-				<th align="left" class="quantita_prodotto"><?php echo gtext("Quantità", false); ?></th>
-				<th style="text-align:right;" class="subtotal_prodotto"><?php echo gtext("Totale", false); ?><?php if (!v("prezzi_ivati_in_carrello")) { ?> <?php echo gtext("(Iva esclusa)", false); ?><?php } ?></th>
+				<th align="left" class="prezzo_prodotto"><?php echo gtextPlain("Prezzo", false); ?> <?php if (!v("prezzi_ivati_in_carrello")) { ?> <?php echo gtextPlain("(Iva esclusa)", false); ?><?php } ?></th>
+				<th align="left" class="quantita_prodotto"><?php echo gtextPlain("Quantità", false); ?></th>
+				<th style="text-align:right;" class="subtotal_prodotto"><?php echo gtextPlain("Totale", false); ?><?php if (!v("prezzi_ivati_in_carrello")) { ?> <?php echo gtextPlain("(Iva esclusa)", false); ?><?php } ?></th>
 			</tr>
 		</thead>
 		
@@ -35,14 +35,14 @@
 			<td style="vertical-align:top;" class="cart_item_price">
 				<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0 && $p["righe"]["prezzo_fisso_intero"] > 0){ echo "<del>€ ".setPriceReverse(p($p["righe"],$p["righe"]["prezzo_fisso_intero"]))."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["prezzo_fisso"]));?></span>
 				<?php if (!v("prezzi_ivati_in_carrello")) { ?>
-				<div class="scritta_iva_carrello"><?php echo gtext("Iva", false); ?>: <?php echo setPriceReverse($p["righe"]["iva"]);?> %</div>
+				<div class="scritta_iva_carrello"><?php echo gtextPlain("Iva", false); ?>: <?php echo setPriceReverse($p["righe"]["iva"]);?> %</div>
 				<?php } ?>
 			</td>
 			<?php } ?>
 			<td style="vertical-align:top;" class="cart_item_price">
 				<?php if (isset($p["righe"]["in_promozione"]) and strcmp($p["righe"]["in_promozione"],"Y")===0){ echo "<del>€ ".setPriceReverse(p($p["righe"],$p["righe"]["prezzo_intero"]))."</del>"; } ?> &euro; <span class="item_price_single"><?php echo setPriceReverse(p($p["righe"],$p["righe"]["price"]));?></span>
 				<?php if (!v("prezzi_ivati_in_carrello")) { ?>
-				<div class="scritta_iva_carrello"><?php echo gtext("Iva", false); ?>: <?php echo setPriceReverse($p["righe"]["iva"]);?> %</div>
+				<div class="scritta_iva_carrello"><?php echo gtextPlain("Iva", false); ?>: <?php echo setPriceReverse($p["righe"]["iva"]);?> %</div>
 				<?php } ?>
 			</td>
 			<td style="vertical-align:top;" class="cart_item_quantity"><?php echo $p["righe"]["quantity"];?></td>

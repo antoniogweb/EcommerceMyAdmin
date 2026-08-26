@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="uk-background-muted uk-card uk-card-default uk-card-small" style="box-shadow: none;">
 	<div class="uk-card-body">
-		<p class="uk-text-small uk-text-emphasis"><?php echo gtext("Se hai un codice promozione, inseriscilo sotto.");?></p>
+		<p class="uk-text-small uk-text-emphasis"><?php echo gtextPlain("Se hai un codice promozione, inseriscilo sotto.");?></p>
 		
 		<div class="uk-margin">
 			<div class="uk-form-controls">
@@ -11,7 +11,7 @@
 		
 		<div>
 			<div class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
-			<button class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m button_invia_coupon" type="button" name="invia_coupon"><?php echo gtext("Invia codice");?></button>
+			<button class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-2@s uk-width-1-1@m button_invia_coupon" type="button" name="invia_coupon"><?php echo gtextPlain("Invia codice");?></button>
 		</div>
 	</div>
 </div>

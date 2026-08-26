@@ -3,12 +3,12 @@
 <?php if ($type !== "insert") { ?>
 
 <ul class="nav_dettaglio nav nav-tabs">
-	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtext("Dettagli");?></a></li>
+	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtextPlain("Dettagli");?></a></li>
 	<?php if (v("attiva_altre_lingue_documento")) { ?>
-	<li <?php echo $posizioni['lingue'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/lingue/$id".$this->viewStatus;?>"><?php echo gtext("Altre lingue");?></a></li>
+	<li <?php echo $posizioni['lingue'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/lingue/$id".$this->viewStatus;?>"><?php echo gtextPlain("Altre lingue");?></a></li>
 	<?php } ?>
 	<?php if (v("attiva_gruppi_documenti") && !v("gestisci_gruppi_da_form")) { ?>
-	<li <?php echo $posizioni['gruppi'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/gruppi/$id".$this->viewStatus;?>"><?php echo gtext("Accessi");?></a></li>
+	<li <?php echo $posizioni['gruppi'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/gruppi/$id".$this->viewStatus;?>"><?php echo gtextPlain("Accessi");?></a></li>
 	<?php } ?>
 	<?php if (v("abilita_traduzioni_documenti")) { ?>
 		<?php $traduz = ContenutitradottiModel::getTraduzioni("id_doc", $id);?>
@@ -21,11 +21,11 @@
 <?php } else { ?>
 
 <ul class="nav_dettaglio nav nav-tabs">
-	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/insert/0".$this->viewStatus;?>"><?php echo gtext("Carica singolo");?></a></li>
+	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/form/insert/0".$this->viewStatus;?>"><?php echo gtextPlain("Carica singolo");?></a></li>
 	<?php if (v("riconoscimento_tipo_documento_automatico")) { ?>
-	<li <?php echo $posizioni['caricamolti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caricamolti/0".$this->viewStatus;?>"><?php echo gtext("Carica molti");?></a></li>
+	<li <?php echo $posizioni['caricamolti'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caricamolti/0".$this->viewStatus;?>"><?php echo gtextPlain("Carica molti");?></a></li>
 	<?php if (extension_loaded("zip") && v("permetti_upload_archivio")) { ?>
-	<li <?php echo $posizioni['caricazip'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caricazip/0".$this->viewStatus;?>"><?php echo gtext("Carica ZIP");?></a></li>
+	<li <?php echo $posizioni['caricazip'];?>><a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/caricazip/0".$this->viewStatus;?>"><?php echo gtextPlain("Carica ZIP");?></a></li>
 	<?php } ?>
 	<?php } ?>
 </ul>

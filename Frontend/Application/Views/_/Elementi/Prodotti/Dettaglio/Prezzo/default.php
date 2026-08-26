@@ -32,7 +32,7 @@ if (v("attiva_prezzo_fisso"))
 	<?php if ($haVarianti) { ?></div><?php } ?>
 	
 	<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
-	<span class="uk-text-muted"><?php echo gtext("Iva inclusa");?></span>
+	<span class="uk-text-muted"><?php echo gtextPlain("Iva inclusa");?></span>
 	<?php } ?>
 	
 	<?php if ($percentualeSconto > 0 && $inPromozioneTot) {
@@ -43,11 +43,11 @@ if (v("attiva_prezzo_fisso"))
 	?>
 	<div class="uk-margin-small uk-padding-remove-vertical uk-text-small uk-text-bold uk-text-danger">
 		<?php if ($p["pages"]["al"] == date("Y-m-d")) { ?>
-		<?php echo gtext("In promozione solo per oggi!")?>
+		<?php echo gtextPlain("In promozione solo per oggi!")?>
 		<?php } else if ($abs_diff == 2) { ?>
-		<?php echo gtext("In promozione fino a domani!")?>
+		<?php echo gtextPlain("In promozione fino a domani!")?>
 		<?php } else { ?>
-		<?php echo gtext("In promozione fino al")?> <?php echo strtolower(traduci(date("j F", strtotime($p["pages"]["al"]))));?>.
+		<?php echo gtextPlain("In promozione fino al")?> <?php echo strtolower(traduci(date("j F", strtotime($p["pages"]["al"]))));?>.
 		<?php if ($abs_diff <= 6) { ?>
 		<br /><?php echo $abs_diff." ".gtext("giorni rimasti!")?>
 		<?php } ?>

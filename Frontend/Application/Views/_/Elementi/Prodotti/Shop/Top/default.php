@@ -6,12 +6,12 @@ $filtriOffCanvas = true;
 if ($isPromo)
 {
 	$breadcrumb = array(
-		gtext("Home") 		=> $this->baseUrl,
-		gtext("Promozioni")	=>	"",
+		gtextPlain("Home") 		=> $this->baseUrl,
+		gtextPlain("Promozioni")	=>	"",
 	);
 	
 	$descrizioneNoProdotti = gtext("Non è presente alcun articolo");
-	$titoloPagina = gtext("Prodotti in promozione");
+	$titoloPagina = gtextPlain("Prodotti in promozione");
 }
 
 $titoloAggiuntivo = "";

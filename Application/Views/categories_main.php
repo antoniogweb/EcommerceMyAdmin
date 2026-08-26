@@ -18,7 +18,7 @@ for ($i=0; $i<count($elencoTraduzioniAttive); $i++) { ?>
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1><?php echo gtext("Gestione");?> <?php echo gtext("categorie");?></h1>
+	<h1><?php echo gtextPlain("Gestione");?> <?php echo gtextPlain("categorie");?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>

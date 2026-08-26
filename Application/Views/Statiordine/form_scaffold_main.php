@@ -35,7 +35,7 @@ $().ready(function() {
 			<?php if (isset($contenutiTradotti) && count($contenutiTradotti) > 0 && count(BaseController::$traduzioni) > 0) { ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<?php echo gtext("Traduzioni");?>
+					<?php echo gtextPlain("Traduzioni");?>
 				</div>
 				<div class="panel-body">
 					<?php

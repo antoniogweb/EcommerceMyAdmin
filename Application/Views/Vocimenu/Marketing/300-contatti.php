@@ -3,10 +3,10 @@
 <li class="<?php echo tm($tm, "contatti");?> treeview">
 	<a href="#">
 		<i class="fa fa-user-o"></i>
-		<span><?php echo gtext("Contatti")?></span>
+		<span><?php echo gtextPlain("Contatti")?></span>
 	</a>
 	<ul class="treeview-menu">
-		<li><a href="<?php echo $this->baseUrl."/contatti/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista");?></a></li>
+		<li><a href="<?php echo $this->baseUrl."/contatti/main";?>"><i class="fa fa-list"></i> <?php echo gtextPlain("Lista");?></a></li>
 	</ul>
 </li>
 <?php } ?>

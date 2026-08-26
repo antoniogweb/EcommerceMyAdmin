@@ -8,9 +8,9 @@ $classePulsanteAggiungiCarrello = isset($classePulsanteAggiungiCarrello) ? $clas
 	<a name="add-to-cart" id-cart="<?php echo isset($_GET["id_cart"]) ? (int)$_GET["id_cart"] : 0;?>" rel="<?php echo $p["pages"]["id_page"];?>" class="<?php echo $classePulsanteAggiungiCarrello;?> aggiungi_al_carrello pulsante_carrello single_add_to_cart_button" href="#">
 		<span>
 			<?php if (idCarrelloEsistente()) { ?>
-			<?php echo gtext("Aggiorna carrello", false); ?>
+			<?php echo gtextPlain("Aggiorna carrello", false); ?>
 			<?php } else { ?>
-			<?php echo gtext("Aggiungi al carrello", false); ?>
+			<?php echo gtextPlain("Aggiungi al carrello", false); ?>
 			<?php } ?>
 		</span>
 	</a>

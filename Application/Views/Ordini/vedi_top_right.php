@@ -13,9 +13,9 @@
 				<a style="margin-left:10px;" class="btn btn-default btn-xs make_spinner pull-right" href="<?php echo $this->baseUrl."/fatture/crea/" . $ordine["id_o"];?>"><i class="fa fa-refresh"></i> Genera</a>
 				<?php } ?>
 				
-				<b><?php echo gtext("Gestione fattura");?></b>
+				<b><?php echo gtextPlain("Gestione fattura");?></b>
 			<?php } else { ?>
-				<b><?php echo gtext("Integrazione con");?> <?php echo GestionaliModel::getModulo()->titoloGestionale();?></b>
+				<b><?php echo gtextPlain("Integrazione con");?> <?php echo GestionaliModel::getModulo()->titoloGestionale();?></b>
 			<?php } ?>
 		</div>
 		<?php if ((v("fatture_attive") && isset($fatture) && count($fatture) > 0) || GestionaliModel::getModulo()->permettiInvioDirettoOrdine()) { ?>
@@ -23,7 +23,7 @@
 			<?php if (v("fatture_attive") && isset($fatture) && count($fatture) > 0) {
 				$fattura = $fatture[0]["fatture"];
 			?>
-			<?php echo gtext("Fattura numero");?>: <b><?php echo $fattura["numero"];?></b> <?php echo gtext("del");?> <b><?php echo smartDate($fattura["data_fattura"]);?></b> <?php if (FattureModel::g()->manageable($fattura["id_f"])) { ?><a class="label label-info iframe" href="<?php echo $this->baseUrl."/fatture/form/update/".$fattura["id_f"]."?partial=Y&nobuttons=Y";?>"><i class="fa fa-pencil"></i></a><?php } ?>
+			<?php echo gtextPlain("Fattura numero");?>: <b><?php echo $fattura["numero"];?></b> <?php echo gtextPlain("del");?> <b><?php echo smartDate($fattura["data_fattura"]);?></b> <?php if (FattureModel::g()->manageable($fattura["id_f"])) { ?><a class="label label-info iframe" href="<?php echo $this->baseUrl."/fatture/form/update/".$fattura["id_f"]."?partial=Y&nobuttons=Y";?>"><i class="fa fa-pencil"></i></a><?php } ?>
 			<?php } ?>
 			<div>
 				<?php echo GestionaliModel::getModulo()->specchiettoOrdine($ordine);?>
@@ -43,10 +43,10 @@
 		<?php if (count($statiSuccessivi) > 0) { ?>
 		<table class="table no-margin">
 			<tr>
-				<th><?php echo gtext("Modifica lo stato dell'ordine")?></th>
+				<th><?php echo gtextPlain("Modifica lo stato dell'ordine")?></th>
 				<th>
 					<a class="pull-right" data-toggle="collapse" href="#collapseStati" role="button" aria-expanded="false" aria-controls="collapseStati">
-						<?php echo gtext("Mostra stati");?>
+						<?php echo gtextPlain("Mostra stati");?>
 					</a>
 				</th>
 			</tr>
@@ -81,14 +81,14 @@
 			<tr>
 				<th colspan="3">
 					<a class="pull-right" data-toggle="collapse" href="#collapseMail" role="button" aria-expanded="false" aria-controls="collapseMail">
-						<?php echo gtext("Mostra e-mail");?>
+						<?php echo gtextPlain("Mostra e-mail");?>
 					</a>
-					<?php echo gtext("Storico invii mail al cliente");?>
+					<?php echo gtextPlain("Storico invii mail al cliente");?>
 				</th>
 			</tr>
 			<tbody class="collapse" id="collapseMail">
 				<tr>
-					<th><?php echo gtext("Data invio");?></th>
+					<th><?php echo gtextPlain("Data invio");?></th>
 					<th><?php echo gtext("Tipo / Oggetto mail");?></th>
 					<th style="width:1%;"></th>
 					<th style="width:1%;"></th>

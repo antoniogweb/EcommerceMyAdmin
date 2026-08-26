@@ -2,7 +2,7 @@
 <?php if (isset($ultimiArticoli) && count($ultimiArticoli) > 0) { ?>
 <section class="uk-section uk-section-muted">
 	<div class="uk-container">
-		<h2 class="uk-text-bold uk-margin-medium"><?php echo gtext("Ultimi articoli");?></h2>
+		<h2 class="uk-text-bold uk-margin-medium"><?php echo gtextPlain("Ultimi articoli");?></h2>
 		<div data-uk-slider="velocity: 5" class="uk-slider">
 			<div class="uk-position-relative">
 				<div class="uk-slider-container">

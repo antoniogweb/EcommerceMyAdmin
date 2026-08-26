@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (count($messaggi) > 0) { ?>
-<div class="uk-text-primary uk-text-bold uk-margin uk-margin-large-top"><?php echo gtext("Messaggi successivi");?></div>
+<div class="uk-text-primary uk-text-bold uk-margin uk-margin-large-top"><?php echo gtextPlain("Messaggi successivi");?></div>
 <?php } ?>
 <?php foreach ($messaggi as $m) {
 	$scrittoDa = $m["ticket_messaggi"]["id_user"] ? $nominativoCliente : $m["adminusers"]["username"];
@@ -8,7 +8,7 @@
 <hr class="uk-divider-icon">
 <div id="messaggi_<?php echo $m["ticket_messaggi"]["id_ticket_messaggio"];?>">
 
-	<?php if (!$m["ticket_messaggi"]["id_user"]) { ?><div class="uk-text-emphasis uk-text-small uk-margin-bottom"><span uk-icon="comments"></span> <?php echo gtext("Risposta del negozio:");?></div><?php } ?>
+	<?php if (!$m["ticket_messaggi"]["id_user"]) { ?><div class="uk-text-emphasis uk-text-small uk-margin-bottom"><span uk-icon="comments"></span> <?php echo gtextPlain("Risposta del negozio:");?></div><?php } ?>
 	
 	<div class="uk-text-italic <?php if (!$m["ticket_messaggi"]["id_user"]) { ?>uk-background-muted uk-padding-small<?php } ?>">
 		<?php if (!$m["ticket_messaggi"]["id_user"]) { ?>
@@ -25,7 +25,7 @@
 		<?php } else {
 			$daElaborare = TicketfileModel::daElaborare($m["ticket_messaggi"]["filename"]);
 		?>
-			<?php echo gtext("file allegato");?>:
+			<?php echo gtextPlain("file allegato");?>:
 			<?php if (!$daElaborare) { ?>
 			<a target="_blank" href="<?php echo $this->baseUrlSrc."/ticket/scarica/".$m["ticket_messaggi"]["filename"];?>">
 			<?php } ?>
@@ -33,12 +33,12 @@
 			<?php if (!$daElaborare) { ?>
 			</a>
 			<?php } else { ?>
-			<span class="uk-text-italic uk-text-small">(<?php echo gtext("in elaborazione");?> <span uk-icon="icon: clock;ratio: 0.7"></span>)</span>
+			<span class="uk-text-italic uk-text-small">(<?php echo gtextPlain("in elaborazione");?> <span uk-icon="icon: clock;ratio: 0.7"></span>)</span>
 			<?php } ?>
 		<?php } ?>
 	</div>
 	<?php } ?>
 	
-	<div class="uk-text-muted uk-text-small uk-margin"><?php echo gtext("Scritto da") . " <span class='uk-text-secondary'>". $scrittoDa;?></span> <?php echo gtext("in data")?> <span class='uk-text-secondary'><?php echo date("d-m-Y H:i", strtotime($m["ticket_messaggi"]["data_creazione"]));?></span></div>
+	<div class="uk-text-muted uk-text-small uk-margin"><?php echo gtextPlain("Scritto da") . " <span class='uk-text-secondary'>". $scrittoDa;?></span> <?php echo gtextPlain("in data")?> <span class='uk-text-secondary'><?php echo date("d-m-Y H:i", strtotime($m["ticket_messaggi"]["data_creazione"]));?></span></div>
 </div>
 <?php } ?>

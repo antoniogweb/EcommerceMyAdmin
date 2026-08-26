@@ -5,7 +5,7 @@ if (!isset($baseUrl))
 	$baseUrl = $this->baseUrl."/";
 ?>
 <?php if (strcmp($tipoOutput,"mail_al_negozio") === 0 || strcmp($tipoOutput,"mail_al_cliente") === 0) { ?>
-<h1><?php echo gtext("Resoconto dell'ordine");?></h1>
+<h1><?php echo gtextPlain("Resoconto dell'ordine");?></h1>
 <?php } ?>
 
 <?php if (strcmp($tipoOutput,"web") === 0) { ?>
@@ -30,7 +30,7 @@ include(tpf(ElementitemaModel::p("AVVISO_LISTA_SELEZIONATA","", array(
 
 <?php include(tpf("Ordini/resoconto_pagamento.php"));?>
 
-<h2 class="uk-margin-medium-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Prodotti acquistati", false); ?></h2>
+<h2 class="uk-margin-medium-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtextPlain("Prodotti acquistati", false); ?></h2>
 
 <?php include(tpf("Ordini/resoconto_prodotti.php"));?>
 
@@ -45,7 +45,7 @@ include(tpf(ElementitemaModel::p("RESOCONTO_TOTALI","", array(
 <div class="uk-grid uk-grid-small uk-margin-medium-top" uk-grid>
 	<?php if (trim($ordine["note"])) { ?>
 	<div class="uk-width-1-1 uk-width-1-2@m">
-		<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Note d'acquisto");?></h2>
+		<h2 class="<?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtextPlain("Note d'acquisto");?></h2>
 		<?php echo nl2br($ordine["note"]);?>
 		<br />
 	</div>
@@ -62,7 +62,7 @@ include(tpf(ElementitemaModel::p("RESOCONTO_TOTALI","", array(
 <?php } ?>
 
 <?php if ($ordine["da_spedire"] && ($ordine["indirizzo_spedizione"] || $ordine["citta_spedizione"])) { ?>
-<h2 class="uk-margin-medium-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dati di spedizione", false); ?></h2>
+<h2 class="uk-margin-medium-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtextPlain("Dati di spedizione", false); ?></h2>
 
 <?php
 include(tpf(ElementitemaModel::p("RESOCONTO_SPEDIZIONE","", array(
@@ -71,7 +71,7 @@ include(tpf(ElementitemaModel::p("RESOCONTO_SPEDIZIONE","", array(
 ))));
 ?>
 <?php } ?>
-<h2 class="uk-margin-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtext("Dati di fatturazione", false); ?></h2>
+<h2 class="uk-margin-top <?php echo v("classi_titoli_resoconto_ordine");?>"><?php echo gtextPlain("Dati di fatturazione", false); ?></h2>
 
 <?php
 include(tpf(ElementitemaModel::p("RESOCONTO_FATTURAZIONE","", array(
@@ -81,7 +81,7 @@ include(tpf(ElementitemaModel::p("RESOCONTO_FATTURAZIONE","", array(
 ?>
 <br /><br />
 <?php if (strcmp($tipoOutput,"mail_al_cliente") === 0 ) { ?>
-<p><?php echo gtext("Può controllare in qualsiasi momento i dettagli dell'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=y"><?php echo gtext("seguente indirizzo web", false); ?></a>.</p>
+<p><?php echo gtextPlain("Può controllare in qualsiasi momento i dettagli dell'ordine al", false); ?> <a href="<?php echo $baseUrl."resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>?n=y"><?php echo gtextPlain("seguente indirizzo web", false); ?></a>.</p>
 <?php } ?>
 
 <?php

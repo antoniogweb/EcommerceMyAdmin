@@ -1,11 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Carrello") => "",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Carrello") => "",
 );
 
-$titoloPagina = gtext("Il tuo Carrello");
+$titoloPagina = gtextPlain("Il tuo Carrello");
 $noFiltri = true;
 $noNumeroProdotti = true;
 

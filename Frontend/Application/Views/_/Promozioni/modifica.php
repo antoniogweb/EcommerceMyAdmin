@@ -1,14 +1,14 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
-	gtext("I miei coupon") => $this->baseUrl."/liste-regalo/",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Area riservata")	=>	$this->baseUrl."/area-riservata",
+	gtextPlain("I miei coupon") => $this->baseUrl."/liste-regalo/",
 );
 
 $breadcrumb[gtext("Modifica la descrizione")] = "";
 
-$titoloPagina = gtext("Modifica la descrizione");
+$titoloPagina = gtextPlain("Modifica la descrizione");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -24,7 +24,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="">
 		<div class="uk-grid uk-grid-column-small uk-child-width-1-2@s" uk-grid>
 			<div class="uk-margin uk-margin-remove-bottom">
-				<label class="uk-form-label"><?php echo gtext("Descrizione del coupon");?> *</label>
+				<label class="uk-form-label"><?php echo gtextPlain("Descrizione del coupon");?> *</label>
 				<div class="uk-form-controls">
 					<?php echo Html_Form::input("titolo",$values['titolo'],"uk-input class_titolo",null);?>
 				</div>

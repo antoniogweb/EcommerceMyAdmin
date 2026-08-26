@@ -35,7 +35,7 @@ img
 	<table width="100%">
 		<tr>
 			<td width="33%">
-				<?php echo gtext("Scaricato il");?> <span style="font-weight: bold;o">{DATE d/m/Y}</span>
+				<?php echo gtextPlain("Scaricato il");?> <span style="font-weight: bold;o">{DATE d/m/Y}</span>
 			</td>
 			<td width="33%" align="center" style="font-weight: bold; font-style: italic;">
 				{PAGENO}/{nbpg}

@@ -6,7 +6,7 @@
 
 	<?php echo Html_Form::select("codice","",$selectServizi,"form-control",null,"yes","placeholder='".gtextAttr("Peso..")."'");?>
 	
-	<button class="submit_file btn btn-success btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-plus-square-o"></i> <?php echo gtext("Aggiungi servizio");?></button>
+	<button class="submit_file btn btn-success btn-sm make_spinner" type="submit" name="insertAction" value="Aggiungi"><i class="fa fa-plus-square-o"></i> <?php echo gtextPlain("Aggiungi servizio");?></button>
 	<input type="hidden" name="insertAction" value="Aggiungi" />
 	
 </form>

@@ -75,7 +75,7 @@
 	
 	<form class="EGuploadFileBox_form" action='<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=uploadfile";?>' method='POST' enctype="multipart/form-data">
 		
-		<b><?php echo gtext("Carica file");?>:</b>
+		<b><?php echo gtextPlain("Carica file");?>:</b>
 		
 		<input id="userfile" name="userfile" type="file">
 	
@@ -90,7 +90,7 @@
 <?php if ($this->viewArgs['mostra_crea']) { ?>
 <div class='EGcreateFolderBox'>
 	<form action='<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=createfolder";?>' method='POST'>
-		<b><?php echo gtext("Crea una cartella");?>:</b>
+		<b><?php echo gtextPlain("Crea una cartella");?>:</b>
 		<input type="text" name="folderName" value="">
 		<input type="submit" name="uploadFileAction" value="<?php echo gtextAttr("crea", false);?>">
 	</form>
@@ -104,7 +104,7 @@
 			<td class="first" width="5%">
 				<a class="parent_folder" href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$parentDir";?>"><img src="<?php echo $this->baseUrlSrc;?>/Public/Img/Icons/back.png" /></a>
 			</td>
-			<td class="second"><?php echo gtext("Current directory");?>: <b><?php echo $base."/".$currentDir;?></b></td>
+			<td class="second"><?php echo gtextPlain("Current directory");?>: <b><?php echo $base."/".$currentDir;?></b></td>
 			<?php if ($this->viewArgs['mostra_delete']) { ?>
 			<td width="5%">&nbsp</td>
 			<?php } ?>
@@ -117,7 +117,7 @@
 			<td width="5%">
 				<a class="inside_folder" href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=".$currentDir.$folder."/";?>"><img src="<?php echo $this->baseUrlSrc?>/Public/Img/Icons/folder.png" /></a>
 			</td>
-			<td><?php echo gtext("Folder name");?>:<br /><b><?php echo $folder;?></b></td>
+			<td><?php echo gtextPlain("Folder name");?>:<br /><b><?php echo $folder;?></b></td>
 			<?php if ($this->viewArgs['mostra_delete']) { ?>
 			<td width="8%">
 				<a href="<?php echo $this->baseUrl."/upload/main".$this->viewStatus."?base=$base&directory=$currentDir&action=delfolder&file=$folder"."&csrf=".User::$csrfToken;?>"><img src="<?php echo $this->baseUrlSrc?>/Public/Img/Icons/delete.png" /></a>

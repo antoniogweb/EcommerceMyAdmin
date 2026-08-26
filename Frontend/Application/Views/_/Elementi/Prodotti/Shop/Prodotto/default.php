@@ -26,9 +26,9 @@ include(tpf(ElementitemaModel::p("PRODOTTO_VARIABILI","", array(
 				<a href="<?php echo $this->baseUrl."/".$urlAlias;?>" rel="<?php echo $idPr;?>" class="uk-text-small add_to_cart_button ajax_add_to_cart <?php if (!$hasCombinations) { ?>aggiungi_al_carrello_semplice<?php } ?>">
 					<span uk-icon="icon: plus; ratio: .75;"></span>
 					<?php if (!$hasCombinations) { ?>
-					<?php echo gtext("Acquista", false);?>
+					<?php echo gtextPlain("Acquista", false);?>
 					<?php } else { ?>
-					<?php echo gtext("Acquista", false);?>
+					<?php echo gtextPlain("Acquista", false);?>
 					<?php } ?>
 				</a>
 			</div>
@@ -50,7 +50,7 @@ include(tpf(ElementitemaModel::p("PRODOTTO_VARIABILI","", array(
 				<?php if ($percentualeSconto > 0 && inPromozioneTot($idPr,$p)) { echo "<del>$stringaDa € ".$strPrezzoFissoIvato.setPriceReverse($prezzoPienoIvato)."</del> € ".$strPrezzoFissoFinaleIvato.setPriceReverse($prezzoFinaleIvato); } else { echo "$stringaDa € ".$strPrezzoFissoFinaleIvato.setPriceReverse($prezzoFinaleIvato);}?>
 				
 				<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
-				<span class="iva_inclusa"><?php echo gtext("Iva inclusa");?></span>
+				<span class="iva_inclusa"><?php echo gtextPlain("Iva inclusa");?></span>
 				<?php } ?>
 			</span>
 		</span>

@@ -11,7 +11,7 @@ if ($layer["contenuti"]["tipo_layer"] == "TESTO") { ?>
 	<h1 <?php echo getAnimazioneLayer($layer, 100);?>><?php echo htmlentitydecode(contfield($layer, "titolo"));?></h1>
 	<p <?php echo getAnimazioneLayer($layer, 200);?>><?php echo htmlentitydecode(contfield($layer, "descrizione"));?></p>
 	<?php if ($url) { ?>
-	<a <?php echo getAnimazioneLayer($layer, 300);?> class="uk-button uk-button-default" href="<?php echo $url;?>"><?php echo gtext("Scopri");?></a>
+	<a <?php echo getAnimazioneLayer($layer, 300);?> class="uk-button uk-button-default" href="<?php echo $url;?>"><?php echo gtextPlain("Scopri");?></a>
 	<?php } ?>
 </div>
 <?php } else if ($layer["contenuti"]["tipo_layer"] == "IMMAGINE") { ?>

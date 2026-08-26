@@ -4,7 +4,7 @@
 
 <section class="content-header">
 	<?php if (!isset($pageTitle)) { ?>
-	<h1><?php echo gtext("Gestione");?> <?php echo $tabella;?>: <?php if (strcmp($type,"update") === 0) { echo $titoloPagina; } else { echo "inserimento nuovo elemento";}?></h1>
+	<h1><?php echo gtextPlain("Gestione");?> <?php echo $tabella;?>: <?php if (strcmp($type,"update") === 0) { echo $titoloPagina; } else { echo "inserimento nuovo elemento";}?></h1>
 	<?php } else { ?>
 	<h1><?php echo $pageTitle;?></h1>
 	<?php } ?>
@@ -56,7 +56,7 @@
 									
 									<div class="submit_entry" style="display:none;">
 										<span class="submit_entry_Salva">
-											<button id="<?php echo $type;?>Action" class="btn btn-success" name="<?php echo $type;?>Action" type="submit"><?php echo gtext("Salva", false);?></button>
+											<button id="<?php echo $type;?>Action" class="btn btn-success" name="<?php echo $type;?>Action" type="submit"><?php echo gtextPlain("Salva", false);?></button>
 											<input type="hidden" value="<?php echo gtextAttr("Salva", false);?>" name="<?php echo $type;?>Action">
 										</span>
 									</div>
@@ -66,7 +66,7 @@
 						
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Pulsante nella modale (call to action)")?>
+								<?php echo gtextPlain("Pulsante nella modale (call to action)")?>
 							</div>
 							<div class="panel-body">
 								<div class='row'>
@@ -102,7 +102,7 @@
 					<div class='col-md-4'>
 						<div class="panel panel-info">
 							<div class="panel-heading">
-								<?php echo gtext("Visibilità");?>
+								<?php echo gtextPlain("Visibilità");?>
 							</div>
 							<div class="panel-body">
 								<?php echo $form["attivo"];?>
@@ -112,7 +112,7 @@
 						<?php if (isset($contenutiTradotti) && count($contenutiTradotti) > 0 && count(BaseController::$traduzioni) > 0) { ?>
 							<div class="panel panel-info">
 								<div class="panel-heading">
-									<?php echo gtext("Traduzioni");?>
+									<?php echo gtextPlain("Traduzioni");?>
 								</div>
 								<div class="panel-body">
 									<?php

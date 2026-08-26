@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <section class="content-header">
-	<h1><?php echo gtext("Aggiunta listino");?></h1>
+	<h1><?php echo gtextPlain("Aggiunta listino");?></h1>
 </section>
 
 <!-- Main content -->
@@ -15,15 +15,15 @@
 							<form class="formClass" method="GET" action="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/main?"?>">
 								<div class="col-md-4">
 									<div class="form_input_text">
-										<label class="entryLabel"><?php echo gtext("Nazione");?></label>
+										<label class="entryLabel"><?php echo gtextPlain("Nazione");?></label>
 										<?php echo Html_Form::select("listino","",$listiniAttivabili,"form-control",null,"yes");?>
 									</div>
 									
 									<div class="submit_entry">
-										<a class="btn btn-info make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/main".$this->viewStatus;?>"><i class="fa fa-arrow-left"></i> <?php echo gtext("Torna");?></a>
+										<a class="btn btn-info make_spinner" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/main".$this->viewStatus;?>"><i class="fa fa-arrow-left"></i> <?php echo gtextPlain("Torna");?></a>
 										<span class="submit_entry_Salva pull-right">
 											<button id="gAction" class="btn btn-success make_spinner" name="gAction" type="submit">
-												<?php echo gtext("Procedi");?> <i class="fa fa-arrow-right"></i>
+												<?php echo gtextPlain("Procedi");?> <i class="fa fa-arrow-right"></i>
 											</button>
 										</span>
 									</div>

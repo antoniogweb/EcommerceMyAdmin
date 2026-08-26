@@ -10,13 +10,13 @@ if (!isset($classScaglioni))
 	<table class="uk-text-small uk-table uk-table-divider uk-table-striped uk-table-small">
 		<thead>
 			<tr>
-				<th><?php echo gtext("Quantità");?></th>
-				<th><?php echo gtext("Sconto");?></th>
+				<th><?php echo gtextPlain("Quantità");?></th>
+				<th><?php echo gtextPlain("Sconto");?></th>
 			</tr>
 		</thead>
 		<?php foreach ($scaglioni as $q => $sconto) { ?>
 		<tr>
-			<td>da <?php echo $q;?> <?php echo gtext("unità");?></td>
+			<td>da <?php echo $q;?> <?php echo gtextPlain("unità");?></td>
 			<td><?php echo $sconto." %";?></td>
 		</tr>
 		<?php } ?>

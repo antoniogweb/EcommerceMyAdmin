@@ -2,7 +2,7 @@
 
 <?php if ($this->action == "categorie") { ?>
 
-<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcuna categoria la promo sarà utilizzabile sui prodotti di tutte le categorie.");?></div>
+<div class="callout callout-info"><?php echo gtextPlain("Se non si seleziona alcuna categoria la promo sarà utilizzabile sui prodotti di tutte le categorie.");?></div>
 
 <form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/categorie/$id".$this->viewStatus;?>' method='POST'>
 
@@ -14,7 +14,7 @@
 		<?php echo Html_Form::select("includi","",PromozioniModel::$selectIncludiEscludi,null,null,"yes","style='min-width:200px'");?>
 	</span>
 	
-	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtextPlain("Aggiungi");?></button>
 	
 </form>
 <br />
@@ -22,7 +22,7 @@
 
 <?php if ($this->action == "marchi") { ?>
 
-<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcun marchio la promo sarà utilizzabile sui prodotti di tutti i marchi.");?></div>
+<div class="callout callout-info"><?php echo gtextPlain("Se non si seleziona alcun marchio la promo sarà utilizzabile sui prodotti di tutti i marchi.");?></div>
 
 <form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/marchi/$id".$this->viewStatus;?>' method='POST'>
 
@@ -34,7 +34,7 @@
 		<?php echo Html_Form::select("includi","",PromozioniModel::$selectIncludiEscludi,null,null,"yes","style='min-width:200px'");?>
 	</span>
 	
-	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtextPlain("Aggiungi");?></button>
 	
 </form>
 <br />
@@ -42,7 +42,7 @@
 
 <?php if ($this->action == "pagine") { ?>
 
-<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcun prodotto la promo sarà utilizzabile su tutti i prodotti.");?></div>
+<div class="callout callout-info"><?php echo gtextPlain("Se non si seleziona alcun prodotto la promo sarà utilizzabile su tutti i prodotti.");?></div>
 
 <form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/pagine/$id".$this->viewStatus;?>' method='POST'>
 	
@@ -54,7 +54,7 @@
 		<?php echo Html_Form::select("includi","",PromozioniModel::$selectIncludiEscludi,null,null,"yes","style='min-width:200px'");?>
 	</span>
 	
-	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtextPlain("Aggiungi");?></button>
 	
 </form>
 <br />
@@ -63,7 +63,7 @@
 
 <?php if ($this->action == "tipi") { ?>
 
-<div class="callout callout-info"><?php echo gtext("Se non si seleziona alcun tipo cliente la promo sarà utilizzabile per tutti i tipi di cliente.");?></div>
+<div class="callout callout-info"><?php echo gtextPlain("Se non si seleziona alcun tipo cliente la promo sarà utilizzabile per tutti i tipi di cliente.");?></div>
 
 <form class="form-inline" role="form" action='<?php echo $this->baseUrl."/".$this->controller."/tipi/$id".$this->viewStatus;?>' method='POST'>
 	
@@ -71,7 +71,7 @@
 		<?php echo Html_Form::select("id_tipo_cliente","",$listaTipi,null,null,"yes","style='min-width:200px'");?>
 	</span>
 	
-	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtext("Aggiungi");?></button>
+	<button class="submit_file btn btn-primary btn-sm make_spinner" type="submit" name="insertAction"><i class="fa fa-save"></i> <?php echo gtextPlain("Aggiungi");?></button>
 	
 </form>
 <br />

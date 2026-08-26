@@ -3,23 +3,23 @@
 if ($islogged)
 {
 	$breadcrumb = array(
-		gtext("Home") 		=> $this->baseUrl,
-		gtext("Area riservata")	=>	$this->baseUrl."/area-riservata",
-		gtext("Ordini effettuati")	=>	$this->baseUrl."/ordini-effettuati",
-		gtext("Resoconto Ordine") => $this->baseUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."?n=y",
+		gtextPlain("Home") 		=> $this->baseUrl,
+		gtextPlain("Area riservata")	=>	$this->baseUrl."/area-riservata",
+		gtextPlain("Ordini effettuati")	=>	$this->baseUrl."/ordini-effettuati",
+		gtextPlain("Resoconto Ordine") => $this->baseUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."?n=y",
 		gtext("Modifica ordine")." ".$ordine["id_o"] => "",
 	);
 }
 else
 {
 	$breadcrumb = array(
-		gtext("Home") 		=> $this->baseUrl,
-		gtext("Resoconto Ordine") => $this->baseUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."?n=y",
+		gtextPlain("Home") 		=> $this->baseUrl,
+		gtextPlain("Resoconto Ordine") => $this->baseUrl."/resoconto-acquisto/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"]."?n=y",
 		gtext("Modifica ordine")." ".$ordine["id_o"] => "",
 	);
 }
 
-$titoloPagina = gtext("Modifica dell'ordine")." ".$ordine["id_o"];
+$titoloPagina = gtextPlain("Modifica dell'ordine")." ".$ordine["id_o"];
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -29,41 +29,41 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 ?>
 
 <div class="uk-overflow-auto">
-	<h2><?php echo gtext("Dettagli dell'ordine");?>:</h2>
+	<h2><?php echo gtextPlain("Dettagli dell'ordine");?>:</h2>
 	<table class="uk-table uk-table-divider uk-table-striped uk-table-small">
 		<tr>
-			<td><?php echo gtext("Ordine", false); ?>:</td>
+			<td><?php echo gtextPlain("Ordine", false); ?>:</td>
 			<td><b>#<?php echo $ordine["id_o"];?></b></td>
 		</tr>
 		<tr>
-			<td><?php echo gtext("Data", false); ?>:</td>
+			<td><?php echo gtextPlain("Data", false); ?>:</td>
 			<td><b><?php echo smartDate($ordine["data_creazione"]);?></b></td>
 		</tr>
 		<tr>
-			<td><?php echo gtext("Totale", false); ?>:</td>
+			<td><?php echo gtextPlain("Totale", false); ?>:</td>
 			<td><b>&euro; <?php echo setPriceReverse($ordine["total"]);?></b></td>
 		</tr>
 		<tr>
-			<td><?php echo gtext("Stato ordine", false); ?>:</td>
+			<td><?php echo gtextPlain("Stato ordine", false); ?>:</td>
 			<td><b><?php echo statoOrdine($ordine["stato"]);?></b></td>
 		</tr>
 	</table>
 </div>
-<h2 id="form_main"><?php echo gtext("Modifica pagamento e indirizzo di spedizione", false); ?>:</h2>
+<h2 id="form_main"><?php echo gtextPlain("Modifica pagamento e indirizzo di spedizione", false); ?>:</h2>
 
 <?php echo $notice; ?>
 
 <form class="" action="<?php echo $this->baseUrl."/ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>#form_main" method="POST">
 	
 	<div class="uk-margin">
-		<label class="uk-form-label"><?php echo gtext("Metodo di pagamento");?> *</label>
+		<label class="uk-form-label"><?php echo gtextPlain("Metodo di pagamento");?> *</label>
 		<div class="uk-form-controls">
 			<?php echo Html_Form::select("pagamento",$ordine["pagamento"], OrdiniModel::$pagamenti, "uk-select class_pagamento", null, "yes");?>
 		</div>
 	</div>
 	
 	<div class="uk-margin">
-		<label class="uk-form-label"><?php echo gtext("Indirizzo di spedizione");?> *</label>
+		<label class="uk-form-label"><?php echo gtextPlain("Indirizzo di spedizione");?> *</label>
 		<div class="uk-form-controls">
 			<?php echo Html_Form::select("id_spedizione",$ordine["id_spedizione"], $tendinaIndirizzi, "uk-select class_id_spedizione", null, "yes");?>
 		</div>
@@ -71,7 +71,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	
 	<input class="uk-button uk-button-primary" type="submit" name="updateAction" value="<?php echo gtextAttr("Modifica dati", false);?>" />
 	
-	<a class="uk-button uk-button-default" href="<?php echo $this->baseUrl."/gestisci-spedizione/0?cart_uid=".$ordine["cart_uid"]."&admin_token=".$ordine["admin_token"];?>"><i class="fa fa-plus"></i> <?php echo gtext("Aggiungi un nuovo indirizzo");?></a>
+	<a class="uk-button uk-button-default" href="<?php echo $this->baseUrl."/gestisci-spedizione/0?cart_uid=".$ordine["cart_uid"]."&admin_token=".$ordine["admin_token"];?>"><i class="fa fa-plus"></i> <?php echo gtextPlain("Aggiungi un nuovo indirizzo");?></a>
 </form>
 
 <?php

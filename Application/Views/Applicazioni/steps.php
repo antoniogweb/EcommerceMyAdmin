@@ -3,9 +3,9 @@
 <?php if ($type !== "insert") { ?>
 
 <ul class="nav_dettaglio nav nav-tabs">
-	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtext("Dettagli");?></a></li>
+	<li <?php echo $posizioni['main'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/form/update/$id".$this->viewStatus;?>"><?php echo gtextPlain("Dettagli");?></a></li>
 	<?php if (v("lista_variabili_gestibili")) { ?>
-	<li <?php echo $posizioni['variabili'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/variabili/$id".$this->viewStatus;?>"><?php echo gtext("Configurazione");?></a></li>
+	<li <?php echo $posizioni['variabili'];?>><a href="<?php echo $this->baseUrl."/".$this->controller."/variabili/$id".$this->viewStatus;?>"><?php echo gtextPlain("Configurazione");?></a></li>
 	<?php } ?>
 </ul>
 

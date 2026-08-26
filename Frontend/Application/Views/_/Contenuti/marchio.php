@@ -3,7 +3,7 @@
 $titoloPagina = mfield($marchioCorrente, "titolo");
 
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
+	gtextPlain("Home") 		=> $this->baseUrl,
 );
 
 $idPaginaMarchi = MarchiModel::g(false)->getIdPaginaMarchi($idMarchio);

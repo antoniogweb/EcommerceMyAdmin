@@ -7,21 +7,21 @@
 	
 	<div class="uk-grid-column-large uk-child-width-1-2@s uk-grid" uk-grid>
 		<div class="first_of_grid tr_ragione_sociale uk-margin uk-margin-remove-bottom">
-			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Dettaglio della richiesta di assistenza");?></div>
-			<label class="uk-form-label"><?php echo gtext("Tipologia della richiesta di assistenza");?> *</label>
+			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtextPlain("Dettaglio della richiesta di assistenza");?></div>
+			<label class="uk-form-label"><?php echo gtextPlain("Tipologia della richiesta di assistenza");?> *</label>
 			<div class="uk-form-controls uk-margin-bottom">
 				<?php echo Html_Form::select("id_ticket_tipologia",$values['id_ticket_tipologia'],$tipologie,"uk-select class_id_ticket_tipologia",null,"yes");?>
 			</div>
 			
 			<?php if ($tipologia["tipo"] == "ORDINE") { ?>
-			<label class="uk-form-label"><?php echo gtext("Seleziona l'ordine per cui chiedi assistenza");?> *</label>
+			<label class="uk-form-label"><?php echo gtextPlain("Seleziona l'ordine per cui chiedi assistenza");?> *</label>
 			<div class="uk-form-controls uk-margin-bottom">
 				<?php echo Html_Form::select("id_o",$values['id_o'],$ordini,"uk-select class_id_o",null,"yes");?>
 			</div>
 			<?php } ?>
 			
 			<?php if ($tipologia["tipo"] == "LISTA REGALO") { ?>
-			<label class="uk-form-label"><?php echo gtext("Seleziona la lista regalo per cui chiedi assistenza");?> *</label>
+			<label class="uk-form-label"><?php echo gtextPlain("Seleziona la lista regalo per cui chiedi assistenza");?> *</label>
 			<div class="uk-form-controls uk-margin-bottom">
 				<?php echo Html_Form::select("id_lista_regalo",$values['id_lista_regalo'],$listeRegalo,"uk-select class_id_lista_regalo",null,"yes");?>
 			</div>
@@ -32,7 +32,7 @@
 				<?php echo Html_Form::input("oggetto",$values['oggetto'],"uk-input class_oggetto",null,"placeholder='".gtextAttr("Oggetto della richiesta", false)."'");?>
 			</div>
 			
-			<label class="uk-form-label"><?php echo gtext("Descrizione");?> (<?php echo gtext("massimo")." ".v("numero_massimo_caratteri_ticket")." ".gtext("caratteri")?>) *</label>
+			<label class="uk-form-label"><?php echo gtextPlain("Descrizione");?> (<?php echo gtextPlain("massimo")." ".v("numero_massimo_caratteri_ticket")." ".gtextPlain("caratteri")?>) *</label>
 			<div class="uk-form-controls">
 				<?php echo Html_Form::textarea("descrizione",$values['descrizione'],"uk-textarea class_descrizione",null,"maxlength='".v("numero_massimo_caratteri_ticket")."' rows='4' placeholder='".gtextAttr("Descrizione", false)."'");?>
 			</div>
@@ -51,7 +51,7 @@
 	<hr />
 	<div class="uk-grid-column-large uk-child-width-1-2@s uk-grid uk-margin-bottom-remove" uk-grid>
 		<div>
-			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica un'immagine (opzionale) - massimo")." ".(v("dimensioni_upload_immagine_ticket")/1000000)." MB";?></div>
+			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtextPlain("Carica un'immagine (opzionale) - massimo")." ".(v("dimensioni_upload_immagine_ticket")/1000000)." MB";?></div>
 			<div class="box_immagini box_immagini_immagine">
 				<?php
 				$files = $immagini;
@@ -60,7 +60,7 @@
 			</div>
 		</div>
 		<div>
-			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica la foto dello scontrino (opzionale) - massimo")." ".(v("dimensioni_upload_immagine_ticket")/1000000)." MB";?></div>
+			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtextPlain("Carica la foto dello scontrino (opzionale) - massimo")." ".(v("dimensioni_upload_immagine_ticket")/1000000)." MB";?></div>
 			<div class="box_immagini box_immagini_scontrino">
 				<?php
 				$files = $scontrini;
@@ -70,7 +70,7 @@
 		</div>
 	</div>
     <hr />
-    <div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtext("Carica un video (opzionale) - massimo")." ".(v("dimensioni_upload_video_ticket")/1000000)." MB";?></div>
+    <div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtextPlain("Carica un video (opzionale) - massimo")." ".(v("dimensioni_upload_video_ticket")/1000000)." MB";?></div>
     <div class="box_immagini box_immagini_video">
 		<?php
 		$files = $video;
@@ -80,11 +80,11 @@
 	<hr />
 	<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
 		<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
-		<label><?php echo Html_Form::checkbox('accetto',$values['accetto'],'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtext("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtext("privacy policy");?></a></span></label>
+		<label><?php echo Html_Form::checkbox('accetto',$values['accetto'],'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("privacy policy");?></a></span></label>
 	</div>
 	
 	<div class="uk-margin">
 		<div class="<?php echo v("classe_pulsanti_submit");?> uk-button-large uk-width-1-1 uk-width-auto@m spinner uk-hidden" uk-spinner="ratio: .70"></div>
-		<button class="<?php echo v("classe_pulsanti_submit");?> uk-button-large btn_submit_ticket btn_submit_form uk-width-1-1 uk-width-auto@m" type="submit"><?php echo gtext("Invia la richiesta di assistenza", false);?></button>
+		<button class="<?php echo v("classe_pulsanti_submit");?> uk-button-large btn_submit_ticket btn_submit_form uk-width-1-1 uk-width-auto@m" type="submit"><?php echo gtextPlain("Invia la richiesta di assistenza", false);?></button>
 	</div>
 </form>

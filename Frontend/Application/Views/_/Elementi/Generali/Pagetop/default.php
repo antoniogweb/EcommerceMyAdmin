@@ -11,7 +11,7 @@
 				<?php if (User::$isMobile && isset($isAreaRiservata)) { ?>
 					<?php if ($islogged) { ?>
 					<div class="uk-margin-large-bottom">
-						<a href="#filtri-categoria" class="uk-button uk-button-default uk-margin-small-right uk-margin-top" uk-toggle="target: #filtri-categoria"><span class="uk-margin-xsmall-right" uk-icon="icon: settings; ratio: .75;"></span> <?php echo gtext("Menù area riservata");?></a>
+						<a href="#filtri-categoria" class="uk-button uk-button-default uk-margin-small-right uk-margin-top" uk-toggle="target: #filtri-categoria"><span class="uk-margin-xsmall-right" uk-icon="icon: settings; ratio: .75;"></span> <?php echo gtextPlain("Menù area riservata");?></a>
 					</div>
 					<?php } ?>
 				<?php } ?>
@@ -30,7 +30,7 @@
 					<div><?php echo $numProdotti." ".singPlu($numProdotti, gtext("prodotto"), gtext("prodotti"))?></div>
 					
 					<?php if (User::$isMobile && !isset($noFiltri)) { ?>
-						<a href="#filtri-categoria" class="uk-button uk-button-default uk-margin-small-right uk-margin-top" uk-toggle="target: #filtri-categoria"><span class="uk-margin-xsmall-right" uk-icon="icon: settings; ratio: .75;"></span> <?php echo gtext("filtri");?></a>
+						<a href="#filtri-categoria" class="uk-button uk-button-default uk-margin-small-right uk-margin-top" uk-toggle="target: #filtri-categoria"><span class="uk-margin-xsmall-right" uk-icon="icon: settings; ratio: .75;"></span> <?php echo gtextPlain("filtri");?></a>
 					<?php } ?>
 				</div>
 				<?php } ?>

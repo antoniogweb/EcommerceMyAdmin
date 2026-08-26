@@ -2,11 +2,11 @@
 
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext($tabella)	=>	"",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain($tabella)	=>	"",
 );
 
-$titoloPagina = gtext($tabella);
+$titoloPagina = gtextPlain($tabella);
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 

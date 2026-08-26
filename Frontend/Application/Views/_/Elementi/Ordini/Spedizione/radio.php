@@ -23,9 +23,9 @@
 								<?php echo Html_Form::radio("id_spedizione_radio",$values["id_spedizione"],$indirizzo["id_spedizione"],"radio_spedizione","none");?>
 							</div>
 							<div class="uk-margin-left uk-text-small">
-								<span class="uk-text-emphasis"><?php echo gtext("Indirizzo");?>:</span> <?php echo $indirizzo["indirizzo_spedizione"];?>, <?php echo $indirizzo["cap_spedizione"];?><br /> <?php echo $indirizzo["citta_spedizione"];?> (<?php echo in_array((string)$indirizzo["nazione_spedizione"], NazioniModel::nazioniConProvince()) ? ProvinceModel::sFindTitoloDaCodice($indirizzo["provincia_spedizione"]) : $indirizzo["dprovincia_spedizione"];?>), <?php echo nomeNazione($indirizzo["nazione_spedizione"]);?>
+								<span class="uk-text-emphasis"><?php echo gtextPlain("Indirizzo");?>:</span> <?php echo $indirizzo["indirizzo_spedizione"];?>, <?php echo $indirizzo["cap_spedizione"];?><br /> <?php echo $indirizzo["citta_spedizione"];?> (<?php echo in_array((string)$indirizzo["nazione_spedizione"], NazioniModel::nazioniConProvince()) ? ProvinceModel::sFindTitoloDaCodice($indirizzo["provincia_spedizione"]) : $indirizzo["dprovincia_spedizione"];?>), <?php echo nomeNazione($indirizzo["nazione_spedizione"]);?>
 								<?php if (trim($indirizzo["telefono_spedizione"])) { ?>
-								<br /><span class="uk-text-emphasis"><?php echo gtext("Tel");?>:</span> <?php echo $indirizzo["telefono_spedizione"];?>
+								<br /><span class="uk-text-emphasis"><?php echo gtextPlain("Tel");?>:</span> <?php echo $indirizzo["telefono_spedizione"];?>
 								<?php } ?>
 							</div>
 						</div>
@@ -39,7 +39,7 @@
 							<?php echo Html_Form::radio("id_spedizione_radio",$values["id_spedizione"],"0","radio_spedizione","none");?> 
 						</div>
 						<div class="uk-margin-left uk-text-small">
-							<?php echo gtext("Aggiungi un nuovo indirizzo di spedizione");?>
+							<?php echo gtextPlain("Aggiungi un nuovo indirizzo di spedizione");?>
 						</div>
 					</div>
 					<div class="campi_nuovo_indirizzo <?php if ($mostraCampiSpedizione) { ?>errori_campo_indirizzo<?php } ?>">
@@ -56,16 +56,16 @@
 				
 				<?php if (false) { ?>
 				<div class="blocco_scelta_indirizzo">
-					<?php echo Html_Form::radio("aggiungi_nuovo_indirizzo",$values["aggiungi_nuovo_indirizzo"],"N","imposta_seleziona","none");?> <?php echo gtext("Seleziona un indirizzo di spedizione esistente");?>
+					<?php echo Html_Form::radio("aggiungi_nuovo_indirizzo",$values["aggiungi_nuovo_indirizzo"],"N","imposta_seleziona","none");?> <?php echo gtextPlain("Seleziona un indirizzo di spedizione esistente");?>
 				</div>
 				
 				<div class="blocco_scelta_indirizzo">
-					<?php echo Html_Form::radio("aggiungi_nuovo_indirizzo",$values["aggiungi_nuovo_indirizzo"],"Y","imposta_aggiungi","none");?> <?php echo gtext("Aggiungi un nuovo indirizzo di spedizione");?>
+					<?php echo Html_Form::radio("aggiungi_nuovo_indirizzo",$values["aggiungi_nuovo_indirizzo"],"Y","imposta_aggiungi","none");?> <?php echo gtextPlain("Aggiungi un nuovo indirizzo di spedizione");?>
 				</div>
 				
 				
 				<div class="uk-margin blocco_tendina_scelta_indirizzo">
-					<label class="uk-form-label"><?php echo gtext("Indirizzo");?> *</label>
+					<label class="uk-form-label"><?php echo gtextPlain("Indirizzo");?> *</label>
 					<div class="uk-form-controls">
 						<?php echo Html_Form::select("id_spedizione",$values["id_spedizione"],$tendinaIndirizzi,"uk-select tendina_scelta_indirizzo",null,"yes");?>
 					</div>

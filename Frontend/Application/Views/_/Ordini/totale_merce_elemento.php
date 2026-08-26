@@ -3,7 +3,7 @@
 <span class="uk-text-small">
 	<?php if ($p["cart"]["attributi"]) { echo "<br />".$p["cart"]["attributi"]; } ?>
 	<?php if (v("mostra_codice_in_carrello") && $p["cart"]["codice"]) { ?>
-		<br /><?php echo gtext("Codice");?>: <?php echo $p["cart"]["codice"];?>
+		<br /><?php echo gtextPlain("Codice");?>: <?php echo $p["cart"]["codice"];?>
 	<?php } ?>
 	<br />
 	<?php if (v("attiva_prezzo_fisso") && $prezzoUnitarioFisso > 0) { ?>

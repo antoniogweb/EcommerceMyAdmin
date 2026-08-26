@@ -13,7 +13,7 @@
 		$titoloListino = $l == "W" ? "Mondo" : findTitoloDaCodice($l);
 		$defaultLabel = (v("mantieni_listini_esteri_sincronizzati_se_non_modificati") && CombinazioniModel::listinoModificato($l, $idProdotto) && $l != v("nazione_default")) ? "warning" : "default";
 	?>
-	<a style="margin-left:10px;" href="<?php echo $this->baseUrl."/combinazioni/main".Url::createUrl($temp);?>" class="btn btn-<?php if ($this->viewArgs["listino"] == $l) { ?>info<?php } else { ?><?php echo $defaultLabel;?><?php } ?> pull-right"><?php echo gtext($titoloListino);?></a>
+	<a style="margin-left:10px;" href="<?php echo $this->baseUrl."/combinazioni/main".Url::createUrl($temp);?>" class="btn btn-<?php if ($this->viewArgs["listino"] == $l) { ?>info<?php } else { ?><?php echo $defaultLabel;?><?php } ?> pull-right"><?php echo gtextPlain($titoloListino);?></a>
 	<?php } ?>
 
 	<?php
@@ -69,13 +69,13 @@ $(document).ready(function(){
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel"><?php echo gtext("Seleziona immagine variante");?></h4>
+				<h4 class="modal-title" id="myModalLabel"><?php echo gtextPlain("Seleziona immagine variante");?></h4>
 			</div>
 			<div class="modal-body">
 				
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo gtext("Chiudi");?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo gtextPlain("Chiudi");?></button>
 			</div>
 		</div>
 	</div>

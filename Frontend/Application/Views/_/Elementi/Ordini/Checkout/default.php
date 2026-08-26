@@ -22,7 +22,7 @@
 					</div>
 					
 					<div class="uk-container">
-						<h2 class="<?php echo v("classi_titoli_checkout");?>" style="margin-bottom:30px;"><?php echo gtext("Dati di fatturazione");?></h2>
+						<h2 class="<?php echo v("classi_titoli_checkout");?>" style="margin-bottom:30px;"><?php echo gtextPlain("Dati di fatturazione");?></h2>
 
 						<div class="blocco_checkout">
 							<?php include(tpf("Regusers/form_dati_cliente.php"));?>
@@ -61,5 +61,5 @@
 		</form>
 	</div>
 <?php } else { ?>
-	<p><?php echo gtext("Non ci sono prodotti nel carrello");?></p>
+	<p><?php echo gtextPlain("Non ci sono prodotti nel carrello");?></p>
 <?php } ?>

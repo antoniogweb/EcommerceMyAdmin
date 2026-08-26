@@ -2,7 +2,7 @@
 
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
+	gtextPlain("Home") 		=> $this->baseUrl,
 	$titoloRecord	=>	"",
 );
 

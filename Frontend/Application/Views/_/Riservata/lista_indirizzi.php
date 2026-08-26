@@ -1,12 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
-	gtext("Indirizzi di spedizione") => "",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
+	gtextPlain("Indirizzi di spedizione") => "",
 );
 
-$titoloPagina = gtext("Indirizzi di spedizione");
+$titoloPagina = gtextPlain("Indirizzi di spedizione");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -18,22 +18,22 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-visible@m">
 		<div class="uk-text-meta uk-text-uppercase uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
-				<?php echo gtext("Indirizzo");?>
+				<?php echo gtextPlain("Indirizzo");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Cap");?>
+				<?php echo gtextPlain("Cap");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Nazione");?>
+				<?php echo gtextPlain("Nazione");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Città");?>
+				<?php echo gtextPlain("Città");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Provincia");?>
+				<?php echo gtextPlain("Provincia");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Telefono");?>
+				<?php echo gtextPlain("Telefono");?>
 			</div>
 			<div class="uk-first-column"></div>
 		</div>
@@ -43,22 +43,22 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div>
 		<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Indirizzo");?>:</span> <?php echo $indirizzo["spedizioni"]["indirizzo_spedizione"];?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Indirizzo");?>:</span> <?php echo $indirizzo["spedizioni"]["indirizzo_spedizione"];?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Cap");?>:</span> <?php echo $indirizzo["spedizioni"]["cap_spedizione"];?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Cap");?>:</span> <?php echo $indirizzo["spedizioni"]["cap_spedizione"];?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Nazione");?>:</span> <?php echo nomeNazione($indirizzo["spedizioni"]["nazione_spedizione"]);?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Nazione");?>:</span> <?php echo nomeNazione($indirizzo["spedizioni"]["nazione_spedizione"]);?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Città");?>:</span> <?php echo $indirizzo["spedizioni"]["citta_spedizione"];?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Città");?>:</span> <?php echo $indirizzo["spedizioni"]["citta_spedizione"];?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Provincia");?>:</span> <?php echo in_array($indirizzo["spedizioni"]["nazione_spedizione"], NazioniModel::nazioniConProvince()) ? ProvinceModel::sFindTitoloDaCodice($indirizzo["spedizioni"]["provincia_spedizione"]) : $indirizzo["spedizioni"]["dprovincia_spedizione"];?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Provincia");?>:</span> <?php echo in_array($indirizzo["spedizioni"]["nazione_spedizione"], NazioniModel::nazioniConProvince()) ? ProvinceModel::sFindTitoloDaCodice($indirizzo["spedizioni"]["provincia_spedizione"]) : $indirizzo["spedizioni"]["dprovincia_spedizione"];?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Telefono");?>:</span> <?php echo $indirizzo["spedizioni"]["telefono_spedizione"];?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Telefono");?>:</span> <?php echo $indirizzo["spedizioni"]["telefono_spedizione"];?>
 			</div>
 			<div class="uk-first-column uk-text-left uk-text-right@m">
 				<a class="td_edit" title="<?php echo gtextAttr("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/gestisci-spedizione/".$indirizzo["spedizioni"]["id_spedizione"];?>">
@@ -74,12 +74,12 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<hr>
 	<?php } ?>
 <?php } else { ?>
-<p><?php echo gtext("Non hai alcun indirizzo configurato");?></p>
+<p><?php echo gtextPlain("Non hai alcun indirizzo configurato");?></p>
 <?php } ?>
 
 <?php if (v("permetti_modifica_account")) { ?>
 <div class="uk-margin">
-	<a class="<?php echo v("classe_pulsanti_submit");?>" href="<?php echo $this->baseUrl."/gestisci-spedizione/0";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span> <?php echo gtext("Aggiungi indirizzo");?></a>
+	<a class="<?php echo v("classe_pulsanti_submit");?>" href="<?php echo $this->baseUrl."/gestisci-spedizione/0";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/plus.svg");?></span> <?php echo gtextPlain("Aggiungi indirizzo");?></a>
 </div>
 <?php } ?>
 <?php

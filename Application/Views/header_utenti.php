@@ -6,7 +6,7 @@ include($this->viewPath("header"));
 		<section class="sidebar">
 		<?php if (User::$logged and strcmp($this->action,'logout') !== 0) {?>
 		<ul class="sidebar-menu">
-			<li class="header"><?php echo gtext("MENÙ GENSTIONE PREFERENZE");?></li>
+			<li class="header"><?php echo gtextPlain("MENÙ GENSTIONE PREFERENZE");?></li>
 			<?php
 			$vociMenu = App::caricaMenu("utenti");
 			

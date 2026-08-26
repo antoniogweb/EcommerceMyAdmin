@@ -7,9 +7,9 @@ if (!isset($labelIdEl))
 ?>
 <div class="panel panel-info">
 	<div class="panel-heading">
-		<?php echo gtext("Assistente testi IA");?>
+		<?php echo gtextPlain("Assistente testi IA");?>
 	</div>
 	<div class="panel-body">
-		<a href="<?php echo $this->baseUrl."/airichieste/form/insert/0?$labelIdEl=$idAiRichiesta&partial=Y";?>" class="btn btn-info iframe"><i class="fa  fa-commenting-o"></i> <?php echo gtext("Apri l'assistente IA")?></a>
+		<a href="<?php echo $this->baseUrl."/airichieste/form/insert/0?$labelIdEl=$idAiRichiesta&partial=Y";?>" class="btn btn-info iframe"><i class="fa  fa-commenting-o"></i> <?php echo gtextPlain("Apri l'assistente IA")?></a>
 	</div>
 </div>

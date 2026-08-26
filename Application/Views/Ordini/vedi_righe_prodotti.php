@@ -16,8 +16,8 @@
 		if (count($elementiRiga) > 0) { ?>
 			<table width="100%" class="table" cellspacing="0">
 				<tr>
-					<th style="text-align:left;font-size:13px;"><?php echo gtext("Da inviare a");?></th>
-					<th style="text-align:left;font-size:13px;"><?php echo gtext("Dedica e firma");?></th>
+					<th style="text-align:left;font-size:13px;"><?php echo gtextPlain("Da inviare a");?></th>
+					<th style="text-align:left;font-size:13px;"><?php echo gtextPlain("Dedica e firma");?></th>
 					<th></th>
 				</tr>
 			<?php foreach ($elementiRiga as $el) { ?>
@@ -46,12 +46,12 @@
 				<br /><a title="<?php echo gtextAttr("Vedi dettagli promo");?>" class="iframe" href="<?php echo $this->baseUrl."/promozioni/form/update/".$promo["id_p"];?>?partial=Y&nobuttons=Y"><i class="fa fa-info-circle"></i></a> <?php echo gtext("Codice");?>: <span class="badge badge-info"><?php echo $promo["codice"];?></span> <?php echo gtext("Stato");?>: <?php echo PromozioniModel::g()->isActiveCoupon($promo["codice"],null,false) ? "<span class='label label-success'>".gtext("Attivo")."</span>" : "<span class='label label-warning'>".gtext("Non attivo")."</span>";?>
 				<?php $inviataA = EventiretargetingelementiModel::getElemento($promo["id_p"], "promozioni"); ?>
 				<?php if (!empty($inviataA)) { ?>
-				<span class="uk-text-meta"><?php echo gtext("Inviato a");?>:</span> <b><?php echo $inviataA["email"];?></b>
+				<span class="uk-text-meta"><?php echo gtextPlain("Inviato a");?>:</span> <b><?php echo $inviataA["email"];?></b>
 				<?php } ?>
 				
 				<?php $euroUsati = PromozioniModel::gNumeroEuroUsati($promo["id_p"]);?>
 				<?php if ($euroUsati > 0) { ?>
-				<?php echo gtext("Usati");?>: <strong><?php echo setPriceReverse($euroUsati);?> €</strong>
+				<?php echo gtextPlain("Usati");?>: <strong><?php echo setPriceReverse($euroUsati);?> €</strong>
 				<?php } ?>
 			<?php } ?>
 		<?php } ?>

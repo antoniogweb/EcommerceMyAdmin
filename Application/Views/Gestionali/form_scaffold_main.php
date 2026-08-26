@@ -25,8 +25,8 @@ $().ready(function() {
 			<?php if (GestionaliModel::getModulo($record["codice"])->isAttiva() && GestionaliModel::getModulo($record["codice"])->metodo("info")) { ?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<a class="ajlink pull-right make_spinner badge" href="<?php echo $this->baseUrl."/gestionali/infoaccount"; ?>"><i class="fa fa-refresh"></i> <?php echo gtext("aggiorna");?></a>
-					<?php echo gtext("Info gestionale");?>
+					<a class="ajlink pull-right make_spinner badge" href="<?php echo $this->baseUrl."/gestionali/infoaccount"; ?>"><i class="fa fa-refresh"></i> <?php echo gtextPlain("aggiorna");?></a>
+					<?php echo gtextPlain("Info gestionale");?>
 				</div>
 				<div class="panel-body">
 					<?php if (trim($record["info_account"])) { ?>
@@ -34,7 +34,7 @@ $().ready(function() {
 					<?php echo sanitizeHtml(json_encode(json_decode(htmlentitydecode($record["info_account"]),true),JSON_PRETTY_PRINT));?>
 					</pre>
 					<?php } else { ?>
-					<?php echo gtext("Info account non presente, si prega di generarlo con il pulsante aggiorna.");?>
+					<?php echo gtextPlain("Info account non presente, si prega di generarlo con il pulsante aggiorna.");?>
 					<?php } ?>
 				</div>
 			</div>

@@ -9,7 +9,7 @@ $campiIndirizzoSpedizione = SpedizioninegozioModel::getCampiIndirizzoModulo((int
 <div class='row'>
 	<form class="formClass" method="POST" action="<?php echo $this->baseUrl."/".$this->controller."/form/$type/$id".$this->viewStatus;?>" enctype="multipart/form-data">
 		<div class='col-md-12'>
-			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-cog"></i> <?php echo gtext("Opzioni di spedizione");?></h4>
+			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-cog"></i> <?php echo gtextPlain("Opzioni di spedizione");?></h4>
 			
 			<div class='row'>
 				<div class='col-md-3'>
@@ -38,7 +38,7 @@ $campiIndirizzoSpedizione = SpedizioninegozioModel::getCampiIndirizzoModulo((int
 			</div>
 			
 			<?php if ($type === "update") { ?>
-			<h4 class="text-bold" style="padding-top:10px;padding-bottom:10px;"><i class="fa fa-map-marker"></i> <?php echo gtext("Indirizzo spedizione");?></h4>
+			<h4 class="text-bold" style="padding-top:10px;padding-bottom:10px;"><i class="fa fa-map-marker"></i> <?php echo gtextPlain("Indirizzo spedizione");?></h4>
 			
 			<div class='row'>
 				<div class='col-md-3'>
@@ -75,7 +75,7 @@ $campiIndirizzoSpedizione = SpedizioninegozioModel::getCampiIndirizzoModulo((int
 				<?php } ?>
 			</div>
 			
-			<h4 class="text-bold" style="padding-top:10px;padding-bottom:10px;"><i class="fa fa-sticky-note-o"></i> <?php echo gtext("Note");?></h4>
+			<h4 class="text-bold" style="padding-top:10px;padding-bottom:10px;"><i class="fa fa-sticky-note-o"></i> <?php echo gtextPlain("Note");?></h4>
 			
 			<?php if (SpedizioninegozioModel::legataAdOrdineOLista((int)$id)) { ?>
 			<div class='row'>

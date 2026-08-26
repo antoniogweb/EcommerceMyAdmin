@@ -1,11 +1,11 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Carrello") => $this->baseUrl."/carrello/vedi",
-	gtext("Checkout") => "",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Carrello") => $this->baseUrl."/carrello/vedi",
+	gtextPlain("Checkout") => "",
 );
-$titoloPagina = gtext("Checkout");
+$titoloPagina = gtextPlain("Checkout");
 
 include(tpf("/Elementi/Pagine/page_top.php")); ?>
 
@@ -59,14 +59,14 @@ if (!User::$isMobile)
 	</div>
 	<div class="uk-width-1-2@m uk-text-left uk-flex-first uk-flex-last@s">
 		<div class="<?php if (!User::$isPhone) { ?>uk-margin-medium-top<?php } ?> uk-margin-bottom">
-			<h3><?php echo gtext("Continua come ospite o crea un account");?></h3>
-			<div class="uk-text-meta"><?php echo gtext("Continua l'acquisto inserendo i tuoi dati. Se lo desideri, potrai creare un account in fase di checkout.");?></div>
+			<h3><?php echo gtextPlain("Continua come ospite o crea un account");?></h3>
+			<div class="uk-text-meta"><?php echo gtextPlain("Continua l'acquisto inserendo i tuoi dati. Se lo desideri, potrai creare un account in fase di checkout.");?></div>
 		</div>
 		
 		<form class="" action = '<?php echo $this->baseUrl."/checkout";?>' method = 'GET'>
 			<fieldset class="uk-fieldset">
 				<div class="uk-margin">
-					<label class="uk-form-label uk-text-bold"><?php echo gtext("Indirizzo e-mail");?></label>
+					<label class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?></label>
 					<div class="uk-form-controls">
 						<input class="uk-input uk-width-1-2@s uk-width-1-1@m" name="default_email" type="text" placeholder="<?php echo gtextAttr("Scrivi qui il tuo indirizzo e-mail")?>"/>
 					</div>

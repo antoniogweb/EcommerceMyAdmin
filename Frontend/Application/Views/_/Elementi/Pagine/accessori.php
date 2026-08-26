@@ -29,18 +29,18 @@
 			<div class="blocco-prezzo-accessorio" style="display:none;">
 				<h5>
 					<div class="price uk-text-small">
-						<?php echo gtext("Prezzo");?>: <span class="amount">
+						<?php echo gtextPlain("Prezzo");?>: <span class="amount">
 							<?php if (inPromozioneTot($acc["pages"]["id_page"])) { echo "<del>€ <span class='price_full_accessorio'>".setPriceReverse(calcolaPrezzoIvato($acc["pages"]["id_page"], $acc["pages"]["price"]))."</span> €</del> <strong class='price_value_accessorio'>".setPriceReverse(calcolaPrezzoFinale($acc["pages"]["id_page"], $acc["pages"]["price"]))."</strong> €"; } else { echo "<strong class='price_value_accessorio'>".setPriceReverse(calcolaPrezzoFinale($acc["pages"]["id_page"], $acc["pages"]["price"]))."</strong> €";}?>
 						</span>
 						<?php if (ImpostazioniModel::$valori["mostra_scritta_iva_inclusa"] == "Y") { ?>
-							<span class="iva_inclusa"><?php echo gtext("Iva inclusa");?></span>
+							<span class="iva_inclusa"><?php echo gtextPlain("Iva inclusa");?></span>
 						<?php } ?>
 					</div>
 					<div class="giacenza_acc uk-text-small">
 						<?php $qtaAcc = giacenzaPrincipale($acc["pages"]["id_page"]);?>
-						<?php echo gtext("Disponibilità");?>: <span class="valore_giacenza_acc"><?php echo $qtaAcc;?></span>
-						<span class="sng" style='display:<?php echo $qtaAcc==1 ? "inline" : "none"; ?>'><?php echo gtext("pezzo rimasto", false);?></span>
-						<span class="plu" style='display:<?php echo $qtaAcc!=1 ? "inline" : "none"; ?>'><?php echo gtext("pezzi rimasti", false);?></span>
+						<?php echo gtextPlain("Disponibilità");?>: <span class="valore_giacenza_acc"><?php echo $qtaAcc;?></span>
+						<span class="sng" style='display:<?php echo $qtaAcc==1 ? "inline" : "none"; ?>'><?php echo gtextPlain("pezzo rimasto", false);?></span>
+						<span class="plu" style='display:<?php echo $qtaAcc!=1 ? "inline" : "none"; ?>'><?php echo gtextPlain("pezzi rimasti", false);?></span>
 					</div>
 				</h5>
 			</div>

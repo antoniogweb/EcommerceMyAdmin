@@ -3,10 +3,10 @@
 <li class="<?php echo tm($tm, array("documentidownload"));?> treeview">
 	<a href="#">
 		<i class="fa fa-bar-chart"></i>
-		<span><?php echo gtext("Download documenti")?></span>
+		<span><?php echo gtextPlain("Download documenti")?></span>
 	</a>
 	<ul class="treeview-menu">
-		<li class="icon_list <?php if ($this->controller === "documentidownload") { ?>active<?php } ?>"><a href="<?php echo $this->baseUrl."/documentidownload/main/1";?>"><i class="fa fa-list"></i> <?php echo gtext("Elenco download documenti")?></a></li>
+		<li class="icon_list <?php if ($this->controller === "documentidownload") { ?>active<?php } ?>"><a href="<?php echo $this->baseUrl."/documentidownload/main/1";?>"><i class="fa fa-list"></i> <?php echo gtextPlain("Elenco download documenti")?></a></li>
 	</ul>
 </li>
 <?php } ?>

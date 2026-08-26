@@ -21,9 +21,9 @@ if (!isset($creaAccountLink))
 	<div class="uk-dropdown-nav">
 		<div class="uk-text-small uk-text-right header_login_popup">
 			<?php if (v("permetti_registrazione")) { ?>
-				<a class="uk-text-secondary uk-text-bold" href="<?php echo $this->baseUrl."/".$creaAccountLink;?>"><?php echo gtext("Crea un account")?></a>
+				<a class="uk-text-secondary uk-text-bold" href="<?php echo $this->baseUrl."/".$creaAccountLink;?>"><?php echo gtextPlain("Crea un account")?></a>
 			<?php } else { ?>
-				<span class="uk-text-secondary uk-text-bold"><?php echo gtext("Esegui il login")?></span>
+				<span class="uk-text-secondary uk-text-bold"><?php echo gtextPlain("Esegui il login")?></span>
 			<?php } ?>
 			<hr />
 		</div>
@@ -34,7 +34,7 @@ if (!isset($creaAccountLink))
 		))));
 		?>
 		<br />
-		<a class="uk-text-small uk-text-secondary" href="<?php echo $this->baseUrl."/password-dimenticata";?>"><?php echo gtext("Hai dimenticato la password?");?></a>
+		<a class="uk-text-small uk-text-secondary" href="<?php echo $this->baseUrl."/password-dimenticata";?>"><?php echo gtextPlain("Hai dimenticato la password?");?></a>
 	</div>
 	<?php } ?>
 </div>

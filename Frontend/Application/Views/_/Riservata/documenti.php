@@ -1,12 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
-	gtext("Biblioteca documenti") => "",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Area riservata")	=>	$this->baseUrl."/".Url::routeToUrl("area-riservata"),
+	gtextPlain("Biblioteca documenti") => "",
 );
 
-$titoloPagina = gtext("Biblioteca documenti");
+$titoloPagina = gtextPlain("Biblioteca documenti");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 
@@ -18,16 +18,16 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-visible@m">
 		<div class="uk-text-meta uk-text-uppercase uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
-				<?php echo gtext("Prodotto");?>
+				<?php echo gtextPlain("Prodotto");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Documento");?>
+				<?php echo gtextPlain("Documento");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Tipo");?>
+				<?php echo gtextPlain("Tipo");?>
 			</div>
 			<div class="uk-first-column">
-				<?php echo gtext("Ordine");?>
+				<?php echo gtextPlain("Ordine");?>
 			</div>
 			<div class="uk-first-column"></div>
 		</div>
@@ -37,16 +37,16 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div>
 		<div class="uk-text-small uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-left uk-text-center@m uk-grid" uk-grid="">
 			<div class="uk-first-column uk-text-left">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Prodotto");?>:</span> <?php echo genericField($documento, "title", "pages", "contenuti_tradotti_pagina");?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Prodotto");?>:</span> <?php echo genericField($documento, "title", "pages", "contenuti_tradotti_pagina");?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Documento");?>:</span> <?php echo dfield($documento, "titolo");?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Documento");?>:</span> <?php echo dfield($documento, "titolo");?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Tipo");?>:</span> <?php echo dfield($documento, "estensione");?>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Tipo");?>:</span> <?php echo dfield($documento, "estensione");?>
 			</div>
 			<div class="uk-first-column">
-				<span class="uk-hidden@m uk-text-bold"><?php echo gtext("Ordine");?>:</span> <a href="<?php echo $this->baseUrl."/resoconto-acquisto/".$documento["orders"]["id_o"]."/".$documento["orders"]["cart_uid"]."/".$documento["orders"]["admin_token"];?>?n=y">#<?php echo $documento["orders"]["id_o"];?> <?php echo gtext("del");?> <?php echo date("d/m/Y H:i", strtotime($documento["orders"]["data_creazione"]))?></a>
+				<span class="uk-hidden@m uk-text-bold"><?php echo gtextPlain("Ordine");?>:</span> <a href="<?php echo $this->baseUrl."/resoconto-acquisto/".$documento["orders"]["id_o"]."/".$documento["orders"]["cart_uid"]."/".$documento["orders"]["admin_token"];?>?n=y">#<?php echo $documento["orders"]["id_o"];?> <?php echo gtextPlain("del");?> <?php echo date("d/m/Y H:i", strtotime($documento["orders"]["data_creazione"]))?></a>
 			</div>
 			<div class="uk-first-column uk-text-left uk-text-right@m">
 				<a target="_blank" class="td_edit" title="<?php echo gtextAttr("Modifica",false);?>" class="" href="<?php echo $this->baseUrl."/contenuti/documento/".$documento["documenti"]["id_doc"];?>">
@@ -58,7 +58,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<hr>
 	<?php } ?>
 <?php } else { ?>
-<p><?php echo gtext("Non hai alcun documento nella tua biblioteca");?></p>
+<p><?php echo gtextPlain("Non hai alcun documento nella tua biblioteca");?></p>
 <?php } ?>
 <?php
 include(tpf("/Elementi/Pagine/riservata_bottom.php"));

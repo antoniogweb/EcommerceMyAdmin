@@ -8,7 +8,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 ?>
 
 <section class="content-header">
-	<h1><?php echo gtext("Gestione ordini");?></h1>
+	<h1><?php echo gtextPlain("Gestione ordini");?></h1>
 </section>
 
 <!-- Main content -->
@@ -67,16 +67,16 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 						$tempViewArgs = $this->viewArgs;
 						$tempViewArgs["prezzi"] = "I";
 						?>
-						<a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/".$ordine["id_o"].Url::createUrl($tempViewArgs);?>" type="button" class="btn btn-<?php echo $mostraIvato ? "primary" : "default"; ?> btn-xs"><?php echo gtext("Prezzi IVA inclusa")?></a>
+						<a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/".$ordine["id_o"].Url::createUrl($tempViewArgs);?>" type="button" class="btn btn-<?php echo $mostraIvato ? "primary" : "default"; ?> btn-xs"><?php echo gtextPlain("Prezzi IVA inclusa")?></a>
 						<?php
 						$tempViewArgs = $this->viewArgs;
 						$tempViewArgs["prezzi"] = "NI";
 						?>
-						<a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/".$ordine["id_o"].Url::createUrl($tempViewArgs);?>" type="button" style="margin-left:8px;" class="btn btn-<?php echo !$mostraIvato ? "primary" : "default"; ?> btn-xs"><?php echo gtext("Prezzi IVA esclusa")?></a>
+						<a href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/vedi/".$ordine["id_o"].Url::createUrl($tempViewArgs);?>" type="button" style="margin-left:8px;" class="btn btn-<?php echo !$mostraIvato ? "primary" : "default"; ?> btn-xs"><?php echo gtextPlain("Prezzi IVA esclusa")?></a>
 					</div>
 					<?php } ?>
 					
-					<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Righe ordine");?>:</h4>
+					<h4 style="margin-top:0px;" class="text-bold"><?php echo gtextPlain("Righe ordine");?>:</h4>
 					
 					<div class="scroll-x" style="clear:both;">
 						<table width="100%" class="table table-striped" cellspacing="0">
@@ -103,7 +103,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 							<?php if ($ordine["costo_pagamento"] && $ordine["mostra_spese_pagamento_ordine_frontend"]) { ?>
 							<tr>
 								<td></td>
-								<td colspan="2"><?php echo gtext("Spese pagamento");?> (<?php echo str_replace("_"," ",$ordine["pagamento"]);?>)</td>
+								<td colspan="2"><?php echo gtextPlain("Spese pagamento");?> (<?php echo str_replace("_"," ",$ordine["pagamento"]);?>)</td>
 								<?php if ($ordine["da_spedire"] && v("attiva_gestione_spedizioni")) { ?><td class="text-left"></td><?php } ?>
 								<td class="text-right"></td>
 								<td class="text-right"></td>
@@ -133,7 +133,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 							<?php if ($ordine["da_spedire"] && $ordine["mostra_spese_spedizione_ordine_frontend"]) { ?>
 							<tr>
 								<td></td>
-								<td colspan="2"><?php echo gtext("Spese di spedizione");?></td>
+								<td colspan="2"><?php echo gtextPlain("Spese di spedizione");?></td>
 								<?php if ($ordine["da_spedire"] && v("attiva_gestione_spedizioni")) { ?><td class="text-left"></td><?php } ?>
 								<td class="text-right"></td>
 								<td class="text-right"></td>
@@ -163,7 +163,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 							<?php if ($ordine["euro_crediti"] > 0) { ?>
 							<tr>
 								<td></td>
-								<td colspan="2"><?php echo gtext("Sconto crediti");?></td>
+								<td colspan="2"><?php echo gtextPlain("Sconto crediti");?></td>
 								<?php if ($ordine["da_spedire"] && v("attiva_gestione_spedizioni")) { ?><td class="text-left"></td><?php } ?>
 								<td class="text-right"></td>
 								<td class="text-right"></td>
@@ -195,10 +195,10 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 								<td></td>
 								<td colspan="2">
 									<?php if ($ordine["nome_promozione"]) { ?>
-									<?php echo gtext("Coupon");?>: <b><?php echo $ordine["nome_promozione"];?></b>. <?php echo gtext("Codice coupon");?>: <b><?php echo $ordine["codice_promozione"];?></b>
+									<?php echo gtextPlain("Coupon");?>: <b><?php echo $ordine["nome_promozione"];?></b>. <?php echo gtextPlain("Codice coupon");?>: <b><?php echo $ordine["codice_promozione"];?></b>
 									<?php } ?>
 									<?php if ($ordine["sconto"] > 0) { ?>
-									<?php echo gtext("Sconto");?>:
+									<?php echo gtextPlain("Sconto");?>:
 									<?php } ?>
 								</td>
 								<?php if ($ordine["da_spedire"] && v("attiva_gestione_spedizioni")) { ?><td class="text-left"></td><?php } ?>
@@ -228,7 +228,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main help_totali_ordine">
-							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Totali ordine");?>:</h4>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtextPlain("Totali ordine");?>:</h4>
 							
 							<?php
 							list($arrayIva, $arraySubtotali) = OrdiniModel::getTotaliIva($ordine["id_o"]);
@@ -239,7 +239,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 							<table class="table table-striped">
 								<?php if (count($arrayIva) === 1) { ?>
 								<tr>
-									<td><?php echo gtext("Imponibile");?></td>
+									<td><?php echo gtextPlain("Imponibile");?></td>
 									<td class="text-right"><b><?php echo setPriceReverse($imponibile);?> €</b></td>
 								</tr>
 								<?php } ?>
@@ -250,7 +250,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 								</tr>
 								<?php } ?>
 								<tr>
-									<td><?php echo gtext("Totale ordine");?></td>
+									<td><?php echo gtextPlain("Totale ordine");?></td>
 									<td class="text-right"><b><?php echo setPriceReverse($ordine["total"]);?> €</b></td>
 								</tr>
 							</table>
@@ -261,16 +261,16 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main help_spese_di_spedizione">
-							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Spedizione");?></h4>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtextPlain("Spedizione");?></h4>
 							
 							<table class="table table-striped">
 								<tr>
 									<td>
-										<?php echo gtext("Spese spedizione");?><br />
-										<?php echo gtext("Peso totale");?>: <span class="badge badge-info"><b><?php echo setPriceReverse($pesoTotale);?> kg</b></span> <?php if (!empty($corriere)) { ?><br />
-										<?php echo gtext("Corriere scelto");?>: <span class="badge badge-info"><?php echo $corriere["titolo"];?></span><?php } ?>
+										<?php echo gtextPlain("Spese spedizione");?><br />
+										<?php echo gtextPlain("Peso totale");?>: <span class="badge badge-info"><b><?php echo setPriceReverse($pesoTotale);?> kg</b></span> <?php if (!empty($corriere)) { ?><br />
+										<?php echo gtextPlain("Corriere scelto");?>: <span class="badge badge-info"><?php echo $corriere["titolo"];?></span><?php } ?>
 										<?php if ($ordine["id_spedizioniere"]) { ?>
-										<br /><?php echo gtext("Spedizioniere");?>: <b><?php echo SpedizionieriModel::g()->titolo($ordine["id_spedizioniere"]);?></b>
+										<br /><?php echo gtextPlain("Spedizioniere");?>: <b><?php echo SpedizionieriModel::g()->titolo($ordine["id_spedizioniere"]);?></b>
 										<?php } ?>
 									</td>
 									<td class="text-right">
@@ -284,7 +284,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 							</table>
 							
 							<?php if ($ordine["link_tracking"]) { ?>
-							<div style="margin-top:10px;"><a target="_blank" href="<?php echo $ordine["link_tracking"];?>"><i class="fa fa-truck"></i> <?php echo gtext("Link tracking");?></a></div>
+							<div style="margin-top:10px;"><a target="_blank" href="<?php echo $ordine["link_tracking"];?>"><i class="fa fa-truck"></i> <?php echo gtextPlain("Link tracking");?></a></div>
 							<?php } ?>
 						</div>
 					</div>
@@ -297,7 +297,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main">
-							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Dedica e firma");?></h4>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtextPlain("Dedica e firma");?></h4>
 							<blockquote cite="#">
 								<div class="uk-margin-small-bottom"><?php echo nl2br($ordine["dedica"]);?></div>
 								<?php if (trim($ordine["firma"])) { ?>
@@ -307,7 +307,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 							<?php if (v("attiva_liste_regalo")) { ?>
 								<?php $dedica = OrdiniModel::g()->getElemendoDedica($ordine["id_o"]);?>
 								<?php if ($dedica) { ?>
-								<div class="alert alert-info"><?php echo gtext("La mail con la dedica e la firma è stata inviata all'utente creatore della lista")." (<b>".$dedica["email"]."</b>) ".gtext("in data")." ".date("d/m/Y H:i", strtotime($dedica["data_creazione"]));?></div>
+								<div class="alert alert-info"><?php echo gtextPlain("La mail con la dedica e la firma è stata inviata all'utente creatore della lista")." (<b>".$dedica["email"]."</b>) ".gtextPlain("in data")." ".date("d/m/Y H:i", strtotime($dedica["data_creazione"]));?></div>
 								<?php } ?>
 							<?php } ?>
 						</div>
@@ -318,7 +318,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main">
-							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Note cliente");?></h4>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtextPlain("Note cliente");?></h4>
 							<?php echo nl2br($ordine["note"])?>
 						</div>
 					</div>
@@ -328,7 +328,7 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 				<div class="col-lg-6">
 					<div class="box">
 						<div class="box-header with-border main">
-							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Note interne");?></h4>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtextPlain("Note interne");?></h4>
 							<?php echo nl2br($ordine["note_interne"])?>
 						</div>
 					</div>
@@ -340,78 +340,78 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 				<div class="box-header with-border main help_fatturazione">
 					<div class="row">
 						<div class="col-lg-6">
-							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Dati di fatturazione");?>:</h4>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtextPlain("Dati di fatturazione");?>:</h4>
 							
 							<table class="table table-striped">
 								<?php if ($cliente && $cliente["deleted"] == "no" && ControllersModel::checkAccessoAlController(array("regusers"))) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("Account cliente");?></td>
+									<td class="first_column"><?php echo gtextPlain("Account cliente");?></td>
 									<td><a class="iframe label label-success" href="<?php echo $this->baseUrl."/regusers/form/update/".$cliente["id_user"]?>?partial=Y"><?php echo $cliente["username"];?></a></td>
 								</tr>
 								<?php } ?>
 								<?php if (strcmp($ordine["tipo_cliente"],"privato") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("Nome");?></td>
+									<td class="first_column"><?php echo gtextPlain("Nome");?></td>
 									<td><?php echo $ordine["nome"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Cognome");?></td>
+									<td class="first_column"><?php echo gtextPlain("Cognome");?></td>
 									<td><?php echo $ordine["cognome"];?></td>
 								</tr>
 								<?php } ?>
 								<?php if (strcmp($ordine["tipo_cliente"],"azienda") === 0) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("Ragione sociale");?></td>
+									<td class="first_column"><?php echo gtextPlain("Ragione sociale");?></td>
 									<td><?php echo $ordine["ragione_sociale"];?></td>
 								</tr>
 								<?php } ?>
 								<?php if (strcmp($ordine["tipo_cliente"],"azienda") === 0 || strcmp($ordine["tipo_cliente"],"libero_professionista") === 0) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("Partita IVA");?></td>
+									<td class="first_column"><?php echo gtextPlain("Partita IVA");?></td>
 									<td><?php echo $ordine["p_iva"];?></td>
 								</tr>
 								<?php } ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("Codice fiscale");?></td>
+									<td class="first_column"><?php echo gtextPlain("Codice fiscale");?></td>
 									<td><?php echo strtoupper($ordine["codice_fiscale"]);?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Indirizzo");?></td>
+									<td class="first_column"><?php echo gtextPlain("Indirizzo");?></td>
 									<td><?php echo $ordine["indirizzo"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Cap");?></td>
+									<td class="first_column"><?php echo gtextPlain("Cap");?></td>
 									<td><?php echo $ordine["cap"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Nazione");?></td>
+									<td class="first_column"><?php echo gtextPlain("Nazione");?></td>
 									<td><?php echo nomeNazione($ordine["nazione"]);?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Provincia");?></td>
+									<td class="first_column"><?php echo gtextPlain("Provincia");?></td>
 									<td><?php echo NazioniModel::conProvince($ordine["nazione"]) ? ProvinceModel::sFindTitoloDaCodice($ordine["provincia"]) : $ordine["dprovincia"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Città");?></td>
+									<td class="first_column"><?php echo gtextPlain("Città");?></td>
 									<td><?php echo $ordine["citta"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Telefono");?></td>
+									<td class="first_column"><?php echo gtextPlain("Telefono");?></td>
 									<td><?php echo $ordine["telefono"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Email");?></td>
+									<td class="first_column"><?php echo gtextPlain("Email");?></td>
 									<td><?php echo $ordine["email"];?></td>
 								</tr>
 								<?php if (VariabiliModel::attivaCodiceGestionale()) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("Codice gestionale");?></td>
+									<td class="first_column"><?php echo gtextPlain("Codice gestionale");?></td>
 									<td><?php echo $ordine["codice_gestionale_cliente"];?></td>
 								</tr>
 								<?php } ?>
 								<?php if (strcmp($tipoOutput,"web") !== 0 and $sendPassword ) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("PASSWORD");?></td>
+									<td class="first_column"><?php echo gtextPlain("PASSWORD");?></td>
 									<td><?php echo $password;?></td>
 								</tr>
 								<?php } ?>
@@ -420,42 +420,42 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 						</div>
 						<?php if ($ordine["da_spedire"]) { ?>
 						<div class="col-lg-6">
-							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Dati di spedizione");?>:</h4>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtextPlain("Dati di spedizione");?>:</h4>
 							
 							<table class="table table-striped">
 								<tr>
-									<td class="first_column"><?php echo gtext("Indirizzo");?></td>
+									<td class="first_column"><?php echo gtextPlain("Indirizzo");?></td>
 									<td><?php echo $ordine["indirizzo_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Cap");?></td>
+									<td class="first_column"><?php echo gtextPlain("Cap");?></td>
 									<td><?php echo $ordine["cap_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Nazione");?></td>
+									<td class="first_column"><?php echo gtextPlain("Nazione");?></td>
 									<td><?php echo nomeNazione($ordine["nazione_spedizione"]);?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Provincia");?></td>
+									<td class="first_column"><?php echo gtextPlain("Provincia");?></td>
 									<td><?php echo NazioniModel::conProvince($ordine["nazione_spedizione"]) ? ProvinceModel::sFindTitoloDaCodice($ordine["provincia_spedizione"]) : $ordine["dprovincia_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Città");?></td>
+									<td class="first_column"><?php echo gtextPlain("Città");?></td>
 									<td><?php echo $ordine["citta_spedizione"];?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("Telefono");?></td>
+									<td class="first_column"><?php echo gtextPlain("Telefono");?></td>
 									<td><?php echo $ordine["telefono_spedizione"];?></td>
 								</tr>
 								<?php if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione")) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("Destinatario");?></td>
+									<td class="first_column"><?php echo gtextPlain("Destinatario");?></td>
 									<td><?php echo $ordine["destinatario_spedizione"];?></td>
 								</tr>
 								<?php } ?>
 								<?php if (VariabiliModel::attivaCodiceGestionale()) { ?>
 								<tr>
-									<td class="first_column"><?php echo gtext("Codice gestionale indirizzo");?></td>
+									<td class="first_column"><?php echo gtextPlain("Codice gestionale indirizzo");?></td>
 									<td><?php echo $ordine["codice_gestionale_spedizione"];?></td>
 								</tr>
 								<?php } ?>
@@ -467,15 +467,15 @@ $haRipartizioni = OrdiniivaripartitaModel::g()->clear()->where(array(
 					<div class="row">
 						<div class="col-lg-12">
 							<br />
-							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtext("Dati per fatturazione elettronica");?>:</h4>
+							<h4 style="margin-top:0px;" class="text-bold"><?php echo gtextPlain("Dati per fatturazione elettronica");?>:</h4>
 							
 							<table class="table table-striped">
 								<tr>
-									<td class="first_column"><?php echo gtext("PEC");?></td>
+									<td class="first_column"><?php echo gtextPlain("PEC");?></td>
 									<td><?php echo $ordine["pec"] ? $ordine["pec"] : "--";?></td>
 								</tr>
 								<tr>
-									<td class="first_column"><?php echo gtext("CODICE DESTINATARIO");?></td>
+									<td class="first_column"><?php echo gtextPlain("CODICE DESTINATARIO");?></td>
 									<td><?php echo $ordine["codice_destinatario"] ? $ordine["codice_destinatario"] : "--";?></td>
 								</tr>
 							</table>

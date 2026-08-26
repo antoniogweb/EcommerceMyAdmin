@@ -1,20 +1,20 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $breadcrumb = array(
-	gtext("Home") 		=> $this->baseUrl,
-	gtext("Accedi")	=>	$this->baseUrl."/regusers/login",
-	gtext("Verifica il tuo account") => "",
+	gtextPlain("Home") 		=> $this->baseUrl,
+	gtextPlain("Accedi")	=>	$this->baseUrl."/regusers/login",
+	gtextPlain("Verifica il tuo account") => "",
 );
 
-$titoloPagina = gtext("Verifica il tuo account");
+$titoloPagina = gtextPlain("Verifica il tuo account");
 
 include(tpf("/Elementi/Pagine/page_top.php"));
 ?>
 <div class="form_account_verification">
 	<p class="uk-text-muted">
-		<?php echo gtext("Sembra che il tuo account sia già presente, ma che non sia mai stato verificato, ed è quindi non attivo.")?><br />
-		<?php echo gtext("Inserisci l'indirizzo e-mail con il quale ti sei registrato al sito.");?><br />
-		<?php echo gtext("Ti invieremo una codice grazie al quale potrai verificare e quindi attivare il tuo account.");?>
+		<?php echo gtextPlain("Sembra che il tuo account sia già presente, ma che non sia mai stato verificato, ed è quindi non attivo.")?><br />
+		<?php echo gtextPlain("Inserisci l'indirizzo e-mail con il quale ti sei registrato al sito.");?><br />
+		<?php echo gtextPlain("Ti invieremo una codice grazie al quale potrai verificare e quindi attivare il tuo account.");?>
 	</p>
 
 	<?php echo $notice;?>
@@ -25,7 +25,7 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 			<form action="<?php echo $this->baseUrl."/account-verification";?>" method="POST">
 				<fieldset class="uk-fieldset">
 					<div class="uk-margin">
-						<label class="uk-form-label uk-text-bold"><?php echo gtext("Indirizzo e-mail");?> *</label>
+						<label class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> *</label>
 						<div class="uk-form-controls">
 							<input class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi la tua e-mail", false)?>" />
 						</div>

@@ -3,10 +3,10 @@
 <li class="<?php echo tm($tm, "pagamenti");?> treeview">
 	<a href="#">
 		<i class="fa fa-credit-card"></i>
-		<span><?php echo gtext("Metodi di pagamento")?></span>
+		<span><?php echo gtextPlain("Metodi di pagamento")?></span>
 	</a>
 	<ul class="treeview-menu">
-		<li><a href="<?php echo $this->baseUrl."/pagamenti/main";?>"><i class="fa fa-list"></i> <?php echo gtext("Lista")?></a></li>
+		<li><a href="<?php echo $this->baseUrl."/pagamenti/main";?>"><i class="fa fa-list"></i> <?php echo gtextPlain("Lista")?></a></li>
 	</ul>
 </li>
 <?php } ?>

@@ -52,27 +52,27 @@ table.corpo td table td
 </style>
 </head>
 <body>
-	<div style="font-size:22px;"><?php echo gtext("General Logistic Systems Italy S.p.A.");?>
-		<p style="text-align:center;"><?php echo gtext("Distinta spedizioni del");?> <?php echo date("d/m/Y H:i:s",strtotime($data));?></p>
+	<div style="font-size:22px;"><?php echo gtextPlain("General Logistic Systems Italy S.p.A.");?>
+		<p style="text-align:center;"><?php echo gtextPlain("Distinta spedizioni del");?> <?php echo date("d/m/Y H:i:s",strtotime($data));?></p>
 		<div>
-			<?php echo gtext("Sede di appartenenza");?>: <?php echo $this->getParam("codice_sede");?><br />
-			<?php echo gtext("Cliente");?>: <?php echo $nomeCliente;?>
+			<?php echo gtextPlain("Sede di appartenenza");?>: <?php echo $this->getParam("codice_sede");?><br />
+			<?php echo gtextPlain("Cliente");?>: <?php echo $nomeCliente;?>
 		</div>
 	</div>
-	<p style="font-size:16px;"><?php echo gtext("Codici cliente");?>: <?php echo $codiceContratto;?></p>
+	<p style="font-size:16px;"><?php echo gtextPlain("Codici cliente");?>: <?php echo $codiceContratto;?></p>
 	
 	<table class="corpo" style="width:297mm;">
 		<tr class="header_tabella">
-			<th><?php echo gtext("Data");?></th>
-			<th><?php echo gtext("N° Sped.");?></th>
-			<th><?php echo gtext("Destinatario");?></th>
-			<th><?php echo gtext("Località");?></th>
-			<th><?php echo gtext("Indirizzo");?></th>
-			<th><?php echo gtext("Prov");?></th>
-			<th><?php echo gtext("ZipCode");?></th>
-			<th><?php echo gtext("Colli");?></th>
-			<th><?php echo gtext("Peso");?></th>
-			<th><?php echo gtext("Codice cliente");?></th>
+			<th><?php echo gtextPlain("Data");?></th>
+			<th><?php echo gtextPlain("N° Sped.");?></th>
+			<th><?php echo gtextPlain("Destinatario");?></th>
+			<th><?php echo gtextPlain("Località");?></th>
+			<th><?php echo gtextPlain("Indirizzo");?></th>
+			<th><?php echo gtextPlain("Prov");?></th>
+			<th><?php echo gtextPlain("ZipCode");?></th>
+			<th><?php echo gtextPlain("Colli");?></th>
+			<th><?php echo gtextPlain("Peso");?></th>
+			<th><?php echo gtextPlain("Codice cliente");?></th>
 		</tr>
 		<?php
 		$spnModel = new SpedizioninegozioModel();
@@ -141,9 +141,9 @@ table.corpo td table td
 	
 	<div style="font-size:18px;">
 	<br />
-	<?php echo gtext("Totale spedizioni");?>: <?php echo $numeroSpedizioni;?><br />
-	<?php echo gtext("Totale colli");?>: <?php echo $numeroColliTotali;?><br />
-	<?php echo gtext("Totale peso reale");?>: <?php echo number_format($pesoTotale,1,",",".");?><br />
+	<?php echo gtextPlain("Totale spedizioni");?>: <?php echo $numeroSpedizioni;?><br />
+	<?php echo gtextPlain("Totale colli");?>: <?php echo $numeroColliTotali;?><br />
+	<?php echo gtextPlain("Totale peso reale");?>: <?php echo number_format($pesoTotale,1,",",".");?><br />
 	</div>
 </body>
 </html>

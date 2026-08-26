@@ -7,7 +7,7 @@
 		<div class="uk-padding-small elemento_gift_card uk-padding-remove-left uk-padding-remove-right" id-cart="<?php echo $p["cart"]["id_cart"];?>">
 			<?php if (false) { ?>
 			<div class="uk-margin">
-				<label class="uk-form-label"><?php echo gtext("Email della persona a cui vuoi regalare la gift card");?></label>
+				<label class="uk-form-label"><?php echo gtextPlain("Email della persona a cui vuoi regalare la gift card");?></label>
 				<div class="uk-form-controls">
 					<div class="uk-grid uk-grid-column-small" uk-grid>
 						<div class="uk-margin uk-margin-remove-bottom uk-width-1-1">
@@ -20,7 +20,7 @@
 				</div>
 			</div>
 			<div class="uk-margin uk-margin-remove-bottom">
-				<label class="uk-form-label"><?php echo gtext("Testo della dedica e firma");?></label>
+				<label class="uk-form-label"><?php echo gtextPlain("Testo della dedica e firma");?></label>
 				<div class="uk-form-controls">
 					<?php echo Html_Form::textarea("testo",$elCart["testo"],"uk-textarea ",null);?>
 				</div>
@@ -29,7 +29,7 @@
 			<?php if (true) { ?>
 			<div class="uk-grid uk-grid-small uk-child-width-expand@s uk-position-relative" uk-grid="">
 				<div class="uk-first-column uk-width-1-1 uk-width-2-5@m">
-					<span class="uk-text-meta"><?php echo gtext("Invia alla e-mail");?></span>
+					<span class="uk-text-meta"><?php echo gtextPlain("Invia alla e-mail");?></span>
 				</div>
 				<div class="uk-width-expand uk-text-left uk-margin-remove-top">
 					<span class="uk-text-small"><?php echo $elCart["email"] ? $elCart["email"] : gtext("-- non definita --");?></span>
@@ -38,7 +38,7 @@
 			</div>
 			<div class="uk-grid uk-grid-small uk-child-width-expand@s uk-margin-remove-top uk-margin-remove-bottom" uk-grid="">
 				<div class="uk-first-column uk-width-1-1 uk-width-2-5@m">
-					<span class="uk-text-meta"><?php echo gtext("Dedica e firma");?></span>
+					<span class="uk-text-meta"><?php echo gtextPlain("Dedica e firma");?></span>
 				</div>
 				<div class="uk-width-expand uk-text-left uk-margin-remove-top dedica_scroll">
 					<span class="uk-text-small"><?php echo nl2br($elCart["testo"]);?></span>

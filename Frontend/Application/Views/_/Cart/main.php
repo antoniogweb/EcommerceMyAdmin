@@ -31,7 +31,7 @@
 		</div>
 		<div class="uk-width-1-1 tm-aside-column uk-width-1-4@m uk-text-left">
 			<div <?php if (!User::$isMobile) { ?>uk-sticky="offset: <?php echo v("cart_sticky_top_offeset");?>;bottom: true;"<?php } ?>>
-				<h3><?php echo gtext("Totali carrello");?></h3>
+				<h3><?php echo gtextPlain("Totali carrello");?></h3>
 				
 				<?php include(tpf("/Ordini/totali.php"));?>
 				
@@ -42,8 +42,8 @@
 		</div>
 	</div>
 <?php } else { ?>
-	<p style="width:100%;text-align:center;"><?php echo gtext("Non ci sono prodotti nel carrello");?></p>
-	<div style="width:100%;text-align:center;"><a style="text-align:center;" class="checkout-button button alt wc-forward torna_al_negozio" href="<?php echo $this->baseUrl;?>"><?php echo gtext("Torna al negozio");?></a></div>
+	<p style="width:100%;text-align:center;"><?php echo gtextPlain("Non ci sono prodotti nel carrello");?></p>
+	<div style="width:100%;text-align:center;"><a style="text-align:center;" class="checkout-button button alt wc-forward torna_al_negozio" href="<?php echo $this->baseUrl;?>"><?php echo gtextPlain("Torna al negozio");?></a></div>
 <?php } ?>
 <?php if (strcmp($pageView,"partial") !== 0) { ?>
 </div>

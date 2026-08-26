@@ -11,12 +11,12 @@
 			?>
 			<div class="callout callout-info">
 				<?php if ($tipoOrdine == "W") { ?>
-				<?php echo gtext("I totali non verranno modificati al salvataggio in quanto è un ordine di tipo");?> <b><?php echo OrdiniModel::getLabelTipoOrdine($tipoOrdine);?></b></div>
+				<?php echo gtextPlain("I totali non verranno modificati al salvataggio in quanto è un ordine di tipo");?> <b><?php echo OrdiniModel::getLabelTipoOrdine($tipoOrdine);?></b></div>
 				<?php } else { ?>
-				<?php echo gtext("Le righe dell'ordine non sono modificabili in quanto l'ordine non è più ad uno dei seguenti stati");?>: <b><?php echo StatiordineModel::getTitoliStati(v("stati_ordine_editabile_ed_eliminabile"));?></b></div>
+				<?php echo gtextPlain("Le righe dell'ordine non sono modificabili in quanto l'ordine non è più ad uno dei seguenti stati");?>: <b><?php echo StatiordineModel::getTitoliStati(v("stati_ordine_editabile_ed_eliminabile"));?></b></div>
 				<?php } ?>
 			<?php } ?>
-			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-user"></i> <?php echo gtext("Fatturazione");?></h4>
+			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-user"></i> <?php echo gtextPlain("Fatturazione");?></h4>
 		</div>
 		<div class='col-md-12'>
 			<div class='row'>
@@ -91,7 +91,7 @@
 		</div>
 		<div class='col-md-12'>
 			<br />
-			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-truck"></i> <?php echo gtext("Spedizione");?></h4>
+			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-truck"></i> <?php echo gtextPlain("Spedizione");?></h4>
 		</div>
 		<div class='col-md-12'>
 			<div class='row'>
@@ -148,7 +148,7 @@
 		</div>
 		<div class='col-md-12'>
 			<br />
-			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-cogs"></i> <?php echo gtext("Opzioni ordine");?></h4>
+			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-cogs"></i> <?php echo gtextPlain("Opzioni ordine");?></h4>
 		</div>
 		<div class='col-md-12'>
 			<div class='row'>
@@ -187,7 +187,7 @@
 		</div>
 		<div class='col-md-6'>
 			<br />
-			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-font"></i> <?php echo gtext("Note");?></h4>
+			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-font"></i> <?php echo gtextPlain("Note");?></h4>
 			<div class='row'>
 				<div class='col-md-12'>
 					<?php echo $form["note"];?>
@@ -198,7 +198,7 @@
 		<?php if (v("attiva_liste_regalo") && (isset($form["dedica"]) || isset($form["firma"]))) { ?>
 		<div class='col-md-6'>
 			<br />
-			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-gift"></i> <?php echo gtext("Dedica e firma");?></h4>
+			<h4 class="text-bold" style="padding-bottom:10px;"><i class="fa fa-gift"></i> <?php echo gtextPlain("Dedica e firma");?></h4>
 			<div class='row'>
 				<div class='col-md-12'>
 					<?php echo $form["dedica"] ?? "";?>

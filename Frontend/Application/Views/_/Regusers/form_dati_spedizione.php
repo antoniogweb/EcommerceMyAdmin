@@ -3,14 +3,14 @@
 <div class="table_dati_spedizione">
 	<div class="uk-grid-column-small uk-child-width-1-2@s" uk-grid>
 		<div class="first_of_grid uk-margin uk-margin-remove-bottom">
-			<label class="uk-form-label"><?php echo gtext("Indirizzo");?> *</label>
+			<label class="uk-form-label"><?php echo gtextPlain("Indirizzo");?> *</label>
 			<div class="uk-form-controls">
 				<?php echo Html_Form::input("indirizzo_spedizione",$values['indirizzo_spedizione'],"uk-input class_indirizzo_spedizione",null,"placeholder='".gtextAttr("Indirizzo", false)."'");?>
 			</div>
 		</div>
 		
 		<div class="uk-margin uk-margin-remove-bottom">
-			<label class="uk-form-label"><?php echo gtext("Cap");?> <span class="nascondi_fuori_italia_inline_spedizione">*</span></label>
+			<label class="uk-form-label"><?php echo gtextPlain("Cap");?> <span class="nascondi_fuori_italia_inline_spedizione">*</span></label>
 			<div class="uk-form-controls">
 				<?php echo Html_Form::input("cap_spedizione",$values['cap_spedizione'],"uk-input class_cap_spedizione",null,"placeholder='".gtextAttr("Cap", false)."'");?>
 			</div>
@@ -18,7 +18,7 @@
 		
 		<?php if (count($selectNazioniSpedizione) > 2) { ?>
 		<div class="uk-margin uk-margin-remove-bottom">
-			<label class="uk-form-label"><?php echo gtext("Nazione");?> *</label>
+			<label class="uk-form-label"><?php echo gtextPlain("Nazione");?> *</label>
 			<div class="uk-form-controls">
 				<?php echo Html_Form::select("nazione_spedizione",$values['nazione_spedizione'],$selectNazioniSpedizione,"uk-select class_nazione_spedizione",null,"yes");?>
 			</div>
@@ -28,7 +28,7 @@
 		<?php } ?>
 		
 		<div class="uk-margin uk-margin-remove-bottom">
-			<label class="uk-form-label"><?php echo gtext("Provincia");?> *</label>
+			<label class="uk-form-label"><?php echo gtextPlain("Provincia");?> *</label>
 			<div class="uk-form-controls">
 				<div class="select_id_provincia_spedizione">
 					<?php echo Html_Form::select("provincia_spedizione",$values['provincia_spedizione'],$provinceSpedizione,"uk-select class_provincia_spedizione",null,"yes");?>
@@ -38,14 +38,14 @@
 		</div>
 		
 		<div class="uk-margin uk-margin-remove-bottom">
-			<label class="uk-form-label"><?php echo gtext("Città");?> *</label>
+			<label class="uk-form-label"><?php echo gtextPlain("Città");?> *</label>
 			<div class="uk-form-controls">
 				<?php echo Html_Form::input("citta_spedizione",$values['citta_spedizione'],"uk-input class_citta_spedizione",null,"placeholder='".gtextAttr("Città", false)."'");?>
 			</div>
 		</div>
 		
 		<div class="uk-margin uk-margin-remove-bottom">
-			<label class="uk-form-label"><?php echo gtext("Telefono");?> *</label>
+			<label class="uk-form-label"><?php echo gtextPlain("Telefono");?> *</label>
 			<div class="uk-form-controls">
 				<?php echo Html_Form::input("telefono_spedizione",$values['telefono_spedizione'],"uk-input class_telefono_spedizione",null,"placeholder='".gtextAttr("Telefono", false)."'");?>
 			</div>
@@ -53,7 +53,7 @@
 		
 		<?php if (OpzioniModel::isAttiva("CAMPI_SALVATAGGIO_SPEDIZIONE", "destinatario_spedizione")) { ?>
 		<div class="uk-margin uk-margin-remove-bottom">
-			<label class="uk-form-label"><?php echo gtext("Destinatario");?> </label>
+			<label class="uk-form-label"><?php echo gtextPlain("Destinatario");?> </label>
 			<div class="uk-form-controls">
 				<?php echo Html_Form::input("destinatario_spedizione",$values['destinatario_spedizione'],"uk-input class_destinatario_spedizione",null,"placeholder='".gtextAttr("Destinatario", false)."'");?>
 			</div>
