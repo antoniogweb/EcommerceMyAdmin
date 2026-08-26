@@ -951,6 +951,11 @@ class VariabiliModel extends GenericModel {
 		"attiva_gestione_ipchecker"	=>	0, // se permette oppure no la gestione degli IP checker
 		### WAF ##
 		"attiva_waf"			=>	0, // se impostato ad 1, attiva il Web Application Firewall
+		"attiva_waf_euristico"		=>	0, // se impostato ad 1, attiva il controllo euristico su GET e POST nel WAF
+		"waf_euristico_score_campo_sospetto"	=>	5, // score minimo di un singolo campo per salvare la richiesta sospetta
+		"waf_euristico_score_totale_sospetto"	=>	8, // score totale minimo della richiesta per salvare la richiesta sospetta
+		"waf_euristico_score_campo_blocco"	=>	8, // score minimo di un singolo campo per bloccare subito la richiesta
+		"waf_euristico_score_totale_blocco"	=>	12, // score totale minimo della richiesta per bloccare subito la richiesta
 		"numero_massimo_attacchi_minuto"	=>	5, // numero massimo di attacchi al minuto, dopo il quale l'IP viene bloccato (il blocco avviene immediatamente dopo aver rilevato l'attacco solo se attiva_blocco_immediato = 1, altrimenti deve essere impostato tramite CRON)
 		"attiva_blocco_immediato"			=>	0, // se impostato ad 1, attiva immediatamente il check di numero_massimo_attacchi_minuto ed eventuale blocco dell'IP (subito dopo aver rilevato l'attacco)
 		### DOS ##

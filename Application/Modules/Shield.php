@@ -263,91 +263,124 @@ class Shield
 	
 	public static function waf()
 	{
+		$ip = getIp();
+		
+		if (!trim($ip))
+			return;
+		
+		Files_Log::$logFolder = LIBRARY."/Logs";
+		$log = Files_Log::getInstance("log_monitoring");
+		
 		$payloadPath = is_dir(FRONT."/Logs/Payload") ? FRONT."/Logs/Payload" : LIBRARY."/Frontend/Logs/Payload";
 		
 		if (is_dir($payloadPath))
 		{
-			$ip = getIp();
-			
-			Files_Log::$logFolder = LIBRARY."/Logs";
-			$log = Files_Log::getInstance("log_monitoring");
-			
 			$erroriBlocco = array();
 			
-			if (trim($ip))
+			if (isset($_SERVER['REQUEST_URI']) && trim($_SERVER['REQUEST_URI']))
 			{
-				if (isset($_SERVER['REQUEST_URI']) && trim($_SERVER['REQUEST_URI']))
+				$requestUriPayloadFilePartial = "$payloadPath/URI/partial.txt";
+				
+				$requestUri = trim($_SERVER['REQUEST_URI']);
+				
+				if (is_file($requestUriPayloadFilePartial))
 				{
-					$requestUriPayloadFilePartial = "$payloadPath/URI/partial.txt";
+					$stringhe = array_map('trim', file($requestUriPayloadFilePartial, FILE_IGNORE_NEW_LINES));
 					
-					$requestUri = trim($_SERVER['REQUEST_URI']);
-					
-					if (is_file($requestUriPayloadFilePartial))
+					foreach ($stringhe as $stringa)
 					{
-						$stringhe = array_map('trim', file($requestUriPayloadFilePartial, FILE_IGNORE_NEW_LINES));
-						
-						foreach ($stringhe as $stringa)
+						if (stripos($requestUri, $stringa) !== false)
 						{
-							if (stripos($requestUri, $stringa) !== false)
-							{
-								$erroriBlocco[] = "Bloccato IP $ip: stringa pericolosa <b>$stringa</b> nel seguente request uri: <b>$requestUri</b>";
-							}
-						}
-					}
-					
-					$requestUriPayloadFileExact = "$payloadPath/URI/exact.txt";
-					
-					if (is_file($requestUriPayloadFileExact))
-					{
-						$stringhe = array_map('trim', file($requestUriPayloadFileExact, FILE_IGNORE_NEW_LINES));
-						
-						foreach ($stringhe as $stringa)
-						{
-							if (strtolower($requestUri) == strtolower($stringa))
-							{
-								$erroriBlocco[] = "Bloccato IP $ip: stringa pericolosa <b>$stringa</b> nel seguente request uri: <b>$requestUri</b>";
-							}
+							$erroriBlocco[] = "Bloccato IP $ip: stringa pericolosa <b>$stringa</b> nel seguente request uri: <b>$requestUri</b>";
 						}
 					}
 				}
 				
-				$allPayloadFilePartial = "$payloadPath/ALL/partial.txt";
-					
-				if (is_file($allPayloadFilePartial))
+				$requestUriPayloadFileExact = "$payloadPath/URI/exact.txt";
+				
+				if (is_file($requestUriPayloadFileExact))
 				{
-					foreach ($_COOKIE as $name => $value)
+					$stringhe = array_map('trim', file($requestUriPayloadFileExact, FILE_IGNORE_NEW_LINES));
+					
+					foreach ($stringhe as $stringa)
 					{
-						$stringhe = array_map('trim', file($allPayloadFilePartial, FILE_IGNORE_NEW_LINES));
-						
-						foreach ($stringhe as $stringa)
+						if (strtolower($requestUri) == strtolower($stringa))
 						{
-							if (stripos($value, $stringa) !== false)
-							{
-								$erroriBlocco[] = "Bloccato IP $ip: stringa pericolosa <b>$stringa</b> nel cookie <b>$value</b>";
-							}
+							$erroriBlocco[] = "Bloccato IP $ip: stringa pericolosa <b>$stringa</b> nel seguente request uri: <b>$requestUri</b>";
 						}
 					}
-				}
-				
-				if (count($erroriBlocco) > 0)
-				{
-					foreach ($erroriBlocco as $erroreBlocco)
-					{
-						$log->writeString($erroreBlocco);
-					}
-					
-					ConteggioqueryModel::aggiungiConCodice(0, 403, 1);
-					
-					if (v("attiva_blocco_immediato"))
-						self::checkEBloccaIp($log);
-					
-					http_response_code(403);
-					die();
 				}
 			}
+			
+			$allPayloadFilePartial = "$payloadPath/ALL/partial.txt";
+				
+			if (is_file($allPayloadFilePartial))
+			{
+				foreach ($_COOKIE as $name => $value)
+				{
+					$stringhe = array_map('trim', file($allPayloadFilePartial, FILE_IGNORE_NEW_LINES));
+					
+					foreach ($stringhe as $stringa)
+					{
+						if (stripos($value, $stringa) !== false)
+						{
+							$erroriBlocco[] = "Bloccato IP $ip: stringa pericolosa <b>$stringa</b> nel cookie <b>$value</b>";
+						}
+					}
+				}
+			}
+			
+			if (count($erroriBlocco) > 0)
+			{
+				foreach ($erroriBlocco as $erroreBlocco)
+				{
+					$log->writeString($erroreBlocco);
+				}
+				
+				ConteggioqueryModel::aggiungiConCodice(0, 403, 1);
+				
+				if (v("attiva_blocco_immediato"))
+					self::checkEBloccaIp($log);
+				
+				http_response_code(403);
+				die();
+			}
+		}
+		
+		if ((int)v("attiva_waf_euristico") !== 1)
+			return;
+		
+		$securityScore = self::requestSecurityScore();
+		$securityScoreTotale = $securityScore["total"];
+		$securityScoreMassimo = $securityScore["max"];
+		$sogliaCampoSospetto = self::wafEuristicoSoglia("waf_euristico_score_campo_sospetto", 5);
+		$sogliaTotaleSospetto = self::wafEuristicoSoglia("waf_euristico_score_totale_sospetto", 8);
+		$sogliaCampoBlocco = self::wafEuristicoSoglia("waf_euristico_score_campo_blocco", 8);
+		$sogliaTotaleBlocco = self::wafEuristicoSoglia("waf_euristico_score_totale_blocco", 12);
+		
+		if ($securityScoreMassimo >= $sogliaCampoBlocco || $securityScoreTotale >= $sogliaTotaleBlocco)
+		{
+			$log->writeString("Bloccato IP $ip: score WAF euristico totale $securityScoreTotale, massimo $securityScoreMassimo nel seguente request uri: ".(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ""));
+			
+			ConteggioqueryModel::aggiungiConCodice(0, 403, 1, $securityScoreTotale, $securityScoreMassimo);
+			
+			if (v("attiva_blocco_immediato"))
+				self::checkEBloccaIp($log);
+			
+			http_response_code(403);
+			die();
+		}
+		else if ($securityScoreMassimo >= $sogliaCampoSospetto || $securityScoreTotale >= $sogliaTotaleSospetto)
+		{
+			$log->writeString("Richiesta sospetta da IP $ip: score WAF euristico totale $securityScoreTotale, massimo $securityScoreMassimo nel seguente request uri: ".(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ""));
+			
+			ConteggioqueryModel::aggiungiConCodice(1, 406, 1, $securityScoreTotale, $securityScoreMassimo);
+			
+			if (v("attiva_blocco_immediato"))
+				self::checkEBloccaIp($log);
 		}
 	}
-	
+
 	public static function checkEBloccaIp($log = null)
 	{
 		$secondi = 60;
@@ -364,5 +397,140 @@ class Shield
 			
 			LogtecniciModel::aggiungi("ATTACCO", "Superato il limite di ".v("numero_massimo_attacchi_minuto")." attacchi negli ultimi $secondi secondi<br />\n". "<pre>".json_encode($conteggio,JSON_PRETTY_PRINT)."</pre>");
 		}
+	}
+	
+	public static function wafEuristicoSoglia($nomeVariabile, $default)
+	{
+		$valore = (int)v($nomeVariabile);
+		
+		return $valore > 0 ? $valore : $default;
+	}
+	
+	public static function requestSecurityScore()
+	{
+		$getScore = self::arraySecurityScore($_GET);
+		$postScore = self::arraySecurityScore($_POST);
+		
+		return array(
+			"total"	=>	$getScore["total"] + $postScore["total"],
+			"max"	=>	max($getScore["max"], $postScore["max"]),
+		);
+	}
+	
+	public static function arraySecurityScore($array)
+	{
+		$score = array(
+			"total"	=>	0,
+			"max"	=>	0,
+		);
+		
+		foreach ($array as $key => $value)
+		{
+			$keyScore = self::securityScore((string)$key);
+			$score["total"] += $keyScore;
+			$score["max"] = max($score["max"], $keyScore);
+			
+			if (is_array($value))
+			{
+				$valueScore = self::arraySecurityScore($value);
+				$score["total"] += $valueScore["total"];
+				$score["max"] = max($score["max"], $valueScore["max"]);
+			}
+			else
+			{
+				$valueScore = self::securityScore((string)$value);
+				$score["total"] += $valueScore;
+				$score["max"] = max($score["max"], $valueScore);
+			}
+		}
+		
+		return $score;
+	}
+	
+	public static function normalizeInputForSecurity($value)
+	{
+		if (!is_string($value))
+			return '';
+		
+		for ($i = 0; $i < 3; $i++)
+		{
+			$decoded = urldecode($value);
+			
+			if ($decoded === $value)
+				break;
+			
+			$value = $decoded;
+		}
+		
+		$value = htmlentitydecode($value);
+		
+		return function_exists('mb_strtolower') ? mb_strtolower($value, 'UTF-8') : strtolower($value);
+	}
+	
+	public static function securityScore($value)
+	{
+		$input = self::normalizeInputForSecurity($value);
+		$rawInput = function_exists('mb_strtolower') ? mb_strtolower((string)$value, 'UTF-8') : strtolower((string)$value);
+		$score = 0;
+		
+		$patterns = array(
+			// SQL injection evidenti
+			'/\bunion\s+select\b/i'											=>	5,
+			'/\bselect\b.{0,80}\bfrom\b/i'									=>	4,
+			'/\binformation_schema\b/i'										=>	5,
+			'/\bconcat\s*\(/i'											=>	3,
+			'/\bsleep\s*\(/i'											=>	5,
+			'/\bbenchmark\s*\(/i'										=>	5,
+			'/\bload_file\s*\(/i'										=>	5,
+			'/\binto\s+outfile\b/i'										=>	5,
+			'/(\'|")\s*(or|and)\s+(\'|")?\w+(\'|")?\s*=\s*(\'|")?\w+/i'	=>	4,
+			'/\/\*/'													=>	2,
+			'/--\s*(\r?\n|$)/'										=>	3,
+			'/(^|[^\w])#/'											=>	1,
+			
+			// XSS
+			'/<\s*script\b/i'										=>	5,
+			'/<\s*\/\s*script\s*>/i'									=>	5,
+			'/<[^>]+\son\w+\s*=/i'									=>	5,
+			'/\bon(?:abort|blur|click|error|focus|load|mouseover|submit)\s*=/i'	=>	4,
+			'/javascript\s*:/i'										=>	8,
+			'/data\s*:\s*text\/html/i'									=>	8,
+			'/<\s*(iframe|object|embed|svg|body|meta|link)\b/i'			=>	4,
+			'/<\s*img\b.{0,200}\bon\w+\s*=/i'					=>	5,
+			'/<\s*img\b/i'										=>	2,
+			
+			// Path traversal / file probing
+			'/(\.\.\/|\.\.\\\\)/'										=>	4,
+			'/\/etc\/passwd/i'										=>	5,
+			'/boot\.ini/i'											=>	5,
+			'/windows\/system32/i'									=>	5,
+			
+			// Command injection
+			'/(`|\$\(|&&|\|\|)/'									=>	3,
+			'/(;|\|)/'											=>	1,
+			'/\b(wget|curl|bash|nc|netcat|python|perl)\b/i'			=>	2,
+			'/(`|\$\(|&&|\|\|).{0,40}\b(wget|curl|bash|nc|netcat|python|perl)\b/i'	=>	5,
+			'/\b(wget|curl|bash|nc|netcat|python|perl)\b.{0,40}(`|\$\(|&&|\|\|)/i'	=>	5,
+			
+			// Encoding sospetto
+			'/char\s*\(/i'											=>	3,
+		);
+		
+		foreach ($patterns as $pattern => $weight)
+		{
+			if (preg_match($pattern, $input))
+				$score += $weight;
+		}
+		
+		if (preg_match('/%3c|%3e|%27|%22|%2f|%5c/i', $rawInput))
+			$score += 2;
+		
+		if (strlen($input) > 1000)
+			$score += 2;
+		
+		if (preg_match('/[^\p{L}\p{N}\s@\.\,\-\_\+\:\;\/\?=&%€£$!\'"\(\)]/u', $input))
+			$score += 1;
+		
+		return $score;
 	}
 }

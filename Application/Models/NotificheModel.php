@@ -140,6 +140,14 @@ class NotificheModel extends GenericModel {
 					"class"	=>	"text-yellow",
 				);
 			
+			if (!v("attiva_waf_euristico"))
+				$notifiche[] = array(
+					"testo"	=>	gtextPlain("Attivare il WAF euristico. Variabile attiva_waf_euristico."),
+					"link"	=>	"",
+					"icona"	=>	"fa-file-text-o",
+					"class"	=>	"text-yellow",
+				);
+			
 			if (!v("attiva_controllo_robustezza_password"))
 				$notifiche[] = array(
 					"testo"	=>	gtextPlain("Attivare il controllo sulla robustezza della password. Variabile attiva_controllo_robustezza_password."),

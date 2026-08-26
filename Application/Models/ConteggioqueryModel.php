@@ -26,6 +26,8 @@ class ConteggioqueryModel extends GenericModel
 {
 	public static $codice = 200;
 	public static $attacco = 0;
+	public static $scoreEuristicoTotale = 0;
+	public static $scoreEuristicoMassimo = 0;
 	private static $logDir = null;
 	
 	public function __construct() {
@@ -71,6 +73,8 @@ class ConteggioqueryModel extends GenericModel
 			"url"		=>	isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : "",
 			"codice"	=>	self::$codice,
 			"attacco"	=>	self::$attacco,
+			"score_euristico_totale"	=>	self::$scoreEuristicoTotale,
+			"score_euristico_massimo"	=>	self::$scoreEuristicoMassimo,
 		);
 
 		return @file_put_contents($fileName, json_encode($record), LOCK_EX) !== false;
@@ -211,18 +215,34 @@ class ConteggioqueryModel extends GenericModel
 		return $resIp + $resRange;
 	}
 	
-	public static function aggiungiConCodice($numero, $codice, $attacco = 0)
+	public static function aggiungiConCodice($numero, $codice, $attacco = 0, $scoreEuristicoTotale = 0, $scoreEuristicoMassimo = 0)
 	{
 		$tmp = self::$codice;
 		$tmpAttacco = self::$attacco;
+		$tmpScoreEuristicoTotale = self::$scoreEuristicoTotale;
+		$tmpScoreEuristicoMassimo = self::$scoreEuristicoMassimo;
 		
 		self::$codice = $codice;
 		self::$attacco = $attacco;
+		self::$scoreEuristicoTotale = self::normalizzaScoreEuristico($scoreEuristicoTotale);
+		self::$scoreEuristicoMassimo = self::normalizzaScoreEuristico($scoreEuristicoMassimo);
 		
 		self::aggiungi($numero);
 		
 		self::$codice = $tmp;
 		self::$attacco = $tmpAttacco;
+		self::$scoreEuristicoTotale = $tmpScoreEuristicoTotale;
+		self::$scoreEuristicoMassimo = $tmpScoreEuristicoMassimo;
+	}
+	
+	public static function normalizzaScoreEuristico($score)
+	{
+		$score = (int)$score;
+		
+		if ($score < 0)
+			return 0;
+		
+		return $score > 127 ? 127 : $score;
 	}
 	
 	public static function aggiungi($numero)
@@ -240,6 +260,8 @@ class ConteggioqueryModel extends GenericModel
 			"url"		=>	isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : "",
 			"codice"	=>	self::$codice,
 			"attacco"	=>	self::$attacco,
+			"score_euristico_totale"	=>	self::$scoreEuristicoTotale,
+			"score_euristico_massimo"	=>	self::$scoreEuristicoMassimo,
 			"user_agent"	=>	isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "",
 			"bot_name"	=>	Device::getBotName(),
 		));
