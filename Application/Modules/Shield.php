@@ -475,22 +475,22 @@ class Shield
 		
 		$patterns = array(
 			// SQL injection evidenti
-			'/\bunion\s+select\b/i'											=>	5,
+			'/\bunion\s+select\b/i'											=>	8,
 			'/\bselect\b.{0,80}\bfrom\b/i'									=>	4,
-			'/\binformation_schema\b/i'										=>	5,
+			'/\binformation_schema\b/i'										=>	8,
 			'/\bconcat\s*\(/i'											=>	3,
-			'/\bsleep\s*\(/i'											=>	5,
-			'/\bbenchmark\s*\(/i'										=>	5,
-			'/\bload_file\s*\(/i'										=>	5,
-			'/\binto\s+outfile\b/i'										=>	5,
+			'/\bsleep\s*\(/i'											=>	8,
+			'/\bbenchmark\s*\(/i'										=>	8,
+			'/\bload_file\s*\(/i'										=>	8,
+			'/\binto\s+outfile\b/i'										=>	8,
 			'/(\'|")\s*(or|and)\s+(\'|")?\w+(\'|")?\s*=\s*(\'|")?\w+/i'	=>	4,
 			'/\/\*/'													=>	2,
 			'/--\s*(\r?\n|$)/'										=>	3,
 			'/(^|[^\w])#/'											=>	1,
 			
 			// XSS
-			'/<\s*script\b/i'										=>	5,
-			'/<\s*\/\s*script\s*>/i'									=>	5,
+			'/<\s*script\b/i'										=>	8,
+			'/<\s*\/\s*script\s*>/i'									=>	8,
 			'/<[^>]+\son\w+\s*=/i'									=>	5,
 			'/\bon(?:abort|blur|click|error|focus|load|mouseover|submit)\s*=/i'	=>	4,
 			'/javascript\s*:/i'										=>	8,
