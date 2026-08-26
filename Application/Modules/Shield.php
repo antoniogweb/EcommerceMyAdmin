@@ -27,6 +27,7 @@ class Shield
 	public static $freedAfterSeconds = 3600;
 	public static $freedThrottleAfterSeconds = 120;
 	public static $freeDDOSSeconds = 600;
+	public static $securityRules = array();
 	
 	public static function createLogFolders()
 	{
@@ -331,6 +332,7 @@ class Shield
 		$securityScore = self::requestSecurityScore();
 		$securityScoreTotale = $securityScore["total"];
 		$securityScoreMassimo = $securityScore["max"];
+		$securityScoreRegole = $securityScore["rules"];
 		$sogliaCampoSospetto = self::wafEuristicoSoglia("waf_euristico_score_campo_sospetto", 5);
 		$sogliaTotaleSospetto = self::wafEuristicoSoglia("waf_euristico_score_totale_sospetto", 8);
 		$sogliaCampoBlocco = self::wafEuristicoSoglia("waf_euristico_score_campo_blocco", 8);
@@ -338,7 +340,7 @@ class Shield
 		
 		if ($securityScoreMassimo >= $sogliaCampoBlocco || $securityScoreTotale >= $sogliaTotaleBlocco)
 		{
-			$log->writeString("Bloccato IP $ip: score WAF euristico totale $securityScoreTotale, massimo $securityScoreMassimo nel seguente request uri: ".(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ""));
+			$log->writeString("Bloccato IP $ip: score WAF euristico totale $securityScoreTotale, massimo $securityScoreMassimo, regole: $securityScoreRegole nel seguente request uri: ".(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ""));
 			
 			ConteggioqueryModel::aggiungiConCodice(0, 403, 1, $securityScoreTotale, $securityScoreMassimo);
 			
@@ -350,7 +352,7 @@ class Shield
 		}
 		else if ($securityScoreMassimo >= $sogliaCampoSospetto || $securityScoreTotale >= $sogliaTotaleSospetto)
 		{
-			$log->writeString("Richiesta sospetta da IP $ip: score WAF euristico totale $securityScoreTotale, massimo $securityScoreMassimo nel seguente request uri: ".(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ""));
+			$log->writeString("Richiesta sospetta da IP $ip: score WAF euristico totale $securityScoreTotale, massimo $securityScoreMassimo, regole: $securityScoreRegole nel seguente request uri: ".(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ""));
 			
 			ConteggioqueryModel::aggiungiConCodice(1, 406, 1, $securityScoreTotale, $securityScoreMassimo);
 			
@@ -386,12 +388,15 @@ class Shield
 	
 	public static function requestSecurityScore()
 	{
+		self::$securityRules = array();
+		
 		$getScore = self::arraySecurityScore($_GET);
 		$postScore = self::arraySecurityScore($_POST);
 		
 		return array(
 			"total"	=>	$getScore["total"] + $postScore["total"],
 			"max"	=>	max($getScore["max"], $postScore["max"]),
+			"rules"	=>	self::securityRulesString(),
 		);
 	}
 	
@@ -423,6 +428,26 @@ class Shield
 		}
 		
 		return $score;
+	}
+	
+	public static function addSecurityRule($pattern, $weight)
+	{
+		self::$securityRules[$pattern] = $weight;
+	}
+	
+	public static function securityRulesString()
+	{
+		if (empty(self::$securityRules))
+			return "";
+		
+		$rules = array();
+		
+		foreach (self::$securityRules as $pattern => $weight)
+		{
+			$rules[] = $pattern." => ".(int)$weight;
+		}
+		
+		return implode("; ", $rules);
 	}
 	
 	public static function normalizeInputForSecurity($value)
@@ -497,17 +522,29 @@ class Shield
 		foreach ($patterns as $pattern => $weight)
 		{
 			if (preg_match($pattern, $input))
+			{
 				$score += $weight;
+				self::addSecurityRule($pattern, $weight);
+			}
 		}
 		
 		if (preg_match('/%3c|%3e|%27|%22|%2f|%5c/i', $rawInput))
+		{
 			$score += 2;
+			self::addSecurityRule('/%3c|%3e|%27|%22|%2f|%5c/i', 2);
+		}
 		
 		if (strlen($input) > 1000)
+		{
 			$score += 2;
+			self::addSecurityRule('strlen($input) > 1000', 2);
+		}
 		
 		if (preg_match('/[^\p{L}\p{N}\s@\.\,\-\_\+\:\;\/\?=&%€£$!\'"\(\)]/u', $input))
+		{
 			$score += 1;
+			self::addSecurityRule('/[^\p{L}\p{N}\s@\.\,\-\_\+\:\;\/\?=&%€£$!\'"\(\)]/u', 1);
+		}
 		
 		return $score;
 	}
