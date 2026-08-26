@@ -33,16 +33,16 @@
 	<script>
 	jQuery(function($){
 		$.datepicker.regional['it'] = {
-			closeText: '<?php echo gtextPlain("Chiudi");?>',
-			prevText: '&#x3c;<?php echo gtextPlain("Prec");?>',
-			nextText: '<?php echo gtextPlain("Succ");?>&#x3e;',
-			currentText: '<?php echo gtextPlain("Oggi");?>',
-			monthNames: ['<?php echo gtextPlain("Gennaio");?>','<?php echo gtextPlain("Febbraio");?>','<?php echo gtextPlain("Marzo");?>','<?php echo gtextPlain("Aprile");?>','<?php echo gtextPlain("Maggio");?>','<?php echo gtextPlain("Giugno");?>','<?php echo gtextPlain("Luglio");?>','<?php echo gtextPlain("Agosto");?>','<?php echo gtextPlain("Settembre");?>','<?php echo gtextPlain("Ottobre");?>','<?php echo gtextPlain("Novembre");?>','<?php echo gtextPlain("Dicembre");?>'],
+			closeText: '<?php echo sanitizeJs(gtextPlain("Chiudi"));?>',
+			prevText: '&#x3c;<?php echo sanitizeJs(gtextPlain("Prec"));?>',
+			nextText: '<?php echo sanitizeJs(gtextPlain("Succ"));?>&#x3e;',
+			currentText: '<?php echo sanitizeJs(gtextPlain("Oggi"));?>',
+			monthNames: ['<?php echo sanitizeJs(gtextPlain("Gennaio"));?>','<?php echo sanitizeJs(gtextPlain("Febbraio"));?>','<?php echo sanitizeJs(gtextPlain("Marzo"));?>','<?php echo sanitizeJs(gtextPlain("Aprile"));?>','<?php echo sanitizeJs(gtextPlain("Maggio"));?>','<?php echo sanitizeJs(gtextPlain("Giugno"));?>','<?php echo sanitizeJs(gtextPlain("Luglio"));?>','<?php echo sanitizeJs(gtextPlain("Agosto"));?>','<?php echo sanitizeJs(gtextPlain("Settembre"));?>','<?php echo sanitizeJs(gtextPlain("Ottobre"));?>','<?php echo sanitizeJs(gtextPlain("Novembre"));?>','<?php echo sanitizeJs(gtextPlain("Dicembre"));?>'],
 			monthNamesShort: ['Gen','Feb','Mar','Apr','Mag','Giu',
 				'Lug','Ago','Set','Ott','Nov','Dic'],
 			dayNames: ['Domenica','Luned&#236','Marted&#236','Mercoled&#236','Gioved&#236','Venerd&#236','Sabato'],
 			dayNamesShort: ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
-			dayNamesMin: ['<?php echo gtextPlain("Do");?>','<?php echo gtextPlain("Lu");?>','<?php echo gtextPlain("Ma");?>','<?php echo gtextPlain("Me");?>','<?php echo gtextPlain("Gi");?>','<?php echo gtextPlain("Ve");?>','<?php echo gtextPlain("Sa");?>'],
+			dayNamesMin: ['<?php echo sanitizeJs(gtextPlain("Do"));?>','<?php echo sanitizeJs(gtextPlain("Lu"));?>','<?php echo sanitizeJs(gtextPlain("Ma"));?>','<?php echo sanitizeJs(gtextPlain("Me"));?>','<?php echo sanitizeJs(gtextPlain("Gi"));?>','<?php echo sanitizeJs(gtextPlain("Ve"));?>','<?php echo sanitizeJs(gtextPlain("Sa"));?>'],
 			weekHeader: 'Sm',
 			dateFormat: 'dd/mm/yy',
 			firstDay: 1,

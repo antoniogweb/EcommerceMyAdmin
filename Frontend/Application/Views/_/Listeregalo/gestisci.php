@@ -28,7 +28,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			<li><a href="<?php echo $this->baseUrl."/listeregalo/modifica/".$lista["id_lista_regalo"];?>" class="uk-button uk-button-link"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/pencil.svg");?></span> <?php echo gtextPlain("Modifica dati");?></a></li>
 			
 			<?php if (ListeregaloModel::attiva($lista["id_lista_regalo"])) { ?>
-			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" share-text="<?php echo gtextPlain("Lista regalo");?>" share-title="<?php echo $lista["titolo"];?>" class="share-link uk-button uk-button-link"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/social.svg");?></span> <?php echo gtextPlain("Condividi");?></a></li>
+			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" share-text="<?php echo gtextAttr("Lista regalo");?>" share-title="<?php echo gtextAttr($lista["titolo"]);?>" class="share-link uk-button uk-button-link"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/social.svg");?></span> <?php echo gtextPlain("Condividi");?></a></li>
 			
 			<li><a target="_blank" href="<?php echo $this->baseUrl."/".ListeregaloModel::getUrlAlias($lista["id_lista_regalo"]);?>" class="uk-button uk-button-link"><?php echo gtextPlain("Vai alla lista");?> <span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-right.svg");?></span></a></li>
 			<?php } ?>
