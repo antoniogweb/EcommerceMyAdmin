@@ -1902,4 +1902,9 @@ class AirichiesteModel extends GenericModel
 			"negozio"	=>	$inviataNegozio,
 		);
 	}
+	
+	public function ticketCreato($idChat)
+	{
+		return (int)$this->clear()->whereId((int)$idChat)->field("ticket_creato");
+	}
 }

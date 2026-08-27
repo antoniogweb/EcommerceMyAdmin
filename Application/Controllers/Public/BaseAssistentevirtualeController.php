@@ -74,6 +74,11 @@ class BaseAssistentevirtualeController extends BaseController
 	
 	public function nuovachat()
 	{
+		$idChat = $this->m("AirichiesteModel")->getChat();
+
+		if (!$idChat || !(int)$this->m("AirichiesteModel")->ticketCreato($idChat))
+			$this->redirect("virtual-assistant/");
+		
 		if (!User::$id)
 		{
 			unset($_COOKIE["assistant_uid"]);
@@ -137,7 +142,7 @@ class BaseAssistentevirtualeController extends BaseController
 		
 		if ($idChat)
 		{
-			if ((int)$this->m("AirichiesteModel")->clear()->whereId((int)$idChat)->field("ticket_creato"))
+			if ((int)$this->m("AirichiesteModel")->ticketCreato((int)$idChat))
 				$this->responseCode(403);
 			
 			AirichiesteresponseModel::$idRichiesta = (int)$idChat;
