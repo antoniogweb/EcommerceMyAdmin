@@ -1,0 +1,1 @@
+alter table ai_richieste add data_ora_ticket datetime null default null;

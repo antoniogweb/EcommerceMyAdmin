@@ -1421,12 +1421,15 @@ class AirichiesteModel extends GenericModel
 					$replyToTranslate = gtext("Per poter essere ricontattato, indica anche un indirizzo email.");
 				else if (!trim($chat["telefono"]))
 					$replyToTranslate = gtext("Per poter essere ricontattato, indica anche un numero di telefono");
+				else if ($this->numeroTicketOggi() >= v("numero_massimo_ticket_ip_ogni_giorno"))
+					$replyToTranslate = gtext("Hai superato il numero di ticket giornalieri, riprova domani");
 				else
 				{
 					$replyToTranslate = gtext("Il ticket è stato creato correttamente.")." ".gtext("Il negozio riceverà questa conversazione e verrai ricontattato dal servizio clienti.")." ".gtext("Ti abbiamo inviato una copia della chat via email come promemoria.")." ".gtext("Puoi chiudere questa chat oppure iniziarne una nuova.");
 					
 					$this->sValues(array(
-						"ticket_creato"	=>	1,
+						"ticket_creato"		=>	1,
+						"data_ora_ticket"	=>	date("Y-m-d H:i:s"),
 					));
 					
 					$this->update((int)self::$idChat);
@@ -1906,5 +1909,16 @@ class AirichiesteModel extends GenericModel
 	public function ticketCreato($idChat)
 	{
 		return (int)$this->clear()->whereId((int)$idChat)->field("ticket_creato");
+	}
+	
+	// Restituisce il numero di ticket aperti oggi
+	public function numeroTicketOggi()
+	{
+		return $this->clear()->where(array(
+			"ip"				=>	sanitizeAll(getIp()),
+		))->sWhere(array(
+			"DATE_FORMAT(data_ora_ticket,'%Y-%m-%d') = ?",
+			array(date("Y-m-d"))
+		))->rowNumber();
 	}
 }
