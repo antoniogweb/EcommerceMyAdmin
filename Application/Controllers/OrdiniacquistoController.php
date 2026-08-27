@@ -218,7 +218,7 @@ class OrdiniacquistoController extends BaseController
 					
 					foreach ($righeDaOrdinare as $rigaDaOrdinare)
 					{
-						$idArticolo = $rigaDaOrdinare["id_articolo"];
+						$idArticolo = (int)$rigaDaOrdinare["id_articolo"];
 						
 						if (!$idArticolo)
 							continue;
