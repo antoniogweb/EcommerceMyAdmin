@@ -446,7 +446,7 @@ class RigheModel extends GenericModel
 			
 			$link = v("mostra_modulo_acquisti") ? "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquisto."/righe/".$idOrdineAcquisto."'><b>".$r["ordini_acquisto"]["numero_ordine"]."</b></a>" : "<b>".$r["ordini_acquisto"]["numero_ordine"]."</b>";
 			
-			$html .= gtext("O.A."). " ".$link." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".$quantita."</b>";
+			$html .= gtext("O.A."). " ".$link." ".gtext("del")." <b>".smartDate($r["ordini_acquisto"]["data_ordine"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".$quantita."</b>";
 			$html .= "</div>";
 		}
 		
@@ -473,7 +473,7 @@ class RigheModel extends GenericModel
 			
 			$link = v("mostra_modulo_acquisti") ? "<a target='_blank' href='".Url::getRoot().$this->urlOrdineAcquistoRicezione."/righe/".$idOrdineAcquistoRicezione."'><b>".$idOrdineAcquistoRicezione."</b></a>" : "<b>".$idOrdineAcquistoRicezione."</b>";
 			
-			$temp = gtext("Ric.")." ".$link." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".$quantita."</b>";
+			$temp = gtext("Ric.")." ".$link." ".gtext("del")." <b>".smartDate($r["ordini_acquisto_ricezioni"]["data_ricezione_merce"],v("default_date_format"))."</b>.<br />".gtext("Qtà").": <b class='label label-$label'>".$quantita."</b>";
 			
 			if ($r["ordini_acquisto_ricezioni"]["numero_documento_trasporto"])
 				$temp .= "<br />DDT: <b>".$r["ordini_acquisto_ricezioni"]["numero_documento_trasporto"]."</b>";
