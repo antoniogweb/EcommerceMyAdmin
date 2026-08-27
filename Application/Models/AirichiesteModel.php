@@ -1890,7 +1890,7 @@ class AirichiesteModel extends GenericModel
 		
 		$inviataNegozio = MailordiniModel::inviaMail(array(
 			"emails"	=>	array($emailNegozio),
-			"oggetto"	=>	"Nuovo ticket aperto tramite chatbot",
+			"oggetto"	=>	"Ticket [OGGETTO_PLACEHOLDER] aperto tramite chatbot",
 			"tipologia"	=>	"ASSISTENTE VIRTUALE NEGOZIO",
 			"testo_path"	=>	"Elementi/Mail/AssistenteVirtuale/ticket_al_negozio.php",
 			"array_variabili_tema"	=>	$variabiliMail,
@@ -1898,6 +1898,7 @@ class AirichiesteModel extends GenericModel
 			"id_user"	=>	(int)$chat["id_user"],
 			"tabella"	=>	"ai_richieste",
 			"id_elemento"	=>	(int)$idChat,
+			"oggetto_placeholder"	=>	(int)$idChat,
 		));
 		
 		return array(

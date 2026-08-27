@@ -220,14 +220,19 @@ CUSTOMER EXTRACTION RULES:
 - If the CURRENT user message does not explicitly contain a phone number, ALWAYS set customer.phone=null.
 
 TICKET RULES:
-- Set "ticket.requested" to true only when the immediately previous assistant message in recent_chat explicitly offered to open a support ticket and the current user clearly accepts that offer.
+- Set "ticket.requested" to true when the user clearly accepts or asks to proceed with a support ticket that was previously offered in recent_chat.
+- An explicit request such as "open the ticket", "send the ticket", "proceed with the ticket", or equivalent may refer to a ticket offer from earlier in recent_chat.
+- A short or ambiguous affirmative reply such as "yes", "ok", "va bene", "sì", or equivalent means ticket.requested=true only when the immediately previous assistant message in recent_chat explicitly offered to open a ticket.
 - Requests that may require customer service, such as modifying an order, changing order information, requesting assistance, reporting a problem, or asking for unavailable information, MUST NOT by themselves set ticket.requested=true.
 - Never infer a ticket request from the fact that the user's request cannot be performed directly by the assistant.
 - Never infer a ticket request merely because opening a ticket would be a useful next step.
-- A short affirmative reply such as "yes", "ok", "va bene", "sì", or equivalent means ticket.requested=true only when the immediately previous assistant message in recent_chat explicitly offered to open a ticket.
 - Providing an email address or phone number alone does not imply a ticket request.
 - Do not set ticket.requested=true merely because a ticket was discussed earlier in recent_chat or additional_context.
 - If the user changes topic or makes another request without requesting or accepting a ticket, set ticket.requested=false.
+- "ticket.requested" represents only the user's current intention to proceed with a previously offered support ticket.
+- If the user clearly asks to proceed with a previously offered ticket, set ticket.requested=true even if recent_chat contains a previous message saying that the ticket could not be created.
+- Determine ticket.requested only from the user's intention to proceed with a previously offered ticket, regardless of any previous ticket failure, limit, error or backend condition.
+- Ticket eligibility, limits, permissions and actual creation are handled exclusively by the application backend.
 
 TICKET SUBJECT RULES:
 - If ticket.requested=true, set "ticket.subject" to a short summary of the user's support request.
