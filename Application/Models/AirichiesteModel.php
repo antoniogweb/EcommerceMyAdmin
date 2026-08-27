@@ -1351,6 +1351,12 @@ class AirichiesteModel extends GenericModel
 			$mail = isset($customer["email"]) ? (string)$customer["email"] : "";
 			$telefono = isset($customer["phone"]) ? (string)$customer["phone"] : "";
 			
+			if ($mail && strpos($messaggio, $mail) === false)
+				$mail = "";
+			
+			if ($telefono && strpos($messaggio, $telefono) === false)
+				$telefono = "";
+			
 			$erroreMail = $erroreTelefono = false;
 
 			// Estraggo i dati del cliente
