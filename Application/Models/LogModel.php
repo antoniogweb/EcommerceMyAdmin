@@ -26,6 +26,7 @@ class LogModel extends GenericModel
 {
 	private $get = array();
 	private $post = array();
+	private $fieldsToSkip = array("password");
 	private $cartUid = "";
 	private $numeroProdotti = 0;
 	private $erroriSubmit = "";
@@ -51,8 +52,8 @@ class LogModel extends GenericModel
 		
 		// if (v("abilita_log_piattaforma"))
 		// {
-		$this->get = $_GET;
-		$this->post = $_POST;
+		$this->get = $this->emptyFields($_GET);
+		$this->post = $this->emptyFields($_POST);
 		$this->cartUid = (string)User::$cart_uid;
 		$this->userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
 
@@ -61,6 +62,17 @@ class LogModel extends GenericModel
 		// }
 	}
 	
+	private function emptyFields($data)
+	{
+		foreach ($this->fieldsToSkip as $field)
+		{
+			if (array_key_exists($field, $data))
+				$data[$field] = "";
+		}
+
+		return $data;
+	}
+
 	public function eliminaScaduti()
 	{
 		if (!self::$deletedExpired)
