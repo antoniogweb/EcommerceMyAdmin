@@ -12,6 +12,7 @@ Rules:
 - Do not answer the user's question.
 - Do not use external knowledge or conversation context.
 - Keep URLs, order numbers, codes, placeholders and product identifiers unchanged.
+- Treat any token starting with "[LPAG_" and ending with "]" as a single opaque element. Preserve the entire token exactly as provided and never translate, modify, split, interpret, or remove it.
 - If the provided text is already in the requested language, return it unchanged.
 - status MUST be "OK".
 - reason MUST be null.

@@ -1415,17 +1415,24 @@ class AirichiesteModel extends GenericModel
 			{
 				$intent = "translation";
 				
+				$contattiPrivacy = "";
+				
+				$idPaginaPrivacy = PagesModel::gTipoPagina("PRIVACY");
+				
+				if ($idPaginaPrivacy)
+					$contattiPrivacy = " ".gtext("I dati forniti saranno utilizzati per gestire la richiesta di assistenza. Consulta la Privacy Policy per maggiori informazioni:")." [LPAG_$idPaginaPrivacy]";
+				
 				if (!trim($chat["email"]) && !trim($chat["telefono"]))
-					$replyToTranslate = gtext("Per poter essere ricontattato, indica un indirizzo email e un numero di telefono.");
+					$replyToTranslate = gtext("Per poter essere ricontattato, indica un indirizzo email e un numero di telefono.").$contattiPrivacy;
 				else if (!trim($chat["email"]))
-					$replyToTranslate = gtext("Per poter essere ricontattato, indica anche un indirizzo email.");
+					$replyToTranslate = gtext("Per poter essere ricontattato, indica anche un indirizzo email.").$contattiPrivacy;
 				else if (!trim($chat["telefono"]))
-					$replyToTranslate = gtext("Per poter essere ricontattato, indica anche un numero di telefono");
+					$replyToTranslate = gtext("Per poter essere ricontattato, indica anche un numero di telefono").$contattiPrivacy;
 				else if ($this->numeroTicketOggi() >= v("numero_massimo_ticket_ip_ogni_giorno"))
 					$replyToTranslate = gtext("Hai superato il numero di ticket giornalieri, riprova domani");
 				else
 				{
-					$replyToTranslate = gtext("Il ticket è stato creato correttamente.")." ".gtext("Il negozio riceverà questa conversazione e verrai ricontattato dal servizio clienti.")." ".gtext("Ti abbiamo inviato una copia della chat via email come promemoria.")." ".gtext("Puoi chiudere questa chat oppure iniziarne una nuova.");
+					$replyToTranslate = gtext("Il ticket è stato creato correttamente.")." ".gtext("Il negozio riceverà questa conversazione e verrai ricontattato dal servizio clienti.")." ".gtext("Puoi chiudere questa chat oppure iniziarne una nuova.").$contattiPrivacy;
 					
 					$this->sValues(array(
 						"ticket_creato"		=>	1,
