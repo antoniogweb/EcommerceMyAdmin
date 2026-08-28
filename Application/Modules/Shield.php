@@ -534,10 +534,10 @@ class Shield
 			self::addSecurityRule('/%3c|%3e|%27|%22|%2f|%5c/i', 2);
 		}
 		
-		if (strlen($input) > 1000)
+		if (strlen($input) > MAX_REQUEST_URI_LENGTH)
 		{
 			$score += 2;
-			self::addSecurityRule('strlen($input) > 1000', 2);
+			self::addSecurityRule('strlen($input) > '.MAX_REQUEST_URI_LENGTH, 2);
 		}
 		
 		if (preg_match('/[^\p{L}\p{N}\s@\.\,\-\_\+\:\;\/\?=&%€£$!\'"\(\)]/u', $input))
