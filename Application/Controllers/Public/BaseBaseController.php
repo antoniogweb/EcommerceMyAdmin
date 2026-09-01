@@ -691,39 +691,7 @@ class BaseBaseController extends Controller
 			User::setTrackingUid();
 		
 		//setto il coupon se presente
-		User::$coupon = null;
-		
-		if (isset($_POST["invia_coupon"]))
-		{
-			IpcheckModel::check("POST_COUPON");
-			
-			User::$coupon = $this->request->post("il_coupon","","sanitizeAll");
-			
-			$time = time() + v("durata_carrello_wishlist_coupon");
-			setcookie("coupon",User::$coupon,$time,"/");
-		}
-		else
-		{
-			if (isset($_COOKIE["coupon"]))
-				User::$coupon = sanitizeAll($_COOKIE["coupon"]);
-		}
-		
-		if (User::$coupon)
-		{
-			if ($this->m("PromozioniModel")->isActiveCoupon(User::$coupon))
-			{
-				// Estraggo tutti i prodotti della promozione
-				User::$prodottiInCoupon = $this->m("PromozioniModel")->elencoProdottiPromozione(User::$coupon);
-			}
-			else
-			{
-				//setto il coupon se presente
-				User::$coupon = null;
-				
-				if (isset($_COOKIE["coupon"]))
-					setcookie("coupon", "", time()-3600,"/");
-			}
-		}
+		PromozioniModel::setCookieCoupon();
 		
 		if (v("attiva_liste_regalo"))
 			ListeregaloModel::getCookieIdLista();

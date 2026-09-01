@@ -1022,4 +1022,51 @@ class PromozioniModel extends GenericModel {
 		
 		return $output;
 	}
+	
+	//setto il coupon se presente
+	public static function setCookieCoupon()
+	{
+		//setto il coupon se presente
+		User::$coupon = null;
+		
+		if (isset($_POST["invia_coupon"]))
+		{
+			IpcheckModel::check("POST_COUPON");
+			
+			$request = new Request();
+			
+			User::$coupon = $request->post("il_coupon","","sanitizeAll");
+			
+			$time = time() + v("durata_carrello_wishlist_coupon");
+			Cookie::set("coupon", User::$coupon, $time, "/", true, 'Lax');
+			// setcookie("coupon",User::$coupon,$time,"/");
+			
+			$plModel = new PromozionilogModel();
+			$plModel->aggiungi(User::$coupon);
+		}
+		else
+		{
+			if (isset($_COOKIE["coupon"]))
+				User::$coupon = sanitizeAll($_COOKIE["coupon"]);
+		}
+		
+		if (User::$coupon)
+		{
+			$pModel = new PromozioniModel();
+			
+			if ($pModel->isActiveCoupon(User::$coupon))
+			{
+				// Estraggo tutti i prodotti della promozione
+				User::$prodottiInCoupon = $pModel->elencoProdottiPromozione(User::$coupon);
+			}
+			else
+			{
+				//setto il coupon se presente
+				User::$coupon = null;
+				
+				if (isset($_COOKIE["coupon"]))
+					Cookie::set("coupon", "", time()-3600, "/", true, 'Lax');
+			}
+		}
+	}
 }
