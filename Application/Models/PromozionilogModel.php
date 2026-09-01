@@ -48,7 +48,7 @@ class PromozionilogModel extends GenericModel {
 			"id_p"			=>	$idP,
 			"ip"			=>	getIp(),
 			"user_agent"	=>	isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "",
-			"post"			=>	$coupon,
+			"post"			=>	htmlentitydecode($coupon),
 		));
 		
 		$this->insert();
