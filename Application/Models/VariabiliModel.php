@@ -575,7 +575,7 @@ class VariabiliModel extends GenericModel {
 		"oggetto_ordine_pagato"	=>	"Conferma pagamento ordine N° [ID_ORDINE]",
 		"oggetto_ordine_spedito"	=>	"Ordine N° [ID_ORDINE] spedito e chiuso",
 		"oggetto_ordine_annullato"	=>	"Annullamento ordine N° [ID_ORDINE]",
-		"oggetto_pdf_ordine"		=>	"Ordine Acquisto [ID_ORDINE] - stampa PDF", // Oggetto mail del PDF ordine offline
+		"oggetto_pdf_ordine"		=>	"Ordine [ID_ORDINE] - stampa PDF", // Oggetto mail del PDF ordine offline
 		"filename_pdf_ordine"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine allegato alla mail
 		"funzione_sanitize_spedizione_in_ordine"	=>	"sanitizeHtmlLight", // forza htmlspecialchars sui dati dell'indirizzo utente nel checkout ordine con ENT_QUOTES (sanitizeHtmlLight) o ENT_COMPAT (sanitizeHtmlLightCompat)
 		"mostra_sezione_righe_ordine"	=>	0, // se impostato su 1, mostra la sezione con l'elenco delle righe ordine
@@ -976,6 +976,7 @@ class VariabiliModel extends GenericModel {
 		"filename_pdf_ordine_acquisto"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine di acquisto allegato alla mail
 		"dimensioni_upload_ricezioni"	=>	10000000, // dimensione massima degli upload nelle ricezioni
 		"mail_aggiuntive_ordine_acquisto"	=>	"", // inserisci una o più mail divise da virgola a cui verrà mandata la mail dell'ordine di acquisto inviata al fornitore (verrà mandata come mail separata, non come bcc o cc)
+		"oggetto_pdf_ordine_acquisto"		=>	"Ordine acquisto [NUMERO_DOCUMENTO] - stampa PDF", // Oggetto mail del PDF ordine offline
 		### IMMAGINI SECONDARIE ##
 		"immagini_in_referenze"		=>	0, // se sono visibili oppure no le immagini supplementari nelle referenze
 		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini supplementari nelle pagine

@@ -178,7 +178,7 @@ class OrdiniacquistopdfModel extends GenericModel
 				
 				return MailordiniModel::inviaMail(array(
 					"emails"	=>	$emailArray,
-					"oggetto"	=>	v("oggetto_pdf_ordine"),
+					"oggetto"	=>	v("oggetto_pdf_ordine_acquisto"),
 					"numero_documento"		=>	(int)$ordine["numero_ordine"],
 					"tipologia"	=>	"ORDINE_ACQUISTO",
 					"lingua"	=>	v("default_backend_language"),
