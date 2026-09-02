@@ -53,6 +53,8 @@ class MagazzinoarticoliController extends BaseController
 		'id_ordine_acquisto_ricezione:sanitizeAll'=>'tutti',
 	);
 	
+	public $splitQueryInRenderView = true;
+	
 	// public $mainButtons = 'ldel';
 	
 	public $useEditor = true;

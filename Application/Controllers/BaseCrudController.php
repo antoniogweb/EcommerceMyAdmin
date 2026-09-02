@@ -360,8 +360,7 @@ trait BaseCrudController
 		else
 		{
 			$data['scaffold'] = $this->scaffold->render(null, null, null, null, $this->splitQueryInRenderView);
-
-			$data['numeroElementi'] = $this->scaffold->model->rowNumber();
+			$data['numeroElementi'] = $this->scaffold->numberOfElements;
 			
 			$data[$this->menuVariable] = $this->scaffold->html['menu'];
 			$data['popup'] = $this->scaffold->html['popup'];
