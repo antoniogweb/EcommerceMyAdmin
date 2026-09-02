@@ -224,9 +224,9 @@ class TraduzioniController extends BaseController {
 		$valore = $this->request->post("valore",0,"none");
 		
 		$possibileModificare = $this->m[$this->modelName]->clear()->where(array(
-			"contesto"	=>	"front",
+			"contesto"	=>	TraduzioniModel::$contestoStaticEdit,
 			"id_t"		=>	(int)$idT,
-		))->rowNUmber();
+		))->rowNumber();
 		
 		if ($possibileModificare)
 		{
@@ -253,7 +253,7 @@ class TraduzioniController extends BaseController {
 				$traduzione =  $this->m[$this->modelName]->clear()->where(array(
 					"lingua"	=>	$codiceLingua,
 					"chiave"	=>	sanitizeDb($record["chiave"]),
-					"contesto"	=>	"front",
+					"contesto"	=>	TraduzioniModel::$contestoStaticEdit,
 				))->record();
 				
 				if (!empty($traduzione))
@@ -261,49 +261,6 @@ class TraduzioniController extends BaseController {
 			}
 		}
 	}
-	
-// 	public function main()
-// 	{ //view all the users
-// 
-// 		$this->s['admin']->check("sito,admin");
-// 		
-// 		$this->shift();
-// 
-// 		Params::$nullQueryValue = 'tutti';
-// 		
-// 		$this->m["TraduzioniModel"]->updateTable('del');
-// 		
-// 		$this->loadScaffold('main',array('popup'=>true,'popupType'=>'inclusive','recordPerPage'=>40));
-// 		
-// 		$this->scaffold->loadMain("[[ledit]];testi.id_t;,[[ledit]];testi.titolo;",'testi.id_t','ledit,del');
-// 		
-// 		$this->scaffold->itemList->setFilters(array('id_t','titolo'));
-// 		
-// 		$this->scaffold->setHead("ID,TITOLO");
-// 		
-// 		$this->scaffold->model->orderBy("id_t");
-// 		
-// 		$where = array(
-// 			'id_t'		=>	$this->viewArgs['id_t'],
-// 			'titolo'	=>	"lk:".$this->viewArgs['titolo'],
-// 		);
-// 		
-// 		$this->scaffold->mainMenu->links['add']['url'] = 'form/insert/0';
-// 		
-// 		$this->scaffold->model->where($where)->convert();
-// 			
-// 		$data['scaffold'] = $this->scaffold->render();
-// // 		echo $this->scaffold->model->getQuery();
-// 		
-// 		$data['menu'] = $this->scaffold->html['menu'];
-// 		$data['main'] = $this->scaffold->html['main'];
-// 		$data['pageList'] = $this->scaffold->html['pageList'];
-// 		$data['notice'] = $this->scaffold->model->notice;
-// 		
-// 		$this->append($data);
-// 		$this->load('main');
-// 		
-// 	}
 	
 	public function form($queryType = 'insert',$id = 0)
 	{
