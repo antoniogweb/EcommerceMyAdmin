@@ -439,7 +439,7 @@ class MailordiniModel extends GenericModel
 		))->orderBy("data_creazione desc")->send(false);
 	}
 	
-	public function estraiRigaTabellaIdRef($tabella, $idElemento)
+	public function estraiRigaTabellaIdRef($tabella, $idElemento, $orderBy = null)
 	{
 		$mo = new MailordiniModel();
 		
@@ -447,6 +447,9 @@ class MailordiniModel extends GenericModel
 			"tabella"		=>	sanitizeAll($tabella),
 			"id_elemento"	=>	(int)$idElemento,
 		));
+		
+		if (isset($orderBy))
+			$mo->orderBy($orderBy);
 		
 		return $mo->send(false);
 	}

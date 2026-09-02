@@ -975,6 +975,7 @@ class VariabiliModel extends GenericModel {
 		"function_pdf_ordine_acquisto"			=>	"", // funzione per generare il PDF dell'ordine di acqusto. Se lasciato vuoto, utilizza le funzioni standard dell'ecommerce
 		"filename_pdf_ordine_acquisto"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine di acquisto allegato alla mail
 		"dimensioni_upload_ricezioni"	=>	10000000, // dimensione massima degli upload nelle ricezioni
+		"mail_aggiuntive_ordine_acquisto"	=>	"", // inserisci una o più mail divise da virgola a cui verrà mandata la mail dell'ordine di acquisto inviata al fornitore (verrà mandata come mail separata, non come bcc o cc)
 		### IMMAGINI SECONDARIE ##
 		"immagini_in_referenze"		=>	0, // se sono visibili oppure no le immagini supplementari nelle referenze
 		"immagini_in_pagine"		=>	0, // se sono visibili oppure no le immagini supplementari nelle pagine

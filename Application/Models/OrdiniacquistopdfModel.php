@@ -161,8 +161,23 @@ class OrdiniacquistopdfModel extends GenericModel
 				
 				$nomeFile = str_replace("[ID_ORDINE]",$ordine["numero_ordine"], $nomeFile);
 				
+				$emailArray = array($email);
+				
+				if (v("mail_aggiuntive_ordine_acquisto"))
+				{
+					$mailAggiuntive = explode(",", v("mail_aggiuntive_ordine_acquisto"));
+					
+					foreach ($mailAggiuntive as $mailAggiuntiva)
+					{
+						$mailAggiuntiva = trim($mailAggiuntiva);
+						
+						if (checkMail($mailAggiuntiva) && !in_array($mailAggiuntiva, $emailArray))
+							$emailArray[] = $mailAggiuntiva;
+					}
+				}
+				
 				return MailordiniModel::inviaMail(array(
-					"emails"	=>	array($email),
+					"emails"	=>	$emailArray,
 					"oggetto"	=>	v("oggetto_pdf_ordine"),
 					"numero_documento"		=>	(int)$ordine["numero_ordine"],
 					"tipologia"	=>	"ORDINE_ACQUISTO",
@@ -206,7 +221,7 @@ class OrdiniacquistopdfModel extends GenericModel
 		if ($record["ordini_acquisto_pdf"]["inviato"])
 			$return = "<i class='verde fa fa-check'></i>";
 		
-		$mail = MailordiniModel::g()->estraiRigaTabellaIdRef("ordini_acquisto_pdf", $record["ordini_acquisto_pdf"]["id_ordine_acquisto_pdf"]);
+		$mail = MailordiniModel::g()->estraiRigaTabellaIdRef("ordini_acquisto_pdf", $record["ordini_acquisto_pdf"]["id_ordine_acquisto_pdf"], "id_mail");
 		
 		if (count($mail) > 0)
 			$return .= " ". $mail[0]["email"];
