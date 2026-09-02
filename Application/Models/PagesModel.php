@@ -3692,7 +3692,7 @@ class PagesModel extends GenericModel {
 		if ($riga["id_riga_tipologia"])
 			return RighetipologieModel::g()->select("titolo")->whereId((int)$riga["id_riga_tipologia"])->field("titolo");
 		
-		return $riga["title"];
+		return $riga["title"] ?? $riga["titolo"];
 	}
 	
 	// Restituisce il titolo della pagina nella lingua di visualizzazione

@@ -575,7 +575,7 @@ class VariabiliModel extends GenericModel {
 		"oggetto_ordine_pagato"	=>	"Conferma pagamento ordine N° [ID_ORDINE]",
 		"oggetto_ordine_spedito"	=>	"Ordine N° [ID_ORDINE] spedito e chiuso",
 		"oggetto_ordine_annullato"	=>	"Annullamento ordine N° [ID_ORDINE]",
-		"oggetto_pdf_ordine"		=>	"Ordine [ID_ORDINE] - stampa PDF", // Oggetto mail del PDF ordine offline
+		"oggetto_pdf_ordine"		=>	"Ordine Acquisto [ID_ORDINE] - stampa PDF", // Oggetto mail del PDF ordine offline
 		"filename_pdf_ordine"		=>	"Ordine_[ID_ORDINE]", // Nome del file del PDF dell'ordine allegato alla mail
 		"funzione_sanitize_spedizione_in_ordine"	=>	"sanitizeHtmlLight", // forza htmlspecialchars sui dati dell'indirizzo utente nel checkout ordine con ENT_QUOTES (sanitizeHtmlLight) o ENT_COMPAT (sanitizeHtmlLightCompat)
 		"mostra_sezione_righe_ordine"	=>	0, // se impostato su 1, mostra la sezione con l'elenco delle righe ordine
