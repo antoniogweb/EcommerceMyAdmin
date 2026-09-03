@@ -29,7 +29,7 @@ trait CrudModel
 		$immagine = ProdottiModel::immagineCarrello($record[$this->_tables]["id_page"], $record[$this->_tables]["id_c"]);
 		
 		if ($immagine)
-			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagine."' />";
+			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/".(int)$record[$this->_tables]["id_page"]."/".$immagine."' />";
 		
 		return "";
     }
