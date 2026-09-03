@@ -305,7 +305,7 @@ class MagazzinoarticoliModel extends GenericModel
 		$immagine = ProdottiModel::immagineCarrello($record["pages"]["id_page"], $record["combinazioni"]["id_c"]);
 		
 		if ($immagine)
-			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/0/".$immagine."' />";
+			return "<img src='".Url::getRoot()."thumb/immagineinlistaprodotti/".(int)$record["pages"]["id_page"]."/".$immagine."' />";
 		
 		return "";
     }
