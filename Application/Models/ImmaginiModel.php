@@ -281,7 +281,8 @@ class ImmaginiModel extends GenericModel {
 	{
 		$p = new PagesModel();
 		
-		$pagina = $p->selectId((int)$idPage);
+		// $pagina = $p->selectId((int)$idPage);
+		$pagina = $p->clear()->select("immagine")->whereId((int)$idPage)->record();
 		
 		$elencoImmagini = ImmaginiModel::immaginiPagina((int)$idPage, true);
 		
@@ -307,8 +308,8 @@ class ImmaginiModel extends GenericModel {
 				))
 				->orderBy("immagini.id_order");
 			
-			if ($soloShop)
-				 $i->where(CategoriesModel::gCatWhere(CategoriesModel::$idShop, true, "pages.id_c"));
+			if ($soloShop && CategoriesModel::$idShop)
+				 $i->aWhere(CategoriesModel::gCatWhere(CategoriesModel::$idShop, true, "pages.id_c"));
 			
 			$elencoImmagini = $i->send();
 			

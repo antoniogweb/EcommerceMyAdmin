@@ -4862,13 +4862,13 @@ class PagesModel extends GenericModel {
 	{
 		$clean["id_page"] = (int)$idPage;
 		
-		$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
-		$elencoImmagini[] = "";
-		
-		$immagine = $elencoImmagini[0];
+		$immagine = null;
 		
 		if (v("immagine_in_varianti") && !v("immagini_separate_per_variante"))
 		{
+			$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
+			$elencoImmagini[] = "";
+			
 			if (!isset($immagineCombinazione))
 				$immagineCombinazione = CombinazioniModel::g()->where(array("id_c"=>(int)$idC))->field("immagine");
 			
@@ -4886,6 +4886,14 @@ class PagesModel extends GenericModel {
 			
 			if (count($immagini) > 0)
 				$immagine = $immagini[0]["immagine"];
+		}
+		
+		if (!isset($immagine))
+		{
+			if (!isset($elencoImmagini))
+				$elencoImmagini = ImmaginiModel::immaginiPaginaFull($clean["id_page"]);
+			
+			$immagine = $elencoImmagini[0] ?? "";
 		}
 		
 		return $immagine;
