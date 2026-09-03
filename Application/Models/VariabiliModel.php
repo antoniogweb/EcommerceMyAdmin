@@ -1491,6 +1491,6 @@ class VariabiliModel extends GenericModel {
 	
 	public static function acquistiAttivi()
 	{
-		return (v("attiva_modulo_acquisti") && v("mostra_modulo_acquisti")) ? true : false;
+		return (v("attiva_modulo_acquisti")) ? true : false;
 	}
 }

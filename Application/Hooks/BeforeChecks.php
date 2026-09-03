@@ -96,6 +96,9 @@ if (v("mostra_modulo_acquisti"))
 	}
 }
 
+if (v("attiva_modulo_acquisti"))
+	Route::$allowed[] = 'magazzinoarticoli,main';
+
 if (v("hash_function_tokens_in_db"))
 	Params::$functionToHashAccessTokens = v("hash_function_tokens_in_db");
 

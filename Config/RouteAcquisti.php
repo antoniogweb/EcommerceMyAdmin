@@ -47,7 +47,6 @@ class RouteAcquisti
 		'ordiniacquistostati,main',
 		'ordiniacquistostati,form',
 		'ordiniacquistostati,ordina',
-		'magazzinoarticoli,main',
 		'magazzinoarticoli,form',
 		'magazzinoarticoli,salva',
 		'ordiniacquistorighe,main',
