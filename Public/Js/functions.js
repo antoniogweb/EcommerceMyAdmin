@@ -1339,6 +1339,22 @@ $(document).ready(function(){
 	});
 	
 	$( "body" ).on( "click", ".sidebar-toggle", function(e){
+		e.preventDefault();
+
+		var body = $("body");
+		var isDesktop = $(window).width() > 767;
+
+		if (isDesktop)
+		{
+			body.toggleClass("sidebar-collapse");
+		}
+		else
+		{
+			body.toggleClass("sidebar-open");
+			if (!body.hasClass("sidebar-open"))
+				body.removeClass("sidebar-collapse");
+		}
+
 		var display = $(".logo-lg").css("display");
 		var url = baseUrl + "/panel/salvasidebar/";
 		
@@ -1353,6 +1369,45 @@ $(document).ready(function(){
 		});
 	});
 	
+	$(".content-wrapper").on("click", function(){
+		if ($(window).width() <= 767)
+			$("body").removeClass("sidebar-open");
+	});
+
+	$(document).on("click", ".sidebar-menu li > a", function(e){
+		var link = $(this);
+		var menu = link.next(".treeview-menu");
+
+		if (menu.length === 0)
+			return;
+
+		e.preventDefault();
+
+		var parentList = link.parent().parent();
+		var parentItem = link.parent();
+
+		if (menu.is(":visible"))
+		{
+			menu.stop(true, false).slideUp(500, function(){
+				menu.removeClass("menu-open");
+				parentItem.removeClass("active");
+			});
+			return;
+		}
+
+		parentList.find(".treeview-menu:visible").each(function(){
+			var openMenu = $(this);
+			var openItem = openMenu.parent("li");
+
+			openMenu.stop(true, false).slideUp(500, function(){
+				openMenu.removeClass("menu-open");
+				openItem.removeClass("active");
+			});
+		});
+		menu.stop(true, true).slideDown(500).addClass("menu-open");
+		parentItem.addClass("active");
+	});
+
 	//events binded to alert notices
 	$( "div[rel='hidden_alert_notice']" ).each(function(){
 		
