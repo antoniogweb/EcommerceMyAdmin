@@ -212,4 +212,204 @@
 		event.preventDefault();
 		$collapse.hasClass("in") ? hideCollapse($collapse) : showCollapse($collapse);
 	});
+
+	/* Help wizard */
+	var helpWizardState = null;
+
+	function helpWizardLocation($step) {
+		var options = $step.attr("data-options") || "";
+		var match = options.match(/(?:^|;)\s*tipLocation\s*:\s*([^;]+)/i);
+		var location = match ? $.trim(match[1]).toLowerCase() : "bottom";
+
+		return $.inArray(location, ["top", "bottom", "left", "right"]) !== -1 ? location : "bottom";
+	}
+
+	function helpWizardTarget($step) {
+		var className = $.trim($step.attr("data-class") || "");
+
+		if (!className)
+			return $(document.body);
+
+		return $("." + $.escapeSelector(className)).filter(":visible").first();
+	}
+
+	function positionHelpWizard() {
+		if (!helpWizardState || !helpWizardState.$tip || !helpWizardState.$target)
+			return;
+
+		var $tip = helpWizardState.$tip;
+		var $target = helpWizardState.$target;
+		var isBody = $target.is("body");
+		var margin = 14;
+		var scrollTop = $(window).scrollTop();
+		var scrollLeft = $(window).scrollLeft();
+		var viewportWidth = $(window).width();
+		var viewportHeight = $(window).height();
+		var tipWidth = $tip.outerWidth();
+		var tipHeight = $tip.outerHeight();
+		var $nub = $tip.find(".helpWizard-nub");
+
+		if (isBody) {
+			$tip.css({
+				top: Math.round(scrollTop + Math.max(10, (viewportHeight - tipHeight) / 2)),
+				left: Math.round(scrollLeft + Math.max(10, (viewportWidth - tipWidth) / 2))
+			});
+			$nub.hide();
+			return;
+		}
+
+		var targetOffset = $target.offset();
+		var targetWidth = $target.outerWidth();
+		var targetHeight = $target.outerHeight();
+		var locations = {
+			top: ["top", "bottom"],
+			bottom: ["bottom", "top"],
+			left: ["left", "right", "top", "bottom"],
+			right: ["right", "left", "top", "bottom"]
+		}[helpWizardState.location];
+		var coordinates = null;
+		var location = locations[0];
+
+		function coordinatesFor(candidate) {
+			if (candidate === "top")
+				return { top: targetOffset.top - tipHeight - margin, left: targetOffset.left };
+			if (candidate === "left")
+				return { top: targetOffset.top, left: targetOffset.left - tipWidth - margin };
+			if (candidate === "right")
+				return { top: targetOffset.top, left: targetOffset.left + targetWidth + margin };
+
+			return { top: targetOffset.top + targetHeight + margin, left: targetOffset.left };
+		}
+
+		$.each(locations, function(index, candidate) {
+			var candidateCoordinates = coordinatesFor(candidate);
+			var fits = candidateCoordinates.top >= scrollTop + 10 &&
+				candidateCoordinates.left >= scrollLeft + 10 &&
+				candidateCoordinates.top + tipHeight <= scrollTop + viewportHeight - 10 &&
+				candidateCoordinates.left + tipWidth <= scrollLeft + viewportWidth - 10;
+
+			if (fits) {
+				location = candidate;
+				coordinates = candidateCoordinates;
+				return false;
+			}
+		});
+
+		if (!coordinates)
+			coordinates = coordinatesFor(location);
+
+		coordinates.left = Math.max(scrollLeft + 10, Math.min(coordinates.left, scrollLeft + viewportWidth - tipWidth - 10));
+		coordinates.top = Math.max(scrollTop + 10, Math.min(coordinates.top, scrollTop + viewportHeight - tipHeight - 10));
+		$tip.css({ top: Math.round(coordinates.top), left: Math.round(coordinates.left) });
+
+		var nubClass = { top: "bottom", bottom: "top", left: "right", right: "left" }[location];
+		var nubPosition;
+		$nub.show().attr("class", "helpWizard-nub " + nubClass).css({ top: "", right: "", bottom: "", left: "" });
+
+		if (location === "top" || location === "bottom") {
+			nubPosition = targetOffset.left + (targetWidth / 2) - coordinates.left;
+			nubPosition = Math.max(14, Math.min(nubPosition, tipWidth - 14));
+			$nub.css("left", Math.round(nubPosition));
+		} else {
+			nubPosition = targetOffset.top + (targetHeight / 2) - coordinates.top;
+			nubPosition = Math.max(14, Math.min(nubPosition, tipHeight - 14));
+			$nub.css("top", Math.round(nubPosition));
+		}
+	}
+
+	function closeHelpWizard(completed) {
+		if (!helpWizardState)
+			return;
+
+		var onComplete = helpWizardState.options.onComplete;
+		if (helpWizardState.$tip)
+			helpWizardState.$tip.remove();
+		$(window).off(".helpWizard");
+		$(document).off(".helpWizard");
+		helpWizardState = null;
+
+		if (completed && $.isFunction(onComplete))
+			onComplete();
+	}
+
+	function showHelpWizardStep() {
+		var state = helpWizardState;
+
+		if (!state)
+			return;
+
+		if (state.$tip)
+			state.$tip.remove();
+
+		while (state.index < state.$steps.length) {
+			var $step = state.$steps.eq(state.index);
+			var $target = helpWizardTarget($step);
+
+			if ($target.length) {
+				state.$target = $target;
+				state.location = helpWizardLocation($step);
+				state.$tip = $(
+					"<div class=\"helpWizard-tip-guide\" role=\"dialog\">" +
+						"<span class=\"helpWizard-nub\"></span>" +
+						"<div class=\"helpWizard-content-wrapper\"></div>" +
+						"<button type=\"button\" class=\"helpWizard-next-tip\"></button>" +
+						"<button type=\"button\" class=\"helpWizard-close-tip\" aria-label=\"Chiudi\">&times;</button>" +
+					"</div>"
+				).appendTo(document.body);
+				state.$tip.find(".helpWizard-content-wrapper").html($step.html());
+				state.$tip.find(".helpWizard-next-tip").text(state.options.nextLabel);
+				state.$tip.on("click", ".helpWizard-next-tip", function() {
+					state.index++;
+					showHelpWizardStep();
+				});
+				state.$tip.on("click", ".helpWizard-close-tip", function() {
+					closeHelpWizard(true);
+				});
+
+				state.$tip.css({ display: "block", visibility: "hidden" });
+				positionHelpWizard();
+				state.$tip.hide().css("visibility", "visible").fadeIn(200);
+
+				if (!$target.is("body")) {
+					$("html, body").stop().animate({
+						scrollTop: Math.max(0, $target.offset().top - ($(window).height() / 2))
+					}, 300, positionHelpWizard);
+				}
+				return;
+			}
+
+			state.index++;
+		}
+
+		closeHelpWizard(true);
+	}
+
+	window.helpWizard = {
+		start: function(selector, options) {
+			closeHelpWizard(false);
+
+			var $container = $(selector);
+			if (!$container.length)
+				return;
+
+			helpWizardState = {
+				$steps: $container.children("li"),
+				$tip: null,
+				$target: null,
+				index: 0,
+				location: "bottom",
+				options: $.extend({ nextLabel: "Successivo", onComplete: null }, options)
+			};
+
+			$(window).on("resize.helpWizard scroll.helpWizard", positionHelpWizard);
+			$(document).on("keydown.helpWizard", function(event) {
+				if (event.which === 27)
+					closeHelpWizard(true);
+			});
+			showHelpWizardStep();
+		},
+		close: function() {
+			closeHelpWizard(true);
+		}
+	};
 })(window.jQuery);

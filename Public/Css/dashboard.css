@@ -326,3 +326,158 @@ body {
 		color: #777 !important;
 	}
 }
+
+#helpWizardTipContent
+{
+	display: none;
+}
+
+.helpWizard-tip-guide
+{
+	display: none;
+	position: absolute;
+	z-index: 99999;
+	border-radius: 4px;
+	background: rgba(0, 0, 0, 0.8);
+	color: #FFF;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: normal;
+}
+
+.helpWizard-content-wrapper
+{
+	padding: 20px 20px 10px 25px;
+}
+
+.helpWizard-content-wrapper img
+{
+	max-width: 100%;
+	height: auto !important;
+}
+
+.helpWizard-tip-guide h1,
+.helpWizard-tip-guide h2,
+.helpWizard-tip-guide h3,
+.helpWizard-tip-guide h4,
+.helpWizard-tip-guide h5,
+.helpWizard-tip-guide h6
+{
+	margin: 0;
+	color: #FFF;
+	font-weight: bold;
+	line-height: 1.25;
+}
+
+.helpWizard-tip-guide h1 { font-size: 30px; }
+.helpWizard-tip-guide h2 { font-size: 26px; }
+.helpWizard-tip-guide h3 { font-size: 22px; }
+.helpWizard-tip-guide h4 { font-size: 18px; }
+.helpWizard-tip-guide h5 { font-size: 16px; }
+.helpWizard-tip-guide h6 { font-size: 14px; }
+
+.helpWizard-tip-guide p
+{
+	margin: 0 0 18px;
+	font-size: 14px;
+	line-height: 18px;
+}
+
+.helpWizard-tip-guide a
+{
+	border-bottom: 1px dotted rgba(255, 255, 255, 0.6);
+	color: #FFF;
+	text-decoration: none;
+}
+
+.helpWizard-next-tip
+{
+	display: inline-block;
+	margin: 0 20px 20px 25px;
+	padding: 6px 18px 4px;
+	border: 0;
+	background: #bc2d2b;
+	color: #FFF;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.helpWizard-next-tip:hover,
+.helpWizard-next-tip:focus
+{
+	background: #FFF;
+	color: #bc2d2b;
+}
+
+.helpWizard-close-tip
+{
+	position: absolute;
+	top: 8px;
+	right: 10px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: rgba(255, 255, 255, 0.55);
+	font-family: Verdana, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.helpWizard-close-tip:hover,
+.helpWizard-close-tip:focus
+{
+	color: #FFF;
+}
+
+.helpWizard-nub
+{
+	display: block;
+	position: absolute;
+	width: 0;
+	height: 0;
+	border: 14px solid rgba(0, 0, 0, 0.8);
+}
+
+.helpWizard-nub.top
+{
+	top: -28px;
+	left: 22px;
+	border-top-color: transparent;
+	border-left-color: transparent;
+	border-right-color: transparent;
+}
+
+.helpWizard-nub.bottom
+{
+	bottom: -28px;
+	left: 22px;
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+	border-left-color: transparent;
+}
+
+.helpWizard-nub.left
+{
+	top: 22px;
+	left: -28px;
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+	border-left-color: transparent;
+}
+
+.helpWizard-nub.right
+{
+	top: 22px;
+	right: -28px;
+	border-top-color: transparent;
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+}
+
+@media (max-width: 767px)
+{
+	.helpWizard-tip-guide {
+		left: 2.5% !important;
+		width: 95% !important;
+		border-radius: 0;
+	}
+}

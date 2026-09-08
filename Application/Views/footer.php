@@ -57,12 +57,12 @@ $(document).ready(function(){
 
 <?php if ($helpDaVedere && v("attiva_help_wizard")) { ?>
 <style>
-.joyride-tip-guide
+.helpWizard-tip-guide
 {
 	width: <?php echo $helpDaVedere[0]["help"]["larghezza"];?>px;
 }
 </style>
-<ol id="joyRideTipContent">
+<ol id="helpWizardTipContent">
 	<?php foreach ($helpDaVedere as $hdv) { ?>
 	<li data-options='tipLocation:<?php echo $hdv["help_item"]["posizione"];?>;' <?php if (trim($hdv["help_item"]["selettore"])) { ?>data-class="<?php echo $hdv["help_item"]["selettore"];?>"<?php } ?>>
 		<div>
@@ -77,14 +77,10 @@ $(document).ready(function(){
 </ol>
 
 <script>
-$(window).load(function() {
-	$("#joyRideTipContent").joyride({
-		autoStart: true,
-		preStepCallback: function(e, tip)
-		{
-			$(".joyride-next-tip").text("<?php echo sanitizeJs(gtextPlain("Successivo"))?>");
-		},
-		postRideCallback: function(e)
+$(window).on("load", function() {
+	helpWizard.start("#helpWizardTipContent", {
+		nextLabel: "<?php echo sanitizeJs(gtextPlain("Successivo"))?>",
+		onComplete: function()
 		{
 			$.ajaxQueue({
 				url: "<?php echo $this->baseUrl."/help/mostranascondi/".$helpDaVedere[0]["help_item"]["id_help"]."/0";?>",
