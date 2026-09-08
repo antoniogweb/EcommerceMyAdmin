@@ -77,7 +77,7 @@
     <!-- Custom styles for this template -->
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Css/dashboard.css?v=<?php echo rand(1,100000);?>" rel="stylesheet">
     
-    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-3.4.1-dist/js/bootstrap.min.js"></script>
+    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/functions.layout.js?v=<?php echo rand(1,100000);?>"></script>
     
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
