@@ -1087,20 +1087,14 @@ class PagesController extends BaseController
 		$this->modelName = "PagescarvalModel";
 		$this->mainButtons = 'ldel';
 		
-		if (!v("nuova_modalita_caratteristiche"))
-		{
-			$this->m['PagescarvalModel']->setFields('id_cv,titolo,id_car','sanitizeAll');
-			$this->m['PagescarvalModel']->values['id_page'] = $clean['id'];
-			$this->m['PagescarvalModel']->updateTable('insert,del');
-			
-			if ($this->m['PagescarvalModel']->queryResult)
-				$this->redirect($this->applicationUrl.$this->controller."/caratteristiche/".$clean['id'].$this->viewStatus);
-		}
+		$this->m['PagescarvalModel']->setFields('id_cv,titolo,id_car','sanitizeAll');
+		$this->m['PagescarvalModel']->values['id_page'] = $clean['id'];
+		$this->m['PagescarvalModel']->updateTable('insert,del');
+		
+		if ($this->m['PagescarvalModel']->queryResult)
+			$this->redirect($this->applicationUrl.$this->controller."/caratteristiche/".$clean['id'].$this->viewStatus);
 		
 		$data["aggiuntaLibera"] = false;
-		
-		if (!v("immagine_in_caratteristiche") && (!v("attiva_tipologie_caratteristiche") || v("caratteristiche_in_tab_separate")))
-			$data["aggiuntaLibera"] = true;
 		
 		$mainAction = "caratteristiche/".$clean['id'];
 		
@@ -1143,16 +1137,13 @@ class PagesController extends BaseController
 		
 		$data["titoloRecord"] = $this->m["PagesModel"]->getSimpleTitle($clean['id']);
 		
-		if (!v("nuova_modalita_caratteristiche"))
-		{
 // 			$data["listaCaratteristiche"] = $this->m['CaratteristicheModel']->clear()->toList("caratteristiche.id_car","caratteristiche.titolo")->orderBy("caratteristiche.titolo")->send();
 			
-			$data["listaCaratteristiche"] = $this->m['CaratteristichevaloriModel']->selectCaratteristica(true, "caratteristiche.titolo");
-			
-			$data["lastCar"] = $this->request->post("id_car",0,"forceInt");
-			
-			$data["listaCarattVal"] = array("0"	=>	"-- seleziona --");
-		}
+		$data["listaCaratteristiche"] = $this->m['CaratteristichevaloriModel']->selectCaratteristica(true, "caratteristiche.titolo");
+		
+		$data["lastCar"] = $this->request->post("id_car",0,"forceInt");
+		
+		$data["listaCarattVal"] = array("0"	=>	"-- seleziona --");
 		
 		$this->append($data);
 	}

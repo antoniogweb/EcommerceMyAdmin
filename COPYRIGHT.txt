@@ -95,11 +95,6 @@ jQuery-ace
 -------
 link: 		https://github.com/cheef/jquery-ace
 
-Bootstrap-3-Typeahead
--------
-License:	Apache License 2.0
-link: 		https://github.com/bassjobsen/Bootstrap-3-Typeahead
-
 Vue.js
 -------
 License:	The MIT License (MIT)

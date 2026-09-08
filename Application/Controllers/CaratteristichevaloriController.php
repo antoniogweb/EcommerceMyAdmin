@@ -165,20 +165,4 @@ class CaratteristichevaloriController extends BaseController {
 	{
 		parent::thumb($field, $id);
 	}
-	
-	public function elenco($section = "")
-	{
-		header('Content-type: application/json; charset=utf-8');
-		
-		$this->clean();
-		$campoTitolo = $this->m[$this->modelName]->campoTitolo;
-		
-		$elementi = $this->m[$this->modelName]->clear()->inner(array("caratteristica"))->where(array(
-			"caratteristiche.section"	=>	sanitizeAll($section),
-		))->select("distinct caratteristiche_valori.$campoTitolo")->orderBy("caratteristiche_valori.".$campoTitolo)->toList("caratteristiche_valori.".$campoTitolo)->send();
-		
-		$elementi = htmlentitydecodeDeep($elementi);
-		
-		echo json_encode($elementi);
-	}
 }

@@ -89,8 +89,6 @@
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/joyride-master/jquery.joyride.js"></script>
     <?php } ?>
     
-    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/Bootstrap-3-Typeahead-master/bootstrap3-typeahead.min.js"></script>
-    
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/select2-develop/dist/css/select2.min.css" rel="stylesheet">
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/select2-develop/dist/js/select2.min.js"></script>
     
