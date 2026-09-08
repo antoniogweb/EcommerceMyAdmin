@@ -83,11 +83,6 @@ mPDF
 License:	GNU GPL version 2 or later
 link: 		https://mpdf.github.io/
 
-Ace (Ajax.org Cloud9 Editor)
--------
-License:	BSD License
-link: 		https://github.com/ajaxorg/ace
-
 jQuery-ace
 -------
 link: 		https://github.com/cheef/jquery-ace

@@ -8,7 +8,7 @@
 <?php } ?>
 
 <link href="<?php echo $this->baseUrlSrc;?>/admin/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/example1/colorbox.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Css/modal.css?v=<?php echo rand(1,10000);?>">
 
 <?php if (v("configurazione_frontend_attiva")) { ?>
 <div class="sideslider" id="sideslider" style="margin-left: -265px;">
@@ -40,7 +40,7 @@
 <script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/jquery.side-slider.js?v=<?php echo rand(1,10000);?>"></script>
 <?php } ?>
 
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Public/Js/colorbox-master/jquery.colorbox.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/modal.js?v=<?php echo rand(1,10000);?>"></script>
 
 
 <script>
@@ -150,12 +150,11 @@
 			var idPagina = fasciaObj.attr("id-pagina");
 			var idFascia = fasciaObj.attr("id");
 			
-			$.colorbox({
-				iframe:true,
-				width:"95%",
-				height:"95%",
-				href:"<?php echo $this->baseUrlSrc;?>/admin/testi/form/update/" + id_t + "?part=Y&nobuttons=Y",
-				onClosed: function(){
+			modalOpen({
+				width:"95vw",
+				height:"95vh",
+				url:"<?php echo $this->baseUrlSrc;?>/admin/testi/form/update/" + id_t + "?part=Y&nobuttons=Y",
+				onClose: function(){
 // 					location.reload();
 					aggiornaFascia(idPagina, idFascia);
 				}
@@ -175,12 +174,11 @@
 			var idPagina = fasciaObj.attr("id-pagina");
 			var idFascia = fasciaObj.attr("id");
 			
-			$.colorbox({
-				iframe:true,
-				width:"95%",
-				height:"95%",
-				href:"<?php echo $this->baseUrlSrc;?>/admin/contenuti/figli/" + idFasciaCustom + "?partial=Y&nobuttons=Y&id_tipo_figlio=" + idTipoFiglio,
-				onClosed: function(){
+			modalOpen({
+				width:"95vw",
+				height:"95vh",
+				url:"<?php echo $this->baseUrlSrc;?>/admin/contenuti/figli/" + idFasciaCustom + "?partial=Y&nobuttons=Y&id_tipo_figlio=" + idTipoFiglio,
+				onClose: function(){
 // 					location.reload();
 					aggiornaFascia(idPagina, idFascia);
 				}
@@ -199,12 +197,11 @@
 			var idPagina = fasciaObj.attr("id-pagina");
 			var idFascia = fasciaObj.attr("id");
 			
-			$.colorbox({
-				iframe:true,
-				width:"95%",
-				height:"95%",
-				href:url,
-				onClosed: function(){
+			modalOpen({
+				width:"95vw",
+				height:"95vh",
+				url:url,
+				onClose: function(){
 // 					location.reload();
 					aggiornaFascia(idPagina, idFascia);
 				}
