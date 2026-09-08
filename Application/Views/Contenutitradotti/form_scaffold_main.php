@@ -28,7 +28,7 @@ $().ready(function() {
 	<?php if ($editor_visuale) { ?>
 	$('.dettagli').tinymce(tiny_editor_config);
 	<?php } else { ?>
-		$('.dettagli').ace({ theme: 'dreamweaver', lang: 'ruby' })
+		$('.dettagli').editorCode();
 	<?php } ?>
 	
 	$("select[name='editor_visuale']").change(function(){

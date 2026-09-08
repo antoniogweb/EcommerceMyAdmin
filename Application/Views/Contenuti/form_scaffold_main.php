@@ -14,7 +14,7 @@ $().ready(function() {
 	<?php if ($editor_visuale) { ?>
 	$('textarea').tinymce(tiny_editor_config);
 	<?php } else { ?>
-		$('textarea').ace({ theme: 'dreamweaver', lang: 'ruby' })
+		$('textarea').editorCode();
 	<?php } ?>
 	
 // 	$('textarea').tinymce(tiny_editor_config);

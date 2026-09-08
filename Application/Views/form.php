@@ -14,7 +14,7 @@
 		
 		<script type="text/javascript">
 		$().ready(function() {
-			$('.editor_textarea').ace({ theme: 'dreamweaver', lang: 'ruby' })
+			$('.editor_textarea').editorCode();
 		});
 		</script>
 	<?php } ?>
