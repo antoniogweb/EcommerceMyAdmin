@@ -76,6 +76,13 @@ License:	The MIT License (MIT)
 Copyright (c) 2014 Wang Shenwei
 link: 		https://github.com/weareoutman/clockpicker
 
+HelpWizard CSS
+--------------
+Derivato e adattato da Joyride2
+License:	The MIT License (MIT)
+Copyright:	ZURB
+link:		https://github.com/zurb/joyride
+
 mPDF
 -------
 License:	GNU GPL version 2 or later
