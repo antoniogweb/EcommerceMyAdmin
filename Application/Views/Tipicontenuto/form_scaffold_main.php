@@ -1,7 +1,4 @@
-<script src="<?php echo $this->baseUrl?>/Public/Js/cheef-jquery-ace/ace/ace.js"></script>
-<script src="<?php echo $this->baseUrl?>/Public/Js/cheef-jquery-ace/ace/theme-dreamweaver.js"></script>
-<script src="<?php echo $this->baseUrl?>/Public/Js/cheef-jquery-ace/ace/mode-ruby.js"></script>
-<script src="<?php echo $this->baseUrl?>/Public/Js/cheef-jquery-ace/jquery-ace.min.js"></script>
+<?php include($this->viewPath("editor"));?>
 
 <script type="text/javascript">
 $().ready(function() {
