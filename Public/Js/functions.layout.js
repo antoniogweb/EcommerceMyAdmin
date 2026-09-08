@@ -213,6 +213,171 @@
 		$collapse.hasClass("in") ? hideCollapse($collapse) : showCollapse($collapse);
 	});
 
+	/* File upload */
+	function appendUploadFormData(formData, values) {
+		if ($.isArray(values)) {
+			$.each(values, function(index, value) {
+				if (value && value.name !== undefined)
+					formData.append(value.name, value.value);
+			});
+			return;
+		}
+
+		$.each(values || {}, function(name, value) {
+			if ($.isArray(value)) {
+				$.each(value, function(index, item) {
+					formData.append(name, item === null || item === undefined ? "" : item);
+				});
+			} else {
+				formData.append(name, value === null || value === undefined ? "" : value);
+			}
+		});
+	}
+
+	function uploadCallback($input, options, name, data) {
+		var event = $.Event("fileupload" + name);
+		var result;
+
+		$input.trigger(event, [data]);
+		if ($.isFunction(options[name]))
+			result = options[name].call($input[0], event, data);
+
+		return result !== false && !event.isDefaultPrevented();
+	}
+
+	function parseUploadResult(xhr) {
+		if (xhr.response && typeof xhr.response === "object")
+			return xhr.response;
+
+		try {
+			return JSON.parse(xhr.responseText);
+		} catch (error) {
+			return xhr.responseText;
+		}
+	}
+
+	$.support.fileInput = (function() {
+		var input = document.createElement("input");
+		input.type = "file";
+		return "files" in input && "FormData" in window && "XMLHttpRequest" in window;
+	})();
+
+	$.fn.fileupload = function(options) {
+		options = $.extend({
+			autoUpload: true,
+			formData: {},
+			type: "POST"
+		}, options);
+
+		return this.each(function() {
+			var $input = $(this);
+
+			$input.off("change.layoutUpload").on("change.layoutUpload", function(event) {
+				var input = this;
+				var files = Array.prototype.slice.call(input.files || []);
+				var selectionData;
+				var started = false;
+
+				if (!files.length)
+					return;
+
+				function startUpload() {
+					if (started)
+						return;
+					started = true;
+
+					var loadedByFile = [];
+					var totalByFile = [];
+					$.each(files, function(index, file) {
+						loadedByFile[index] = 0;
+						totalByFile[index] = file.size || 0;
+					});
+
+					function notifyProgress() {
+						var loaded = 0;
+						var total = 0;
+						$.each(loadedByFile, function(index, value) {
+							loaded += value;
+							total += totalByFile[index];
+						});
+						uploadCallback($input, options, "progressall", {
+							files: files,
+							loaded: loaded,
+							total: total || 1
+						});
+					}
+
+					$.each(files, function(index, file) {
+						var fileData = { files: [file], originalFiles: files };
+						uploadCallback($input, options, "processdone", fileData);
+
+						var xhr = new XMLHttpRequest();
+						var formData = new FormData();
+						var extraData = $.isFunction(options.formData) ? options.formData($input.closest("form")) : options.formData;
+						appendUploadFormData(formData, extraData);
+						formData.append(options.paramName || input.name || "files[]", file, file.name);
+
+						xhr.open(options.type, options.url, true);
+						xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+						$.each(options.headers || {}, function(name, value) {
+							xhr.setRequestHeader(name, value);
+						});
+
+						xhr.upload.addEventListener("progress", function(progressEvent) {
+							if (!progressEvent.lengthComputable)
+								return;
+							loadedByFile[index] = progressEvent.loaded;
+							totalByFile[index] = progressEvent.total;
+							notifyProgress();
+						});
+
+						xhr.addEventListener("load", function() {
+							var data = {
+								files: [file],
+								originalFiles: files,
+								result: parseUploadResult(xhr),
+								jqXHR: xhr
+							};
+
+							if (xhr.status >= 200 && xhr.status < 300) {
+								loadedByFile[index] = totalByFile[index];
+								notifyProgress();
+								uploadCallback($input, options, "done", data);
+							} else {
+								data.errorThrown = xhr.statusText;
+								uploadCallback($input, options, "fail", data);
+							}
+						});
+
+						xhr.addEventListener("error", function() {
+							uploadCallback($input, options, "fail", {
+								files: [file],
+								originalFiles: files,
+								jqXHR: xhr,
+								errorThrown: "Network error"
+							});
+						});
+
+						xhr.send(formData);
+					});
+
+					$input.val("");
+				}
+
+				selectionData = {
+					files: files,
+					submit: startUpload
+				};
+
+				if (!uploadCallback($input, options, "change", selectionData))
+					return;
+
+				if (options.autoUpload !== false)
+					startUpload();
+			});
+		});
+	};
+
 	/* Help wizard */
 	var helpWizardState = null;
 
