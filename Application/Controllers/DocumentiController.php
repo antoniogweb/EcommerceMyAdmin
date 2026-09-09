@@ -232,6 +232,7 @@ class DocumentiController extends BaseController
 		header('Content-type: application/json');
 		
 		$this->shift();
+		$this->checkCsrf(true);
 		
 		$compresso = false;
 		

@@ -16,7 +16,7 @@ $(document).ready(function() {
 	
 	var myDropzone = new Dropzone(".dropzone", {
 		paramName: "filename",
-		url: "<?php echo $uploadUrl;?>",
+		url: "<?php echo $uploadUrl;?>&csrf=<?php echo sanitizeJs(User::$csrfToken);?>",
 		timeout: 180000,
 		init: function () {
 			this.on("success", function (file, responseText) {
