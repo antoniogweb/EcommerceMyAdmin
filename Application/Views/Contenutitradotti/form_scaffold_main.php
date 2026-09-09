@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
 <?php if ($editor_visuale) { ?>
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
+<?php include($this->viewPath("editor_visuale"));?>
 <?php } else { ?>
 <?php include($this->viewPath("editor"));?>
 <?php } ?>
@@ -26,7 +26,7 @@ function updateForm()
 }
 $().ready(function() {
 	<?php if ($editor_visuale) { ?>
-	$('.dettagli').tinymce(tiny_editor_config);
+	editorVisuale('.dettagli');
 	<?php } else { ?>
 		$('.dettagli').editorCode();
 	<?php } ?>

@@ -5,7 +5,7 @@
 <!-- <script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/uploadify_3_2_1/jquery.uploadify.js?<?php echo date("U")?>"></script> -->
 
 <?php if (strcmp($use_editor,"Y") === 0) { ?>
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
+<?php include($this->viewPath("editor_visuale"));?>
 <?php } else { ?>
 <?php include($this->viewPath("editor"));?>
 <?php } ?>
@@ -42,7 +42,7 @@ function updateForm()
 
 $().ready(function() {
 <?php if (strcmp($use_editor,"Y") === 0) { ?>
-	$('textarea.dettagli').tinymce(tiny_editor_config);
+	editorVisuale('textarea.dettagli');
 	<?php } else { ?>
 		$('textarea.dettagli').editorCode();
 	<?php } ?>

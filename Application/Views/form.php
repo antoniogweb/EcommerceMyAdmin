@@ -2,11 +2,11 @@
 
 <?php if ($useEditor) { ?>
 	<?php if ($useEditorVisuale) { ?>
-		<script type="text/javascript" src="<?php echo $this->baseUrl?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
+		<?php include($this->viewPath("editor_visuale"));?>
 
 		<script type="text/javascript">
 		$().ready(function() {
-			$('.editor_textarea').tinymce(tiny_editor_config);
+			editorVisuale('.editor_textarea');
 		});
 		</script>
 	<?php } else { ?>

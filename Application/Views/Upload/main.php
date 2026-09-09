@@ -4,12 +4,10 @@
 <?php echo $notice;?>
 
 <!--jquery-->
-<script src="<?php echo $this->baseUrlSrc.'/Public/Js/jquery/';?>jquery-3.6.0.min.js"></script>
-<script src="<?php echo $this->baseUrlSrc.'/Public/Js/jquery/';?>jquery-migrate-1.4.1.min.js"></script>
+<script src="<?php echo $this->baseUrlSrc.'/Public/Js/vendor/jquery/';?>jquery.min.js"></script>
+<script src="<?php echo $this->baseUrlSrc.'/Public/Js/vendor/jquery/';?>jquery-migrate-1.4.1.min.js"></script>
 
 <?php if ($this->viewArgs['is_popup']) { ?>
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/tiny_mce_popup.js"></script>
-
 <script language="javascript" type="text/javascript">
 
 	$(document).ready(function(){
@@ -25,21 +23,14 @@
 		
 			if ($(".selected").length > 0)
 			{
-				var URL = $(".selected").find(".file_url").attr("rel");;
-				var win = tinyMCEPopup.getWindowArg("window");
+				var URL = $(".selected").find(".file_url").attr("rel");
 
-				// insert information now
-				win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = URL;
-
-				// are we an image browser
-				if (typeof(win.ImageDialog) != "undefined")
+				if (window.opener && !window.opener.closed &&
+					typeof window.opener.editorVisualeSelezionaFile === "function" &&
+					window.opener.editorVisualeSelezionaFile(URL))
 				{
-					// we are, so update image dimensions and preview if necessary
-					if (win.ImageDialog.getImageData) win.ImageDialog.getImageData();
-					if (win.ImageDialog.showPreviewImage) win.ImageDialog.showPreviewImage(URL);
+					window.close();
 				}
-				
-				tinyMCEPopup.close();
 			}
 			return false;
 		});

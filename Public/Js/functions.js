@@ -1,35 +1,3 @@
-var tiny_editor_config = {
-	// Location of TinyMCE script
-	script_url :  baseUrlSrc+ '/Public/Js/tiny_mce/tiny_mce_src.js',
-	convert_urls : false,
-
-	force_br_newlines : true,
-	force_p_newlines : false,
-	forced_root_block : '',
-	entity_encoding : "raw",
-			width : "100%",
-			height : "250",
-	
-	// General options
-	theme : "advanced",
-	plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
-
-	// Theme options
-	theme_advanced_buttons1 : "bold,italic,underline,strikethrough,bullist,numlist,justifyleft,justifycenter,justifyright,justifyfull",
-	theme_advanced_buttons2 : "link,unlink,image,formatselect,forecolor,backcolor,sub,sup,code",
-	
-	theme_advanced_toolbar_location : "top",
-	theme_advanced_toolbar_align : "left",
-	theme_advanced_statusbar_location : "bottom",
-	theme_advanced_resizing : true,
-	accessibility_warnings : false,
-	accessibility_focus : false,
-	oninit : aggAlteIfr
-};
-
-if (permetti_upload_generico == 1)
-	tiny_editor_config["file_browser_callback"] = "ajaxfilemanager";
-
 var form_modificato = false;
 var riga_modificata = false;
 
@@ -38,27 +6,6 @@ if (typeof stringaSalvaOPerdiIDati == "undefined")
 
 if (typeof nazioniConProvince == "undefined")
 	var nazioniConProvince = ['IT'];
-
-if (typeof(ajaxfilemanager) !== typeof(Function))
-{
-	function ajaxfilemanager(field_name, url, type, win) {
-		var ajaxfilemanagerurl = baseUrl + "/upload/main/1/1/1/1/0/0/1/0/1/0/1?base=";
-		var fileBrowserWindow = new Array();
-		fileBrowserWindow["file"] = ajaxfilemanagerurl;
-		fileBrowserWindow["title"] = "Ajax File Manager";
-		fileBrowserWindow["width"] = "782";
-		fileBrowserWindow["height"] = "440";
-		fileBrowserWindow["resizable "] = "yes";
-		fileBrowserWindow["inline"] = "yes";
-		fileBrowserWindow["close_previous"] = "no";
-		tinyMCE.activeEditor.windowManager.open(fileBrowserWindow, {
-			window : win,
-			input : field_name
-		});
-		
-		return false;
-	}
-}
 
 var applicationControllerAction = applicationName + controllerName + "/" + actionName;
 

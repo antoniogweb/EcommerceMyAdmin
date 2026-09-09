@@ -5,6 +5,7 @@ const vendorPaths = {
     jqueryUi: '../../Public/Js/vendor/jquery-ui/',
     dropzone: '../../Public/Js/vendor/dropzone/',
     select2: '../../Public/Js/vendor/select2/',
+    jodit: '../../Public/Js/vendor/jodit/',
 };
 
 for (const path of Object.values(vendorPaths)) {
@@ -94,4 +95,20 @@ fs.copyFileSync(
 fs.copyFileSync(
     select2SourcePath + 'css/select2.min.css',
     select2DestinationPath + 'select2.min.css'
+);
+
+// Jodit
+const joditSourcePath = 'node_modules/jodit/es2021/';
+const joditDestinationPath = vendorPaths.jodit;
+
+for (const file of ['jodit.min.js', 'jodit.min.css']) {
+    fs.copyFileSync(
+        joditSourcePath + file,
+        joditDestinationPath + file
+    );
+}
+
+fs.copyFileSync(
+    'node_modules/jodit/LICENSE.txt',
+    joditDestinationPath + 'LICENSE.txt'
 );

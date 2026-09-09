@@ -3,7 +3,7 @@
 <?php if ($tipo == "TESTO") { ?>
 
 <?php if ($editor_visuale) { ?>
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/tiny_mce/jquery.tinymce.js"></script>
+<?php include($this->viewPath("editor_visuale"));?>
 <?php } else { ?>
 <?php include($this->viewPath("editor"));?>
 <?php } ?>
@@ -11,7 +11,7 @@
 <script type="text/javascript">
 $().ready(function() {
 	<?php if ($editor_visuale) { ?>
-		$('textarea').tinymce(tiny_editor_config);
+		editorVisuale('textarea');
 	<?php } else { ?>
 		$('textarea').editorCode();
 	<?php } ?>
