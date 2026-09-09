@@ -2,6 +2,7 @@
 	"use strict";
 
 	var activeEditor = null;
+	var activeInsertMode = "auto";
 	var uploadManagerWatcher = null;
 	var imageExtensions = /\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#].*)?$/i;
 
@@ -16,12 +17,13 @@
 		}
 	}
 
-	function openUploadManager(editor) {
+	function openUploadManager(editor, insertMode) {
 		if (activeEditor && activeEditor !== editor) {
 			activeEditor.s.restore();
 		}
 
 		activeEditor = editor;
+		activeInsertMode = insertMode || "auto";
 		editor.s.save();
 
 		var managerUrl = baseUrl + "/upload/main/1/1/1/1/0/0/1/0/1/0/1?base=";
@@ -42,12 +44,14 @@
 					if (activeEditor) {
 						activeEditor.s.restore();
 						activeEditor = null;
+						activeInsertMode = "auto";
 					}
 				}
 			}, 500);
 		} else {
 			activeEditor.s.restore();
 			activeEditor = null;
+			activeInsertMode = "auto";
 		}
 	}
 
@@ -58,7 +62,7 @@
 
 		activeEditor.s.restore();
 
-		if (imageExtensions.test(url)) {
+		if (activeInsertMode !== "link" && imageExtensions.test(url)) {
 			activeEditor.s.insertImage(url, null, null);
 		} else {
 			var link = activeEditor.createInside.element("a");
@@ -69,6 +73,7 @@
 
 		activeEditor.synchronizeValues();
 		activeEditor = null;
+		activeInsertMode = "auto";
 		window.clearInterval(uploadManagerWatcher);
 		uploadManagerWatcher = null;
 
@@ -90,11 +95,19 @@
 				openUploadManager(editor);
 			}
 		};
-		buttons.push("archivioFile");
+		controls.archivioLink = {
+			name: "archivioLink",
+			icon: "link",
+			tooltip: "Inserisci link dall'archivio",
+			exec: function (editor) {
+				openUploadManager(editor, "link");
+			}
+		};
+		buttons.push("archivioFile", "archivioLink");
 	}
 
 	buttons = buttons.concat([
-		"paragraph", "brush", "subscript", "superscript", "table", "hr",
+		"paragraph", "brush", "subscript", "superscript", "hr",
 		"undo", "redo", "source"
 	]);
 
@@ -105,6 +118,21 @@
 		enter: "br",
 		useSplitMode: false,
 		buttons: buttons,
+		// Jodit inserisce un a-capo nei profili responsive predefiniti: qui i
+		// comandi meno frequenti confluiscono nel menu "dots" senza lasciare righe vuote.
+		buttonsMD: [
+			"bold", "italic", "underline", "strikethrough", "ul", "ol",
+			"link", "unlink", "archivioFile", "archivioLink", "paragraph",
+			"brush", "undo", "redo", "source", "|", "dots"
+		],
+		buttonsSM: [
+			"bold", "italic", "underline", "ul", "ol", "link",
+			"archivioFile", "archivioLink", "brush", "|", "dots"
+		],
+		buttonsXS: [
+			"bold", "italic", "ul", "ol", "link", "archivioFile",
+			"archivioLink", "|", "dots"
+		],
 		controls: controls,
 		events: {
 			afterInit: function () {
