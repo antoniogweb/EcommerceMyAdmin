@@ -65,12 +65,6 @@ License:	The MIT License (MIT)
 Copyright (c) 2016 Jack Moore
 link: 		https://github.com/jackmoore/colorbox
 
-ClockPicker
--------
-License:	The MIT License (MIT)
-Copyright (c) 2014 Wang Shenwei
-link: 		https://github.com/weareoutman/clockpicker
-
 HelpWizard CSS
 --------------
 Derivato e adattato da Joyride2

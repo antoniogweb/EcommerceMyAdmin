@@ -626,10 +626,12 @@ class PagesModel extends GenericModel {
 					
 				),
 				'ora_inizio_evento'	=>	array(
-					"className"		=>	"form-control clockpicker",
+					'type'		=>	'Time',
+					"className"		=>	"form-control",
 				),
 				'ora_fine_evento'	=>	array(
-					"className"		=>	"form-control clockpicker",
+					'type'		=>	'Time',
+					"className"		=>	"form-control",
 				),
 				'testo_link'	=>	array(
 					'labelString'	=>	'Testo pulsante',
