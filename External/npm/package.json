@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "jquery": "^3.0.0"
+  },
+  "scripts": {
+        "vendor": "node scripts/vendor.js"
+    }
+}

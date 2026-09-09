@@ -13,6 +13,7 @@ config.php
 /Theme/*
 /thumb/*
 /Frontend/Application/Views/Default/layout.json
+/External/npm/node_modules/*
 .directory
 # Unit test reports
 TEST*.xml

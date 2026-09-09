@@ -23,8 +23,8 @@
 	<?php include($this->viewPath("header_variabili_js"));?>
 
 	<!--jquery-->
-	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/jquery/';?>jquery-3.6.0.min.js"></script>
-	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/jquery/';?>jquery-migrate-1.4.1.min.js"></script>
+	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/vendor/jquery/';?>jquery.min.js"></script>
+	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/vendor/jquery/';?>jquery-migrate-1.4.1.min.js"></script>
 	
 	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery-ui-1.12.1.custom/jquery-ui.css" />
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
