@@ -902,8 +902,6 @@ $(document).ready(function(){
 		
 	});
 	
-	$('.colorpicker-element').colorpicker();
-	
 	$("body").on("submit", ".moveupForm form, .movedownForm form", function(e){
         e.preventDefault();  //prevent form from submitting
         var data = $(this).serializeArray();

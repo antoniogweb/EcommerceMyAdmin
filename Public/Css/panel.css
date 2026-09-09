@@ -387,7 +387,11 @@ a.linkItem {
 {
 	width:100% !important;
 }
-
+.form_input_text input[type=color]
+{
+	width:40px !important;
+	cursor: pointer;
+}
 .form_textarea textarea.meta_textarea
 {
 	height:80px;

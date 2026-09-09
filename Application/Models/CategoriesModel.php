@@ -227,7 +227,8 @@ class CategoriesModel extends HierarchicalModel {
 					'type'		=>	'Hidden'
 				),
 				'colore_testo_in_slide'	=>	array(
-					"className"	=>	"form-control colorpicker-element",
+					'type'		=>	'Color',
+					"className"	=>	"form-control",
 				),
 				'priorita_sitemap'	=>	array(
 					'labelString'=>	'Priorità sitemap',
