@@ -2,7 +2,8 @@
   "dependencies": {
     "dropzone": "^5.9.3",
     "jquery": "^3.0.0",
-    "jquery-ui": "^1.14.2"
+    "jquery-ui": "^1.14.2",
+    "select2": "^4.1.0"
   },
   "scripts": {
     "vendor": "node scripts/vendor.js"

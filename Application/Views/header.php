@@ -81,8 +81,8 @@
     
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
     
-    <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/select2-develop/dist/css/select2.min.css" rel="stylesheet">
-    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/select2-develop/dist/js/select2.min.js"></script>
+    <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/vendor/select2/select2.min.css" rel="stylesheet">
+    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/vendor/select2/select2.min.js"></script>
     
     <?php if (defined("APPS")) {
 		foreach (APPS as $app)

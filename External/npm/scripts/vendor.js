@@ -71,3 +71,19 @@ for (const file of ['dropzone.min.js', 'dropzone.min.css']) {
         dropzoneDestinationPath + file
     );
 }
+
+// Select2
+const select2SourcePath = 'node_modules/select2/dist/';
+const select2DestinationPath = '../../Public/Js/vendor/select2/';
+
+fs.mkdirSync(select2DestinationPath, { recursive: true });
+
+fs.copyFileSync(
+    select2SourcePath + 'js/select2.min.js',
+    select2DestinationPath + 'select2.min.js'
+);
+
+fs.copyFileSync(
+    select2SourcePath + 'css/select2.min.css',
+    select2DestinationPath + 'select2.min.css'
+);
