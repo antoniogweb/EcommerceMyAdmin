@@ -10,36 +10,6 @@
 <link href="<?php echo $this->baseUrlSrc;?>/admin/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Css/modal.css?v=<?php echo rand(1,10000);?>">
 
-<?php if (v("configurazione_frontend_attiva")) { ?>
-<div class="sideslider" id="sideslider" style="margin-left: -265px;">
-    <div class="sideslider-tab"> <?php /*echo gtext("Configura");*/?> <i class='fa fa-cogs'></i></div>
-   
-	<div id="sideslider-smartbutton">
-		<div id="sideslider-text">
-			<span class="header"><?php echo gtextPlain("Pannello gestione");?></span>
-			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/categorie/main?partial=Y";?>" class="iframe"><?php echo gtextPlain("Categorie prodotti");?></a></span>
-			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/prodotti/main?partial=Y";?>" class="iframe"><?php echo gtextPlain("Prodotti ecommerce");?></a></span>
-			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/blog/main?partial=Y";?>" class="iframe"><?php echo gtextPlain("Blog");?></a></span>
-			<?php if (v("mostra_slide")) { ?>
-			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/slide/main?partial=Y";?>" class="iframe"><?php echo gtextPlain("Slide principale");?></a></span>
-			<?php } ?>
-			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/menu/main?partial=Y";?>" class="iframe"><?php echo gtextPlain("Menu navigazione");?></a></span>
-			<?php if (count(Tema::getElencoTemi()) > 1 && v("permetti_cambio_tema")) { ?>
-			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/impostazioni/tema?partial=Y";?>" class="iframe"><?php echo gtextPlain("Seleziona tema");?></a></span>
-			<?php } ?>
-			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/testi/main?partial=Y";?>" class="iframe"><?php echo gtextPlain("Elementi tema");?></a></span>
-			<span class="line"><a href="<?php echo $this->baseUrlSrc."/admin/traduzioni/main?partial=Y";?>" class="iframe"><?php echo gtextPlain("Traduzione testi");?></a></span>
-			<span class="line"><a target="_blank" href="<?php echo $this->baseUrlSrc."/admin/panel/main";?>"><?php echo gtextPlain("Dashboard amministrativa");?></a></span>
-		</div>
-		<div class="sideclear"></div>
-	</div>
-	
-	<div class="sideslider-close sideslider-close_en"><?php echo gtextPlain("Chiudi"); ?>&nbsp;</div>
-</div>
-
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/jquery.side-slider.js?v=<?php echo rand(1,10000);?>"></script>
-<?php } ?>
-
 <script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/modal.js?v=<?php echo rand(1,10000);?>"></script>
 
 
@@ -80,10 +50,6 @@
 	}
 
 	$(document).ready(function() {
-		
-		<?php if (v("configurazione_frontend_attiva")) { ?>
-		$('#sideslider').sideSlider();
-		<?php } ?>
 		
 		$("body").on("click",".aggiungi_blocco_testo_context_element", function(e){
 			
