@@ -26,8 +26,8 @@
 	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/vendor/jquery/';?>jquery.min.js"></script>
 	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/vendor/jquery/';?>jquery-migrate-1.4.1.min.js"></script>
 	
-	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery-ui-1.12.1.custom/jquery-ui.css" />
-	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc;?>/Public/Js/vendor/jquery-ui/jquery-ui.min.css" />
+	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/vendor/jquery-ui/jquery-ui.min.js"></script>
 	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/';?>ajaxQueue.js"></script>
 	
 	<script>
@@ -80,9 +80,6 @@
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/functions.layout.js?v=<?php echo rand(1,100000);?>"></script>
     
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
-    <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
     
     <link href="<?php echo $this->baseUrlSrc;?>/Public/Js/select2-develop/dist/css/select2.min.css" rel="stylesheet">
     <script src="<?php echo $this->baseUrlSrc;?>/Public/Js/select2-develop/dist/js/select2.min.js"></script>

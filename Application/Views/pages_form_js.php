@@ -1,8 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/Public/Js/clockpicker-gh-pages/dist/bootstrap-clockpicker.min.css">
-<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/clockpicker-gh-pages/dist/bootstrap-clockpicker.min.js"></script>
-
 <?php include($this->viewPath("uploader_scripts"));?>
 
 <!-- <script type="text/javascript" src="<?php echo $this->baseUrlSrc?>/Public/Js/uploadify_3_2_1/jquery.uploadify.js?<?php echo date("U")?>"></script> -->
@@ -119,11 +116,6 @@ $(document).ready(function() {
 		reloadPage();
 		
 	});
-	
-	$(".clockpicker").clockpicker({
-		"donetext" : "Seleziona"
-	});
-	
 });
 
 if (typeof show_preview_generica !== 'function')

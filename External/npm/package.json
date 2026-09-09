@@ -1,8 +1,9 @@
 {
   "dependencies": {
-    "jquery": "^3.0.0"
+    "jquery": "^3.0.0",
+    "jquery-ui-dist": "^1.13.3"
   },
   "scripts": {
-        "vendor": "node scripts/vendor.js"
-    }
+    "vendor": "node scripts/vendor.js"
+  }
 }
