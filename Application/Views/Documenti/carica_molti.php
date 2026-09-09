@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 
-<script src="<?php echo $this->baseUrlSrc;?>/Public/Js/dropzone-5.7.0/dist/min/dropzone.min.js"></script>
-<link rel="stylesheet" href="<?php echo $this->baseUrlSrc;?>/Public/Js/dropzone-5.7.0/dist/min/dropzone.min.css">
+<script src="<?php echo $this->baseUrlSrc;?>/Public/Js/vendor/dropzone/dropzone.min.js"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrlSrc;?>/Public/Js/vendor/dropzone/dropzone.min.css">
 
 <script>
 Dropzone.autoDiscover = false;

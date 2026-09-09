@@ -8,7 +8,7 @@ fs.copyFileSync(
 
 // jQuery UI: JavaScript and widget structure are supplied by npm. The
 // ui-lightness ThemeRoller variant used by the application is kept under
-// assets, because jquery-ui-dist ships only its base theme.
+// assets, because the official package ships only its base theme.
 fs.rmSync(
     '../../Public/Js/vendor/jquery-ui/images',
     { recursive: true, force: true }
@@ -20,31 +20,54 @@ fs.cpSync(
     { recursive: true }
 );
 
-const sourcePath = 'node_modules/jquery-ui-dist/';
+const jqueryUiSourcePath = 'node_modules/jquery-ui/';
 const destinationPath = '../../Public/Js/vendor/jquery-ui/';
 
-const files = [
-    'jquery-ui.min.js',
-];
-
-files.forEach(file => {
-    fs.copyFileSync(
-        sourcePath + file,
-        destinationPath + file
-    );
-});
-
 fs.copyFileSync(
-    'assets/jquery-ui-theme/jquery-ui.theme.min.css',
-    destinationPath + 'jquery-ui.theme.min.css'
+    jqueryUiSourcePath + 'dist/jquery-ui.min.js',
+    destinationPath + 'jquery-ui.min.js'
 );
+
+const jqueryUiCssFiles = [
+    'core.css',
+    'accordion.css',
+    'autocomplete.css',
+    'button.css',
+    'checkboxradio.css',
+    'controlgroup.css',
+    'datepicker.css',
+    'dialog.css',
+    'draggable.css',
+    'menu.css',
+    'progressbar.css',
+    'resizable.css',
+    'selectable.css',
+    'selectmenu.css',
+    'slider.css',
+    'sortable.css',
+    'spinner.css',
+    'tabs.css',
+    'tooltip.css',
+];
 
 fs.writeFileSync(
     destinationPath + 'jquery-ui.min.css',
-    fs.readFileSync(sourcePath + 'jquery-ui.structure.min.css', 'utf8') + '\n' +
+    jqueryUiCssFiles.map(file => fs.readFileSync(
+        jqueryUiSourcePath + 'themes/base/' + file,
+        'utf8'
+    )).join('\n') + '\n' +
     fs.readFileSync('assets/jquery-ui-theme/jquery-ui.theme.min.css', 'utf8')
 );
 
-for (const file of ['jquery-ui.structure.min.css', 'jquery-ui.theme.min.css']) {
-    fs.rmSync(destinationPath + file, { force: true });
+// Dropzone
+const dropzoneSourcePath = 'node_modules/dropzone/dist/min/';
+const dropzoneDestinationPath = '../../Public/Js/vendor/dropzone/';
+
+fs.mkdirSync(dropzoneDestinationPath, { recursive: true });
+
+for (const file of ['dropzone.min.js', 'dropzone.min.css']) {
+    fs.copyFileSync(
+        dropzoneSourcePath + file,
+        dropzoneDestinationPath + file
+    );
 }
