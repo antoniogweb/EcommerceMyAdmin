@@ -9,13 +9,14 @@ $(document).ready(function() {
 	
 	
 	<?php if (isset($caricaZip)) { ?>
-	Dropzone.prototype.defaultOptions.dictDefaultMessage = "<?php echo sanitizeJs(gtext("Trascina qui i file compressi (formato ZIP) che desideri caricare"))."<br /><i>(".sanitizeJs(gtext("ogni file verrà decompresso e i file al loro interno verranno salvati singolarmente")).")</i>";?>";
-	<?php } else { ?>
-	Dropzone.prototype.defaultOptions.dictDefaultMessage = "<?php echo sanitizeJs(gtext("Trascina qui i file che desideri caricare"));?>";
-	<?php } ?>
+		var dropzoneDefaultMessage = "<?php echo sanitizeJs(gtext("Trascina qui i file compressi (formato ZIP) che desideri caricare"))."<br /><i>(".sanitizeJs(gtext("ogni file verrà decompresso e i file al loro interno verranno salvati singolarmente")).")</i>";?>";
+		<?php } else { ?>
+		var dropzoneDefaultMessage = "<?php echo sanitizeJs(gtext("Trascina qui i file che desideri caricare"));?>";
+		<?php } ?>
 	
 	var myDropzone = new Dropzone(".dropzone", {
 		paramName: "filename",
+		dictDefaultMessage: dropzoneDefaultMessage,
 		url: "<?php echo $uploadUrl;?>&csrf=<?php echo sanitizeJs(User::$csrfToken);?>",
 		timeout: 180000,
 		init: function () {
