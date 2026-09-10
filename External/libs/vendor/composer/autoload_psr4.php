@@ -51,6 +51,7 @@ return array(
     'GeoIp2\\' => array($vendorDir . '/geoip2/geoip2/src'),
     'Facebook\\' => array($vendorDir . '/joelbutcher/facebook-graph-sdk/src'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
+    'Detection\\' => array($vendorDir . '/mobiledetect/mobiledetectlib/src'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'Composer\\Pcre\\' => array($vendorDir . '/composer/pcre/src'),
     'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),

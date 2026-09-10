@@ -113,6 +113,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
+            'Detection\\' => 10,
             'DeepCopy\\' => 9,
         ),
         'C' => 
@@ -314,6 +315,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Doctrine\\Instantiator\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
+        ),
+        'Detection\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/src',
         ),
         'DeepCopy\\' => 
         array (
