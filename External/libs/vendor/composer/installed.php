@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '00bdd48561aec32a6882b1b891b3ea6cf1ee6568',
+        'reference' => '51ac020fae33c7dcc54b54dc71e0ec21a1a79213',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '00bdd48561aec32a6882b1b891b3ea6cf1ee6568',
+            'reference' => '51ac020fae33c7dcc54b54dc71e0ec21a1a79213',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -495,8 +495,8 @@
         'psr/http-client-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/http-factory' => array(
@@ -511,8 +511,8 @@
         'psr/http-factory-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/http-message' => array(
@@ -527,8 +527,8 @@
         'psr/http-message-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '*',
-                1 => '1.0',
+                0 => '1.0',
+                1 => '*',
             ),
         ),
         'psr/log' => array(
@@ -710,15 +710,6 @@
             'install_path' => __DIR__ . '/../sebastian/version',
             'aliases' => array(),
             'dev_requirement' => true,
-        ),
-        'sendinblue/api-v3-sdk' => array(
-            'pretty_version' => 'v8.4.2',
-            'version' => '8.4.2.0',
-            'reference' => '5d08398c7247a2f5d80f285d08a6dbe169f18eab',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../sendinblue/api-v3-sdk',
-            'aliases' => array(),
-            'dev_requirement' => false,
         ),
         'sendpulse/rest-api' => array(
             'pretty_version' => '1.0.27',

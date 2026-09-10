@@ -50,7 +50,6 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
             'Symfony\\Polyfill\\Ctype\\' => 23,
             'Symfony\\Component\\Filesystem\\' => 29,
             'Sendpulse\\RestApi\\' => 18,
-            'SendinBlue\\Client\\' => 18,
             'SatispayGBusiness\\' => 18,
         ),
         'P' => 
@@ -169,10 +168,6 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'Sendpulse\\RestApi\\' => 
         array (
             0 => __DIR__ . '/..' . '/sendpulse/rest-api/src',
-        ),
-        'SendinBlue\\Client\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/sendinblue/api-v3-sdk/lib',
         ),
         'SatispayGBusiness\\' => 
         array (
