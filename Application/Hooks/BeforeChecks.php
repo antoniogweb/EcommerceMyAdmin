@@ -113,9 +113,9 @@ App::setPannelli();
 if (v("usa_https"))
 	Params::$useHttps = true;
 
-require(LIBRARY."/External/mobile_detect.php");
+require_once(LIBRARY . '/External/libs/vendor/autoload.php');
 
-$detect = new Mobile_Detect();
+$detect = new Detection\MobileDetect();
 User::$isMobile = $detect->isMobile();
 
 Params::$language = "It";

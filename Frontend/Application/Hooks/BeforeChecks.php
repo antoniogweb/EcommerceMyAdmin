@@ -146,12 +146,12 @@ if (!v("traduzione_frontend"))
 
 Domain::$adminRoot = LIBRARY;
 
-require(LIBRARY."/External/mobile_detect.php");
+require_once(LIBRARY . '/External/libs/vendor/autoload.php');
 
 if (v("usa_https"))
 	Params::$useHttps = true;
 
-$detect = new Mobile_Detect();
+$detect = new Detection\MobileDetect();
 User::$isMobile = $detect->isMobile();
 User::$isTablet = $detect->isTablet();
 User::$isPhone = ($detect->isMobile() && !$detect->isTablet());
