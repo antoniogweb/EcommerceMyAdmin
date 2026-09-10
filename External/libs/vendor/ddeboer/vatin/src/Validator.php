@@ -3,7 +3,7 @@
 namespace Ddeboer\Vatin;
 
 use Ddeboer\Vatin\Vies\Client;
-use Ddeboer\Vatin\Exception\ViesException;
+use Ddeboer\Vatin\Vies\ClientInterface;
 
 /**
  * Validate a VAT identification number (VATIN)
@@ -12,19 +12,19 @@ use Ddeboer\Vatin\Exception\ViesException;
  * @link http://sima.cat/nif.php
  * @link https://github.com/jonathanmaron/zf2_proposal/blob/master/library/Zend/Validator/Vatin.php
  */
-class Validator
+final class Validator implements ValidatorInterface
 {
     /**
      * Regular expression patterns per country code
      *
-     * @var array
+     * @var array<string, string>
      * @link http://ec.europa.eu/taxation_customs/vies/faq.html?locale=lt#item_11
      */
-    private $patterns = array(
+    private const PATTERNS = [
         'AT' => 'U[A-Z\d]{8}',
-        'BE' => '[0|1]{1}\d{9}',
+        'BE' => '[01]{1}\d{9}',
         'BG' => '\d{9,10}',
-        'CH' => 'E(-| ?)(\d{3}(\.)\d{3}(\.)\d{3}|\d{9})( ?)(MWST|TVA|IVA)',
+        'CH' => 'E(-| ?)(\d{3}(\.)\d{3}(\.)\d{3}|\d{9})( ?)(MWST|TVA|IVA)?',
         'CY' => '\d{8}[A-Z]',
         'CZ' => '\d{8,10}',
         'DE' => '\d{9}',
@@ -50,39 +50,21 @@ class Validator
         'RO' => '\d{2,10}',
         'SE' => '\d{12}',
         'SI' => '\d{8}',
-        'SK' => '\d{10}'
-    );
-
-    /**
-     * Client for the VIES web service
-     *
-     * @var Client
-     */
-    private $viesClient;
+        'SK' => '\d{10}',
+        'XI' => '\d{9,12}|(GD|HA)\d{3}'
+    ];
 
     /**
      * Constructor
      *
-     * @param Client|null $viesClient Client for the VIES web service
+     * @param ClientInterface $viesClient Client for the VIES web service
      */
-    public function __construct(?Client $viesClient = null)
-    {
-        $this->viesClient = $viesClient;
+    public function __construct(
+        private readonly ClientInterface $viesClient = new Client()
+    ) {
     }
 
-    /**
-     * Returns true if value is a valid VAT identification number, false
-     * otherwise
-     *
-     * @param string $value          Value
-     * @param bool   $checkExistence In addition to checking the VATIN's format
-     *                               for validity, also check whether the VATIN
-     *                               exists. This requires a call to the VIES
-     *                               web service.
-     *
-     * @return bool
-     */
-    public function isValid($value, $checkExistence = false)
+    public function isValid(?string $value, bool $checkExistence = false): bool
     {
         if (null === $value || '' === $value) {
             return false;
@@ -95,42 +77,24 @@ class Validator
             return false;
         }
 
-        if (0 === preg_match('/^(?:'.$this->patterns[$countryCode].')$/', $vatin)) {
+        if (0 === preg_match('/^(?:'.self::PATTERNS[$countryCode].')$/', $vatin)) {
             return false;
         }
 
         if (true === $checkExistence) {
-            $result = $this->getViesClient()->checkVat($countryCode, $vatin);
+            $result = $this->viesClient->checkVat($countryCode, $vatin);
 
-            return $result->isValid();
+            return $result->valid;
         }
 
         return true;
     }
 
     /**
-     * Returns true if value is valid country code, false otherwise
-     *
-     * @param string $value Value
-     *
-     * @return bool
+     * @return bool true if value is valid country code, false otherwise
      */
-    public function isValidCountryCode($value)
+    private function isValidCountryCode(string $value): bool
     {
-        return isset($this->patterns[$value]);
-    }
-
-    /**
-     * Get VIES client
-     *
-     * @return Client
-     */
-    private function getViesClient()
-    {
-        if ($this->viesClient === null) {
-            $this->viesClient = new Client();
-        }
-
-        return $this->viesClient;
+        return isset(self::PATTERNS[$value]);
     }
 }

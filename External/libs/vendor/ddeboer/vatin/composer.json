@@ -15,11 +15,15 @@
         }
     ],
     "require": {
-        "php": ">=5.6.0"
+        "php": ">=8.1"
     },
     "require-dev": {
         "ext-soap": "*",
-        "phpunit/phpunit": "^5.7 || ^6.5"
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpunit/phpunit": "^10.5"
     },
     "suggest": {
         "ext-soap": "Required if you want to check the VAT number via VIES"
@@ -32,6 +36,11 @@
     "autoload-dev": {
         "psr-4": {
             "Ddeboer\\Vatin\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
         }
     }
 }

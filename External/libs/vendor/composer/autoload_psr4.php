@@ -53,6 +53,7 @@ return array(
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
     'Detection\\' => array($vendorDir . '/mobiledetect/mobiledetectlib/src'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
+    'Ddeboer\\Vatin\\' => array($vendorDir . '/ddeboer/vatin/src'),
     'Composer\\Pcre\\' => array($vendorDir . '/composer/pcre/src'),
     'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),

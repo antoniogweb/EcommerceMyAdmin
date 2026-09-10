@@ -1,0 +1,19 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Ddeboer\\Vatin\\Vies\\Client\:\:checkVat\(\) should return Ddeboer\\Vatin\\Vies\\Response\\CheckVatResponse but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Vies/Client.php
+
+		-
+			message: '#^Readonly property Ddeboer\\Vatin\\Vies\\Response\\CheckVatResponse\:\:\$date is assigned outside of the constructor\.$#'
+			identifier: property.readOnlyAssignNotInConstructor
+			count: 1
+			path: src/Vies/Response/CheckVatResponse.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''DateTimeImmutable'' and DateTimeImmutable will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Vies/ClientTest.php

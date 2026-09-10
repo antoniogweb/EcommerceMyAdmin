@@ -26,6 +26,15 @@ trait CommonModel {
 	
 	public static $redirect = "";
 	public static $redirectQueryString = "";
+
+	// Codici paese per i quali ddeboer/vatin fornisce una regola di formato.
+	// I paesi non presenti non vengono validati.
+	private const NAZIONI_CON_FORMATO_PIVA = array(
+		"AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "EL",
+		"ES", "FI", "FR", "GB", "HR", "HU", "IE", "IT", "LT", "LU",
+		"LV", "MT", "NL", "NO", "PL", "PT", "RO", "SE", "SI", "SK",
+		"XI",
+	);
 	
 	public function controllaCF($controlla = 1)
 	{
@@ -57,13 +66,14 @@ trait CommonModel {
 		{
 			if (isset($this->values["p_iva"]) && isset($this->values["tipo_cliente"]) && isset($_POST["nazione"]) && $this->values["tipo_cliente"] != "privato")
 			{
-				include(ROOT."/admin/External/ddeboervatin/vendor/autoload.php");
+				require_once(ROOT . "/admin/External/libs/vendor/autoload.php");
 				
 				$validator = new Ddeboer\Vatin\Validator();
+				$nazione = strtoupper(trim((string)$_POST["nazione"]));
 				
-				if ($validator->isValidCountryCode($_POST["nazione"]))
+				if (in_array($nazione, self::NAZIONI_CON_FORMATO_PIVA, true))
 				{
-					$stringa = substr($this->values["p_iva"],0,2) == $_POST["nazione"] ? $this->values["p_iva"] : $_POST["nazione"].$this->values["p_iva"];
+					$stringa = substr($this->values["p_iva"],0,2) === $nazione ? $this->values["p_iva"] : $nazione.$this->values["p_iva"];
 					
 					$res = $validator->isValid($stringa);
 					

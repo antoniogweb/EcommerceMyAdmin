@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "893b1db5ec279f41b960695bf087b229",
+    "content-hash": "19ad0db8a01234840d8df3ce266c855a",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -440,6 +440,74 @@
                 }
             ],
             "time": "2026-06-07T11:47:49+00:00"
+        },
+        {
+            "name": "ddeboer/vatin",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ddeboer/vatin.git",
+                "reference": "778c9e7d7619ee9ed5f30609b9b2a39b613933db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ddeboer/vatin/zipball/778c9e7d7619ee9ed5f30609b9b2a39b613933db",
+                "reference": "778c9e7d7619ee9ed5f30609b9b2a39b613933db",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "ext-soap": "*",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-symfony": "^2.0",
+                "phpunit/phpunit": "^10.5"
+            },
+            "suggest": {
+                "ext-soap": "Required if you want to check the VAT number via VIES"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ddeboer\\Vatin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David de Boer",
+                    "email": "david@ddeboer.nl",
+                    "homepage": "https://github.com/ddeboer"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/ddeboer/vatin/contributors"
+                }
+            ],
+            "description": "Validate VAT identification numbers",
+            "keywords": [
+                "btw",
+                "tax",
+                "vat",
+                "vies"
+            ],
+            "support": {
+                "issues": "https://github.com/ddeboer/vatin/issues",
+                "source": "https://github.com/ddeboer/vatin/tree/3.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ddeboer",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-02-27T22:06:37+00:00"
         },
         {
             "name": "donatj/phpuseragentparser",

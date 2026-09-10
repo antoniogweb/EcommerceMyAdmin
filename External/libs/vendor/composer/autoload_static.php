@@ -115,6 +115,7 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
             'Doctrine\\Instantiator\\' => 22,
             'Detection\\' => 10,
             'DeepCopy\\' => 9,
+            'Ddeboer\\Vatin\\' => 14,
         ),
         'C' => 
         array (
@@ -323,6 +324,10 @@ class ComposerStaticInit94305569a9f8eb7128fa7ff248d5901e
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+        ),
+        'Ddeboer\\Vatin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ddeboer/vatin/src',
         ),
         'Composer\\Pcre\\' => 
         array (
