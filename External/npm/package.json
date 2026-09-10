@@ -5,7 +5,8 @@
     "jquery": "^3.0.0",
     "jquery-migrate": "1.4.1",
     "jquery-ui": "^1.14.2",
-    "select2": "^4.1.0"
+    "select2": "^4.1.0",
+    "vue": "^3.5.42"
   },
   "scripts": {
     "vendor": "node scripts/vendor.js"

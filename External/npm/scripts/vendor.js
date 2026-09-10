@@ -6,6 +6,7 @@ const vendorPaths = {
     dropzone: '../../Public/Js/vendor/dropzone/',
     select2: '../../Public/Js/vendor/select2/',
     jodit: '../../Public/Js/vendor/jodit/',
+    vue: '../../Public/Js/vendor/vue/',
 };
 
 for (const path of Object.values(vendorPaths)) {
@@ -111,4 +112,10 @@ for (const file of ['jodit.min.js', 'jodit.min.css']) {
 fs.copyFileSync(
     'node_modules/jodit/LICENSE.txt',
     joditDestinationPath + 'LICENSE.txt'
+);
+
+// Vue: global production build, used by the CMS panel without a module bundler.
+fs.copyFileSync(
+    'node_modules/vue/dist/vue.global.prod.js',
+    vendorPaths.vue + 'vue.global.prod.js'
 );
