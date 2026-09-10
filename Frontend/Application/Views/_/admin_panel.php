@@ -87,7 +87,7 @@
 							<div v-if="aggiungiTema">
 								<div class="uk-text-meta"><?php echo gtextPlain("Tema corrente");?></div>
 								<select v-model="temaSelezionato" class="uk-margin-remove uk-select uk-margin-small" v-on:change="cambiaTema()">
-									<option  v-for="(tema, index) in tendinaTemi" v-bind:value="tema.nome">{{tema.nome}}</option>
+									<option v-for="tema in tendinaTemi" v-bind:key="tema.nome" v-bind:value="tema.nome">{{tema.nome}}</option>
 								</select>
 							</div>
 							
@@ -104,7 +104,7 @@
 					<li v-if="abilitaGestioneVarianti && varianti.length > 0" class="">
 						<a class="uk-accordion-title" href="#"><?php echo gtextPlain("Varianti pagina");?></a>
 						<div class="uk-accordion-content">
-							<variante-item v-for="variante in varianti" v-bind:variante="variante" v-bind:idelemento="idElemento" v-bind:tipoelemento="tipoElemento"></variante-item>
+							<variante-item v-for="variante in varianti" v-bind:key="variante.id_elemento_tema" v-bind:variante="variante" v-bind:idelemento="idElemento" v-bind:tipoelemento="tipoElemento"></variante-item>
 							<div v-if="abilitaGestioneVarianti && varianti.length > 0" class="uk-margin-small">
 								<a href="#" @click.prevent="resettaTema()" class="uk-button uk-button-danger uk-width-1-1"><?php echo gtextPlain("Resetta varianti")?></a>
 							</div>
@@ -143,7 +143,7 @@
 							<div v-if="!aggiungi">
 								<input v-bind:class="oggettoErroreTitolo" v-model="titoloNuovaFascia" class="uk-input" placeholder="Titolo fascia nuova fascia"/>
 								<select v-bind:class="oggettoErroreIdTipo" v-model="idTipoFascia" class="uk-select uk-margin-small">
-									<option  v-for="(tipoFascia, index) in tipiFasce" v-bind:value="tipoFascia.tipi_contenuto.id_tipo">{{tipoFascia.tipi_contenuto.titolo}}</option>
+									<option v-for="tipoFascia in tipiFasce" v-bind:key="tipoFascia.tipi_contenuto.id_tipo" v-bind:value="tipoFascia.tipi_contenuto.id_tipo">{{tipoFascia.tipi_contenuto.titolo}}</option>
 								</select>
 								<a @click.prevent="confermaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="check"></span> Aggiungi</a>
 								<a @click.prevent="annullaAggiungi()" href="" class="uk-margin-small uk-button uk-button-default uk-width-1-1"><span uk-icon="arrow-left"></span> Annulla</a>
@@ -162,7 +162,7 @@
 
 					<div class="uk-modal-body" uk-overflow-auto>
 						<div class="uk-grid-match uk-grid-column-small uk-grid-row-large uk-child-width-1-4@s uk-text-center" uk-grid>
-							<div v-for="(tipoFascia, index) in tipiFasce">
+							<div v-for="tipoFascia in tipiFasce" v-bind:key="tipoFascia.tipi_contenuto.id_tipo">
 								<div class="uk-card uk-card-default uk-card-body uk-padding-small card_tipo_fascia">
 									<div class="card_tipo_fascia_inner_box">
 										<h4>{{tipoFascia.tipi_contenuto.titolo}}</h4>
@@ -194,7 +194,7 @@
    		$urlFasce = $this->baseUrlSrc."/admin/".$urlFasce.ContenutiModel::$idElementoCorrente."?esporta_json";
    		?>
    		
-   		<script src="<?php echo $this->baseUrlSrc."/admin/Public/Js/vue.min.js";?>"></script>
+			<script src="<?php echo $this->baseUrlSrc."/admin/Public/Js/vendor/vue/vue.global.prod.js";?>"></script>
    		<script type="application/javascript">
 		
    		var urlGetTipiFasce = "<?php echo $this->baseUrlSrc."/admin/tipicontenuto/main?tipo=FASCIA&esporta_json";?>";
@@ -203,7 +203,7 @@
    		
 //    		console.log(tendinaTemi);
    		
-   		Vue.component('variante-item', {
+			var varianteItem = {
 			props: ['variante','idelemento','tipoelemento'],
 			data: function () {
 				return {
@@ -245,15 +245,15 @@
 			template: `<div>
 							<div class='uk-text-meta'>{{variante.titolo}}</div>
 							<select class="uk-select uk-margin-small" v-model="nomeFile" v-on:change="sendData()">
-								<option v-for="(opzione, index) in variante.opzioni" v-bind:value="opzione.k" v-bind:key="variante.nome_file">{{opzione.v}}</option>
+								<option v-for="opzione in variante.opzioni" v-bind:key="opzione.k" v-bind:value="opzione.k">{{opzione.v}}</option>
 							</select>
 						</div>
 					`
-		});
-   		
-   		var app = new Vue({
-			el: '#right-col',
-			data: {
+			};
+
+			var app = Vue.createApp({
+				data: function () {
+					return {
 				aggiungiTema: true,
 				titoloNuovoTema: "",
 				confermataAggiuntaTema: false,
@@ -293,8 +293,9 @@
 							titolo: "",
 						}
 					}
-				],
-			},
+					],
+					};
+				},
 			computed: {
 				oggettoErroreTitoloTema: function () {
 					return {
@@ -583,13 +584,14 @@
 				this.inizializza();
 			}
 		});
-   		
-//    		app.inizializza();
-   		
-   		function aggiornaIframe()
-   		{
+
+		app.component('variante-item', varianteItem);
+		app.mount('#right-col');
+
+		function aggiornaIframe()
+		{
 			document.getElementById("iframe_webpage").contentDocument.location.reload(true);
-   		}
+		}
 
    		function aggiornaOrdinamento()
 		{
@@ -603,13 +605,13 @@
 				order += id_cont + ",";
 			
 			});
-			
+
 			var post_data = "order="+order+"&ordinaPagine=Y";
 			
 			$.ajaxQueue({
 				type: "POST",
 				data: post_data,
-				url: "<?php echo $this->baseUrlSrc.'/admin/'.$this->controller.'/ordina';?>",
+				url: "<?php echo $this->baseUrlSrc.'/admin/contenuti/ordina';?>",
 				async: true,
 				cache:false,
 				success: function(html){
