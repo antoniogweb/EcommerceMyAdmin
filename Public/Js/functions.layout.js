@@ -108,7 +108,7 @@
 
 	/* Dropdown */
 	function closeDropdowns($exception) {
-		$(".dropdown.open").each(function() {
+		$(".dropdown.open, .btn-group.open").each(function() {
 			var $dropdown = $(this);
 			if ($exception && $dropdown.is($exception))
 				return;
@@ -126,7 +126,9 @@
 
 		if ($toggle.length) {
 			event.preventDefault();
-			var $dropdown = $toggle.closest(".dropdown");
+			var $dropdown = $toggle.closest(".dropdown, .btn-group");
+			if (!$dropdown.length)
+				return;
 			var isOpen = $dropdown.hasClass("open");
 
 			closeDropdowns(isOpen ? null : $dropdown);
