@@ -200,9 +200,7 @@ class MailordiniModel extends GenericModel
 	
 	public static function inviaMail($params)
 	{
-		require_once(LIBRARY.'/External/PHPMailer-master/src/Exception.php');
-		require_once(LIBRARY.'/External/PHPMailer-master/src/PHPMailer.php');
-		require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
+		require_once(LIBRARY . '/External/libs/vendor/autoload.php');
 		
 		$mo = new MailordiniModel();
 		

@@ -1211,9 +1211,7 @@ class OrdiniModel extends FormModel
 	
 	public function mandaMailGeneric($id_o, $oggetto, $template, $tipo, $fattura = false, $forzaTemplate = false, $sendTo = null, $tipologia = null)
 	{
-		require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/Exception.php');
-		require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/PHPMailer.php');
-		require_once(Domain::$adminRoot.'/External/PHPMailer-master/src/SMTP.php');
+		require_once(Domain::$adminRoot . '/External/libs/vendor/autoload.php');
 		
 		$clean["id_o"] = (int)$id_o;
 		$this->baseUrl = Domain::$name;

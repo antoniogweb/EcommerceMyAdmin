@@ -20,17 +20,10 @@
 // You should have received a copy of the GNU General Public License
 // along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 header("X-Robots-Tag: noindex, nofollow, noarchive");
 header("Referrer-Policy: no-referrer");
 
 if (!defined('EG')) die('Direct access not allowed!');
-
-// require_once(LIBRARY.'/External/PHPMailer-master/src/Exception.php');
-// require_once(LIBRARY.'/External/PHPMailer-master/src/PHPMailer.php');
-// require_once(LIBRARY.'/External/PHPMailer-master/src/SMTP.php');
 
 class BaseOrdiniController extends BaseController
 {
