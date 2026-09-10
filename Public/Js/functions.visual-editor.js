@@ -117,6 +117,9 @@
 		height: 250,
 		enter: "br",
 		useSplitMode: false,
+		// L'evento nativo viene emesso dal listener registrato dopo l'avvio,
+		// evitando che la sincronizzazione iniziale segni subito il form come modificato.
+		triggerChangeEvent: false,
 		buttons: buttons,
 		// Jodit inserisce un a-capo nei profili responsive predefiniti: qui i
 		// comandi meno frequenti confluiscono nel menu "dots" senza lasciare righe vuote.
@@ -146,7 +149,11 @@
 	window.editorVisuale = function (selettore) {
 		document.querySelectorAll(selettore).forEach(function (textarea) {
 			if (!Jodit.isJoditAssigned(textarea)) {
-				Jodit.make(textarea, editorVisualeConfig);
+				var editor = Jodit.make(textarea, editorVisualeConfig);
+
+				editor.events.on("change.editorVisuale", function () {
+					$(textarea).trigger("change");
+				});
 			}
 		});
 	};
