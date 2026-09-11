@@ -1232,6 +1232,8 @@ class OrdiniModel extends FormModel
 			$bckCountry = Params::$country;
 			$bckContesto = TraduzioniModel::$contestoStatic;
 			$bckPrezziIvatiInCarrello = v("prezzi_ivati_in_carrello");
+			$mailOrdini = null;
+			$lId = 0;
 			
 			if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
 				VariabiliModel::$valori["prezzi_ivati_in_carrello"] = (int)$ordine["prezzi_ivati_in_carrello"];
@@ -1387,7 +1389,9 @@ class OrdiniModel extends FormModel
 				if ($mailOrdini->checkLimitiInvio && $mail->Send())
 				{
 					$mailOrdini->sValues(array(
-						"inviata"	=>	1,
+						"inviata"		=>	1,
+						"message_id"	=>	$mail->getLastMessageID(),
+						"errore_invio"	=>	"",
 					));
 					
 					if ($tipo == "R")
@@ -1399,6 +1403,15 @@ class OrdiniModel extends FormModel
 				}
 				else
 				{
+					$erroreInvio = $mailOrdini->checkLimitiInvio
+						? ($mail->ErrorInfo ? $mail->ErrorInfo : "Invio email non riuscito")
+						: "Superato il limite orario o giornaliero di invio email";
+
+					$mailOrdini->sValues(array(
+						"errore_invio"	=>	$erroreInvio,
+					));
+					$mailOrdini->update($lId);
+
 					$this->notice = "<div class='alert alert-danger'>Errore nell'invio della mail.</div>";
 				}
 			} catch (Exception $e) {
@@ -1408,6 +1421,14 @@ class OrdiniModel extends FormModel
 				
 				if (v("attiva_prezzi_ivati_in_carrello_per_utente_e_ordine"))
 					VariabiliModel::$valori["prezzi_ivati_in_carrello"] = $bckPrezziIvatiInCarrello;
+
+				if ($mailOrdini && $lId)
+				{
+					$mailOrdini->sValues(array(
+						"errore_invio"	=>	$e->getMessage(),
+					));
+					$mailOrdini->update($lId);
+				}
 			}
 		}
 	}

@@ -235,6 +235,7 @@ class MailordiniModel extends GenericModel
 		$bckContesto = TraduzioniModel::$contestoStatic;
 		
 		self::$idMailInviate = array();
+		$idMailCorrente = 0;
 		
 		try
 		{
@@ -354,6 +355,7 @@ class MailordiniModel extends GenericModel
 			
 			foreach ($emails as $email)
 			{
+				$idMailCorrente = 0;
 				$mail->ClearAddresses();
 				$mail->AddAddress($email);
 				
@@ -381,12 +383,15 @@ class MailordiniModel extends GenericModel
 				
 				if ($res)
 				{
+					$idMailCorrente = $mo->lId;
 					self::$idMailInviate[] = $mo->lId;
 					
 					if ($mo->checkLimitiInvio && $mail->Send())
 					{
 						$mo->sValues(array(
-							"inviata"	=>	1,
+							"inviata"		=>	1,
+							"message_id"	=>	$mail->getLastMessageID(),
+							"errore_invio"	=>	"",
 						));
 						
 						if ($tipologia == "ISCRIZIONE" || $tipologia == "ISCRIZIONE AL NEGOZIO" || $tipologia == "ORDINE" || $tipologia == "ORDINE NEGOZIO" || $tipologia == "FORGOT" || $tipologia == "LINK_CONFERMA" || $tipologia == "INVIO_CODICE_TWO")
@@ -395,7 +400,18 @@ class MailordiniModel extends GenericModel
 						$mo->update($mo->lId);
 					}
 					else
+					{
+						$erroreInvio = $mo->checkLimitiInvio
+							? ($mail->ErrorInfo ? $mail->ErrorInfo : "Invio email non riuscito")
+							: "Superato il limite orario o giornaliero di invio email";
+
+						$mo->sValues(array(
+							"errore_invio"	=>	$erroreInvio,
+						));
+						$mo->update($mo->lId);
+
 						$arrayErrori[] = false;
+					}
 				}
 				else
 					$arrayErrori[] = false;
@@ -406,6 +422,15 @@ class MailordiniModel extends GenericModel
 			Params::$lang = $bckLang;
 			Params::$country = $bckCountry;
 			TraduzioniModel::$contestoStatic = $bckContesto;
+
+			if ($idMailCorrente)
+			{
+				$mo->sValues(array(
+					"errore_invio"	=>	$e->getMessage(),
+				));
+				$mo->update($idMailCorrente);
+			}
+
 			return false;
 		}
 	}
