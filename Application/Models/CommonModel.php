@@ -29,7 +29,7 @@ trait CommonModel {
 
 	// Codici paese per i quali ddeboer/vatin fornisce una regola di formato.
 	// I paesi non presenti non vengono validati.
-	private const NAZIONI_CON_FORMATO_PIVA = array(
+	private static $nazioniConFormatoPIva = array(
 		"AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "EL",
 		"ES", "FI", "FR", "GB", "HR", "HU", "IE", "IT", "LT", "LU",
 		"LV", "MT", "NL", "NO", "PL", "PT", "RO", "SE", "SI", "SK",
@@ -71,7 +71,7 @@ trait CommonModel {
 				$validator = new Ddeboer\Vatin\Validator();
 				$nazione = strtoupper(trim((string)$_POST["nazione"]));
 				
-				if (in_array($nazione, self::NAZIONI_CON_FORMATO_PIVA, true))
+				if (in_array($nazione, self::$nazioniConFormatoPIva, true))
 				{
 					$stringa = substr($this->values["p_iva"],0,2) === $nazione ? $this->values["p_iva"] : $nazione.$this->values["p_iva"];
 					
