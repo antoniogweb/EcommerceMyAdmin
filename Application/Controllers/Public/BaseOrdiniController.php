@@ -1241,9 +1241,6 @@ class BaseOrdiniController extends BaseController
 		
 		$this->getAppLogin();
 		
-		// Controllo spazi nella mail e altro
-		$this->elaboraCampiPost();
-		
 		$tipo_cliente = $this->request->post("tipo_cliente","","sanitizeAll");
 		$pec = $this->request->post("pec","","sanitizeAll");
 		$codiceDestinatario = $this->request->post("codice_destinatario","","sanitizeAll");
