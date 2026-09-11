@@ -1175,12 +1175,6 @@ class BaseOrdiniController extends BaseController
 		}
 	}
 	
-	protected function elaboraCampiPost()
-	{
-		if (isset($_POST["email"]) && is_string($_POST["email"]))
-			$_POST["email"] = trim($_POST["email"]);
-	}
-	
 	protected function nonPermettereModificaAccountELoggato()
 	{
 		if (!v("permetti_modifica_account") && User::$id)

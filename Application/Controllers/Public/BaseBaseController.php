@@ -358,6 +358,9 @@ class BaseBaseController extends Controller
 	
 	protected function correggiValoriPostFormRegistrazioneEOrdine()
 	{
+		// Sistema gli spazi
+		$this->elaboraCampiPost();
+		
 		if (v("sistema_maiuscole_clienti"))
 		{
 			if (isset($_POST["nome"]))
@@ -388,6 +391,15 @@ class BaseBaseController extends Controller
 					$_POST[$campo] = eg_strtoupper($_POST[$campo]);
 			}
 		}
+	}
+	
+	protected function elaboraCampiPost()
+	{
+		if (isset($_POST["email"]) && is_string($_POST["email"]))
+			$_POST["email"] = trim($_POST["email"]);
+		
+		if (isset($_POST["codice_fiscale"]) && is_string($_POST["codice_fiscale"]))
+			$_POST["codice_fiscale"] = trim($_POST["codice_fiscale"]);
 	}
 	
 	protected function getPageNotFoundFileName()
