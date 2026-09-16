@@ -130,21 +130,33 @@ ul.thumbnails.image_picker_selector li .thumbnail
 .nstSlider
 {
 	background-color: #999 !important;
+	border: 0 !important;
+	border-radius: 10px;
+	cursor: pointer;
 	height: 2px !important;
+	position: relative;
 	width:94% !important;
 	margin:0 auto;
 	
 	.bar
 	{
 		background-color: #333 !important;
+		border-radius: 10px;
 		height: 2px !important;
+		position: absolute;
 		top: 0px !important;
 	}
 	
 	.leftGrip, .rightGrip
 	{
 		background-color: #333 !important;
+		background-image: none !important;
+		border: 0 !important;
+		border-radius: 10px;
+		cursor: pointer;
+		height: 20px !important;
 		top: -9px !important;
+		width: 20px !important;
 	}
 	
 	.leftLabel, .rightLabel

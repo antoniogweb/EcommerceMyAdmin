@@ -288,7 +288,7 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 			pagamento: pagamento
 		},
 		success: function(content){
-			
+
 			if (content)
 			{
 				$(".blocco_totale_merce").html(content);
@@ -300,7 +300,7 @@ function impostaSpeseSpedizione(id_corriere, nazione)
 				
 				mostraTendinaAvvisoCambioListino();
 			}
-			
+
 			checkCouponAttivo();
 		}
 	});
@@ -417,7 +417,7 @@ function impostaCorrieriESpeseSpedizione(ricarica_pagamenti)
 	if (ricarica_pagamenti_quando_cambi_nazione && ricarica_pagamenti === undefined && $(".bx_pagamenti").length > 0)
 	{
 		var pagamento = $("[name='pagamento']:checked").val();
-		
+
 		$.ajaxQueue({
 			url: baseUrl + "/ordini/pagamenti/" + nazione,
 			cache:false,
@@ -1263,25 +1263,32 @@ $(document).ready(function(){
 	
 	if (filtro_prezzo_slider)
 	{
-		$('.nstSlider').nstSlider({
-			"left_grip_selector": ".leftGrip",
-			"right_grip_selector": ".rightGrip",
-			"value_bar_selector": ".bar",
-			"value_changed_callback": function(cause, leftValue, rightValue) {
-				leftValue += "€";
-				rightValue += "€";
-				$(this).parent().find('.leftLabel').text(leftValue);
-				$(this).parent().find('.rightLabel').text(rightValue);
-			},
-			"user_mouseup_callback": function(leftValue, rightValue, left_grip_moved) {
-				
-				var urlSlider = $(".url_slider_prezzo").text();
-				
-				urlSlider = urlSlider.replace("[DA]", leftValue);
-				urlSlider = urlSlider.replace("[A]", rightValue);
-				
-				location.href = urlSlider;
-			}
+		$('.nstSlider').each(function(){
+			var slider = $(this);
+			var aggiornaEtichette = function(values) {
+				slider.find('.leftLabel').text(values[0] + "€");
+				slider.find('.rightLabel').text(values[1] + "€");
+			};
+
+			slider.slider({
+				range: true,
+				min: Number(slider.data('range_min')),
+				max: Number(slider.data('range_max')),
+				values: [Number(slider.data('cur_min')), Number(slider.data('cur_max'))],
+				create: function(event, ui) {
+					slider.find('.ui-slider-range').addClass('bar');
+					aggiornaEtichette(slider.slider('values'));
+				},
+				slide: function(event, ui) {
+					aggiornaEtichette(ui.values);
+				},
+				stop: function(event, ui) {
+					var urlSlider = $(".url_slider_prezzo").text();
+					urlSlider = urlSlider.replace("[DA]", ui.values[0]);
+					urlSlider = urlSlider.replace("[A]", ui.values[1]);
+					location.href = urlSlider;
+				}
+			});
 		});
 		
 	}

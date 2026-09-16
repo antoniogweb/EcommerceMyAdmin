@@ -260,11 +260,10 @@
 		<h4 class="uk-margin-remove"><?php echo gtextPlain("Prezzo")?></h4>
 		<div class="uk-margin-top">
 			<div class="nstSlider" data-range_min="<?php echo floor($prezzoMinimoElenco);?>" data-range_max="<?php echo ceil($prezzoMassimoElenco);?>" data-cur_min="<?php echo $curMin;?>"    data-cur_max="<?php echo $curMax;?>">
-				<div class="bar"></div>
-				<div class="leftGrip">
+				<div class="leftGrip ui-slider-handle">
 					<div class="uk-margin-top uk-text-small leftLabel"></div>
 				</div>
-				<div class="rightGrip">
+				<div class="rightGrip ui-slider-handle">
 					<div class="uk-margin-top uk-text-small rightLabel"></div>
 				</div>
 			</div>

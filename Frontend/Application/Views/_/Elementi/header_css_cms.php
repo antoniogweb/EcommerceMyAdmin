@@ -12,11 +12,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/star-rating-svg-master/src/css/star-rating-svg.css">
 <?php } ?>
 
-<?php if (v("filtro_prezzo_slider")) { ?>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/jquery-nstslider-master/dist/jquery.nstSlider.min.css">
-<?php } ?>
-
-<?php if (($this->controller == "listeregalo" && $this->action == "modifica") || isset($loadJqueryUi)) { ?>
+<?php if (v("filtro_prezzo_slider") || ($this->controller == "listeregalo" && $this->action == "modifica") || isset($loadJqueryUi)) { ?>
 	<?php if (!isset($skipJqueryUi)) { ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/vendor/jquery-ui/jquery-ui.min.css">
 	<?php } ?>

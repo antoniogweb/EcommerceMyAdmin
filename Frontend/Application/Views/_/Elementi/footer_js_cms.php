@@ -12,7 +12,7 @@
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>password.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
 <?php } ?>
 
-<?php if ($this->controller == "listeregalo" || (isset($fsection) && $fsection == "prodotti") || isset($loadJsListe) || isset($loadJqueryUi)) { ?>
+<?php if (v("filtro_prezzo_slider") || $this->controller == "listeregalo" || (isset($fsection) && $fsection == "prodotti") || isset($loadJsListe) || isset($loadJqueryUi)) { ?>
 	<?php if (v("attiva_liste_regalo")) { ?>
 	<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>listeregalo.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
 	<?php } ?>
@@ -52,10 +52,6 @@
 <?php } ?>
 <?php if (v("ecommerce_attivo")) { ?>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.min.js'></script>
-<?php } ?>
-
-<?php if (v("filtro_prezzo_slider")) { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-nstslider-master/dist/';?>jquery.nstSlider.min.js"></script>
 <?php } ?>
 
 <?php
