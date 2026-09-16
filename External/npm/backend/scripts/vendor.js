@@ -20,11 +20,6 @@ fs.copyFileSync(
     vendorPaths.jquery + 'jquery.min.js'
 ); 
 
-fs.copyFileSync(
-    'node_modules/jquery-migrate/dist/jquery-migrate.min.js',
-    vendorPaths.jquery + 'jquery-migrate-1.4.1.min.js'
-);
-
 // jQuery UI: JavaScript and widget structure are supplied by npm. The
 // ui-lightness ThemeRoller variant used by the application is kept under
 // assets, because the official package ships only its base theme.

@@ -5,7 +5,6 @@
 
 <!--jquery-->
 <script src="<?php echo $this->baseUrlSrc.'/Public/Js/vendor/jquery/';?>jquery.min.js"></script>
-<script src="<?php echo $this->baseUrlSrc.'/Public/Js/vendor/jquery/';?>jquery-migrate-1.4.1.min.js"></script>
 
 <?php if ($this->viewArgs['is_popup']) { ?>
 <script language="javascript" type="text/javascript">

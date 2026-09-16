@@ -24,7 +24,6 @@
 
 	<!--jquery-->
 	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/vendor/jquery/';?>jquery.min.js"></script>
-	<script src="<?php echo $this->baseUrlSrc.'/Public/Js/vendor/jquery/';?>jquery-migrate-1.4.1.min.js"></script>
 	
 	<link rel="stylesheet" href="<?php echo $this->baseUrlSrc;?>/Public/Js/vendor/jquery-ui/jquery-ui.min.css" />
 	<script type="text/javascript" src="<?php echo $this->baseUrlSrc;?>/Public/Js/vendor/jquery-ui/jquery-ui.min.js"></script>

@@ -117,6 +117,7 @@
 		height: 250,
 		enter: "br",
 		useSplitMode: false,
+		hidePoweredByJodit: true,
 		// L'evento nativo viene emesso dal listener registrato dopo l'avvio,
 		// evitando che la sincronizzazione iniziale segni subito il form come modificato.
 		triggerChangeEvent: false,
