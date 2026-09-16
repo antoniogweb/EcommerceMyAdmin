@@ -99,7 +99,8 @@ class AttributivaloriModel extends GenericModel {
 					),
 				),
 				'colore'	=>	array(
-					"className"	=>	"form-control colorpicker-element",
+					'type'		=>	'Color',
+					"className"	=>	"form-control",
 					'wrap'		=>	array(
 						null,
 						null,

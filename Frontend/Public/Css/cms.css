@@ -1,0 +1,36 @@
+ul.thumbnails.image_picker_selector {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.thumbnails.image_picker_selector li { margin: 0; }
+
+ul.thumbnails.image_picker_selector .thumbnail {
+	display: block;
+	padding: 6px;
+	border: 1px solid #ddd;
+	background: #fff;
+	cursor: pointer;
+	line-height: 0;
+}
+
+ul.thumbnails.image_picker_selector .thumbnail.selected { background: #08c; }
+ul.thumbnails.image_picker_selector .thumbnail:focus-visible { outline: 2px solid #005a9c; outline-offset: 2px; }
+ul.thumbnails.image_picker_selector .thumbnail img { vertical-align: middle; -webkit-user-drag: none; }
+
+.box_attributo_immagine .image_picker_image {
+	width: 50px;
+	height: 50px;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+}
+
+.box_attributo_immagine .thumbnail,
+.box_attributo_immagine .image_picker_image {
+	border-radius: 0 !important;
+}
+ul.thumbnails.image_picker_selector .image_picker_label { display: block; line-height: 1.3; }

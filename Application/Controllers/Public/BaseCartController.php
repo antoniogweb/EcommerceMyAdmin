@@ -222,7 +222,7 @@ class BaseCartController extends BaseController
 						{
 							if ($idCart == -1)
 							{
-								$errore = gtext("Attenzione, hai già inserito nel carrello tutti i pezzi presenti a magazzino", false);
+								$errore = gtextPlain("Attenzione, hai già inserito nel carrello tutti i pezzi presenti a magazzino", false);
 							}
 							else
 							{
@@ -300,36 +300,36 @@ class BaseCartController extends BaseController
 							}
 						}
 						else
-							$errore = gtext("Si prega di selezionare la variante", false);
+							$errore = gtextPlain("Si prega di selezionare la variante", false);
 					}
 					else
 					{
 						// KO giacenza
 						if ((int)$giacenza === 0)
-							$errore = gtext("Attenzione, prodotto esaurito", false);
+							$errore = gtextPlain("Attenzione, prodotto esaurito", false);
 						else if ((int)$giacenza == 1)
-							$errore = gtext("Attenzione, è rimasto un solo prodotto in magazzino", false);
+							$errore = gtextPlain("Attenzione, è rimasto un solo prodotto in magazzino", false);
 						else if ((int)$giacenza > 1)
 						{
-							$errore = gtext("Attenzione, sono rimasti solo [N] prodotti in magazzino", false);
+							$errore = gtextPlain("Attenzione, sono rimasti solo [N] prodotti in magazzino", false);
 							$errore = str_replace("[N]", $giacenza, $errore);
 						}
 					}
 				}
 				else
 				{
-					$errore = gtext("Attenzione, non è possibile inserire nel carrello più di [N] gift card", false);
+					$errore = gtextPlain("Attenzione, non è possibile inserire nel carrello più di [N] gift card", false);
 					$errore = str_replace("[N]", v("numero_massimo_gift_card"), $errore);
 				}
 			}
 			else
 			{
-				$errore = gtext("Si prega di indicare una quantità maggiore di zero", false);
+				$errore = gtextPlain("Si prega di indicare una quantità maggiore di zero", false);
 			}
 		}
 		else
 		{
-			$errore = gtext("Hai nel carrello dei prodotti legati ad una lista nascita. Per poter inserire altri prodotti devi prima completare l'ordine della lista nascita oppure svuotare il carrello.", false);
+			$errore = gtextPlain("Hai nel carrello dei prodotti legati ad una lista nascita. Per poter inserire altri prodotti devi prima completare l'ordine della lista nascita oppure svuotare il carrello.", false);
 		}
 		
 		echo json_encode(array(

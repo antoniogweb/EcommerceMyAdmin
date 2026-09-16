@@ -50,9 +50,6 @@
 <?php if (!isset($skipIcheck)) { ?>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
 <?php } ?>
-<?php if (v("ecommerce_attivo")) { ?>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.min.js'></script>
-<?php } ?>
 
 <?php
 if (!isset($stringaCacheMeta))

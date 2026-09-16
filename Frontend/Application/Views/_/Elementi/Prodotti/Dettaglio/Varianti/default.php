@@ -20,7 +20,7 @@ if (!isset($classeSelectVarianti))
 			<?php } else if ($tipoAttributo == "IMMAGINE" || $tipoAttributo == "COLORE") {
 				$actionImmagine = ($tipoAttributo == "IMMAGINE") ? "valoreattributo" : "colore";
 			?>
-				<div class="box_attributo_immagine_colore">
+				<div class="box_attributo_immagine_colore box_attributo_<?php echo strtolower($tipoAttributo);?>">
 					<div class="uk-text-small uk-text-bold">
 						<?php echo $lista_attributi[$col];?>
 						<?php if ($tipoAttributo == "COLORE") { ?>

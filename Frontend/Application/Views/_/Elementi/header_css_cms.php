@@ -6,7 +6,7 @@
 <?php } ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc."/".v("checkbox_css_path");?>">
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/image-picker/image-picker.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Css/cms.css?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>">
 
 <?php if (isset($tipoPagina) && $tipoPagina == "FORM_FEEDBACK") { ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/star-rating-svg-master/src/css/star-rating-svg.css">

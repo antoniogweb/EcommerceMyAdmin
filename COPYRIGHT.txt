@@ -54,11 +54,6 @@ iCheck
 License:	The MIT License (MIT)
 link:	https://plugins.jquery.com/icheck/
 
-Image Picker
--------
-License:	The MIT License (MIT)
-link:	https://rvera.github.io/image-picker/
-
 HelpWizard CSS
 --------------
 Derivato e adattato da Joyride2

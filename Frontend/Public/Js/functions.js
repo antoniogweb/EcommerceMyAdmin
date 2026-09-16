@@ -1099,7 +1099,7 @@ $(document).ready(function(){
 	
 	if ($(".image-picker").length > 0)
 	{
-		$(".image-picker").imagepicker({
+		initProductImagePicker($(".image-picker"), {
 			selected: function(select, picker_option, event){
 				
 				mostraLabelColore();
