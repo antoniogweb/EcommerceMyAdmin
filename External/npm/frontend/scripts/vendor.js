@@ -33,6 +33,12 @@ fs.copyFileSync(
     destinationPath + 'jquery-ui.min.js'
 );
 
+fs.cpSync(
+    jqueryUiSourcePath + 'ui/i18n',
+    destinationPath + 'i18n',
+    { recursive: true }
+);
+
 const jqueryUiCssFiles = [
     'core.css',
     'accordion.css',

@@ -17,9 +17,9 @@
 	<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>listeregalo.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
 	<?php } ?>
 	<?php if (!isset($skipJqueryUi)) { ?>
-		<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/';?>jquery-ui.min.js"></script>
-		<?php if (file_exists(ROOT.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js')) { ?>
-		<script type="text/javascript" src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/jquery-ui-1.13.2.custom/main/ui/i18n/datepicker-'.Params::$lang.'.js';?>"></script>
+		<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/vendor/jquery-ui/';?>jquery-ui.min.js"></script>
+		<?php if (file_exists(ROOT.'/admin/Frontend/Public/Js/vendor/jquery-ui/i18n/datepicker-'.Params::$lang.'.js')) { ?>
+		<script type="text/javascript" src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/vendor/jquery-ui/i18n/datepicker-'.Params::$lang.'.js';?>"></script>
 		<?php } ?>
 	<?php } ?>
 <?php } ?>
