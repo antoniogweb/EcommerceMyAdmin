@@ -13,6 +13,93 @@ function copyToClipboard(testo) {
 }
 
 
+
+/* Interactive product-feedback rating, independent from external plugins. */
+(function($) {
+	"use strict";
+
+	window.initProductRating = function($elements, options) {
+		var settings = $.extend({
+			totalStars: 5,
+			starSize: 30,
+			minRating: 1,
+			initialRating: 0,
+			emptyColor: "lightgray",
+			hoverColor: "gold",
+			ratedColor: "gold",
+			readOnly: false,
+			disableAfterRate: false,
+			callback: $.noop
+		}, options);
+
+		return $elements.each(function() {
+			var $element = $(this);
+			var rating = Number($element.data("rating") || settings.initialRating) || 0;
+			var $rating = $("<div>", { "class": "product-rating", role: "radiogroup", "aria-label": "Valutazione" });
+			var $stars = $();
+
+			function paint(value, color) {
+				$stars.each(function(index) {
+					var selected = index < value;
+					$(this).css("color", selected ? color : settings.emptyColor).attr("aria-checked", index + 1 === value ? "true" : "false");
+				});
+			}
+
+			function setRating(value, notify) {
+				rating = Math.max(settings.minRating, Math.min(settings.totalStars, value));
+				paint(rating, settings.ratedColor);
+				if (notify) settings.callback(rating, $element);
+			}
+
+			for (var index = 1; index <= settings.totalStars; index++) {
+				(function(value) {
+					var $star = $("<button>", {
+						type: "button",
+						"class": "product-rating__star",
+						role: "radio",
+						"aria-label": value + " su " + settings.totalStars,
+						"aria-checked": "false"
+					}).css({ width: settings.starSize + "px", height: settings.starSize + "px" });
+					var svgNamespace = "http://www.w3.org/2000/svg";
+					var $svg = $(document.createElementNS(svgNamespace, "svg")).attr({ viewBox: "0 0 100 100", "aria-hidden": "true", focusable: "false" });
+					$svg.append($(document.createElementNS(svgNamespace, "polygon")).attr({
+						points: "50,6 62,36 95,37 69,57 78,91 50,72 22,91 31,57 5,37 38,36",
+						fill: "currentColor",
+						stroke: "currentColor",
+						"stroke-width": "7",
+						"stroke-linejoin": "round"
+					}));
+					$star.append($svg);
+					if (!settings.readOnly) {
+						$star.on("mouseenter", function() { paint(value, settings.hoverColor); });
+						$star.on("click", function() {
+							setRating(value, true);
+							if (settings.disableAfterRate) $stars.prop("disabled", true);
+						});
+						$star.on("keydown", function(event) {
+							var next = rating;
+							if (event.key === "ArrowRight" || event.key === "ArrowUp") next++;
+							else if (event.key === "ArrowLeft" || event.key === "ArrowDown") next--;
+							else if (event.key === "Home") next = settings.minRating;
+							else if (event.key === "End") next = settings.totalStars;
+							else if (event.key === " " || event.key === "Enter") next = value;
+							else return;
+							event.preventDefault();
+							setRating(next, true);
+							$stars.eq(rating - 1).focus();
+						});
+					}
+					$stars = $stars.add($star);
+					$rating.append($star);
+				})(index);
+			}
+			if (!settings.readOnly) $rating.on("mouseleave", function() { paint(rating, settings.ratedColor); });
+			$element.empty().append($rating).data("productRating", { setRating: setRating, getRating: function() { return rating; } });
+			paint(rating, settings.ratedColor);
+		});
+	};
+})(jQuery);
+
 /* Accessible replacement for the legacy image-picker plugin. */
 (function($) {
 	"use strict";

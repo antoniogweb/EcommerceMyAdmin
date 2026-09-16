@@ -6,23 +6,16 @@ $(document).ready(function(){
 		if (voto == "")
 			voto = 0;
 		
-		$(".my-rating").starRating({
+		initProductRating($(".my-rating"), {
 			starSize: 30,
 			disableAfterRate: false,
-			useFullStars: true,
-			starShape: 'rounded',
 			minRating: 1,
 			initialRating: voto,
-			useGradient: false,
 			ratedColor: 'gold',
 			hoverColor: 'gold',
-			ratedColors: ['gold', 'gold', 'gold', 'gold', 'gold'],
-			forceRoundUp: true,
 			callback: function(currentRating, $el){
 				$("[name='voto']").val(currentRating);
 				
-// 				$el.starRating('setReadOnly', true);
-// 				$el.starRating('setRating', 1);
 			}
 		});
 	}

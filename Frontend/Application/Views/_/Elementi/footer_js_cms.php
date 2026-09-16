@@ -61,7 +61,6 @@ include(tpf("/Elementi/fbk.php",false, false, $stringaCacheMeta));?>
 <?php } ?>
 
 <?php if (isset($tipoPagina) && $tipoPagina == "FORM_FEEDBACK") { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/star-rating-svg-master/src/';?>jquery.star-rating-svg.js"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>rating.min.js?v=<?php echo rand(1,10000);?>"></script>
 <?php } ?>
 

@@ -1,0 +1,28 @@
+.product-rating {
+	display: inline-flex;
+	gap: 3px;
+}
+
+.product-rating__star {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	line-height: 1;
+}
+
+.product-rating__star svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+
+.product-rating__star:focus-visible {
+	outline: 2px solid #005a9c;
+	outline-offset: 2px;
+}
+
+.product-rating__star:disabled {
+	cursor: default;
+}
