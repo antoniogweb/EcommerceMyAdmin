@@ -3,7 +3,7 @@
 	<?php include(tpf("/Elementi/footer_js_variables.php"));?>
 <?php } ?>
 <?php if (!isset($skipJquery)) { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>jquery-3.5.1.min.js"></script>
+<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/vendor/jquery/';?>jquery.min.js"></script>
 <?php } ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>ajaxQueue.js"></script>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>cms.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>

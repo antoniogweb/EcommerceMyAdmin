@@ -14,6 +14,7 @@ config.php
 /thumb/*
 /Frontend/Application/Views/Default/layout.json
 /External/npm/backend/node_modules/*
+/External/npm/frontend/node_modules/*
 .directory
 # Unit test reports
 TEST*.xml
