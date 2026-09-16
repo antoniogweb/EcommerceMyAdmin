@@ -1065,7 +1065,7 @@ $(document).ready(function(){
 			url: baseUrl + "/" + applicationName + controllerName + "/salvaqtadaordinare",
 			cache:false,
 			async: true,
-			dataType: "json",
+			dataType: "html",
 			type: "POST",
 			data: {
 				csrf: csrf_token,

@@ -18,6 +18,14 @@ Options -Indexes
 	
 	# Blocca README.md
 	RewriteRule (^|/)README\.md$ - [R=404,L,NC]
+
+	# Compatibilità temporanea: vecchi percorsi jQuery e jQuery UI.
+	# Le risorse vengono servite dai vendor npm senza passare da index.php.
+	RewriteRule ^Frontend/Public/Js/jquery-3\.5\.1\.min\.js$ Frontend/Public/Js/vendor/jquery/jquery.min.js [L]
+	RewriteRule ^Frontend/Public/Js/jquery-ui-1\.13\.2\.custom/jquery-ui\.min\.js$ Frontend/Public/Js/vendor/jquery-ui/jquery-ui.min.js [L]
+	RewriteRule ^Frontend/Public/Js/jquery-ui-1\.13\.2\.custom/jquery-ui\.min\.css$ Frontend/Public/Js/vendor/jquery-ui/jquery-ui.min.css [L]
+	RewriteRule ^Frontend/Public/Js/jquery-ui-1\.13\.2\.custom/main/ui/i18n/(datepicker-[A-Za-z-]+\.js)$ Frontend/Public/Js/vendor/jquery-ui/i18n/$1 [L]
+	RewriteRule ^Frontend/Public/Js/jquery-ui-1\.13\.2\.custom/images/(.+)$ Frontend/Public/Js/vendor/jquery-ui/images/$1 [L]
 	
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
