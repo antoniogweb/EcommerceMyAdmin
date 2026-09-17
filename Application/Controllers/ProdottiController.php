@@ -242,6 +242,12 @@ class ProdottiController extends PagesController {
 		if (v("attiva_campo_prodotto_rappresentativo_in_pagine"))
 			$this->queryFields .= ",prodotto_rappresentativo";
 		
+		if (VariabiliModel::attivaDataPubblicazione("prodotti"))
+		{
+			$this->queryFields .= ",data_pubblicazione";
+			$this->formDefaultValues = array("data_pubblicazione" => date(App::getFormatoData()));
+		}
+		
 		parent::form($queryType, $id);
 		
 		$this->append($data);

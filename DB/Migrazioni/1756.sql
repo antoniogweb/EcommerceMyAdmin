@@ -1,0 +1,1 @@
+alter table pages add data_pubblicazione date null DEFAULT (CURRENT_DATE()) after data_news;

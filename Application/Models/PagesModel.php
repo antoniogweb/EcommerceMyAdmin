@@ -349,6 +349,14 @@ class PagesModel extends GenericModel {
 				'data_news'		=>	array(
 					'labelString'=>	'Data scrittura',
 				),
+				'data_pubblicazione'		=>	array(
+					'labelString'=>	'Data pubblicazione',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Sarà visibile nel sito solo dalla data di pubblicazione in avanti")."</div>"
+					),
+				),
 				'coordinate'		=>	array(
 					'labelString'=>	'Coordinate',
 					'wrap'		=>	array(
@@ -1564,7 +1572,7 @@ class PagesModel extends GenericModel {
 	
 	public function addWhereClauseCerca()
 	{
-		$this->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap();
+		$this->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap()->addWhereDaPubblicare();
 		
 		return $this;
 	}
@@ -1701,10 +1709,15 @@ class PagesModel extends GenericModel {
 		))->sWhere(array("combinazioni.codice = ?",array(sanitizeAll($codice))))->limit(1);
 		
 		if (!User::$adminLogged && !$forzaTutti)
+		{
 			$c->aWhere(array(
 				"pages.attivo"=>"Y",
 				"combinazioni.acquistabile"	=>	1,
 			));
+			
+			if (VariabiliModel::attivaDataPubblicazione(Parametri::$nomeSezioneProdotti))
+				$c->addWhereDaPubblicare();
+		}
 		
 		return $c->toList("pages.id_page", "combinazioni.id_c")->send();
 	}
@@ -1758,10 +1771,15 @@ class PagesModel extends GenericModel {
 			$this->inner("combinazioni_alias")->on(array("combinazioni_alias.id_c = combinazioni.id_c and combinazioni_alias.lingua = ?",array(sanitizeDb($lingua))));
 		
 		if (!User::$adminLogged && !$forzaTutti)
+		{
 			$this->aWhere(array(
 				"pages.attivo"=>"Y",
 				"combinazioni.acquistabile"	=>	1,
 			));
+			
+			if (VariabiliModel::attivaDataPubblicazione(Parametri::$nomeSezioneProdotti))
+				$this->addWhereDaPubblicare();
+		}
 		
 		$bindedValues = array();
 		
@@ -1820,7 +1838,7 @@ class PagesModel extends GenericModel {
 			if (!User::$adminLogged)
 				$this->aWhere(array(
 					"attivo"=>"Y",
-				));
+				))->addWhereDaPubblicare();
 			
 			$res = $this->send();
 			
@@ -1847,7 +1865,7 @@ class PagesModel extends GenericModel {
 				if (!User::$adminLogged)
 					$this->aWhere(array(
 						"pages.attivo"=>"Y",
-					));
+					))->addWhereDaPubblicare();
 				
 				if ($lingua)
 				{

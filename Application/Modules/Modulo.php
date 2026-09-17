@@ -224,7 +224,7 @@ trait Modulo
 // 			->orderBy("pages.title");
 		
 		if ($soloAttivi)
-			$p->addWhereAttivo();
+			$p->addWhereAttivo()->addWhereDaPubblicare();
 		
 		if (!isset($p->orderBy))
 			$p->orderBy("pages.title");

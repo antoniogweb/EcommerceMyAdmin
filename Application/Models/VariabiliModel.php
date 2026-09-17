@@ -352,6 +352,7 @@ class VariabiliModel extends GenericModel {
 		"blog_attivo"				=>	1,
 		"mostra_autore_in_blog"		=>	0,
 		"immagine_2_in_blog"		=>	0, // mostra la seconda immagine nella sezione blog
+		"sezioni_con_data_pubblicazione"	=>	"", // elenco di sezioni, divise da virgola, dove mostrare il campo data_pubblicazione
 		## GALLERY ##
 		"mostra_gallery"			=>	0, // Attiva la sezione gallery
 		"mostra_immagini_in_gallery"			=>	0, // Se attivare la scheda immagini nella gallery
@@ -1492,5 +1493,15 @@ class VariabiliModel extends GenericModel {
 	public static function acquistiAttivi()
 	{
 		return (v("attiva_modulo_acquisti")) ? true : false;
+	}
+	
+	public static function attivaDataPubblicazione($sezione = "")
+	{
+		if (!$sezione)
+			return !v("sezioni_con_data_pubblicazione") ? false : true;
+		
+		$elencoArray = explode(",", v("sezioni_con_data_pubblicazione"));
+		
+		return in_array($sezione, $elencoArray);
 	}
 }

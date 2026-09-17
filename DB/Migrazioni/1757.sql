@@ -1,0 +1,1 @@
+UPDATE pages SET data_pubblicazione = COALESCE(NULLIF(data_news, '0000-00-00'), CURRENT_DATE());

@@ -34,6 +34,8 @@
 									
 									<?php echo $form["data_news"];?>
 									
+									<?php echo VariabiliModel::attivaDataPubblicazione("blog") ? $form["data_pubblicazione"] : "";?>
+									
 									<?php echo isset($form["autore"]) ? $form["autore"] : "";?>
 									
 									<?php echo $form["description"];?>

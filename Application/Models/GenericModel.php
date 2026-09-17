@@ -1253,6 +1253,18 @@ class GenericModel extends Model_Tree
 		return $this;
 	}
 	
+	public function addWhereDaPubblicare()
+	{
+		if (VariabiliModel::attivaDataPubblicazione())
+			$this->aWhere(array(
+				"    lte"	=>	array(
+					"pages.data_pubblicazione"	=>	sanitizeAll(date("Y-m-d")),
+				)
+			));
+		
+		return $this;
+	}
+	
 	public function addWhereOkAcqusti()
 	{
 		$this->aWhere(array(

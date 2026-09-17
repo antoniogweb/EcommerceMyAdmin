@@ -1130,6 +1130,9 @@ class BaseContenutiController extends BaseController
 			
 		$this->m("PagesModel")->clear()->restore()->select($select)->addWhereAttivo();
 		
+		if (VariabiliModel::attivaDataPubblicazione($firstSection))
+			$this->m("PagesModel")->addWhereDaPubblicare();
+		
 		$this->addOrderByClause($firstSection, null, $attivaOrderBy);
 		
 		if ($this->catSWhere)

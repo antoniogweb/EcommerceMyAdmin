@@ -72,6 +72,12 @@ class BlogController extends GenericsectionController {
 		if (v("immagine_2_in_blog"))
 			$this->queryFields .= ",immagine_2";
 		
+		if (VariabiliModel::attivaDataPubblicazione("blog"))
+		{
+			$this->queryFields .= ",data_pubblicazione";
+			$this->formDefaultValues = array("data_pubblicazione" => date(App::getFormatoData()));
+		}
+		
 		$this->tableFields[] = 'PagesModel.getPubblicatoCheckbox|pages.id_page';
 		
 		$this->head .= ',Pubblicato?';

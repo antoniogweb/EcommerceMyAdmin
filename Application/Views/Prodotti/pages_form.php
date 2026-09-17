@@ -41,6 +41,8 @@
 									<?php echo $form["alias"];?>
 									<?php echo $form["sottotitolo"];?>
 									
+									<?php echo VariabiliModel::attivaDataPubblicazione("prodotti") ? $form["data_pubblicazione"] : "";?>
+									
 									<?php if ((isset($form["price"]) || isset($form["price_ivato"])) && isset($form["id_iva"])) { ?>
 									<div class='row'>
 										<div class='col-lg-6'>

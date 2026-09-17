@@ -43,6 +43,11 @@ class App
 	
 	public static $dateFormatArray = array("d", "m", "Y");
 	
+	public static function getFormatoData($divisorio = "-")
+	{
+		return implode($divisorio, self::$dateFormatArray);
+	}
+	
 	public static function setPannelli()
 	{
 		self::$pannelli = array(
