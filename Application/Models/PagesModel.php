@@ -1570,9 +1570,9 @@ class PagesModel extends GenericModel {
 		return $r;
 	}
 	
-	public function addWhereClauseCerca()
+	public function addWhereClauseCerca($section = "")
 	{
-		$this->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap()->addWhereDaPubblicare();
+		$this->addWhereAttivo()->addWhereAttivoCategoria()->addWhereCategoriaInstallata()->addWhereOkSitemap()->addWhereDaPubblicare($section);
 		
 		return $this;
 	}
@@ -1863,7 +1863,7 @@ class PagesModel extends GenericModel {
 					->toList("pages.id_page");
 				
 				if (!User::$adminLogged)
-					$this->aWhere(array(
+					$ct->aWhere(array(
 						"pages.attivo"=>"Y",
 					))->addWhereDaPubblicare();
 				

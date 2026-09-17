@@ -245,7 +245,7 @@ class ProdottiController extends PagesController {
 		if (VariabiliModel::attivaDataPubblicazione("prodotti"))
 		{
 			$this->queryFields .= ",data_pubblicazione";
-			$this->formDefaultValues = array("data_pubblicazione" => date(App::getFormatoData()));
+			$this->formDefaultValues["data_pubblicazione"] = date(App::getFormatoData());
 		}
 		
 		parent::form($queryType, $id);

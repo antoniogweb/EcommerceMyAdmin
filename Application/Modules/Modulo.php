@@ -224,7 +224,13 @@ trait Modulo
 // 			->orderBy("pages.title");
 		
 		if ($soloAttivi)
-			$p->addWhereAttivo()->addWhereDaPubblicare();
+		{
+			$p->addWhereAttivo();
+			
+			$firstSection = $c->section((int)$idShop, true);
+			
+			$p->addWhereDaPubblicare($firstSection);
+		}
 		
 		if (!isset($p->orderBy))
 			$p->orderBy("pages.title");

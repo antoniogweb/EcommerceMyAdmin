@@ -1253,9 +1253,9 @@ class GenericModel extends Model_Tree
 		return $this;
 	}
 	
-	public function addWhereDaPubblicare()
+	public function addWhereDaPubblicare($section = "")
 	{
-		if (VariabiliModel::attivaDataPubblicazione())
+		if (VariabiliModel::attivaDataPubblicazione($section))
 			$this->aWhere(array(
 				"    lte"	=>	array(
 					"pages.data_pubblicazione"	=>	sanitizeAll(date("Y-m-d")),
