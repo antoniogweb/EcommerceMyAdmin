@@ -6,15 +6,15 @@
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/vendor/jquery/';?>jquery.min.js"></script>
 <?php } ?>
 <script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>ajaxQueue.js"></script>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>cms.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>functions.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
+<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/Minified/cms.min.js');?>"></script>
+<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/Minified/functions.min.js');?>"></script>
 <?php if (v("attiva_controllo_robustezza_password")) { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>password.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
+<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/Minified/password.min.js');?>"></script>
 <?php } ?>
 
 <?php if (v("filtro_prezzo_slider") || $this->controller == "listeregalo" || (isset($fsection) && $fsection == "prodotti") || isset($loadJsListe) || isset($loadJqueryUi)) { ?>
 	<?php if (v("attiva_liste_regalo")) { ?>
-	<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>listeregalo.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
+	<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/Minified/listeregalo.min.js');?>"></script>
 	<?php } ?>
 	<?php if (!isset($skipJqueryUi)) { ?>
 		<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/vendor/jquery-ui/';?>jquery-ui.min.js"></script>
@@ -25,24 +25,24 @@
 <?php } ?>
 
 <?php if ($this->controller == "ticket") { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>ticket.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
+<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/Minified/ticket.min.js');?>"></script>
 <?php } ?>
 
 <?php if ($this->controller == "promozioni") { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>promozioni.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
+<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/Minified/promozioni.min.js');?>"></script>
 <?php } ?>
 
 <?php if ($this->controller == "assistentevirtuale" || VariabiliModel::mostraAssistenteFrontend()) {
 	$randomAssistente = $this->controller == "assistentevirtuale" ? true : false;
 ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>assistente_virtuale.min.js?v=<?php echo $randomAssistente ? rand(1,10000): v("js_version_number");?>"></script>
+<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/Minified/assistente_virtuale.min.js');?>"></script>
 <?php if (VariabiliModel::mostraAssistenteFrontend()) { ?>
 <?php include(tpf("/Assistentevirtuale/widget.php"));?>
 <?php } ?>
 <?php } ?>
 
 <?php if (v("ecommerce_attivo")) { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>cart.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>"></script>
+<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/Minified/cart.min.js');?>"></script>
 <?php } ?>
 <?php if (!isset($skipUikitIcons)) { ?>
 <script <?php if (v("usa_defear")) { ?>defer<?php } ?> src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit-icons.min.js"></script>
@@ -61,7 +61,7 @@ include(tpf("/Elementi/fbk.php",false, false, $stringaCacheMeta));?>
 <?php } ?>
 
 <?php if (isset($tipoPagina) && $tipoPagina == "FORM_FEEDBACK") { ?>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/Minified/';?>rating.min.js?v=<?php echo rand(1,10000);?>"></script>
+<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/Minified/rating.min.js');?>"></script>
 <?php } ?>
 
 <?php if (CaptchaModel::getModulo()->inPage() && CaptchaModel::getModulo()->pathJs()) { ?>
@@ -75,8 +75,8 @@ include(tpf("/Elementi/fbk.php",false, false, $stringaCacheMeta));?>
 	var noSelectedString = "<?php echo gtext("Si prega di selezionare alcune righe")?>";
 	var stringaConfermiEliminazione = "<?php echo gtext("Confermi l'eliminazione dell'elemento?")?>";
 </script>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Frontend/Public/Js/';?>crud.min.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
-<script src="<?php echo $this->baseUrlSrc.'/admin/Public/Js/';?>crud.js?v=<?php echo v("usa_versione_random") ? rand(1,10000): 1;?>"></script>
+<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/crud.min.js');?>"></script>
+<script src="<?php echo F::assertPath('/admin/Public/Js/crud.js');?>"></script>
 <?php } ?>
 
 <?php include(tpf("/Elementi/footer_js_admin_panel.php"));?>

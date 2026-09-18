@@ -357,6 +357,17 @@ class F
 		return number_format(setPrice($string),v("cifre_decimali"),".","");
 	}
 	
+	public static function assertPath($relativeAssetFilePath)
+	{
+		$url = Domain::$publicUrl."/".ltrim($relativeAssetFilePath,"/");
+		$path = Domain::$parentRoot."/".ltrim($relativeAssetFilePath,"/");
+		
+		if (@is_file($path))
+			return $url . '?v=' . md5((string)filemtime($path));
+		
+		return "";
+	}
+	
 	public static function checkPreparedStatement()
 	{
 		if (defined('PRINT_ALL_QUERY') || ((DATABASE_TYPE === 'PDOMysql' || DATABASE_TYPE === 'PDOMssql') && defined('CHECK_QUERIES')))
