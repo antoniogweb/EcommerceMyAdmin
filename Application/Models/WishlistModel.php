@@ -192,4 +192,45 @@ class WishlistModel extends GenericModel {
 			->addJoinTraduzione(null, "contenuti_tradotti_categoria", false, (new CategoriesModel()))
 			->where(array("wishlist_uid"=>$clean["wishlist_uid"]))->orderBy("wishlist.id_order ASC, id_wishlist ASC")->send();
 	}
+	
+	public function numeroInWishList($wishlist_uid)
+	{
+		$clean["wishlist_uid"] = sanitizeAll($wishlist_uid);
+		
+		return $this->clear()->where(array(
+			"wishlist_uid"	=>	$clean["wishlist_uid"],
+		))->rowNumber();
+	}
+	
+	public function setCookieWishlist()
+	{
+		//set the cookie for the wishlist
+		if (
+			isset($_COOKIE["wishlist_uid"]) && 
+			$_COOKIE["wishlist_uid"] && 
+			(int)strlen($_COOKIE["wishlist_uid"]) === 32 && 
+			ctype_alnum((string)$_COOKIE["wishlist_uid"]) && 
+			(
+				(isset($_COOKIE["wishlist_uid_sig"]) && ValueSigner::verify($_COOKIE['wishlist_uid'], $_COOKIE['wishlist_uid_sig'], v("secret_key"))) 
+				|| 
+				$this->numeroInWishList((string)$_COOKIE["wishlist_uid"]) 
+			)
+		)
+		{
+			User::$wishlist_uid = sanitizeAll((string)$_COOKIE["wishlist_uid"]);
+			
+			// Se manca la firma la aggiunge
+			if (!isset($_COOKIE["wishlist_uid_sig"]))
+			{
+				$time = time() + v("durata_carrello_wishlist_coupon");
+				Cookie::set("wishlist_uid", User::$wishlist_uid, $time, "/", true, 'Lax', true, v("secret_key"));
+			}
+		}
+		else
+		{
+			User::$wishlist_uid = randomToken();
+			$time = time() + v("durata_carrello_wishlist_coupon");
+			Cookie::set("wishlist_uid", User::$wishlist_uid, $time, "/", true, 'Lax', true, v("secret_key"));
+		}
+	}
 }

@@ -688,17 +688,18 @@ class BaseBaseController extends Controller
 		OrdiniModel::setStatiOrdine();
 		OrdiniModel::setPagamenti();
 		
-		//set the cookie for the wishlist
-		if (isset($_COOKIE["wishlist_uid"]) && $_COOKIE["wishlist_uid"] && (int)strlen($_COOKIE["wishlist_uid"]) === 32 && ctype_alnum((string)$_COOKIE["wishlist_uid"]))
-		{
-			User::$wishlist_uid = sanitizeAll((string)$_COOKIE["wishlist_uid"]);
-		}
-		else
-		{
-			User::$wishlist_uid = randomToken();
-			$time = time() + v("durata_carrello_wishlist_coupon");
-			Cookie::set("wishlist_uid", User::$wishlist_uid, $time, "/", true, 'Lax');
-		}
+		$this->m("WishlistModel")->setCookieWishlist();
+		// //set the cookie for the wishlist
+		// if (isset($_COOKIE["wishlist_uid"]) && $_COOKIE["wishlist_uid"] && (int)strlen($_COOKIE["wishlist_uid"]) === 32 && ctype_alnum((string)$_COOKIE["wishlist_uid"]))
+		// {
+		// 	User::$wishlist_uid = sanitizeAll((string)$_COOKIE["wishlist_uid"]);
+		// }
+		// else
+		// {
+		// 	User::$wishlist_uid = randomToken();
+		// 	$time = time() + v("durata_carrello_wishlist_coupon");
+		// 	Cookie::set("wishlist_uid", User::$wishlist_uid, $time, "/", true, 'Lax');
+		// }
 		
 		if (App::cookieTerziApprovati() && VariabiliModel::attivaTrackingUid())
 			User::setTrackingUid();

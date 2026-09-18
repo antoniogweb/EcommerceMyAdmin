@@ -165,6 +165,14 @@ class App
 					"Durata"		=>	v("durata_carrello_wishlist_coupon"),
 					"usato"				=>	v("ecommerce_attivo"),
 				),
+				"wishlist_uid_sig"	=>	array(
+					"Fornitore"	=>	Parametri::$nomeNegozio,
+					gtextPlain("Tipologia")	=>	gtextPlain("Tecnici"),
+					gtextPlain("Necessario")	=>	gtextPlain("Sì"),
+					"Descrizione"=>	gtext("Utilizzato per salvare la firma del cookie wishlist_uid"),
+					"Durata"		=>	v("durata_carrello_wishlist_coupon"),
+					"usato"				=>	v("ecommerce_attivo"),
+				),
 				"cart_uid"	=>	array(
 					"Fornitore"	=>	Parametri::$nomeNegozio,
 					gtextPlain("Tipologia")	=>	gtextPlain("Tecnici"),
