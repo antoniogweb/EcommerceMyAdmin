@@ -1988,7 +1988,7 @@ class BaseContenutiController extends BaseController
 							"lt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
 						),
 					),
-				))->addWhereDaPubblicare($firstSection)->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc,pages.id_order desc")->limit(1)->send();
+				))->addWhereAttivo()->addWhereDaPubblicare($firstSection)->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news desc,pages.id_order desc")->limit(1)->send();
 				
 				$data["paginaSuccessiva"] = $this->m('PagesModel')->where(array(
 					"OR"	=>	array(
@@ -1998,7 +1998,7 @@ class BaseContenutiController extends BaseController
 							"gt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
 						),
 					),
-				))->addWhereDaPubblicare($firstSection)->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news,pages.id_order desc")->limit(1)->send();
+				))->addWhereAttivo()->addWhereDaPubblicare($firstSection)->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.data_news,pages.id_order desc")->limit(1)->send();
 			}
 			else
 			{
@@ -2006,13 +2006,13 @@ class BaseContenutiController extends BaseController
 					"OR"	=>	array(
 						"lt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
 					),
-				))->addWhereDaPubblicare($firstSection)->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.id_order desc")->limit(1)->send();
+				))->addWhereAttivo()->addWhereDaPubblicare($firstSection)->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.id_order desc")->limit(1)->send();
 				
 				$data["paginaSuccessiva"] = $this->m('PagesModel')->where(array(
 					"OR"	=>	array(
 						"gt"	=>	array("pages.id_order"	=>	(int)$data['pages'][0]["pages"]["id_order"]),
 					),
-				))->addWhereDaPubblicare($firstSection)->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.id_order desc")->limit(1)->send();
+				))->addWhereAttivo()->addWhereDaPubblicare($firstSection)->addWhereCategoria((int)CategoriesModel::getIdCategoriaDaSezione($firstSection))->orderBy("pages.id_order desc")->limit(1)->send();
 			}
 			
 			$this->append($data);

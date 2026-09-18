@@ -37,6 +37,8 @@ class BaseRiservataController extends BaseController
 		
 		$data["isAreaRiservata"] = true;
 		
+		VariabiliModel::$valori["usa_versione_random"] = 1;
+		
 		$this->append($data);
 	}
 
