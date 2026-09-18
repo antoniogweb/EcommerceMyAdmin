@@ -213,14 +213,14 @@ class WishlistModel extends GenericModel {
 			(
 				(isset($_COOKIE["wishlist_uid_sig"]) && ValueSigner::verify($_COOKIE['wishlist_uid'], $_COOKIE['wishlist_uid_sig'], v("secret_key"))) 
 				|| 
-				$this->numeroInWishList((string)$_COOKIE["wishlist_uid"]) 
+				(!isset($_COOKIE["wishlist_uid_sig"]) && $this->numeroInWishList((string)$_COOKIE["wishlist_uid"])) 
 			)
 		)
 		{
 			User::$wishlist_uid = sanitizeAll((string)$_COOKIE["wishlist_uid"]);
 			
 			// Se manca la firma la aggiunge
-			if (!isset($_COOKIE["wishlist_uid_sig"]))
+			if (!isset($_COOKIE["wishlist_uid_sig"]) || !ValueSigner::verify($_COOKIE['wishlist_uid'], $_COOKIE['wishlist_uid_sig'], v("secret_key")))
 			{
 				$time = time() + v("durata_carrello_wishlist_coupon");
 				Cookie::set("wishlist_uid", User::$wishlist_uid, $time, "/", true, 'Lax', true, v("secret_key"));
