@@ -97,6 +97,8 @@ class BaseCartController extends BaseController
 	
 	public function add($id_page = 0, $quantity = 1, $id_c = 0, $id_p = 0, $id_cart = 0)
 	{
+		$this->checkCsrf();
+
 		IvaModel::getAliquotaEstera();
 		
 		$result = "KO";
@@ -344,6 +346,8 @@ class BaseCartController extends BaseController
 	
 	public function delete($id_cart)
 	{
+		$this->checkCsrf();
+
 		if (!v("ecommerce_online"))
 			$this->redirect("");
 		

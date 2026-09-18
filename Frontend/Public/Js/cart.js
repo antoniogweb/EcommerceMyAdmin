@@ -775,7 +775,8 @@ function actionAggiungiAlCarrello(principale, accessorio)
 		type: "POST",
 		data: {
 			json_pers: json_pers,
-			id_lista: id_lista
+			id_lista: id_lista,
+			csrf_token: csrf_token
 		},
 		success: function(content){
 			clearTimeout(time);
@@ -1217,6 +1218,10 @@ $(document).ready(function(){
 			async: true,
 			cache:false,
 			dataType: "html",
+			type: "POST",
+			data: {
+				csrf_token: csrf_token
+			},
 			success: function(content){
 				reloadCart();
 			}
