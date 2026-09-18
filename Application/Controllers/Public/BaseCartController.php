@@ -370,6 +370,8 @@ class BaseCartController extends BaseController
 	//$quantita: id_page:quantity|id_page:quantity|...
 	public function update()
 	{
+		$this->checkCsrf();
+
 		if (!v("ecommerce_online"))
 			$this->redirect("");
 		

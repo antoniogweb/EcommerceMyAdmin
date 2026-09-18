@@ -951,7 +951,8 @@ function aggiornaCarrello(vai_la_checkout, incrementa)
 		type: "POST",
 		data: {
 			products_list: products_list,
-			elementi_carrello:  elementi
+			elementi_carrello:  elementi,
+			csrf_token: csrf_token
 		},
 // 		data: post_data,
 		async: true,
