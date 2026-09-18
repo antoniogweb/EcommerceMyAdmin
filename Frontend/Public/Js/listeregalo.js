@@ -340,9 +340,13 @@ $(document).ready(function(){
 		
 		e.preventDefault();
 		
-		var url = $(this).attr("href");
+		var that = $(this);
+		var idLink = that.attr("data-id-link");
+		var url = that.attr("href");
 		
 		$.ajaxQueue({
+			type: "POST",
+			data: { id: idLink, csrf_token: csrf_token },
 			url: url,
 			async: true,
 			cache:false,

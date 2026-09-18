@@ -263,7 +263,7 @@ class Route
 		'listeregalo/aggiornaprodotti'=>	'listeregalo/aggiornaprodotti',
 		'listeregalo/invialink/(.*)'=>	'listeregalo/invialink/${1}',
 		'listeregalo/elencolink/(.*)'=>	'listeregalo/elencolink/${1}',
-		'listeregalo/invianuovamentelink/(.*)'=>	'listeregalo/invianuovamentelink/${1}',
+		'listeregalo/invianuovamentelink'	=>	'listeregalo/invianuovamentelink',
 		'reso-lista/(.*)'			=>	'listeregalo/resolista/${1}',
 		'ticket/?'					=>	'ticket/index',
 		'ticket/add/?'				=>	'ticket/add',

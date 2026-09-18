@@ -211,11 +211,11 @@ class BaseListeregaloController extends BaseController
 		));
 	}
 	
-	public function invianuovamentelink($idLink = 0)
+	public function invianuovamentelink()
 	{
 		$this->clean();
 		
-		$clean["id"] = $data["id"] = (int)$idLink;
+		$clean["id"] = $data["id"] = $this->request->post("id",0,"forceInt");
 		
 		$result = "KO";
 		$notice = gtext("Errore nell'invio");
@@ -223,7 +223,7 @@ class BaseListeregaloController extends BaseController
 		if ($this->m('ListeregalolinkModel')->checkAccesso($clean["id"]))
 		{
 			// Controlla CSRF
-			$this->checkCsrf("GET");
+			$this->checkCsrf();
 			
 			if ($this->m('ListeregalolinkModel')->inviaMail($clean["id"]))
 			{
