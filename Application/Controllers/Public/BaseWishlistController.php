@@ -121,6 +121,8 @@ class BaseWishlistController extends BaseController
 	
 	public function add($id_cart = 0)
 	{
+		$this->checkCsrf();
+
 		$clean["id_cart"] = (int)$id_cart;
 		
 		$this->clean();
@@ -198,6 +200,8 @@ class BaseWishlistController extends BaseController
 	
 	public function delete($id_cart)
 	{
+		$this->checkCsrf();
+
 		$clean["id_cart"] = (int)$id_cart;
 		
 		$this->clean();

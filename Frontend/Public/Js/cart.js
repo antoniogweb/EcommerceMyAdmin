@@ -1256,6 +1256,10 @@ $(document).ready(function(){
 			async: true,
 			cache:false,
 			dataType: "json",
+			type: "POST",
+			data: {
+				csrf_token: csrf_token
+			},
 			success: function(content){
 				
 				if (jQuery.trim(content.result) == "OK")
