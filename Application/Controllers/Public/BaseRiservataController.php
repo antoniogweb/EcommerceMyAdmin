@@ -148,12 +148,12 @@ class BaseRiservataController extends BaseController
 		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Lista indirizzi di spedizione"));
 		
-		$clean["id_spedizione"] = $this->request->get("del",0,"forceInt");
+		$clean["id_spedizione"] = $this->request->post("del",0,"forceInt");
 		
 		if ($clean["id_spedizione"] > 0 && v("permetti_modifica_account"))
 		{
 			// Controlla CSRF
-			$this->checkCsrf("GET");
+			$this->checkCsrf();
 			
 			$this->m("SpedizioniModel")->del(null, array("id_spedizione = ? AND id_user = ?",array($clean["id_spedizione"], User::$id)));
 		}
