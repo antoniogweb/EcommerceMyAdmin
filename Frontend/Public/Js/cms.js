@@ -171,37 +171,38 @@ function copyToClipboard(testo) {
 
 $(document).ready(function(){
 	
-			$( "body" ).on( "click", ".csrf_post", function(e) {
-			e.preventDefault();
+	$( "body" ).on( "click", ".csrf_post", function(e) {
+		e.preventDefault();
 
-			var that = $(this);
-			var data = {};
-			var postAttributes = [];
+		var that = $(this);
+		var data = {};
+		var postAttributes = [];
 
-			$.each(this.attributes, function() {
-				if (this.name.indexOf("data-post-") === 0) {
-					postAttributes.push({ name: this.name, value: this.value });
-				}
-			});
-
-			$.each(postAttributes, function() {
-				data[this.name.substring(10)] = this.value;
-				that.removeAttr(this.name);
-			});
-
-			data.csrf_token = that.attr("data-csrf-token");
-
-			$.ajaxQueue({
-				url: that.attr("href"),
-				type: "POST",
-				data: data,
-				cache: false,
-				async: true,
-				success: function() {
-					location.href = location.href;
-				}
-			});
+		$.each(this.attributes, function() {
+			if (this.name.indexOf("data-post-") === 0) {
+				postAttributes.push({ name: this.name, value: this.value });
+			}
 		});
+
+		$.each(postAttributes, function() {
+			data[this.name.substring(10)] = this.value;
+			that.removeAttr(this.name);
+		});
+
+		data.csrf_token = csrf_token;
+
+		$.ajaxQueue({
+			url: that.attr("href"),
+			type: "POST",
+			data: data,
+			cache: false,
+			async: true,
+			success: function() {
+				location.href = location.href;
+			}
+		});
+	});
+		
 	$( "body" ).on( "click", ".share-link", function(e) {
 		e.preventDefault();
 		

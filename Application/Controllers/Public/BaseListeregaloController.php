@@ -58,13 +58,13 @@ class BaseListeregaloController extends BaseController
 		
 		$data['title'] = $this->aggiungiNomeNegozioATitle(gtext("Liste regalo"));
 		
-		$clean["id_lista"] = $this->request->get("id_lista",0,"forceInt");
-		$clean["valore"] = $this->request->get("valore","","sanitizeAll");
+		$clean["id_lista"] = $this->request->post("id_lista",0,"forceInt");
+		$clean["valore"] = $this->request->post("valore","","sanitizeAll");
 		
 		if ($clean["id_lista"] > 0 && ListeregaloModel::numeroListeUtente(User::$id, $clean["id_lista"]) && in_array($clean["valore"], array("Y","N")))
 		{
 			// Controlla CSRF
-			$this->checkCsrf("GET");
+			$this->checkCsrf();
 			
 			$valoreAttivo = (string)$clean["valore"] === "Y" ? "Y" : "N";
 			

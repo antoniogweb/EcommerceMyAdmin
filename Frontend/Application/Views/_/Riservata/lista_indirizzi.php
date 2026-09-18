@@ -66,7 +66,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 				</a>
 				
 				<?php if (v("permetti_modifica_account")) { ?>
-				<a class="uk-margin-left uk-text-bold td_edit uk-text-danger csrf_post" data-post-del="<?php echo $indirizzo["spedizioni"]["id_spedizione"];?>" data-csrf-token="<?php echo $csrf_token;?>" title="<?php echo gtextAttr("Elimina",false);?>" href="<?php echo $this->baseUrl."/riservata/indirizzi";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a>
+				<a class="uk-margin-left uk-text-bold td_edit uk-text-danger csrf_post" data-post-del="<?php echo (int)$indirizzo["spedizioni"]["id_spedizione"];?>" title="<?php echo gtextAttr("Elimina",false);?>" href="<?php echo $this->baseUrl."/riservata/indirizzi";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span></a>
 				<?php } ?>
 			</div>
 		</div>
