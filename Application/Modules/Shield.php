@@ -504,7 +504,7 @@ class Shield
 			
 			// Path traversal / file probing
 			'/(\.\.\/|\.\.\\\\)/'										=>	4,
-			'/\/etc\/passwd/i'										=>	5,
+			'/(?:^|\/)etc\/passwd(?:\/|$)/i'							=>	5,
 			'/boot\.ini/i'											=>	5,
 			'/windows\/system32/i'									=>	5,
 			
