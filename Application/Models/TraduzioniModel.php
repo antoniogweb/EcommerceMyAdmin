@@ -27,6 +27,8 @@ class TraduzioniModel extends GenericModel {
 	public static $contestoStatic = "front"; // usato quando leggo la lingua
 	public static $contestoStaticEdit = "front"; // usato in edit lingua
 	
+	public static $nonTradotte = array(); // contiene array di traduzioni non tradotte nella lingua corrente
+	
 	public static $edit = false;
 	
 	public static $bckLingua = null;
@@ -73,11 +75,29 @@ class TraduzioniModel extends GenericModel {
 		$this->contestoCorrente = $contesto;
 		
 		$values = $this->clear()->where(array(
-			"lingua"	=>	sanitizeAll(getLinguaIso()),
+			"lingua"	=>	sanitizeAll($tempLang),
 			"contesto"	=>	sanitizeDb($contesto),
 		))->toList("chiave", "valore")->send();
 		
 		Lang::$i18n[$tempLang] = $values;
+		
+		// Lingua di ricaduta se settata
+		if (VariabiliModel::attivaLinguaRicaduta($tempLang))
+		{
+			$values = $this->clear()->where(array(
+				"lingua"	=>	sanitizeAll(v("usa_lingua_se_manca_traduzione")),
+				"contesto"	=>	sanitizeDb($contesto),
+				"tradotta"	=>	1,
+			))->toList("chiave", "valore")->send();
+			
+			Lang::$i18n[v("usa_lingua_se_manca_traduzione")] = $values;
+			
+			self::$nonTradotte = $this->clear()->where(array(
+				"lingua"	=>	sanitizeAll($tempLang),
+				"contesto"	=>	sanitizeDb($contesto),
+				"tradotta"	=>	0,
+			))->toList("chiave", "tradotta")->send();
+		}
 	}
 	
 	public function getTraduzione($chiave, $function = "none", $contesto = null)

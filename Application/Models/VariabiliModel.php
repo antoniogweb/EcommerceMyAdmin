@@ -821,6 +821,7 @@ class VariabiliModel extends GenericModel {
 		"traduci_sempre_le_pagine_di_queste_categorie"	=>	"127", // traduci le pagine in queste categorie anche se non sono attive (lista di ID di categorie divise da ,)
 		"default_date_format"		=>	"d/m/Y", // formato di default per le date per la funzione date del php
 		"default_date_format_datepicket"		=>	"dd-mm-yy", // formato di default per le date in datepicker
+		"usa_lingua_se_manca_traduzione"	=>	"", // lingua di ricaduta se manca la traduzione di un contenuto nella lingua selezionata. Se blank, usa la lingua di default (LingueModel::getFrontendLanguage())
 		### HOOK ##
 		"hook_ordine_confermato"	=>	"", // se diversa da blank, funzione che viene chiamata dopo la conferma dell'ordine. Gli viene passato l'ID dell'ordine come unico parametro
 		"hook_update_ordine"		=>	"", // se diversa da blank, funzione che viene chiamata dopo la modifica dell'ordine. Gli viene passato l'ID dell'ordine come unico parametro
@@ -1503,5 +1504,13 @@ class VariabiliModel extends GenericModel {
 		$elencoArray = explode(",", v("sezioni_con_data_pubblicazione"));
 		
 		return in_array($sezione, $elencoArray);
+	}
+	
+	public static function attivaLinguaRicaduta($lingua)
+	{
+		if ($lingua && v("usa_lingua_se_manca_traduzione") && $lingua != Params::$defaultFrontEndLanguage && $lingua != v("usa_lingua_se_manca_traduzione"))
+			return true;
+		
+		return false;
 	}
 }

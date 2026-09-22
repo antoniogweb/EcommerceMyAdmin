@@ -414,7 +414,7 @@ class BaseContenutiController extends BaseController
 						$this->fullParents = $parents[$id];
 						$clean["id"] = $id;
 						
-						$data["title"] = $this->getTitlePagina($parents[$id][count($parents[$id])-1]);
+						// $data["title"] = $this->getTitlePagina($parents[$id][count($parents[$id])-1]);
 					}
 				}
 
@@ -428,7 +428,7 @@ class BaseContenutiController extends BaseController
 				$parents = $this->m("CategoriesModel")->parents($clean['id'],false,false, Params::$lang);
 				array_shift($parents); //remove the root parent
 				
-				$data["title"] = $this->getTitleCategoria($parents[count($parents)-1], $clean['id']);
+				// $data["title"] = $this->getTitleCategoria($parents[count($parents)-1], $clean['id']);
 				
 				$this->fullParents = $parents;
 
@@ -483,12 +483,13 @@ class BaseContenutiController extends BaseController
 	// $categoria contiene anche la traduzione in contenuti_tradotti
 	protected function getTitleCategoria($categoria, $idCat = 0)
 	{
-		if (isset($categoria["contenuti_tradotti"]["title"]) && $categoria["contenuti_tradotti"]["title"])
-			$title = $categoria["contenuti_tradotti"]["title"];
-		else
-			$title = $categoria["categories"]["title"];
+		// if (isset($categoria["contenuti_tradotti"]["title"]) && $categoria["contenuti_tradotti"]["title"])
+		// 	$title = $categoria["contenuti_tradotti"]["title"];
+		// else
+		// 	$title = $categoria["categories"]["title"];
 		
-		$metaTitleCategoria = cfield($categoria, "meta_title", "contenuti_tradotti");
+		$title = cfield($categoria, "title");
+		$metaTitleCategoria = cfield($categoria, "meta_title");
 		
 		if (trim($metaTitleCategoria))
 			$title = $metaTitleCategoria;
@@ -665,6 +666,26 @@ class BaseContenutiController extends BaseController
 		}
 	}
 	
+	protected function getTitleFromParents($titolo, $table, $tempParents)
+	{
+		$lingua = $tempParents[count($tempParents)-1]["contenuti_tradotti"]["lingua"] ?? Params::$lang;
+		
+		if ($table == "categories")
+		{
+			$idC = $tempParents[count($tempParents)-1][$table]['id_c'];
+			$first = $this->m("CategoriesModel")->clear()->select("categories.title,contenuti_tradotti_categoria.title")->whereId((int)$idC)->addJoinTraduzione(null, "contenuti_tradotti_categoria", false)->first();
+			$titolo = cfield($first, "title");
+		}
+		else if ($table == "pages")
+		{
+			$idPage = $tempParents[count($tempParents)-1][$table]['id_page'];
+			$first = $this->m("PagesModel")->clear()->select("pages.title,contenuti_tradotti.title")->whereId((int)$idPage)->addJoinTraduzione(null, "contenuti_tradotti", false)->first();
+			$titolo = field($first, "title");
+		}
+		
+		return $titolo;
+	}
+	
 	//create the HTML of the breadcrumb
 	protected function breadcrumb($type = "category", $linkInLast = false, $separator = "&raquo;", $fullParents = null)
 	{
@@ -735,9 +756,14 @@ class BaseContenutiController extends BaseController
 			
 			$breadcrumbLinkClass = v("classe_link_breadcrumb");
 			
+			$lingua = $tempParents[count($tempParents)-1]["contenuti_tradotti"]["lingua"] ?? Params::$lang;
+			
 			if ($i === 0 and !$linkInLast)
 			{
 				$titolo = (isset($tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) && $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) ? $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title] : $tempParents[count($tempParents)-1][$table][$title];
+				
+				if (VariabiliModel::attivaLinguaRicaduta($lingua))
+					$titolo = $this->getTitleFromParents($titolo, $table, $tempParents);
 				
 				$titolo = $this->titoloBreadcrumb($titolo, true);
 				
@@ -760,6 +786,9 @@ class BaseContenutiController extends BaseController
 				$alias = (isset($tempParents[count($tempParents)-1]["contenuti_tradotti"]['alias']) && $tempParents[count($tempParents)-1]["contenuti_tradotti"]['alias']) ? $tempParents[count($tempParents)-1]["contenuti_tradotti"]['alias'] : $tempParents[count($tempParents)-1][$table]['alias'];
 				
 				$titolo = (isset($tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) && $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title]) ? $tempParents[count($tempParents)-1]["contenuti_tradotti"][$title] : $tempParents[count($tempParents)-1][$table][$title];
+				
+				if (VariabiliModel::attivaLinguaRicaduta($lingua))
+					$titolo = $this->getTitleFromParents($titolo, $table, $tempParents);
 				
 				$titolo = $this->titoloBreadcrumb($titolo, false);
 				
@@ -889,6 +918,8 @@ class BaseContenutiController extends BaseController
 		
 		if ($metaDescriptionCategoria)
 			$data["meta_description"] = $metaDescriptionCategoria;
+		
+		$data["title"] = $this->getTitleCategoria($r[0], $clean['id']);
 		
 		if (cfield($r[0], "keywords"))
 			$data["keywords"] = F::meta(cfield($r[0], "keywords"));
@@ -1787,6 +1818,8 @@ class BaseContenutiController extends BaseController
 		}
 		
 		$this->getSuccessivoPrecedente($firstSection, $data);
+		
+		$data["title"] = $this->getTitlePagina($data['pages'][0]);
 		
 		if (field($data['pages'][0], "meta_description"))
 			$data["meta_description"] = F::meta(field($data['pages'][0], "meta_description"));

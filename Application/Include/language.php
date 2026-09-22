@@ -73,7 +73,12 @@ function gtext($string, $edit = true, $function = "none", $contesto = null, $ges
 		}
 		else
 		{
-			return call_user_func($function,sanitizeHtmlLight(stripTagsSicuro(Lang::$i18n[$tempLang][$string])));
+			$linguaFinale = $tempLang; // lingua di ricaduta
+			
+			if (VariabiliModel::attivaLinguaRicaduta($tempLang) && isset(TraduzioniModel::$nonTradotte[$string]) && isset(Lang::$i18n[v("usa_lingua_se_manca_traduzione")][$string]))
+				$linguaFinale = v("usa_lingua_se_manca_traduzione");
+
+			return call_user_func($function,sanitizeHtmlLight(stripTagsSicuro(Lang::$i18n[$linguaFinale][$string])));
 // 			return Lang::$i18n[$tempLang][$string];
 		}
 	}

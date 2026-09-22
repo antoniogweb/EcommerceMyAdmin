@@ -951,8 +951,13 @@ class GenericModel extends Model_Tree
 	
 	public function addJoinTraduzione($lingua = null, $alias = "contenuti_tradotti", $selectAll = true, $modelTabella = null)
 	{
+		$linguaNonSettata = false;
+		
 		if (!isset($lingua))
+		{
+			$linguaNonSettata = true;
 			$lingua = Params::$lang;
+		}
 		
 		$strAlias = " as $alias";
 		
@@ -962,11 +967,32 @@ class GenericModel extends Model_Tree
 		if ($selectAll)
 			$this->select("*");
 		
+		$onClause = "$alias.".$modelTabella->_idFields." = ".$modelTabella->_tables.".".$modelTabella->_idFields;
+		$bindedValues = array(
+			sanitizeDb($lingua),
+		);
+		
+		if ($linguaNonSettata && VariabiliModel::attivaLinguaRicaduta($lingua))
+		{
+			$onClause .= " and (
+				($alias.lingua = ? and $alias.salvato = 1) OR 
+				($alias.lingua = ? AND NOT EXISTS (
+					SELECT 1
+					FROM contenuti_tradotti AS $alias
+					WHERE $alias.".$modelTabella->_idFields." = ".$modelTabella->_tables.".".$modelTabella->_idFields."
+					AND $alias.lingua = ?
+					AND $alias.salvato = 1
+				))
+			)";
+			$bindedValues[] = sanitizeDb(v("usa_lingua_se_manca_traduzione"));
+			$bindedValues[] = sanitizeDb($lingua);
+		}
+		else
+			$onClause .= " and $alias.lingua = ?";
+		
 		$this->left("contenuti_tradotti $strAlias")->on(array(
-			"$alias.".$modelTabella->_idFields." = ".$modelTabella->_tables.".".$modelTabella->_idFields." and $alias.lingua = ?",
-			array(
-				sanitizeDb($lingua),
-			),
+			$onClause,
+			$bindedValues,
 		));
 		
 		return $this;

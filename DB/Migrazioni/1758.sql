@@ -1,0 +1,1 @@
+alter table testi add salvato tinyint not null default 0;

@@ -176,6 +176,7 @@ class TestiModel extends GenericModel
 				$this->values["valore"] = "";
 			
 			$this->setValue("data_ultima_modifica", date("Y-m-d H:i:s"));
+			$this->values["salvato"] = 1;
 			
 			$res = parent::update($id, $whereClause);
 			
