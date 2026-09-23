@@ -83,14 +83,14 @@
 	var controls = {};
 	var buttons = [
 		"bold", "italic", "underline", "strikethrough", "ul", "ol",
-		"left", "center", "right", "justify", "link", "unlink"
+		"left", "center", "right", "justify", "link", "unlink", "image"
 	];
 
 	if (String(window.permetti_upload_generico) === "1") {
 		controls.archivioFile = {
 			name: "archivioFile",
 			icon: "image",
-			tooltip: "Inserisci immagine o file",
+			tooltip: "Inserisci immagine o file dall'archivio",
 			exec: function (editor) {
 				openUploadManager(editor);
 			}
@@ -126,15 +126,15 @@
 		// comandi meno frequenti confluiscono nel menu "dots" senza lasciare righe vuote.
 		buttonsMD: [
 			"bold", "italic", "underline", "strikethrough", "ul", "ol",
-			"link", "unlink", "archivioFile", "archivioLink", "paragraph",
+			"link", "unlink", "image", "archivioFile", "archivioLink", "paragraph",
 			"brush", "undo", "redo", "source", "|", "dots"
 		],
 		buttonsSM: [
 			"bold", "italic", "underline", "ul", "ol", "link",
-			"archivioFile", "archivioLink", "brush", "|", "dots"
+			"image", "archivioFile", "archivioLink", "brush", "|", "dots"
 		],
 		buttonsXS: [
-			"bold", "italic", "ul", "ol", "link", "archivioFile",
+			"bold", "italic", "ul", "ol", "link", "image", "archivioFile",
 			"archivioLink", "|", "dots"
 		],
 		controls: controls,
