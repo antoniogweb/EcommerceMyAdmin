@@ -2009,14 +2009,14 @@ function selectPersonalizzazioni($id_page)
 	return $p->selectPersonalizzazioni($id_page);
 }
 
-function numeroProdottiCategoria($id_c, $filtriSuccessivi = false)
+function numeroProdottiCategoria($id_c, $filtriSuccessivi = false, $section = "")
 {
 	$c = new CategoriesModel();
 	
-	return $c->numeroProdotti($id_c, $filtriSuccessivi);
+	return $c->numeroProdotti($id_c, $filtriSuccessivi, $section);
 }
 
-function numeroProdottiCategoriaFull($id_c, $filtriSuccessivi = false)
+function numeroProdottiCategoriaFull($id_c, $filtriSuccessivi = false, $section = "")
 {
 	$c = new CategoriesModel();
 	
@@ -2024,7 +2024,7 @@ function numeroProdottiCategoriaFull($id_c, $filtriSuccessivi = false)
 	
 	$signature = CategoriesModel::getSignatureSuccessivi("[categoria]");
 	
-	return Cache_Functions::getInstance()->load(new CategoriesModel())->numeroProdottiFull($id_c, $filtriSuccessivi, $signature);
+	return Cache_Functions::getInstance()->load(new CategoriesModel())->numeroProdottiFull($id_c, $filtriSuccessivi, $section, $signature);
 // 	return $c->numeroProdottiFull($id_c, $filtriSuccessivi);
 }
 

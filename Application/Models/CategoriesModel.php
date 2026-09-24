@@ -855,7 +855,7 @@ class CategoriesModel extends HierarchicalModel {
 		return $signature = isset(CategoriesModel::$arrayIdsPagineFiltrate[$filtroSuccessivo]) ? md5(implode(",",CategoriesModel::$arrayIdsPagineFiltrate[$filtroSuccessivo])) : "";
 	}
 	
-	public function numeroProdottiFull($id_c, $filtriSuccessivi = false)
+	public function numeroProdottiFull($id_c, $filtriSuccessivi = false, $section = "")
 	{
 		if (self::filtroSoloCategoria())
 			$filtriSuccessivi = false;
@@ -873,7 +873,7 @@ class CategoriesModel extends HierarchicalModel {
 		
 		$cat->orderBy = null;
 		
-		$res = $cat->select("pages.id_page")->toList("id_page")->send();
+		$res = $cat->select("pages.id_page")->addWhereDaPubblicare($section)->toList("id_page")->send();
 		
 		$res = array_unique($res);
 		
@@ -950,14 +950,14 @@ class CategoriesModel extends HierarchicalModel {
 // 		return $structFinale;
 // 	}
 	
-	public function numeroProdotti($id_c, $filtriSuccessivi = false)
+	public function numeroProdotti($id_c, $filtriSuccessivi = false, $section = "")
 	{
 		$cat = self::gPage($id_c, false, false);
 		
 		if ($filtriSuccessivi)
 			$cat->sWhereFiltriSuccessivi("[categoria]");
 		
-		return $cat->rowNumber();
+		return $cat->addWhereDaPubblicare($section)->rowNumber();
 	}
 	
 	public function categorieFiglie($id_c, $select = "categories.*,contenuti_tradotti_categoria.*", $soloAttivi = true, $traduzione = true)
