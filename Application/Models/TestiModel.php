@@ -207,6 +207,8 @@ class TestiModel extends GenericModel
 			if (!isset($this->values["data_ultima_modifica"]))
 				$this->setValue("data_ultima_modifica", date("Y-m-d H:i:s"));
 			
+			$this->values["salvato"] = 0;
+			
 			return parent::insert();
 		}
 	}

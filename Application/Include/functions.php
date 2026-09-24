@@ -1223,8 +1223,13 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 	
 	$linguaPrincipale = sanitizeAll(LingueModel::getPrincipale());
 	
+	$permettiLinguaRicaduta = false;
+	
 	if ($tipo == "TESTO" || $tipo == "LINK")
+	{
 		$lingua = sanitizeAll(getLinguaIso());
+		$permettiLinguaRicaduta = true;
+	}
 	else
 		$lingua = $linguaPrincipale;
 	
@@ -1238,7 +1243,7 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 	if (count($testo) > 0)
 	{
 		// Lingua di ricaduta
-		if (VariabiliModel::attivaLinguaRicaduta($lingua))
+		if (VariabiliModel::attivaLinguaRicaduta($lingua) && $permettiLinguaRicaduta)
 		{
 			$testoLinguaRicaduta = $t->clear()->where(array(
 				"chiave"	=>	$clean["chiave"],
@@ -1246,7 +1251,10 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 			))->record();
 			
 			if (!empty($testoLinguaRicaduta) && $testoLinguaRicaduta["salvato"] && !$testo["salvato"])
+			{
+				$testoLinguaRicaduta["id_t"] = $testo["id_t"];
 				$testo = $testoLinguaRicaduta;
+			}
 		}
 		
 		if ($ritornaElemento)
@@ -1336,15 +1344,28 @@ function getTesto($matches, $tags = null, $tipo = "TESTO", $cleanFlush = true, $
 	else
 	{
 		$testoPrincipale = $t->clear()->where(array(
-			"chiave"=>$clean["chiave"],
+			"chiave"	=>	$clean["chiave"],
 			"lingua"	=>	sanitizeAll(LingueModel::getPrincipale()),
 		))->record();
+		
+		// Lingua di ricaduta
+		if (VariabiliModel::attivaLinguaRicaduta($lingua) && $permettiLinguaRicaduta)
+		{
+			$testoLinguaRicaduta = $t->clear()->where(array(
+				"chiave"	=>	$clean["chiave"],
+				"lingua"	=>	sanitizeAll(v("usa_lingua_se_manca_traduzione")),
+			))->record();
+			
+			if (!empty($testoLinguaRicaduta) && $testoLinguaRicaduta["salvato"])
+				$testoPrincipale = $testoLinguaRicaduta;
+		}
 		
 		if (!empty($testoPrincipale))
 		{
 			$t->setValues($testoPrincipale, "sanitizeDb");
 			
 			unset($t->values["id_t"]);
+			unset($t->values["data_ultima_modifica"]);
 		}
 		else
 		{
