@@ -201,17 +201,17 @@
                 },
                 {
                         "name": "aws/aws-sdk-php",
-                        "version": "3.394.2",
-                        "version_normalized": "3.394.2.0",
+                        "version": "3.397.0",
+                        "version_normalized": "3.397.0.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/aws/aws-sdk-php.git",
-                                "reference": "3123c895f535792857e8c2ce345ee025606d648d"
+                                "reference": "8d2c3adc6ab2d7c6160a9034867cd4bd2b535619"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3123c895f535792857e8c2ce345ee025606d648d",
-                                "reference": "3123c895f535792857e8c2ce345ee025606d648d",
+                                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8d2c3adc6ab2d7c6160a9034867cd4bd2b535619",
+                                "reference": "8d2c3adc6ab2d7c6160a9034867cd4bd2b535619",
                                 "shasum": ""
                         },
                         "require": {
@@ -251,7 +251,7 @@
                                 "ext-pcntl": "To use client-side monitoring",
                                 "ext-sockets": "To use client-side monitoring"
                         },
-                        "time": "2026-08-27T18:54:08+00:00",
+                        "time": "2026-09-23T18:07:37+00:00",
                         "type": "library",
                         "extra": {
                                 "branch-alias": {
@@ -295,7 +295,7 @@
                         "support": {
                                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                                "source": "https://github.com/aws/aws-sdk-php/tree/3.394.2"
+                                "source": "https://github.com/aws/aws-sdk-php/tree/3.397.0"
                         },
                         "install-path": "../aws/aws-sdk-php"
                 },
@@ -751,17 +751,17 @@
                 },
                 {
                         "name": "ezyang/htmlpurifier",
-                        "version": "v4.19.0",
-                        "version_normalized": "4.19.0.0",
+                        "version": "v4.19.1",
+                        "version_normalized": "4.19.1.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                                "reference": "b287d2a16aceffbf6e0295559b39662612b77fcf"
+                                "reference": "5e0539132d934f936fbae2c88b55d58f9438623f"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/b287d2a16aceffbf6e0295559b39662612b77fcf",
-                                "reference": "b287d2a16aceffbf6e0295559b39662612b77fcf",
+                                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/5e0539132d934f936fbae2c88b55d58f9438623f",
+                                "reference": "5e0539132d934f936fbae2c88b55d58f9438623f",
                                 "shasum": ""
                         },
                         "require": {
@@ -777,7 +777,7 @@
                                 "ext-iconv": "Converts text to and from non-UTF-8 encodings",
                                 "ext-tidy": "Used for pretty-printing HTML"
                         },
-                        "time": "2025-10-17T16:34:55+00:00",
+                        "time": "2026-09-15T15:42:51+00:00",
                         "type": "library",
                         "installation-source": "dist",
                         "autoload": {
@@ -809,7 +809,7 @@
                         ],
                         "support": {
                                 "issues": "https://github.com/ezyang/htmlpurifier/issues",
-                                "source": "https://github.com/ezyang/htmlpurifier/tree/v4.19.0"
+                                "source": "https://github.com/ezyang/htmlpurifier/tree/v4.19.1"
                         },
                         "install-path": "../ezyang/htmlpurifier"
                 },
@@ -1797,30 +1797,31 @@
                 },
                 {
                         "name": "maxmind-db/reader",
-                        "version": "v1.13.1",
-                        "version_normalized": "1.13.1.0",
+                        "version": "v1.14.0",
+                        "version_normalized": "1.14.0.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/maxmind/MaxMind-DB-Reader-php.git",
-                                "reference": "2194f58d0f024ce923e685cdf92af3daf9951908"
+                                "reference": "f3c92f68b3bec42a9aa780368399e03dc6b91e89"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/maxmind/MaxMind-DB-Reader-php/zipball/2194f58d0f024ce923e685cdf92af3daf9951908",
-                                "reference": "2194f58d0f024ce923e685cdf92af3daf9951908",
+                                "url": "https://api.github.com/repos/maxmind/MaxMind-DB-Reader-php/zipball/f3c92f68b3bec42a9aa780368399e03dc6b91e89",
+                                "reference": "f3c92f68b3bec42a9aa780368399e03dc6b91e89",
                                 "shasum": ""
                         },
                         "require": {
                                 "php": ">=7.2"
                         },
                         "conflict": {
-                                "ext-maxminddb": "<1.11.1 || >=2.0.0"
+                                "ext-maxminddb": "<1.14.0 || >=2.0.0"
                         },
                         "require-dev": {
                                 "friendsofphp/php-cs-fixer": "3.*",
                                 "phpstan/phpstan": "*",
                                 "phpunit/phpunit": ">=8.0.0,<10.0.0",
-                                "squizlabs/php_codesniffer": "4.*"
+                                "squizlabs/php_codesniffer": "4.*",
+                                "symfony/polyfill-php80": "^1.33"
                         },
                         "suggest": {
                                 "ext-bcmath": "bcmath or gmp is required for decoding larger integers with the pure PHP decoder",
@@ -1828,7 +1829,7 @@
                                 "ext-maxminddb": "A C-based database decoder that provides significantly faster lookups",
                                 "maxmind-db/reader-ext": "C extension for significantly faster IP lookups (install via PIE: pie install maxmind-db/reader-ext)"
                         },
-                        "time": "2025-11-21T22:24:26+00:00",
+                        "time": "2026-09-10T22:02:38+00:00",
                         "type": "library",
                         "installation-source": "dist",
                         "autoload": {
@@ -1844,7 +1845,7 @@
                                 {
                                         "name": "Gregory J. Oschwald",
                                         "email": "goschwald@maxmind.com",
-                                        "homepage": "https://www.maxmind.com/"
+                                        "homepage": "https://www.maxmind.com/en/home"
                                 }
                         ],
                         "description": "MaxMind DB Reader API",
@@ -1858,7 +1859,7 @@
                         ],
                         "support": {
                                 "issues": "https://github.com/maxmind/MaxMind-DB-Reader-php/issues",
-                                "source": "https://github.com/maxmind/MaxMind-DB-Reader-php/tree/v1.13.1"
+                                "source": "https://github.com/maxmind/MaxMind-DB-Reader-php/tree/v1.14.0"
                         },
                         "install-path": "../maxmind-db/reader"
                 },
@@ -2300,17 +2301,17 @@
                 },
                 {
                         "name": "nikic/php-parser",
-                        "version": "v5.8.0",
-                        "version_normalized": "5.8.0.0",
+                        "version": "v5.9.0",
+                        "version_normalized": "5.9.0.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/nikic/PHP-Parser.git",
-                                "reference": "044a6a392ff8ad0d61f14370a5fbbd0a0107152f"
+                                "reference": "9e33da9553fe7786f0962b35f4e4ecf01be89def"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/044a6a392ff8ad0d61f14370a5fbbd0a0107152f",
-                                "reference": "044a6a392ff8ad0d61f14370a5fbbd0a0107152f",
+                                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/9e33da9553fe7786f0962b35f4e4ecf01be89def",
+                                "reference": "9e33da9553fe7786f0962b35f4e4ecf01be89def",
                                 "shasum": ""
                         },
                         "require": {
@@ -2322,7 +2323,7 @@
                                 "ircmaxell/php-yacc": "^0.0.7",
                                 "phpunit/phpunit": "^9.0"
                         },
-                        "time": "2026-07-04T14:30:18+00:00",
+                        "time": "2026-09-13T18:51:52+00:00",
                         "bin": [
                                 "bin/php-parse"
                         ],
@@ -2354,7 +2355,7 @@
                         ],
                         "support": {
                                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                                "source": "https://github.com/nikic/PHP-Parser/tree/v5.8.0"
+                                "source": "https://github.com/nikic/PHP-Parser/tree/v5.9.0"
                         },
                         "install-path": "../nikic/php-parser"
                 },
@@ -3080,17 +3081,17 @@
                 },
                 {
                         "name": "phpoffice/phpspreadsheet",
-                        "version": "2.4.7",
-                        "version_normalized": "2.4.7.0",
+                        "version": "2.4.8",
+                        "version_normalized": "2.4.8.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                                "reference": "03e65f7c3399756d77f656118f75a61e0fca23c6"
+                                "reference": "badf4f22c54332046af37687c3384c6a0ed14ae1"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/03e65f7c3399756d77f656118f75a61e0fca23c6",
-                                "reference": "03e65f7c3399756d77f656118f75a61e0fca23c6",
+                                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/badf4f22c54332046af37687c3384c6a0ed14ae1",
+                                "reference": "badf4f22c54332046af37687c3384c6a0ed14ae1",
                                 "shasum": ""
                         },
                         "require": {
@@ -3134,7 +3135,7 @@
                                 "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
                                 "tecnickcom/tcpdf": "Option for rendering PDF with PDF Writer"
                         },
-                        "time": "2026-07-12T19:37:16+00:00",
+                        "time": "2026-09-17T04:17:53+00:00",
                         "type": "library",
                         "installation-source": "dist",
                         "autoload": {
@@ -3183,7 +3184,7 @@
                         ],
                         "support": {
                                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/2.4.7"
+                                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/2.4.8"
                         },
                         "install-path": "../phpoffice/phpspreadsheet"
                 },
@@ -3707,17 +3708,17 @@
                 },
                 {
                         "name": "phpunit/phpunit",
-                        "version": "9.6.36",
-                        "version_normalized": "9.6.36.0",
+                        "version": "9.6.37",
+                        "version_normalized": "9.6.37.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                                "reference": "abab27ed286d3e1246fbbfe6b56bfd732d945ec9"
+                                "reference": "aceaa623912caf8e80bffea22fc4103a0a01565f"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/abab27ed286d3e1246fbbfe6b56bfd732d945ec9",
-                                "reference": "abab27ed286d3e1246fbbfe6b56bfd732d945ec9",
+                                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/aceaa623912caf8e80bffea22fc4103a0a01565f",
+                                "reference": "aceaa623912caf8e80bffea22fc4103a0a01565f",
                                 "shasum": ""
                         },
                         "require": {
@@ -3753,7 +3754,7 @@
                                 "ext-soap": "To be able to generate mocks based on WSDL files",
                                 "ext-xdebug": "PHP extension that provides line coverage as well as branch and path coverage"
                         },
-                        "time": "2026-08-11T06:25:15+00:00",
+                        "time": "2026-09-23T09:59:59+00:00",
                         "bin": [
                                 "phpunit"
                         ],
@@ -3793,7 +3794,7 @@
                         "support": {
                                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.36"
+                                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.37"
                         },
                         "funding": [
                                 {
@@ -5389,17 +5390,17 @@
                 },
                 {
                         "name": "symfony/filesystem",
-                        "version": "v7.4.17",
-                        "version_normalized": "7.4.17.0",
+                        "version": "v7.4.18",
+                        "version_normalized": "7.4.18.0",
                         "source": {
                                 "type": "git",
                                 "url": "https://github.com/symfony/filesystem.git",
-                                "reference": "ee7bc7bca4c7079b88e57d5000aeeb20df570c8d"
+                                "reference": "90d412aa5277c6819db39e7605aa46b1019e3232"
                         },
                         "dist": {
                                 "type": "zip",
-                                "url": "https://api.github.com/repos/symfony/filesystem/zipball/ee7bc7bca4c7079b88e57d5000aeeb20df570c8d",
-                                "reference": "ee7bc7bca4c7079b88e57d5000aeeb20df570c8d",
+                                "url": "https://api.github.com/repos/symfony/filesystem/zipball/90d412aa5277c6819db39e7605aa46b1019e3232",
+                                "reference": "90d412aa5277c6819db39e7605aa46b1019e3232",
                                 "shasum": ""
                         },
                         "require": {
@@ -5410,7 +5411,7 @@
                         "require-dev": {
                                 "symfony/process": "^6.4|^7.0|^8.0"
                         },
-                        "time": "2026-08-21T12:09:28+00:00",
+                        "time": "2026-08-23T10:03:40+00:00",
                         "type": "library",
                         "installation-source": "dist",
                         "autoload": {
@@ -5438,7 +5439,7 @@
                         "description": "Provides basic utilities for the filesystem",
                         "homepage": "https://symfony.com",
                         "support": {
-                                "source": "https://github.com/symfony/filesystem/tree/v7.4.17"
+                                "source": "https://github.com/symfony/filesystem/tree/v7.4.18"
                         },
                         "funding": [
                                 {
