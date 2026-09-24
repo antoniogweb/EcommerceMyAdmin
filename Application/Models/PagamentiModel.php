@@ -148,7 +148,9 @@ class PagamentiModel extends GenericModel {
 					'labelString'=>	$this->aliasAccountLabel($record),
 				),
 				'chiave_segreta'		=>	array(
-					'labelString'=>	$this->chiaveSegretaLabel($record),
+					'type'			=>	"Password",
+					'labelString'	=>	$this->chiaveSegretaLabel($record),
+					'fill'			=>	false,
 				),
 				'codice_pagamento_pa'	=>	array(
 					"type"	=>	"Select",
@@ -297,7 +299,7 @@ class PagamentiModel extends GenericModel {
 	{
 		$this->setPriceNonIvato();
 		
-		if ($this->upload("update"))
+		if ($this->upload("insert"))
 			return parent::insert();
 		
 		return false;
@@ -307,7 +309,10 @@ class PagamentiModel extends GenericModel {
 	{
 		$this->setPriceNonIvato();
 		
-		if ($this->upload("insert"))
+		if (isset($this->values["chiave_segreta"]) && !trim((string)$this->values["chiave_segreta"]))
+			$this->delFields("chiave_segreta");
+		
+		if ($this->upload("update"))
 			return parent::update($id, $where);
 		
 		return false;
