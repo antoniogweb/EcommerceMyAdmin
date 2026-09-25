@@ -2371,8 +2371,11 @@ class BaseContenutiController extends BaseController
 			if ($this->m("DocumentiModel")->checkAccessoUtente($documento["id_doc"]))
 			{
 				$path = $this->m("DocumentiModel")->getFolderBasePath("filename")."/images/documenti/".trim($documento['filename']);
+				$haFile = trim($documento['filename']) && @is_file($path);
+				$urlEsterno = isset($documento['link_to_url']) ? trim($documento['link_to_url']) : "";
+				$haUrlValido = (int)v("attiva_url_esterno_documento") === 1 && $urlEsterno !== "" && checkUrl($urlEsterno);
 				
-				if (trim($documento['filename']) && @is_file($path))
+				if ($haFile || $haUrlValido)
 				{
 					// Salva il download
 					$idDownload = $this->m("DocumentidownloadModel")->salvaDownload((int)$id);
@@ -2383,19 +2386,24 @@ class BaseContenutiController extends BaseController
 					// Azione che viene eseguita dopo il download del documento
 					$this->azioneDopoDownloadDocumento((int)$id, (int)$idDownload);
 					
-					$extArray = explode('.', $documento['filename']);
-					$ext = strtolower(end($extArray));
-				
-					$contentDisposition = ($ext == "pdf" || $ext == "png" || $ext == "jpg" || $ext == "jpeg") ? "inline" : "attachment";
+					if ($haFile)
+					{
+						$extArray = explode('.', $documento['filename']);
+						$ext = strtolower(end($extArray));
 					
-					//get the MIME type of the file
-					$finfo = finfo_open(FILEINFO_MIME_TYPE);
-					$MIMEtype = finfo_file($finfo, $path);
-					$contentType = $MIMEtype;
+						$contentDisposition = ($ext == "pdf" || $ext == "png" || $ext == "jpg" || $ext == "jpeg") ? "inline" : "attachment";
 					
-					header('Content-disposition: '.$contentDisposition.'; filename='.$documento['clean_filename']);
-					header('Content-Type: '.$contentType);
-					readfile($path);
+						//get the MIME type of the file
+						$finfo = finfo_open(FILEINFO_MIME_TYPE);
+						$MIMEtype = finfo_file($finfo, $path);
+						$contentType = $MIMEtype;
+					
+						header('Content-disposition: '.$contentDisposition.'; filename='.$documento['clean_filename']);
+						header('Content-Type: '.$contentType);
+						readfile($path);
+					}
+					else if ($haUrlValido)
+						HeaderObj::location($urlEsterno);
 				}
 				else
 					$this->responseCode(403);

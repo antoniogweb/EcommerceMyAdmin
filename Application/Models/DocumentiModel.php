@@ -255,6 +255,8 @@ class DocumentiModel extends GenericModel {
 		{
 			$this->recuperaEstensione();
 			
+			$this->controllaDataUpload((int)$id);
+			
 			$res = parent::update($id, $whereClause);
 			
 			if ($res && v("attiva_reggroups_tipi"))
@@ -288,6 +290,17 @@ class DocumentiModel extends GenericModel {
 		}
 	}
 	
+	protected function controllaDataUpload($idDoc = 0)
+	{
+		if (!v("attiva_url_esterno_documento"))
+			return;
+		
+		$dataFileUpload = $this->values["data_file_upload"] ?? ($idDoc ? $this->clear()->select("data_file_upload")->whereId((int)$idDoc)->field("data_file_upload") : '');
+		
+		if (isset($this->values["link_to_url"]) && checkUrl($this->values["link_to_url"]) && !trim(nullToBlank($dataFileUpload)))
+			$this->values["data_file_upload"] = date("Y-m-d H:i:s");
+	}
+	
 	public function insert()
 	{
 		if (!self::$uploadFile || $this->upload("insert"))
@@ -297,6 +310,8 @@ class DocumentiModel extends GenericModel {
 			
 			if (!v("attiva_data_documento"))
 				$this->values["data_documento"] = date("Y-m-d");
+			
+			$this->controllaDataUpload();
 			
 			$res = parent::insert();
 			
@@ -518,6 +533,7 @@ class DocumentiModel extends GenericModel {
 				"filename"			=>	$fileName.".".$ext,
 				"clean_filename"	=>	$this_file,
 				"titolo"			=>	$this->files->getNameWithoutFileExtension($this_file),
+				"data_file_upload"	=>	date("Y-m-d H:i:s"),
 				"data_documento"	=>	date("Y-m-d"),
 				"id_tipo_doc"		=>	$idTipoDoc,
 				"estensione"		=>	$ext,
@@ -781,12 +797,14 @@ class DocumentiModel extends GenericModel {
 				"in"	=>	array(
 					"categories.id_c"	=>	CategoriesModel::getIdCategorieAccessibili(),
 				),
-				"ne"	=>	array(
-					"documenti.filename"	=>	"",
-				),
 			))
 			->sWhere(array("DATE_FORMAT(documenti.data_file_upload, '%Y-%m-%d') >= ?",array(sanitizeDb(date("Y-m-d",User::$dettagli["creation_time"])))))
 			->groupBy("documenti.id_doc");
+		
+		if (v("attiva_url_esterno_documento"))
+			$this->sWhere("(documenti.filename != '' OR documenti.link_to_url != '')");
+		else
+			$this->sWhere("documenti.filename != ''");
 		
 		if (v("attiva_gruppi_documenti"))
 			$this->addAccessoGruppiWhereClase();
