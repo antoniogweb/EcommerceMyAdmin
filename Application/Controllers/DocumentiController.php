@@ -61,7 +61,11 @@ class DocumentiController extends BaseController
 		$fields = $this->campiBaseFormDocumenti;
 		
 		if (v("attiva_url_esterno_documento"))
+		{
 			$fields .= ",link_to_url";
+			
+			$this->m[$this->modelName]->addSoftCondition("both",'checkUrl',"link_to_url");
+		}
 		
 		if (v("attiva_data_documento"))
 			$fields .= ",data_documento";
