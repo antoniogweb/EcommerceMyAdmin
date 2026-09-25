@@ -136,6 +136,14 @@ class DocumentiModel extends GenericModel {
 						"<div class='js_permessi_checkbox'>".$this->getHtmlCheckboxPermessi($id)."</div>",
 					),
 				),
+				'link_to_url'		=>	array(
+					'labelString'=>	'Link esterno',
+					'wrap'		=>	array(
+						null,
+						null,
+						"<div class='form_notice'>".gtext("Se si inserisce un link, quando l'utente proverà a scaricare il documento verrà reindirizzato all'URL indicato")."</div>"
+					),
+				),
 			),
 			
 			'enctype'	=>	'multipart/form-data',
