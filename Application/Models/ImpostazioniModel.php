@@ -45,6 +45,7 @@ class ImpostazioniModel extends GenericModel {
 		if (count($res) > 0)
 		{
 			self::$valori = $res[0]["impostazioni"];
+			self::$valori["smtp_psw"] = htmlentitydecode(self::$valori["smtp_psw"]);
 			
 			// Cripta se le chiavi sono presenti
 			if (!self::$valori["stmp_pws_encrypted"] && Aes::chiaviPresenti())
@@ -60,8 +61,6 @@ class ImpostazioniModel extends GenericModel {
 				
 				self::$valori["stmp_pws_encrypted"] = 1;
 			}
-			
-			self::$valori["smtp_psw"] = htmlentitydecode(self::$valori["smtp_psw"]);
 			
 			if (self::$valori["stmp_pws_encrypted"])
 				self::$valori["smtp_psw"] = Aes::decrypt(self::$valori["smtp_psw"]);
