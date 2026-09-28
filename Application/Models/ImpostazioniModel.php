@@ -46,7 +46,25 @@ class ImpostazioniModel extends GenericModel {
 		{
 			self::$valori = $res[0]["impostazioni"];
 			
+			// Cripta se le chiavi sono presenti
+			if (!self::$valori["stmp_pws_encrypted"] && Aes::chiaviPresenti())
+			{
+				self::$valori["smtp_psw"] = Aes::encrypt(self::$valori["smtp_psw"]);
+				
+				$this->sValues(array(
+					"smtp_psw"				=>	self::$valori["smtp_psw"],
+					"stmp_pws_encrypted"	=>	1,
+				));
+				
+				$this->pUpdate((int)$res[0]["impostazioni"]["id_imp"]);
+				
+				self::$valori["stmp_pws_encrypted"] = 1;
+			}
+			
 			self::$valori["smtp_psw"] = htmlentitydecode(self::$valori["smtp_psw"]);
+			
+			if (self::$valori["stmp_pws_encrypted"])
+				self::$valori["smtp_psw"] = Aes::decrypt(self::$valori["smtp_psw"]);
 			
 			if (v("email_sviluppo"))
 			{
@@ -59,8 +77,16 @@ class ImpostazioniModel extends GenericModel {
 	
 	public function update($id = null, $where = null)
 	{
-		if (isset($this->values["smtp_psw"]) && !trim((string)$this->values["smtp_psw"]))
-			$this->delFields("smtp_psw");
+		if (isset($this->values["smtp_psw"]))
+		{
+			if (!trim((string)$this->values["smtp_psw"]))
+				$this->delFields("smtp_psw");
+			else if (Aes::chiaviPresenti())
+			{
+				$this->values["smtp_psw"] = Aes::encrypt(htmlentitydecode($this->values["smtp_psw"]));
+				$this->values["stmp_pws_encrypted"] = 1;
+			}
+		}
 		
 		return parent::update($id, $where);
 	}

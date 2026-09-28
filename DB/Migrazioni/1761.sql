@@ -1,0 +1,1 @@
+ALTER TABLE `impostazioni` add stmp_pws_encrypted tinyint not null default 0;
