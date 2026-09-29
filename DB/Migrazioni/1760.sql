@@ -1,0 +1,1 @@
+ALTER TABLE `impostazioni` CHANGE `smtp_psw` `smtp_psw` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;

@@ -24,6 +24,14 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 class Aes
 {
+	public static function chiaviPresenti()
+	{
+		if (!defined('AES_KEY') || !defined('MAC_KEY'))
+			return false;
+		
+		return true;
+	}
+	
 	// ENCRYPT: prende OTP 6 cifre, chiavi binarie (32B), ritorna HEX (IV||CT||MAC)
 	public static function encrypt(string $text): string {
 		
