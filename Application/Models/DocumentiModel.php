@@ -285,7 +285,7 @@ class DocumentiModel extends GenericModel {
 		{
 			$ext = $this->files->ext;
 			
-			if (isset($ext) && $ext)
+			if (isset($ext) && $ext && $this->files->getParam("fileUploadKey") == "filename")
 				$this->setValue("estensione", $ext);
 		}
 	}
