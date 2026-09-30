@@ -16,6 +16,11 @@
 		activeModal = null;
 		onClose = modal.onClose;
 		document.body.style.overflow = previousBodyOverflow;
+		if (modal.content && modal.placeholder && modal.placeholder.parentNode) {
+			modal.placeholder.parentNode.insertBefore(modal.content, modal.placeholder);
+			modal.content.hidden = true;
+			modal.placeholder.parentNode.removeChild(modal.placeholder);
+		}
 		modal.element.parentNode.removeChild(modal.element);
 		document.removeEventListener("keydown", modal.onKeyDown);
 
@@ -33,11 +38,14 @@
 		var dialog;
 		var closeButton;
 		var iframe;
+		var contentContainer;
+		var content;
+		var placeholder;
 		var onKeyDown;
 
 		options = options || {};
 
-		if (!options.url) {
+		if (!options.url && !options.content) {
 			return;
 		}
 
@@ -64,13 +72,25 @@
 		closeButton.innerHTML = "&times;";
 		closeButton.addEventListener("click", closeModal);
 
-		iframe = document.createElement("iframe");
-		iframe.className = "modalFrame";
-		iframe.src = options.url;
-		iframe.setAttribute("title", options.title || "Finestra di modifica");
-
 		dialog.appendChild(closeButton);
-		dialog.appendChild(iframe);
+		if (options.content) {
+			content = options.content;
+			placeholder = document.createComment("modal content position");
+			if (content.parentNode) {
+				content.parentNode.insertBefore(placeholder, content);
+			}
+			content.hidden = false;
+			contentContainer = document.createElement("div");
+			contentContainer.className = "modalContent";
+			contentContainer.appendChild(content);
+			dialog.appendChild(contentContainer);
+		} else {
+			iframe = document.createElement("iframe");
+			iframe.className = "modalFrame";
+			iframe.src = options.url;
+			iframe.setAttribute("title", options.title || "Finestra di modifica");
+			dialog.appendChild(iframe);
+		}
 		overlay.appendChild(dialog);
 		document.body.appendChild(overlay);
 		document.body.style.overflow = "hidden";
@@ -89,6 +109,8 @@
 		document.addEventListener("keydown", onKeyDown);
 		activeModal = {
 			element: overlay,
+			content: content,
+			placeholder: placeholder,
 			onClose: options.onClose,
 			onKeyDown: onKeyDown
 		};

@@ -3,6 +3,7 @@
 <html lang="<?php echo Params::$lang;?>">
    <head>
 		<?php include(tpf("/Elementi/header_css_admin.php"));?>
+		<link rel="stylesheet" href="<?php echo F::assertPath('/admin/Frontend/Public/Css/modal.css');?>">
 		<?php /*include(tpf("/Elementi/header_css_cms.php"));*/?>
    </head>
    <body>
@@ -86,25 +87,19 @@
 				</ul>
 			</div>
 			
-			<div id="modale-tipo-fascia" class="modal fade">
-				<div class="modal-dialog modal-body">
-					<button class="modal-close" type="button" data-dismiss="modal" aria-label="Chiudi">&times;</button>
-					<div class="modal-header">
-						<h2 class="modal-title"><?php echo gtextPlain("Seleziona la fascia");?></h2>
-					</div>
-
-					<div class="modal-body">
-						<div class="uk-grid-match uk-text-center">
-							<div v-for="tipoFascia in tipiFasce" v-bind:key="tipoFascia.tipi_contenuto.id_tipo">
-								<div class="uk-card uk-card-default uk-card-body uk-padding-small card_tipo_fascia">
-									<div class="card_tipo_fascia_inner_box">
-										<h4>{{tipoFascia.tipi_contenuto.titolo}}</h4>
-										<div>
-											<img v-if="tipoFascia.tipi_contenuto.immagine != '' && tipoFascia.tipi_contenuto.immagine != undefined" v-bind:src="'<?php echo $this->baseUrlSrc."/images/anteprimefasce/";?>' + tipoFascia.tipi_contenuto.immagine" />
-										</div>
-										<a href="" @click.prevent="confermaAggiungiDialog(tipoFascia)"  class="card_tipo_fascia_aggiungi uk-button uk-button-secondary uk-width-1-1"><span class="fa fa-check" aria-hidden="true"></span> Aggiungi</a>
-									</div>
+			<div id="modale-tipo-fascia" class="modalContent" ref="modalTipoFascia" hidden>
+				<div class="modal-header">
+					<h2 class="modal-title"><?php echo gtextPlain("Seleziona la fascia");?></h2>
+				</div>
+				<div class="uk-grid-match uk-text-center">
+					<div v-for="tipoFascia in tipiFasce" v-bind:key="tipoFascia.tipi_contenuto.id_tipo">
+						<div class="uk-card uk-card-default uk-card-body uk-padding-small card_tipo_fascia">
+							<div class="card_tipo_fascia_inner_box">
+								<h4>{{tipoFascia.tipi_contenuto.titolo}}</h4>
+								<div>
+									<img v-if="tipoFascia.tipi_contenuto.immagine != '' && tipoFascia.tipi_contenuto.immagine != undefined" v-bind:src="'<?php echo $this->baseUrlSrc."/images/anteprimefasce/";?>' + tipoFascia.tipi_contenuto.immagine" />
 								</div>
+								<a href="" @click.prevent="confermaAggiungiDialog(tipoFascia)" class="card_tipo_fascia_aggiungi uk-button uk-button-secondary uk-width-1-1"><span class="fa fa-check" aria-hidden="true"></span> Aggiungi</a>
 							</div>
 						</div>
 					</div>
@@ -112,16 +107,9 @@
 			</div>
 		</aside>
 		
-		<!-- This is the modal -->
-		<div id="modale-fascia" class="modal fade">
-			<div class="modal-dialog">
-				<button class="modal-close" type="button" data-dismiss="modal" aria-label="Chiudi">&times;</button>
-				<iframe class="" id="" src=""></iframe>
-			</div>
-		</div>
-
 		<?php $skipUikitIcons = true; include(tpf("/Elementi/footer_js_cms.php"));?>
 		<script src="<?php echo F::assertPath('/admin/Public/Js/functions.layout.js');?>"></script>
+		<script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/modal.js');?>"></script>
    		
    		<?php
    		$urlFasce = ContenutiModel::$tipoElementoCorrente == "pagine" ? "pagine/contenuti/" : "categorie/contenuti/";
@@ -169,10 +157,6 @@
 				}
 			},
 			mounted(){
-// 				console.log(this.variante.codice);
-				this.nomeFile = this.variante.nome_file;
-			},
-			updated(){
 // 				console.log(this.variante.codice);
 				this.nomeFile = this.variante.nome_file;
 			},
@@ -273,7 +257,7 @@
 					this.idTipoFascia = tipoFascia.tipi_contenuto.id_tipo;
 					
 					this.confermaAggiungi();
-					$("#modale-tipo-fascia").modal("hide");
+					modalClose();
 				},
 				confermaAggiungi: function()
 				{
@@ -347,7 +331,12 @@
 				},
 				preparaAggiungiDialog: function()
 				{
-					$("#modale-tipo-fascia").modal("show");
+					modalOpen({
+						content: this.$refs.modalTipoFascia,
+						title: "Seleziona la fascia",
+						width: "95vw",
+						height: "95vh"
+					});
 				},
 				preparaAggiungiTema: function()
 				{
@@ -399,8 +388,15 @@
 				modificaFascia: function(id)
 				{
 					var url = this.baseUrlSrc + "/admin/contenuti/form/update/" + id + "?partial=Y";
-					$("#modale-fascia").find("iframe").attr("src", url);
-					$("#modale-fascia").modal("show");
+					modalOpen({
+						url: url,
+						title: "Modifica fascia",
+						width: "95vw",
+						height: "95vh",
+						onClose: function(){
+							aggiornaIframe();
+						}
+					});
 				},
 				eliminaFascia: function(id)
 				{
@@ -583,9 +579,6 @@
 				else
 					this.parentNode.insertBefore(draggedFascia, this.nextSibling);
 				aggiornaOrdinamento();
-			});
-			$("#modale-fascia").on("hide.bs.modal", function () {
-				aggiornaIframe();
 			});
 		});
 		</script>
