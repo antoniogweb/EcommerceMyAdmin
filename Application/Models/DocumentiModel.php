@@ -285,7 +285,7 @@ class DocumentiModel extends GenericModel {
 		{
 			$ext = $this->files->ext;
 			
-			if (isset($ext) && $ext)
+			if (isset($ext) && $ext && $this->files->getParam("fileUploadKey") == "filename")
 				$this->setValue("estensione", $ext);
 		}
 	}
@@ -858,5 +858,25 @@ class DocumentiModel extends GenericModel {
 		{
 			$run->aggiungiDocumento((int)$r["documenti"]["id_doc"]);
 		}
+	}
+	
+	public function getDocumentoCheck($id)
+	{
+		$this->clear()->restore(true)->select("distinct documenti.id_doc,documenti.*")->aWhere(array(
+			"id_doc"	=>	(int)$id,
+		));
+		
+		if (v("attiva_gruppi_documenti"))
+			$this->addAccessoGruppiWhereClase();
+		
+		$documento = $this->record();
+		
+		if (!empty($documento))
+		{
+			if ($this->checkAccessoUtente($documento["id_doc"]))
+				return $documento;
+		}
+		
+		return array();
 	}
 }

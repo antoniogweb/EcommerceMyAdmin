@@ -2353,23 +2353,59 @@ class BaseContenutiController extends BaseController
 		$this->load("api_output");
 	}
 	
+	public function anteprimadocumento($id)
+	{
+		$this->clean();
+		
+		$documento = $this->m("DocumentiModel")->getDocumentoCheck((int)$id);
+		
+		if (!empty($documento))
+		{
+			$path = $this->m("DocumentiModel")->getFolderBasePath("filename")."/images/documenti/".trim($documento['filename']);
+			$haFile = trim($documento['filename']) && @is_file($path);
+			
+			if ($haFile)
+			{
+				//get the MIME type of the file
+				$finfo = finfo_open(FILEINFO_MIME_TYPE);
+				$MIMEtype = finfo_file($finfo, $path);
+				$contentType = $MIMEtype;
+				
+				if ($MIMEtype == "image/jpeg" || $MIMEtype == "image/png")
+				{
+					header('Content-disposition: inline; filename='.$documento['clean_filename']);
+					header('Content-Type: '.$contentType);
+					readfile($path);
+				}
+				else
+					$this->responseCode(403);
+			}
+			else
+				$this->responseCode(403);
+		}
+		else
+			$this->responseCode(403);
+	}
+	
 	public function documento($id)
 	{
 		$this->clean();
 		
-		$this->m("DocumentiModel")->clear()->restore(true)->select("distinct documenti.id_doc,documenti.*")->aWhere(array(
-			"id_doc"	=>	(int)$id,
-		));
+// 		$this->m("DocumentiModel")->clear()->restore(true)->select("distinct documenti.id_doc,documenti.*")->aWhere(array(
+// 			"id_doc"	=>	(int)$id,
+// 		));
+// 		
+// 		if (v("attiva_gruppi_documenti"))
+// 			$this->m("DocumentiModel")->addAccessoGruppiWhereClase();
+// 		
+// 		$documento = $this->m("DocumentiModel")->record();
 		
-		if (v("attiva_gruppi_documenti"))
-			$this->m("DocumentiModel")->addAccessoGruppiWhereClase();
-		
-		$documento = $this->m("DocumentiModel")->record();
+		$documento = $this->m("DocumentiModel")->getDocumentoCheck((int)$id);
 		
 		if (!empty($documento))
 		{
-			if ($this->m("DocumentiModel")->checkAccessoUtente($documento["id_doc"]))
-			{
+			// if ($this->m("DocumentiModel")->checkAccessoUtente($documento["id_doc"]))
+			// {
 				$path = $this->m("DocumentiModel")->getFolderBasePath("filename")."/images/documenti/".trim($documento['filename']);
 				$haFile = trim($documento['filename']) && @is_file($path);
 				$urlEsterno = isset($documento['link_to_url']) ? trim($documento['link_to_url']) : "";
@@ -2407,9 +2443,9 @@ class BaseContenutiController extends BaseController
 				}
 				else
 					$this->responseCode(403);
-			}
-			else
-				$this->responseCode(403);
+			// }
+			// else
+			// 	$this->responseCode(403);
 		}
 		else
 			$this->responseCode(403);

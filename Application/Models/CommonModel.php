@@ -615,35 +615,18 @@ trait CommonModel {
 					{
 						$path = $params["path"];
 						
-						if (isset($params["allowedExtensions"]))
-						{
-							$this->files->setParam('allowedExtensions',$params["allowedExtensions"]);
-						}
+						$this->files->setParam('allowedExtensions',$params["allowedExtensions"] ?? Files_Upload::$defaultParams["allowedExtensions"]);
 						
-						if (isset($params["allowedMimeTypes"]))
-						{
-							$this->files->setParam('allowedMimeTypes',$params["allowedMimeTypes"]);
-						}
+						$this->files->setParam('allowedMimeTypes',$params["allowedMimeTypes"] ?? '');
 						
-						if (isset($params["maxFileSize"]))
-						{
-							$this->files->setParam('maxFileSize',$params["maxFileSize"]);
-						}
+						$this->files->setParam('maxFileSize',$params["maxFileSize"] ?? Files_Upload::$defaultParams["maxFileSize"]);
 						
-						if (isset($params["createImage"]) and $params["createImage"])
-						{
-							$this->files->setParam('createImage',true);
-						}
+						$this->files->setParam('createImage',$params["createImage"] ?? Files_Upload::$defaultParams["createImage"]);
 						
 						if (strcmp($params["type"],"file") === 0)
-						{
 							$this->files->setParam('createImage',false);
-						}
 						
-						if (isset($params["createImageParams"]))
-						{
-							$this->files->setParam('createImageParams',$params["createImageParams"]);
-						}
+						$this->files->setParam('createImageParams',$params["createImageParams"] ?? Files_Upload::$defaultParams["createImageParams"]);
 						
 						$this->files->setParam('fileUploadKey',$field);
 						
