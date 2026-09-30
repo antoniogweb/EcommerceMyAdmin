@@ -3,6 +3,7 @@ const fs = require('fs');
 const vendorPaths = {
     jquery: '../../../Frontend/Public/Js/vendor/jquery/',
     jqueryUi: '../../../Frontend/Public/Js/vendor/jquery-ui/',
+    uikit: '../../../Frontend/Public/Js/vendor/uikit/',
 };
 
 for (const path of Object.values(vendorPaths)) {
@@ -69,3 +70,10 @@ fs.writeFileSync(
     )).join('\n') + '\n' +
     fs.readFileSync('assets/jquery-ui-theme/jquery-ui.theme.min.css', 'utf8')
 );
+
+// UIkit: keep the npm-managed distribution alongside the other frontend
+// vendors. The legacy copy under Public/Js/uikit is left untouched.
+const uikitSourcePath = 'node_modules/uikit/dist/js/';
+for (const file of ['uikit.js', 'uikit.min.js', 'uikit-icons.js', 'uikit-icons.min.js']) {
+    fs.copyFileSync(uikitSourcePath + file, vendorPaths.uikit + file);
+}

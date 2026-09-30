@@ -45,7 +45,7 @@
 <script src="<?php echo F::assertPath('/admin/Frontend/Public/Js/Minified/cart.min.js');?>"></script>
 <?php } ?>
 <?php if (!isset($skipUikitIcons)) { ?>
-<script <?php if (v("usa_defear")) { ?>defer<?php } ?> src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/uikit/"?>uikit-icons.min.js"></script>
+<script <?php if (v("usa_defear")) { ?>defer<?php } ?> src="<?php echo $this->baseUrlSrc."/admin/Frontend/Public/Js/vendor/uikit/"?>uikit-icons.min.js"></script>
 <?php } ?>
 <?php if (!isset($skipIcheck)) { ?>
 <script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/icheck.min.js'></script>
