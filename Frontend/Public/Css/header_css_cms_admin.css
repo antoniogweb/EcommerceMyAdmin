@@ -1,0 +1,196 @@
+html,
+body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	color: #222;
+}
+
+#right-col {
+	position: fixed;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	box-sizing: border-box;
+	width: min(340px, 100vw);
+	z-index: 1;
+	background: #fff;
+}
+
+#left-col {
+	height: 100%;
+	margin-right: 340px;
+}
+
+iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+#right-col > div {
+	padding: 10px 10px 10px 8px;
+}
+
+#right-col a {
+	color: #1e87f0;
+	text-decoration: none;
+}
+
+#right-col a:hover,
+#right-col a:focus {
+	color: #0f6ecd;
+	text-decoration: underline;
+}
+
+.uk-width-1-1 { width: 100%; }
+.uk-width-auto { width: auto; }
+.uk-height-1-1 { height: 100%; }
+.uk-padding-small { padding: 10px; }
+.uk-margin-small { margin-top: 10px; margin-bottom: 10px; }
+.uk-margin { margin-top: 20px; margin-bottom: 20px; }
+.uk-margin-remove { margin: 0; }
+.uk-padding-remove-left { padding-left: 0; }
+.uk-padding-remove-right { padding-right: 0; }
+.uk-text-small { font-size: 12px !important; line-height: 1.2 !important; }
+.uk-text-meta { color: #999; }
+.uk-text-danger { color: #f0506e; }
+.uk-text-center { text-align: center; }
+
+.uk-button {
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 0 15px;
+	border: 1px solid #e5e5e5;
+	border-radius: 0;
+	background: #f8f8f8;
+	color: #222 !important;
+	font: inherit;
+	line-height: 38px;
+	text-align: center;
+	cursor: pointer;
+}
+.uk-button:hover { background: #ebebeb; text-decoration: none !important; }
+.uk-button-secondary { background: #222; border-color: #222; color: #fff !important; }
+.uk-button-secondary:hover { background: #444; }
+.uk-button-danger { background: #f0506e; border-color: #f0506e; color: #fff !important; }
+.uk-button-nuova-fascia { margin-top: 20px; }
+
+.uk-input,
+.uk-select {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 40px;
+	padding: 5px 10px;
+	border: 1px solid #e5e5e5;
+	background: #fff;
+	color: #666;
+	font: inherit;
+}
+.uk-form-danger { border-color: #f0506e; color: #f0506e; }
+
+.cms-accordion { margin: 15px 0; padding: 0; list-style: none; }
+.cms-accordion > li { border-top: 1px solid #e5e5e5; }
+.uk-accordion-title {
+	position: relative;
+	display: block;
+	padding: 12px 22px 12px 0;
+	font-size: 18px !important;
+	line-height: 1.2em !important;
+	color: #333 !important;
+	text-decoration: none !important;
+}
+.uk-accordion-title::after {
+	position: absolute;
+	right: 5px;
+	top: 50%;
+	transform: translateY(-50%);
+	content: "+";
+	color: #777;
+	font-size: 20px;
+	font-weight: 300;
+}
+.uk-open > .uk-accordion-title::after { content: "−"; }
+.uk-accordion-content { display: none; padding-bottom: 15px; }
+.uk-open > .uk-accordion-content { display: block; }
+
+.uk-table { width: 100%; border-collapse: collapse; font-size: 14px !important; }
+.uk-table td { padding: 10px 5px; vertical-align: middle; }
+.uk-table tbody tr { background-color: #eee; border-bottom: 1px solid #fff; }
+.uk-table-striped tbody tr:nth-of-type(odd) { background-color: #f8f8f8; }
+.uk-sortable-handle { cursor: move; }
+.sortable tr.is-dragging { opacity: .45; }
+
+.fa { display: inline-block; vertical-align: middle; }
+.fa-bars { color: #777; font-size: 16px; }
+.fa-pencil { color: #444; font-size: 16px; }
+.fa-trash { color: #ff1744; font-size: 16px; }
+
+.uk-alert { padding: 12px; background: #f8f8f8; }
+.uk-alert-primary { color: #1e87f0; }
+
+.uk-grid-match {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 20px 10px;
+}
+.uk-card { box-sizing: border-box; height: 100%; background: #fff; }
+.uk-card-default { border: 1px solid #e5e5e5; }
+.uk-card-body { padding: 20px; }
+.uk-card-body.uk-padding-small { padding: 10px; }
+.card_tipo_fascia { display: flex; flex-wrap: wrap; }
+.card_tipo_fascia_inner_box { display: flex; flex: 1; flex-direction: column; }
+.card_tipo_fascia img { max-width: 100%; height: auto; }
+.card_tipo_fascia_aggiungi { margin-top: auto; }
+
+/* Compatible with the modal API implemented in functions.layout.js. */
+.modal {
+	position: fixed;
+	inset: 0;
+	z-index: 1050;
+	display: none;
+	overflow: auto;
+	background: rgba(0, 0, 0, .55);
+	opacity: 0;
+	transition: opacity .3s ease;
+}
+.modal.in { opacity: 1; }
+.modal-dialog {
+	position: relative;
+	box-sizing: border-box;
+	width: min(1100px, calc(100% - 40px));
+	min-height: 80vh;
+	margin: 5vh auto;
+	padding: 20px;
+	background: #fff;
+}
+.modal-body { overflow: auto; }
+.modal-header { padding: 0 35px 10px 0; border-bottom: 1px solid #e5e5e5; }
+.modal-title { margin: 0; font-size: 22px; }
+.modal-close {
+	position: absolute;
+	top: 8px;
+	right: 12px;
+	border: 0;
+	background: transparent;
+	font-size: 28px;
+	cursor: pointer;
+}
+.modal-dialog iframe { height: 90vh; }
+.modal-backdrop { position: fixed; inset: 0; z-index: 1040; background: #000; }
+.modal-backdrop.fade { opacity: 0; transition: opacity .3s ease; }
+.modal-backdrop.in { opacity: .5; }
+body.modal-open { overflow: hidden; }
+
+@media (max-width: 760px) {
+	#right-col { width: 100vw; }
+	#left-col { margin-right: 100vw; }
+	.uk-grid-match { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

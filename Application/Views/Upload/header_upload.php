@@ -6,7 +6,7 @@
 <title>Admin zone</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc.'/Public/Css/filesystem.css';?>">
+<link rel="stylesheet" href="<?php echo F::assertPath('/admin/Public/Css/filesystem.css');?>">
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc.'/Public/Css/icons/font-awesome-4.7.0/css/font-awesome.min.css';?>">
 
 </head>

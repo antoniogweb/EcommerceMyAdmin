@@ -1,86 +1,19 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <!DOCTYPE html>
-<html lang="<?php echo Params::$lang;?>" class="uk-height-1-1" uk-height-viewport>
+<html lang="<?php echo Params::$lang;?>">
    <head>
 		<?php include(tpf("/Elementi/header_css_admin.php"));?>
-		<?php include(tpf("/Elementi/header_css_cms.php"));?>
-		<style>
-			#right-col {
-				position: fixed;
-				right: 0;
-				top:0;
-				bottom:0;
-				overflow-x: hidden;
-				overflow-y: auto;
-/* 				background-color: #222; */
-				width: 340px;
-				z-index:1;
-			}
-			
-			#left-col {
-				margin-right: 340px;
-			}
-			
-			iframe
-			{
-				display: block;
-				width:100%;
-				height:100%;
-			}
-			
-			.uk-text-small
-			{
-				font-size:12px !important;
-				line-height:1em !important;
-			}
-			
-			.uk-accordion-title
-			{
-				font-size:18px !important;
-				line-height:1em !important;
-			}
-			
-			.uk-table
-			{
-				font-size:14px !important;
-			}
-			
-			.uk-table tbody tr
-			{
-				background-color:#EEE;
-			}
-			
-			.card_tipo_fascia
-			{
-				display: flex;
-				flex-wrap: wrap;
-			}
-			
-			.card_tipo_fascia_inner_box
-			{
-				display:flex;
-				flex-direction:column;
-				flex:1;
-			}
-			
-			.card_tipo_fascia_aggiungi
-			{
-				margin-top: auto;
-			}
-		</style>
-		
-		
-		<?php include(tpf("/Elementi/header_js_cms.php"));?>
+		<?php /*include(tpf("/Elementi/header_css_cms.php"));*/?>
    </head>
-   <body class="uk-height-1-1">
-		<div id="left-col" class="uk-height-1-1">
-			<iframe id="iframe_webpage" class="uk-height-1-1" src="<?php echo $currentUrl;?>"></iframe>
+   <body>
+		<div id="left-col">
+			<iframe id="iframe_webpage" src="<?php echo $currentUrl;?>"></iframe>
 		</div>
 		<aside id="right-col" class="">
 			<div class="uk-padding-small">
-				<a href="<?php echo $currentUrl;?>" class="uk-button uk-button-default uk-width-1-1"><?php echo gtextPlain("Esci modalità edit")?> <span uk-icon="sign-out"></span></a>
+				<a href="<?php echo $currentUrl;?>" class="uk-button uk-button-default uk-width-1-1"><?php echo gtextPlain("Esci modalità edit")?> <span class="fa fa-sign-out" aria-hidden="true"></span></a>
 				
-				<ul uk-accordion>
+				<ul class="cms-accordion">
 					<li v-if="abilitaGestioneTemi && tendinaTemi.length > 0" class="">
 						<a class="uk-accordion-title" href="#"><?php echo gtextPlain("Gestione tema");?></a>
 						<div class="uk-accordion-content">
@@ -92,11 +25,11 @@
 							</div>
 							
 							<div class="uk-margin-small">
-								<a v-if="aggiungiTema" @click.prevent="preparaAggiungiTema()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> Nuovo tema</a>
+								<a v-if="aggiungiTema" @click.prevent="preparaAggiungiTema()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span class="fa fa-plus" aria-hidden="true"></span> Nuovo tema</a>
 								<div v-if="!aggiungiTema">
 									<input v-bind:class="oggettoErroreTitoloTema" v-model="titoloNuovoTema" class="uk-input uk-margin-small" placeholder="Titolo nuovo tema"/>
-									<a @click.prevent="confermaAggiungiTema()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="check"></span> Aggiungi</a>
-									<a @click.prevent="annullaAggiungiTema()" href="" class="uk-margin-small uk-button uk-button-default uk-width-1-1"><span uk-icon="arrow-left"></span> Annulla</a>
+									<a @click.prevent="confermaAggiungiTema()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span class="fa fa-check" aria-hidden="true"></span> Aggiungi</a>
+									<a @click.prevent="annullaAggiungiTema()" href="" class="uk-margin-small uk-button uk-button-default uk-width-1-1"><span class="fa fa-arrow-left" aria-hidden="true"></span> Annulla</a>
 								</div>
 							</div>
 						</div>
@@ -114,9 +47,9 @@
 						<a class="uk-accordion-title" href="#"><?php echo gtextPlain("Fasce pagina");?></a>
 						<div class="uk-accordion-content">
 							<table class="uk-table uk-table-divider uk-table-striped uk-table-small">
-								<tbody class="sortable" uk-sortable="handle: .uk-sortable-handle">
-									<tr v-for="f in fasce" :key="f.contenuti.id_cont">
-										<td><span class="uk-sortable-handle" uk-icon="table"></span></td>
+								<tbody class="sortable">
+									<tr v-for="f in fasce" :key="f.contenuti.id_cont" draggable="true">
+										<td><span class="uk-sortable-handle fa fa-bars" aria-hidden="true"></span></td>
 										<td class="fascia uk-padding-remove-left uk-padding-remove-right" v-bind:data-id="f.contenuti.id_cont">
 											<div>
 												<span class="uk-text-meta uk-text-small">{{ f.tipi_contenuto.titolo }}</span>
@@ -127,8 +60,8 @@
 											</div>
 											<?php } ?>
 										</td>
-										<td class="uk-padding-remove-left uk-padding-remove-right"><a title="<?php echo gtextAttr("Modifica");?>" href="#" @click.prevent="modificaFascia(f.contenuti.id_cont)" class="iframe"><span class="" uk-icon="pencil"></span></a></td>
-										<td class="uk-padding-remove-right"><a href="" @click.prevent="eliminaFascia(f.contenuti.id_cont)"><span class="uk-text-danger" uk-icon="trash"></span></a></td>
+										<td class="uk-padding-remove-left uk-padding-remove-right"><a title="<?php echo gtextAttr("Modifica");?>" href="#" @click.prevent="modificaFascia(f.contenuti.id_cont)" class="iframe"><span class="fa fa-pencil" aria-hidden="true"></span></a></td>
+										<td class="uk-padding-remove-right"><a href="" @click.prevent="eliminaFascia(f.contenuti.id_cont)"><span class="uk-text-danger fa fa-trash" aria-hidden="true"></span></a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -136,32 +69,32 @@
 								<?php echo gtextPlain("Nessuna fascia presente");?>
 							</div>
 							<?php if (!v("aggiunta_fasce_frontend_nuovo")) { ?>
-							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> <?php echo gtextPlain("Nuova fascia");?></a>
+							<a v-if="aggiungi" @click.prevent="preparaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1 uk-button-nuova-fascia"><span class="fa fa-plus" aria-hidden="true"></span> <?php echo gtextPlain("Nuova fascia");?></a>
 							<?php } else { ?>
-							<a @click.prevent="preparaAggiungiDialog()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="plus"></span> <?php echo gtextPlain("Nuova fascia");?></a>
+							<a @click.prevent="preparaAggiungiDialog()" href="" class="uk-button uk-button-secondary uk-width-1-1 uk-button-nuova-fascia"><span class="fa fa-plus" aria-hidden="true"></span> <?php echo gtextPlain("Nuova fascia");?></a>
 							<?php } ?>
 							<div v-if="!aggiungi">
 								<input v-bind:class="oggettoErroreTitolo" v-model="titoloNuovaFascia" class="uk-input" placeholder="Titolo fascia nuova fascia"/>
 								<select v-bind:class="oggettoErroreIdTipo" v-model="idTipoFascia" class="uk-select uk-margin-small">
 									<option v-for="tipoFascia in tipiFasce" v-bind:key="tipoFascia.tipi_contenuto.id_tipo" v-bind:value="tipoFascia.tipi_contenuto.id_tipo">{{tipoFascia.tipi_contenuto.titolo}}</option>
 								</select>
-								<a @click.prevent="confermaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span uk-icon="check"></span> Aggiungi</a>
-								<a @click.prevent="annullaAggiungi()" href="" class="uk-margin-small uk-button uk-button-default uk-width-1-1"><span uk-icon="arrow-left"></span> Annulla</a>
+								<a @click.prevent="confermaAggiungi()" href="" class="uk-button uk-button-secondary uk-width-1-1"><span class="fa fa-check" aria-hidden="true"></span> Aggiungi</a>
+								<a @click.prevent="annullaAggiungi()" href="" class="uk-margin-small uk-button uk-button-default uk-width-1-1"><span class="fa fa-arrow-left" aria-hidden="true"></span> Annulla</a>
 							</div>
 						</div>
 					</li>
 				</ul>
 			</div>
 			
-			<div id="modale-tipo-fascia" class="" uk-modal>
-				<div class=" uk-modal-dialog uk-modal-body uk-width-auto">
-					<button class="uk-modal-close-full uk-close large" type="button" uk-close></button>
-					<div class="uk-modal-header">
-						<h2 class="uk-modal-title"><?php echo gtextPlain("Seleziona la fascia");?></h2>
+			<div id="modale-tipo-fascia" class="modal fade">
+				<div class="modal-dialog modal-body">
+					<button class="modal-close" type="button" data-dismiss="modal" aria-label="Chiudi">&times;</button>
+					<div class="modal-header">
+						<h2 class="modal-title"><?php echo gtextPlain("Seleziona la fascia");?></h2>
 					</div>
 
-					<div class="uk-modal-body" uk-overflow-auto>
-						<div class="uk-grid-match uk-grid-column-small uk-grid-row-large uk-child-width-1-4@s uk-text-center" uk-grid>
+					<div class="modal-body">
+						<div class="uk-grid-match uk-text-center">
 							<div v-for="tipoFascia in tipiFasce" v-bind:key="tipoFascia.tipi_contenuto.id_tipo">
 								<div class="uk-card uk-card-default uk-card-body uk-padding-small card_tipo_fascia">
 									<div class="card_tipo_fascia_inner_box">
@@ -169,7 +102,7 @@
 										<div>
 											<img v-if="tipoFascia.tipi_contenuto.immagine != '' && tipoFascia.tipi_contenuto.immagine != undefined" v-bind:src="'<?php echo $this->baseUrlSrc."/images/anteprimefasce/";?>' + tipoFascia.tipi_contenuto.immagine" />
 										</div>
-										<a href="" @click.prevent="confermaAggiungiDialog(tipoFascia)"  class="card_tipo_fascia_aggiungi uk-button uk-button-secondary uk-width-1-1"><span uk-icon="check"></span> Aggiungi</a>
+										<a href="" @click.prevent="confermaAggiungiDialog(tipoFascia)"  class="card_tipo_fascia_aggiungi uk-button uk-button-secondary uk-width-1-1"><span class="fa fa-check" aria-hidden="true"></span> Aggiungi</a>
 									</div>
 								</div>
 							</div>
@@ -180,14 +113,15 @@
 		</aside>
 		
 		<!-- This is the modal -->
-		<div id="modale-fascia" class="" uk-modal>
-			<div class="uk-height-1-1 uk-modal-dialog uk-modal-body uk-width-auto">
-				<button class="uk-modal-close-full uk-close large" type="button" uk-close></button>
+		<div id="modale-fascia" class="modal fade">
+			<div class="modal-dialog">
+				<button class="modal-close" type="button" data-dismiss="modal" aria-label="Chiudi">&times;</button>
 				<iframe class="" id="" src=""></iframe>
 			</div>
 		</div>
 
-   		<?php include(tpf("/Elementi/footer_js_cms.php"));?>
+		<?php $skipUikitIcons = true; include(tpf("/Elementi/footer_js_cms.php"));?>
+		<script src="<?php echo F::assertPath('/admin/Public/Js/functions.layout.js');?>"></script>
    		
    		<?php
    		$urlFasce = ContenutiModel::$tipoElementoCorrente == "pagine" ? "pagine/contenuti/" : "categorie/contenuti/";
@@ -339,7 +273,7 @@
 					this.idTipoFascia = tipoFascia.tipi_contenuto.id_tipo;
 					
 					this.confermaAggiungi();
-					UIkit.modal("#modale-tipo-fascia",{}).hide();
+					$("#modale-tipo-fascia").modal("hide");
 				},
 				confermaAggiungi: function()
 				{
@@ -413,7 +347,7 @@
 				},
 				preparaAggiungiDialog: function()
 				{
-					UIkit.modal("#modale-tipo-fascia",{}).show();
+					$("#modale-tipo-fascia").modal("show");
 				},
 				preparaAggiungiTema: function()
 				{
@@ -466,7 +400,7 @@
 				{
 					var url = this.baseUrlSrc + "/admin/contenuti/form/update/" + id + "?partial=Y";
 					$("#modale-fascia").find("iframe").attr("src", url);
-					UIkit.modal("#modale-fascia",{}).show();
+					$("#modale-fascia").modal("show");
 				},
 				eliminaFascia: function(id)
 				{
@@ -621,11 +555,36 @@
 		}
 
    		$(document).ready(function() {
-			UIkit.util.on('.sortable', 'moved', function (item) {
+			$(document).on("click", ".cms-accordion > li > .uk-accordion-title", function(event) {
+				event.preventDefault();
+				$(this).parent().toggleClass("uk-open");
+			});
+
+			var draggedFascia = null;
+			$(document).on("dragstart", ".sortable tr", function(event) {
+				draggedFascia = this;
+				$(this).addClass("is-dragging");
+				event.originalEvent.dataTransfer.effectAllowed = "move";
+			});
+			$(document).on("dragend", ".sortable tr", function() {
+				$(this).removeClass("is-dragging");
+				draggedFascia = null;
+			});
+			$(document).on("dragover", ".sortable tr", function(event) {
+				event.preventDefault();
+			});
+			$(document).on("drop", ".sortable tr", function(event) {
+				event.preventDefault();
+				if (!draggedFascia || draggedFascia === this)
+					return;
+				var bounds = this.getBoundingClientRect();
+				if (event.originalEvent.clientY < bounds.top + bounds.height / 2)
+					this.parentNode.insertBefore(draggedFascia, this);
+				else
+					this.parentNode.insertBefore(draggedFascia, this.nextSibling);
 				aggiornaOrdinamento();
 			});
-			
-			UIkit.util.on('#modale-fascia', 'hide', function () {
+			$("#modale-fascia").on("hide.bs.modal", function () {
 				aggiornaIframe();
 			});
 		});
