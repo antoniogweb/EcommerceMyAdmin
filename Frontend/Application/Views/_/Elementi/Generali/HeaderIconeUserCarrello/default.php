@@ -12,7 +12,7 @@
 $ukdropdown = "pos: bottom-right; offset: 10; delay-hide: 200;";
 include(tpf("/Elementi/header_user_box.php"));?>
 
-<a class="uk-margin-left uk-link-muted es-navbar-button" href="<?php echo $this->baseUrl."/carrello/vedi"?>" uk-toggle="target: #cart-offcanvas" onclick="return false">
+<a class="uk-margin-left uk-link-muted es-navbar-button" href="<?php echo $this->baseUrl."/carrello/vedi"?>" uk-toggle="target: #cart-offcanvas">
 	<span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/carrello.svg");?></span>
 	<span class="uk-badge link_carrello_num_prod <?php if ((int)$prodInCart === 0) { ?>uk-hidden<?php } ?>"><?php echo $prodInCart;?></span>
 </a>
