@@ -1564,6 +1564,9 @@ class OrdiniModel extends FormModel
 		
 		$idsPage = [];
 		
+		if (v("usa_transactions"))
+			$this->db->beginTransaction();
+		
 		foreach ($pages as $p)
 		{
 			$tempTime = array();
@@ -1703,6 +1706,9 @@ class OrdiniModel extends FormModel
 			
 			$logTimes["ROWS"][] = $tempTime;
 		}
+		
+		if (v("usa_transactions"))
+			$this->db->commit();
 		
 		$logSubmit->resetTime();
 		
