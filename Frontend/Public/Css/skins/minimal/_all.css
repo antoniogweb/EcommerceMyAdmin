@@ -1,5 +1,5 @@
 @import url("../base.css?v=10");
-@import url("../minimal-family.css?v=5");
+@import url("../minimal-family.css?v=7");
 
 .icheckbox_minimal, .iradio_minimal { --native-check-size: 18px; --native-check-radius: 3px; --native-check-color: #292929; --native-check-border: #292929; }
 .icheckbox_minimal-aero, .iradio_minimal-aero { --native-check-size: 18px; --native-check-radius: 3px; --native-check-color: #00a8e0; --native-check-border: #00a8e0; }

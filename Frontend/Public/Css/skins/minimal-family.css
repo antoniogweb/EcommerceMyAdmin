@@ -2,7 +2,7 @@
 input[type="checkbox"][class*="icheckbox_"],
 input[type="radio"][class*="iradio_"] {
 	--native-check-size: 18px !important;
-	--native-check-mark-size: 11px !important;
+	--native-check-mark-size: 14px !important;
 	--native-radio-mark-size: 10px !important;
 	--native-check-radius: 0 !important;
 }
