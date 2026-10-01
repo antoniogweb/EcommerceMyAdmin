@@ -1,0 +1,1 @@
+ALTER TABLE cart ADD INDEX idx_cart_id_order (id_order);
