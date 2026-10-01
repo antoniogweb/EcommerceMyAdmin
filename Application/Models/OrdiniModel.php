@@ -1664,12 +1664,14 @@ class OrdiniModel extends FormModel
 			
 			$r->sanitize();
 			
+			$tempTime["5"] = $logSubmit->getTime();
+			
 			if ($idRiff)
 				$result = $r->pUpdate((int)$idRiff);
 			else
 				$result = $r->insert();
 			
-			$tempTime["5"] = $logSubmit->getTime();
+			$tempTime["6"] = $logSubmit->getTime();
 			
 			if ($result)
 			{
@@ -1697,7 +1699,7 @@ class OrdiniModel extends FormModel
 				}
 			}
 			
-			$tempTime["6"] = $logSubmit->getTime();
+			$tempTime["7"] = $logSubmit->getTime();
 			
 			$logTimes["ROWS"][] = $tempTime;
 		}
