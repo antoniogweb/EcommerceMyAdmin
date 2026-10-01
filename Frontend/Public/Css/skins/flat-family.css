@@ -1,0 +1,8 @@
+/* Geometry for the selected skin file, regardless of the legacy class on the input. */
+input[type="checkbox"][class*="icheckbox_"],
+input[type="radio"][class*="iradio_"] {
+	--native-check-size: 20px !important;
+	--native-check-mark-size: 13px !important;
+	--native-radio-mark-size: 12px !important;
+	--native-check-radius: 4px !important;
+}

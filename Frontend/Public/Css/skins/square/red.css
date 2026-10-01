@@ -1,4 +1,5 @@
-@import url("../base.css?v=9");
+@import url("../base.css?v=10");
+@import url("../square-family.css?v=1");
 
 .icheckbox_square-red, .iradio_square-red { --native-check-size: 22px; --native-check-radius: 0; --native-check-color: #d54e21; --native-check-border: #d54e21; }
 

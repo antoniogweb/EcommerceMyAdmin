@@ -1,0 +1,23 @@
+/* Geometry for the selected skin file, regardless of the legacy class on the input. */
+input[type="checkbox"][class*="icheckbox_"],
+input[type="radio"][class*="iradio_"] {
+	--native-check-size: 18px !important;
+	--native-check-mark-size: 11px !important;
+	--native-radio-mark-size: 10px !important;
+	--native-check-radius: 0 !important;
+}
+
+input[type="radio"][class*="iradio_"]:checked {
+	background-image: none !important;
+	box-shadow: inset 0 0 0 4px #fff !important;
+}
+
+input[type="checkbox"][class*="icheckbox_"] {
+	background-color: #fff !important;
+	border-color: var(--native-check-color, #292929) !important;
+}
+
+input[type="checkbox"][class*="icheckbox_"]:checked {
+	background-color: #fff !important;
+	border-color: var(--native-check-color, #292929) !important;
+}
