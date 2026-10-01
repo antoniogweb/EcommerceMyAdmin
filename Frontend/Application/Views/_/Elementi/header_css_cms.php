@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="<?php echo tpf("Public/Css/style.css", true);?>?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>" />
 <?php } ?>
 
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc."/".v("checkbox_css_path");?>">
+<link rel="stylesheet" type="text/css" href="<?php echo F::assertPath('/'.ltrim(v("checkbox_css_path"), '/'));?>">
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Css/cms.css?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>">
 
 <?php if (isset($tipoPagina) && $tipoPagina == "FORM_FEEDBACK") { ?>

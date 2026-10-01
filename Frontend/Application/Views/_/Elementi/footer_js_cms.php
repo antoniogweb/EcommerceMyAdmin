@@ -46,7 +46,7 @@
 <?php } ?>
 <?php include(tpf("/Elementi/footer_js_uikit.php"));?>
 <?php if (!isset($skipIcheck)) { ?>
-<script type='text/javascript' src='<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Js/checkbox-compat.js'></script>
+<script type='text/javascript' src='<?php echo F::assertPath('/admin/Frontend/Public/Js/checkbox-compat.js');?>'></script>
 <?php } ?>
 
 <?php

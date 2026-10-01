@@ -1,0 +1,129 @@
+/* Shared native input styling for the legacy skin class names. */
+@import url("colors.css?v=3");
+
+input[type="checkbox"][class*="icheckbox_minimal"],
+input[type="radio"][class*="iradio_minimal"],
+input[type="checkbox"][class*="icheckbox_square"],
+input[type="radio"][class*="iradio_square"],
+input[type="checkbox"][class*="icheckbox_flat"],
+input[type="radio"][class*="iradio_flat"],
+input[type="checkbox"][class*="icheckbox_line"],
+input[type="radio"][class*="iradio_line"],
+input[type="checkbox"][class*="icheckbox_polaris"],
+input[type="radio"][class*="iradio_polaris"],
+input[type="checkbox"][class*="icheckbox_futurico"],
+input[type="radio"][class*="iradio_futurico"] {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  display: inline-block;
+  width: var(--native-check-size, 18px);
+  height: var(--native-check-size, 18px);
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+  border: 1px solid var(--native-check-border, #777);
+  border-radius: var(--native-check-radius, 3px);
+  background-color: #fff;
+  cursor: pointer;
+}
+input[type="radio"][class*="iradio_minimal"] { border-radius: 50%; }
+input[type="radio"][class*="iradio_square"] { border-radius: 50%; }
+input[type="radio"][class*="iradio_flat"] { border-radius: 50%; }
+input[type="radio"][class*="iradio_line"] { border-radius: 50%; }
+input[type="radio"][class*="iradio_polaris"] { border-radius: 50%; }
+input[type="radio"][class*="iradio_futurico"] { border-radius: 50%; }
+
+input[type="checkbox"][class*="icheckbox_minimal"]:checked,
+input[type="radio"][class*="iradio_minimal"]:checked,
+input[type="checkbox"][class*="icheckbox_square"]:checked,
+input[type="radio"][class*="iradio_square"]:checked,
+input[type="checkbox"][class*="icheckbox_flat"]:checked,
+input[type="radio"][class*="iradio_flat"]:checked,
+input[type="checkbox"][class*="icheckbox_line"]:checked,
+input[type="radio"][class*="iradio_line"]:checked,
+input[type="checkbox"][class*="icheckbox_polaris"]:checked,
+input[type="radio"][class*="iradio_polaris"]:checked,
+input[type="checkbox"][class*="icheckbox_futurico"]:checked,
+input[type="radio"][class*="iradio_futurico"]:checked {
+  border-color: var(--native-check-color, #292929);
+  background-color: var(--native-check-color, #292929);
+}
+input[type="checkbox"][class*="icheckbox_minimal"]:checked {
+  background-image: linear-gradient(45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%), linear-gradient(-45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%);
+  background-position: 25% 62%, 42% 48%;
+  background-size: 30% 45%, 48% 58%;
+  background-repeat: no-repeat;
+}
+input[type="checkbox"][class*="icheckbox_square"]:checked {
+  background-image: linear-gradient(45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%), linear-gradient(-45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%);
+  background-position: 25% 62%, 42% 48%;
+  background-size: 30% 45%, 48% 58%;
+  background-repeat: no-repeat;
+}
+input[type="checkbox"][class*="icheckbox_flat"]:checked {
+  background-image: linear-gradient(45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%), linear-gradient(-45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%);
+  background-position: 25% 62%, 42% 48%;
+  background-size: 30% 45%, 48% 58%;
+  background-repeat: no-repeat;
+}
+input[type="checkbox"][class*="icheckbox_line"]:checked {
+  background-image: linear-gradient(45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%), linear-gradient(-45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%);
+  background-position: 25% 62%, 42% 48%;
+  background-size: 30% 45%, 48% 58%;
+  background-repeat: no-repeat;
+}
+input[type="checkbox"][class*="icheckbox_polaris"]:checked {
+  background-image: linear-gradient(45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%), linear-gradient(-45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%);
+  background-position: 25% 62%, 42% 48%;
+  background-size: 30% 45%, 48% 58%;
+  background-repeat: no-repeat;
+}
+input[type="checkbox"][class*="icheckbox_futurico"]:checked {
+  background-image: linear-gradient(45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%), linear-gradient(-45deg, transparent 40%, #fff 40%, #fff 54%, transparent 54%);
+  background-position: 25% 62%, 42% 48%;
+  background-size: 30% 45%, 48% 58%;
+  background-repeat: no-repeat;
+}
+input[type="radio"][class*="iradio_minimal"]:checked { box-shadow: inset 0 0 0 4px #fff; }
+input[type="radio"][class*="iradio_square"]:checked { box-shadow: inset 0 0 0 4px #fff; }
+input[type="radio"][class*="iradio_flat"]:checked { box-shadow: inset 0 0 0 4px #fff; }
+input[type="radio"][class*="iradio_line"]:checked { box-shadow: inset 0 0 0 4px #fff; }
+input[type="radio"][class*="iradio_polaris"]:checked { box-shadow: inset 0 0 0 4px #fff; }
+input[type="radio"][class*="iradio_futurico"]:checked { box-shadow: inset 0 0 0 4px #fff; }
+input[type="checkbox"][class*="icheckbox_minimal"]:hover, input[type="radio"][class*="iradio_minimal"]:hover { border-color: var(--native-check-color, #292929); }
+input[type="checkbox"][class*="icheckbox_minimal"]:disabled, input[type="radio"][class*="iradio_minimal"]:disabled { opacity: .55; cursor: not-allowed; }
+input[type="checkbox"][class*="icheckbox_minimal"]:focus-visible, input[type="radio"][class*="iradio_minimal"]:focus-visible { outline: 2px solid var(--native-check-color, #292929); outline-offset: 2px; }
+input[type="checkbox"][class*="icheckbox_square"]:hover, input[type="radio"][class*="iradio_square"]:hover { border-color: var(--native-check-color, #292929); }
+input[type="checkbox"][class*="icheckbox_square"]:disabled, input[type="radio"][class*="iradio_square"]:disabled { opacity: .55; cursor: not-allowed; }
+input[type="checkbox"][class*="icheckbox_square"]:focus-visible, input[type="radio"][class*="iradio_square"]:focus-visible { outline: 2px solid var(--native-check-color, #292929); outline-offset: 2px; }
+input[type="checkbox"][class*="icheckbox_flat"]:hover, input[type="radio"][class*="iradio_flat"]:hover { border-color: var(--native-check-color, #292929); }
+input[type="checkbox"][class*="icheckbox_flat"]:disabled, input[type="radio"][class*="iradio_flat"]:disabled { opacity: .55; cursor: not-allowed; }
+input[type="checkbox"][class*="icheckbox_flat"]:focus-visible, input[type="radio"][class*="iradio_flat"]:focus-visible { outline: 2px solid var(--native-check-color, #292929); outline-offset: 2px; }
+input[type="checkbox"][class*="icheckbox_line"]:hover, input[type="radio"][class*="iradio_line"]:hover { border-color: var(--native-check-color, #292929); }
+input[type="checkbox"][class*="icheckbox_line"]:disabled, input[type="radio"][class*="iradio_line"]:disabled { opacity: .55; cursor: not-allowed; }
+input[type="checkbox"][class*="icheckbox_line"]:focus-visible, input[type="radio"][class*="iradio_line"]:focus-visible { outline: 2px solid var(--native-check-color, #292929); outline-offset: 2px; }
+input[type="checkbox"][class*="icheckbox_polaris"]:hover, input[type="radio"][class*="iradio_polaris"]:hover { border-color: var(--native-check-color, #292929); }
+input[type="checkbox"][class*="icheckbox_polaris"]:disabled, input[type="radio"][class*="iradio_polaris"]:disabled { opacity: .55; cursor: not-allowed; }
+input[type="checkbox"][class*="icheckbox_polaris"]:focus-visible, input[type="radio"][class*="iradio_polaris"]:focus-visible { outline: 2px solid var(--native-check-color, #292929); outline-offset: 2px; }
+input[type="checkbox"][class*="icheckbox_futurico"]:hover, input[type="radio"][class*="iradio_futurico"]:hover { border-color: var(--native-check-color, #292929); }
+input[type="checkbox"][class*="icheckbox_futurico"]:disabled, input[type="radio"][class*="iradio_futurico"]:disabled { opacity: .55; cursor: not-allowed; }
+input[type="checkbox"][class*="icheckbox_futurico"]:focus-visible, input[type="radio"][class*="iradio_futurico"]:focus-visible { outline: 2px solid var(--native-check-color, #292929); outline-offset: 2px; }
+
+/* Centered checkmark for checked checkboxes and radios. */
+input[type="checkbox"][class*="icheckbox_"]:checked,
+input[type="radio"][class*="iradio_"]:checked {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m2.5 8.2 3.4 3.4 7.6-7.2' fill='none' stroke='%23fff' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-position: center;
+	background-size: var(--native-check-mark-size, 14px);
+	background-repeat: no-repeat;
+}
+
+input[type="checkbox"][class*="icheckbox_"]:checked {
+	background-position: calc(50% + 0.5px) calc(50% + 0.5px);
+}
+
+input[type="radio"][class*="iradio_"]:checked {
+	box-shadow: none !important;
+	background-size: var(--native-radio-mark-size, 12px);
+}

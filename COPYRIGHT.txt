@@ -49,10 +49,11 @@ jQuery UI
 License:	The MIT License (MIT)
 link:		https://jqueryui.com/
 
-iCheck
--------
+iCheck CSS skins
+----------------
+Use: CSS skin styles and visual assets only; the iCheck JavaScript plugin has been removed.
 License:	The MIT License (MIT)
-link:	https://plugins.jquery.com/icheck/
+link:		https://plugins.jquery.com/icheck/
 
 HelpWizard CSS
 --------------
