@@ -34,6 +34,7 @@ class LogModel extends GenericModel
 	private $userAgent = false;
 	private $fullLog = "";
 	private $svuota = 1;
+	private $__microtime = 0;
 	
 	private static $deletedExpired = false;
 	
@@ -43,6 +44,7 @@ class LogModel extends GenericModel
 	const REGISTRAZIONE_ESEGUITA = 'REGISTRAZIONE ESEGUITA';
 	const ERRORI_VALIDAZIONE = 'ERRORI VALIDAZIONE';
 	const SPAM = 'SPAM';
+	const RIGHE = 'RIGHE';
 	
 	public function __construct() {
 		$this->_tables='log_piattaforma';
@@ -168,5 +170,15 @@ class LogModel extends GenericModel
 		}
 		
 		return false;
+	}
+	
+	public function resetTime()
+	{
+		$this->__microtime = microtime(true);
+	}
+	
+	public function getTime()
+	{
+		return microtime(true) - $this->__microtime;
 	}
 }

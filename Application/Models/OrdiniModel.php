@@ -1530,6 +1530,13 @@ class OrdiniModel extends FormModel
 	{
 		Params::$setValuesConditionsFromDbTableStruct = false;
 		
+		$logSubmit = new LogModel();
+		$logTimes = array(
+			"HEADER"	=>	array(),
+			"ROWS"		=>	array(),
+		);
+		$logSubmit->resetTime();
+		
 		$clean["id_o"] = (int)$id_o;
 		
 		$clean["cart_uid"] = sanitizeAll(User::$cart_uid);
@@ -1550,10 +1557,18 @@ class OrdiniModel extends FormModel
 		
 		$pages = $c->getRighePerOrdine();
 		
+		$logTimes["HEADER"] = array(
+			"id_o"		=>	(int)$id_o,
+			"seconds"	=>	$logSubmit->getTime(),
+		);
+		
 		$idsPage = [];
 		
 		foreach ($pages as $p)
 		{
+			$tempTime = array();
+			$logSubmit->resetTime();
+			
 			// Creo un array con tutti gli ID delle pagine nell'ordine
 			if (!in_array($p["cart"]["id_page"], $idsPage))
 				$idsPage[] = $p["cart"]["id_page"];
@@ -1569,6 +1584,8 @@ class OrdiniModel extends FormModel
 			
 			$r->values["price_ivato"] = number_format($r->values["price"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			$r->values["prezzo_intero_ivato"] = number_format($r->values["prezzo_intero"] * (1 + ($r->values["iva"] / 100)),2,".","");
+			
+			$tempTime["1"] = $logSubmit->getTime();
 			
 			if (v("attiva_prezzo_fisso"))
 			{
@@ -1603,6 +1620,8 @@ class OrdiniModel extends FormModel
 					$r->values["prezzo_finale"] = number_format($r->values["price"],v("cifre_decimali"),".","");
 			}
 			
+			$tempTime["2"] = $logSubmit->getTime();
+			
 			$r->values["prezzo_finale_ivato"] = number_format($r->values["prezzo_finale"] * (1 + ($r->values["iva"] / 100)),2,".","");
 			
 			$r->values["fonte"] = App::$isFrontend ? "W" : "B";
@@ -1634,10 +1653,14 @@ class OrdiniModel extends FormModel
 					$r->delFields("codice");
 			}
 			
+			$tempTime["3"] = $logSubmit->getTime();
+			
 			foreach (self::$colonneAggiuntiveRighe as $colonnaAggiuntiva)
 			{
 				$r->delFields($colonnaAggiuntiva);
 			}
+			
+			$tempTime["4"] = $logSubmit->getTime();
 			
 			$r->sanitize();
 			
@@ -1645,6 +1668,8 @@ class OrdiniModel extends FormModel
 				$result = $r->pUpdate((int)$idRiff);
 			else
 				$result = $r->insert();
+			
+			$tempTime["5"] = $logSubmit->getTime();
 			
 			if ($result)
 			{
@@ -1671,7 +1696,13 @@ class OrdiniModel extends FormModel
 					$re->insert();
 				}
 			}
+			
+			$tempTime["6"] = $logSubmit->getTime();
+			
+			$logTimes["ROWS"][] = $tempTime;
 		}
+		
+		$logSubmit->resetTime();
 		
 		if (v("aggiorna_colonna_numero_acquisti_prodotti_ad_ordine_concluso"))
 		{
@@ -1682,6 +1713,13 @@ class OrdiniModel extends FormModel
 				$pModel->aggiornaNumeroAcquisti($idPage);
 			}
 		}
+		
+		$logTimes["FOOTER"] = array(
+			"seconds"	=>	$logSubmit->getTime(),
+		);
+		
+		$logSubmit->setFullLog(json_encode($logTimes));
+		$logSubmit->write(LogModel::RIGHE, "");
 	}
 	
 	public function totaleCrudPieno($record)
