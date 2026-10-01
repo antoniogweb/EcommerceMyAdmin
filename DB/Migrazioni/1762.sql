@@ -1,0 +1,1 @@
+ALTER TABLE righe ADD INDEX idx_righe_id_order (id_order);
