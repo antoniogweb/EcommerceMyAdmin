@@ -26,6 +26,9 @@ Options -Indexes
 	RewriteRule ^Frontend/Public/Js/jquery-ui-1\.13\.2\.custom/jquery-ui\.min\.css$ Frontend/Public/Js/vendor/jquery-ui/jquery-ui.min.css [L]
 	RewriteRule ^Frontend/Public/Js/jquery-ui-1\.13\.2\.custom/main/ui/i18n/(datepicker-[A-Za-z-]+\.js)$ Frontend/Public/Js/vendor/jquery-ui/i18n/$1 [L]
 	RewriteRule ^Frontend/Public/Js/jquery-ui-1\.13\.2\.custom/images/(.+)$ Frontend/Public/Js/vendor/jquery-ui/images/$1 [L]
+
+	# Compatibilità: i vecchi URL iCheck restituiscono lo shim sostitutivo.
+	RewriteRule ^Frontend/Public/Js/icheck(?:\.min)?\.js$ Frontend/Public/Js/checkbox-compat.js [NC,L]
 	
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
