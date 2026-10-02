@@ -128,7 +128,7 @@
 		$extArray = explode('.', $file);
 		$ext =  strtolower(end($extArray));
 		$imgExt= array('jpg','jpeg','png','gif');
-		if ($this->viewArgs['tutti_i_tipi'] or in_array($ext,$imgExt))
+		if (in_array($ext,$imgExt))
 		{
 		?>
 		<tr class='EGfileBox'>
