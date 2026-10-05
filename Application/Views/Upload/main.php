@@ -127,8 +127,8 @@
 		<?php
 		$extArray = explode('.', $file);
 		$ext =  strtolower(end($extArray));
-		$imgExt= array('jpg','jpeg','png','gif');
-		if (in_array($ext,$imgExt))
+		$imgExt= array('jpg','jpeg','png','gif','svg');
+		if ($this->viewArgs['tutti_i_tipi'] or in_array($ext,$imgExt))
 		{
 		?>
 		<tr class='EGfileBox'>
@@ -139,7 +139,7 @@
 				$zipExt= array('zip');
 				if (in_array($ext,$imgExt))
 				{
-					if ($this->viewArgs['use_dynamic_thumbs'])
+					if ($this->viewArgs['use_dynamic_thumbs'] && in_array($ext, array('jpg','jpeg','png')))
 					{
 						$img = "<img src='".$this->baseUrlSrc."/upload/thumb/$file?base=$base&directory=$currentDir' />";
 					}
