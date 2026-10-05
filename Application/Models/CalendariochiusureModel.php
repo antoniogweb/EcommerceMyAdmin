@@ -68,7 +68,7 @@ class CalendariochiusureModel extends GenericModel
 		
 		$dal->modify("+1 days");
 		
-		$arrayDate = self::nextXDays($dal, $numeroGiorni, $formatLabel, $arrayDate);
+		$arrayDate = self::nextXDays($dal, $numeroGiorni, $formatLabel, $arrayDate, $giorniSettimanaEsclusi);
 		
 		return $arrayDate;
 	}
