@@ -1,9 +1,9 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php
 $cssStileFile = file_exists(tpf("Public/Css/style.min.css")) ? "style.min.css" : "style.css";
-$cssStilePath = parse_url(tpf("Public/Css/".$cssStileFile, true), PHP_URL_PATH);
+$cssStilePath = tpf("Public/Css/".$cssStileFile);
 ?>
-<link rel="stylesheet" href="<?php echo F::assertPath($cssStilePath);?>" />
+<link rel="stylesheet" href="<?php echo tpf("Public/Css/".$cssStileFile, true);?>?v=<?php echo md5((string)filemtime($cssStilePath));?>" />
 
 <link rel="stylesheet" type="text/css" href="<?php echo F::assertPath('/'.ltrim(v("checkbox_css_path"), '/'));?>">
 <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrlSrc;?>/admin/Frontend/Public/Css/cms.css?v=<?php echo v("usa_versione_random") ? rand(1,10000): v("js_version_number");?>">
