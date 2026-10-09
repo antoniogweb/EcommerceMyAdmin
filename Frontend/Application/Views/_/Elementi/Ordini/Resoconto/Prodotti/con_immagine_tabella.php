@@ -1,15 +1,17 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div width="100%" class="" cellspacing="0">
-	<?php foreach ($righeOrdine as $p) { ?>
+	<?php foreach ($righeOrdine as $p) {
+		$titoloRiga = OrdiniModel::tipoOrdine($p["righe"]["id_o"]) != "W" ? PagesModel::getTitleRigaBackend($p["righe"]) : PagesModel::getTitleRigaFrontend($p["righe"]);
+	?>
 	<div class="due_colonne">
 		<div class="due_colonne_col" style="text-align:left">
 			<?php if ($p["righe"]["immagine"]) { ?>
-			<img width="200px" src="<?php echo Domain::$publicUrl."/thumb/carrello/".$p["righe"]["immagine"];?>" />
+		<img width="200px" src="<?php echo Domain::$publicUrl."/thumb/carrello/".$p["righe"]["immagine"];?>" alt="<?php echo altUrlencode($titoloRiga);?>" />
 			<?php } ?>
 		</div>
 		<div class="due_colonne_col" style="text-align:left">
-			<b><?php echo OrdiniModel::tipoOrdine($p["righe"]["id_o"]) != "W" ? PagesModel::getTitleRigaBackend($p["righe"]) : PagesModel::getTitleRigaFrontend($p["righe"]);?></b>
+			<b><?php echo $titoloRiga;?></b>
 			<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<br />".$p["righe"]["attributi"]; } ?>
 			<?php include(tpf("Elementi/Ordini/main_testo_disponibilita.php"));?>
 			

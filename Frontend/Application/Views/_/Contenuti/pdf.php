@@ -65,7 +65,7 @@ td
 	<h1><?php echo htmlentitydecode(field($p, "title"));?></h1>
 	
 	<?php if (strcmp($p["pages"]["immagine"],"") !== 0) { ?>
-	<img src="<?php echo ROOT."/images/contents/".$p["pages"]["immagine"];?>" />
+	<img src="<?php echo ROOT."/images/contents/".$p["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>" />
 	<br /><br />
 	<?php } ?>
 

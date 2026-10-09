@@ -3,7 +3,7 @@
 	<?php if (User::$isMobile) { ?>
 	<div class="uk-offcanvas-bar">
 	<div class="uk-margin-large-bottom">
-		<button class="uk-offcanvas-close" type="button" uk-close></button>
+		<button class="uk-offcanvas-close" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
 	</div>
 	<?php } ?>
 	

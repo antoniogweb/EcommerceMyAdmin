@@ -5,7 +5,7 @@
 			<div class="uk-width-expand ajax-cart-title">
 				<?php echo gtextPlain("Carrello");?>
 			</div>
-			<button style="margin-top:-7px;" class="uk-offcanvas-close" type="button" uk-close></button>
+			<button style="margin-top:-7px;" class="uk-offcanvas-close" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
 		</div>
 	</header>
 	<div class="uk-card-body uk-overflow-auto">
@@ -25,7 +25,7 @@
 							<?php if ($p["cart"]["immagine"]) { ?>
 							<?php if (!$p["cart"]["id_p"] && $p["cart"]["prodotto_attivo"]) { ?><a class="" href="<?php echo $this->baseUrl."/".$cartUrlAlias;?>"><?php } ?>
 								<figure class="tm-media-box-wrap">
-									<img src="<?php echo $this->baseUrlSrc."/thumb/carrelloajax/".$p["cart"]["immagine"];?>" alt="<?php echo encodeUrl(field($p, "title"));?>">
+								<img src="<?php echo $this->baseUrlSrc."/thumb/carrelloajax/".$p["cart"]["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>">
 								</figure>
 							<?php if (!$p["cart"]["id_p"] && $p["cart"]["prodotto_attivo"]) { ?></a><?php } ?>
 							<?php } ?>

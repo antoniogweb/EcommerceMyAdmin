@@ -16,6 +16,6 @@ if ($layer["contenuti"]["tipo_layer"] == "TESTO") { ?>
 </div>
 <?php } else if ($layer["contenuti"]["tipo_layer"] == "IMMAGINE") { ?>
 <div id="<?php echo $layer["contenuti"]["id_cont"];?>" class="uk-width-1-2 uk-width-2-3@m <?php echo $posizione; ?> eg-position-small uk-position-small">
-	<img style="max-width:90%;" <?php echo getAnimazioneLayer($layer, 200);?> src="<?php echo $this->baseUrlSrc."/thumb/slidelayer/".$layer["contenuti"]["immagine_1"]?>" />
+	<img style="max-width:90%;" <?php echo getAnimazioneLayer($layer, 200);?> src="<?php echo $this->baseUrlSrc."/thumb/slidelayer/".$layer["contenuti"]["immagine_1"]?>" alt="<?php echo gtextAttr("Immagine della slide");?>" />
 </div>
 <?php } ?>

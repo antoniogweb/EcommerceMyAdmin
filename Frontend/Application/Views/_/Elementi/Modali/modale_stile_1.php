@@ -12,7 +12,7 @@ $url = PagesModel::getUrlContenuto($p);
 				<img src="<?php echo $this->baseUrlSrc."/thumb/modale/".$p["pages"]["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>" uk-cover>
             </div>
             <div class="uk-padding-large uk-text-center">
-				<button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+				<button class="uk-modal-close-full uk-close-large" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
 				<?php if ($p["pages"]["immagine_2"]) { ?>
 				<img src="<?php echo $this->baseUrlSrc."/thumb/modalepiccola/".$p["pages"]["immagine_2"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>">
 				<?php } ?>

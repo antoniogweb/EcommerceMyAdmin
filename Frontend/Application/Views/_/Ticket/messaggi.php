@@ -21,7 +21,7 @@
 	<?php if ($m["ticket_messaggi"]["filename"] && TicketfileModel::fileEsistente($m["ticket_messaggi"]["filename"])) { ?>
 	<div class="uk-margin">
 		<?php if ($m["ticket_messaggi"]["tipo"] == "IMMAGINE") { ?>
-		<a target="_blank" href="<?php echo $this->baseUrlSrc."/thumb/immagineticketfull/".$m["ticket_messaggi"]["filename"];?>"><img style="max-width:100px;" src="<?php echo $this->baseUrlSrc."/thumb/immagineticket/".$m["ticket_messaggi"]["filename"];?>" /></a>
+		<a target="_blank" href="<?php echo $this->baseUrlSrc."/thumb/immagineticketfull/".$m["ticket_messaggi"]["filename"];?>"><img style="max-width:100px;" src="<?php echo $this->baseUrlSrc."/thumb/immagineticket/".$m["ticket_messaggi"]["filename"];?>" alt="<?php echo gtextAttr("Apri immagine allegata");?>" /></a>
 		<?php } else {
 			$daElaborare = TicketfileModel::daElaborare($m["ticket_messaggi"]["filename"]);
 		?>

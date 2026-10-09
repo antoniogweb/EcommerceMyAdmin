@@ -61,7 +61,7 @@
 					</div>
 					<?php } ?>
 					<?php if ($immagine) { ?>
-					<a href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><img width="200px" src="<?php echo $this->baseUrl."/thumb/listaregalo/".$immagine;?>" /></a>
+					<a href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><img width="200px" src="<?php echo $this->baseUrl."/thumb/listaregalo/".$immagine;?>" alt="<?php echo altUrlencode(field($p, "title"));?>" /></a>
 					<?php } ?>
 				</div>
 				<div class="uk-width-expand">

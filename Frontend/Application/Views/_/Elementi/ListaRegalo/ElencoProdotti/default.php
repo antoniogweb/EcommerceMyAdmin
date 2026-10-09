@@ -55,7 +55,7 @@
 			<div class="lista-riga uk-grid-small uk-child-width-1-2 uk-child-width-1-5@m <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid="" id-lista-riga="<?php echo $p["liste_regalo_pages"]["id_lista_regalo_page"];?>">
 				<div class="uk-first-column">
 					<?php if ($immagine) { ?>
-					<a href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><img width="200px" src="<?php echo $this->baseUrl."/thumb/listaregalo/".$immagine;?>" /></a>
+					<a href="<?php echo $this->baseUrl."/".$urlAliasProdotto;?>"><img width="200px" src="<?php echo $this->baseUrl."/thumb/listaregalo/".$immagine;?>" alt="<?php echo altUrlencode(field($p, "title"));?>" /></a>
 					<?php } ?>
 				</div>
 				<div class="uk-width-expand">

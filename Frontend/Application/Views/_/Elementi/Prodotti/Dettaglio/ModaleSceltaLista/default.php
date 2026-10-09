@@ -2,7 +2,7 @@
 
 <div id="modale-scelta-lista" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-margin-auto-vertical">
-        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <button class="uk-modal-close-default" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
         <div class="uk-modal-body uk-text-center uk-padding">
 			<h5><?php echo gtextPlain("Seleziona la lista a cui aggiungere questo prodotto");?></h5>
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom">

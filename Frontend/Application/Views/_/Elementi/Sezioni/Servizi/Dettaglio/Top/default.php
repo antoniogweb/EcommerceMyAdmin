@@ -20,8 +20,8 @@ include(tpf("/Elementi/Pagine/page_top.php")); ?>
 				</li>
 				<?php } ?>
 			</ul>
-			<a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" data-uk-slidenav-previous="ratio: 1.5" data-uk-slideshow-item="previous"></a>
-			<a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" data-uk-slidenav-next="ratio: 1.5" data-uk-slideshow-item="next"></a>
+			<a class="uk-position-center-left uk-position-small uk-hidden-hover" aria-label="<?php echo gtextAttr("Vai alla slide precedente");?>" href="#" data-uk-slidenav-previous="ratio: 1.5" data-uk-slideshow-item="previous"></a>
+			<a class="uk-position-center-right uk-position-small uk-hidden-hover" aria-label="<?php echo gtextAttr("Vai alla slide successiva");?>" href="#" data-uk-slidenav-next="ratio: 1.5" data-uk-slideshow-item="next"></a>
 		</div>
 	</div>
 	<?php } ?>

@@ -97,7 +97,7 @@
 							<div class="card_tipo_fascia_inner_box">
 								<h4>{{tipoFascia.tipi_contenuto.titolo}}</h4>
 								<div>
-									<img v-if="tipoFascia.tipi_contenuto.immagine != '' && tipoFascia.tipi_contenuto.immagine != undefined" v-bind:src="'<?php echo $this->baseUrlSrc."/images/anteprimefasce/";?>' + tipoFascia.tipi_contenuto.immagine" />
+									<img v-if="tipoFascia.tipi_contenuto.immagine != '' && tipoFascia.tipi_contenuto.immagine != undefined" v-bind:src="'<?php echo $this->baseUrlSrc."/images/anteprimefasce/";?>' + tipoFascia.tipi_contenuto.immagine" alt="<?php echo gtextAttr("Anteprima fascia");?>" />
 								</div>
 								<a href="" @click.prevent="confermaAggiungiDialog(tipoFascia)" class="card_tipo_fascia_aggiungi uk-button uk-button-secondary uk-width-1-1"><span class="fa fa-check" aria-hidden="true"></span> Aggiungi</a>
 							</div>
