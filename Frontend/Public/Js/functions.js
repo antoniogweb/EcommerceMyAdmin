@@ -1269,6 +1269,12 @@ $(document).ready(function(){
 				slider.find('.leftLabel').text(values[0] + "€");
 				slider.find('.rightLabel').text(values[1] + "€");
 			};
+			var applicaFiltroPrezzo = function(values) {
+				var urlSlider = $(".url_slider_prezzo").text();
+				urlSlider = urlSlider.replace("[DA]", values[0]);
+				urlSlider = urlSlider.replace("[A]", values[1]);
+				location.href = urlSlider;
+			};
 
 			slider.slider({
 				range: true,
@@ -1283,12 +1289,61 @@ $(document).ready(function(){
 					aggiornaEtichette(ui.values);
 				},
 				stop: function(event, ui) {
-					var urlSlider = $(".url_slider_prezzo").text();
-					urlSlider = urlSlider.replace("[DA]", ui.values[0]);
-					urlSlider = urlSlider.replace("[A]", ui.values[1]);
-					location.href = urlSlider;
+					applicaFiltroPrezzo(ui.values);
 				}
 			});
+
+			if (window.PointerEvent) {
+				var trascinamentoTouch = null;
+				slider.find('.ui-slider-handle').each(function(indiceManiglia) {
+					var maniglia = this;
+					maniglia.style.touchAction = 'none';
+
+					maniglia.addEventListener('pointerdown', function(event) {
+						if (event.pointerType === 'mouse' || trascinamentoTouch || slider.slider('option', 'disabled'))
+							return;
+
+						event.preventDefault();
+						var rettangoloManiglia = maniglia.getBoundingClientRect();
+						trascinamentoTouch = {
+							id: event.pointerId,
+							indice: indiceManiglia,
+							offsetX: event.clientX - rettangoloManiglia.left - rettangoloManiglia.width / 2
+						};
+						maniglia.setPointerCapture(event.pointerId);
+					});
+
+					maniglia.addEventListener('pointermove', function(event) {
+						if (!trascinamentoTouch || trascinamentoTouch.id !== event.pointerId)
+							return;
+
+						var rettangoloSlider = slider[0].getBoundingClientRect();
+						var percentuale = Math.max(0, Math.min(1,
+							(event.clientX - trascinamentoTouch.offsetX - rettangoloSlider.left) / rettangoloSlider.width
+						));
+						var minimo = Number(slider.slider('option', 'min'));
+						var massimo = Number(slider.slider('option', 'max'));
+						var valore = minimo + percentuale * (massimo - minimo);
+						var valori = slider.slider('values');
+						valore = trascinamentoTouch.indice === 0 ? Math.min(valore, valori[1]) : Math.max(valore, valori[0]);
+						slider.slider('values', trascinamentoTouch.indice, valore);
+						aggiornaEtichette(slider.slider('values'));
+					});
+
+					maniglia.addEventListener('pointerup', function(event) {
+						if (!trascinamentoTouch || trascinamentoTouch.id !== event.pointerId)
+							return;
+
+						trascinamentoTouch = null;
+						applicaFiltroPrezzo(slider.slider('values'));
+					});
+
+					maniglia.addEventListener('pointercancel', function(event) {
+						if (trascinamentoTouch && trascinamentoTouch.id === event.pointerId)
+							trascinamentoTouch = null;
+					});
+				});
+			}
 		});
 		
 	}
