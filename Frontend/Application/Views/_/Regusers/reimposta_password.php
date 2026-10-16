@@ -21,17 +21,17 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 		<form action="<?php echo $this->baseUrl."/reimposta-password/$forgot_token";?>" method="POST">
 			<fieldset class="uk-fieldset">
 				<div class="uk-margin">
-					<label class="uk-form-label uk-text-bold"><?php echo gtextPlain("Password");?></label>
+					<label for="password" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Password");?></label>
 					<div class="uk-form-controls uk-position-relative">
-						<?php echo Html_Form::password("password",$values['password'],"uk-input uk-width-1-2@s uk-width-1-1@m class_password ".VariabiliModel::classeHelpWizardPassword(),null,"placeholder='".gtextAttr("Scrivi la nuova password", false)."'");?>
+						<?php echo Html_Form::password("password",$values['password'],"uk-input uk-width-1-2@s uk-width-1-1@m class_password ".VariabiliModel::classeHelpWizardPassword(),"password","placeholder='".gtextAttr("Scrivi la nuova password", false)."'");?>
 						<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 					</div>
 				</div>
 				
 				<div class="uk-margin">
-					<label class="uk-form-label uk-text-bold"><?php echo gtextPlain("Conferma password");?></label>
+					<label for="confirmation" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Conferma password");?></label>
 					<div class="uk-form-controls uk-position-relative">
-						<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input uk-width-1-2@s uk-width-1-1@m class_confirmation ".VariabiliModel::classeHelpWizardPassword(),null,"placeholder='".gtextAttr("Conferma la nuova password", false)."'");?>
+						<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input uk-width-1-2@s uk-width-1-1@m class_confirmation ".VariabiliModel::classeHelpWizardPassword(),"confirmation","placeholder='".gtextAttr("Conferma la nuova password", false)."'");?>
 						<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 					</div>
 				</div>

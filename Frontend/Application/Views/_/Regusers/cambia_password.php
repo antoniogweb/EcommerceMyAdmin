@@ -21,25 +21,25 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <form class="form_cambio_password" action="<?php echo $this->baseUrl."/modifica-password";?>" method="POST">
 	<div class="uk-margin form_cambio_password_box" style="z-index:3;">
-		<label class="uk-form-label"><?php echo gtextPlain("Vecchia password");?></label>
+		<label for="old" class="uk-form-label"><?php echo gtextPlain("Vecchia password");?></label>
 		<div class="uk-form-controls uk-position-relative">
-			<?php echo Html_Form::password("old",$values['old'],"uk-input class_old");?>
+			<?php echo Html_Form::password("old",$values['old'],"uk-input class_old","old");?>
 			<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 		</div>
 	</div>
 	
 	<div class="uk-margin form_cambio_password_box" style="z-index:2;">
-		<label class="uk-form-label"><?php echo gtextPlain("Password");?></label>
+		<label for="password" class="uk-form-label"><?php echo gtextPlain("Password");?></label>
 		<div class="uk-form-controls uk-position-relative">
-			<?php echo Html_Form::password("password",$values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword());?>
+			<?php echo Html_Form::password("password",$values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),"password");?>
 			<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 		</div>
 	</div>
 	
 	<div class="uk-margin form_cambio_password_box" style="z-index:1;">
-		<label class="uk-form-label"><?php echo gtextPlain("Conferma password");?></label>
+		<label for="confirmation" class="uk-form-label"><?php echo gtextPlain("Conferma password");?></label>
 		<div class="uk-form-controls uk-position-relative">
-			<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation ".VariabiliModel::classeHelpWizardPassword());?>
+			<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation ".VariabiliModel::classeHelpWizardPassword(),"confirmation");?>
 			<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 		</div>
 	</div>

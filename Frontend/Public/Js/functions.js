@@ -623,16 +623,16 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 		// if (val == "IT")
 		if (nazioniConProvince.indexOf(val) > -1)
 		{
-			$("[name='dprovincia_spedizione']").css("display","none");
-			$("[name='provincia_spedizione']").css("display","block");
+			$(".select_id_provincia_spedizione .box_select_dprovincia_spedizione").css("display","none");
+			$(".select_id_provincia_spedizione .box_select_provincia_spedizione").css("display","block");
 			
 			if (nazioniConProvince.length > 0)
 				recuperaProvinceNazione(val, $("[name='provincia_spedizione']"), default_spedizione);
 		}
 		else
 		{
-			$("[name='dprovincia_spedizione']").css("display","block");
-			$("[name='provincia_spedizione']").css("display","none");
+			$(".select_id_provincia_spedizione .box_select_dprovincia_spedizione").css("display","block");
+			$(".select_id_provincia_spedizione .box_select_provincia_spedizione").css("display","none");
 		}
 	}
 }

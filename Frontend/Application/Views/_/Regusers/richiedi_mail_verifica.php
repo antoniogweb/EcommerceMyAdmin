@@ -25,9 +25,9 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 			<form action="<?php echo $this->baseUrl."/account-verification";?>" method="POST">
 				<fieldset class="uk-fieldset">
 					<div class="uk-margin">
-						<label class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> *</label>
+						<label for="username" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> *</label>
 						<div class="uk-form-controls">
-							<input class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi la tua e-mail", false)?>" />
+							<input id="username" class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi la tua e-mail", false)?>" />
 						</div>
 						
 						<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
