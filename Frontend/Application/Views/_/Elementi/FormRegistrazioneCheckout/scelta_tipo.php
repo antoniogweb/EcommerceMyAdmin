@@ -16,7 +16,7 @@ else
 			$tipoCliente = array(
 				"<label for='".$idRadioTipoCliente."'><span style='margin-left:8px;'>".gtext($titoloTipo)."</span></label>" => $codiceTipo,
 			);
-			echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio_cliente","after",$idRadioTipoCliente);
+			echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio_cliente","after",$idRadioTipoCliente,null,"aria-required='true'");
 			echo "<span style='margin-right:20px;'></span>".$divisoreTipoCliente;
 		}
 	}

@@ -30,8 +30,8 @@ if (!v("disattiva_antispam_checkout")) {
 	<?php } ?>
 	
 	<div class="class_accetto">
-		<label for="checkout_accetto_non_accetto"><?php echo Html_Form::radio("accetto",$values['accetto'],"non_accetto","radio_2","none","checkout_accetto_non_accetto");?><span style='margin-left:8px;'></span><span class='radio_2_testo'><?php echo gtext("NON ACCETTO");?></span><span style='margin-right:20px;'></span></label>
-		<label for="checkout_accetto_accetto"><?php echo Html_Form::radio("accetto",$values['accetto'],"accetto","radio_2","none","checkout_accetto_accetto");?><span style='margin-left:8px;'></span><span class='radio_2_testo'><?php echo gtext("ACCETTO");?></span></label>
+		<label for="checkout_accetto_non_accetto"><?php echo Html_Form::radio("accetto",$values['accetto'],"non_accetto","radio_2","none","checkout_accetto_non_accetto",null,"aria-required='true'");?><span style='margin-left:8px;'></span><span class='radio_2_testo'><?php echo gtext("NON ACCETTO");?></span><span style='margin-right:20px;'></span></label>
+		<label for="checkout_accetto_accetto"><?php echo Html_Form::radio("accetto",$values['accetto'],"accetto","radio_2","none","checkout_accetto_accetto",null,"aria-required='true'");?><span style='margin-left:8px;'></span><span class='radio_2_testo'><?php echo gtext("ACCETTO");?></span></label>
 	</div>
 </div>
 
