@@ -13,9 +13,9 @@
 				<?php echo $flash;?>
 				<fieldset class="uk-fieldset">
 					<div class="uk-margin">
-						<label for="two_factor_code" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Codice inviato via e-mail");?> *</label>
+						<label for="two_factor_code" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Codice inviato via e-mail");?> <span aria-hidden="true">*</span></label>
 						<div class="uk-form-controls">
-							<input id="two_factor_code" class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="codice" type="text" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtextAttr("Scrivi qui il codice..", false) : "";?>" />
+							<input id="two_factor_code" class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="codice" type="text" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtextAttr("Scrivi qui il codice..", false) : "";?>" aria-required="true" />
 						</div>
 					</div>
 					

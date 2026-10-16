@@ -17,9 +17,9 @@ include(tpf("/Elementi/Pagine/page_top.php"));
 		<form class="form_richiedi_nuova_password" action="<?php echo $this->baseUrl."/password-dimenticata";?>" method="POST">
 			<?php echo $notice;?>
 			<div class="uk-margin">
-				<label for="username" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> *</label>
+				<label for="username" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> <span aria-hidden="true">*</span></label>
 				<div class="uk-form-controls">
-					<input id="username" class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi la tua e-mail", false)?>" />
+					<input id="username" class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi la tua e-mail", false)?>" aria-required="true" />
 				</div>
 				
 				<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>

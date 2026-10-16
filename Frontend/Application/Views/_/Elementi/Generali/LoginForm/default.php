@@ -10,16 +10,16 @@ if (!isset($classePulsanteLogin))
 	?>
 	<fieldset class="uk-fieldset">
 		<div class="uk-margin">
-			<label for="login_username" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> *</label>
+			<label for="login_username" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> <span aria-hidden="true">*</span></label>
 			<div class="uk-form-controls">
-				<input id="login_username" class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="username" type="text" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtextAttr("Scrivi la tua e-mail", false) : "";?>" />
+				<input id="login_username" class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="username" type="text" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtextAttr("Scrivi la tua e-mail", false) : "";?>" aria-required="true" />
 			</div>
 		</div>
 		
 		<div class="uk-margin">
-			<label for="login_password" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Password");?> *</label>
+			<label for="login_password" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Password");?> <span aria-hidden="true">*</span></label>
 			<div class="uk-form-controls uk-position-relative">
-				<input id="login_password" class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="password" type="password" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtextAttr("Scrivi la tua password", false) : "";?>" />
+				<input id="login_password" class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="password" type="password" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtextAttr("Scrivi la tua password", false) : "";?>" aria-required="true" />
 				<?php include tpf("Elementi/mostra_nascondi_password.php");?>
 			</div>
 		</div>

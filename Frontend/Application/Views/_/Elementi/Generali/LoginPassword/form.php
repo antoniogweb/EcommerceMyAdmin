@@ -6,9 +6,9 @@
 	<form class="uk-margin" action="<?php echo $this->baseUrl."/password-dimenticata";?>" method="POST">
 		<fieldset class="uk-fieldset">
 			<div class="uk-margin">
-				<label class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> *</label>
+				<label for="username" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> <span aria-hidden="true">*</span></label>
 				<div class="uk-form-controls">
-					<input class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi qui il tuo indirizzo e-mail")?>"/>
+					<input id="username" class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="new-password" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi qui il tuo indirizzo e-mail")?>" aria-required="true"/>
 				</div>
 				
 				<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
