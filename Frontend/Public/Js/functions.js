@@ -590,8 +590,8 @@ if (typeof sistemaTendinaProvincia !== 'function')
 		// if (val == "IT")
 		if (nazioniConProvince.indexOf(val) > -1)
 		{
-			$("[name='dprovincia']").css("display","none");
-			$("[name='provincia']").css("display","block");
+			$(".select_id_provincia .box_select_dprovincia").css("display","none");
+			$(".select_id_provincia .box_select_provincia").css("display","block");
 			
 			if (val == "IT")
 				$(".nascondi_fuori_italia").css("display","table-row");
@@ -603,8 +603,8 @@ if (typeof sistemaTendinaProvincia !== 'function')
 		}
 		else
 		{
-			$("[name='dprovincia']").css("display","block");
-			$("[name='provincia']").css("display","none");
+			$(".select_id_provincia .box_select_dprovincia").css("display","block");
+			$(".select_id_provincia .box_select_provincia").css("display","none");
 			$(".nascondi_fuori_italia").css("display","none");
 			$("[name='codice_fiscale']").val("");
 		}

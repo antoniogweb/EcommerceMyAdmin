@@ -10,14 +10,15 @@ else
 	
 	if (count($tipiClienti) > 1)
 	{
-		$tipoCliente = array();
-		
 		foreach ($tipiClienti as $codiceTipo => $titoloTipo)
 		{
-			$tipoCliente["<span style='margin-left:8px;'></span>".gtext($titoloTipo)."<span style='margin-right:20px;'></span>$divisoreTipoCliente"] = $codiceTipo; 
+			$idRadioTipoCliente = "tipo_cliente_".encodeUrl($codiceTipo);
+			$tipoCliente = array(
+				"<label for='".$idRadioTipoCliente."'><span style='margin-left:8px;'>".gtext($titoloTipo)."</span></label>" => $codiceTipo,
+			);
+			echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio_cliente","after",$idRadioTipoCliente);
+			echo "<span style='margin-right:20px;'></span>".$divisoreTipoCliente;
 		}
-		
-		echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio_cliente");
 	}
 	else
 	{
