@@ -439,7 +439,7 @@ class GenericModel extends Model_Tree
 					
 					$src = $href = Domain::$name. "/" . $params["path"] . "/;;value;;";
 					
-					if (isset($params["clean_field"]))
+					if (isset($params["clean_field"]) || (isset($params["stream_file"]) && $params["stream_file"]))
 					{
 						$src = Url::getRoot().$this->applicationUrl.$this->controller."/thumb/".$field."/".$clean["id"];
 						$href = Url::getRoot().$this->applicationUrl.$this->controller."/documento/".$field."/".$clean["id"];
