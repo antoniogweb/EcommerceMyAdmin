@@ -69,9 +69,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	</div>
 	<form class="" action="<?php echo $this->baseUrl."/riservata/privacy";?>#privacy" method="POST">
 		<div class="uk-margin">
-			<label class="uk-form-label"><?php echo gtextPlain("Password");?></label>
+			<label for="cancella-account-password" class="uk-form-label"><?php echo gtextPlain("Password");?></label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::password("password","","uk-input class_password",null,"placeholder='".gtextAttr("Inserisci la password", false)."'");?>
+				<?php echo Html_Form::password("password","","uk-input class_password","cancella-account-password","aria-required='true' placeholder='".gtextAttr("Inserisci la password", false)."'");?>
 			</div>
 		</div>
 		
