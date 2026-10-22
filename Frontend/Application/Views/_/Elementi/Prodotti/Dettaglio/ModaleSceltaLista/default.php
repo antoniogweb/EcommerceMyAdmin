@@ -7,7 +7,8 @@
 			<h5><?php echo gtextPlain("Seleziona la lista a cui aggiungere questo prodotto");?></h5>
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom">
 				<div class="uk-form-controls">
-					<?php echo Html_Form::select("id_lista","",array("0" => gtext("Seleziona la lista regalo")) + $liste_regalo,"uk-select class_id_lista_tipo",null,"yes");?>
+					<label for="lista-regalo-prodotto" class="accessibility-visually-hidden"><?php echo gtextPlain("Lista regalo");?></label>
+					<?php echo Html_Form::select("id_lista","",array("0" => gtext("Seleziona la lista regalo")) + $liste_regalo,"uk-select class_id_lista_tipo","lista-regalo-prodotto","yes");?>
 				</div>
 			</div>
 			<?php

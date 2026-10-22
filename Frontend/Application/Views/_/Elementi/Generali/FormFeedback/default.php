@@ -31,17 +31,20 @@
 						$attributiNome = "disabled";
 					?>
 					<div class="uk-margin"> 
-						<?php echo Html_Form::input("autore",FeedbackModel::gValue("autore"),"uk-input class_autore","autore","$attributiNome placeholder='".gtextAttr("Il tuo nome*")."'");?>
+						<label for="feedback-autore" class="accessibility-visually-hidden"><?php echo gtextPlain("Il tuo nome");?></label>
+						<?php echo Html_Form::input("autore",FeedbackModel::gValue("autore"),"uk-input class_autore","feedback-autore","$attributiNome aria-required='true' placeholder='".gtextAttr("Il tuo nome*")."'");?>
 					</div>
 					
 					<?php if (!User::$id) { ?>
 					<div class="uk-margin"> 
-						<?php echo Html_Form::input("email",FeedbackModel::gValue("email"),"uk-input class_email","email","placeholder='".gtextAttr("Email*")."'");?>
+						<label for="feedback-email" class="accessibility-visually-hidden"><?php echo gtextPlain("Email");?></label>
+						<?php echo Html_Form::input("email",FeedbackModel::gValue("email"),"uk-input class_email","feedback-email","aria-required='true' placeholder='".gtextAttr("Email*")."'");?>
 					</div>
 					<?php } ?>
 					
 					<div class="uk-margin">
-						<?php echo Html_Form::textarea("testo",FeedbackModel::gValue("testo"),"uk-textarea class_testo","testo","rows='5' placeholder='".gtextAttr("Il tuo commento*")."'");?>
+						<label for="feedback-testo" class="accessibility-visually-hidden"><?php echo gtextPlain("Il tuo commento");?></label>
+						<?php echo Html_Form::textarea("testo",FeedbackModel::gValue("testo"),"uk-textarea class_testo","feedback-testo","rows='5' aria-required='true' placeholder='".gtextAttr("Il tuo commento*")."'");?>
 					</div>
 					
 					<?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>

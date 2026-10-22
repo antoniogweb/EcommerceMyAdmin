@@ -4,7 +4,9 @@
 	<?php foreach ($accessori as $acc) { ?>
 	<div class="box_accessorio box_accessorio_figlio" id-page="<?php echo $acc["pages"]["id_page"];?>" id-p="0">
 		<div class="uk-margin-small">
-			<input type="checkbox" name="<?php echo $acc["pages"]["id_page"];?>" value="<?php echo $acc["pages"]["id_page"];?>" <?php if (accessorioInCarrello($acc["pages"]["id_page"])) { ?>checked<?php } ?> class="input_attivo" />
+			<?php $idAccessorio = "accessorio-".(int)$acc["pages"]["id_page"];?>
+			<label for="<?php echo $idAccessorio;?>" class="accessibility-visually-hidden"><?php echo gtextPlain("Aggiungi accessorio")." ".field($acc, "title");?></label>
+			<input id="<?php echo $idAccessorio;?>" type="checkbox" name="<?php echo $acc["pages"]["id_page"];?>" value="<?php echo $acc["pages"]["id_page"];?>" <?php if (accessorioInCarrello($acc["pages"]["id_page"])) { ?>checked<?php } ?> class="input_attivo" />
 			<span class="uk-text-lead uk-text-small uk-margin-small-left"><?php echo htmlentitydecode(field($acc, "description"));?></span>
 		</div>
 		

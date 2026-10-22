@@ -11,8 +11,11 @@ if (!isset($classePersonalizzazioni))
 	<?php foreach ($personalizzazioni as $pers) { ?>
 	<div class="<?php echo $classePersonalizzazioni;?>">
 		<?php
+		$idPersonalizzazione = "personalizzazione-".(int)$p["pages"]["id_page"]."-".(int)$pers["personalizzazioni"]["id_pers"];
 		$maxLength = $pers["personalizzazioni"]["numero_caratteri"] ? 'maxlength="'.$pers["personalizzazioni"]["numero_caratteri"].'"' : "";
-		echo Html_Form::input($pers["personalizzazioni"]["id_pers"],getPersonalizzazioneDaCarrello($pers["personalizzazioni"]["id_pers"]),"uk-input form_input_personalizzazione",null,"$maxLength rel='".persfield($pers, "titolo")."'".' placeholder="'.persfield($pers, "titolo").'"');?>
+		?>
+		<label for="<?php echo $idPersonalizzazione;?>" class="accessibility-visually-hidden"><?php echo persfield($pers, "titolo");?></label>
+		<?php echo Html_Form::input($pers["personalizzazioni"]["id_pers"],getPersonalizzazioneDaCarrello($pers["personalizzazioni"]["id_pers"]),"uk-input form_input_personalizzazione",$idPersonalizzazione,"$maxLength rel='".persfield($pers, "titolo")."'".' placeholder="'.persfield($pers, "titolo").'"');?>
 	</div>
 	<?php } ?>
 </div>

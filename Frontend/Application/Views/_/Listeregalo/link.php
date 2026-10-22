@@ -20,7 +20,7 @@
 			</div>
 			<div class="uk-margin-bottom">
 				<div class="uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></div>
-				<button class="invia_link_lista uk-button uk-button-primary btn_submit_form"><?php echo gtextPlain("Invia");?></button>
+				<button type="submit" class="invia_link_lista uk-button uk-button-primary btn_submit_form"><?php echo gtextPlain("Invia");?></button>
 			</div>
 			<?php echo Html_Form::hidden("insertAction","1");?>
 			<?php include(tpf("Elementi/Pagine/campo-csrf.php")); ?>
