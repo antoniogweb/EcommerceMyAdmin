@@ -5,7 +5,7 @@
 			<div class="uk-width-expand ajax-cart-title">
 				<?php echo gtextPlain("Carrello");?>
 			</div>
-			<button style="margin-top:-7px;" class="uk-offcanvas-close" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
+			<button style="margin-top:-7px;" class="uk-offcanvas-close close_cart_button" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
 		</div>
 	</header>
 	<div class="uk-card-body uk-overflow-auto">
