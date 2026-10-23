@@ -42,6 +42,7 @@ $options = getopt(null, array(
 	"rete_whitelist::",
 	"ore::",
 	"throttle::",
+	"ip::",
 ));
 
 $default = array(
@@ -368,4 +369,30 @@ if ($params["azione"] == "rimuovi-da-whitelist" && isset($params["ip_whitelist"]
 	IpfilterModel::rimuoviDaWhitelist($params["ip_whitelist"], $params["rete_whitelist"], $log);
 	
 	$log->writeString("FINE RIMOZIONE DA WHITELIST");
+}
+
+// Scarica IP MMDB
+if ($params["azione"] == "scarica-mmdb")
+{
+	$log->writeString("INIZIO SCARICAMENTO MMDB");
+	
+	GeolocatorModel::downloadMMDB($log);
+	
+	$log->writeString("FINE SCARICAMENTO MMDB");
+}
+
+// Ottieni nazione da IP
+if ($params["azione"] == "get-country-from-ip")
+{
+	$log->writeString("INIZIO GET COUNTRY FROM IP");
+	
+	if (!isset($params["ip"]))
+	{
+		echo "si prega di indicare un IP l'istruzione --ip=\"<IP>\" \n";
+		die();
+	}
+	
+	echo GeolocatorModel::getCountryFromIpMMDB($params["ip"]);
+	
+	$log->writeString("FINE GET COUNTRY FROM IP");
 }

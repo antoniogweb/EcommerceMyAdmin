@@ -73,4 +73,16 @@ class GeolocatorModel extends GenericModel
 		
 		return parent::update($id, $where);
 	}
+	
+	// Scarica il database IP MMDB
+	public static function downloadMMDB($log = null)
+	{
+		self::getModulo()->downloadMMDB_($log);
+	}
+	
+	// Country from MMDB
+	public static function getCountryFromIpMMDB($ip, $log = null)
+	{
+		return self::getModulo()->getCountryFromIpMMDB_($ip);
+	}
 }

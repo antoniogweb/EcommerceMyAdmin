@@ -25,4 +25,26 @@ if (!defined('EG')) die('Direct access not allowed!');
 class Geolocator
 {
 	use Modulo;
+	
+	protected $dbFolder = "MMDB";
+	protected $dbFolderExtracted = "Extracted";
+	
+	public function getDbPath()
+	{
+		$path = $this->cacheAbsolutePath."/".trim($this->params["codice"]);
+		
+		if (!@is_dir($path."/".$this->dbFolder))
+		{
+			createFolderFull($this->dbFolder, $path);
+			@chmod($path."/".$this->dbFolder, octdec('777'));
+		}
+		
+		if (!@is_dir($path."/".$this->dbFolder."/".$this->dbFolderExtracted))
+		{
+			createFolderFull($this->dbFolderExtracted, $path."/".$this->dbFolder);
+			@chmod($path."/".$this->dbFolder."/".$this->dbFolderExtracted, octdec('777'));
+		}
+		
+		return $path."/".$this->dbFolder;
+	}
 }
