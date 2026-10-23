@@ -34,6 +34,7 @@ use Aws\AwsClient;
  *             ownerType?: 'organization'|'user',
  *             instanceIdentifier?: string,
  *             runtimeRoleArn?: string,
+ *             releaseManagementAssociationId?: string,
  *             ...,
  *         },
  *         slack?: array{workspaceId?: string, workspaceName?: string, transmissionTarget?: array, bidirectional?: array, ...},
@@ -42,7 +43,14 @@ use Aws\AwsClient;
  *         mcpservernewrelic?: array{accountId?: string, endpoint?: string, ...},
  *         mcpserverdatadog?: array{enabledElevatedTools?: list<array>, ...},
  *         mcpserver?: array{tools?: list<string>, toolDetails?: list<array>, ...},
- *         gitlab?: array{projectId?: string, projectPath?: string, instanceIdentifier?: string, runtimeRoleArn?: string, ...},
+ *         gitlab?: array{
+ *             projectId?: string,
+ *             projectPath?: string,
+ *             instanceIdentifier?: string,
+ *             runtimeRoleArn?: string,
+ *             releaseManagementAssociationId?: string,
+ *             ...,
+ *         },
  *         mcpserversplunk?: array,
  *         eventChannel?: array,
  *         azure?: array{subscriptionId?: string, ...},
@@ -58,6 +66,8 @@ use Aws\AwsClient;
  *         mcpserversigv4?: array{tools?: list<string>, toolDetails?: list<array>, ...},
  *         remoteagent?: array,
  *         remoteagentsigv4?: array,
+ *         msteams?: array{teamId?: string, teamName?: string, transmissionTarget?: array, ...},
+ *         releaseManagement?: array{name?: string, networkAccess?: array, ...},
  *         ...,
  *     },
  *     capabilities?: array<string, array{enabled?: bool, triggerFilterGroups?: list<array>, ...}>,
@@ -92,6 +102,7 @@ use Aws\AwsClient;
  *             ownerType?: 'organization'|'user',
  *             instanceIdentifier?: string,
  *             runtimeRoleArn?: string,
+ *             releaseManagementAssociationId?: string,
  *             ...,
  *         },
  *         slack?: array{workspaceId?: string, workspaceName?: string, transmissionTarget?: array, bidirectional?: array, ...},
@@ -100,7 +111,14 @@ use Aws\AwsClient;
  *         mcpservernewrelic?: array{accountId?: string, endpoint?: string, ...},
  *         mcpserverdatadog?: array{enabledElevatedTools?: list<array>, ...},
  *         mcpserver?: array{tools?: list<string>, toolDetails?: list<array>, ...},
- *         gitlab?: array{projectId?: string, projectPath?: string, instanceIdentifier?: string, runtimeRoleArn?: string, ...},
+ *         gitlab?: array{
+ *             projectId?: string,
+ *             projectPath?: string,
+ *             instanceIdentifier?: string,
+ *             runtimeRoleArn?: string,
+ *             releaseManagementAssociationId?: string,
+ *             ...,
+ *         },
  *         mcpserversplunk?: array,
  *         eventChannel?: array,
  *         azure?: array{subscriptionId?: string, ...},
@@ -116,6 +134,8 @@ use Aws\AwsClient;
  *         mcpserversigv4?: array{tools?: list<string>, toolDetails?: list<array>, ...},
  *         remoteagent?: array,
  *         remoteagentsigv4?: array,
+ *         msteams?: array{teamId?: string, teamName?: string, transmissionTarget?: array, ...},
+ *         releaseManagement?: array{name?: string, networkAccess?: array, ...},
  *         ...,
  *     },
  *     capabilities?: array<string, array{enabled?: bool, triggerFilterGroups?: list<array>, ...}>,
@@ -279,7 +299,7 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result createTrigger(array{
  *     agentSpaceId?: string,
  *     type?: string,
- *     condition?: array{schedule?: array{expression?: string, ...}, ...},
+ *     condition?: array{schedule?: array{expression?: string, spec?: array, ...}, ...},
  *     action?: array,
  *     status?: string,
  *     clientToken?: string,
@@ -289,7 +309,7 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise createTriggerAsync(array{
  *     agentSpaceId?: string,
  *     type?: string,
- *     condition?: array{schedule?: array{expression?: string, ...}, ...},
+ *     condition?: array{schedule?: array{expression?: string, spec?: array, ...}, ...},
  *     action?: array,
  *     status?: string,
  *     clientToken?: string,
@@ -360,9 +380,9 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise getAccountUsageAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getAccountUsageAsync(array{...} $args = [])
  * @method \Aws\Result getAgentSpace(array $args = [])
- * @phpstan-method \Aws\Result getAgentSpace(array{agentSpaceId?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result getAgentSpace(array{agentSpaceId?: string, includedData?: 'ALL_DATA'|'METADATA_ONLY', ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getAgentSpaceAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise getAgentSpaceAsync(array{agentSpaceId?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getAgentSpaceAsync(array{agentSpaceId?: string, includedData?: 'ALL_DATA'|'METADATA_ONLY', ...} $args = [])
  * @method \Aws\Result getAsset(array $args = [])
  * @phpstan-method \Aws\Result getAsset(array{agentSpaceId?: string, assetId?: string, assetVersion?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getAssetAsync(array $args = [])
@@ -400,9 +420,9 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise getTriggerAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getTriggerAsync(array{agentSpaceId?: string, triggerId?: string, ...} $args = [])
  * @method \Aws\Result listAgentSpaces(array $args = [])
- * @phpstan-method \Aws\Result listAgentSpaces(array{maxResults?: int, nextToken?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result listAgentSpaces(array{maxResults?: int, nextToken?: string, includedData?: 'ALL_DATA'|'METADATA_ONLY', ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listAgentSpacesAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise listAgentSpacesAsync(array{maxResults?: int, nextToken?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listAgentSpacesAsync(array{maxResults?: int, nextToken?: string, includedData?: 'ALL_DATA'|'METADATA_ONLY', ...} $args = [])
  * @method \Aws\Result listAssetFiles(array $args = [])
  * @phpstan-method \Aws\Result listAssetFiles(array{agentSpaceId?: string, assetId?: string, assetVersion?: int, nextToken?: string, maxResults?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listAssetFilesAsync(array $args = [])
@@ -555,14 +575,14 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result listServices(array{
  *     maxResults?: int,
  *     nextToken?: string,
- *     filterServiceType?: 'azure'|'azuredevops'|'azureidentity'|'dynatrace'|'eventChannel'|'github'|'gitlab'|'mcpserver'|'mcpserverdatadog'|'mcpservergrafana'|'mcpservernewrelic'|'mcpserversigv4'|'mcpserversplunk'|'pagerduty'|'remoteagent'|'remoteagentsigv4'|'servicenow'|'slack',
+ *     filterServiceType?: 'azure'|'azuredevops'|'azureidentity'|'dynatrace'|'eventChannel'|'github'|'gitlab'|'mcpserver'|'mcpserverdatadog'|'mcpservergrafana'|'mcpservernewrelic'|'mcpserversigv4'|'mcpserversplunk'|'msteams'|'pagerduty'|'remoteagent'|'remoteagentsigv4'|'servicenow'|'slack',
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise listServicesAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise listServicesAsync(array{
  *     maxResults?: int,
  *     nextToken?: string,
- *     filterServiceType?: 'azure'|'azuredevops'|'azureidentity'|'dynatrace'|'eventChannel'|'github'|'gitlab'|'mcpserver'|'mcpserverdatadog'|'mcpservergrafana'|'mcpservernewrelic'|'mcpserversigv4'|'mcpserversplunk'|'pagerduty'|'remoteagent'|'remoteagentsigv4'|'servicenow'|'slack',
+ *     filterServiceType?: 'azure'|'azuredevops'|'azureidentity'|'dynatrace'|'eventChannel'|'github'|'gitlab'|'mcpserver'|'mcpserverdatadog'|'mcpservergrafana'|'mcpservernewrelic'|'mcpserversigv4'|'mcpserversplunk'|'msteams'|'pagerduty'|'remoteagent'|'remoteagentsigv4'|'servicenow'|'slack',
  *     ...,
  * } $args = [])
  * @method \Aws\Result listTagsForResource(array $args = [])
@@ -818,6 +838,7 @@ use Aws\AwsClient;
  *             ownerType?: 'organization'|'user',
  *             instanceIdentifier?: string,
  *             runtimeRoleArn?: string,
+ *             releaseManagementAssociationId?: string,
  *             ...,
  *         },
  *         slack?: array{workspaceId?: string, workspaceName?: string, transmissionTarget?: array, bidirectional?: array, ...},
@@ -826,7 +847,14 @@ use Aws\AwsClient;
  *         mcpservernewrelic?: array{accountId?: string, endpoint?: string, ...},
  *         mcpserverdatadog?: array{enabledElevatedTools?: list<array>, ...},
  *         mcpserver?: array{tools?: list<string>, toolDetails?: list<array>, ...},
- *         gitlab?: array{projectId?: string, projectPath?: string, instanceIdentifier?: string, runtimeRoleArn?: string, ...},
+ *         gitlab?: array{
+ *             projectId?: string,
+ *             projectPath?: string,
+ *             instanceIdentifier?: string,
+ *             runtimeRoleArn?: string,
+ *             releaseManagementAssociationId?: string,
+ *             ...,
+ *         },
  *         mcpserversplunk?: array,
  *         eventChannel?: array,
  *         azure?: array{subscriptionId?: string, ...},
@@ -842,6 +870,8 @@ use Aws\AwsClient;
  *         mcpserversigv4?: array{tools?: list<string>, toolDetails?: list<array>, ...},
  *         remoteagent?: array,
  *         remoteagentsigv4?: array,
+ *         msteams?: array{teamId?: string, teamName?: string, transmissionTarget?: array, ...},
+ *         releaseManagement?: array{name?: string, networkAccess?: array, ...},
  *         ...,
  *     },
  *     capabilities?: array<string, array{enabled?: bool, triggerFilterGroups?: list<array>, ...}>,
@@ -876,6 +906,7 @@ use Aws\AwsClient;
  *             ownerType?: 'organization'|'user',
  *             instanceIdentifier?: string,
  *             runtimeRoleArn?: string,
+ *             releaseManagementAssociationId?: string,
  *             ...,
  *         },
  *         slack?: array{workspaceId?: string, workspaceName?: string, transmissionTarget?: array, bidirectional?: array, ...},
@@ -884,7 +915,14 @@ use Aws\AwsClient;
  *         mcpservernewrelic?: array{accountId?: string, endpoint?: string, ...},
  *         mcpserverdatadog?: array{enabledElevatedTools?: list<array>, ...},
  *         mcpserver?: array{tools?: list<string>, toolDetails?: list<array>, ...},
- *         gitlab?: array{projectId?: string, projectPath?: string, instanceIdentifier?: string, runtimeRoleArn?: string, ...},
+ *         gitlab?: array{
+ *             projectId?: string,
+ *             projectPath?: string,
+ *             instanceIdentifier?: string,
+ *             runtimeRoleArn?: string,
+ *             releaseManagementAssociationId?: string,
+ *             ...,
+ *         },
  *         mcpserversplunk?: array,
  *         eventChannel?: array,
  *         azure?: array{subscriptionId?: string, ...},
@@ -900,6 +938,8 @@ use Aws\AwsClient;
  *         mcpserversigv4?: array{tools?: list<string>, toolDetails?: list<array>, ...},
  *         remoteagent?: array,
  *         remoteagentsigv4?: array,
+ *         msteams?: array{teamId?: string, teamName?: string, transmissionTarget?: array, ...},
+ *         releaseManagement?: array{name?: string, networkAccess?: array, ...},
  *         ...,
  *     },
  *     capabilities?: array<string, array{enabled?: bool, triggerFilterGroups?: list<array>, ...}>,

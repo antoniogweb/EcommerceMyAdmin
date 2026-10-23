@@ -543,6 +543,24 @@ use Aws\AwsClient;
  *     Tags?: array<string, string>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result createContactFlowAlias(array $args = [])
+ * @phpstan-method \Aws\Result createContactFlowAlias(array{
+ *     InstanceId?: string,
+ *     Description?: string,
+ *     ContactFlowId?: string,
+ *     ContactFlowVersion?: int,
+ *     AliasName?: string,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise createContactFlowAliasAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise createContactFlowAliasAsync(array{
+ *     InstanceId?: string,
+ *     Description?: string,
+ *     ContactFlowId?: string,
+ *     ContactFlowVersion?: int,
+ *     AliasName?: string,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result createContactFlowModule(array $args = [])
  * @phpstan-method \Aws\Result createContactFlowModule(array{
  *     InstanceId?: string,
@@ -1186,7 +1204,7 @@ use Aws\AwsClient;
  *     },
  *     Function?: string,
  *     Actions?: list<array{
- *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
+ *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
  *         TaskAction?: array,
  *         EventBridgeAction?: array,
  *         AssignContactCategoryAction?: array,
@@ -1197,6 +1215,7 @@ use Aws\AwsClient;
  *         EndAssociatedTasksAction?: array,
  *         SubmitAutoEvaluationAction?: array,
  *         ExtractInformationAction?: array,
+ *         SendInAppNotificationAction?: array,
  *         ...,
  *     }>,
  *     PublishStatus?: 'DRAFT'|'PUBLISHED',
@@ -1216,7 +1235,7 @@ use Aws\AwsClient;
  *     },
  *     Function?: string,
  *     Actions?: list<array{
- *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
+ *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
  *         TaskAction?: array,
  *         EventBridgeAction?: array,
  *         AssignContactCategoryAction?: array,
@@ -1227,6 +1246,7 @@ use Aws\AwsClient;
  *         EndAssociatedTasksAction?: array,
  *         SubmitAutoEvaluationAction?: array,
  *         ExtractInformationAction?: array,
+ *         SendInAppNotificationAction?: array,
  *         ...,
  *     }>,
  *     PublishStatus?: 'DRAFT'|'PUBLISHED',
@@ -1597,6 +1617,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result deleteContactFlow(array{InstanceId?: string, ContactFlowId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteContactFlowAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise deleteContactFlowAsync(array{InstanceId?: string, ContactFlowId?: string, ...} $args = [])
+ * @method \Aws\Result deleteContactFlowAlias(array $args = [])
+ * @phpstan-method \Aws\Result deleteContactFlowAlias(array{InstanceId?: string, ContactFlowId?: string, AliasId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise deleteContactFlowAliasAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise deleteContactFlowAliasAsync(array{InstanceId?: string, ContactFlowId?: string, AliasId?: string, ...} $args = [])
  * @method \Aws\Result deleteContactFlowModule(array $args = [])
  * @phpstan-method \Aws\Result deleteContactFlowModule(array{InstanceId?: string, ContactFlowModuleId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteContactFlowModuleAsync(array $args = [])
@@ -1775,6 +1799,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result describeContactFlow(array{InstanceId?: string, ContactFlowId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeContactFlowAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise describeContactFlowAsync(array{InstanceId?: string, ContactFlowId?: string, ...} $args = [])
+ * @method \Aws\Result describeContactFlowAlias(array $args = [])
+ * @phpstan-method \Aws\Result describeContactFlowAlias(array{InstanceId?: string, ContactFlowId?: string, AliasId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeContactFlowAliasAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise describeContactFlowAliasAsync(array{InstanceId?: string, ContactFlowId?: string, AliasId?: string, ...} $args = [])
  * @method \Aws\Result describeContactFlowModule(array $args = [])
  * @phpstan-method \Aws\Result describeContactFlowModule(array{InstanceId?: string, ContactFlowModuleId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeContactFlowModuleAsync(array $args = [])
@@ -1818,13 +1846,13 @@ use Aws\AwsClient;
  * @method \Aws\Result describeInstanceAttribute(array $args = [])
  * @phpstan-method \Aws\Result describeInstanceAttribute(array{
  *     InstanceId?: string,
- *     AttributeType?: 'AUTO_RESOLVE_BEST_VOICES'|'CONTACTFLOW_LOGS'|'CONTACT_LENS'|'EARLY_MEDIA'|'ENHANCED_CHAT_MONITORING'|'ENHANCED_CONTACT_MONITORING'|'HIGH_VOLUME_OUTBOUND'|'INBOUND_CALLS'|'MESSAGE_STREAMING'|'MULTI_PARTY_CHAT_CONFERENCE'|'MULTI_PARTY_CONFERENCE'|'OUTBOUND_CALLS'|'USE_CUSTOM_TTS_VOICES',
+ *     AttributeType?: 'AUTO_MUTE_AGENT_ON_HOLD'|'AUTO_RESOLVE_BEST_VOICES'|'CONTACTFLOW_LOGS'|'CONTACT_LENS'|'EARLY_MEDIA'|'ENHANCED_CHAT_MONITORING'|'ENHANCED_CONTACT_MONITORING'|'HIGH_VOLUME_OUTBOUND'|'INBOUND_CALLS'|'MESSAGE_STREAMING'|'MULTI_PARTY_CHAT_CONFERENCE'|'MULTI_PARTY_CONFERENCE'|'OUTBOUND_CALLS'|'USE_CUSTOM_TTS_VOICES',
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise describeInstanceAttributeAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise describeInstanceAttributeAsync(array{
  *     InstanceId?: string,
- *     AttributeType?: 'AUTO_RESOLVE_BEST_VOICES'|'CONTACTFLOW_LOGS'|'CONTACT_LENS'|'EARLY_MEDIA'|'ENHANCED_CHAT_MONITORING'|'ENHANCED_CONTACT_MONITORING'|'HIGH_VOLUME_OUTBOUND'|'INBOUND_CALLS'|'MESSAGE_STREAMING'|'MULTI_PARTY_CHAT_CONFERENCE'|'MULTI_PARTY_CONFERENCE'|'OUTBOUND_CALLS'|'USE_CUSTOM_TTS_VOICES',
+ *     AttributeType?: 'AUTO_MUTE_AGENT_ON_HOLD'|'AUTO_RESOLVE_BEST_VOICES'|'CONTACTFLOW_LOGS'|'CONTACT_LENS'|'EARLY_MEDIA'|'ENHANCED_CHAT_MONITORING'|'ENHANCED_CONTACT_MONITORING'|'HIGH_VOLUME_OUTBOUND'|'INBOUND_CALLS'|'MESSAGE_STREAMING'|'MULTI_PARTY_CHAT_CONFERENCE'|'MULTI_PARTY_CONFERENCE'|'OUTBOUND_CALLS'|'USE_CUSTOM_TTS_VOICES',
  *     ...,
  * } $args = [])
  * @method \Aws\Result describeInstanceStorageConfig(array $args = [])
@@ -2090,9 +2118,23 @@ use Aws\AwsClient;
  *     ...,
  * } $args = [])
  * @method \Aws\Result getAttachedFile(array $args = [])
- * @phpstan-method \Aws\Result getAttachedFile(array{InstanceId?: string, FileId?: string, UrlExpiryInSeconds?: int, AssociatedResourceArn?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result getAttachedFile(array{
+ *     InstanceId?: string,
+ *     FileId?: string,
+ *     UrlExpiryInSeconds?: int,
+ *     AssociatedResourceArn?: string,
+ *     UrlContentDisposition?: 'ATTACHMENT'|'INLINE',
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise getAttachedFileAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise getAttachedFileAsync(array{InstanceId?: string, FileId?: string, UrlExpiryInSeconds?: int, AssociatedResourceArn?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getAttachedFileAsync(array{
+ *     InstanceId?: string,
+ *     FileId?: string,
+ *     UrlExpiryInSeconds?: int,
+ *     AssociatedResourceArn?: string,
+ *     UrlContentDisposition?: 'ATTACHMENT'|'INLINE',
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result getContactAttributes(array $args = [])
  * @phpstan-method \Aws\Result getContactAttributes(array{InstanceId?: string, InitialContactId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getContactAttributesAsync(array $args = [])
@@ -2417,6 +2459,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result listContactEvaluations(array{InstanceId?: string, ContactId?: string, NextToken?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listContactEvaluationsAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise listContactEvaluationsAsync(array{InstanceId?: string, ContactId?: string, NextToken?: string, ...} $args = [])
+ * @method \Aws\Result listContactFlowAliases(array $args = [])
+ * @phpstan-method \Aws\Result listContactFlowAliases(array{InstanceId?: string, ContactFlowId?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise listContactFlowAliasesAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listContactFlowAliasesAsync(array{InstanceId?: string, ContactFlowId?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
  * @method \Aws\Result listContactFlowModuleAliases(array $args = [])
  * @phpstan-method \Aws\Result listContactFlowModuleAliases(array{InstanceId?: string, ContactFlowModuleId?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listContactFlowModuleAliasesAsync(array $args = [])
@@ -2779,6 +2825,10 @@ use Aws\AwsClient;
  *     SegmentTypes?: list<'Attachments'|'Categories'|'Event'|'ExtractedInformation'|'Issues'|'PostContactSummary'|'Transcript'>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result listReplicationFindings(array $args = [])
+ * @phpstan-method \Aws\Result listReplicationFindings(array{InstanceId?: string, ResourceType?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise listReplicationFindingsAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listReplicationFindingsAsync(array{InstanceId?: string, ResourceType?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
  * @method \Aws\Result listRoutingProfileManualAssignmentQueues(array $args = [])
  * @phpstan-method \Aws\Result listRoutingProfileManualAssignmentQueues(array{InstanceId?: string, RoutingProfileId?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listRoutingProfileManualAssignmentQueuesAsync(array $args = [])
@@ -4298,6 +4348,8 @@ use Aws\AwsClient;
  *     }>,
  *     CustomerId?: string,
  *     DisconnectOnCustomerExit?: list<'AGENT'>,
+ *     ConnectionTypes?: list<'AUTHENTICATION_SESSION'|'CONNECTION_CREDENTIALS'|'WEBRTC_CONNECTION'|'WEBSOCKET'>,
+ *     ChatStreamingConfiguration?: array{StreamingEndpointArn?: string, ...},
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise startChatContactAsync(array $args = [])
@@ -4323,6 +4375,8 @@ use Aws\AwsClient;
  *     }>,
  *     CustomerId?: string,
  *     DisconnectOnCustomerExit?: list<'AGENT'>,
+ *     ConnectionTypes?: list<'AUTHENTICATION_SESSION'|'CONNECTION_CREDENTIALS'|'WEBRTC_CONNECTION'|'WEBSOCKET'>,
+ *     ChatStreamingConfiguration?: array{StreamingEndpointArn?: string, ...},
  *     ...,
  * } $args = [])
  * @method \Aws\Result startContactConversationalAnalyticsJob(array $args = [])
@@ -5069,6 +5123,26 @@ use Aws\AwsClient;
  *     UpdatedBy?: array{ConnectUserArn?: string, ...},
  *     ...,
  * } $args = [])
+ * @method \Aws\Result updateContactFlowAlias(array $args = [])
+ * @phpstan-method \Aws\Result updateContactFlowAlias(array{
+ *     InstanceId?: string,
+ *     ContactFlowId?: string,
+ *     AliasId?: string,
+ *     Name?: string,
+ *     Description?: string,
+ *     ContactFlowVersion?: int,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateContactFlowAliasAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateContactFlowAliasAsync(array{
+ *     InstanceId?: string,
+ *     ContactFlowId?: string,
+ *     AliasId?: string,
+ *     Name?: string,
+ *     Description?: string,
+ *     ContactFlowVersion?: int,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result updateContactFlowContent(array $args = [])
  * @phpstan-method \Aws\Result updateContactFlowContent(array{InstanceId?: string, ContactFlowId?: string, Content?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise updateContactFlowContentAsync(array $args = [])
@@ -5440,7 +5514,7 @@ use Aws\AwsClient;
  * @method \Aws\Result updateInstanceAttribute(array $args = [])
  * @phpstan-method \Aws\Result updateInstanceAttribute(array{
  *     InstanceId?: string,
- *     AttributeType?: 'AUTO_RESOLVE_BEST_VOICES'|'CONTACTFLOW_LOGS'|'CONTACT_LENS'|'EARLY_MEDIA'|'ENHANCED_CHAT_MONITORING'|'ENHANCED_CONTACT_MONITORING'|'HIGH_VOLUME_OUTBOUND'|'INBOUND_CALLS'|'MESSAGE_STREAMING'|'MULTI_PARTY_CHAT_CONFERENCE'|'MULTI_PARTY_CONFERENCE'|'OUTBOUND_CALLS'|'USE_CUSTOM_TTS_VOICES',
+ *     AttributeType?: 'AUTO_MUTE_AGENT_ON_HOLD'|'AUTO_RESOLVE_BEST_VOICES'|'CONTACTFLOW_LOGS'|'CONTACT_LENS'|'EARLY_MEDIA'|'ENHANCED_CHAT_MONITORING'|'ENHANCED_CONTACT_MONITORING'|'HIGH_VOLUME_OUTBOUND'|'INBOUND_CALLS'|'MESSAGE_STREAMING'|'MULTI_PARTY_CHAT_CONFERENCE'|'MULTI_PARTY_CONFERENCE'|'OUTBOUND_CALLS'|'USE_CUSTOM_TTS_VOICES',
  *     Value?: string,
  *     ClientToken?: string,
  *     ...,
@@ -5448,7 +5522,7 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise updateInstanceAttributeAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise updateInstanceAttributeAsync(array{
  *     InstanceId?: string,
- *     AttributeType?: 'AUTO_RESOLVE_BEST_VOICES'|'CONTACTFLOW_LOGS'|'CONTACT_LENS'|'EARLY_MEDIA'|'ENHANCED_CHAT_MONITORING'|'ENHANCED_CONTACT_MONITORING'|'HIGH_VOLUME_OUTBOUND'|'INBOUND_CALLS'|'MESSAGE_STREAMING'|'MULTI_PARTY_CHAT_CONFERENCE'|'MULTI_PARTY_CONFERENCE'|'OUTBOUND_CALLS'|'USE_CUSTOM_TTS_VOICES',
+ *     AttributeType?: 'AUTO_MUTE_AGENT_ON_HOLD'|'AUTO_RESOLVE_BEST_VOICES'|'CONTACTFLOW_LOGS'|'CONTACT_LENS'|'EARLY_MEDIA'|'ENHANCED_CHAT_MONITORING'|'ENHANCED_CONTACT_MONITORING'|'HIGH_VOLUME_OUTBOUND'|'INBOUND_CALLS'|'MESSAGE_STREAMING'|'MULTI_PARTY_CHAT_CONFERENCE'|'MULTI_PARTY_CONFERENCE'|'OUTBOUND_CALLS'|'USE_CUSTOM_TTS_VOICES',
  *     Value?: string,
  *     ClientToken?: string,
  *     ...,
@@ -5706,7 +5780,7 @@ use Aws\AwsClient;
  *     Name?: string,
  *     Function?: string,
  *     Actions?: list<array{
- *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
+ *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
  *         TaskAction?: array,
  *         EventBridgeAction?: array,
  *         AssignContactCategoryAction?: array,
@@ -5717,6 +5791,7 @@ use Aws\AwsClient;
  *         EndAssociatedTasksAction?: array,
  *         SubmitAutoEvaluationAction?: array,
  *         ExtractInformationAction?: array,
+ *         SendInAppNotificationAction?: array,
  *         ...,
  *     }>,
  *     PublishStatus?: 'DRAFT'|'PUBLISHED',
@@ -5730,7 +5805,7 @@ use Aws\AwsClient;
  *     Name?: string,
  *     Function?: string,
  *     Actions?: list<array{
- *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
+ *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
  *         TaskAction?: array,
  *         EventBridgeAction?: array,
  *         AssignContactCategoryAction?: array,
@@ -5741,6 +5816,7 @@ use Aws\AwsClient;
  *         EndAssociatedTasksAction?: array,
  *         SubmitAutoEvaluationAction?: array,
  *         ExtractInformationAction?: array,
+ *         SendInAppNotificationAction?: array,
  *         ...,
  *     }>,
  *     PublishStatus?: 'DRAFT'|'PUBLISHED',

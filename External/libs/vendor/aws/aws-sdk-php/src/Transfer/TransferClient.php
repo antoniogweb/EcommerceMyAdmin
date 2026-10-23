@@ -184,6 +184,7 @@ use Aws\AwsClient;
  *         PassiveIp?: string,
  *         TlsSessionResumptionMode?: 'DISABLED'|'ENABLED'|'ENFORCED',
  *         SetStatOption?: 'DEFAULT'|'ENABLE_NO_OP',
+ *         SftpPorts?: list<array>,
  *         As2Transports?: list<'HTTP'>,
  *         ProxyConfig?: array{SftpMode?: 'NONE'|'PROXY_PROTOCOL_V2_ENFORCED', ...},
  *         ...,
@@ -194,6 +195,7 @@ use Aws\AwsClient;
  *     StructuredLogDestinations?: list<string>,
  *     S3StorageOptions?: array{DirectoryListingOptimization?: 'DISABLED'|'ENABLED', ...},
  *     IpAddressType?: 'DUALSTACK'|'IPV4',
+ *     HostKeyStorageType?: 'SECRETS_MANAGER'|'SERVICE_MANAGED',
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createServerAsync(array $args = [])
@@ -227,6 +229,7 @@ use Aws\AwsClient;
  *         PassiveIp?: string,
  *         TlsSessionResumptionMode?: 'DISABLED'|'ENABLED'|'ENFORCED',
  *         SetStatOption?: 'DEFAULT'|'ENABLE_NO_OP',
+ *         SftpPorts?: list<array>,
  *         As2Transports?: list<'HTTP'>,
  *         ProxyConfig?: array{SftpMode?: 'NONE'|'PROXY_PROTOCOL_V2_ENFORCED', ...},
  *         ...,
@@ -237,6 +240,7 @@ use Aws\AwsClient;
  *     StructuredLogDestinations?: list<string>,
  *     S3StorageOptions?: array{DirectoryListingOptimization?: 'DISABLED'|'ENABLED', ...},
  *     IpAddressType?: 'DUALSTACK'|'IPV4',
+ *     HostKeyStorageType?: 'SECRETS_MANAGER'|'SERVICE_MANAGED',
  *     ...,
  * } $args = [])
  * @method \Aws\Result createUser(array $args = [])
@@ -327,6 +331,7 @@ use Aws\AwsClient;
  *         ...,
  *     }>,
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
+ *     StructuredLogDestinations?: list<string>,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createWorkflowAsync(array $args = [])
@@ -351,6 +356,7 @@ use Aws\AwsClient;
  *         ...,
  *     }>,
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
+ *     StructuredLogDestinations?: list<string>,
  *     ...,
  * } $args = [])
  * @method \Aws\Result deleteAccess(array $args = [])
@@ -483,6 +489,8 @@ use Aws\AwsClient;
  *     HostKeyBody?: string,
  *     Description?: string,
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
+ *     StorageType?: 'SECRETS_MANAGER'|'SERVICE_MANAGED',
+ *     KmsKey?: string,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise importHostKeyAsync(array $args = [])
@@ -491,6 +499,8 @@ use Aws\AwsClient;
  *     HostKeyBody?: string,
  *     Description?: string,
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
+ *     StorageType?: 'SECRETS_MANAGER'|'SERVICE_MANAGED',
+ *     KmsKey?: string,
  *     ...,
  * } $args = [])
  * @method \Aws\Result importSshPublicKey(array $args = [])
@@ -776,9 +786,23 @@ use Aws\AwsClient;
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateHostKey(array $args = [])
- * @phpstan-method \Aws\Result updateHostKey(array{ServerId?: string, HostKeyId?: string, Description?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result updateHostKey(array{
+ *     ServerId?: string,
+ *     HostKeyId?: string,
+ *     Description?: string,
+ *     StorageType?: 'SECRETS_MANAGER'|'SERVICE_MANAGED',
+ *     KmsKey?: string,
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateHostKeyAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise updateHostKeyAsync(array{ServerId?: string, HostKeyId?: string, Description?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateHostKeyAsync(array{
+ *     ServerId?: string,
+ *     HostKeyId?: string,
+ *     Description?: string,
+ *     StorageType?: 'SECRETS_MANAGER'|'SERVICE_MANAGED',
+ *     KmsKey?: string,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result updateProfile(array $args = [])
  * @phpstan-method \Aws\Result updateProfile(array{ProfileId?: string, CertificateIds?: list<string>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise updateProfileAsync(array $args = [])
@@ -790,6 +814,7 @@ use Aws\AwsClient;
  *         PassiveIp?: string,
  *         TlsSessionResumptionMode?: 'DISABLED'|'ENABLED'|'ENFORCED',
  *         SetStatOption?: 'DEFAULT'|'ENABLE_NO_OP',
+ *         SftpPorts?: list<array>,
  *         As2Transports?: list<'HTTP'>,
  *         ProxyConfig?: array{SftpMode?: 'NONE'|'PROXY_PROTOCOL_V2_ENFORCED', ...},
  *         ...,
@@ -832,6 +857,7 @@ use Aws\AwsClient;
  *         PassiveIp?: string,
  *         TlsSessionResumptionMode?: 'DISABLED'|'ENABLED'|'ENFORCED',
  *         SetStatOption?: 'DEFAULT'|'ENABLE_NO_OP',
+ *         SftpPorts?: list<array>,
  *         As2Transports?: list<'HTTP'>,
  *         ProxyConfig?: array{SftpMode?: 'NONE'|'PROXY_PROTOCOL_V2_ENFORCED', ...},
  *         ...,

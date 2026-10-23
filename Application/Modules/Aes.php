@@ -43,7 +43,7 @@ class Aes
 		// IV 16 byte
 		$iv = random_bytes(16);
 
-		$aes = new phpseclib\Crypt\AES('cbc');
+		$aes = new phpseclib3\Crypt\AES('cbc');
 		$aes->setKey(AES_KEY);
 		$aes->setIV($iv);
 		$ciphertext = $aes->encrypt($text); // pkcs7 padding gestito da phpseclib v2
@@ -78,7 +78,7 @@ class Aes
 		$calc = hash_hmac('sha256', $iv . $ciphertext, MAC_KEY, true);
 		if (!hash_equals($calc, $mac)) return null;
 
-		$aes = new phpseclib\Crypt\AES('cbc');
+		$aes = new phpseclib3\Crypt\AES('cbc');
 		$aes->setKey(AES_KEY);
 		$aes->setIV($iv);
 		$plain = $aes->decrypt($ciphertext);

@@ -255,6 +255,10 @@ use Aws\AwsClient;
  *     }>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result cancelExportJobV2(array $args = [])
+ * @phpstan-method \Aws\Result cancelExportJobV2(array{ExportJobId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise cancelExportJobV2Async(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise cancelExportJobV2Async(array{ExportJobId?: string, ...} $args = [])
  * @method \Aws\Result createActionTarget(array $args = [])
  * @phpstan-method \Aws\Result createActionTarget(array{Name?: string, Description?: string, Id?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise createActionTargetAsync(array $args = [])
@@ -391,11 +395,16 @@ use Aws\AwsClient;
  *     RuleStatus?: 'DISABLED'|'ENABLED',
  *     Description?: string,
  *     RuleOrder?: float,
- *     Criteria?: array{OcsfFindingCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...}, ...},
+ *     Criteria?: array{
+ *         OcsfFindingCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *         ResourceCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *         ...,
+ *     },
  *     Actions?: list<array{
- *         Type?: 'EXTERNAL_INTEGRATION'|'FINDING_FIELDS_UPDATE',
+ *         Type?: 'EXTERNAL_INTEGRATION'|'FINDING_FIELDS_UPDATE'|'RESOURCE_FIELDS_UPDATE',
  *         FindingFieldsUpdate?: array,
  *         ExternalIntegrationConfiguration?: array,
+ *         ResourceFieldsUpdate?: array,
  *         ...,
  *     }>,
  *     Tags?: array<string, string>,
@@ -408,11 +417,16 @@ use Aws\AwsClient;
  *     RuleStatus?: 'DISABLED'|'ENABLED',
  *     Description?: string,
  *     RuleOrder?: float,
- *     Criteria?: array{OcsfFindingCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...}, ...},
+ *     Criteria?: array{
+ *         OcsfFindingCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *         ResourceCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *         ...,
+ *     },
  *     Actions?: list<array{
- *         Type?: 'EXTERNAL_INTEGRATION'|'FINDING_FIELDS_UPDATE',
+ *         Type?: 'EXTERNAL_INTEGRATION'|'FINDING_FIELDS_UPDATE'|'RESOURCE_FIELDS_UPDATE',
  *         FindingFieldsUpdate?: array,
  *         ExternalIntegrationConfiguration?: array,
+ *         ResourceFieldsUpdate?: array,
  *         ...,
  *     }>,
  *     Tags?: array<string, string>,
@@ -935,6 +949,10 @@ use Aws\AwsClient;
  *     Providers?: list<'AWS'|'Azure'>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result getExportJobV2(array $args = [])
+ * @phpstan-method \Aws\Result getExportJobV2(array{ExportJobId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise getExportJobV2Async(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getExportJobV2Async(array{ExportJobId?: string, ...} $args = [])
  * @method \Aws\Result getFindingAggregator(array $args = [])
  * @phpstan-method \Aws\Result getFindingAggregator(array{FindingAggregatorArn?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getFindingAggregatorAsync(array $args = [])
@@ -961,7 +979,7 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result getFindingStatisticsV2(array{
  *     GroupByRules?: list<array{
  *         Filters?: array,
- *         GroupByField?: 'activity_name'|'class_name'|'cloud.account.name'|'cloud.account.uid'|'cloud.provider'|'cloud.region'|'compliance.assessments.name'|'compliance.control'|'compliance.standards'|'compliance.status'|'finding_info.analytic.name'|'finding_info.related_events.traits.category'|'finding_info.title'|'finding_info.types'|'metadata.product.name'|'metadata.product.uid'|'metadata.product.vendor_name'|'resources.cloud_partition'|'resources.name'|'resources.owner.account.name'|'resources.owner.account.uid'|'resources.owner.org.uid'|'resources.provider'|'resources.region'|'resources.type'|'resources.uid'|'severity'|'status'|'vendor_attributes.severity'|'vulnerabilities.affected_packages.name'|'vulnerabilities.fix_coverage',
+ *         GroupByField?: 'activity_name'|'class_name'|'cloud.account.name'|'cloud.account.uid'|'cloud.provider'|'cloud.region'|'compliance.assessments.name'|'compliance.control'|'compliance.standards'|'compliance.status'|'finding_info.analytic.name'|'finding_info.related_events.traits.category'|'finding_info.title'|'finding_info.types'|'impact'|'likelihood'|'metadata.product.name'|'metadata.product.uid'|'metadata.product.vendor_name'|'resources.cloud_partition'|'resources.criticality'|'resources.name'|'resources.owner.account.name'|'resources.owner.account.uid'|'resources.owner.org.uid'|'resources.provider'|'resources.region'|'resources.type'|'resources.uid'|'severity'|'status'|'vendor_attributes.severity'|'vulnerabilities.affected_packages.name'|'vulnerabilities.fix_coverage',
  *         ...,
  *     }>,
  *     Scopes?: array{AwsOrganizations?: list<array>, ...},
@@ -973,7 +991,7 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise getFindingStatisticsV2Async(array{
  *     GroupByRules?: list<array{
  *         Filters?: array,
- *         GroupByField?: 'activity_name'|'class_name'|'cloud.account.name'|'cloud.account.uid'|'cloud.provider'|'cloud.region'|'compliance.assessments.name'|'compliance.control'|'compliance.standards'|'compliance.status'|'finding_info.analytic.name'|'finding_info.related_events.traits.category'|'finding_info.title'|'finding_info.types'|'metadata.product.name'|'metadata.product.uid'|'metadata.product.vendor_name'|'resources.cloud_partition'|'resources.name'|'resources.owner.account.name'|'resources.owner.account.uid'|'resources.owner.org.uid'|'resources.provider'|'resources.region'|'resources.type'|'resources.uid'|'severity'|'status'|'vendor_attributes.severity'|'vulnerabilities.affected_packages.name'|'vulnerabilities.fix_coverage',
+ *         GroupByField?: 'activity_name'|'class_name'|'cloud.account.name'|'cloud.account.uid'|'cloud.provider'|'cloud.region'|'compliance.assessments.name'|'compliance.control'|'compliance.standards'|'compliance.status'|'finding_info.analytic.name'|'finding_info.related_events.traits.category'|'finding_info.title'|'finding_info.types'|'impact'|'likelihood'|'metadata.product.name'|'metadata.product.uid'|'metadata.product.vendor_name'|'resources.cloud_partition'|'resources.criticality'|'resources.name'|'resources.owner.account.name'|'resources.owner.account.uid'|'resources.owner.org.uid'|'resources.provider'|'resources.region'|'resources.type'|'resources.uid'|'severity'|'status'|'vendor_attributes.severity'|'vulnerabilities.affected_packages.name'|'vulnerabilities.fix_coverage',
  *         ...,
  *     }>,
  *     Scopes?: array{AwsOrganizations?: list<array>, ...},
@@ -1275,10 +1293,32 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result getRecommendedPolicyV2(array{MetadataUid?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getRecommendedPolicyV2Async(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getRecommendedPolicyV2Async(array{MetadataUid?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
+ * @method \Aws\Result getRemediationsV2(array $args = [])
+ * @phpstan-method \Aws\Result getRemediationsV2(array{
+ *     TargetUid?: string,
+ *     MetadataUid?: string,
+ *     Filters?: array{CompositeFilters?: list<array>, ...},
+ *     ShowGuidance?: bool,
+ *     GuidanceFormat?: 'All'|'AwsCli'|'Cdk'|'Cli'|'CloudFormation'|'IaC'|'Python'|'Template'|'Terraform',
+ *     MaxResults?: int,
+ *     NextToken?: string,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise getRemediationsV2Async(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getRemediationsV2Async(array{
+ *     TargetUid?: string,
+ *     MetadataUid?: string,
+ *     Filters?: array{CompositeFilters?: list<array>, ...},
+ *     ShowGuidance?: bool,
+ *     GuidanceFormat?: 'All'|'AwsCli'|'Cdk'|'Cli'|'CloudFormation'|'IaC'|'Python'|'Template'|'Terraform',
+ *     MaxResults?: int,
+ *     NextToken?: string,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result getResourcesStatisticsV2(array $args = [])
  * @phpstan-method \Aws\Result getResourcesStatisticsV2(array{
  *     GroupByRules?: list<array{
- *         GroupByField?: 'AccountId'|'AccountName'|'DiscoveryType'|'FindingsSummary.FindingType'|'Region'|'ResourceCategory'|'ResourceCloudPartition'|'ResourceInfo.AIDetails.CanonicalId'|'ResourceInfo.AIDetails.HostResourceType'|'ResourceName'|'ResourceOwnerAccountId'|'ResourceOwnerOrgId'|'ResourceProvider'|'ResourceRegion'|'ResourceSubCategory'|'ResourceType',
+ *         GroupByField?: 'AccountId'|'AccountName'|'DiscoveryType'|'FindingsSummary.FindingType'|'Region'|'ResourceCategory'|'ResourceCloudPartition'|'ResourceCriticality'|'ResourceInfo.AIDetails.CanonicalId'|'ResourceInfo.AIDetails.HostResourceType'|'ResourceName'|'ResourceOwnerAccountId'|'ResourceOwnerOrgId'|'ResourceProvider'|'ResourceRegion'|'ResourceSubCategory'|'ResourceType',
  *         Filters?: array,
  *         ...,
  *     }>,
@@ -1290,7 +1330,7 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise getResourcesStatisticsV2Async(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getResourcesStatisticsV2Async(array{
  *     GroupByRules?: list<array{
- *         GroupByField?: 'AccountId'|'AccountName'|'DiscoveryType'|'FindingsSummary.FindingType'|'Region'|'ResourceCategory'|'ResourceCloudPartition'|'ResourceInfo.AIDetails.CanonicalId'|'ResourceInfo.AIDetails.HostResourceType'|'ResourceName'|'ResourceOwnerAccountId'|'ResourceOwnerOrgId'|'ResourceProvider'|'ResourceRegion'|'ResourceSubCategory'|'ResourceType',
+ *         GroupByField?: 'AccountId'|'AccountName'|'DiscoveryType'|'FindingsSummary.FindingType'|'Region'|'ResourceCategory'|'ResourceCloudPartition'|'ResourceCriticality'|'ResourceInfo.AIDetails.CanonicalId'|'ResourceInfo.AIDetails.HostResourceType'|'ResourceName'|'ResourceOwnerAccountId'|'ResourceOwnerOrgId'|'ResourceProvider'|'ResourceRegion'|'ResourceSubCategory'|'ResourceType',
  *         Filters?: array,
  *         ...,
  *     }>,
@@ -1423,6 +1463,26 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result listEnabledProductsForImport(array{NextToken?: string, MaxResults?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listEnabledProductsForImportAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise listEnabledProductsForImportAsync(array{NextToken?: string, MaxResults?: int, ...} $args = [])
+ * @method \Aws\Result listExportJobsV2(array $args = [])
+ * @phpstan-method \Aws\Result listExportJobsV2(array{
+ *     Status?: 'CANCELLED'|'FAILED'|'RUNNING'|'SUCCEEDED',
+ *     DataType?: 'FINDINGS',
+ *     MaxResults?: int,
+ *     NextToken?: string,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise listExportJobsV2Async(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listExportJobsV2Async(array{
+ *     Status?: 'CANCELLED'|'FAILED'|'RUNNING'|'SUCCEEDED',
+ *     DataType?: 'FINDINGS',
+ *     MaxResults?: int,
+ *     NextToken?: string,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result listExposuresByRemediationV2(array $args = [])
+ * @phpstan-method \Aws\Result listExposuresByRemediationV2(array{TargetUid?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise listExposuresByRemediationV2Async(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listExposuresByRemediationV2Async(array{TargetUid?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
  * @method \Aws\Result listFindingAggregators(array $args = [])
  * @phpstan-method \Aws\Result listFindingAggregators(array{NextToken?: string, MaxResults?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listFindingAggregatorsAsync(array $args = [])
@@ -1495,6 +1555,40 @@ use Aws\AwsClient;
  *     ConfigurationPolicyIdentifier?: string,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result startExportJobV2(array $args = [])
+ * @phpstan-method \Aws\Result startExportJobV2(array{
+ *     Name?: string,
+ *     Destination?: array{S3?: array{BucketArn?: string, KmsKeyArn?: string, ObjectPrefix?: string, ...}, ...},
+ *     OutputConfiguration?: array{
+ *         Findings?: array{
+ *             Format?: 'CSV'|'OCSF_JSON',
+ *             Filters?: array,
+ *             SelectedFields?: list<'activity_id'|'activity_name'|'class_name'|'cloud.account.name'|'cloud.account.uid'|'cloud.provider'|'cloud.region'|'comment'|'compliance.assessments.category'|'compliance.assessments.meets_criteria'|'compliance.assessments.name'|'compliance.control'|'compliance.control_parameters'|'compliance.standards'|'compliance.status'|'compliance.status_id'|'confidence_score'|'databucket.encryption_details.algorithm'|'databucket.encryption_details.key_uid'|'databucket.file.data_classifications.classifier_details.type'|'databucket.tags'|'evidences.actor.user.account.uid'|'evidences.api.operation'|'evidences.api.response.code'|'evidences.api.response.error_message'|'evidences.api.service.name'|'evidences.connection_info.direction'|'evidences.connection_info.protocol_name'|'evidences.dst_endpoint.autonomous_system.name'|'evidences.dst_endpoint.autonomous_system.number'|'evidences.dst_endpoint.ip'|'evidences.dst_endpoint.location.city'|'evidences.dst_endpoint.location.country'|'evidences.dst_endpoint.port'|'evidences.src_endpoint.autonomous_system.name'|'evidences.src_endpoint.autonomous_system.number'|'evidences.src_endpoint.hostname'|'evidences.src_endpoint.ip'|'evidences.src_endpoint.location.city'|'evidences.src_endpoint.location.country'|'evidences.src_endpoint.port'|'finding_info.analytic.name'|'finding_info.created_time_dt'|'finding_info.desc'|'finding_info.first_seen_time_dt'|'finding_info.last_seen_time_dt'|'finding_info.modified_time_dt'|'finding_info.related_events.product.uid'|'finding_info.related_events.title'|'finding_info.related_events.traits.category'|'finding_info.related_events.uid'|'finding_info.related_events_count'|'finding_info.src_url'|'finding_info.tags'|'finding_info.title'|'finding_info.types'|'finding_info.uid'|'malware.name'|'malware.severity'|'malware_scan_info.uid'|'metadata.product.feature.uid'|'metadata.product.name'|'metadata.product.uid'|'metadata.product.vendor_name'|'metadata.uid'|'remediation.desc'|'remediation.references'|'resources.cloud_function.layers.uid_alt'|'resources.cloud_function.runtime'|'resources.cloud_function.user.uid'|'resources.cloud_partition'|'resources.device.encryption_details.key_uid'|'resources.device.image.uid'|'resources.image.architecture'|'resources.image.created_time_dt'|'resources.image.in_use_count'|'resources.image.last_used_time_dt'|'resources.image.registry_uid'|'resources.image.repository_name'|'resources.image.uid'|'resources.modified_time_dt'|'resources.name'|'resources.owner.account.name'|'resources.owner.account.uid'|'resources.owner.org.uid'|'resources.provider'|'resources.region'|'resources.subnet_info.uid'|'resources.tags'|'resources.type'|'resources.uid'|'resources.vpc_uid'|'severity'|'severity_id'|'status'|'status_id'|'vendor_attributes.severity'|'vendor_attributes.severity_id'|'vulnerabilities.affected_code.file.path'|'vulnerabilities.affected_packages.name'|'vulnerabilities.cve.cvss.base_score'|'vulnerabilities.cve.cvss.vendor_name'|'vulnerabilities.cve.cvss.version'|'vulnerabilities.cve.epss.score'|'vulnerabilities.cve.uid'|'vulnerabilities.fix_coverage'|'vulnerabilities.is_exploit_available'|'vulnerabilities.is_fix_available'|'vulnerabilities.related_vulnerabilities'>,
+ *             ...,
+ *         },
+ *         ...,
+ *     },
+ *     Scopes?: array{AwsOrganizations?: list<array>, ...},
+ *     ClientToken?: string,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise startExportJobV2Async(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise startExportJobV2Async(array{
+ *     Name?: string,
+ *     Destination?: array{S3?: array{BucketArn?: string, KmsKeyArn?: string, ObjectPrefix?: string, ...}, ...},
+ *     OutputConfiguration?: array{
+ *         Findings?: array{
+ *             Format?: 'CSV'|'OCSF_JSON',
+ *             Filters?: array,
+ *             SelectedFields?: list<'activity_id'|'activity_name'|'class_name'|'cloud.account.name'|'cloud.account.uid'|'cloud.provider'|'cloud.region'|'comment'|'compliance.assessments.category'|'compliance.assessments.meets_criteria'|'compliance.assessments.name'|'compliance.control'|'compliance.control_parameters'|'compliance.standards'|'compliance.status'|'compliance.status_id'|'confidence_score'|'databucket.encryption_details.algorithm'|'databucket.encryption_details.key_uid'|'databucket.file.data_classifications.classifier_details.type'|'databucket.tags'|'evidences.actor.user.account.uid'|'evidences.api.operation'|'evidences.api.response.code'|'evidences.api.response.error_message'|'evidences.api.service.name'|'evidences.connection_info.direction'|'evidences.connection_info.protocol_name'|'evidences.dst_endpoint.autonomous_system.name'|'evidences.dst_endpoint.autonomous_system.number'|'evidences.dst_endpoint.ip'|'evidences.dst_endpoint.location.city'|'evidences.dst_endpoint.location.country'|'evidences.dst_endpoint.port'|'evidences.src_endpoint.autonomous_system.name'|'evidences.src_endpoint.autonomous_system.number'|'evidences.src_endpoint.hostname'|'evidences.src_endpoint.ip'|'evidences.src_endpoint.location.city'|'evidences.src_endpoint.location.country'|'evidences.src_endpoint.port'|'finding_info.analytic.name'|'finding_info.created_time_dt'|'finding_info.desc'|'finding_info.first_seen_time_dt'|'finding_info.last_seen_time_dt'|'finding_info.modified_time_dt'|'finding_info.related_events.product.uid'|'finding_info.related_events.title'|'finding_info.related_events.traits.category'|'finding_info.related_events.uid'|'finding_info.related_events_count'|'finding_info.src_url'|'finding_info.tags'|'finding_info.title'|'finding_info.types'|'finding_info.uid'|'malware.name'|'malware.severity'|'malware_scan_info.uid'|'metadata.product.feature.uid'|'metadata.product.name'|'metadata.product.uid'|'metadata.product.vendor_name'|'metadata.uid'|'remediation.desc'|'remediation.references'|'resources.cloud_function.layers.uid_alt'|'resources.cloud_function.runtime'|'resources.cloud_function.user.uid'|'resources.cloud_partition'|'resources.device.encryption_details.key_uid'|'resources.device.image.uid'|'resources.image.architecture'|'resources.image.created_time_dt'|'resources.image.in_use_count'|'resources.image.last_used_time_dt'|'resources.image.registry_uid'|'resources.image.repository_name'|'resources.image.uid'|'resources.modified_time_dt'|'resources.name'|'resources.owner.account.name'|'resources.owner.account.uid'|'resources.owner.org.uid'|'resources.provider'|'resources.region'|'resources.subnet_info.uid'|'resources.tags'|'resources.type'|'resources.uid'|'resources.vpc_uid'|'severity'|'severity_id'|'status'|'status_id'|'vendor_attributes.severity'|'vendor_attributes.severity_id'|'vulnerabilities.affected_code.file.path'|'vulnerabilities.affected_packages.name'|'vulnerabilities.cve.cvss.base_score'|'vulnerabilities.cve.cvss.vendor_name'|'vulnerabilities.cve.cvss.version'|'vulnerabilities.cve.epss.score'|'vulnerabilities.cve.uid'|'vulnerabilities.fix_coverage'|'vulnerabilities.is_exploit_available'|'vulnerabilities.is_fix_available'|'vulnerabilities.related_vulnerabilities'>,
+ *             ...,
+ *         },
+ *         ...,
+ *     },
+ *     Scopes?: array{AwsOrganizations?: list<array>, ...},
+ *     ClientToken?: string,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result tagResource(array $args = [])
  * @phpstan-method \Aws\Result tagResource(array{ResourceArn?: string, Tags?: array<string, string>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise tagResourceAsync(array $args = [])
@@ -1518,11 +1612,16 @@ use Aws\AwsClient;
  *     RuleOrder?: float,
  *     Description?: string,
  *     RuleName?: string,
- *     Criteria?: array{OcsfFindingCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...}, ...},
+ *     Criteria?: array{
+ *         OcsfFindingCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *         ResourceCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *         ...,
+ *     },
  *     Actions?: list<array{
- *         Type?: 'EXTERNAL_INTEGRATION'|'FINDING_FIELDS_UPDATE',
+ *         Type?: 'EXTERNAL_INTEGRATION'|'FINDING_FIELDS_UPDATE'|'RESOURCE_FIELDS_UPDATE',
  *         FindingFieldsUpdate?: array,
  *         ExternalIntegrationConfiguration?: array,
+ *         ResourceFieldsUpdate?: array,
  *         ...,
  *     }>,
  *     ...,
@@ -1534,11 +1633,16 @@ use Aws\AwsClient;
  *     RuleOrder?: float,
  *     Description?: string,
  *     RuleName?: string,
- *     Criteria?: array{OcsfFindingCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...}, ...},
+ *     Criteria?: array{
+ *         OcsfFindingCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *         ResourceCriteria?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *         ...,
+ *     },
  *     Actions?: list<array{
- *         Type?: 'EXTERNAL_INTEGRATION'|'FINDING_FIELDS_UPDATE',
+ *         Type?: 'EXTERNAL_INTEGRATION'|'FINDING_FIELDS_UPDATE'|'RESOURCE_FIELDS_UPDATE',
  *         FindingFieldsUpdate?: array,
  *         ExternalIntegrationConfiguration?: array,
+ *         ResourceFieldsUpdate?: array,
  *         ...,
  *     }>,
  *     ...,

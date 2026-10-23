@@ -4,7 +4,6 @@ namespace SatispayGBusiness;
 
 use \Exception;
 use SatispayGBusiness\RSAService\OpenSSL_RSAService;
-use SatispayGBusiness\RSAService\SeclibRSAService;
 
 class RSAServiceFactory
 {
@@ -21,6 +20,10 @@ class RSAServiceFactory
             return OpenSSL_RSAService::class;
         }
 
+        throw new \RuntimeException(
+            'OpenSSL RSA service is not available'
+        );
+        
         if (SeclibRSAService::isAvailable()) {
             return SeclibRSAService::class;
         }

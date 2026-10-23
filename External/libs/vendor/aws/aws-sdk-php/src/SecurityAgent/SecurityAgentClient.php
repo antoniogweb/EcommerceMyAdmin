@@ -49,6 +49,28 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result batchDeleteThreatModels(array{threatModelIds?: list<string>, agentSpaceId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise batchDeleteThreatModelsAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise batchDeleteThreatModelsAsync(array{threatModelIds?: list<string>, agentSpaceId?: string, ...} $args = [])
+ * @method \Aws\Result batchDisassociateFindingIssue(array $args = [])
+ * @phpstan-method \Aws\Result batchDisassociateFindingIssue(array{agentSpaceId?: string, pentestJobId?: string, codeReviewJobId?: string, findingIds?: list<string>, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise batchDisassociateFindingIssueAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise batchDisassociateFindingIssueAsync(array{agentSpaceId?: string, pentestJobId?: string, codeReviewJobId?: string, findingIds?: list<string>, ...} $args = [])
+ * @method \Aws\Result batchExportFindings(array $args = [])
+ * @phpstan-method \Aws\Result batchExportFindings(array{
+ *     agentSpaceId?: string,
+ *     pentestJobId?: string,
+ *     codeReviewJobId?: string,
+ *     issueDestination?: array{integrationId?: string, projectKey?: string, ...},
+ *     findingIds?: list<string>,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise batchExportFindingsAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise batchExportFindingsAsync(array{
+ *     agentSpaceId?: string,
+ *     pentestJobId?: string,
+ *     codeReviewJobId?: string,
+ *     issueDestination?: array{integrationId?: string, projectKey?: string, ...},
+ *     findingIds?: list<string>,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result batchGetAgentSpaces(array $args = [])
  * @phpstan-method \Aws\Result batchGetAgentSpaces(array{agentSpaceIds?: list<string>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise batchGetAgentSpacesAsync(array $args = [])
@@ -181,6 +203,18 @@ use Aws\AwsClient;
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
  *     validationMode?: 'DISABLED'|'SIMULATED',
  *     maxTaskHours?: float,
+ *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
+ *     reportFilters?: array{
+ *         riskLevels?: list<'CRITICAL'|'HIGH'|'INFORMATIONAL'|'LOW'|'MEDIUM'|'UNKNOWN'>,
+ *         confidenceLevels?: list<'FALSE_POSITIVE'|'HIGH'|'LOW'|'MEDIUM'|'UNCONFIRMED'>,
+ *         statuses?: list<'ACCEPTED'|'ACTIVE'|'FALSE_POSITIVE'|'RESOLVED'>,
+ *         riskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
+ *         findingTypes?: list<string>,
+ *         taskStatuses?: list<'ABORTED'|'COMPLETED'|'FAILED'|'INTERNAL_ERROR'|'IN_PROGRESS'>,
+ *         annotationNotes?: bool,
+ *         complianceReport?: bool,
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createCodeReviewAsync(array $args = [])
@@ -201,11 +235,23 @@ use Aws\AwsClient;
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
  *     validationMode?: 'DISABLED'|'SIMULATED',
  *     maxTaskHours?: float,
+ *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
+ *     reportFilters?: array{
+ *         riskLevels?: list<'CRITICAL'|'HIGH'|'INFORMATIONAL'|'LOW'|'MEDIUM'|'UNKNOWN'>,
+ *         confidenceLevels?: list<'FALSE_POSITIVE'|'HIGH'|'LOW'|'MEDIUM'|'UNCONFIRMED'>,
+ *         statuses?: list<'ACCEPTED'|'ACTIVE'|'FALSE_POSITIVE'|'RESOLVED'>,
+ *         riskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
+ *         findingTypes?: list<string>,
+ *         taskStatuses?: list<'ABORTED'|'COMPLETED'|'FAILED'|'INTERNAL_ERROR'|'IN_PROGRESS'>,
+ *         annotationNotes?: bool,
+ *         complianceReport?: bool,
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \Aws\Result createIntegration(array $args = [])
  * @phpstan-method \Aws\Result createIntegration(array{
- *     provider?: 'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB',
+ *     provider?: 'AZURE_DEVOPS'|'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB'|'JIRA',
  *     input?: array{
  *         github?: array{
  *             code?: string,
@@ -218,6 +264,9 @@ use Aws\AwsClient;
  *         gitlab?: array{accessToken?: string, targetUrl?: string, tokenType?: 'GROUP'|'PERSONAL', groupId?: string, ...},
  *         bitbucket?: array{installationId?: string, workspace?: string, code?: string, state?: string, ...},
  *         confluence?: array{installationId?: string, code?: string, state?: string, siteUrl?: string, ...},
+ *         azureDevOps?: array{code?: string, state?: string, organizationName?: string, ...},
+ *         bitbucketDataCenter?: array{targetUrl?: string, code?: string, state?: string, ...},
+ *         jira?: array{installationId?: string, code?: string, state?: string, siteUrl?: string, ...},
  *         ...,
  *     },
  *     integrationDisplayName?: string,
@@ -228,7 +277,7 @@ use Aws\AwsClient;
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createIntegrationAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise createIntegrationAsync(array{
- *     provider?: 'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB',
+ *     provider?: 'AZURE_DEVOPS'|'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB'|'JIRA',
  *     input?: array{
  *         github?: array{
  *             code?: string,
@@ -241,6 +290,9 @@ use Aws\AwsClient;
  *         gitlab?: array{accessToken?: string, targetUrl?: string, tokenType?: 'GROUP'|'PERSONAL', groupId?: string, ...},
  *         bitbucket?: array{installationId?: string, workspace?: string, code?: string, state?: string, ...},
  *         confluence?: array{installationId?: string, code?: string, state?: string, siteUrl?: string, ...},
+ *         azureDevOps?: array{code?: string, state?: string, organizationName?: string, ...},
+ *         bitbucketDataCenter?: array{targetUrl?: string, code?: string, state?: string, ...},
+ *         jira?: array{installationId?: string, code?: string, state?: string, siteUrl?: string, ...},
  *         ...,
  *     },
  *     integrationDisplayName?: string,
@@ -288,6 +340,20 @@ use Aws\AwsClient;
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
  *     disableManagedSkills?: list<'FINDING_PERSONALIZATION'|'LOGIN_OPTIMIZATION'>,
  *     maxTaskHours?: float,
+ *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
+ *     reportFilters?: array{
+ *         riskLevels?: list<'CRITICAL'|'HIGH'|'INFORMATIONAL'|'LOW'|'MEDIUM'|'UNKNOWN'>,
+ *         confidenceLevels?: list<'FALSE_POSITIVE'|'HIGH'|'LOW'|'MEDIUM'|'UNCONFIRMED'>,
+ *         statuses?: list<'ACCEPTED'|'ACTIVE'|'FALSE_POSITIVE'|'RESOLVED'>,
+ *         riskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
+ *         findingTypes?: list<string>,
+ *         taskStatuses?: list<'ABORTED'|'COMPLETED'|'FAILED'|'INTERNAL_ERROR'|'IN_PROGRESS'>,
+ *         annotationNotes?: bool,
+ *         complianceReport?: bool,
+ *         ...,
+ *     },
+ *     cicdConfiguration?: array{enabled?: bool, ...},
+ *     testScope?: array{type?: 'GENERATIVE_AI_APP'|'WEB_APP', ...},
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createPentestAsync(array $args = [])
@@ -311,6 +377,20 @@ use Aws\AwsClient;
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
  *     disableManagedSkills?: list<'FINDING_PERSONALIZATION'|'LOGIN_OPTIMIZATION'>,
  *     maxTaskHours?: float,
+ *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
+ *     reportFilters?: array{
+ *         riskLevels?: list<'CRITICAL'|'HIGH'|'INFORMATIONAL'|'LOW'|'MEDIUM'|'UNKNOWN'>,
+ *         confidenceLevels?: list<'FALSE_POSITIVE'|'HIGH'|'LOW'|'MEDIUM'|'UNCONFIRMED'>,
+ *         statuses?: list<'ACCEPTED'|'ACTIVE'|'FALSE_POSITIVE'|'RESOLVED'>,
+ *         riskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
+ *         findingTypes?: list<string>,
+ *         taskStatuses?: list<'ABORTED'|'COMPLETED'|'FAILED'|'INTERNAL_ERROR'|'IN_PROGRESS'>,
+ *         annotationNotes?: bool,
+ *         complianceReport?: bool,
+ *         ...,
+ *     },
+ *     cicdConfiguration?: array{enabled?: bool, ...},
+ *     testScope?: array{type?: 'GENERATIVE_AI_APP'|'WEB_APP', ...},
  *     ...,
  * } $args = [])
  * @method \Aws\Result createPrivateConnection(array $args = [])
@@ -526,9 +606,41 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise importSecurityRequirementsAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise importSecurityRequirementsAsync(array{packId?: string, input?: array{documents?: list<array>, ...}, ...} $args = [])
  * @method \Aws\Result initiateProviderRegistration(array $args = [])
- * @phpstan-method \Aws\Result initiateProviderRegistration(array{provider?: 'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB', ...} $args = [])
+ * @phpstan-method \Aws\Result initiateProviderRegistration(array{
+ *     provider?: 'AZURE_DEVOPS'|'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB'|'JIRA',
+ *     targetUrl?: string,
+ *     organizationName?: string,
+ *     clientId?: string,
+ *     clientSecret?: string,
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise initiateProviderRegistrationAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise initiateProviderRegistrationAsync(array{provider?: 'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB', ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise initiateProviderRegistrationAsync(array{
+ *     provider?: 'AZURE_DEVOPS'|'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB'|'JIRA',
+ *     targetUrl?: string,
+ *     organizationName?: string,
+ *     clientId?: string,
+ *     clientSecret?: string,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result listActorMessages(array $args = [])
+ * @phpstan-method \Aws\Result listActorMessages(array{
+ *     maxResults?: int,
+ *     nextToken?: string,
+ *     agentSpaceId?: string,
+ *     pentestId?: string,
+ *     actorIdentifier?: string,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise listActorMessagesAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listActorMessagesAsync(array{
+ *     maxResults?: int,
+ *     nextToken?: string,
+ *     agentSpaceId?: string,
+ *     pentestId?: string,
+ *     actorIdentifier?: string,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result listAgentSpaces(array $args = [])
  * @phpstan-method \Aws\Result listAgentSpaces(array{nextToken?: string, maxResults?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listAgentSpacesAsync(array $args = [])
@@ -619,7 +731,7 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result listIntegratedResources(array{
  *     agentSpaceId?: string,
  *     integrationId?: string,
- *     resourceType?: 'CODE_REPOSITORY'|'DOCUMENT',
+ *     resourceType?: 'CODE_REPOSITORY'|'DOCUMENT'|'PROJECT',
  *     nextToken?: string,
  *     maxResults?: int,
  *     ...,
@@ -628,7 +740,7 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise listIntegratedResourcesAsync(array{
  *     agentSpaceId?: string,
  *     integrationId?: string,
- *     resourceType?: 'CODE_REPOSITORY'|'DOCUMENT',
+ *     resourceType?: 'CODE_REPOSITORY'|'DOCUMENT'|'PROJECT',
  *     nextToken?: string,
  *     maxResults?: int,
  *     ...,
@@ -636,8 +748,8 @@ use Aws\AwsClient;
  * @method \Aws\Result listIntegrations(array $args = [])
  * @phpstan-method \Aws\Result listIntegrations(array{
  *     filter?: array{
- *         provider?: 'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB',
- *         providerType?: 'DOCUMENTATION'|'SOURCE_CODE',
+ *         provider?: 'AZURE_DEVOPS'|'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB'|'JIRA',
+ *         providerType?: 'DOCUMENTATION'|'ISSUE_TRACKING'|'SOURCE_CODE',
  *         ...,
  *     },
  *     nextToken?: string,
@@ -647,8 +759,8 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise listIntegrationsAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise listIntegrationsAsync(array{
  *     filter?: array{
- *         provider?: 'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB',
- *         providerType?: 'DOCUMENTATION'|'SOURCE_CODE',
+ *         provider?: 'AZURE_DEVOPS'|'BITBUCKET'|'CONFLUENCE'|'GITHUB'|'GITLAB'|'JIRA',
+ *         providerType?: 'DOCUMENTATION'|'ISSUE_TRACKING'|'SOURCE_CODE',
  *         ...,
  *     },
  *     nextToken?: string,
@@ -694,9 +806,23 @@ use Aws\AwsClient;
  *     ...,
  * } $args = [])
  * @method \Aws\Result listPentestJobsForPentest(array $args = [])
- * @phpstan-method \Aws\Result listPentestJobsForPentest(array{maxResults?: int, pentestId?: string, agentSpaceId?: string, nextToken?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result listPentestJobsForPentest(array{
+ *     maxResults?: int,
+ *     pentestId?: string,
+ *     agentSpaceId?: string,
+ *     nextToken?: string,
+ *     jobType?: 'CICD'|'FULL'|'REVALIDATION',
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise listPentestJobsForPentestAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise listPentestJobsForPentestAsync(array{maxResults?: int, pentestId?: string, agentSpaceId?: string, nextToken?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listPentestJobsForPentestAsync(array{
+ *     maxResults?: int,
+ *     pentestId?: string,
+ *     agentSpaceId?: string,
+ *     nextToken?: string,
+ *     jobType?: 'CICD'|'FULL'|'REVALIDATION',
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result listPentests(array $args = [])
  * @phpstan-method \Aws\Result listPentests(array{maxResults?: int, nextToken?: string, agentSpaceId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listPentestsAsync(array $args = [])
@@ -759,16 +885,32 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result startPentestJob(array{
  *     agentSpaceId?: string,
  *     pentestId?: string,
- *     jobType?: 'FULL'|'REVALIDATION',
+ *     jobType?: 'CICD'|'FULL'|'REVALIDATION',
  *     selectedFindingIds?: list<string>,
+ *     scopeChanges?: list<array{
+ *         integrationId?: string,
+ *         providerResourceId?: string,
+ *         baseCommitSha?: string,
+ *         headCommitSha?: string,
+ *         triggerRunId?: string,
+ *         ...,
+ *     }>,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise startPentestJobAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise startPentestJobAsync(array{
  *     agentSpaceId?: string,
  *     pentestId?: string,
- *     jobType?: 'FULL'|'REVALIDATION',
+ *     jobType?: 'CICD'|'FULL'|'REVALIDATION',
  *     selectedFindingIds?: list<string>,
+ *     scopeChanges?: list<array{
+ *         integrationId?: string,
+ *         providerResourceId?: string,
+ *         baseCommitSha?: string,
+ *         headCommitSha?: string,
+ *         triggerRunId?: string,
+ *         ...,
+ *     }>,
  *     ...,
  * } $args = [])
  * @method \Aws\Result startThreatModelJob(array $args = [])
@@ -854,6 +996,18 @@ use Aws\AwsClient;
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
  *     validationMode?: 'DISABLED'|'SIMULATED',
  *     maxTaskHours?: float,
+ *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
+ *     reportFilters?: array{
+ *         riskLevels?: list<'CRITICAL'|'HIGH'|'INFORMATIONAL'|'LOW'|'MEDIUM'|'UNKNOWN'>,
+ *         confidenceLevels?: list<'FALSE_POSITIVE'|'HIGH'|'LOW'|'MEDIUM'|'UNCONFIRMED'>,
+ *         statuses?: list<'ACCEPTED'|'ACTIVE'|'FALSE_POSITIVE'|'RESOLVED'>,
+ *         riskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
+ *         findingTypes?: list<string>,
+ *         taskStatuses?: list<'ABORTED'|'COMPLETED'|'FAILED'|'INTERNAL_ERROR'|'IN_PROGRESS'>,
+ *         annotationNotes?: bool,
+ *         complianceReport?: bool,
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateCodeReviewAsync(array $args = [])
@@ -875,6 +1029,18 @@ use Aws\AwsClient;
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
  *     validationMode?: 'DISABLED'|'SIMULATED',
  *     maxTaskHours?: float,
+ *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
+ *     reportFilters?: array{
+ *         riskLevels?: list<'CRITICAL'|'HIGH'|'INFORMATIONAL'|'LOW'|'MEDIUM'|'UNKNOWN'>,
+ *         confidenceLevels?: list<'FALSE_POSITIVE'|'HIGH'|'LOW'|'MEDIUM'|'UNCONFIRMED'>,
+ *         statuses?: list<'ACCEPTED'|'ACTIVE'|'FALSE_POSITIVE'|'RESOLVED'>,
+ *         riskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
+ *         findingTypes?: list<string>,
+ *         taskStatuses?: list<'ABORTED'|'COMPLETED'|'FAILED'|'INTERNAL_ERROR'|'IN_PROGRESS'>,
+ *         annotationNotes?: bool,
+ *         complianceReport?: bool,
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateFinding(array $args = [])
@@ -921,6 +1087,10 @@ use Aws\AwsClient;
  *     items?: list<array{resource?: array, capabilities?: array, ...}>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result updateIntegration(array $args = [])
+ * @phpstan-method \Aws\Result updateIntegration(array{integrationId?: string, webhookAction?: 'CREATE_IF_ABSENT'|'ROTATE', ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateIntegrationAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateIntegrationAsync(array{integrationId?: string, webhookAction?: 'CREATE_IF_ABSENT'|'ROTATE', ...} $args = [])
  * @method \Aws\Result updatePentest(array $args = [])
  * @phpstan-method \Aws\Result updatePentest(array{
  *     pentestId?: string,
@@ -943,6 +1113,20 @@ use Aws\AwsClient;
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
  *     disableManagedSkills?: list<'FINDING_PERSONALIZATION'|'LOGIN_OPTIMIZATION'>,
  *     maxTaskHours?: float,
+ *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
+ *     reportFilters?: array{
+ *         riskLevels?: list<'CRITICAL'|'HIGH'|'INFORMATIONAL'|'LOW'|'MEDIUM'|'UNKNOWN'>,
+ *         confidenceLevels?: list<'FALSE_POSITIVE'|'HIGH'|'LOW'|'MEDIUM'|'UNCONFIRMED'>,
+ *         statuses?: list<'ACCEPTED'|'ACTIVE'|'FALSE_POSITIVE'|'RESOLVED'>,
+ *         riskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
+ *         findingTypes?: list<string>,
+ *         taskStatuses?: list<'ABORTED'|'COMPLETED'|'FAILED'|'INTERNAL_ERROR'|'IN_PROGRESS'>,
+ *         annotationNotes?: bool,
+ *         complianceReport?: bool,
+ *         ...,
+ *     },
+ *     cicdConfiguration?: array{enabled?: bool, ...},
+ *     testScope?: array{type?: 'GENERATIVE_AI_APP'|'WEB_APP', ...},
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updatePentestAsync(array $args = [])
@@ -967,6 +1151,20 @@ use Aws\AwsClient;
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
  *     disableManagedSkills?: list<'FINDING_PERSONALIZATION'|'LOGIN_OPTIMIZATION'>,
  *     maxTaskHours?: float,
+ *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
+ *     reportFilters?: array{
+ *         riskLevels?: list<'CRITICAL'|'HIGH'|'INFORMATIONAL'|'LOW'|'MEDIUM'|'UNKNOWN'>,
+ *         confidenceLevels?: list<'FALSE_POSITIVE'|'HIGH'|'LOW'|'MEDIUM'|'UNCONFIRMED'>,
+ *         statuses?: list<'ACCEPTED'|'ACTIVE'|'FALSE_POSITIVE'|'RESOLVED'>,
+ *         riskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
+ *         findingTypes?: list<string>,
+ *         taskStatuses?: list<'ABORTED'|'COMPLETED'|'FAILED'|'INTERNAL_ERROR'|'IN_PROGRESS'>,
+ *         annotationNotes?: bool,
+ *         complianceReport?: bool,
+ *         ...,
+ *     },
+ *     cicdConfiguration?: array{enabled?: bool, ...},
+ *     testScope?: array{type?: 'GENERATIVE_AI_APP'|'WEB_APP', ...},
  *     ...,
  * } $args = [])
  * @method \Aws\Result updatePrivateConnectionCertificate(array $args = [])
@@ -1039,6 +1237,7 @@ use Aws\AwsClient;
  *     scopeDocs?: list<array{s3Location?: string, artifactId?: string, integratedDocument?: array, ...}>,
  *     serviceRole?: string,
  *     logConfig?: array{logGroup?: string, logStream?: string, ...},
+ *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateThreatModelAsync(array $args = [])
@@ -1059,6 +1258,7 @@ use Aws\AwsClient;
  *     scopeDocs?: list<array{s3Location?: string, artifactId?: string, integratedDocument?: array, ...}>,
  *     serviceRole?: string,
  *     logConfig?: array{logGroup?: string, logStream?: string, ...},
+ *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
  *     ...,
  * } $args = [])
  * @method \Aws\Result verifyTargetDomain(array $args = [])

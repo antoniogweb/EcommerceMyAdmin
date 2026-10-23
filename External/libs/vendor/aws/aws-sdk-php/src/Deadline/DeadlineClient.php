@@ -389,7 +389,21 @@ use Aws\AwsClient;
  *     template?: string,
  *     templateType?: 'JSON'|'YAML',
  *     priority?: int,
- *     parameters?: array<string, array{int?: string, float?: string, string?: string, path?: string, ...}>,
+ *     parameters?: array<string, array{
+ *         int?: string,
+ *         float?: string,
+ *         string?: string,
+ *         path?: string,
+ *         bool?: string,
+ *         rangeExpr?: string,
+ *         stringList?: list<string>,
+ *         pathList?: list<string>,
+ *         intList?: list<string>,
+ *         floatList?: list<string>,
+ *         boolList?: list<string>,
+ *         intListList?: list<list<string>>,
+ *         ...,
+ *     }>,
  *     attachments?: array{manifests?: list<array>, fileSystem?: 'COPIED'|'VIRTUAL', ...},
  *     storageProfileId?: string,
  *     targetTaskRunStatus?: 'READY'|'SUSPENDED',
@@ -410,7 +424,21 @@ use Aws\AwsClient;
  *     template?: string,
  *     templateType?: 'JSON'|'YAML',
  *     priority?: int,
- *     parameters?: array<string, array{int?: string, float?: string, string?: string, path?: string, ...}>,
+ *     parameters?: array<string, array{
+ *         int?: string,
+ *         float?: string,
+ *         string?: string,
+ *         path?: string,
+ *         bool?: string,
+ *         rangeExpr?: string,
+ *         stringList?: list<string>,
+ *         pathList?: list<string>,
+ *         intList?: list<string>,
+ *         floatList?: list<string>,
+ *         boolList?: list<string>,
+ *         intListList?: list<list<string>>,
+ *         ...,
+ *     }>,
  *     attachments?: array{manifests?: list<array>, fileSystem?: 'COPIED'|'VIRTUAL', ...},
  *     storageProfileId?: string,
  *     targetTaskRunStatus?: 'READY'|'SUSPENDED',
@@ -841,6 +869,26 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result listLimits(array{farmId?: string, nextToken?: string, maxResults?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listLimitsAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise listLimitsAsync(array{farmId?: string, nextToken?: string, maxResults?: int, ...} $args = [])
+ * @method \Aws\Result listMemberships(array $args = [])
+ * @phpstan-method \Aws\Result listMemberships(array{
+ *     nextToken?: string,
+ *     maxResults?: int,
+ *     principalId?: string,
+ *     identityStoreId?: string,
+ *     identityCenterRegion?: string,
+ *     resourceTypes?: list<'FARM'|'FLEET'|'JOB'|'QUEUE'>,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise listMembershipsAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listMembershipsAsync(array{
+ *     nextToken?: string,
+ *     maxResults?: int,
+ *     principalId?: string,
+ *     identityStoreId?: string,
+ *     identityCenterRegion?: string,
+ *     resourceTypes?: list<'FARM'|'FLEET'|'JOB'|'QUEUE'>,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result listMeteredProducts(array $args = [])
  * @phpstan-method \Aws\Result listMeteredProducts(array{licenseEndpointId?: string, nextToken?: string, maxResults?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listMeteredProductsAsync(array $args = [])
