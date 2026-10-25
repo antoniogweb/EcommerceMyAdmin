@@ -49,6 +49,8 @@ if (typeof alert_success_class == "undefined")
 
 $ = jQuery;
 
+var campiObbligatoriNonCompilati = [];
+
 function isInArray(elemento,haystack)
 {
     var count=haystack.length;
@@ -658,6 +660,49 @@ function rimuoviAriaInvalid(elemento)
 	campi.removeAttr("aria-invalid");
 }
 
+function aggiungiCampoObbligatorio(nomeCampo)
+{
+	nomeCampo = $.trim(nomeCampo || "").replace(/\s*\*$/, "");
+	nomeCampo = nomeCampo.charAt(0).toUpperCase() + nomeCampo.substring(1);
+
+	if (nomeCampo && $.inArray(nomeCampo, campiObbligatoriNonCompilati) === -1)
+		campiObbligatoriNonCompilati.push(nomeCampo);
+}
+
+function popolaCampoObbligatorioDaSelettore(selettore, contenitore)
+{
+	var selettoreClasse = selettore.substring(1);
+	var campo = contenitore.find(selettore).first();
+	var indicatore = contenitore.find(".evidenzia.not_defined_input").filter(function(){ return $.trim($(this).text()) === selettoreClasse; });
+
+	if (indicatore.length > 0 && campo.length > 0)
+	{
+		if (campo.attr("data-field-name"))
+			aggiungiCampoObbligatorio(campo.attr("data-field-name"));
+		else
+		{
+			var campoInput = campo.filter("input, select, textarea").add(campo.find("input, select, textarea")).first();
+			var nomeCampo = campoInput.attr("name");
+			if (nomeCampo)
+				popolaCampoObbligatorioDaLabel(nomeCampo, contenitore);
+		}
+	}
+}
+
+function popolaCampoObbligatorioDaLabel(nomeCampo, contenitore)
+{
+	var indicatore = contenitore.find(".evidenzia.not_defined_input").filter(function(){ return $.trim($(this).text()) === "class_" + nomeCampo; });
+	var campo = contenitore.find("[name='" + nomeCampo + "']").first();
+	var idCampo = campo.attr("id");
+
+	if (indicatore.length > 0 && idCampo)
+	{
+		var label = contenitore.find("label").filter(function(){ return $(this).attr("for") === idCampo; }).first();
+		if (label.length > 0)
+			aggiungiCampoObbligatorio($.trim(label.text()));
+	}
+}
+
 if (typeof evidenziaErrore !== 'function')
 {
 	window.evidenziaErrore = function(selettore, form)
@@ -674,11 +719,15 @@ if (typeof evidenziaErrore !== 'function')
 			{
 				boxErrori.find(selettore).addClass("uk-form-danger");
 				applicaAriaInvalid(boxErrori.find(selettore));
+				// funzione per cercare il nome dal selettore
+				popolaCampoObbligatorioDaSelettore(selettore, boxErrori);
 			}
 			else
 			{
 				boxErrori.find("[name='" + nomeCampo + "']").addClass("uk-form-danger");
 				applicaAriaInvalid(boxErrori.find("[name='" + nomeCampo + "']"));
+				// funzione per cercare il nome dalla label
+				popolaCampoObbligatorioDaLabel(nomeCampo, boxErrori);
 			}
 		}
 		else
@@ -687,11 +736,15 @@ if (typeof evidenziaErrore !== 'function')
 			{
 				$(selettore).addClass("uk-form-danger");
 				applicaAriaInvalid($(selettore));
+				// funzione per cercare il nome dal selettore
+				popolaCampoObbligatorioDaSelettore(selettore, $(document));
 			}
 			else
 			{
 				$("[name='" + nomeCampo + "']").addClass("uk-form-danger");
 				applicaAriaInvalid($("[name='" + nomeCampo + "']"));
+				// funzione per cercare il nome dalla label
+				popolaCampoObbligatorioDaLabel(nomeCampo, $(document));
 			}
 		}
 	}
@@ -709,6 +762,8 @@ function nascondiErrori(form)
 
 function evidenziaErrori(ajaxSubmit, form)
 {
+	campiObbligatoriNonCompilati = [];
+
 	if (typeof ajaxSubmit != "undefined")
 		nascondiErrori(form);
 	
