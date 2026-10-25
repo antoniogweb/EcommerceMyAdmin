@@ -49,7 +49,7 @@
 					
 					<?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>
 					
-					<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
+					<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto" data-field-name="<?php echo gtextAttr("privacy policy");?>">
 						<?php 
 						$idPrivacy = PagineModel::gTipoPagina("PRIVACY");
 						$paginaPrivacy = PagineModel::getPageDetailsPreloaded($idPrivacy);
@@ -60,7 +60,7 @@
 						</label>
 					</div>
 					
-					<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto_feedback">
+					<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto_feedback" data-field-name="<?php echo gtextAttr("condizioni di pubblicazione della mia valutazione");?>">
 						<?php $idCondizioniFeedback = PagineModel::gTipoPagina("CONDIZIONI_FEEDBACK"); ?>
 						<label>
 							<?php echo Html_Form::checkbox('accetto_feedback',FeedbackModel::gValue("accetto_feedback"),'1','uk-checkbox');?>

@@ -27,7 +27,7 @@ class Lang_It_ValCondStrings extends Lang_En_ValCondStrings {
 	//if the element is not defined
 	public function getNotDefinedResultString($element)
 	{
-		return "<div class='evidenzia'>class_$element</div>\n";
+		return "<div class='evidenzia not_defined_input'>class_$element</div>\n";
 	}
 	
 	//if the elements are not equal

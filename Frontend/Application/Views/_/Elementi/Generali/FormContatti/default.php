@@ -24,7 +24,7 @@
 			
 			<?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>
 			
-			<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
+			<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto" data-field-name="<?php echo gtextAttr("privacy policy");?>">
 				<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
 				<label><?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("privacy policy");?></a></span></label>
 			</div>
