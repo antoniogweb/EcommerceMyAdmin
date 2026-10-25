@@ -695,11 +695,13 @@ function popolaCampoObbligatorioDaLabel(nomeCampo, contenitore)
 	var campo = contenitore.find("[name='" + nomeCampo + "']").first();
 	var idCampo = campo.attr("id");
 
-	if (indicatore.length > 0 && idCampo)
+	if (indicatore.length > 0 && campo.length > 0)
 	{
-		var label = contenitore.find("label").filter(function(){ return $(this).attr("for") === idCampo; }).first();
+		var label = idCampo ? contenitore.find("label").filter(function(){ return $(this).attr("for") === idCampo; }).first() : $();
 		if (label.length > 0)
 			aggiungiCampoObbligatorio($.trim(label.text()));
+		else if (campo.attr("placeholder"))
+			aggiungiCampoObbligatorio(campo.attr("placeholder"));
 	}
 }
 
