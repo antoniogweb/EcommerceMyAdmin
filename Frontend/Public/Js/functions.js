@@ -38,6 +38,15 @@ if (typeof ricarica_pagamenti_quando_cambi_nazione == "undefined")
 if (typeof nazioniConProvince == "undefined")
 	var nazioniConProvince = ['IT'];
 
+if (typeof attiva_messaggi_alert_status == "undefined")
+	var attiva_messaggi_alert_status = false;
+
+if (typeof alert_error_class == "undefined")
+	var alert_error_class = 'uk-alert uk-alert-danger';
+
+if (typeof alert_success_class == "undefined")
+	var alert_success_class = 'uk-alert uk-alert-success';
+
 $ = jQuery;
 
 function isInArray(elemento,haystack)

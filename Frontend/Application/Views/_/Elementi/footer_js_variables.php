@@ -47,5 +47,10 @@
 	var nazioniConProvince = ['<?php echo implode("','",NazioniModel::nazioniConProvince())?>'];
 	<?php } ?>
 	var formato_data_date_picker = '<?php echo v("default_date_format_datepicket");?>';
+	<?php if (v("attiva_messaggi_alert_status")) { ?>
+	var attiva_messaggi_alert_status = true;
+	var alert_error_class = '<?php echo v("alert_error_class");?>';
+	var alert_success_class = '<?php echo v("alert_success_class");?>';
+	<?php } ?>
 </script>
 <?php $jsVariablesLoaded = true;?>
