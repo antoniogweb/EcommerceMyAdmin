@@ -47,6 +47,9 @@ if (typeof alert_error_class == "undefined")
 if (typeof alert_success_class == "undefined")
 	var alert_success_class = 'uk-alert uk-alert-success';
 
+if (typeof messaggio_campi_obbligatori == "undefined")
+	var messaggio_campi_obbligatori = 'Si prega di compilare i seguenti campi obbligatori:';
+
 $ = jQuery;
 
 var campiObbligatoriNonCompilati = [];
@@ -762,6 +765,28 @@ function nascondiErrori(form)
 	});
 }
 
+function mostraAlertCampiObbligatori(form)
+{
+	var contenitoreCampi = (typeof form == "undefined") ? $(document) : form.closest(".box_form_evidenzia");
+	var numeroCampiObbligatori = contenitoreCampi.find(".evidenzia.not_defined_input").length;
+
+	if (attiva_messaggi_alert_status && campiObbligatoriNonCompilati.length > 0 && campiObbligatoriNonCompilati.length === numeroCampiObbligatori)
+	{
+		var classiAlertErrore = $.trim(alert_error_class || "");
+		if (classiAlertErrore)
+		{
+			var selettoreAlertErrore = "." + classiAlertErrore.replace(/\s+/g, ".");
+			var alertErrore = contenitoreCampi.find(selettoreAlertErrore).first();
+
+			if (alertErrore.length > 0)
+			{
+				alertErrore.next(".riepilogo_campi_obbligatori").remove();
+				$('<div>').addClass(classiAlertErrore + " riepilogo_campi_obbligatori").text(messaggio_campi_obbligatori + " " + campiObbligatoriNonCompilati.join(", ")).insertAfter(alertErrore);
+			}
+		}
+	}
+}
+
 function evidenziaErrori(ajaxSubmit, form)
 {
 	campiObbligatoriNonCompilati = [];
@@ -776,6 +801,8 @@ function evidenziaErrori(ajaxSubmit, form)
 		
 		evidenziaErrore("."+t_tag, form);
 	});
+
+	mostraAlertCampiObbligatori(form);
 }
 
 function controllaCheckFattura()
@@ -944,8 +971,6 @@ $(document).ready(function(){
 		
 		return false;
 	});
-	
-	evidenziaErrori();
 	
 	$(".not_active_link").click(function(){
 	
@@ -1322,6 +1347,8 @@ $(document).ready(function(){
 		}
 		
 	});
+
+	evidenziaErrori();
 	
 	$("body").on("click", ".disattiva_acquisto_lista", function(e){
 		e.preventDefault();

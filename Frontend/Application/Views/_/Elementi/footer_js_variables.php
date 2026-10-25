@@ -51,6 +51,7 @@
 	var attiva_messaggi_alert_status = true;
 	var alert_error_class = '<?php echo v("alert_error_class");?>';
 	var alert_success_class = '<?php echo v("alert_success_class");?>';
+	var messaggio_campi_obbligatori = '<?php echo gtext("Si prega di compilare i seguenti campi obbligatori:");?>';
 	<?php } ?>
 </script>
 <?php $jsVariablesLoaded = true;?>
