@@ -637,6 +637,18 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 	}
 }
 
+function applicaAriaInvalid(elemento)
+{
+	var campi = elemento.filter("input, select, textarea").add(elemento.find("input, select, textarea"));
+	campi.attr("aria-invalid", "true");
+}
+
+function rimuoviAriaInvalid(elemento)
+{
+	var campi = elemento.filter("input, select, textarea").add(elemento.find("input, select, textarea"));
+	campi.removeAttr("aria-invalid");
+}
+
 if (typeof evidenziaErrore !== 'function')
 {
 	window.evidenziaErrore = function(selettore, form)
@@ -650,16 +662,28 @@ if (typeof evidenziaErrore !== 'function')
 			var boxErrori = (typeof form == "undefined") ? $(".evidenzia").closest(".box_form_evidenzia") : form.closest(".box_form_evidenzia");
 			
 			if (boxErrori.find(selettore).length > 0)
+			{
 				boxErrori.find(selettore).addClass("uk-form-danger");
+				applicaAriaInvalid(boxErrori.find(selettore));
+			}
 			else
+			{
 				boxErrori.find("[name='" + nomeCampo + "']").addClass("uk-form-danger");
+				applicaAriaInvalid(boxErrori.find("[name='" + nomeCampo + "']"));
+			}
 		}
 		else
 		{
 			if ($(selettore).length > 0)
+			{
 				$(selettore).addClass("uk-form-danger");
+				applicaAriaInvalid($(selettore));
+			}
 			else
+			{
 				$("[name='" + nomeCampo + "']").addClass("uk-form-danger");
+				applicaAriaInvalid($("[name='" + nomeCampo + "']"));
+			}
 		}
 	}
 }
@@ -670,6 +694,7 @@ function nascondiErrori(form)
 	
 	boxErrori.each(function(){
 		$(this).removeClass("uk-form-danger");
+		rimuoviAriaInvalid($(this));
 	});
 }
 
