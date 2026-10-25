@@ -787,6 +787,29 @@ function mostraAlertCampiObbligatori(form)
 	}
 }
 
+function aggiornaLiveRegionAlert()
+{
+	var liveRegionAlert = $(".live-region-alert, #live-region-alert").first();
+	if (!attiva_messaggi_alert_status || liveRegionAlert.length === 0)
+		return;
+
+	var classiAlertErrore = $.trim(alert_error_class || "");
+	var testoAlert = "";
+	if (classiAlertErrore)
+	{
+		var selettoreAlertErrore = "div." + classiAlertErrore.replace(/\s+/g, ".");
+		testoAlert = $(selettoreAlertErrore).last().map(function(){
+			var alert = $(this).clone();
+			alert.find(".evidenzia").remove();
+			return $.trim(alert.text());
+		}).get().filter(function(testo){
+			return testo !== "";
+		}).join(". ");
+	}
+
+	liveRegionAlert.text(testoAlert);
+}
+
 function evidenziaErrori(ajaxSubmit, form)
 {
 	campiObbligatoriNonCompilati = [];
@@ -803,6 +826,7 @@ function evidenziaErrori(ajaxSubmit, form)
 	});
 
 	mostraAlertCampiObbligatori(form);
+	aggiornaLiveRegionAlert();
 }
 
 function controllaCheckFattura()
