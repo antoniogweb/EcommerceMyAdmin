@@ -787,7 +787,7 @@ function mostraAlertCampiObbligatori(form)
 	}
 }
 
-function aggiornaLiveRegionAlert()
+function aggiornaLiveRegionAlert(ajaxSubmit)
 {
 	var liveRegionAlert = $(".live-region-alert, #live-region-alert").first();
 	if (!attiva_messaggi_alert_status || liveRegionAlert.length === 0)
@@ -808,6 +808,8 @@ function aggiornaLiveRegionAlert()
 	}
 
 	liveRegionAlert.text(testoAlert);
+	if (testoAlert && !ajaxSubmit)
+		liveRegionAlert.attr("tabindex", "-1").focus();
 }
 
 function evidenziaErrori(ajaxSubmit, form)
@@ -826,7 +828,7 @@ function evidenziaErrori(ajaxSubmit, form)
 	});
 
 	mostraAlertCampiObbligatori(form);
-	aggiornaLiveRegionAlert();
+	aggiornaLiveRegionAlert(ajaxSubmit);
 }
 
 function controllaCheckFattura()
