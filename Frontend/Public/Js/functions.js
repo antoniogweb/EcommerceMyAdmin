@@ -787,12 +787,8 @@ function mostraAlertCampiObbligatori(form)
 	}
 }
 
-function aggiornaLiveRegionAlert(ajaxSubmit)
+function costruisciTestoAlert()
 {
-	var liveRegionAlert = $(".live-region-alert, #live-region-alert").first();
-	if (!attiva_messaggi_alert_status || liveRegionAlert.length === 0)
-		return;
-
 	var classiAlertErrore = $.trim(alert_error_class || "");
 	var testoAlert = "";
 	if (classiAlertErrore)
@@ -807,9 +803,21 @@ function aggiornaLiveRegionAlert(ajaxSubmit)
 		}).join(". ");
 	}
 
+	return testoAlert;
+}
+
+function scriviTestoLiveRegionAlert(testoAlert, usaFocus)
+{
+	var liveRegionAlert = $(".live-region-alert, #live-region-alert").first();
+	if (!attiva_messaggi_alert_status || liveRegionAlert.length === 0)
+		return;
+
 	liveRegionAlert.text(testoAlert);
-	if (testoAlert && !ajaxSubmit)
-		liveRegionAlert.attr("tabindex", "-1").focus();
+	if (testoAlert && usaFocus)
+	{
+		liveRegionAlert.attr("tabindex", "-1");
+		liveRegionAlert[0].focus({ preventScroll: true });
+	}
 }
 
 function evidenziaErrori(ajaxSubmit, form)
@@ -828,7 +836,7 @@ function evidenziaErrori(ajaxSubmit, form)
 	});
 
 	mostraAlertCampiObbligatori(form);
-	aggiornaLiveRegionAlert(ajaxSubmit);
+	scriviTestoLiveRegionAlert(costruisciTestoAlert(), !ajaxSubmit);
 }
 
 function controllaCheckFattura()
