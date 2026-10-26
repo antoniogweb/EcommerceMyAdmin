@@ -52,6 +52,11 @@
 	var alert_error_class = '<?php echo v("alert_error_class");?>';
 	var alert_success_class = '<?php echo v("alert_success_class");?>';
 	var messaggio_campi_obbligatori = '<?php echo gtext("Si prega di compilare i seguenti campi obbligatori:");?>';
+	var messaggio_prodotto_aggiunto_carrello = '<?php echo gtext("Prodotto aggiunto al carrello");?>';
+	var messaggio_carrello_aggiornato = '<?php echo gtext("Carrello aggiornato");?>';
+	var messaggio_prodotto_rimosso_carrello = '<?php echo gtext("Prodotto rimosso dal carrello");?>';
+	var messaggio_prodotto_aggiunto_wishlist = '<?php echo gtext("Prodotto aggiunto alla lista dei desideri");?>';
+	var messaggio_prodotto_rimosso_wishlist = '<?php echo gtext("Prodotto rimosso dalla lista dei desideri");?>';
 	<?php } ?>
 </script>
 <?php $jsVariablesLoaded = true;?>
