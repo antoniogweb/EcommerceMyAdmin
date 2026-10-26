@@ -806,17 +806,20 @@ function costruisciTestoAlert()
 	return testoAlert;
 }
 
-function scriviTestoLiveRegionAlert(testoAlert, usaFocus)
+function scriviTestoLiveRegion(testo, role, usaFocus)
 {
-	var liveRegionAlert = $(".live-region-alert, #live-region-alert").first();
-	if (!attiva_messaggi_alert_status || liveRegionAlert.length === 0)
+	if (!attiva_messaggi_alert_status || $.inArray(role, ["alert", "status"]) === -1)
 		return;
 
-	liveRegionAlert.text(testoAlert);
-	if (testoAlert && usaFocus)
+	var liveRegion = $(".live-region-" + role + ", #live-region-" + role).first();
+	if (liveRegion.length === 0)
+		return;
+
+	liveRegion.text(testo);
+	if (testo && usaFocus)
 	{
-		liveRegionAlert.attr("tabindex", "-1");
-		liveRegionAlert[0].focus({ preventScroll: true });
+		liveRegion.attr("tabindex", "-1");
+		liveRegion[0].focus({ preventScroll: true });
 	}
 }
 
@@ -836,7 +839,7 @@ function evidenziaErrori(ajaxSubmit, form)
 	});
 
 	mostraAlertCampiObbligatori(form);
-	scriviTestoLiveRegionAlert(costruisciTestoAlert(), !ajaxSubmit);
+	scriviTestoLiveRegion(costruisciTestoAlert(), "alert", !ajaxSubmit);
 }
 
 function controllaCheckFattura()
