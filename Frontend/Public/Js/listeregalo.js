@@ -119,7 +119,11 @@ function aggiornaQuantitaLista()
 		success: function(content){
 			
 			if (content.result == "OK")
+			{
+				scriviTestoLiveRegion(messaggio_quantita_lista_regalo_aggiornata, "status", false);
+
 				aggiornaListaProdotti();
+			}
 			
 			ok_aggiorna_prodotti_lista = true;
 		}
@@ -157,7 +161,9 @@ $(document).ready(function(){
 				csrf_token: csrfToken
 			},
 			success: function(content){
-				
+				if (jQuery.trim(content) == "OK")
+					scriviTestoLiveRegion(messaggio_prodotto_rimosso_lista_regalo, "status", false);
+
 				aggiornaListaProdotti();
 				
 			}
@@ -251,6 +257,8 @@ $(document).ready(function(){
 					
 					if (jQuery.trim(content.result) == "OK")
 					{
+						scriviTestoLiveRegion(messaggio_prodotto_aggiunto_lista_regalo, "status", false);
+
 						UIkit.modal("#modale-aggiunto-alla-lista").show();
 					}
 					else
@@ -325,6 +333,8 @@ $(document).ready(function(){
 					$(".form_invia_link [name='nome']").val("");
 					$(".form_invia_link [name='cognome']").val("");
 					$(".form_invia_link [name='email']").val("");
+					if (typeof alert_error_class == "undefined" || content.errore.indexOf(alert_error_class) === -1)
+						scriviTestoLiveRegion(messaggio_link_lista_inviato, "status", false);
 					
 					aggiornaListaLink();
 				}
@@ -352,8 +362,10 @@ $(document).ready(function(){
 			cache:false,
 			dataType: "json",
 			success: function(content){
-				
-				alert(content.errore);
+				if (content.result == "OK")
+					scriviTestoLiveRegion(messaggio_link_lista_reinviato, "status", false);
+				else
+					alert(content.errore);
 				
 				aggiornaListaLink();
 				
