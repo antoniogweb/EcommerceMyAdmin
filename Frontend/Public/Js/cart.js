@@ -53,6 +53,21 @@ if (typeof attiva_gift_card == "undefined")
 if (typeof stringa_errore_righe_carrello == "undefined")
 	var stringa_errore_righe_carrello = "Attenzione, controllare i campi evidenziati";
 
+if (typeof messaggio_prodotto_aggiunto_carrello == "undefined")
+	var messaggio_prodotto_aggiunto_carrello = "Prodotto aggiunto al carrello";
+
+if (typeof messaggio_carrello_aggiornato == "undefined")
+	var messaggio_carrello_aggiornato = "Carrello aggiornato";
+
+if (typeof messaggio_prodotto_rimosso_carrello == "undefined")
+	var messaggio_prodotto_rimosso_carrello = "Prodotto rimosso dal carrello";
+
+if (typeof messaggio_prodotto_aggiunto_wishlist == "undefined")
+	var messaggio_prodotto_aggiunto_wishlist = "Prodotto aggiunto alla lista dei desideri";
+
+if (typeof messaggio_prodotto_rimosso_wishlist == "undefined")
+	var messaggio_prodotto_rimosso_wishlist = "Prodotto rimosso dalla lista dei desideri";
+
 if (typeof current_url == "undefined")
 	var current_url = "Attenzione, controllare i campi evidenziati";
 

@@ -50,6 +50,12 @@ if (typeof alert_success_class == "undefined")
 if (typeof messaggio_campi_obbligatori == "undefined")
 	var messaggio_campi_obbligatori = 'Si prega di compilare i seguenti campi obbligatori:';
 
+if (typeof messaggio_coupon_rimosso == "undefined")
+	var messaggio_coupon_rimosso = 'Coupon rimosso';
+
+if (typeof messaggio_coupon_applicato == "undefined")
+	var messaggio_coupon_applicato = 'Coupon applicato';
+
 $ = jQuery;
 
 var campiObbligatoriNonCompilati = [];

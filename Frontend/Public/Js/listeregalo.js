@@ -3,6 +3,21 @@ var ok_aggiorna_prodotti_lista = true;
 if (typeof stringa_errore_lista_non_selezionata == "undefined")
 	var stringa_errore_lista_non_selezionata = "Si prega di selezionare una lista regalo";
 
+if (typeof messaggio_quantita_lista_regalo_aggiornata == "undefined")
+	var messaggio_quantita_lista_regalo_aggiornata = "Quantità della lista aggiornata";
+
+if (typeof messaggio_prodotto_rimosso_lista_regalo == "undefined")
+	var messaggio_prodotto_rimosso_lista_regalo = "Prodotto rimosso dalla lista regalo";
+
+if (typeof messaggio_prodotto_aggiunto_lista_regalo == "undefined")
+	var messaggio_prodotto_aggiunto_lista_regalo = "Prodotto aggiunto alla lista regalo";
+
+if (typeof messaggio_link_lista_inviato == "undefined")
+	var messaggio_link_lista_inviato = "Link inviato";
+
+if (typeof messaggio_link_lista_reinviato == "undefined")
+	var messaggio_link_lista_reinviato = "Link reinviato";
+
 function sistemaCampiFormLista()
 {
 	$(".form_lista_regalo").find(".btn_submit_form").attr("name","gAction");
