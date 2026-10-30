@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if ($okInvioNuovoMessaggio) { ?>
 <div class="uk-text-primary uk-text-bold uk-margin"><?php echo gtextPlain("Aggiungi un messaggio");?></div>
-<form class="form_registrazione box_form_evidenzia form_messaggio_ticket" id-ticket="<?php echo $idTicket;?>" ticket-uid="<?php echo $ticketUid;?>" action="<?php echo $this->baseUrl."/".$this->controller."/aggiungimessaggio/".(int)$ticket["id_ticket"]."/".$ticket["ticket_uid"];?>" method="POST" autocomplete="new-password" enctype="multipart/form-data">
+<form class="form_registrazione box_form_evidenzia form_messaggio_ticket" id-ticket="<?php echo $idTicket;?>" ticket-uid="<?php echo $ticketUid;?>" action="<?php echo $this->baseUrl."/".$this->controller."/aggiungimessaggio/".(int)$ticket["id_ticket"]."/".$ticket["ticket_uid"];?>" method="POST" enctype="multipart/form-data">
 	<div class="uk-text-center notice_messaggio">
 		
 	</div>

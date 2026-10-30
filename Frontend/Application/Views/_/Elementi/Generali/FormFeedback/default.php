@@ -32,13 +32,13 @@
 					?>
 					<div class="uk-margin"> 
 						<label for="feedback-autore" class="accessibility-visually-hidden"><?php echo gtextPlain("Il tuo nome");?></label>
-						<?php echo Html_Form::input("autore",FeedbackModel::gValue("autore"),"uk-input class_autore","feedback-autore","$attributiNome aria-required='true' placeholder='".gtextAttr("Il tuo nome*")."'");?>
+						<?php echo Html_Form::input("autore",FeedbackModel::gValue("autore"),"uk-input class_autore","feedback-autore","autocomplete='name' $attributiNome aria-required='true' placeholder='".gtextAttr("Il tuo nome*")."'");?>
 					</div>
 					
 					<?php if (!User::$id) { ?>
 					<div class="uk-margin"> 
 						<label for="feedback-email" class="accessibility-visually-hidden"><?php echo gtextPlain("Email");?></label>
-						<?php echo Html_Form::input("email",FeedbackModel::gValue("email"),"uk-input class_email","feedback-email","aria-required='true' placeholder='".gtextAttr("Email*")."'");?>
+						<?php echo Html_Form::input("email",FeedbackModel::gValue("email"),"uk-input class_email","feedback-email","autocomplete='email' aria-required='true' placeholder='".gtextAttr("Email*")."'");?>
 					</div>
 					<?php } ?>
 					

@@ -10,11 +10,11 @@
 		<fieldset class="uk-fieldset">
 			<div uk-grid class="uk-margin uk-grid"> 
 				<div class="uk-width-1-2@m uk-width-1-2@s">
-					<?php echo Html_Form::input("nome",Form::gValue("nome"),"uk-input class_nome","nome","aria-required='true' placeholder='".gtextAttr("Nome*")."'");?>
+				<?php echo Html_Form::input("nome",Form::gValue("nome"),"uk-input class_nome","nome","autocomplete='given-name' aria-required='true' placeholder='".gtextAttr("Nome*")."'");?>
 				</div>
 				
 				<div class="uk-width-1-2@m uk-width-1-2@s">
-					<?php echo Html_Form::input("email",Form::gValue("email"),"uk-input class_email","email","aria-required='true' placeholder='".gtextAttr("Email*")."'");?>
+				<?php echo Html_Form::input("email",Form::gValue("email"),"uk-input class_email","email","autocomplete='email' aria-required='true' placeholder='".gtextAttr("Email*")."'");?>
 				</div>
 			</div>
 

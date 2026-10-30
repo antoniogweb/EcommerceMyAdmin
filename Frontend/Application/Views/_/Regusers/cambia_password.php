@@ -23,7 +23,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-margin form_cambio_password_box" style="z-index:3;">
 		<label for="old" class="uk-form-label"><?php echo gtextPlain("Vecchia password");?></label>
 		<div class="uk-form-controls uk-position-relative">
-			<?php echo Html_Form::password("old",$values['old'],"uk-input class_old","old");?>
+			<?php echo Html_Form::password("old",$values['old'],"uk-input class_old","old","autocomplete='current-password'");?>
 			<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 		</div>
 	</div>
@@ -31,7 +31,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-margin form_cambio_password_box" style="z-index:2;">
 		<label for="password" class="uk-form-label"><?php echo gtextPlain("Password");?></label>
 		<div class="uk-form-controls uk-position-relative">
-			<?php echo Html_Form::password("password",$values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),"password");?>
+			<?php echo Html_Form::password("password",$values['password'],"uk-input class_password ".VariabiliModel::classeHelpWizardPassword(),"password","autocomplete='new-password'");?>
 			<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 		</div>
 	</div>
@@ -39,7 +39,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="uk-margin form_cambio_password_box" style="z-index:1;">
 		<label for="confirmation" class="uk-form-label"><?php echo gtextPlain("Conferma password");?></label>
 		<div class="uk-form-controls uk-position-relative">
-			<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation ".VariabiliModel::classeHelpWizardPassword(),"confirmation");?>
+			<?php echo Html_Form::password("confirmation",$values['confirmation'],"uk-input class_confirmation ".VariabiliModel::classeHelpWizardPassword(),"confirmation","autocomplete='new-password'");?>
 			<?php include tpf("Elementi/mostra_nascondi_password.php")?>
 		</div>
 	</div>

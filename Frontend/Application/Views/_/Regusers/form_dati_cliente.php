@@ -8,19 +8,19 @@
 	<div class="box_entry_dati first_of_grid tr_ragione_sociale uk-margin uk-margin-remove-bottom">
 		<label for="ragione_sociale" class="uk-form-label"><?php echo gtextPlain("Ragione sociale");?> <span aria-hidden="true">*</span></label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("ragione_sociale",$values['ragione_sociale'],"uk-input class_ragione_sociale","ragione_sociale",'placeholder="'.gtextAttr("Ragione sociale", false).'" aria-required="true"');?>
+			<?php echo Html_Form::input("ragione_sociale",$values['ragione_sociale'],"uk-input class_ragione_sociale","ragione_sociale",'autocomplete="organization" placeholder="'.gtextAttr("Ragione sociale", false).'" aria-required="true"');?>
 		</div>
 	</div>
 	<div class="box_entry_dati tr_nome uk-margin uk-margin-remove-bottom">
 		<label for="nome" class="uk-form-label"><?php echo gtextPlain("Nome");?> <span aria-hidden="true">*</span></label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("nome",$values['nome'],"uk-input class_nome","nome","placeholder='".gtextAttr("Nome", false)."' aria-required='true'");?>
+			<?php echo Html_Form::input("nome",$values['nome'],"uk-input class_nome","nome","autocomplete='given-name' placeholder='".gtextAttr("Nome", false)."' aria-required='true'");?>
 		</div>
 	</div>
 	<div class="box_entry_dati tr_cognome uk-margin uk-margin-remove-bottom">
 		<label for="cognome" class="uk-form-label"><?php echo gtextPlain("Cognome");?> <span aria-hidden="true">*</span></label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("cognome",$values['cognome'],"uk-input class_cognome","cognome","placeholder='".gtextAttr("Cognome", false)."' aria-required='true'");?>
+			<?php echo Html_Form::input("cognome",$values['cognome'],"uk-input class_cognome","cognome","autocomplete='family-name' placeholder='".gtextAttr("Cognome", false)."' aria-required='true'");?>
 		</div>
 	</div>
 
@@ -45,7 +45,7 @@
 		<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 			<label for="nazione" class="uk-form-label"><?php echo gtextPlain("Nazione");?> <span aria-hidden="true">*</span></label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::select("nazione",$values['nazione'],$selectNazioni,"uk-select class_nazione","nazione","yes","aria-required='true'");?>
+				<?php echo Html_Form::select("nazione",$values['nazione'],$selectNazioni,"uk-select class_nazione","nazione","yes","autocomplete='country' aria-required='true'");?>
 			</div>
 		</div>
 		<?php } else { ?>
@@ -56,12 +56,12 @@
 			<div class="uk-form-controls">
 				<div class="box_select_provincia">
 					<label for="provincia" class="uk-form-label"><?php echo gtextPlain("Provincia");?> <span aria-hidden="true">*</span></label>
-					<?php echo Html_Form::select("provincia",$values['provincia'],$province,"uk-select class_provincia","provincia","yes","aria-required='true'");?>
+					<?php echo Html_Form::select("provincia",$values['provincia'],$province,"uk-select class_provincia","provincia","yes","autocomplete='address-level1' aria-required='true'");?>
 				</div>
 
 				<div class="box_select_dprovincia">
 					<label for="dprovincia" class="uk-form-label"><?php echo gtextPlain("Provincia");?> <span aria-hidden="true">*</span></label>
-					<?php echo Html_Form::input("dprovincia",$values['dprovincia'],"uk-input class_dprovincia","dprovincia","placeholder='".gtextAttr("Provincia", false)."' aria-required='true'");?>
+					<?php echo Html_Form::input("dprovincia",$values['dprovincia'],"uk-input class_dprovincia","dprovincia","autocomplete='address-level1' placeholder='".gtextAttr("Provincia", false)."' aria-required='true'");?>
 				</div>
 			</div>
 		</div>
@@ -69,19 +69,19 @@
 		<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 			<label for="citta" class="uk-form-label"><?php echo gtextPlain("Città");?> <span aria-hidden="true">*</span></label>
 			<div class="uk-form-controls">
-			<?php echo Html_Form::input("citta",$values['citta'],"uk-input class_citta","citta","placeholder='".gtextAttr("Città", false)."' aria-required='true'");?>
+			<?php echo Html_Form::input("citta",$values['citta'],"uk-input class_citta","citta","autocomplete='address-level2' placeholder='".gtextAttr("Città", false)."' aria-required='true'");?>
 			</div>
 		</div>
 		<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 			<label for="indirizzo" class="uk-form-label"><?php echo gtextPlain("Indirizzo");?> <span aria-hidden="true">*</span></label>
 			<div class="uk-form-controls">
-			<?php echo Html_Form::input("indirizzo",$values['indirizzo'],"uk-input class_indirizzo","indirizzo","placeholder='".gtextAttr("Indirizzo", false)."' aria-required='true'");?>
+			<?php echo Html_Form::input("indirizzo",$values['indirizzo'],"uk-input class_indirizzo","indirizzo","autocomplete='street-address' placeholder='".gtextAttr("Indirizzo", false)."' aria-required='true'");?>
 			</div>
 		</div>
 		<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 			<label for="cap" class="uk-form-label"><?php echo gtextPlain("Cap");?> <span class="nascondi_fuori_italia_inline" aria-hidden="true">*</span></label>
 			<div class="uk-form-controls">
-			<?php echo Html_Form::input("cap",$values['cap'],"uk-input class_cap","cap","placeholder='".gtextAttr("Cap", false)."' aria-required='true'");?>
+			<?php echo Html_Form::input("cap",$values['cap'],"uk-input class_cap","cap","autocomplete='postal-code' placeholder='".gtextAttr("Cap", false)."' aria-required='true'");?>
 			</div>
 		</div>
 	<?php } else { ?>
@@ -97,7 +97,7 @@
 		<?php $telefonoObbligatorio = GenericModel::camboObbligatorio("telefono", $this->controller, $tipoAzione); ?>
 		<label for="telefono" class="uk-form-label"><?php echo gtextPlain("Telefono");?><?php if ($telefonoObbligatorio) { ?> <span aria-hidden="true">*</span><?php } ?></label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("telefono",$values['telefono'],"uk-input class_telefono","telefono","placeholder='".gtextAttr("Telefono", false)."'".($telefonoObbligatorio ? " aria-required='true'" : ""));?>
+			<?php echo Html_Form::input("telefono",$values['telefono'],"uk-input class_telefono","telefono","autocomplete='tel' placeholder='".gtextAttr("Telefono", false)."'".($telefonoObbligatorio ? " aria-required='true'" : ""));?>
 		</div>
 	</div>
 	
@@ -111,7 +111,7 @@
 	<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 			<label for="username" class="uk-form-label"><?php echo gtextPlain("Email");?> <span aria-hidden="true">*</span></label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("username",$values['username'],"uk-input class_username","username","placeholder='".gtextAttr("Email", false)."' aria-required='true'");?>
+			<?php echo Html_Form::input("username",$values['username'],"uk-input class_username","username","autocomplete='email' placeholder='".gtextAttr("Email", false)."' aria-required='true'");?>
 		</div>
 	</div>
 
@@ -154,14 +154,14 @@
 	<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 		<label for="email" class="uk-form-label"><?php echo gtextPlain("Email");?> <span aria-hidden="true">*</span></label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("email",$values['email'],"uk-input class_email","email","autocomplete='new-password' placeholder='".gtextAttr("Email", false)."' aria-required='true'");?>
+			<?php echo Html_Form::input("email",$values['email'],"uk-input class_email","email","autocomplete='email' placeholder='".gtextAttr("Email", false)."' aria-required='true'");?>
 		</div>
 	</div>
 	<?php if (v("account_attiva_conferma_username")) { ?>
 	<div class="box_entry_dati uk-margin uk-margin-remove-bottom">
 		<label for="conferma_email" class="uk-form-label"><?php echo gtextPlain("Conferma email");?> <span aria-hidden="true">*</span></label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::input("conferma_email",$values['conferma_email'],"uk-input class_conferma_email","conferma_email","autocomplete='new-password' placeholder='".gtextAttr("Conferma email", false)."' aria-required='true'");?>
+			<?php echo Html_Form::input("conferma_email",$values['conferma_email'],"uk-input class_conferma_email","conferma_email","placeholder='".gtextAttr("Conferma email", false)."' aria-required='true'");?>
 		</div>
 	</div>
 	<?php } ?>

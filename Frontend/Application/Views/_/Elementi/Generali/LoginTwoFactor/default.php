@@ -15,13 +15,13 @@
 					<div class="uk-margin">
 						<label for="two_factor_code" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Codice inviato via e-mail");?> <span aria-hidden="true">*</span></label>
 						<div class="uk-form-controls">
-							<input id="two_factor_code" class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="new-password" name="codice" type="text" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtextAttr("Scrivi qui il codice..", false) : "";?>" aria-required="true" />
+							<input id="two_factor_code" class="uk-input uk-width-1-2@s uk-width-1-1@m" autocomplete="one-time-code" name="codice" type="text" placeholder="<?php echo !isset($nascondiPlaceholder) ? gtextAttr("Scrivi qui il codice..", false) : "";?>" aria-required="true" />
 						</div>
 					</div>
 					
 					<div>
 						<div class="<?php echo $classePulsanteTwoFactor;?> uk-width-1-1 uk-width-1-2@s spinner uk-hidden" uk-spinner="ratio: .70"></div>
-						<input autocomplete="new-password" class="<?php echo $classePulsanteTwoFactor;?> uk-width-1-1 uk-width-1-2@s btn_submit_form" type="submit" name="login" value="<?php echo gtextAttr("Invia");?>" />
+						<input class="<?php echo $classePulsanteTwoFactor;?> uk-width-1-1 uk-width-1-2@s btn_submit_form" type="submit" name="login" value="<?php echo gtextAttr("Invia");?>" />
 					</div>
 					<div class="uk-margin-top">
 						<a class="uk-button uk-button-default uk-width-1-1 uk-width-1-2@s" href="<?php echo $this->baseUrl."/".$this->applicationUrl.$this->controller."/login";?>"><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/arrow-left.svg");?></span> <?php echo gtextPlain("Torna");?></a>
