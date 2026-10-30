@@ -789,21 +789,30 @@ function mostraAlertCampiObbligatori(form)
 
 function costruisciTestoAlert()
 {
-	var classiAlertErrore = $.trim(alert_error_class || "");
-	var testoAlert = "";
-	if (classiAlertErrore)
-	{
-		var selettoreAlertErrore = "div." + classiAlertErrore.replace(/\s+/g, ".");
-		testoAlert = $(selettoreAlertErrore).last().map(function(){
-			var alert = $(this).clone();
-			alert.find(".evidenzia").remove();
-			return $.trim(alert.text());
-		}).get().filter(function(testo){
-			return testo !== "";
-		}).join(". ");
-	}
+	var testiAlert = { error: [], success: [] };
+	var classiAlert = { error: alert_error_class, success: alert_success_class };
 
-	return testoAlert;
+	$.each(classiAlert, function(tipo, classi){
+		var classiAlertCorrenti = $.trim(classi || "");
+		if (classiAlertCorrenti)
+		{
+			var selettoreAlert = "div." + classiAlertCorrenti.replace(/\s+/g, ".");
+			var testoAlert = $(selettoreAlert).last().map(function(){
+				var alert = $(this).clone();
+				alert.find(".evidenzia").remove();
+				return $.trim(alert.text());
+			}).get().filter(function(testo){
+				return testo !== "";
+			});
+
+			testiAlert[tipo] = testiAlert[tipo].concat(testoAlert);
+		}
+	});
+
+	var testo = testiAlert.error.concat(testiAlert.success).join(". ");
+	var role = testiAlert.error.length > 0 ? "alert" : "status";
+
+	return { testo: testo, role: role };
 }
 
 function scriviTestoLiveRegion(testo, role, usaFocus)
@@ -839,7 +848,8 @@ function evidenziaErrori(ajaxSubmit, form)
 	});
 
 	mostraAlertCampiObbligatori(form);
-	scriviTestoLiveRegion(costruisciTestoAlert(), "alert", !ajaxSubmit);
+	var messaggioAlert = costruisciTestoAlert();
+	scriviTestoLiveRegion(messaggioAlert.testo, messaggioAlert.role, !ajaxSubmit);
 }
 
 function controllaCheckFattura()
