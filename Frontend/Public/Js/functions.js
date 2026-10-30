@@ -256,7 +256,12 @@ function impostaSpedizioneNonLoggato(obj)
 function checkCouponAttivo()
 {
 	if ($("#ha-coupon-attivo").length > 0 && $("[name='il_coupon']").length > 0)
+	{
+		var couponPresenteNelModulo = $(".box_coupon").find("[name='il_coupon']").length > 0;
 		$(".box_coupon").html("");
+		if (couponPresenteNelModulo)
+			scriviTestoLiveRegion(messaggio_coupon_applicato, "status", false);
+	}
 	else if ($("#ha-coupon-attivo").length <= 0 && $("[name='il_coupon']").length <= 0)
 	{
 		$.ajaxQueue({

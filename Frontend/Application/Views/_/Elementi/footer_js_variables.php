@@ -58,6 +58,7 @@
 	var messaggio_link_lista_inviato = "";
 	var messaggio_link_lista_reinviato = "";
 	var messaggio_coupon_rimosso = "";
+	var messaggio_coupon_applicato = "";
 	<?php if (v("attiva_messaggi_alert_status")) { ?>
 	var attiva_messaggi_alert_status = true;
 	var alert_error_class = '<?php echo v("alert_error_class");?>';
@@ -74,6 +75,7 @@
 	var messaggio_link_lista_inviato = '<?php echo gtext("Link inviato");?>';
 	var messaggio_link_lista_reinviato = '<?php echo gtext("Link reinviato");?>';
 	var messaggio_coupon_rimosso = '<?php echo gtext("Coupon rimosso");?>';
+	var messaggio_coupon_applicato = '<?php echo gtext("Coupon applicato");?>';
 	<?php } ?>
 </script>
 <?php $jsVariablesLoaded = true;?>
