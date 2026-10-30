@@ -1297,6 +1297,7 @@ $(document).ready(function(){
 				il_coupon: randomCoupon
 			},
 			success: function(content){
+				scriviTestoLiveRegion(messaggio_coupon_rimosso, "status", false);
 				
 				if ($(".btn_completa_acquisto").length > 0)
 					impostaCorrieriESpeseSpedizione();
