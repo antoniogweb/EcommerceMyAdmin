@@ -47,22 +47,6 @@
 	var nazioniConProvince = ['<?php echo implode("','",NazioniModel::nazioniConProvince())?>'];
 	<?php } ?>
 	var formato_data_date_picker = '<?php echo v("default_date_format_datepicket");?>';
-	var messaggio_prodotto_aggiunto_carrello = "";
-	var messaggio_carrello_aggiornato = "";
-	var messaggio_prodotto_rimosso_carrello = "";
-	var messaggio_prodotto_aggiunto_wishlist = "";
-	var messaggio_prodotto_rimosso_wishlist = "";
-	var messaggio_prodotto_aggiunto_lista_regalo = "";
-	var messaggio_quantita_lista_regalo_aggiornata = "";
-	var messaggio_prodotto_rimosso_lista_regalo = "";
-	var messaggio_link_lista_inviato = "";
-	var messaggio_link_lista_reinviato = "";
-	var messaggio_coupon_rimosso = "";
-	var messaggio_coupon_applicato = "";
-	<?php if (v("attiva_messaggi_alert_status")) { ?>
-	var attiva_messaggi_alert_status = true;
-	var alert_error_class = '<?php echo v("alert_error_class");?>';
-	var alert_success_class = '<?php echo v("alert_success_class");?>';
 	var messaggio_campi_obbligatori = '<?php echo gtext("Si prega di compilare i seguenti campi obbligatori:");?>';
 	var messaggio_prodotto_aggiunto_carrello = '<?php echo gtext("Prodotto aggiunto al carrello");?>';
 	var messaggio_carrello_aggiornato = '<?php echo gtext("Carrello aggiornato");?>';
@@ -76,6 +60,10 @@
 	var messaggio_link_lista_reinviato = '<?php echo gtext("Link reinviato");?>';
 	var messaggio_coupon_rimosso = '<?php echo gtext("Coupon rimosso");?>';
 	var messaggio_coupon_applicato = '<?php echo gtext("Coupon applicato");?>';
+	<?php if (v("attiva_messaggi_alert_status")) { ?>
+	var attiva_messaggi_alert_status = true;
+	var alert_error_class = '<?php echo v("alert_error_class");?>';
+	var alert_success_class = '<?php echo v("alert_success_class");?>';
 	<?php } ?>
 </script>
 <?php $jsVariablesLoaded = true;?>
