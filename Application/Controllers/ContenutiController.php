@@ -57,14 +57,14 @@ class ContenutiController extends BaseController
 		else
 			$this->menuLinks = $this->menuLinksInsert = "save";
 		
+		$recordContenuto = $id ? $this->m[$this->modelName]->selectId((int)$id) : array();
+		
 		$recordTipo = $data["recordTipo"] = array();
 		
 		if ($this->viewArgs["id_tipo"] != "tutti")
 			$recordTipo = $data["recordTipo"] = $this->m["TipicontenutoModel"]->selectId($this->viewArgs["id_tipo"]);
 		else
 		{
-			$recordContenuto = $this->m[$this->modelName]->selectId((int)$id);
-			
 			if ($recordContenuto)
 				$recordTipo = $data["recordTipo"] = $this->m["TipicontenutoModel"]->selectId($recordContenuto["id_tipo"]);
 		}
@@ -101,8 +101,6 @@ class ContenutiController extends BaseController
 		
 		if ($queryType == "update")
 		{
-			$recordContenuto = $this->m[$this->modelName]->selectId((int)$id);
-			
 			if (!empty($recordContenuto) && !$recordContenuto["id_page"] && !$recordContenuto["id_c"] && !$recordContenuto["id_fascia"])
 				$fields .= ",id_page";
 		}
