@@ -1,0 +1,1 @@
+ALTER TABLE contenuti ADD editor_visuale tinyint not null default -1 after descrizione;
