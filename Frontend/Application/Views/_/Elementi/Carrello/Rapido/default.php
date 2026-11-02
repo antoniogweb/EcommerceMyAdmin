@@ -49,7 +49,7 @@
 								<div class="uk-margin-remove-top uk-text-meta uk-text-xsmall"><?php echo $p["cart"]["quantity"];?> × <?php echo setPriceReverse(p($p["cart"],$p["cart"]["price"]));?> €</div>
 							</div>
 						</div>
-						<div><a class="uk-icon-link uk-text-danger uk-invisible-hover cart_item_delete_link" href="#" uk-icon="icon: close; ratio: .75" uk-tooltip=""></a></div>
+						<div><a class="uk-icon-link uk-text-danger uk-invisible-hover cart_item_delete_link" href="#" aria-label="<?php echo gtextAttr("Rimuovi dal carrello: ", false).field($p, "title");?>" uk-icon="icon: close; ratio: .75" uk-tooltip=""></a></div>
 					</div>
 				</article>
 			</li>
