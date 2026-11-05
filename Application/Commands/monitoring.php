@@ -43,6 +43,7 @@ $options = getopt(null, array(
 	"ore::",
 	"throttle::",
 	"ip::",
+	"write_log::",
 ));
 
 $default = array(
@@ -125,6 +126,7 @@ if ($params["azione"] == "check-numero-query-ddos")
 	$secondi = $params["secondi"] ?? 60;
 	$mail = isset($params["email"]) ? $params["email"] : "";
 	$blocca = isset($params["blocca"]) ? true : false;
+	$writeLog = isset($params["write_log"]) ? (bool)$params["write_log"] : false;
 	
 	$conteggio = ConteggioqueryModel::numeroQueryGlobali($query, $secondi);
 	
@@ -144,6 +146,14 @@ if ($params["azione"] == "check-numero-query-ddos")
 		
 		$log->writeString("È stato attivato il sistema anti DDOS");
 	}
+	
+	$logPathFile = LIBRARY."/Logs/total_queries.log";
+	
+	if (is_file($logPathFile))
+		unlink($logPathFile);
+	
+	if ($writeLog && !empty($conteggio))
+		FilePutContentsAtomic(LIBRARY."/Logs/total_queries.log", json_encode($conteggio));
 	
 	Shield::freeDDOSAttack();
 	

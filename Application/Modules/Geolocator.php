@@ -33,16 +33,19 @@ class Geolocator
 	{
 		$path = $this->cacheAbsolutePath."/".trim($this->params["codice"]);
 		
-		if (!@is_dir($path."/".$this->dbFolder))
+		if (function_exists("createFolderFull"))
 		{
-			createFolderFull($this->dbFolder, $path);
-			@chmod($path."/".$this->dbFolder, octdec('777'));
-		}
-		
-		if (!@is_dir($path."/".$this->dbFolder."/".$this->dbFolderExtracted))
-		{
-			createFolderFull($this->dbFolderExtracted, $path."/".$this->dbFolder);
-			@chmod($path."/".$this->dbFolder."/".$this->dbFolderExtracted, octdec('777'));
+			if (!@is_dir($path."/".$this->dbFolder))
+			{
+				createFolderFull($this->dbFolder, $path);
+				@chmod($path."/".$this->dbFolder, octdec('777'));
+			}
+			
+			if (!@is_dir($path."/".$this->dbFolder."/".$this->dbFolderExtracted))
+			{
+				createFolderFull($this->dbFolderExtracted, $path."/".$this->dbFolder);
+				@chmod($path."/".$this->dbFolder."/".$this->dbFolderExtracted, octdec('777'));
+			}
 		}
 		
 		return $path."/".$this->dbFolder;

@@ -25,6 +25,7 @@ define('EG','allowed');
 include(LIBRARY . DS . 'Frontend' . DS . "/block_ip.php");
 include(LIBRARY . DS . 'Frontend' . DS . "/throttle.php");
 // include(LIBRARY . DS . 'Frontend' . DS . "/captcha.php");
+// include(LIBRARY . DS . 'Frontend' . DS . "/ddos.php");
 
 if (file_exists(ROOT . "/redirect_url.php"))
 	include(ROOT . "/redirect_url.php");
