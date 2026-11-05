@@ -22,7 +22,7 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-$ip = getIp();
+$ip = getIpToCheck();
 
 if (isset($ip) && trim($ip) && defined('DDOS_GEOLOCALIZATION_LIMITS') && isset(DDOS_GEOLOCALIZATION_LIMITS["geolocator"]) && isset(DDOS_GEOLOCALIZATION_LIMITS["limits"]))
 {
@@ -68,9 +68,10 @@ if (isset($ip) && trim($ip) && defined('DDOS_GEOLOCALIZATION_LIMITS') && isset(D
 							
 							if ($country && !in_array($country, $allowedCountries))
 							{
+								// error_log($country);
 								$retryAfterSeconds = (int)$struct["retry_after_seconds"] + 20;
 								$retryDate = gmdate('D, d M Y H:i:s', time() + $retryAfterSeconds) . ' GMT';
-				
+								
 								http_response_code(429);
 								header('Retry-After: ' . $retryDate);
 								header('Content-Type: application/json');
@@ -91,4 +92,3 @@ if (isset($ip) && trim($ip) && defined('DDOS_GEOLOCALIZATION_LIMITS') && isset(D
 		}
 	}
 }
-
