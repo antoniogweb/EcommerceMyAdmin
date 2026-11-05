@@ -378,7 +378,13 @@ function aggiornaDatiVariante(obj)
 					var imm = $(this).attr("data-image");
 					
 					if (imm == t_immagine)
-						UIkit.slideshow("#slide_singolo_prodotto").show(indice);
+					{
+						if ($("#slide_singolo_prodotto").length > 0)
+							UIkit.slideshow("#slide_singolo_prodotto").show(indice);
+						
+						if ($("#slide_singolo_prodotto_mobile").length > 0)
+							UIkit.slideshow("#slide_singolo_prodotto_mobile").show(indice);
+					}
 					else
 						indice++;
 				});
