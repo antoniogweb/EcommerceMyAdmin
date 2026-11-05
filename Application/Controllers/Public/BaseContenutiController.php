@@ -710,7 +710,7 @@ class BaseContenutiController extends BaseController
 		else
 			$tempParents = $this->fullParents;
 		
-		if (v("togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio") && count($tempParents) > 0 && PagesModel::$currentIdPage && $this->firstSection == Parametri::$nomeSezioneProdotti)
+		if (v("togli_link_categoria_prodotti_in_breadcrumb_in_dettaglio") && count($tempParents) > 0 && PagesModel::$currentIdPage && $this->firstSection == Parametri::$nomeSezioneProdotti && $tempParents[0] == Parametri::$nomeSezioneProdotti)
 			array_shift($tempParents);
 		
 // 		print_r($tempParents);
