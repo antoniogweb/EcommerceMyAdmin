@@ -43,7 +43,7 @@ if (isset($ip) && trim($ip) && defined('DDOS_GEOLOCALIZATION_LIMITS') && isset(D
 			
 			$logPathFileContentArray = json_decode($logPathFileContent, true);
 			
-			if (count($logPathFileContentArray) > 0)
+			if (is_array($logPathFileContentArray) && isset($logPathFileContentArray[0]) && is_numeric($logPathFileContentArray[0]))
 			{
 				require_once(LIBRARY . '/External/libs/vendor/maxmind-db/reader/autoload.php');
 				require_once (LIBRARY . DS . 'Application/Modules/Modulo.php');
