@@ -928,6 +928,7 @@ class Device
 		, 'ClaudeBot'
 		, 'GeedoShopProductFinder'
 		, 'SleepBot'
+		, 'SofyaBot'
 	);
 	
 	public static function getBotName()
