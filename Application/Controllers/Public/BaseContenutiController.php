@@ -776,8 +776,20 @@ class BaseContenutiController extends BaseController
 					
 					if ($marchio)
 					{
+						$titoloCat = "";
+						
+						if (isset($tempParents[count($tempParents)-2]["categories"]["title"]))
+							$titoloCat = cfield($tempParents[count($tempParents)-2], "title", "contenuti_tradotti");
+						else
+						{
+							$currentCat = CategoriesModel::g(false)->addJoinTraduzione()->whereId((int)$tempParents[count($tempParents)-1]["pages"]["id_c"])->first();
+							
+							if (!empty($currentCat))
+								$titoloCat = cfield($currentCat, "title", "contenuti_tradotti");
+						}
+							
 						$alias = mfield($marchio,"alias");
-						array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a class='$lClass $breadcrumbLinkClass ".$alias."' href='".$this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio(0, $tempParents[count($tempParents)-1]["pages"]["id_marchio"], $tempParents[count($tempParents)-1]["pages"]["id_c"])."'>".mfield($marchio,"titolo")."</a>".v("breadcrumb_element_close")."\n");
+						array_unshift($breadcrumbArray, v("breadcrumb_element_open")."<a aria-label='".gtextAttr("Vai ai prodotti del marchio")." ".mfield($marchio,"titolo")." ".gtextAttr("e della categoria")." $titoloCat' class='$lClass $breadcrumbLinkClass ".$alias."' href='".$this->baseUrl."/".CategoriesModel::getUrlAliasTagMarchio(0, $tempParents[count($tempParents)-1]["pages"]["id_marchio"], $tempParents[count($tempParents)-1]["pages"]["id_c"])."'>".mfield($marchio,"titolo")."</a>".v("breadcrumb_element_close")."\n");
 					}
 				}
 			}
