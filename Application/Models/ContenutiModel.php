@@ -276,8 +276,11 @@ class ContenutiModel extends GenericModel {
 					"className"	=>	"form-control",
 					"labelString"	=>	"Margine inferiore fascia",
 				),
+				'sottotitolo'		=>	array(
+					'labelString'=>	"Sottotitolo contenuto",
+				),
 				'descrizione'		=>	array(
-					'labelString'=>	(isset($contenuto["tipo"]) && $contenuto["tipo"] == "FASCIA") ? "HTML fascia" : "Descrizione",
+					'labelString'=>	(isset($contenuto["tipo"]) && $contenuto["tipo"] == "FASCIA") ? "HTML fascia" : "Descrizione contenuto",
 				),
 				'id_page'		=>	array(
 					'type'		=>	'Select',
