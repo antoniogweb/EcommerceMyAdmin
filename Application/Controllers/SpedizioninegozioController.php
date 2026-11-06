@@ -59,6 +59,8 @@ class SpedizioninegozioController extends BaseController {
 		'titolo:sanitizeAll'=>'tutti', // -> ricerca libera
 	);
 	
+	public $splitQueryInRenderView = true;
+	
 	public $sezionePannello = "ecommerce";
 	
 	function __construct($model, $controller, $queryString, $application, $action) {
