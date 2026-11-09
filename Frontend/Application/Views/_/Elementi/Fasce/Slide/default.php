@@ -20,7 +20,7 @@
         <?php } ?>
     </ul>
 
-    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
-    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+    <a class="uk-position-center-left uk-position-small uk-hidden-hover" aria-label="<?php echo gtextAttr("Vai alla slide precedente");?>" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+    <a class="uk-position-center-right uk-position-small uk-hidden-hover" aria-label="<?php echo gtextAttr("Vai alla slide successiva");?>" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
 </div>
 <?php } ?>

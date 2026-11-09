@@ -157,7 +157,7 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result createPublishingDestination(array{
  *     DetectorId?: string,
  *     DestinationType?: 'S3',
- *     DestinationProperties?: array{DestinationArn?: string, KmsKeyArn?: string, ...},
+ *     DestinationProperties?: array{DestinationArn?: string, KmsKeyArn?: string, ExpectedBucketOwner?: string, ...},
  *     ClientToken?: string,
  *     Tags?: array<string, string>,
  *     ...,
@@ -166,7 +166,7 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise createPublishingDestinationAsync(array{
  *     DetectorId?: string,
  *     DestinationType?: 'S3',
- *     DestinationProperties?: array{DestinationArn?: string, KmsKeyArn?: string, ...},
+ *     DestinationProperties?: array{DestinationArn?: string, KmsKeyArn?: string, ExpectedBucketOwner?: string, ...},
  *     ClientToken?: string,
  *     Tags?: array<string, string>,
  *     ...,
@@ -481,7 +481,7 @@ use Aws\AwsClient;
  *         AccountIds?: list<string>,
  *         DataSources?: list<'CLOUD_TRAIL'|'DNS_LOGS'|'EC2_MALWARE_SCAN'|'FLOW_LOGS'|'KUBERNETES_AUDIT_LOGS'|'S3_LOGS'>,
  *         Resources?: list<string>,
- *         Features?: list<'AI_PROTECTION'|'CLOUD_TRAIL'|'DNS_LOGS'|'EBS_MALWARE_PROTECTION'|'EC2_RUNTIME_MONITORING'|'EKS_AUDIT_LOGS'|'EKS_RUNTIME_MONITORING'|'FARGATE_RUNTIME_MONITORING'|'FLOW_LOGS'|'LAMBDA_NETWORK_LOGS'|'RDS_DBI_PROTECTION_PROVISIONED'|'RDS_DBI_PROTECTION_SERVERLESS'|'RDS_LOGIN_EVENTS'|'S3_DATA_EVENTS'>,
+ *         Features?: list<'AI_PROTECTION'|'CLOUD_TRAIL'|'DNS_LOGS'|'EBS_MALWARE_PROTECTION'|'EC2_RUNTIME_MONITORING'|'EKS_AUDIT_LOGS'|'EKS_RUNTIME_MONITORING'|'FARGATE_RUNTIME_MONITORING'|'FLOW_LOGS'|'LAMBDA_NETWORK_LOGS'|'RDS_DATA_ACTIVITY_DBI_PROTECTION_LIMITLESS'|'RDS_DATA_ACTIVITY_DBI_PROTECTION_PROVISIONED'|'RDS_DATA_ACTIVITY_DBI_PROTECTION_SERVERLESS'|'RDS_DBI_PROTECTION_LIMITLESS'|'RDS_DBI_PROTECTION_PROVISIONED'|'RDS_DBI_PROTECTION_SERVERLESS'|'RDS_LOGIN_EVENTS'|'S3_DATA_EVENTS'>,
  *         ...,
  *     },
  *     Unit?: string,
@@ -497,7 +497,7 @@ use Aws\AwsClient;
  *         AccountIds?: list<string>,
  *         DataSources?: list<'CLOUD_TRAIL'|'DNS_LOGS'|'EC2_MALWARE_SCAN'|'FLOW_LOGS'|'KUBERNETES_AUDIT_LOGS'|'S3_LOGS'>,
  *         Resources?: list<string>,
- *         Features?: list<'AI_PROTECTION'|'CLOUD_TRAIL'|'DNS_LOGS'|'EBS_MALWARE_PROTECTION'|'EC2_RUNTIME_MONITORING'|'EKS_AUDIT_LOGS'|'EKS_RUNTIME_MONITORING'|'FARGATE_RUNTIME_MONITORING'|'FLOW_LOGS'|'LAMBDA_NETWORK_LOGS'|'RDS_DBI_PROTECTION_PROVISIONED'|'RDS_DBI_PROTECTION_SERVERLESS'|'RDS_LOGIN_EVENTS'|'S3_DATA_EVENTS'>,
+ *         Features?: list<'AI_PROTECTION'|'CLOUD_TRAIL'|'DNS_LOGS'|'EBS_MALWARE_PROTECTION'|'EC2_RUNTIME_MONITORING'|'EKS_AUDIT_LOGS'|'EKS_RUNTIME_MONITORING'|'FARGATE_RUNTIME_MONITORING'|'FLOW_LOGS'|'LAMBDA_NETWORK_LOGS'|'RDS_DATA_ACTIVITY_DBI_PROTECTION_LIMITLESS'|'RDS_DATA_ACTIVITY_DBI_PROTECTION_PROVISIONED'|'RDS_DATA_ACTIVITY_DBI_PROTECTION_SERVERLESS'|'RDS_DBI_PROTECTION_LIMITLESS'|'RDS_DBI_PROTECTION_PROVISIONED'|'RDS_DBI_PROTECTION_SERVERLESS'|'RDS_LOGIN_EVENTS'|'S3_DATA_EVENTS'>,
  *         ...,
  *     },
  *     Unit?: string,
@@ -935,14 +935,14 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result updatePublishingDestination(array{
  *     DetectorId?: string,
  *     DestinationId?: string,
- *     DestinationProperties?: array{DestinationArn?: string, KmsKeyArn?: string, ...},
+ *     DestinationProperties?: array{DestinationArn?: string, KmsKeyArn?: string, ExpectedBucketOwner?: string, ...},
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updatePublishingDestinationAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise updatePublishingDestinationAsync(array{
  *     DetectorId?: string,
  *     DestinationId?: string,
- *     DestinationProperties?: array{DestinationArn?: string, KmsKeyArn?: string, ...},
+ *     DestinationProperties?: array{DestinationArn?: string, KmsKeyArn?: string, ExpectedBucketOwner?: string, ...},
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateThreatEntitySet(array $args = [])

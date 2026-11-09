@@ -2,8 +2,8 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
-// See COPYRIGHT.txt and LICENSE.txt.
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
 //
 // This file is part of EcommerceMyAdmin
 //
@@ -68,7 +68,7 @@ class CalendariochiusureModel extends GenericModel
 		
 		$dal->modify("+1 days");
 		
-		$arrayDate = self::nextXDays($dal, $numeroGiorni, $formatLabel, $arrayDate);
+		$arrayDate = self::nextXDays($dal, $numeroGiorni, $formatLabel, $arrayDate, $giorniSettimanaEsclusi);
 		
 		return $arrayDate;
 	}

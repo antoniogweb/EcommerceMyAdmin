@@ -2,8 +2,8 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
-// See COPYRIGHT.txt and LICENSE.txt.
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
 //
 // This file is part of EcommerceMyAdmin
 //
@@ -35,6 +35,7 @@ class ContenutiController extends BaseController
 		'id_tipo:sanitizeAll'	=>	'tutti',
 		'id_fascia:sanitizeAll'	=>	'tutti',
 		'id_tipo_figlio:sanitizeAll'	=>	'tutti',
+		'editor_visuale:forceInt'	=>	1,
 	);
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -56,14 +57,14 @@ class ContenutiController extends BaseController
 		else
 			$this->menuLinks = $this->menuLinksInsert = "save";
 		
+		$recordContenuto = $id ? $this->m[$this->modelName]->selectId((int)$id) : array();
+		
 		$recordTipo = $data["recordTipo"] = array();
 		
 		if ($this->viewArgs["id_tipo"] != "tutti")
 			$recordTipo = $data["recordTipo"] = $this->m["TipicontenutoModel"]->selectId($this->viewArgs["id_tipo"]);
 		else
 		{
-			$recordContenuto = $this->m[$this->modelName]->selectId((int)$id);
-			
 			if ($recordContenuto)
 				$recordTipo = $data["recordTipo"] = $this->m["TipicontenutoModel"]->selectId($recordContenuto["id_tipo"]);
 		}
@@ -87,12 +88,12 @@ class ContenutiController extends BaseController
 		if (v("attiva_sottotitolo_in_contenuti"))
 			$fields .= ",sottotitolo";
 		
-		$data["editor_visuale"] = true;
+		$data["editor_visuale"] = (isset($recordContenuto["editor_visuale"]) && $recordContenuto["editor_visuale"] >= 0) ? (int)$recordContenuto["editor_visuale"] : $this->viewArgs["editor_visuale"];
 		
 		if (isset($recordTipo["tipo"]) && $recordTipo["tipo"] == "FASCIA" && $queryType == "update")
 		{
 			$fields .= ",descrizione";
-			$data["editor_visuale"] = false;
+			$data["editor_visuale"] = 0;
 		}
 		
 		if (($this->viewArgs["id_tipo"] == "tutti" && $queryType == "insert") || (isset($recordTipo["tipo"]) && $recordTipo["tipo"] != "FASCIA" && $queryType == "update"))
@@ -100,13 +101,12 @@ class ContenutiController extends BaseController
 		
 		if ($queryType == "update")
 		{
-			$recordContenuto = $this->m[$this->modelName]->selectId((int)$id);
-			
 			if (!empty($recordContenuto) && !$recordContenuto["id_page"] && !$recordContenuto["id_c"] && !$recordContenuto["id_fascia"])
 				$fields .= ",id_page";
 		}
 		
 		$this->m[$this->modelName]->setValuesFromPost($fields);
+		$this->m[$this->modelName]->setValue("editor_visuale", (int)$data["editor_visuale"]);
 		
 		if ($this->viewArgs["id_page"] != "tutti")
 			$this->m[$this->modelName]->setValue("id_page", (int)$this->viewArgs["id_page"]);

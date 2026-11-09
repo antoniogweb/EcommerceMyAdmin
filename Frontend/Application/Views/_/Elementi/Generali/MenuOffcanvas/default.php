@@ -3,7 +3,7 @@
 	<aside class="uk-offcanvas-bar uk-padding-remove">
 		<div class="uk-card uk-card-small tm-shadow-remove">
 			<header class="uk-card-header uk-flex uk-flex-middle">
-				<button class="uk-offcanvas-close" type="button" uk-close></button>
+				<button class="uk-offcanvas-close" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
 				<div>
 					<div class="uk-margin-medium"><a href="<?php echo $this->baseUrl;?>"><?php echo i("__LOGO__");?></a></div>
 					<div class="uk-text-muted uk-text-bold"><span class="uk-margin-small-right" uk-icon="receiver"></span> <?php echo v("telefono_aziendale");?></div>

@@ -47,5 +47,23 @@
 	var nazioniConProvince = ['<?php echo implode("','",NazioniModel::nazioniConProvince())?>'];
 	<?php } ?>
 	var formato_data_date_picker = '<?php echo v("default_date_format_datepicket");?>';
+	var messaggio_campi_obbligatori = '<?php echo gtext("Si prega di compilare i seguenti campi obbligatori:");?>';
+	var messaggio_prodotto_aggiunto_carrello = '<?php echo gtext("Prodotto aggiunto al carrello");?>';
+	var messaggio_carrello_aggiornato = '<?php echo gtext("Carrello aggiornato");?>';
+	var messaggio_prodotto_rimosso_carrello = '<?php echo gtext("Prodotto rimosso dal carrello");?>';
+	var messaggio_prodotto_aggiunto_wishlist = '<?php echo gtext("Prodotto aggiunto alla lista dei desideri");?>';
+	var messaggio_prodotto_rimosso_wishlist = '<?php echo gtext("Prodotto rimosso dalla lista dei desideri");?>';
+	var messaggio_prodotto_aggiunto_lista_regalo = '<?php echo gtext("Prodotto aggiunto alla lista regalo");?>';
+	var messaggio_quantita_lista_regalo_aggiornata = '<?php echo gtext("Quantità della lista aggiornata");?>';
+	var messaggio_prodotto_rimosso_lista_regalo = '<?php echo gtext("Prodotto rimosso dalla lista regalo");?>';
+	var messaggio_link_lista_inviato = '<?php echo gtext("Link inviato");?>';
+	var messaggio_link_lista_reinviato = '<?php echo gtext("Link reinviato");?>';
+	var messaggio_coupon_rimosso = '<?php echo gtext("Coupon rimosso");?>';
+	var messaggio_coupon_applicato = '<?php echo gtext("Coupon applicato");?>';
+	<?php if (v("attiva_messaggi_alert_status")) { ?>
+	var attiva_messaggi_alert_status = true;
+	var alert_error_class = '<?php echo v("alert_error_class");?>';
+	var alert_success_class = '<?php echo v("alert_success_class");?>';
+	<?php } ?>
 </script>
 <?php $jsVariablesLoaded = true;?>

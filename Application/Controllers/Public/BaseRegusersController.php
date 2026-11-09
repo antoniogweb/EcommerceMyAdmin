@@ -2,8 +2,8 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
-// See COPYRIGHT.txt and LICENSE.txt.
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
 //
 // This file is part of EcommerceMyAdmin
 //
@@ -162,7 +162,7 @@ class BaseRegusersController extends BaseController
 							}
 						}
 						
-						$data['notice'] = '<div class="'.v("alert_error_class").'">'.gtext('E-Mail o Password sbagliati').'</div>';
+						$data['notice'] = '<div class="'.v("alert_error_class").'">'.gtext('E-Mail o Password sbagliati').'</div><div class="evidenzia">class_login_username</div><div class="evidenzia">class_password</div>';
 					}
 					else
 						Output::setHeaderValue("Status","login-error");

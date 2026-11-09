@@ -2,8 +2,8 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
-// See COPYRIGHT.txt and LICENSE.txt.
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
 //
 // This file is part of EcommerceMyAdmin
 //
@@ -991,6 +991,8 @@ class VariabiliModel extends GenericModel {
 		"secret_key"			=>	"", // secret key usata come firma con hash_hmac sha256
 		### MARCHI ##
 		"attiva_documenti_in_marchi"	=>	0, // se impostato su 1, permette il caricamento dei documenti nei marchi
+		### ACCESSIBILITÀ ##
+		"attiva_messaggi_alert_status"	=>	0, // se mostrare i messaggi role="status" e role="alert"
 		###
 		"attiva_tag_in_testi"	=>	0, // se impostato a 0 sarà possibile selezionare il tag contenitore dell'elemento
 		"attiva_redirect"		=>	0, // se impostato a 1, permette di gestire i redirect

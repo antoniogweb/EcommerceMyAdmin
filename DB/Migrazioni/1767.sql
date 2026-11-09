@@ -1,0 +1,1 @@
+ALTER TABLE orders ADD INDEX idx_orders_spedizione (id_spedizione);

@@ -1,1 +1,131 @@
-<?phpif (!defined('EG')) die('Direct access not allowed!');// EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary//// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)// See COPYRIGHT.txt and LICENSE.txt.//// This file is part of EcommerceMyAdmin//// EcommerceMyAdmin is free software: you can redistribute it and/or modify// it under the terms of the GNU General Public License as published by// the Free Software Foundation, either version 3 of the License, or// (at your option) any later version.//// EcommerceMyAdmin is distributed in the hope that it will be useful,// but WITHOUT ANY WARRANTY; without even the implied warranty of// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the// GNU General Public License for more details.//// You should have received a copy of the GNU General Public License// along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.class ImmaginiController extends BaseController{	public $orderBy;		public $argKeys = array('contesto:sanitizeAll'=>'P');		public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)	{		parent::__construct($model, $controller, $queryString, $application, $action);				$this->session('admin');		$this->s['admin']->check();				$this->model('PagesModel');		$this->model('ImmaginiModel');		$this->orderBy = "immagini.id_order";				$data['token'] = $this->s['admin']->status['token'];		$this->append($data);	}		public function form($queryType = 'insert', $id = 0)	{		$fields = 'alt_tag';				if (ImmaginitipologieModel::numero() > 0)			$fields .= ",id_immagine_tipologia";				$this->m[$this->modelName]->setValuesFromPost($fields);				parent::form($queryType, $id);	}		public function view($id_page = null, $id_c = null)	{		$this->clean();				if (isset($id_page))		{			$clean['id_page'] = (int)$id_page;			$clean['id_c'] = (int)$id_c;						$data['records'] = $this->m['ImmaginiModel']->clear()->where(array(				'id_page'=>$clean['id_page'],			))->orderBy('id_order');						$this->m['ImmaginiModel']->aWhere(array(				"id_c"	=>	$clean['id_c'],			));						$data['records'] = $this->m['ImmaginiModel']->send();						$this->append($data);			$this->load('view');		}	}		public function ordina()	{		$this->modelName = "ImmaginiModel";				parent::ordina();	}	public function erase($id_immagine = null)	{		$this->checkCsrf(true);				$this->clean();		if (isset($id_immagine))		{			$clean['id_immagine'] = (int)$id_immagine;			$this->m['ImmaginiModel']->del($clean['id_immagine']);		}	}		public function rotateo($id_immagine = null)	{		$this->checkCsrf(true);				$this->clean();				if (isset($id_immagine))		{			$clean['id_immagine'] = (int)$id_immagine;						$immagine = $this->m['ImmaginiModel']->selectId($clean['id_immagine']);						if (!empty($immagine))			{				$path = Domain::$parentRoot."/".Parametri::$cartellaImmaginiContenuti;								if (is_file($path."/".$immagine["immagine"]))				{					$thumb = new Image_Gd_Thumbnail($path);										$thumb->imageRotations[] = array(						"angle"	=>	270,					);										$thumb->render($immagine["immagine"], $path."/".$immagine["immagine"]);				}			}		}	}}
+<?php
+if (!defined('EG')) die('Direct access not allowed!');
+
+// EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
+//
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
+//
+// This file is part of EcommerceMyAdmin
+//
+// EcommerceMyAdmin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// EcommerceMyAdmin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with EcommerceMyAdmin.  If not, see <http://www.gnu.org/licenses/>.
+
+class ImmaginiController extends BaseController
+{
+	public $orderBy;
+	
+	public $argKeys = array('contesto:sanitizeAll'=>'P');
+	
+	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
+	{
+		parent::__construct($model, $controller, $queryString, $application, $action);
+		
+		$this->session('admin');
+		$this->s['admin']->check();
+		
+		$this->model('PagesModel');
+		$this->model('ImmaginiModel');
+
+		$this->orderBy = "immagini.id_order";
+		
+		$data['token'] = $this->s['admin']->status['token'];
+		$this->append($data);
+	}
+	
+	public function form($queryType = 'insert', $id = 0)
+	{
+		$fields = 'alt_tag';
+		
+		if (ImmaginitipologieModel::numero() > 0)
+			$fields .= ",id_immagine_tipologia";
+		
+		$this->m[$this->modelName]->setValuesFromPost($fields);
+		
+		parent::form($queryType, $id);
+	}
+	
+	public function view($id_page = null, $id_c = null)
+	{
+		$this->clean();
+		
+		if (isset($id_page))
+		{
+			$clean['id_page'] = (int)$id_page;
+			$clean['id_c'] = (int)$id_c;
+			
+			$data['records'] = $this->m['ImmaginiModel']->clear()->where(array(
+				'id_page'=>$clean['id_page'],
+			))->orderBy('id_order');
+			
+			$this->m['ImmaginiModel']->aWhere(array(
+				"id_c"	=>	$clean['id_c'],
+			));
+			
+			$data['records'] = $this->m['ImmaginiModel']->send();
+			
+			$this->append($data);
+			$this->load('view');
+		}
+	}
+	
+	public function ordina()
+	{
+		$this->modelName = "ImmaginiModel";
+		
+		parent::ordina();
+	}
+
+	public function erase($id_immagine = null)
+	{
+		$this->checkCsrf(true);
+		
+		$this->clean();
+		if (isset($id_immagine))
+		{
+			$clean['id_immagine'] = (int)$id_immagine;
+
+			$this->m['ImmaginiModel']->del($clean['id_immagine']);
+		}
+	}
+	
+	public function rotateo($id_immagine = null)
+	{
+		$this->checkCsrf(true);
+		
+		$this->clean();
+		
+		if (isset($id_immagine))
+		{
+			$clean['id_immagine'] = (int)$id_immagine;
+			
+			$immagine = $this->m['ImmaginiModel']->selectId($clean['id_immagine']);
+			
+			if (!empty($immagine))
+			{
+				$path = Domain::$parentRoot."/".Parametri::$cartellaImmaginiContenuti;
+				
+				if (is_file($path."/".$immagine["immagine"]))
+				{
+					$thumb = new Image_Gd_Thumbnail($path);
+					
+					$thumb->imageRotations[] = array(
+						"angle"	=>	270,
+					);
+					
+					$thumb->render($immagine["immagine"], $path."/".$immagine["immagine"]);
+				}
+			}
+		}
+	}
+}

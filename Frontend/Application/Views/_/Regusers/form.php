@@ -32,7 +32,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <?php include(tpf("Elementi/Registrazione/Form/top.php"));?>
 
-<form class="form_registrazione box_form_evidenzia" action="<?php echo $this->baseUrl.$action;?>#main" method="POST" autocomplete="new-password">
+<form class="form_registrazione box_form_evidenzia" action="<?php echo $this->baseUrl.$action;?>#main" method="POST">
 	<div class="uk-text-center">
 		<?php echo $notice; ?>
 	</div>

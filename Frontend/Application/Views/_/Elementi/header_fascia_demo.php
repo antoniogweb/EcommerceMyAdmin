@@ -2,6 +2,6 @@
 <?php if (v("piattaforma_di_demo")) { ?>
 <div class="uk-text-center uk-alert-danger uk-margin-remove" uk-alert>
 	<?php echo gtextPlain("Attenzione, questa è una piattaforma di demo.");?>
-	<button class="uk-alert-close" type="button" uk-close></button>
+	<button class="uk-alert-close" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
 </div>
 <?php } ?>

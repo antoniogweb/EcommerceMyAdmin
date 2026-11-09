@@ -2,8 +2,8 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2020  Antonio Gallo (info@laboratoriolibero.com)
-// See COPYRIGHT.txt and LICENSE.txt.
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
 //
 // This file is part of EcommerceMyAdmin
 //
@@ -25,6 +25,7 @@ define('EG','allowed');
 include(LIBRARY . DS . 'Frontend' . DS . "/block_ip.php");
 include(LIBRARY . DS . 'Frontend' . DS . "/throttle.php");
 // include(LIBRARY . DS . 'Frontend' . DS . "/captcha.php");
+// include(LIBRARY . DS . 'Frontend' . DS . "/ddos.php");
 
 if (file_exists(ROOT . "/redirect_url.php"))
 	include(ROOT . "/redirect_url.php");

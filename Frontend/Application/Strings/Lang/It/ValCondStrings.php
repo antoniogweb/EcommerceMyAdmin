@@ -2,8 +2,8 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
-// See COPYRIGHT.txt and LICENSE.txt.
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
 //
 // This file is part of EcommerceMyAdmin
 //
@@ -27,7 +27,7 @@ class Lang_It_ValCondStrings extends Lang_En_ValCondStrings {
 	//if the element is not defined
 	public function getNotDefinedResultString($element)
 	{
-		return "<div class='evidenzia'>class_$element</div>\n";
+		return "<div class='evidenzia not_defined_input'>class_$element</div>\n";
 	}
 	
 	//if the elements are not equal

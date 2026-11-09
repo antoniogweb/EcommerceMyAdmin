@@ -3,19 +3,19 @@
 <div class="spedizione_box uk-width-1-1 uk-margin-bottom">
 	<div class="uk-flex uk-flex-top">
 		<div>
-			<?php echo Html_Form::checkbox("con_note_check",$values["con_note"],1,"",null);?>
+			<?php echo Html_Form::checkbox("con_note_check",$values["con_note"],1,"","checkout_con_note_check");?>
 		</div>
 		<div class="uk-margin-left uk-text-small">
-			<?php echo gtextPlain("Aggiungi una nota all'ordine");?>
+			<label for="checkout_con_note_check"><?php echo gtextPlain("Aggiungi una nota all'ordine");?></label>
 		</div>
 	</div>
 </div>
 
 <div class="box_note uk-margin-medium-bottom">
 	<div class="uk-margin uk-margin-remove-bottom">
-		<label class="uk-form-label"><?php echo gtextPlain("Nota d'acquisto")?></label>
+		<label class="uk-form-label" for="checkout_nota_acquisto"><?php echo gtextPlain("Nota d'acquisto")?></label>
 	
-		<?php echo Html_Form::textarea("note",$values["note"],"uk-textarea",null,"placeholder='".gtextAttr("Scrivi qui una eventuale nota al tuo ordine..")."'");?>
+		<?php echo Html_Form::textarea("note",$values["note"],"uk-textarea","checkout_nota_acquisto","placeholder='".gtextAttr("Scrivi qui una eventuale nota al tuo ordine..")."'");?>
 	</div>
 </div>
 

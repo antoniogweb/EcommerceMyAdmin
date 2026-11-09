@@ -5,7 +5,7 @@
 ?>
 <div class="uk-grid-column-small uk-grid" uk-grid>
 	<div class="uk-width-1-3">
-		<img src="<?php echo $this->baseUrl."/thumb/carrello/".$p["cart"]["immagine"];?>" />
+		<img src="<?php echo $this->baseUrl."/thumb/carrello/".$p["cart"]["immagine"];?>" alt="<?php echo altUrlencode(field($p, "title"));?>" />
 	</div>
 	<div class="uk-margin-remove-top uk-width-2-3">
 		<div class="uk-grid-column-small uk-grid" uk-grid>

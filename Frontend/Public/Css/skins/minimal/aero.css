@@ -1,59 +1,13 @@
-/* iCheck plugin Minimal skin, aero
------------------------------------ */
-.icheckbox_minimal-aero,
-.iradio_minimal-aero {
-    display: inline-block;
-    *display: inline;
-    vertical-align: middle;
-    margin: 0;
-    padding: 0;
-    width: 18px;
-    height: 18px;
-    background: url(aero.png) no-repeat;
-    border: none;
-    cursor: pointer;
+@import url("../base.css?v=10");
+@import url("../minimal-family.css?v=7");
+
+.icheckbox_minimal-aero, .iradio_minimal-aero { --native-check-size: 18px; --native-check-radius: 3px; --native-check-color: #00a8e0; --native-check-border: #00a8e0; }
+
+/* Selected file color applies to every legacy skin class on the page. */
+input[type="checkbox"][class*="icheckbox_"],
+input[type="radio"][class*="iradio_"] {
+  --native-check-color: #00a8e0 !important;
+  --native-check-border: #00a8e0 !important;
 }
 
-.icheckbox_minimal-aero {
-    background-position: 0 0;
-}
-    .icheckbox_minimal-aero.hover {
-        background-position: -20px 0;
-    }
-    .icheckbox_minimal-aero.checked {
-        background-position: -40px 0;
-    }
-    .icheckbox_minimal-aero.disabled {
-        background-position: -60px 0;
-        cursor: default;
-    }
-    .icheckbox_minimal-aero.checked.disabled {
-        background-position: -80px 0;
-    }
-
-.iradio_minimal-aero {
-    background-position: -100px 0;
-}
-    .iradio_minimal-aero.hover {
-        background-position: -120px 0;
-    }
-    .iradio_minimal-aero.checked {
-        background-position: -140px 0;
-    }
-    .iradio_minimal-aero.disabled {
-        background-position: -160px 0;
-        cursor: default;
-    }
-    .iradio_minimal-aero.checked.disabled {
-        background-position: -180px 0;
-    }
-
-/* HiDPI support */
-@media (-o-min-device-pixel-ratio: 5/4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.25dppx) {
-    .icheckbox_minimal-aero,
-    .iradio_minimal-aero {
-        background-image: url(aero@2x.png);
-        -webkit-background-size: 200px 20px;
-        background-size: 200px 20px;
-    }
-}
+input[type="checkbox"][class*="icheckbox_"]:checked { background-color: #fff !important; border-color: var(--native-check-color, #292929) !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m2.5 8.2 3.4 3.4 7.6-7.2' fill='none' stroke='%2300a8e0' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important; background-position: calc(50% + 0.5px) calc(50% + 0.5px) !important; background-size: 14px !important; background-repeat: no-repeat !important; }

@@ -2,8 +2,8 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
-// See COPYRIGHT.txt and LICENSE.txt.
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
 //
 // This file is part of EcommerceMyAdmin
 //
@@ -58,6 +58,8 @@ class SpedizioninegozioController extends BaseController {
 		'id_sped:sanitizeAll'=>'tutti', // -> usato durante l'inserimento
 		'titolo:sanitizeAll'=>'tutti', // -> ricerca libera
 	);
+	
+	public $splitQueryInRenderView = true;
 	
 	public $sezionePannello = "ecommerce";
 	

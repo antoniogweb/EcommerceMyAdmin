@@ -3,8 +3,8 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
-// See COPYRIGHT.txt and LICENSE.txt.
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
 //
 // This file is part of EcommerceMyAdmin
 //
@@ -42,6 +42,8 @@ $options = getopt(null, array(
 	"rete_whitelist::",
 	"ore::",
 	"throttle::",
+	"ip::",
+	"write_log::",
 ));
 
 $default = array(
@@ -124,6 +126,7 @@ if ($params["azione"] == "check-numero-query-ddos")
 	$secondi = $params["secondi"] ?? 60;
 	$mail = isset($params["email"]) ? $params["email"] : "";
 	$blocca = isset($params["blocca"]) ? true : false;
+	$writeLog = isset($params["write_log"]) ? (bool)$params["write_log"] : false;
 	
 	$conteggio = ConteggioqueryModel::numeroQueryGlobali($query, $secondi);
 	
@@ -143,6 +146,14 @@ if ($params["azione"] == "check-numero-query-ddos")
 		
 		$log->writeString("È stato attivato il sistema anti DDOS");
 	}
+	
+	$logPathFile = LIBRARY."/Logs/total_queries.log";
+	
+	if (is_file($logPathFile))
+		unlink($logPathFile);
+	
+	if ($writeLog && !empty($conteggio))
+		FilePutContentsAtomic(LIBRARY."/Logs/total_queries.log", json_encode($conteggio));
 	
 	Shield::freeDDOSAttack();
 	
@@ -368,4 +379,30 @@ if ($params["azione"] == "rimuovi-da-whitelist" && isset($params["ip_whitelist"]
 	IpfilterModel::rimuoviDaWhitelist($params["ip_whitelist"], $params["rete_whitelist"], $log);
 	
 	$log->writeString("FINE RIMOZIONE DA WHITELIST");
+}
+
+// Scarica IP MMDB
+if ($params["azione"] == "scarica-mmdb")
+{
+	$log->writeString("INIZIO SCARICAMENTO MMDB");
+	
+	GeolocatorModel::downloadMMDB($log);
+	
+	$log->writeString("FINE SCARICAMENTO MMDB");
+}
+
+// Ottieni nazione da IP
+if ($params["azione"] == "get-country-from-ip")
+{
+	$log->writeString("INIZIO GET COUNTRY FROM IP");
+	
+	if (!isset($params["ip"]))
+	{
+		echo "si prega di indicare un IP l'istruzione --ip=\"<IP>\" \n";
+		die();
+	}
+	
+	echo GeolocatorModel::getCountryFromIpMMDB($params["ip"]);
+	
+	$log->writeString("FINE GET COUNTRY FROM IP");
 }

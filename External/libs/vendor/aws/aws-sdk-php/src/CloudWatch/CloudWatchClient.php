@@ -10,6 +10,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result associateDatasetKmsKey(array{DatasetIdentifier?: string, KmsKeyArn?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise associateDatasetKmsKeyAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise associateDatasetKmsKeyAsync(array{DatasetIdentifier?: string, KmsKeyArn?: string, ...} $args = [])
+ * @method \Aws\Result createResourceMetricsConfiguration(array $args = [])
+ * @phpstan-method \Aws\Result createResourceMetricsConfiguration(array{ResourceArn?: string, MetricSelections?: list<array{IncludeMetrics?: list<string>, ...}>, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise createResourceMetricsConfigurationAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise createResourceMetricsConfigurationAsync(array{ResourceArn?: string, MetricSelections?: list<array{IncludeMetrics?: list<string>, ...}>, ...} $args = [])
  * @method \Aws\Result deleteAlarmMuteRule(array $args = [])
  * @phpstan-method \Aws\Result deleteAlarmMuteRule(array{AlarmMuteRuleName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteAlarmMuteRuleAsync(array $args = [])
@@ -66,6 +70,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result deleteMetricStream(array{Name?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteMetricStreamAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise deleteMetricStreamAsync(array{Name?: string, ...} $args = [])
+ * @method \Aws\Result deleteResourceMetricsConfiguration(array $args = [])
+ * @phpstan-method \Aws\Result deleteResourceMetricsConfiguration(array{ResourceArn?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise deleteResourceMetricsConfigurationAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise deleteResourceMetricsConfigurationAsync(array{ResourceArn?: string, ...} $args = [])
  * @method \Aws\Result describeAlarmContributors(array $args = [])
  * @phpstan-method \Aws\Result describeAlarmContributors(array{AlarmName?: string, NextToken?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeAlarmContributorsAsync(array $args = [])
@@ -302,6 +310,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result getOTelEnrichment(array{...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getOTelEnrichmentAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getOTelEnrichmentAsync(array{...} $args = [])
+ * @method \Aws\Result getResourceMetricsConfiguration(array $args = [])
+ * @phpstan-method \Aws\Result getResourceMetricsConfiguration(array{ResourceArn?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise getResourceMetricsConfigurationAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getResourceMetricsConfigurationAsync(array{ResourceArn?: string, ...} $args = [])
  * @method \Aws\Result listAlarmMuteRules(array $args = [])
  * @phpstan-method \Aws\Result listAlarmMuteRules(array{
  *     AlarmName?: string,
@@ -384,7 +396,13 @@ use Aws\AwsClient;
  *     MetricName?: string,
  *     Dimensions?: list<array{Name?: string, Value?: string, ...}>,
  *     Stat?: string,
- *     Configuration?: array{ExcludedTimeRanges?: list<array>, MetricTimezone?: string, ...},
+ *     Configuration?: array{
+ *         ExcludedTimeRanges?: list<array>,
+ *         MetricTimezone?: string,
+ *         AdaptationSpeed?: 'FAST'|'NORMAL'|'SLOW',
+ *         OutlierFilteringStrength?: 'MINIMAL'|'MODERATE'|'STRICT',
+ *         ...,
+ *     },
  *     MetricCharacteristics?: array{PeriodicSpikes?: bool, ...},
  *     SingleMetricAnomalyDetector?: array{
  *         AccountId?: string,
@@ -403,7 +421,13 @@ use Aws\AwsClient;
  *     MetricName?: string,
  *     Dimensions?: list<array{Name?: string, Value?: string, ...}>,
  *     Stat?: string,
- *     Configuration?: array{ExcludedTimeRanges?: list<array>, MetricTimezone?: string, ...},
+ *     Configuration?: array{
+ *         ExcludedTimeRanges?: list<array>,
+ *         MetricTimezone?: string,
+ *         AdaptationSpeed?: 'FAST'|'NORMAL'|'SLOW',
+ *         OutlierFilteringStrength?: 'MINIMAL'|'MODERATE'|'STRICT',
+ *         ...,
+ *     },
  *     MetricCharacteristics?: array{PeriodicSpikes?: bool, ...},
  *     SingleMetricAnomalyDetector?: array{
  *         AccountId?: string,
@@ -429,6 +453,10 @@ use Aws\AwsClient;
  *     ActionsSuppressor?: string,
  *     ActionsSuppressorWaitPeriod?: int,
  *     ActionsSuppressorExtensionPeriod?: int,
+ *     ActionConfiguration?: array{
+ *         AlarmTagsPropagation?: array{Enabled?: bool, IncludedTagKeys?: list<string>, ExcludedTagKeys?: list<string>, ...},
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise putCompositeAlarmAsync(array $args = [])
@@ -444,6 +472,10 @@ use Aws\AwsClient;
  *     ActionsSuppressor?: string,
  *     ActionsSuppressorWaitPeriod?: int,
  *     ActionsSuppressorExtensionPeriod?: int,
+ *     ActionConfiguration?: array{
+ *         AlarmTagsPropagation?: array{Enabled?: bool, IncludedTagKeys?: list<string>, ExcludedTagKeys?: list<string>, ...},
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \Aws\Result putDashboard(array $args = [])
@@ -505,6 +537,10 @@ use Aws\AwsClient;
  *     TreatMissingData?: string,
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
  *     WarmUpConfiguration?: array{WarmUpPeriodDurationInMinutes?: int, OnlyStartEvaluatingAfterWarmUpPeriodEnds?: bool, ...},
+ *     ActionConfiguration?: array{
+ *         AlarmTagsPropagation?: array{Enabled?: bool, IncludedTagKeys?: list<string>, ExcludedTagKeys?: list<string>, ...},
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise putLogAlarmAsync(array $args = [])
@@ -534,6 +570,10 @@ use Aws\AwsClient;
  *     TreatMissingData?: string,
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
  *     WarmUpConfiguration?: array{WarmUpPeriodDurationInMinutes?: int, OnlyStartEvaluatingAfterWarmUpPeriodEnds?: bool, ...},
+ *     ActionConfiguration?: array{
+ *         AlarmTagsPropagation?: array{Enabled?: bool, IncludedTagKeys?: list<string>, ExcludedTagKeys?: list<string>, ...},
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \Aws\Result putManagedInsightRules(array $args = [])
@@ -577,6 +617,10 @@ use Aws\AwsClient;
  *     WarmUpConfiguration?: array{WarmUpPeriodDurationInMinutes?: int, OnlyStartEvaluatingAfterWarmUpPeriodEnds?: bool, ...},
  *     EvaluationCriteria?: array{PromQLCriteria?: array{Query?: string, PendingPeriod?: int, RecoveryPeriod?: int, ...}, ...},
  *     EvaluationInterval?: int,
+ *     ActionConfiguration?: array{
+ *         AlarmTagsPropagation?: array{Enabled?: bool, IncludedTagKeys?: list<string>, ExcludedTagKeys?: list<string>, ...},
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise putMetricAlarmAsync(array $args = [])
@@ -616,6 +660,10 @@ use Aws\AwsClient;
  *     WarmUpConfiguration?: array{WarmUpPeriodDurationInMinutes?: int, OnlyStartEvaluatingAfterWarmUpPeriodEnds?: bool, ...},
  *     EvaluationCriteria?: array{PromQLCriteria?: array{Query?: string, PendingPeriod?: int, RecoveryPeriod?: int, ...}, ...},
  *     EvaluationInterval?: int,
+ *     ActionConfiguration?: array{
+ *         AlarmTagsPropagation?: array{Enabled?: bool, IncludedTagKeys?: list<string>, ExcludedTagKeys?: list<string>, ...},
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \Aws\Result putMetricData(array $args = [])
@@ -703,9 +751,17 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise startMetricStreamsAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise startMetricStreamsAsync(array{Names?: list<string>, ...} $args = [])
  * @method \Aws\Result startOTelEnrichment(array $args = [])
- * @phpstan-method \Aws\Result startOTelEnrichment(array{...} $args = [])
+ * @phpstan-method \Aws\Result startOTelEnrichment(array{
+ *     IncludeFilters?: list<array{Namespace?: string, MetricNames?: list<string>, ...}>,
+ *     ExcludeFilters?: list<array{Namespace?: string, MetricNames?: list<string>, ...}>,
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise startOTelEnrichmentAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise startOTelEnrichmentAsync(array{...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise startOTelEnrichmentAsync(array{
+ *     IncludeFilters?: list<array{Namespace?: string, MetricNames?: list<string>, ...}>,
+ *     ExcludeFilters?: list<array{Namespace?: string, MetricNames?: list<string>, ...}>,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result stopMetricStreams(array $args = [])
  * @phpstan-method \Aws\Result stopMetricStreams(array{Names?: list<string>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise stopMetricStreamsAsync(array $args = [])
@@ -722,5 +778,21 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result untagResource(array{ResourceARN?: string, TagKeys?: list<string>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise untagResourceAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise untagResourceAsync(array{ResourceARN?: string, TagKeys?: list<string>, ...} $args = [])
+ * @method \Aws\Result updateOTelEnrichment(array $args = [])
+ * @phpstan-method \Aws\Result updateOTelEnrichment(array{
+ *     IncludeFilters?: list<array{Namespace?: string, MetricNames?: list<string>, ...}>,
+ *     ExcludeFilters?: list<array{Namespace?: string, MetricNames?: list<string>, ...}>,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateOTelEnrichmentAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateOTelEnrichmentAsync(array{
+ *     IncludeFilters?: list<array{Namespace?: string, MetricNames?: list<string>, ...}>,
+ *     ExcludeFilters?: list<array{Namespace?: string, MetricNames?: list<string>, ...}>,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result updateResourceMetricsConfiguration(array $args = [])
+ * @phpstan-method \Aws\Result updateResourceMetricsConfiguration(array{ResourceArn?: string, MetricSelections?: list<array{IncludeMetrics?: list<string>, ...}>, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateResourceMetricsConfigurationAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateResourceMetricsConfigurationAsync(array{ResourceArn?: string, MetricSelections?: list<array{IncludeMetrics?: list<string>, ...}>, ...} $args = [])
  */
 class CloudWatchClient extends AwsClient {}

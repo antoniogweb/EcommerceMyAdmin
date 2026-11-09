@@ -13,21 +13,25 @@ if (!isset($classeSelectVarianti))
 		<?php foreach ($lista_valori_attributi as $col => $valori_attributo) {
 			$tipoAttributo = PagesModel::getAttributoDaCol($p["pages"]["id_page"], $col);
 			$tipoAttributo = isset($tipoAttributo["tipo"]) ? $tipoAttributo["tipo"] : "TENDINA";
+			$idVariante = "variante-".encodeUrl($col);
+			$idDescrizioneVariante = "descrizione-variante-".encodeUrl($col);
 		?>
-			<label style="display:none;" class="pa_size nome_attributo nome_attributo_<?php echo encodeUrl($lista_attributi[$col]);?>"><?php echo $lista_attributi[$col];?></label>
 			<?php if ($tipoAttributo == "RADIO") { ?>
-				<?php echo Html_Form::radio($col,getAttributoDaCarrello($col),$valori_attributo,"form_radio_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]), "after", null, "yes", "col='".$col."' rel='".$lista_attributi[$col]."'");?>
+			<span id="<?php echo $idDescrizioneVariante;?>" class="accessibility-visually-hidden"><?php echo $lista_attributi[$col];?></span>
+			<?php } ?>
+			<?php if ($tipoAttributo == "RADIO") { ?>
+				<?php echo Html_Form::radio($col,getAttributoDaCarrello($col),$valori_attributo,"form_radio_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]), "after", null, "yes", "col='".$col."' rel='".$lista_attributi[$col]."' aria-describedby='".$idDescrizioneVariante."'");?>
 			<?php } else if ($tipoAttributo == "IMMAGINE" || $tipoAttributo == "COLORE") {
 				$actionImmagine = ($tipoAttributo == "IMMAGINE") ? "valoreattributo" : "colore";
 			?>
 				<div class="box_attributo_immagine_colore box_attributo_<?php echo strtolower($tipoAttributo);?>">
-					<div class="uk-text-small uk-text-bold">
+					<label for="<?php echo $idVariante;?>" class="uk-text-small uk-text-bold">
 						<?php echo $lista_attributi[$col];?>
 						<?php if ($tipoAttributo == "COLORE") { ?>
 						: <span class="uk-text-meta label_variante_colore"></span>
 						<?php } ?>
-					</div>
-					<select class="image-picker uk-select form_select_attributo form_select_attributo_<?php echo encodeUrl($lista_attributi[$col]);?>" name="<?php echo $col;?>" col="<?php echo $col;?>" rel="<?php echo $lista_attributi[$col];?>">
+					</label>
+					<select id="<?php echo $idVariante;?>" class="image-picker uk-select form_select_attributo form_select_attributo_<?php echo encodeUrl($lista_attributi[$col]);?>" name="<?php echo $col;?>" col="<?php echo $col;?>" rel="<?php echo $lista_attributi[$col];?>">
 						<?php
 						$indice = 0;
 						foreach ($valori_attributo as $v => $i) {
@@ -46,7 +50,8 @@ if (!isset($classeSelectVarianti))
 				</div>
 			<?php } else { ?>
 				<div class="<?php echo $classeTendinaVarianti;?>">
-					<?php echo Html_Form::select($col,getAttributoDaCarrello($col),$valori_attributo,$classeSelectVarianti." form_select_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]),null,"yes","col='".$col."' rel='".$lista_attributi[$col]."'");?>
+					<label for="<?php echo $idVariante;?>" class="accessibility-visually-hidden"><?php echo $lista_attributi[$col];?></label>
+					<?php echo Html_Form::select($col,getAttributoDaCarrello($col),$valori_attributo,$classeSelectVarianti." form_select_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]),$idVariante,"yes","col='".$col."' rel='".$lista_attributi[$col]."'");?>
 				</div>
 			<?php } ?>
 			

@@ -35,17 +35,19 @@
 <hr>
 <?php
 $indice = 1;
-foreach ($righeOrdine as $p) { ?>
+foreach ($righeOrdine as $p) {
+	$titoloRiga = OrdiniModel::tipoOrdine($p["righe"]["id_o"]) != "W" ? PagesModel::getTitleRigaBackend($p["righe"]) : PagesModel::getTitleRigaFrontend($p["righe"]);
+?>
 <div class="uk-overflow-auto lista-riga uk-grid-small uk-child-width-1-2 uk-child-width-1-2@s <?php if (!User::$isMobile) { ?>uk-flex-middle<?php } ?> uk-grid" uk-grid>
 	<div class="uk-first-column">
 		<div class="uk-grid-small uk-child-width-1-1 uk-child-width-1-2@s uk-flex-middle uk-grid uk-text-uppercase" uk-grid="">
 			<div>
 				<?php if ($p["righe"]["immagine"]) { ?>
-				<img width="200px" src="<?php echo $this->baseUrl."/thumb/carrello/".$p["righe"]["immagine"];?>" />
+				<img width="200px" src="<?php echo $this->baseUrl."/thumb/carrello/".$p["righe"]["immagine"];?>" alt="<?php echo altUrlencode($titoloRiga);?>" />
 				<?php } ?>
 			</div>
 			<div class="uk-visible@s">
-				<?php echo OrdiniModel::tipoOrdine($p["righe"]["id_o"]) != "W" ? PagesModel::getTitleRigaBackend($p["righe"]) : PagesModel::getTitleRigaFrontend($p["righe"]);?>
+				<?php echo $titoloRiga;?>
 				<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<span class='uk-text-small'><br />".$p["righe"]["attributi"]."</span>"; } ?>
 				<?php include(tpf("Elementi/Ordini/main_testo_disponibilita.php"));?>
 			</div>
@@ -56,7 +58,7 @@ foreach ($righeOrdine as $p) { ?>
 	<div class="uk-width-expand">
 		<div class="uk-flex uk-flex-middle uk-grid-small uk-child-width-1-1 uk-child-width-expand@s uk-text-center@s uk-text-left uk-grid" uk-grid="">
 			<div class="uk-hidden@s">
-				<b><?php echo OrdiniModel::tipoOrdine($p["righe"]["id_o"]) != "W" ? PagesModel::getTitleRigaBackend($p["righe"]) : PagesModel::getTitleRigaFrontend($p["righe"]);?></b>
+				<b><?php echo $titoloRiga;?></b>
 				<?php if (strcmp($p["righe"]["id_c"],0) !== 0) { echo "<span class='uk-text-small'><br />".$p["righe"]["attributi"]."</span>"; } ?>
 				<?php include(tpf("Elementi/Ordini/main_testo_disponibilita.php"));?>
 			</div>

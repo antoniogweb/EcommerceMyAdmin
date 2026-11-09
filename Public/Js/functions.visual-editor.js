@@ -26,7 +26,11 @@
 		activeInsertMode = insertMode || "auto";
 		editor.s.save();
 
-		var managerUrl = baseUrl + "/upload/main/1/1/1/1/0/0/1/0/1/0/1?base=";
+		if (activeInsertMode == "auto")
+			var managerUrl = baseUrl + "/upload/main/1/1/1/1/0/0/0/0/1/0/1?base=";
+		else
+			var managerUrl = baseUrl + "/upload/main/1/1/1/1/0/0/1/0/1/0/1?base=";
+		
 		var popup = window.open(
 			managerUrl,
 			"editorVisualeUploadManager",

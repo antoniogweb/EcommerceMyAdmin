@@ -1,6 +1,6 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if ($testo["immagine"]) {
-	$altImmagine = $testo["alt"] ? ' alt="'.htmlentitydecode($testo["alt"]).'" ' : "";
+	$altImmagine = $testo["alt"] ? ' alt="'.htmlentitydecode($testo["alt"]).'" ' : ($urlLink && empty($testo["testo_link"]) ? ' alt="'.gtextAttr("Apri immagine").'" ' : ' alt="" ');
 ?>
 	<?php if ($urlLink) { ?>
 	<a <?php echo $target;?> href="<?php echo $urlLink;?>">

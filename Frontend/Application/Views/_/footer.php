@@ -5,5 +5,6 @@
 		<?php include(tpf("/Elementi/footer_js.php"));?>
 		<?php include(tpf("/Elementi/cookies.php",false,false));?>
 		<?php include(tpf("/Elementi/admin.php"));?>
+		<?php include(tpf("/Elementi/status.php"));?>
    </body>
 </html>

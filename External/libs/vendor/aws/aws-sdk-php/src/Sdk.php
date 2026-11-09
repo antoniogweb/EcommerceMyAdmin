@@ -228,6 +228,8 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionConnectParticipant(array $args = [])
  * @method \Aws\ConnectWisdomService\ConnectWisdomServiceClient createConnectWisdomService(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionConnectWisdomService(array $args = [])
+ * @method \Aws\Continuum\ContinuumClient createContinuum(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionContinuum(array $args = [])
  * @method \Aws\ControlCatalog\ControlCatalogClient createControlCatalog(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionControlCatalog(array $args = [])
  * @method \Aws\ControlTower\ControlTowerClient createControlTower(array $args = [])
@@ -316,10 +318,14 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionElementalInference(array $args = [])
  * @method \Aws\Emr\EmrClient createEmr(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionEmr(array $args = [])
+ * @method \Aws\EndUserMessaging\EndUserMessagingClient createEndUserMessaging(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionEndUserMessaging(array $args = [])
  * @method \Aws\EntityResolution\EntityResolutionClient createEntityResolution(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionEntityResolution(array $args = [])
  * @method \Aws\EventBridge\EventBridgeClient createEventBridge(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionEventBridge(array $args = [])
+ * @method \Aws\EventBridgeV2\EventBridgeV2Client createEventBridgeV2(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionEventBridgeV2(array $args = [])
  * @method \Aws\Evs\EvsClient createEvs(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionEvs(array $args = [])
  * @method \Aws\FIS\FISClient createFIS(array $args = [])
@@ -328,8 +334,6 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionFMS(array $args = [])
  * @method \Aws\FSx\FSxClient createFSx(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionFSx(array $args = [])
- * @method \Aws\FinSpaceData\FinSpaceDataClient createFinSpaceData(array $args = [])
- * @method \Aws\MultiRegionClient createMultiRegionFinSpaceData(array $args = [])
  * @method \Aws\Firehose\FirehoseClient createFirehose(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionFirehose(array $args = [])
  * @method \Aws\ForecastQueryService\ForecastQueryServiceClient createForecastQueryService(array $args = [])
@@ -452,6 +456,8 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionLambdaCore(array $args = [])
  * @method \Aws\LambdaMicrovms\LambdaMicrovmsClient createLambdaMicrovms(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionLambdaMicrovms(array $args = [])
+ * @method \Aws\LambdaWeb\LambdaWebClient createLambdaWeb(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionLambdaWeb(array $args = [])
  * @method \Aws\LaunchWizard\LaunchWizardClient createLaunchWizard(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionLaunchWizard(array $args = [])
  * @method \Aws\LexModelBuildingService\LexModelBuildingServiceClient createLexModelBuildingService(array $args = [])
@@ -726,6 +732,8 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionSageMakerMetrics(array $args = [])
  * @method \Aws\SageMakerRuntime\SageMakerRuntimeClient createSageMakerRuntime(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionSageMakerRuntime(array $args = [])
+ * @method \Aws\SageMakerTrainingSessionRuntime\SageMakerTrainingSessionRuntimeClient createSageMakerTrainingSessionRuntime(array $args = [])
+ * @method \Aws\MultiRegionClient createMultiRegionSageMakerTrainingSessionRuntime(array $args = [])
  * @method \Aws\SagemakerEdgeManager\SagemakerEdgeManagerClient createSagemakerEdgeManager(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionSagemakerEdgeManager(array $args = [])
  * @method \Aws\SagemakerJobRuntime\SagemakerJobRuntimeClient createSagemakerJobRuntime(array $args = [])
@@ -810,8 +818,6 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionTimestreamQuery(array $args = [])
  * @method \Aws\TimestreamWrite\TimestreamWriteClient createTimestreamWrite(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionTimestreamWrite(array $args = [])
- * @method \Aws\Tnb\TnbClient createTnb(array $args = [])
- * @method \Aws\MultiRegionClient createMultiRegionTnb(array $args = [])
  * @method \Aws\TranscribeService\TranscribeServiceClient createTranscribeService(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionTranscribeService(array $args = [])
  * @method \Aws\Transfer\TransferClient createTransfer(array $args = [])
@@ -856,8 +862,6 @@ namespace Aws;
  * @method \Aws\MultiRegionClient createMultiRegionXRay(array $args = [])
  * @method \Aws\drs\drsClient createdrs(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegiondrs(array $args = [])
- * @method \Aws\finspace\finspaceClient createfinspace(array $args = [])
- * @method \Aws\MultiRegionClient createMultiRegionfinspace(array $args = [])
  * @method \Aws\imagebuilder\imagebuilderClient createimagebuilder(array $args = [])
  * @method \Aws\MultiRegionClient createMultiRegionimagebuilder(array $args = [])
  * @method \Aws\ivschat\ivschatClient createivschat(array $args = [])
@@ -871,7 +875,7 @@ namespace Aws;
  */
 class Sdk
 {
-    const VERSION = '3.397.0';
+    const VERSION = '3.402.0';
 
     /** @var array Arguments for creating clients */
     private $args;

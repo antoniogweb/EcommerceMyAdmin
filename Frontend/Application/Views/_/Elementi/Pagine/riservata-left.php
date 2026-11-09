@@ -4,7 +4,7 @@
 	<div class="uk-card uk-card-default uk-card-small uk-height-1-1">
 		<div class="uk-card-header">
 			<?php echo gtextPlain("Menù area riservata");?>
-			<button style="margin-top:-7px;" class="uk-offcanvas-close" type="button" uk-close></button>
+			<button style="margin-top:-7px;" class="uk-offcanvas-close" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
 		</div>
 		<div class="uk-card-body">
 <?php } ?>

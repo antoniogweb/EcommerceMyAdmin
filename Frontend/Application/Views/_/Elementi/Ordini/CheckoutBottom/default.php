@@ -29,15 +29,16 @@ if (!v("disattiva_antispam_checkout")) {
 	<div class="uk-alert uk-alert-danger"><?php echo gtextPlain("Attenzione, definire le condizioni di vendita");?></div>
 	<?php } ?>
 	
-	<div class="class_accetto">
-		<?php echo Html_Form::radio("accetto",$values['accetto'],array("<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("NON ACCETTO")."</span><span style='margin-right:20px;'></span>" => "non_accetto", "<span style='margin-left:8px;'></span><span class='radio_2_testo'>".gtext("ACCETTO")."</span>" => "accetto"),"radio_2");?>
+	<div class="class_accetto" data-field-name="<?php echo gtextAttr("termini e condizioni di vendita");?>">
+		<label for="checkout_accetto_non_accetto"><?php echo Html_Form::radio("accetto",$values['accetto'],"non_accetto","radio_2","none","checkout_accetto_non_accetto",null,"aria-required='true'");?><span style='margin-left:8px;'></span><span class='radio_2_testo'><?php echo gtext("NON ACCETTO");?></span><span style='margin-right:20px;'></span></label>
+		<label for="checkout_accetto_accetto"><?php echo Html_Form::radio("accetto",$values['accetto'],"accetto","radio_2","none","checkout_accetto_accetto",null,"aria-required='true'");?><span style='margin-left:8px;'></span><span class='radio_2_testo'><?php echo gtext("ACCETTO");?></span></label>
 	</div>
 </div>
 
 <?php if (v("piattaforma_di_demo")) { ?>
 <div class="uk-text-center uk-alert-danger uk-margin-remove" uk-alert>
 	<?php echo gtextPlain("Attenzione, questa è una piattaforma di demo e non è possibile completare l'acquisto.");?>
-	<button class="uk-alert-close" type="button" uk-close></button>
+	<button class="uk-alert-close" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
 </div>
 <?php } else {
 	include(tpf(ElementitemaModel::p("CHECKOUT_PULSANTE_ACQUISTA","", array(

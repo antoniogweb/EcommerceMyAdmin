@@ -2,8 +2,8 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
-// See COPYRIGHT.txt and LICENSE.txt.
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
 //
 // This file is part of EcommerceMyAdmin
 //
@@ -25,4 +25,29 @@ if (!defined('EG')) die('Direct access not allowed!');
 class Geolocator
 {
 	use Modulo;
+	
+	protected $dbFolder = "MMDB";
+	protected $dbFolderExtracted = "Extracted";
+	
+	public function getDbPath()
+	{
+		$path = $this->cacheAbsolutePath."/".trim($this->params["codice"]);
+		
+		if (function_exists("createFolderFull"))
+		{
+			if (!@is_dir($path."/".$this->dbFolder))
+			{
+				createFolderFull($this->dbFolder, $path);
+				@chmod($path."/".$this->dbFolder, octdec('777'));
+			}
+			
+			if (!@is_dir($path."/".$this->dbFolder."/".$this->dbFolderExtracted))
+			{
+				createFolderFull($this->dbFolderExtracted, $path."/".$this->dbFolder);
+				@chmod($path."/".$this->dbFolder."/".$this->dbFolderExtracted, octdec('777'));
+			}
+		}
+		
+		return $path."/".$this->dbFolder;
+	}
 }

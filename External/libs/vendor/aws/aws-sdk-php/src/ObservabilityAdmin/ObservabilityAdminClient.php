@@ -79,8 +79,8 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result createTelemetryRule(array{
  *     RuleName?: string,
  *     Rule?: array{
- *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL',
- *         TelemetryType?: 'Logs'|'Metrics'|'Traces',
+ *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig',
+ *         TelemetryType?: 'Insights'|'Logs'|'Metrics'|'Traces',
  *         TelemetrySourceTypes?: list<'EKS_API_LOGS'|'EKS_AUDIT_LOGS'|'EKS_AUTHENTICATOR_LOGS'|'EKS_CONTROLLER_MANAGER_LOGS'|'EKS_SCHEDULER_LOGS'|'ROUTE53_RESOLVER_QUERY_LOGS'|'VPC_FLOW_LOGS'>,
  *         DestinationConfiguration?: array{
  *             DestinationType?: 'cloud-watch-logs',
@@ -109,8 +109,8 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise createTelemetryRuleAsync(array{
  *     RuleName?: string,
  *     Rule?: array{
- *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL',
- *         TelemetryType?: 'Logs'|'Metrics'|'Traces',
+ *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig',
+ *         TelemetryType?: 'Insights'|'Logs'|'Metrics'|'Traces',
  *         TelemetrySourceTypes?: list<'EKS_API_LOGS'|'EKS_AUDIT_LOGS'|'EKS_AUTHENTICATOR_LOGS'|'EKS_CONTROLLER_MANAGER_LOGS'|'EKS_SCHEDULER_LOGS'|'ROUTE53_RESOLVER_QUERY_LOGS'|'VPC_FLOW_LOGS'>,
  *         DestinationConfiguration?: array{
  *             DestinationType?: 'cloud-watch-logs',
@@ -139,8 +139,8 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result createTelemetryRuleForOrganization(array{
  *     RuleName?: string,
  *     Rule?: array{
- *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL',
- *         TelemetryType?: 'Logs'|'Metrics'|'Traces',
+ *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig',
+ *         TelemetryType?: 'Insights'|'Logs'|'Metrics'|'Traces',
  *         TelemetrySourceTypes?: list<'EKS_API_LOGS'|'EKS_AUDIT_LOGS'|'EKS_AUTHENTICATOR_LOGS'|'EKS_CONTROLLER_MANAGER_LOGS'|'EKS_SCHEDULER_LOGS'|'ROUTE53_RESOLVER_QUERY_LOGS'|'VPC_FLOW_LOGS'>,
  *         DestinationConfiguration?: array{
  *             DestinationType?: 'cloud-watch-logs',
@@ -169,8 +169,8 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise createTelemetryRuleForOrganizationAsync(array{
  *     RuleName?: string,
  *     Rule?: array{
- *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL',
- *         TelemetryType?: 'Logs'|'Metrics'|'Traces',
+ *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig',
+ *         TelemetryType?: 'Insights'|'Logs'|'Metrics'|'Traces',
  *         TelemetrySourceTypes?: list<'EKS_API_LOGS'|'EKS_AUDIT_LOGS'|'EKS_AUTHENTICATOR_LOGS'|'EKS_CONTROLLER_MANAGER_LOGS'|'EKS_SCHEDULER_LOGS'|'ROUTE53_RESOLVER_QUERY_LOGS'|'VPC_FLOW_LOGS'>,
  *         DestinationConfiguration?: array{
  *             DestinationType?: 'cloud-watch-logs',
@@ -266,7 +266,7 @@ use Aws\AwsClient;
  * @method \Aws\Result listResourceTelemetry(array $args = [])
  * @phpstan-method \Aws\Result listResourceTelemetry(array{
  *     ResourceIdentifierPrefix?: string,
- *     ResourceTypes?: list<'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'>,
+ *     ResourceTypes?: list<'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig'>,
  *     TelemetryConfigurationState?: array<string, 'Disabled'|'Enabled'|'NotApplicable'>,
  *     ResourceTags?: array<string, string>,
  *     MaxResults?: int,
@@ -276,7 +276,7 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise listResourceTelemetryAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise listResourceTelemetryAsync(array{
  *     ResourceIdentifierPrefix?: string,
- *     ResourceTypes?: list<'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'>,
+ *     ResourceTypes?: list<'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig'>,
  *     TelemetryConfigurationState?: array<string, 'Disabled'|'Enabled'|'NotApplicable'>,
  *     ResourceTags?: array<string, string>,
  *     MaxResults?: int,
@@ -287,7 +287,7 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result listResourceTelemetryForOrganization(array{
  *     AccountIdentifiers?: list<string>,
  *     ResourceIdentifierPrefix?: string,
- *     ResourceTypes?: list<'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'>,
+ *     ResourceTypes?: list<'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig'>,
  *     TelemetryConfigurationState?: array<string, 'Disabled'|'Enabled'|'NotApplicable'>,
  *     ResourceTags?: array<string, string>,
  *     MaxResults?: int,
@@ -298,7 +298,7 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise listResourceTelemetryForOrganizationAsync(array{
  *     AccountIdentifiers?: list<string>,
  *     ResourceIdentifierPrefix?: string,
- *     ResourceTypes?: list<'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'>,
+ *     ResourceTypes?: list<'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig'>,
  *     TelemetryConfigurationState?: array<string, 'Disabled'|'Enabled'|'NotApplicable'>,
  *     ResourceTags?: array<string, string>,
  *     MaxResults?: int,
@@ -443,8 +443,8 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result updateTelemetryRule(array{
  *     RuleIdentifier?: string,
  *     Rule?: array{
- *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL',
- *         TelemetryType?: 'Logs'|'Metrics'|'Traces',
+ *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig',
+ *         TelemetryType?: 'Insights'|'Logs'|'Metrics'|'Traces',
  *         TelemetrySourceTypes?: list<'EKS_API_LOGS'|'EKS_AUDIT_LOGS'|'EKS_AUTHENTICATOR_LOGS'|'EKS_CONTROLLER_MANAGER_LOGS'|'EKS_SCHEDULER_LOGS'|'ROUTE53_RESOLVER_QUERY_LOGS'|'VPC_FLOW_LOGS'>,
  *         DestinationConfiguration?: array{
  *             DestinationType?: 'cloud-watch-logs',
@@ -472,8 +472,8 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise updateTelemetryRuleAsync(array{
  *     RuleIdentifier?: string,
  *     Rule?: array{
- *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL',
- *         TelemetryType?: 'Logs'|'Metrics'|'Traces',
+ *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig',
+ *         TelemetryType?: 'Insights'|'Logs'|'Metrics'|'Traces',
  *         TelemetrySourceTypes?: list<'EKS_API_LOGS'|'EKS_AUDIT_LOGS'|'EKS_AUTHENTICATOR_LOGS'|'EKS_CONTROLLER_MANAGER_LOGS'|'EKS_SCHEDULER_LOGS'|'ROUTE53_RESOLVER_QUERY_LOGS'|'VPC_FLOW_LOGS'>,
  *         DestinationConfiguration?: array{
  *             DestinationType?: 'cloud-watch-logs',
@@ -501,8 +501,8 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result updateTelemetryRuleForOrganization(array{
  *     RuleIdentifier?: string,
  *     Rule?: array{
- *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL',
- *         TelemetryType?: 'Logs'|'Metrics'|'Traces',
+ *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig',
+ *         TelemetryType?: 'Insights'|'Logs'|'Metrics'|'Traces',
  *         TelemetrySourceTypes?: list<'EKS_API_LOGS'|'EKS_AUDIT_LOGS'|'EKS_AUTHENTICATOR_LOGS'|'EKS_CONTROLLER_MANAGER_LOGS'|'EKS_SCHEDULER_LOGS'|'ROUTE53_RESOLVER_QUERY_LOGS'|'VPC_FLOW_LOGS'>,
  *         DestinationConfiguration?: array{
  *             DestinationType?: 'cloud-watch-logs',
@@ -530,8 +530,8 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise updateTelemetryRuleForOrganizationAsync(array{
  *     RuleIdentifier?: string,
  *     Rule?: array{
- *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL',
- *         TelemetryType?: 'Logs'|'Metrics'|'Traces',
+ *         ResourceType?: 'AWS::Bedrock::KnowledgeBase'|'AWS::BedrockAgentCore::Browser'|'AWS::BedrockAgentCore::CodeInterpreter'|'AWS::BedrockAgentCore::Gateway'|'AWS::BedrockAgentCore::Memory'|'AWS::BedrockAgentCore::PaymentManager'|'AWS::BedrockAgentCore::Runtime'|'AWS::BedrockAgentCore::WorkloadIdentity'|'AWS::CloudFront::Distribution'|'AWS::CloudTrail'|'AWS::CloudWatch::OTelEnrichment'|'AWS::EC2::Instance'|'AWS::EC2::VPC'|'AWS::EKS::Cluster'|'AWS::ElasticLoadBalancingV2::LoadBalancer'|'AWS::Lambda::Function'|'AWS::MSK::Cluster'|'AWS::Route53Resolver::ResolverEndpoint'|'AWS::S3::Bucket'|'AWS::SecurityHub::Hub'|'AWS::SecurityHub::HubV2'|'AWS::WAFv2::WebACL'|'AWS::XRay::TransactionSearchConfig',
+ *         TelemetryType?: 'Insights'|'Logs'|'Metrics'|'Traces',
  *         TelemetrySourceTypes?: list<'EKS_API_LOGS'|'EKS_AUDIT_LOGS'|'EKS_AUTHENTICATOR_LOGS'|'EKS_CONTROLLER_MANAGER_LOGS'|'EKS_SCHEDULER_LOGS'|'ROUTE53_RESOLVER_QUERY_LOGS'|'VPC_FLOW_LOGS'>,
  *         DestinationConfiguration?: array{
  *             DestinationType?: 'cloud-watch-logs',

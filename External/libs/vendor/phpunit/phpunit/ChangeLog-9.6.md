@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.6 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.6.38] - 2026-10-05
+
+### Changed
+
+* The Software Bill of Materials (SBOM) embedded in the PHAR now uses CycloneDX 1.7 and provides the NTIA minimum elements as well as the data fields that BSI TR-03183-2 (version 2.1.0) requires for logical and identified components, including component creators, original, distribution and effective licences, source code URIs, and the PHP runtime and its extensions as external components
+
 ## [9.6.37] - 2026-09-23
 
 ### Changed
@@ -249,6 +255,7 @@ All notable changes of the PHPUnit 9.6 release series are documented in this fil
 * [#5064](https://github.com/sebastianbergmann/phpunit/issues/5064): Deprecate `PHPUnit\Framework\TestCase::getMockClass()`
 * [#5132](https://github.com/sebastianbergmann/phpunit/issues/5132): Deprecate `Test` suffix for abstract test case classes
 
+[9.6.38]: https://github.com/sebastianbergmann/phpunit/compare/9.6.37...9.6.38
 [9.6.37]: https://github.com/sebastianbergmann/phpunit/compare/9.6.36...9.6.37
 [9.6.36]: https://github.com/sebastianbergmann/phpunit/compare/9.6.35...9.6.36
 [9.6.35]: https://github.com/sebastianbergmann/phpunit/compare/9.6.34...9.6.35

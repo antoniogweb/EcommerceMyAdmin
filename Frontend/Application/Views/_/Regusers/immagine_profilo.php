@@ -22,7 +22,7 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<?php if (strcmp($utenteProfilo["immagine"],"") !== 0) { ?>
 		
 		<div class="uk-margin">
-			<img src='<?php echo $this->baseUrlSrc."/thumb/profilo/".$utenteProfilo["immagine"];?>'>
+			<img src='<?php echo $this->baseUrlSrc."/thumb/profilo/".$utenteProfilo["immagine"];?>' alt="<?php echo gtextAttr("Immagine del profilo");?>">
 		</div>
 		<div class="uk-margin">
 			<a class='uk-button uk-button-danger' title='<?php echo gtextAttr("Cancella immagine");?>' href='<?php echo $this->baseUrl."/immagine-profilo";?>?deleteFoto=y'><span class="uk-icon"><?php include tpf("Elementi/Icone/Svg/trash.svg");?></span> <?php echo gtext("Elimina immagine");?></a>

@@ -2,7 +2,7 @@
 
 <div id="modale-aggiunto-alla-lista" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-margin-auto-vertical">
-        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <button class="uk-modal-close-default" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
         <div class="uk-modal-body">
             <p><?php echo gtextPlain("Il prodotto è stato aggiunto alla lista!");?></p>
         </div>

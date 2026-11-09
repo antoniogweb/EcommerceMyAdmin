@@ -2,8 +2,8 @@
 
 // EcommerceMyAdmin is a PHP CMS based on MvcMyLibrary
 //
-// Copyright (C) 2009 - 2025  Antonio Gallo (info@laboratoriolibero.com)
-// See COPYRIGHT.txt and LICENSE.txt.
+// Copyright (C) 2009 - 2026  Antonio Gallo (info@laboratoriolibero.com)
+// See COPYRIGHT.txt and LICENSE.
 //
 // This file is part of EcommerceMyAdmin
 //
@@ -72,5 +72,17 @@ class GeolocatorModel extends GenericModel
 			$this->db->query("update geolocator set attivo = 0 where 1");
 		
 		return parent::update($id, $where);
+	}
+	
+	// Scarica il database IP MMDB
+	public static function downloadMMDB($log = null)
+	{
+		self::getModulo()->downloadMMDB_($log);
+	}
+	
+	// Country from MMDB
+	public static function getCountryFromIpMMDB($ip, $log = null)
+	{
+		return self::getModulo()->getCountryFromIpMMDB_($ip);
 	}
 }

@@ -14,7 +14,7 @@
 	<div class="uk-margin-small-top uk-position-relative">
 		<div class="uk-inline <?php if ($file["tipo"] == "VIDEO") { ?>uk-background-muted"<?php } ?>">
 			<?php if ($file["tipo"] == "IMMAGINE" || $file["tipo"] == "SCONTRINO") { ?>
-			<a target="_blank" href="<?php echo $this->baseUrlSrc."/thumb/immagineticketfull/".$file["filename"];?>"><img src="<?php echo $this->baseUrlSrc."/thumb/immagineticket/".$file["filename"];?>" /></a>
+			<a target="_blank" href="<?php echo $this->baseUrlSrc."/thumb/immagineticketfull/".$file["filename"];?>"><img src="<?php echo $this->baseUrlSrc."/thumb/immagineticket/".$file["filename"];?>" alt="<?php echo gtextAttr("Apri immagine allegata");?>" /></a>
 			<?php } else { ?>
 			<div style="padding:5px;"><span uk-icon="icon: play; ratio: 1.5"></span>
 				<?php $daElaborare = TicketfileModel::daElaborare($file["filename"]);?>

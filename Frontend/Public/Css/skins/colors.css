@@ -1,0 +1,30 @@
+/* Color and size tokens are shared so any legacy skin URL supports every variant. */
+.icheckbox_minimal, .iradio_minimal,
+.icheckbox_square, .iradio_square,
+.icheckbox_flat, .iradio_flat,
+.icheckbox_line, .iradio_line,
+.icheckbox_polaris, .iradio_polaris,
+.icheckbox_futurico, .iradio_futurico {
+	--native-check-color: #292929;
+	--native-check-border: #292929;
+}
+
+[class*="icheckbox_minimal"], [class*="iradio_minimal"] { --native-check-size: 18px; --native-check-mark-size: 11px; --native-radio-mark-size: 10px; --native-check-radius: 3px; }
+[class*="icheckbox_square"], [class*="iradio_square"] { --native-check-size: 22px; --native-check-mark-size: 13px; --native-radio-mark-size: 12px; --native-check-radius: 0; }
+[class*="icheckbox_flat"], [class*="iradio_flat"] { --native-check-size: 20px; --native-check-mark-size: 13px; --native-radio-mark-size: 12px; --native-check-radius: 3px; }
+[class*="icheckbox_line"], [class*="iradio_line"] { --native-check-size: 18px; --native-check-mark-size: 11px; --native-radio-mark-size: 10px; --native-check-radius: 3px; }
+[class*="icheckbox_polaris"], [class*="iradio_polaris"] { --native-check-size: 29px; --native-check-mark-size: 18px; --native-radio-mark-size: 17px; --native-check-radius: 4px; }
+[class*="icheckbox_futurico"], [class*="iradio_futurico"] { --native-check-size: 20px; --native-check-mark-size: 13px; --native-radio-mark-size: 12px; --native-check-radius: 3px; }
+
+.icheckbox_minimal-aero, .iradio_minimal-aero, .icheckbox_square-aero, .iradio_square-aero, .icheckbox_flat-aero, .iradio_flat-aero, .icheckbox_line-aero, .iradio_line-aero { --native-check-color: #00a8e0; --native-check-border: #00a8e0; }
+.icheckbox_minimal-blue, .iradio_minimal-blue, .icheckbox_square-blue, .iradio_square-blue, .icheckbox_flat-blue, .iradio_flat-blue, .icheckbox_line-blue, .iradio_line-blue { --native-check-color: #2484c6; --native-check-border: #2484c6; }
+.icheckbox_minimal-green, .iradio_minimal-green, .icheckbox_square-green, .iradio_square-green, .icheckbox_flat-green, .iradio_flat-green, .icheckbox_line-green, .iradio_line-green { --native-check-color: #78a300; --native-check-border: #78a300; }
+.icheckbox_minimal-grey, .iradio_minimal-grey, .icheckbox_square-grey, .iradio_square-grey, .icheckbox_flat-grey, .iradio_flat-grey, .icheckbox_line-grey, .iradio_line-grey { --native-check-color: #737373; --native-check-border: #737373; }
+.icheckbox_minimal-orange, .iradio_minimal-orange, .icheckbox_square-orange, .iradio_square-orange, .icheckbox_flat-orange, .iradio_flat-orange, .icheckbox_line-orange, .iradio_line-orange { --native-check-color: #f07c00; --native-check-border: #f07c00; }
+.icheckbox_minimal-pink, .iradio_minimal-pink, .icheckbox_square-pink, .iradio_square-pink, .icheckbox_flat-pink, .iradio_flat-pink, .icheckbox_line-pink, .iradio_line-pink { --native-check-color: #e671b8; --native-check-border: #e671b8; }
+.icheckbox_minimal-purple, .iradio_minimal-purple, .icheckbox_square-purple, .iradio_square-purple, .icheckbox_flat-purple, .iradio_flat-purple, .icheckbox_line-purple, .iradio_line-purple { --native-check-color: #8e7cc3; --native-check-border: #8e7cc3; }
+.icheckbox_minimal-red, .iradio_minimal-red, .icheckbox_square-red, .iradio_square-red, .icheckbox_flat-red, .iradio_flat-red, .icheckbox_line-red, .iradio_line-red { --native-check-color: #d54e21; --native-check-border: #d54e21; }
+.icheckbox_minimal-yellow, .iradio_minimal-yellow, .icheckbox_square-yellow, .iradio_square-yellow, .icheckbox_flat-yellow, .iradio_flat-yellow, .icheckbox_line-yellow, .iradio_line-yellow { --native-check-color: #ffcc33; --native-check-border: #ffcc33; }
+
+.icheckbox_polaris, .iradio_polaris { --native-check-size: 29px; --native-check-color: #404040; --native-check-border: #404040; }
+.icheckbox_futurico, .iradio_futurico { --native-check-size: 20px; --native-check-color: #404040; --native-check-border: #404040; }

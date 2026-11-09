@@ -38,7 +38,27 @@ if (typeof ricarica_pagamenti_quando_cambi_nazione == "undefined")
 if (typeof nazioniConProvince == "undefined")
 	var nazioniConProvince = ['IT'];
 
+if (typeof attiva_messaggi_alert_status == "undefined")
+	var attiva_messaggi_alert_status = false;
+
+if (typeof alert_error_class == "undefined")
+	var alert_error_class = 'uk-alert uk-alert-danger';
+
+if (typeof alert_success_class == "undefined")
+	var alert_success_class = 'uk-alert uk-alert-success';
+
+if (typeof messaggio_campi_obbligatori == "undefined")
+	var messaggio_campi_obbligatori = 'Si prega di compilare i seguenti campi obbligatori:';
+
+if (typeof messaggio_coupon_rimosso == "undefined")
+	var messaggio_coupon_rimosso = 'Coupon rimosso';
+
+if (typeof messaggio_coupon_applicato == "undefined")
+	var messaggio_coupon_applicato = 'Coupon applicato';
+
 $ = jQuery;
+
+var campiObbligatoriNonCompilati = [];
 
 function isInArray(elemento,haystack)
 {
@@ -242,7 +262,12 @@ function impostaSpedizioneNonLoggato(obj)
 function checkCouponAttivo()
 {
 	if ($("#ha-coupon-attivo").length > 0 && $("[name='il_coupon']").length > 0)
+	{
+		var couponPresenteNelModulo = $(".box_coupon").find("[name='il_coupon']").length > 0;
 		$(".box_coupon").html("");
+		if (couponPresenteNelModulo)
+			scriviTestoLiveRegion(messaggio_coupon_applicato, "status", false);
+	}
 	else if ($("#ha-coupon-attivo").length <= 0 && $("[name='il_coupon']").length <= 0)
 	{
 		$.ajaxQueue({
@@ -590,8 +615,8 @@ if (typeof sistemaTendinaProvincia !== 'function')
 		// if (val == "IT")
 		if (nazioniConProvince.indexOf(val) > -1)
 		{
-			$("[name='dprovincia']").css("display","none");
-			$("[name='provincia']").css("display","block");
+			$(".select_id_provincia .box_select_dprovincia").css("display","none");
+			$(".select_id_provincia .box_select_provincia").css("display","block");
 			
 			if (val == "IT")
 				$(".nascondi_fuori_italia").css("display","table-row");
@@ -603,8 +628,8 @@ if (typeof sistemaTendinaProvincia !== 'function')
 		}
 		else
 		{
-			$("[name='dprovincia']").css("display","block");
-			$("[name='provincia']").css("display","none");
+			$(".select_id_provincia .box_select_dprovincia").css("display","block");
+			$(".select_id_provincia .box_select_provincia").css("display","none");
 			$(".nascondi_fuori_italia").css("display","none");
 			$("[name='codice_fiscale']").val("");
 		}
@@ -623,17 +648,74 @@ if (typeof sistemaTendinaProvinciaSpedizione !== 'function')
 		// if (val == "IT")
 		if (nazioniConProvince.indexOf(val) > -1)
 		{
-			$("[name='dprovincia_spedizione']").css("display","none");
-			$("[name='provincia_spedizione']").css("display","block");
+			$(".select_id_provincia_spedizione .box_select_dprovincia_spedizione").css("display","none");
+			$(".select_id_provincia_spedizione .box_select_provincia_spedizione").css("display","block");
 			
 			if (nazioniConProvince.length > 0)
 				recuperaProvinceNazione(val, $("[name='provincia_spedizione']"), default_spedizione);
 		}
 		else
 		{
-			$("[name='dprovincia_spedizione']").css("display","block");
-			$("[name='provincia_spedizione']").css("display","none");
+			$(".select_id_provincia_spedizione .box_select_dprovincia_spedizione").css("display","block");
+			$(".select_id_provincia_spedizione .box_select_provincia_spedizione").css("display","none");
 		}
+	}
+}
+
+function applicaAriaInvalid(elemento)
+{
+	var campi = elemento.filter("input, select, textarea").add(elemento.find("input, select, textarea"));
+	campi.attr("aria-invalid", "true");
+}
+
+function rimuoviAriaInvalid(elemento)
+{
+	var campi = elemento.filter("input, select, textarea").add(elemento.find("input, select, textarea"));
+	campi.removeAttr("aria-invalid");
+}
+
+function aggiungiCampoObbligatorio(nomeCampo)
+{
+	nomeCampo = $.trim(nomeCampo || "").replace(/\s*\*$/, "");
+	nomeCampo = nomeCampo.charAt(0).toUpperCase() + nomeCampo.substring(1);
+
+	if (nomeCampo && $.inArray(nomeCampo, campiObbligatoriNonCompilati) === -1)
+		campiObbligatoriNonCompilati.push(nomeCampo);
+}
+
+function popolaCampoObbligatorioDaSelettore(selettore, contenitore)
+{
+	var selettoreClasse = selettore.substring(1);
+	var campo = contenitore.find(selettore).first();
+	var indicatore = contenitore.find(".evidenzia.not_defined_input").filter(function(){ return $.trim($(this).text()) === selettoreClasse; });
+
+	if (indicatore.length > 0 && campo.length > 0)
+	{
+		if (campo.attr("data-field-name"))
+			aggiungiCampoObbligatorio(campo.attr("data-field-name"));
+		else
+		{
+			var campoInput = campo.filter("input, select, textarea").add(campo.find("input, select, textarea")).first();
+			var nomeCampo = campoInput.attr("name");
+			if (nomeCampo)
+				popolaCampoObbligatorioDaLabel(nomeCampo, contenitore);
+		}
+	}
+}
+
+function popolaCampoObbligatorioDaLabel(nomeCampo, contenitore)
+{
+	var indicatore = contenitore.find(".evidenzia.not_defined_input").filter(function(){ return $.trim($(this).text()) === "class_" + nomeCampo; });
+	var campo = contenitore.find("[name='" + nomeCampo + "']").first();
+	var idCampo = campo.attr("id");
+
+	if (indicatore.length > 0 && campo.length > 0)
+	{
+		var label = idCampo ? contenitore.find("label").filter(function(){ return $(this).attr("for") === idCampo; }).first() : $();
+		if (label.length > 0)
+			aggiungiCampoObbligatorio($.trim(label.text()));
+		else if (campo.attr("placeholder"))
+			aggiungiCampoObbligatorio(campo.attr("placeholder"));
 	}
 }
 
@@ -650,16 +732,36 @@ if (typeof evidenziaErrore !== 'function')
 			var boxErrori = (typeof form == "undefined") ? $(".evidenzia").closest(".box_form_evidenzia") : form.closest(".box_form_evidenzia");
 			
 			if (boxErrori.find(selettore).length > 0)
+			{
 				boxErrori.find(selettore).addClass("uk-form-danger");
+				applicaAriaInvalid(boxErrori.find(selettore));
+				// funzione per cercare il nome dal selettore
+				popolaCampoObbligatorioDaSelettore(selettore, boxErrori);
+			}
 			else
+			{
 				boxErrori.find("[name='" + nomeCampo + "']").addClass("uk-form-danger");
+				applicaAriaInvalid(boxErrori.find("[name='" + nomeCampo + "']"));
+				// funzione per cercare il nome dalla label
+				popolaCampoObbligatorioDaLabel(nomeCampo, boxErrori);
+			}
 		}
 		else
 		{
 			if ($(selettore).length > 0)
+			{
 				$(selettore).addClass("uk-form-danger");
+				applicaAriaInvalid($(selettore));
+				// funzione per cercare il nome dal selettore
+				popolaCampoObbligatorioDaSelettore(selettore, $(document));
+			}
 			else
+			{
 				$("[name='" + nomeCampo + "']").addClass("uk-form-danger");
+				applicaAriaInvalid($("[name='" + nomeCampo + "']"));
+				// funzione per cercare il nome dalla label
+				popolaCampoObbligatorioDaLabel(nomeCampo, $(document));
+			}
 		}
 	}
 }
@@ -670,11 +772,81 @@ function nascondiErrori(form)
 	
 	boxErrori.each(function(){
 		$(this).removeClass("uk-form-danger");
+		rimuoviAriaInvalid($(this));
 	});
+}
+
+function mostraAlertCampiObbligatori(form)
+{
+	var contenitoreCampi = (typeof form == "undefined") ? $(document) : form.closest(".box_form_evidenzia");
+	var numeroCampiObbligatori = contenitoreCampi.find(".evidenzia.not_defined_input").length;
+
+	if (attiva_messaggi_alert_status && campiObbligatoriNonCompilati.length > 0 && campiObbligatoriNonCompilati.length === numeroCampiObbligatori)
+	{
+		var classiAlertErrore = $.trim(alert_error_class || "");
+		if (classiAlertErrore)
+		{
+			var selettoreAlertErrore = "." + classiAlertErrore.replace(/\s+/g, ".");
+			var alertErrore = contenitoreCampi.find(selettoreAlertErrore).first();
+
+			if (alertErrore.length > 0)
+			{
+				alertErrore.next(".riepilogo_campi_obbligatori").remove();
+				$('<div>').addClass(classiAlertErrore + " riepilogo_campi_obbligatori").text(messaggio_campi_obbligatori + " " + campiObbligatoriNonCompilati.join(", ")).insertAfter(alertErrore);
+			}
+		}
+	}
+}
+
+function costruisciTestoAlert()
+{
+	var testiAlert = { error: [], success: [] };
+	var classiAlert = { error: alert_error_class, success: alert_success_class };
+
+	$.each(classiAlert, function(tipo, classi){
+		var classiAlertCorrenti = $.trim(classi || "");
+		if (classiAlertCorrenti)
+		{
+			var selettoreAlert = "div." + classiAlertCorrenti.replace(/\s+/g, ".");
+			var testoAlert = $(selettoreAlert).last().map(function(){
+				var alert = $(this).clone();
+				alert.find(".evidenzia").remove();
+				return $.trim(alert.text());
+			}).get().filter(function(testo){
+				return testo !== "";
+			});
+
+			testiAlert[tipo] = testiAlert[tipo].concat(testoAlert);
+		}
+	});
+
+	var testo = testiAlert.error.concat(testiAlert.success).join(". ");
+	var role = testiAlert.error.length > 0 ? "alert" : "status";
+
+	return { testo: testo, role: role };
+}
+
+function scriviTestoLiveRegion(testo, role, usaFocus)
+{
+	if (!attiva_messaggi_alert_status || $.inArray(role, ["alert", "status"]) === -1)
+		return;
+
+	var liveRegion = $(".live-region-" + role + ", #live-region-" + role).first();
+	if (liveRegion.length === 0)
+		return;
+
+	liveRegion.text(testo);
+	if (testo && usaFocus)
+	{
+		liveRegion.attr("tabindex", "-1");
+		liveRegion[0].focus({ preventScroll: true });
+	}
 }
 
 function evidenziaErrori(ajaxSubmit, form)
 {
+	campiObbligatoriNonCompilati = [];
+
 	if (typeof ajaxSubmit != "undefined")
 		nascondiErrori(form);
 	
@@ -685,6 +857,10 @@ function evidenziaErrori(ajaxSubmit, form)
 		
 		evidenziaErrore("."+t_tag, form);
 	});
+
+	mostraAlertCampiObbligatori(form);
+	var messaggioAlert = costruisciTestoAlert();
+	scriviTestoLiveRegion(messaggioAlert.testo, messaggioAlert.role, !ajaxSubmit);
 }
 
 function controllaCheckFattura()
@@ -853,8 +1029,6 @@ $(document).ready(function(){
 		
 		return false;
 	});
-	
-	evidenziaErrori();
 	
 	$(".not_active_link").click(function(){
 	
@@ -1134,6 +1308,7 @@ $(document).ready(function(){
 				il_coupon: randomCoupon
 			},
 			success: function(content){
+				scriviTestoLiveRegion(messaggio_coupon_rimosso, "status", false);
 				
 				if ($(".btn_completa_acquisto").length > 0)
 					impostaCorrieriESpeseSpedizione();
@@ -1231,6 +1406,8 @@ $(document).ready(function(){
 		}
 		
 	});
+
+	evidenziaErrori();
 	
 	$("body").on("click", ".disattiva_acquisto_lista", function(e){
 		e.preventDefault();
@@ -1269,6 +1446,12 @@ $(document).ready(function(){
 				slider.find('.leftLabel').text(values[0] + "€");
 				slider.find('.rightLabel').text(values[1] + "€");
 			};
+			var applicaFiltroPrezzo = function(values) {
+				var urlSlider = $(".url_slider_prezzo").text();
+				urlSlider = urlSlider.replace("[DA]", values[0]);
+				urlSlider = urlSlider.replace("[A]", values[1]);
+				location.href = urlSlider;
+			};
 
 			slider.slider({
 				range: true,
@@ -1283,12 +1466,61 @@ $(document).ready(function(){
 					aggiornaEtichette(ui.values);
 				},
 				stop: function(event, ui) {
-					var urlSlider = $(".url_slider_prezzo").text();
-					urlSlider = urlSlider.replace("[DA]", ui.values[0]);
-					urlSlider = urlSlider.replace("[A]", ui.values[1]);
-					location.href = urlSlider;
+					applicaFiltroPrezzo(ui.values);
 				}
 			});
+
+			if (window.PointerEvent) {
+				var trascinamentoTouch = null;
+				slider.find('.ui-slider-handle').each(function(indiceManiglia) {
+					var maniglia = this;
+					maniglia.style.touchAction = 'none';
+
+					maniglia.addEventListener('pointerdown', function(event) {
+						if (event.pointerType === 'mouse' || trascinamentoTouch || slider.slider('option', 'disabled'))
+							return;
+
+						event.preventDefault();
+						var rettangoloManiglia = maniglia.getBoundingClientRect();
+						trascinamentoTouch = {
+							id: event.pointerId,
+							indice: indiceManiglia,
+							offsetX: event.clientX - rettangoloManiglia.left - rettangoloManiglia.width / 2
+						};
+						maniglia.setPointerCapture(event.pointerId);
+					});
+
+					maniglia.addEventListener('pointermove', function(event) {
+						if (!trascinamentoTouch || trascinamentoTouch.id !== event.pointerId)
+							return;
+
+						var rettangoloSlider = slider[0].getBoundingClientRect();
+						var percentuale = Math.max(0, Math.min(1,
+							(event.clientX - trascinamentoTouch.offsetX - rettangoloSlider.left) / rettangoloSlider.width
+						));
+						var minimo = Number(slider.slider('option', 'min'));
+						var massimo = Number(slider.slider('option', 'max'));
+						var valore = minimo + percentuale * (massimo - minimo);
+						var valori = slider.slider('values');
+						valore = trascinamentoTouch.indice === 0 ? Math.min(valore, valori[1]) : Math.max(valore, valori[0]);
+						slider.slider('values', trascinamentoTouch.indice, valore);
+						aggiornaEtichette(slider.slider('values'));
+					});
+
+					maniglia.addEventListener('pointerup', function(event) {
+						if (!trascinamentoTouch || trascinamentoTouch.id !== event.pointerId)
+							return;
+
+						trascinamentoTouch = null;
+						applicaFiltroPrezzo(slider.slider('values'));
+					});
+
+					maniglia.addEventListener('pointercancel', function(event) {
+						if (trascinamentoTouch && trascinamentoTouch.id === event.pointerId)
+							trascinamentoTouch = null;
+					});
+				});
+			}
 		});
 		
 	}

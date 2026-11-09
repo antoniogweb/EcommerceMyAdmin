@@ -53,6 +53,21 @@ if (typeof attiva_gift_card == "undefined")
 if (typeof stringa_errore_righe_carrello == "undefined")
 	var stringa_errore_righe_carrello = "Attenzione, controllare i campi evidenziati";
 
+if (typeof messaggio_prodotto_aggiunto_carrello == "undefined")
+	var messaggio_prodotto_aggiunto_carrello = "Prodotto aggiunto al carrello";
+
+if (typeof messaggio_carrello_aggiornato == "undefined")
+	var messaggio_carrello_aggiornato = "Carrello aggiornato";
+
+if (typeof messaggio_prodotto_rimosso_carrello == "undefined")
+	var messaggio_prodotto_rimosso_carrello = "Prodotto rimosso dal carrello";
+
+if (typeof messaggio_prodotto_aggiunto_wishlist == "undefined")
+	var messaggio_prodotto_aggiunto_wishlist = "Prodotto aggiunto alla lista dei desideri";
+
+if (typeof messaggio_prodotto_rimosso_wishlist == "undefined")
+	var messaggio_prodotto_rimosso_wishlist = "Prodotto rimosso dalla lista dei desideri";
+
 if (typeof current_url == "undefined")
 	var current_url = "Attenzione, controllare i campi evidenziati";
 
@@ -363,7 +378,13 @@ function aggiornaDatiVariante(obj)
 					var imm = $(this).attr("data-image");
 					
 					if (imm == t_immagine)
-						UIkit.slideshow("#slide_singolo_prodotto").show(indice);
+					{
+						if ($("#slide_singolo_prodotto").length > 0)
+							UIkit.slideshow("#slide_singolo_prodotto").show(indice);
+						
+						if ($("#slide_singolo_prodotto_mobile").length > 0)
+							UIkit.slideshow("#slide_singolo_prodotto_mobile").show(indice);
+					}
 					else
 						indice++;
 				});
@@ -648,6 +669,9 @@ function beforeAggiungiCarrello(principale, accessorio)
 
 function prodottiAggiunti(principale, content, id_cart)
 {
+	if (content && jQuery.trim(content.result) == "OK")
+		scriviTestoLiveRegion(messaggio_prodotto_aggiunto_carrello, "status", false);
+
 	var titoloProdo = "";
 	var urlThumb = principale.attr("img-thumb");
 	
@@ -982,7 +1006,10 @@ function aggiornaCarrello(vai_la_checkout, incrementa)
 			if (content.qty.length == 0 && content.errori_elementi == 0)
 			{
 				if (typeof vai_la_checkout == "undefined")
+				{
+					scriviTestoLiveRegion(messaggio_carrello_aggiornato, "status", false);
 					reloadCart(incrementa);
+				}
 				else
 					location.href = baseUrl + "/" + url_autenticati;
 			}
@@ -1225,6 +1252,7 @@ $(document).ready(function(){
 			},
 			success: function(content){
 				reloadCart();
+				scriviTestoLiveRegion(messaggio_prodotto_rimosso_carrello, "status", false);
 			}
 		});
 	});
@@ -1264,6 +1292,8 @@ $(document).ready(function(){
 				
 				if (jQuery.trim(content.result) == "OK")
 				{
+					var prodottoPresenteInWishlist = that.parent().hasClass(classe_wish_presente);
+
 					if (pixel && content.contens_fbk != undefined && content.contens_fbk != "")
 					{
 						if (typeof fbq !== 'undefined')
@@ -1298,6 +1328,8 @@ $(document).ready(function(){
 						that.closest("."+box_pulsante_wishlist).find("."+classe_wish_presente).css("display","block");
 						that.closest("."+box_pulsante_wishlist).find("."+classe_wish_non_presente).css("display","none");
 					}
+
+					scriviTestoLiveRegion(prodottoPresenteInWishlist ? messaggio_prodotto_rimosso_wishlist : messaggio_prodotto_aggiunto_wishlist, "status", false);
 				}
 				
 				reloadWishlistSecondario();

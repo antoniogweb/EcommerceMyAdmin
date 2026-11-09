@@ -2,7 +2,7 @@
 <?php if (isset($_COOKIE["ok_cookie"])) { ?>
 <div id="modaleMaps" uk-modal>
     <div class="uk-modal-dialog">
-        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <button class="uk-modal-close-default" type="button" aria-label="<?php echo gtextAttr("Chiudi");?>" uk-close></button>
         <div class="uk-modal-body">
 			<?php
 			$servizioBloccato = "Google Maps";

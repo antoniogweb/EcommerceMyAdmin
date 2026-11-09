@@ -13,15 +13,15 @@
 					<div class="uk-grid uk-grid-small" uk-grid>
 						<div>
 							<?php if ($link["liste_regalo_link"]["inviato"]) { ?>
-							<span title="<?php echo gtextAttr("Il link è stato inviato correttamente.");?>" class="uk-text-success" uk-icon="check"></span>
+							<span aria-hidden="true" title="<?php echo gtextAttr("Il link è stato inviato correttamente.");?>" class="uk-text-success" uk-icon="check"></span><span class="accessibility-visually-hidden"><?php echo gtextPlain("Il link è stato inviato correttamente.");?></span>
 							<?php } else { ?>
-							<span title="<?php echo gtextAttr("Errore nell'invio del link, si prega di riprovare.");?>" class="uk-text-danger" uk-icon="ban"></span>
+							<span aria-hidden="true" title="<?php echo gtextAttr("Errore nell'invio del link, si prega di riprovare.");?>" class="uk-text-danger" uk-icon="ban"></span><span class="accessibility-visually-hidden"><?php echo gtextPlain("Errore nell'invio del link, si prega di riprovare.");?></span>
 							<?php } ?>
 						</div>
 						<div class="uk-margin-remove-top">
 							<?php if ($link["liste_regalo_link"]["numero_tentativi"] < v("numero_massimo_tentativi_invio_link")) { ?>
 							<span class="spinner uk-hidden" uk-spinner="ratio: .70"></span>
-								<a class="invia_nuovamente_link btn_submit_form" data-id-link="<?php echo (int)$link["liste_regalo_link"]["id_lista_regalo_link"];?>" href="<?php echo $this->baseUrl."/listeregalo/invianuovamentelink";?>"><span title="<?php echo gtextAttr("Invia nuovamente il link");?>" class="uk-margin-small-left" uk-icon="mail"></span></a>
+								<a class="invia_nuovamente_link btn_submit_form" data-id-link="<?php echo (int)$link["liste_regalo_link"]["id_lista_regalo_link"];?>" href="<?php echo $this->baseUrl."/listeregalo/invianuovamentelink";?>" aria-label="<?php echo gtextAttr("Invia nuovamente il link");?>"><span aria-hidden="true" title="<?php echo gtextAttr("Invia nuovamente il link");?>" class="uk-margin-small-left" uk-icon="mail"></span></a>
 							<?php } ?>
 						</div>
 					</div>
