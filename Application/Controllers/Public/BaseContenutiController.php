@@ -1258,7 +1258,6 @@ class BaseContenutiController extends BaseController
 			$sWhereQueryArray = array();
 			
 			$bindedValues = array();
-			
 			foreach ($sWhereArray as $sWhereValori)
 			{
 				$tempWhere = array();
@@ -1275,11 +1274,32 @@ class BaseContenutiController extends BaseController
 						$bindedValues[] = sanitizeDb(Params::$lang);
 					}
 					
-					$existsQuery .= "where pages_caratteristiche_valori.id_page = pages.id_page and caratteristiche.filtro = ? and $aliasExpr = ?)";
+					$bindedValues[] = 'Y';
+					
+					$sWhereValoreArray = array_values(array_filter(array_map("trim", explode("|", (string)$sWhereValore)), function ($valore) {
+						return $valore !== "";
+					}));
+					
+					if (count($sWhereValoreArray) === 0)
+					{
+						$sWhereValoreArray[] = (string)$sWhereValore;
+					}
+					
+					if (count($sWhereValoreArray) > 1)
+					{
+						$existsQuery .= "where pages_caratteristiche_valori.id_page = pages.id_page and caratteristiche.filtro = ? and $aliasExpr in (".$this->m("PagesModel")->placeholdersFromArray($sWhereValoreArray)."))";
+					}
+					else
+					{
+						$existsQuery .= "where pages_caratteristiche_valori.id_page = pages.id_page and caratteristiche.filtro = ? and $aliasExpr = ?)";
+					}
 					
 					$tempWhere[] = $existsQuery;
-					$bindedValues[] = 'Y';
-					$bindedValues[] = sanitizeDb($sWhereValore);
+					
+					foreach ($sWhereValoreArray as $sWhereValoreBind)
+					{
+						$bindedValues[] = sanitizeDb($sWhereValoreBind);
+					}
 				}
 				
 				$sWhereQueryArray[] = "(".implode(" AND ", $tempWhere).")";
