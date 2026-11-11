@@ -1,0 +1,1 @@
+INSERT INTO `ai_modelli` (`titolo`, `attivo`, `codice`, `modulo`, `key_1`, `tipo`, `predefinito`, `id_order`, `nome_modello`, `numero_pagine`) VALUES ('GPT-6.1 Terra', '1', 'ChatGPT61Terra', 'ChatGPT61Terra', '', 'NLP', '0', '5', 'gpt-6.1-terra', '40');

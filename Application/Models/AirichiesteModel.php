@@ -774,7 +774,11 @@ class AirichiesteModel extends GenericModel
 							list($ris, $risposta) = array(1, $messaggoRag);
 						else
 						{
-							list($ris, $risposta) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low", array(), true);
+							list($ris, $risposta) = $this->richiesta($messaggi, $contesto, $istruzioni, (int)$record["id_ai_modello"], $okRouting, "low", array(), true, [
+								'format' => [
+									'type' => 'json_object'
+								],
+							]);
 							
 							$risposta = stripTagsSicuro($risposta);
 							
@@ -1810,7 +1814,7 @@ class AirichiesteModel extends GenericModel
 		return false;
 	}
 	
-	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false, $reasoning = "low", $routingSchema = array(), $prenotaResponse = false)
+	public function richiesta($messaggi, $contesto = "", $istruzioni = "", $idModello = null, $forza = false, $reasoning = "low", $routingSchema = array(), $prenotaResponse = false, $text = array())
 	{
 		if (!isset($idModello))
 			$idModello = AimodelliModel::g(false)->getModelloPredefinito();
@@ -1835,7 +1839,7 @@ class AirichiesteModel extends GenericModel
 				$airrModel->db->commit();
 			}
 			
-			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni, $reasoning, $routingSchema);
+			list($res, $output) = AimodelliModel::getModulo($idModello, true)->chat($messaggi, $contesto, $istruzioni, $reasoning, $routingSchema, $text);
 		}
 		
 		// echo $output."\n\n\n";
