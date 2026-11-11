@@ -1,0 +1,1 @@
+INSERT INTO `ai_modelli` (`titolo`, `attivo`, `codice`, `modulo`, `key_1`, `tipo`, `predefinito`, `id_order`, `nome_modello`, `numero_pagine`) VALUES ('GPT-6 Luna', '1', 'ChatGPT6Luna', 'ChatGPT6Luna', '', 'NLP', '0', '3', 'gpt-6-luna', '40');
