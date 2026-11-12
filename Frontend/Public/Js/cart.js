@@ -1026,6 +1026,7 @@ function aggiornaCarrello(vai_la_checkout, incrementa)
 			{
 				if (typeof vai_la_checkout == "undefined")
 				{
+					scriviTestoLiveRegion("", "alert", false);
 					scriviTestoLiveRegion(messaggio_carrello_aggiornato, "status", false);
 					reloadCart(incrementa);
 				}
