@@ -101,12 +101,25 @@ if (typeof reloadCart !== 'function')
 			success: function(content){
 				
 				$(".cart_container").html(content);
+				aggiornaLiveRegionAlertCarrello();
 				
 				reloadCartSecondario();
 				
 				nascondiTendinaCaricamento();
 			}
 		});
+	}
+}
+
+function aggiornaLiveRegionAlertCarrello()
+{
+	var erroreCarrello = $(".cart_container .errori_inferiori_carrello").first();
+	var testoErrore = erroreCarrello.length > 0 ? $.trim(erroreCarrello.text()) : "";
+
+	if (testoErrore)
+	{
+		scriviTestoLiveRegion("", "status", false);
+		scriviTestoLiveRegion(testoErrore, "alert", false);
 	}
 }
 
