@@ -882,7 +882,9 @@ if (typeof evidenziaErroreCart !== 'function')
 {
 	window.evidenziaErroreCart = function(selettore)
 	{
-		$(selettore).css("background-color",back_cart_error);
+		var campo = $(selettore);
+		campo.css("background-color",back_cart_error);
+		applicaAriaInvalid(campo);
 	}
 }
 
@@ -891,6 +893,7 @@ if (typeof pulisciErroriCart !== 'function')
 	window.pulisciErroriCart = function()
 	{
 		$(".item_quantity").css("background-color","#FFF");
+		rimuoviAriaInvalid($(".item_quantity"));
 	}
 }
 
@@ -899,6 +902,7 @@ if (typeof evidenziaErroreGiftCard !== 'function')
 	window.evidenziaErroreGiftCard = function(obj)
 	{
 		obj.addClass("uk-form-danger");
+		applicaAriaInvalid(obj);
 	}
 }
 
@@ -909,12 +913,14 @@ if (typeof pulisciErroriGiftCard !== 'function')
 		$(".form_elemento_gift_card input").each(function(){
 			
 			$(this).removeClass("uk-form-danger");
+			rimuoviAriaInvalid($(this));
 			
 		});
 		
 		$(".form_elemento_gift_card textarea").each(function(){
 			
 			$(this).removeClass("uk-form-danger");
+			rimuoviAriaInvalid($(this));
 			
 		});
 	}

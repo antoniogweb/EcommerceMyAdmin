@@ -8,15 +8,18 @@
 			</div>
 			<div class="uk-width-expand uk-text-left">
 				<div class="uk-margin">
-					<label class="uk-form-label"><?php echo gtextPlain("Email");?></label>
+				<label class="uk-form-label" for="gift_card_email_<?php echo (int)$elCart["id_cart_elemento"];?>"><?php echo gtextPlain("Email");?> <span aria-hidden="true">*</span></label>
 					<div class="uk-form-controls">
 						<div class="uk-grid uk-grid-column-small" uk-grid>
 							<div class="uk-margin uk-margin-remove-bottom uk-width-1-1 uk-width-2-3@m">
 								<div class="uk-inline">
-									<span class="uk-form-icon" uk-icon="icon: mail"></span>
+									<span class="uk-form-icon" aria-hidden="true" uk-icon="icon: mail"></span>
 									<?php
 									$classeInput = (CartelementiModel::evidenzia($pageView) && !CartelementiModel::isOkField($elCart["id_cart_elemento"], "email")) ? "uk-form-danger" : "";
-									echo Html_Form::input("email",$elCart["email"],"$classeInput uk-input uk-form-width-large");?>
+									$attributiEmail = "autocomplete='email' aria-required='true'";
+									if ($classeInput)
+										$attributiEmail .= " aria-invalid='true'";
+									echo Html_Form::input("email",$elCart["email"],"$classeInput uk-input uk-form-width-large","gift_card_email_".(int)$elCart["id_cart_elemento"],$attributiEmail,"email");?>
 								</div>
 							</div>
 							<div class="uk-width-1-1 uk-width-1-3@m uk-text-meta uk-margin-remove-top">
@@ -26,11 +29,14 @@
 					</div>
 				</div>
 				<div class="uk-margin">
-					<label class="uk-form-label"><?php echo gtextPlain("Testo della dedica e firma");?></label>
+					<label class="uk-form-label" for="gift_card_testo_<?php echo (int)$elCart["id_cart_elemento"];?>"><?php echo gtextPlain("Testo della dedica e firma");?> <span aria-hidden="true">*</span></label>
 					<div class="uk-form-controls">
 						<?php
 						$classeInput = (CartelementiModel::evidenzia($pageView) && !CartelementiModel::isOkField($elCart["id_cart_elemento"], "testo")) ? "uk-form-danger" : "";
-						echo Html_Form::textarea("testo",$elCart["testo"],"$classeInput uk-textarea");?>
+						$attributiTesto = "aria-required='true'";
+						if ($classeInput)
+							$attributiTesto .= " aria-invalid='true'";
+						echo Html_Form::textarea("testo",$elCart["testo"],"$classeInput uk-textarea","gift_card_testo_".(int)$elCart["id_cart_elemento"],$attributiTesto);?>
 					</div>
 				</div>
 			</div>

@@ -1,5 +1,5 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<?php if (strcmp($pageView,"partial") !== 0) { ?><div id="main" class="cart_container"><?php } ?>
+<?php if (strcmp($pageView,"partial") !== 0) { ?><div class="cart_container"><?php } ?>
 <?php if (count($pages) > 0) { ?>
 	<div class="uk-grid-medium uk-grid main_cart" uk-grid="">
 		<div class="uk-width-1-1 uk-width-expand@m uk-first-column">

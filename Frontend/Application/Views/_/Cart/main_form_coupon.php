@@ -3,6 +3,7 @@
 <form action="<?php echo $this->baseUrl."/carrello/vedi";?>" method="POST">
 	<div class="uk-grid-small uk-child-width-expand@s uk-grid" uk-grid="">
 		<div>
+		<label class="accessibility-visually-hidden" for="coupon_code"><?php echo gtextPlain("Codice promozione");?></label>
 		<input type="text" name="il_coupon" class="uk-input uk-form-width-medium@m input-text" id="coupon_code" value="" placeholder="<?php echo gtextAttr("Codice promozione", false);?>" />
 		</div>
 		<div>
