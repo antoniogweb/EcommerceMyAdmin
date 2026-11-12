@@ -18,6 +18,7 @@
 			</div>
 			<?php } ?>
 			<hr>
+			<?php $campiGiftCardInErrore = array(); ?>
 			<?php foreach ($pages as $p) { ?>
 				<?php include(tpf("Cart/main_riga.php"));?>
 			<?php } ?>

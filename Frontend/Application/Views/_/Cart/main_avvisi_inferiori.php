@@ -4,7 +4,7 @@
 	<div class="uk-first-column uk-width-1-1 uk-width-1-5@m">
 	</div>
 	<div class="errori_inferiori_carrello uk-width-expand uk-text-right uk-text-small uk-text-danger">
-		<?php echo gtextPlain("Si prega di verificare i campi evidenziati");?>
+		<?php echo gtextPlain("Si prega di verificare i campi evidenziati");?><?php if (!empty($campiGiftCardInErrore)) { ?>: <?php echo implode(", ", array_unique($campiGiftCardInErrore));?><?php } ?>
 	</div>
 </div>
 <?php } ?>
