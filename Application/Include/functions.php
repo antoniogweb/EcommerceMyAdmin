@@ -1625,7 +1625,8 @@ function pulsanteFattura($id_o)
 	
 	if (count($res) > 0)
 	{
-		return "<a download title='scarica fattura' href='".Url::getRoot()."ordini/scaricafattura/".$clean["id_o"]."'><img src='".Url::getFileRoot()."admin/Public/Img/Icons/pdf.png' /></a>";
+		$etichettaFattura = gtextAttr("Scarica fattura per ordine", false)." ".$clean["id_o"];
+		return "<a download aria-label='".$etichettaFattura."' title='".gtextAttr("Scarica fattura", false)."' href='".Url::getRoot()."ordini/scaricafattura/".$clean["id_o"]."'><img src='".Url::getFileRoot()."admin/Public/Img/Icons/pdf.png' alt='' /></a>";
 	}
 }
 
