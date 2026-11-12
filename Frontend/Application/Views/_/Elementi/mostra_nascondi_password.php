@@ -1,12 +1,12 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
-<a class="uk-form-icon uk-form-icon-flip mostra_nascondi_password mostra_password" href="#"><span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/eye-slash.svg");?></span></a>
-<a class="uk-form-icon uk-form-icon-flip mostra_nascondi_password nascondi_password uk-hidden" href="#"><span class="uk-icon uk-text-meta"><?php include tpf("Elementi/Icone/Svg/eye.svg");?></span></a>
+<a class="uk-form-icon uk-form-icon-flip mostra_nascondi_password mostra_password" href="#" aria-label="<?php echo gtextAttr('Mostra la password');?>"><span class="uk-icon uk-text-meta" aria-hidden="true"><?php include tpf("Elementi/Icone/Svg/eye-slash.svg");?></span></a>
+<a class="uk-form-icon uk-form-icon-flip mostra_nascondi_password nascondi_password uk-hidden" href="#" aria-label="<?php echo gtextAttr('Nascondi la password');?>"><span class="uk-icon uk-text-meta" aria-hidden="true"><?php include tpf("Elementi/Icone/Svg/eye.svg");?></span></a>
 
 <?php if (v("attiva_controllo_robustezza_password")) { ?>
 <div class="box_avvisi_password uk-hidden uk-position-absolute uk-position-bottom-out uk-background-muted uk-width-1-1" style="z-index:3;">
 	<div class="uk-padding-small uk-text-small" style="padding-right:30px !important;">
 		<div class="uk-position-top-right uk-padding-small">
-			<a title="<?php echo gtextAttr("Chiudi avviso");?>" rel="nofollow" class="chiudi_wizard_password" href="#" uk-icon="icon: close"></a>
+			<a title="<?php echo gtextAttr("Chiudi avviso");?>" aria-label="<?php echo gtextAttr("Chiudi avviso");?>" class="chiudi_wizard_password" href="#" uk-icon="icon: close"></a>
 		</div>
 		<?php echo gtextPlain("La password deve contenere:");?>
 		<span class="avviso_numero_caratteri uk-text-danger">
