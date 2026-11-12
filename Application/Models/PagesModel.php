@@ -137,6 +137,7 @@ class PagesModel extends GenericModel {
 		"ASSISTENZA"	=>	"Pagina informazioni assistenza",
 		"GUIDA_ACQUISTO"=>	"Pagina Guida all'acquisto",
 		"RICHIEDI_RESO"	=>	"Pagina per richiedere un reso di un ordine",
+		"ACCESSIBILITY"	=>	"Pagina con documento accessibilità",
 	);
 	
 	public static $ordinamentoDefaultProdotti = "";
