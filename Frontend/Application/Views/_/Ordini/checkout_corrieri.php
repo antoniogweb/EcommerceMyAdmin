@@ -8,6 +8,8 @@
 					<span uk-icon="icon:clock;ratio:1" class="uk-margin-right uk-hidden@m"></span><?php echo gtextPlain("Modalità di consegna");?>
 				</h2>
 				
+				<fieldset class="uk-fieldset radio-group-fieldset">
+					<legend class="accessibility-visually-hidden"><?php echo gtextPlain("Modalità di consegna");?></legend>
 				<?php foreach ($corrieri as $corriere) {
 					$idRadioCorriere = "checkout-corriere-".(int)$corriere["id_corriere"];
 				?>
@@ -15,6 +17,7 @@
 					<?php echo Html_Form::radio("id_corriere",$values["id_corriere"],$corriere["id_corriere"],"imposta_corriere","none",$idRadioCorriere);?><label class="uk-margin-left" for="<?php echo $idRadioCorriere;?>"><?php echo gtextPlain($corriere["titolo"]);?></label>
 				</div>
 				<?php } ?>
+				</fieldset>
 			</div>
 		</div>
 		

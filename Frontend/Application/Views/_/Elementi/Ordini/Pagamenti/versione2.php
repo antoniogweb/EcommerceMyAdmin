@@ -9,11 +9,14 @@
 		<h2 class="<?php echo v("classi_titoli_checkout");?>">
 			<?php echo $htmlIcona;?><?php echo gtextPlain("Metodo di pagamento");?>
 		</h2>
+		<fieldset class="uk-fieldset radio-group-fieldset">
+			<legend class="accessibility-visually-hidden"><?php echo gtextPlain("Metodo di pagamento");?></legend>
 		<div class="payment_methods modalita_pagamento class_pagamento bx_pagamenti">
 			<?php foreach (OrdiniModel::$pagamenti as $codPag => $descPag) { ?>
 				<div class="radio_pagamento radio_pagamento_<?php echo $codPag;?> radio_pagamento_select uk-padding-small uk-padding-remove-top uk-padding-remove-bottom <?php if ($values["pagamento"] == $codPag) { ?>spedizione_selezionata<?php } ?>"><?php include(tpf("Elementi/Pagamenti/pagamento_generico.php")); ?></div>
 			<?php } ?>
 		</div>
+		</fieldset>
 	</div>
 </div>
 <?php } else { ?>

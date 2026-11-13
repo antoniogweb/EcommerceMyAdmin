@@ -10,6 +10,7 @@ else
 	
 	if (count($tipiClienti) > 1)
 	{
+		echo '<fieldset class="uk-fieldset radio-group-fieldset"><legend class="accessibility-visually-hidden">'.gtextPlain("Tipo cliente").'</legend>';
 		foreach ($tipiClienti as $codiceTipo => $titoloTipo)
 		{
 			$idRadioTipoCliente = "tipo_cliente_".encodeUrl($codiceTipo);
@@ -19,6 +20,7 @@ else
 			echo Html_Form::radio("tipo_cliente",$values['tipo_cliente'],$tipoCliente,"radio_cliente","after",$idRadioTipoCliente,null,"aria-required='true'");
 			echo "<span style='margin-right:20px;'></span>".$divisoreTipoCliente;
 		}
+		echo '</fieldset>';
 	}
 	else
 	{
