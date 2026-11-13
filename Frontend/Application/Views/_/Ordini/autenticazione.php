@@ -64,19 +64,17 @@ if (!User::$isMobile)
 		</div>
 		
 		<form class="" action = '<?php echo $this->baseUrl."/checkout";?>' method = 'GET'>
-			<fieldset class="uk-fieldset">
-				<div class="uk-margin">
-					<label class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?></label>
-					<div class="uk-form-controls">
-						<input class="uk-input uk-width-1-2@s uk-width-1-1@m" name="default_email" type="text" autocomplete="email" placeholder="<?php echo gtextAttr("Scrivi qui il tuo indirizzo e-mail")?>"/>
-					</div>
+			<div class="uk-margin">
+				<label class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?></label>
+				<div class="uk-form-controls">
+					<input class="uk-input uk-width-1-2@s uk-width-1-1@m" name="default_email" type="text" autocomplete="email" placeholder="<?php echo gtextAttr("Scrivi qui il tuo indirizzo e-mail")?>"/>
 				</div>
-				
-				<div>
-					<div class="uk-button uk-button-primary uk-width-1-1 spinner uk-hidden" uk-spinner="ratio: .70"></div>
-					<input class="uk-button uk-button-primary uk-width-1-1 btn_submit_form" type="submit" name="login" value="<?php echo gtextAttr("Procedi inserendo i tuoi dati");?>" />
-				</div>
-			</fieldset>
+			</div>
+			
+			<div>
+				<div class="uk-button uk-button-primary uk-width-1-1 spinner uk-hidden" uk-spinner="ratio: .70"></div>
+				<input class="uk-button uk-button-primary uk-width-1-1 btn_submit_form" type="submit" name="login" value="<?php echo gtextAttr("Procedi inserendo i tuoi dati");?>" />
+			</div>
 		</form>
 	</div>
 </div>

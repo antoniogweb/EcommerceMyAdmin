@@ -4,20 +4,18 @@
 	<div class="uk-text-meta"><?php echo gtextPlain("Scrivi il tuo indirizzo e-mail e premi invia per richiedere una nuova password.");?></div>
 
 	<form class="uk-margin" action="<?php echo $this->baseUrl."/password-dimenticata";?>" method="POST">
-		<fieldset class="uk-fieldset">
-			<div class="uk-margin">
-				<label for="username" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> <span aria-hidden="true">*</span></label>
-				<div class="uk-form-controls">
-					<input id="username" class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="email" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi qui il tuo indirizzo e-mail")?>" aria-required="true"/>
-				</div>
-				
-				<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
+		<div class="uk-margin">
+			<label for="username" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Indirizzo e-mail");?> <span aria-hidden="true">*</span></label>
+			<div class="uk-form-controls">
+				<input id="username" class="uk-input uk-width-1-2@s uk-width-1-1@m class_username" autocomplete="email" name="username" type="text" placeholder="<?php echo gtextAttr("Scrivi qui il tuo indirizzo e-mail")?>" aria-required="true"/>
 			</div>
 			
-			<div>
-				<div class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-1-3@s spinner uk-hidden" uk-spinner="ratio: .70"></div>
-				<input class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-1-3@s btn_submit_form" type="submit" name="invia" value="<?php echo gtextAttr("Invia");?>" title="<?php echo gtextAttr("Richiedi una nuova password");?>" />
-			</div>
-		</fieldset>
+			<?php include (tpf("Elementi/Pagine/campo-captcha-registrazione.php"));?>
+		</div>
+		
+		<div>
+			<div class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-1-3@s spinner uk-hidden" uk-spinner="ratio: .70"></div>
+			<input class="<?php echo v("classe_pulsanti_submit");?> uk-width-1-1 uk-width-1-3@s btn_submit_form" type="submit" name="invia" value="<?php echo gtextAttr("Invia");?>" title="<?php echo gtextAttr("Richiedi una nuova password");?>" />
+		</div>
 	</form>
 </div>
