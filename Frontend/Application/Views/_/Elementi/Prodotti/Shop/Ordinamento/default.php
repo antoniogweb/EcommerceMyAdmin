@@ -1,7 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <?php if (isset($url_ordinamento)) { ?>
-<span class="uk-text-small uk-text-mute"><?php echo gtextPlain("Ordina per");?>:</span>
-<select name="o" class="select_follow_url uk-select uk-form-width-medium uk-form-small">
+<label for="shop-order-select" class="uk-text-small uk-text-mute"><?php echo gtextPlain("Ordina per");?>:</label>
+<select id="shop-order-select" name="o" class="select_follow_url uk-select uk-form-width-medium uk-form-small">
 	<option <?php if (isset($this->viewArgs["o"]) && $this->viewArgs["o"] == "tutti") echo "selected";?> value="<?php echo $url_ordinamento.$this->getViewStatusUsingVariables(array("o"=>"tutti", "p"=>1));?>"><?php echo gtextPlain("Predefinito");?></option>
 	<option <?php if (isset($this->viewArgs["o"]) && $this->viewArgs["o"] == "az") echo "selected";?> value="<?php echo $url_ordinamento . $this->getViewStatusUsingVariables(array("o"=>"az", "p"=>1));?>"><?php echo gtextPlain("A -> Z");?></option>
 	<option <?php if (isset($this->viewArgs["o"]) && $this->viewArgs["o"] == "za") echo "selected";?> value="<?php echo $url_ordinamento . $this->getViewStatusUsingVariables(array("o"=>"za", "p"=>1));?>"><?php echo gtextPlain("Z -> A");?></option>

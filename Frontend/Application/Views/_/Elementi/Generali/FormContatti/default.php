@@ -10,23 +10,26 @@
 		<fieldset class="uk-fieldset">
 			<div uk-grid class="uk-margin uk-grid"> 
 				<div class="uk-width-1-2@m uk-width-1-2@s">
-				<?php echo Html_Form::input("nome",Form::gValue("nome"),"uk-input class_nome","nome","autocomplete='given-name' aria-required='true' placeholder='".gtextAttr("Nome*")."'");?>
+				<label for="contatti-nome" class="accessibility-visually-hidden"><?php echo gtextPlain("Nome");?> <span aria-hidden="true">*</span></label>
+				<?php echo Html_Form::input("nome",Form::gValue("nome"),"uk-input class_nome","contatti-nome","autocomplete='given-name' aria-required='true' placeholder='".gtextAttr("Nome*")."'");?>
 				</div>
 				
 				<div class="uk-width-1-2@m uk-width-1-2@s">
-				<?php echo Html_Form::input("email",Form::gValue("email"),"uk-input class_email","email","autocomplete='email' aria-required='true' placeholder='".gtextAttr("Email*")."'");?>
+				<label for="contatti-email" class="accessibility-visually-hidden"><?php echo gtextPlain("Email");?> <span aria-hidden="true">*</span></label>
+				<?php echo Html_Form::input("email",Form::gValue("email"),"uk-input class_email","contatti-email","autocomplete='email' aria-required='true' placeholder='".gtextAttr("Email*")."'");?>
 				</div>
 			</div>
 
 			<div class="uk-margin">
-				<?php echo Html_Form::textarea("messaggio",Form::gValue("messaggio"),"uk-textarea class_messaggio","messaggio","rows='5' aria-required='true' placeholder='".gtextAttr("Messaggio*")."'");?>
+				<label for="contatti-messaggio" class="accessibility-visually-hidden"><?php echo gtextPlain("Messaggio");?> <span aria-hidden="true">*</span></label>
+				<?php echo Html_Form::textarea("messaggio",Form::gValue("messaggio"),"uk-textarea class_messaggio","contatti-messaggio","rows='5' aria-required='true' placeholder='".gtextAttr("Messaggio*")."'");?>
 			</div>
 			
 			<?php include (tpf("Elementi/Pagine/campo-captcha.php"));?>
 			
 			<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto" data-field-name="<?php echo gtextAttr("privacy policy");?>">
 				<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
-				<label><?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox',null,"aria-required='true'");?><span class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("privacy policy");?></a></span></label>
+				<?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox',"contatti-accetto","aria-required='true'");?> <label class="uk-text-small uk-margin-left" for="contatti-accetto"><?php echo gtextPlain("Ho letto e accetto le condizioni della privacy policy.");?></label> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("Leggi la privacy policy");?></a>
 			</div>
 			
 			<?php echo Html_Form::hidden("invia","invia");?>

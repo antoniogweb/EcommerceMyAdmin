@@ -35,81 +35,88 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			<?php $attributiIdTipo = ($id === 0) ? "" : "disabled";?>
 			
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom">
-				<label class="uk-form-label"><?php echo gtextPlain("Tipo lista");?> *</label>
+				<label for="lista-tipo" class="uk-form-label"><?php echo gtextPlain("Tipo lista");?> <span aria-hidden="true">*</span></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::select("id_lista_tipo",$values['id_lista_tipo'],$selectTipi,"uk-select class_id_lista_tipo",null,"yes",$attributiIdTipo);?>
+					<?php echo Html_Form::select("id_lista_tipo",$values['id_lista_tipo'],$selectTipi,"uk-select class_id_lista_tipo","lista-tipo","yes","aria-required='true' ".$attributiIdTipo);?>
 				</div>
 			</div>
 			
 			<div class="uk-margin uk-margin-remove-bottom">
-				<label class="uk-form-label"><?php echo gtextPlain("Nome della lista");?> *</label>
+				<label for="lista-titolo" class="uk-form-label"><?php echo gtextPlain("Nome della lista");?> <span aria-hidden="true">*</span></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::input("titolo",$values['titolo'],"uk-input class_titolo",null);?>
+					<?php echo Html_Form::input("titolo",$values['titolo'],"uk-input class_titolo","lista-titolo","aria-required='true'");?>
 				</div>
 			</div>
 			
 			<?php if (array_key_exists("nome_bambino",$values)) { ?>
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("nome_bambino"));?>">
-				<label class="uk-form-label"><?php echo gtextPlain("Nome del bimbo/a");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "nome_bambino")) {?>*<?php } ?></label>
+				<?php $nomeBambinoObbligatorio = ListeregalotipiModel::obbligatorio($idTipoLista, "nome_bambino");?>
+				<label for="lista-nome-bambino" class="uk-form-label"><?php echo gtextPlain("Nome del bimbo/a");?> <?php if ($nomeBambinoObbligatorio) {?><span aria-hidden="true">*</span><?php } ?></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::input("nome_bambino",$values['nome_bambino'],"uk-input class_nome_bambino",null);?>
+					<?php echo Html_Form::input("nome_bambino",$values['nome_bambino'],"uk-input class_nome_bambino","lista-nome-bambino",$nomeBambinoObbligatorio ? "aria-required='true'" : null);?>
 				</div>
 			</div>
 			<?php } ?>
 			
 			<?php if (array_key_exists("genitore_1",$values)) { ?>
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("genitore_1"));?>">
-				<label class="uk-form-label"><?php echo gtextPlain("Nome genitore 1");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "genitore_1")) {?>*<?php } ?></label>
+				<?php $genitore1Obbligatorio = ListeregalotipiModel::obbligatorio($idTipoLista, "genitore_1");?>
+				<label for="lista-genitore-1" class="uk-form-label"><?php echo gtextPlain("Nome genitore 1");?> <?php if ($genitore1Obbligatorio) {?><span aria-hidden="true">*</span><?php } ?></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::input("genitore_1",$values['genitore_1'],"uk-input class_genitore_1",null);?>
+					<?php echo Html_Form::input("genitore_1",$values['genitore_1'],"uk-input class_genitore_1","lista-genitore-1",$genitore1Obbligatorio ? "aria-required='true'" : null);?>
 				</div>
 			</div>
 			<?php } ?>
 			
 			<?php if (array_key_exists("genitore_2",$values)) { ?>
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("genitore_2"));?>">
-				<label class="uk-form-label"><?php echo gtextPlain("Nome genitore 2");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "genitore_2")) {?>*<?php } ?></label>
+				<?php $genitore2Obbligatorio = ListeregalotipiModel::obbligatorio($idTipoLista, "genitore_2");?>
+				<label for="lista-genitore-2" class="uk-form-label"><?php echo gtextPlain("Nome genitore 2");?> <?php if ($genitore2Obbligatorio) {?><span aria-hidden="true">*</span><?php } ?></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::input("genitore_2",$values['genitore_2'],"uk-input class_genitore_2",null);?>
+					<?php echo Html_Form::input("genitore_2",$values['genitore_2'],"uk-input class_genitore_2","lista-genitore-2",$genitore2Obbligatorio ? "aria-required='true'" : null);?>
 				</div>
 			</div>
 			<?php } ?>
 			
 			<?php if (array_key_exists("sesso",$values)) { ?>
 			<div class="uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("sesso"));?>">
-				<label class="uk-form-label"><?php echo gtextPlain("Sesso");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "sesso")) {?>*<?php } ?></label>
+				<?php $sessoObbligatorio = ListeregalotipiModel::obbligatorio($idTipoLista, "sesso");?>
+				<label for="lista-sesso" class="uk-form-label"><?php echo gtextPlain("Sesso");?> <?php if ($sessoObbligatorio) {?><span aria-hidden="true">*</span><?php } ?></label>
 				<div class="uk-form-controls">
 					<?php echo Html_Form::select("sesso",$values['sesso'],array(
 						"M"	=>	gtext("Maschio"),
 						"F"	=>	gtext("Femmina"),
-					),"uk-select class_sesso",null,"yes");?>
+					),"uk-select class_sesso","lista-sesso","yes",$sessoObbligatorio ? "aria-required='true'" : null);?>
 				</div>
 			</div>
 			<?php } ?>
 			
 			<?php if (array_key_exists("data_nascita",$values)) { ?>
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("data_nascita"));?>">
-				<label class="uk-form-label"><?php echo gtextPlain("Data prevista nascita");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "data_nascita")) {?>*<?php } ?></label>
+				<?php $dataNascitaObbligatoria = ListeregalotipiModel::obbligatorio($idTipoLista, "data_nascita");?>
+				<label for="lista-data-nascita" class="uk-form-label"><?php echo gtextPlain("Data prevista nascita");?> (<?php echo gtextPlain("gg-mm-aaaa");?>) <?php if ($dataNascitaObbligatoria) {?><span aria-hidden="true">*</span><?php } ?></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::input("data_nascita",$values['data_nascita'] == "00-00-0000" ? "" : $values['data_nascita'],"uk-input class_data_nascita datepicker",null,"autocomplete='off'");?>
+					<?php echo Html_Form::input("data_nascita",$values['data_nascita'] == "00-00-0000" ? "" : $values['data_nascita'],"uk-input class_data_nascita datepicker","lista-data-nascita","autocomplete='off'".($dataNascitaObbligatoria ? " aria-required='true'" : ""));?>
 				</div>
 			</div>
 			<?php } ?>
 			
 			<?php if (array_key_exists("data_battesimo",$values)) { ?>
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("data_battesimo"));?>">
-				<label class="uk-form-label"><?php echo gtextPlain("Data battesimo");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "data_battesimo")) {?>*<?php } ?></label>
+				<?php $dataBattesimoObbligatoria = ListeregalotipiModel::obbligatorio($idTipoLista, "data_battesimo");?>
+				<label for="lista-data-battesimo" class="uk-form-label"><?php echo gtextPlain("Data battesimo");?> (<?php echo gtextPlain("gg-mm-aaaa");?>) <?php if ($dataBattesimoObbligatoria) {?><span aria-hidden="true">*</span><?php } ?></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::input("data_battesimo",$values['data_battesimo'] == "00-00-0000" ? "" : $values['data_battesimo'],"uk-input class_data_battesimo datepicker",null,"autocomplete='off'");?>
+					<?php echo Html_Form::input("data_battesimo",$values['data_battesimo'] == "00-00-0000" ? "" : $values['data_battesimo'],"uk-input class_data_battesimo datepicker","lista-data-battesimo","autocomplete='off'".($dataBattesimoObbligatoria ? " aria-required='true'" : ""));?>
 				</div>
 			</div>
 			<?php } ?>
 			
 			<?php if (array_key_exists("nominativo",$values)) { ?>
 			<div class="first_of_grid uk-margin uk-margin-remove-bottom campo_lista <?php echo implode(" ",ListeregalotipiModel::campoPresenteInTipi("nominativo"));?>">
-				<label class="uk-form-label"><?php echo gtextPlain("Nominativo");?> <?php if (ListeregalotipiModel::obbligatorio($idTipoLista, "nominativo")) {?>*<?php } ?></label>
+				<?php $nominativoObbligatorio = ListeregalotipiModel::obbligatorio($idTipoLista, "nominativo");?>
+				<label for="lista-nominativo" class="uk-form-label"><?php echo gtextPlain("Nominativo");?> <?php if ($nominativoObbligatorio) {?><span aria-hidden="true">*</span><?php } ?></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::input("nominativo",$values['nominativo'],"uk-input class_genitore_1",null);?>
+					<?php echo Html_Form::input("nominativo",$values['nominativo'],"uk-input class_genitore_1","lista-nominativo",$nominativoObbligatorio ? "aria-required='true'" : null);?>
 				</div>
 			</div>
 			<?php } ?>

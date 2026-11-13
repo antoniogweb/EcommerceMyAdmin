@@ -1,6 +1,7 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div class="payment_method_box">
-	<?php echo Html_Form::radio("pagamento",$values["pagamento"],$codPag,null,"none");?> <span class="uk-margin-small-left"><?php echo $descPag;?></span>
+	<?php $idRadioPagamento = "checkout-pagamento-".encodeUrl($codPag);?>
+	<?php echo Html_Form::radio("pagamento",$values["pagamento"],$codPag,null,"none",$idRadioPagamento,null,"aria-required='true'");?> <label class="uk-margin-small-left" for="<?php echo $idRadioPagamento;?>"><?php echo $descPag;?></label>
 	
 	<?php $immaginePagamento = OrdiniModel::getImmaginePagamento($codPag);
 		if ($immaginePagamento) { 

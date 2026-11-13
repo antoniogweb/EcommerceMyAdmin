@@ -5,7 +5,8 @@
 		
 		<div class="uk-margin">
 			<div class="uk-form-controls">
-			<input class="uk-input uk-width-1-2@s uk-width-1-1@m" name="il_coupon" type="text" placeholder="<?php echo gtextAttr("Codice promozione", false)?>" />
+			<label for="checkout-coupon-code-consfondo" class="accessibility-visually-hidden"><?php echo gtextPlain("Codice promozione");?></label>
+			<input id="checkout-coupon-code-consfondo" class="uk-input uk-width-1-2@s uk-width-1-1@m" name="il_coupon" type="text" aria-required="true" placeholder="<?php echo gtextAttr("Codice promozione", false)?>" />
 			</div>
 		</div>
 		

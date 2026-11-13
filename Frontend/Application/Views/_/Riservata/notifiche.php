@@ -17,16 +17,20 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 
 <form action="<?php echo $this->baseUrl."/user-notifications/";?>" class="uk-grid-small uk-margin-medium-bottom" uk-grid method="GET">
 	<div class="uk-width-1-5@s">
-		<?php echo Html_Form::input("dal",$this->viewArgs["dal"],"uk-input date_picker_generale",null,'placeholder="'.gtextAttr("Dal").'"');?>
+		<label for="notifiche-dal" class="accessibility-visually-hidden"><?php echo gtextPlain("Dal");?></label>
+		<?php echo Html_Form::input("dal",$this->viewArgs["dal"],"uk-input date_picker_generale","notifiche-dal",'placeholder="'.gtextAttr("Dal").'"');?>
 	</div>
 	<div class="uk-width-1-5@s">
-		<?php echo Html_Form::input("al",$this->viewArgs["al"],"uk-input date_picker_generale",null,'placeholder="'.gtextAttr("Al").'"');?>
+		<label for="notifiche-al" class="accessibility-visually-hidden"><?php echo gtextPlain("Al");?></label>
+		<?php echo Html_Form::input("al",$this->viewArgs["al"],"uk-input date_picker_generale","notifiche-al",'placeholder="'.gtextAttr("Al").'"');?>
 	</div>
 	<div class="uk-width-1-5@s">
-		<?php echo Html_Form::select("id_c",$this->viewArgs["id_c"],$categorieDaLeggere,"uk-input",null,'yes','placeholder="'.gtextAttr("Categoria").'"');?>
+		<label for="notifiche-categoria" class="accessibility-visually-hidden"><?php echo gtextPlain("Categoria");?></label>
+		<?php echo Html_Form::select("id_c",$this->viewArgs["id_c"],$categorieDaLeggere,"uk-input","notifiche-categoria",'yes','placeholder="'.gtextAttr("Categoria").'"');?>
 	</div>
 	<div class="uk-width-1-5@s">
-		<?php echo Html_Form::select("id_page",$this->viewArgs["id_page"],$pagineDaLeggere,"uk-input",null,'yes','placeholder="'.gtextAttr("Prodotto").'"');?>
+		<label for="notifiche-prodotto" class="accessibility-visually-hidden"><?php echo gtextPlain("Prodotto");?></label>
+		<?php echo Html_Form::select("id_page",$this->viewArgs["id_page"],$pagineDaLeggere,"uk-input","notifiche-prodotto",'yes','placeholder="'.gtextAttr("Prodotto").'"');?>
 	</div>
 	<div class="uk-width-1-5@s">
 		<button type="submit" class="uk-button uk-button-primary uk-width-1-1"><?php echo gtextPlain("Filtra");?></button>

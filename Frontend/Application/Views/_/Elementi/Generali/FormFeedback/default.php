@@ -23,7 +23,8 @@
 			</div>
 			<form action="<?php echo Domain::$currentUrl."?".v("var_query_string_id_rif")."=".(int)FeedbackModel::gIdProdotto();?>#form-feedback" method="post" novalidate="novalidate">
 				<fieldset class="uk-fieldset">
-					<div class="my-rating class_voto"></div>
+					<div class="uk-margin-small-bottom" id="feedback-rating-label"><?php echo gtextPlain("Valutazione");?> <span aria-hidden="true">*</span></div>
+					<div class="my-rating class_voto" aria-describedby="feedback-rating-label"></div>
 					
 					<?php
 					$attributiNome = "";
@@ -55,20 +56,17 @@
 						$paginaPrivacy = PagineModel::getPageDetailsPreloaded($idPrivacy);
 						$urlPrivacy = $paginaPrivacy["pages"]["redirect"] ? $paginaPrivacy["pages"]["redirect"] : $this->baseUrl."/".getUrlAlias($idPrivacy);
 						?>
-						<label>
-							<?php echo Html_Form::checkbox('accetto',FeedbackModel::gValue("accetto"),'1','uk-checkbox',null,"aria-required='true'");?> <span class="uk-text-small uk-margin-left"><?php echo gtext("Ho letto e accetto le condizioni della privacy policy.");?>
-						</label>
-						<a class="uk-text-small" target="_blank" href="<?php echo $urlPrivacy;?>"><?php echo gtext("Leggi le condizioni di privacy");?></span></a>
+						<?php echo Html_Form::checkbox('accetto',FeedbackModel::gValue("accetto"),'1','uk-checkbox',"feedback-accetto-privacy","aria-required='true'");?>
+						<label class="uk-text-small uk-margin-left" for="feedback-accetto-privacy"><?php echo gtextPlain("Ho letto e accetto le condizioni della privacy policy.");?></label>
+						<a class="uk-text-small" target="_blank" href="<?php echo $urlPrivacy;?>"><?php echo gtextPlain("Leggi le condizioni di privacy");?></a>
 					</div>
 					
 					<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto_feedback" data-field-name="<?php echo gtextAttr("condizioni di pubblicazione della mia valutazione");?>">
 						<?php $idCondizioniFeedback = PagineModel::gTipoPagina("CONDIZIONI_FEEDBACK"); ?>
-						<label>
-							<?php echo Html_Form::checkbox('accetto_feedback',FeedbackModel::gValue("accetto_feedback"),'1','uk-checkbox',null,"aria-required='true'");?>
-							<span class="uk-text-small uk-margin-left"><?php echo gtext("Ho letto e accetto le condizioni di pubblicazione della mia valutazione");?>
-						</label>
+						<?php echo Html_Form::checkbox('accetto_feedback',FeedbackModel::gValue("accetto_feedback"),'1','uk-checkbox',"feedback-accetto-condizioni","aria-required='true'");?>
+						<label class="uk-text-small uk-margin-left" for="feedback-accetto-condizioni"><?php echo gtextPlain("Ho letto e accetto le condizioni di pubblicazione della mia valutazione");?></label>
 						<?php if ($idCondizioniFeedback) { ?>
-							<a class="uk-text-small" target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idCondizioniFeedback);?>"><?php echo gtext("Leggi le condizioni di pubblicazione della mia valutazione");?></span></a>
+							<a class="uk-text-small" target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idCondizioniFeedback);?>"><?php echo gtextPlain("Leggi le condizioni di pubblicazione della mia valutazione");?></a>
 						<?php } else { ?>
 							<div class="uk-alert uk-alert-danger"><?php echo gtext("Attenzione, condizioni di pubblicazioni del feedback assenti");?></div>
 						<?php } ?>

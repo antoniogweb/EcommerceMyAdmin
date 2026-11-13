@@ -25,16 +25,22 @@ if (!isset($iconDown))
 	$iconDown = "chevron-down";
 ?>
 <?php if (User::$isMobile) { ?>
-	<div class="select_box cart_select_box" back-color="<?php echo $backColor;?>"><?php echo Html_Form::select("quantity", $quantitaRigaCarrello, array_combine(range(1,$qtaMaxSelect),range(1,$qtaMaxSelect)),"uk-select item_quantity $mobileCallbackClass", null, "yes", "rel='".$idRigaCarrello."' style='background-color:$backColor; !important'");?></div>
+	<?php $idQuantitaCarrello = "cart-item-quantity-".(int)$idRigaCarrello;?>
+	<label class="accessibility-visually-hidden" for="<?php echo $idQuantitaCarrello;?>"><?php echo gtextPlain("Quantità dell'articolo");?></label>
+	<div class="select_box cart_select_box" back-color="<?php echo $backColor;?>"><?php echo Html_Form::select("quantity", $quantitaRigaCarrello, array_combine(range(1,$qtaMaxSelect),range(1,$qtaMaxSelect)),"uk-select item_quantity $mobileCallbackClass", $idQuantitaCarrello, "yes", "rel='".$idRigaCarrello."' style='background-color:$backColor; !important'");?></div>
 <?php } else { ?>
 	<?php if (!v("mostra_piu_meno_modifica_quantita")) { ?>
-	<input rel="<?php echo $idRigaCarrello;?>" class="uk-input item_quantity" name="quantity" type="number" value="<?php echo $quantitaRigaCarrello;?>" min="1" 	style="background-color:<?php echo $backColor;?> !important" />
+	<?php $idQuantitaCarrello = "cart-item-quantity-".(int)$idRigaCarrello;?>
+	<label class="accessibility-visually-hidden" for="<?php echo $idQuantitaCarrello;?>"><?php echo gtextPlain("Quantità dell'articolo");?></label>
+	<input id="<?php echo $idQuantitaCarrello;?>" rel="<?php echo $idRigaCarrello;?>" class="uk-input item_quantity" name="quantity" type="number" value="<?php echo $quantitaRigaCarrello;?>" min="1" 	style="background-color:<?php echo $backColor;?> !important" />
 	<?php } else { ?>
 	<div class="uk-flex uk-flex-middle uk-flex-center box_quantity uk-border-rounded">
-		<input rel="<?php echo $idRigaCarrello;?>" disabled class="uk-padding-remove uk-form-width-xsmall uk-input item_quantity" name="quantity" type="text" value="<?php echo $quantitaRigaCarrello;?>" min="1" style="max-width:25px;border:none;background-color:<?php echo $backColor;?> !important" />
+		<?php $idQuantitaCarrello = "cart-item-quantity-".(int)$idRigaCarrello;?>
+		<label class="accessibility-visually-hidden" for="<?php echo $idQuantitaCarrello;?>"><?php echo gtextPlain("Quantità dell'articolo");?></label>
+		<input id="<?php echo $idQuantitaCarrello;?>" rel="<?php echo $idRigaCarrello;?>" disabled class="uk-padding-remove uk-form-width-xsmall uk-input item_quantity" name="quantity" type="text" value="<?php echo $quantitaRigaCarrello;?>" min="1" style="max-width:25px;border:none;background-color:<?php echo $backColor;?> !important" />
 		<div class="uk-text-center">
-			<a lvalue="<?php echo $qtaMax;?>" style="display:block" class="<?php if ((int)$qtaMax <= 1) { ?>uk-text-meta<?php } ?> <?php echo $increaseCallbackClass;?>" href="#"><span uk-icon="icon: <?php echo $iconUp;?>;ratio: 1"></span></a>
-			<a lvalue="<?php echo $qtaMin;?>" style="display:block" class="<?php if ((int)$quantitaRigaCarrello <= 1) { ?>uk-text-meta<?php } ?> <?php echo $decreaseCallbackClass;?>" href="#"><span uk-icon="icon: <?php echo $iconDown;?>;ratio: 1"></span></a>
+			<a lvalue="<?php echo $qtaMax;?>" style="display:block" class="<?php if ((int)$qtaMax <= 1) { ?>uk-text-meta<?php } ?> <?php echo $increaseCallbackClass;?>" href="#" aria-label="<?php echo gtextAttr("Aumenta quantità");?>"><span aria-hidden="true" uk-icon="icon: <?php echo $iconUp;?>;ratio: 1"></span></a>
+			<a lvalue="<?php echo $qtaMin;?>" style="display:block" class="<?php if ((int)$quantitaRigaCarrello <= 1) { ?>uk-text-meta<?php } ?> <?php echo $decreaseCallbackClass;?>" href="#" aria-label="<?php echo gtextAttr("Riduci quantità");?>"><span aria-hidden="true" uk-icon="icon: <?php echo $iconDown;?>;ratio: 1"></span></a>
 		</div>
 	</div>
 	<?php } ?>

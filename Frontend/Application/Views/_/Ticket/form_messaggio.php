@@ -7,20 +7,22 @@
 	</div>
 	
 	<div class="uk-form-controls">
-		<?php echo Html_Form::textarea("descrizione","","uk-textarea class_descrizione",null,"maxlength='".v("numero_massimo_caratteri_ticket")."' rows='4' placeholder='".gtextAttr("Messaggio", false)." (".gtextAttr("massimo")." ".v("numero_massimo_caratteri_ticket")." ".gtextAttr("caratteri").")"."'");?>
+		<label for="ticket-messaggio-descrizione" class="accessibility-visually-hidden"><?php echo gtextPlain("Messaggio");?></label>
+		<?php echo Html_Form::textarea("descrizione","","uk-textarea class_descrizione","ticket-messaggio-descrizione","maxlength='".v("numero_massimo_caratteri_ticket")."' rows='4' placeholder='".gtextAttr("Messaggio", false)." (".gtextAttr("massimo")." ".v("numero_massimo_caratteri_ticket")." ".gtextAttr("caratteri").")"."'");?>
 	</div>
 	
 	<div class="uk-margin-top uk-text-italic uk-text-meta"><?php echo gtextPlain("Carica un'immagine (opzionale)")?></div>
 	<div class="" uk-margin>
 		<div uk-form-custom="target: true" class="uk-margin-remove">
-			<input type="file" aria-label="Custom controls" name="filename">
-			<input class="uk-input uk-form-width-medium uk-text-primary" type="text" placeholder="<?php echo gtextAttr("Seleziona il file");?>" aria-label="Custom controls" disabled>
+			<label for="ticket-messaggio-allegato" class="accessibility-visually-hidden"><?php echo gtextPlain("Seleziona un allegato per il messaggio");?></label>
+			<input id="ticket-messaggio-allegato" type="file" name="filename">
+			<input class="uk-input uk-form-width-medium uk-text-primary" type="text" placeholder="<?php echo gtextAttr("Seleziona il file");?>" aria-hidden="true" disabled>
 		</div>
 	</div>
 	
 	<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
 		<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
-		<label><?php echo Html_Form::checkbox('accetto',"",'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("privacy policy");?></a></span></label>
+		<?php echo Html_Form::checkbox('accetto',"",'1','uk-checkbox',"ticket-messaggio-accetto-privacy","aria-required='true'");?> <label for="ticket-messaggio-accetto-privacy" class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della privacy policy.");?></label> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("Leggi la privacy policy");?></a>
 	</div>
 	
 	<div class="uk-margin">

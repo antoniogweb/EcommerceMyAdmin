@@ -18,9 +18,13 @@ if (!isset($classeSelectVarianti))
 		?>
 			<?php if ($tipoAttributo == "RADIO") { ?>
 			<span id="<?php echo $idDescrizioneVariante;?>" class="accessibility-visually-hidden"><?php echo $lista_attributi[$col];?></span>
+			<span role="group" aria-labelledby="<?php echo $idDescrizioneVariante;?>">
 			<?php } ?>
 			<?php if ($tipoAttributo == "RADIO") { ?>
-				<?php echo Html_Form::radio($col,getAttributoDaCarrello($col),$valori_attributo,"form_radio_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]), "after", null, "yes", "col='".$col."' rel='".$lista_attributi[$col]."' aria-describedby='".$idDescrizioneVariante."'");?>
+				<?php foreach ($valori_attributo as $valoreVariante => $titoloVariante) {
+					$idRadioVariante = "variante-radio-".encodeUrl($col)."-".encodeUrl($valoreVariante);
+					echo Html_Form::radio($col,getAttributoDaCarrello($col),array($titoloVariante => $valoreVariante),"form_radio_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]), "none", $idRadioVariante, null, "col='".$col."' rel='".$lista_attributi[$col]."'");
+				?><label for="<?php echo $idRadioVariante;?>"><?php echo $titoloVariante;?></label><?php } ?>
 			<?php } else if ($tipoAttributo == "IMMAGINE" || $tipoAttributo == "COLORE") {
 				$actionImmagine = ($tipoAttributo == "IMMAGINE") ? "valoreattributo" : "colore";
 			?>
@@ -54,6 +58,7 @@ if (!isset($classeSelectVarianti))
 					<?php echo Html_Form::select($col,getAttributoDaCarrello($col),$valori_attributo,$classeSelectVarianti." form_select_attributo form_select_attributo_".encodeUrl($lista_attributi[$col]),$idVariante,"yes","col='".$col."' rel='".$lista_attributi[$col]."'");?>
 				</div>
 			<?php } ?>
+			<?php if ($tipoAttributo == "RADIO") { ?></span><?php } ?>
 			
 		<?php } ?>
 	<?php

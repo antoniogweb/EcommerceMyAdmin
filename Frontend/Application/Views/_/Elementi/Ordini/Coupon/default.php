@@ -3,9 +3,9 @@
 	<p class="uk-text-small uk-text-muted"><?php echo gtextPlain("Se hai un codice promozione, inseriscilo sotto.");?></p>
 	
 	<div class="uk-margin">
-		<label class="uk-form-label uk-text-bold"><?php echo gtextPlain("Codice promozione");?> *</label>
+		<label for="checkout-coupon-code" class="uk-form-label uk-text-bold"><?php echo gtextPlain("Codice promozione");?> <span aria-hidden="true">*</span></label>
 		<div class="uk-form-controls">
-			<input class="uk-input uk-width-1-2@s uk-width-1-1@m" name="il_coupon" type="text" placeholder="<?php echo gtextAttr("Codice promozione", false)?>" />
+			<input id="checkout-coupon-code" class="uk-input uk-width-1-2@s uk-width-1-1@m" name="il_coupon" type="text" aria-required="true" placeholder="<?php echo gtextAttr("Codice promozione", false)?>" />
 		</div>
 	</div>
 	

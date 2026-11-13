@@ -44,8 +44,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 			
 			<div class="uk-margin" uk-margin>
 				<div uk-form-custom="target: true" class="class_immagine">
-					<input type="file" name="immagine" aria-label="Custom controls">
-					<input class="uk-input uk-form-width-medium" type="text" placeholder="<?php echo gtextAttr("Seleziona il file");?>" aria-label="Custom controls" disabled>
+					<label for="profilo-immagine" class="accessibility-visually-hidden"><?php echo gtextPlain("Seleziona l'immagine del profilo");?></label>
+					<input id="profilo-immagine" type="file" name="immagine">
+					<input class="uk-input uk-form-width-medium" type="text" placeholder="<?php echo gtextAttr("Seleziona il file");?>" aria-hidden="true" disabled>
 				</div>
 				
 				<span class="uk-margin">

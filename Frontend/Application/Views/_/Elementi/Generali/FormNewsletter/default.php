@@ -8,7 +8,7 @@
 	</div>
     <form action="<?php echo Domain::$currentUrl ? Domain::$currentUrl : Url::getRoot();?>#<?php echo v("fragment_form_newsletter");?>" class="uk-container uk-container-xsmall" method="post" novalidate="novalidate">
         <div class="uk-grid" uk-grid>
-			<div class="uk-width-3-4@m uk-width-3-4@s"><?php echo Html_Form::input("email",Form::gValue("email"),"uk-width-expand uk-input uk-flex-first class_email","email","autocomplete='email' aria-required='true' placeholder='".gtextAttr("Il tuo indirizzo email*")."'");?></div>
+			<div class="uk-width-3-4@m uk-width-3-4@s"><label for="email" class="accessibility-visually-hidden"><?php echo gtextPlain("Indirizzo email");?> <span aria-hidden="true">*</span></label><?php echo Html_Form::input("email",Form::gValue("email"),"uk-width-expand uk-input uk-flex-first class_email","email","autocomplete='email' aria-required='true' placeholder='".gtextAttr("Il tuo indirizzo email*")."'");?></div>
 			
 			<div class="uk-width-1-4@m uk-width-1-4@s">
 				<div class="uk-button uk-button-secondary uk-text-bold uk-width-expandy spinner uk-hidden" uk-spinner="ratio: .70"></div>
@@ -26,7 +26,7 @@
         <?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
         <br />
         <div class="class_accetto" data-field-name="<?php echo gtextAttr("privacy policy");?>">
-			<?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox',null,"aria-required='true'");?><span class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("privacy policy");?></a></span>
+			<?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox',"newsletter-accetto","aria-required='true'");?> <label class="uk-text-small uk-margin-left" for="newsletter-accetto"><?php echo gtextPlain("Ho letto e accetto le condizioni della privacy policy.");?></label> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("Leggi la privacy policy");?></a>
 		</div>
     </form>
 </div> 

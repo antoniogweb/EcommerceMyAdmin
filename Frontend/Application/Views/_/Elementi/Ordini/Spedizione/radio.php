@@ -16,13 +16,15 @@
 					<?php foreach ($elencoIndirizzi as $indirizzo) {
 						if ($values["id_spedizione"] == $indirizzo["id_spedizione"] && !empty($erroriInvioOrdine))
 							$indirizzo = array_merge($indirizzo, $values);
+						$idRadioIndirizzo = "checkout-indirizzo-".(int)$indirizzo["id_spedizione"];
 					?>
 					<div class="uk-width-1-1 uk-width-1-2@m">
 						<div class="spedizione_box spedizione_box_select uk-padding-small uk-flex uk-flex-middle <?php if ($values["id_spedizione"] == $indirizzo["id_spedizione"]) { ?>spedizione_selezionata<?php } ?>">
 							<div>
-								<?php echo Html_Form::radio("id_spedizione_radio",$values["id_spedizione"],$indirizzo["id_spedizione"],"radio_spedizione","none");?>
+								<?php echo Html_Form::radio("id_spedizione_radio",$values["id_spedizione"],$indirizzo["id_spedizione"],"radio_spedizione","none",$idRadioIndirizzo);?>
 							</div>
 							<div class="uk-margin-left uk-text-small">
+								<label for="<?php echo $idRadioIndirizzo;?>" class="accessibility-visually-hidden"><?php echo gtextPlain("Seleziona l'indirizzo di spedizione");?>: <?php echo $indirizzo["indirizzo_spedizione"];?>, <?php echo $indirizzo["cap_spedizione"];?>, <?php echo $indirizzo["citta_spedizione"];?></label>
 								<span class="uk-text-emphasis"><?php echo gtextPlain("Indirizzo");?>:</span> <?php echo $indirizzo["indirizzo_spedizione"];?>, <?php echo $indirizzo["cap_spedizione"];?><br /> <?php echo $indirizzo["citta_spedizione"];?> (<?php echo in_array((string)$indirizzo["nazione_spedizione"], NazioniModel::nazioniConProvince()) ? ProvinceModel::sFindTitoloDaCodice($indirizzo["provincia_spedizione"]) : $indirizzo["dprovincia_spedizione"];?>), <?php echo nomeNazione($indirizzo["nazione_spedizione"]);?>
 								<?php if (trim($indirizzo["telefono_spedizione"])) { ?>
 								<br /><span class="uk-text-emphasis"><?php echo gtextPlain("Tel");?>:</span> <?php echo $indirizzo["telefono_spedizione"];?>
@@ -36,10 +38,10 @@
 				<div class="spedizione_box">
 					<div class="uk-width-1-1 uk-width-1-2@m <?php if ($values["id_spedizione"] == 0) { ?>spedizione_selezionata<?php } ?> uk-padding-small uk-flex uk-flex-middle spedizione_box_select">
 						<div>
-							<?php echo Html_Form::radio("id_spedizione_radio",$values["id_spedizione"],"0","radio_spedizione","none");?> 
+							<?php echo Html_Form::radio("id_spedizione_radio",$values["id_spedizione"],"0","radio_spedizione","none","checkout-indirizzo-nuovo");?> 
 						</div>
 						<div class="uk-margin-left uk-text-small">
-							<?php echo gtextPlain("Aggiungi un nuovo indirizzo di spedizione");?>
+							<label for="checkout-indirizzo-nuovo"><?php echo gtextPlain("Aggiungi un nuovo indirizzo di spedizione");?></label>
 						</div>
 					</div>
 					<div class="campi_nuovo_indirizzo <?php if ($mostraCampiSpedizione) { ?>errori_campo_indirizzo<?php } ?>">

@@ -44,8 +44,10 @@
 <div class="uk-margin upload_ticket_box" uk-margin>
 	<div class="upload_ticket_alert"></div>
 	<div uk-form-custom="target: true" class="uk-margin-remove">
-		<input type="file" aria-label="Custom controls" name="<?php echo strtolower($tipo);?>">
-		<input class="uk-input uk-form-width-medium uk-text-primary" type="text" placeholder="<?php echo gtextAttr("Seleziona il file");?>" aria-label="Custom controls" disabled>
+		<?php $idInputFileTicket = "ticket-allegato-".strtolower($tipo);?>
+		<label for="<?php echo $idInputFileTicket;?>" class="accessibility-visually-hidden"><?php echo gtextPlain("Seleziona un file da allegare");?> - <?php echo gtextPlain($tipo);?></label>
+		<input id="<?php echo $idInputFileTicket;?>" type="file" name="<?php echo strtolower($tipo);?>">
+		<input class="uk-input uk-form-width-medium uk-text-primary" type="text" placeholder="<?php echo gtextAttr("Seleziona il file");?>" aria-hidden="true" disabled>
 	</div>
 	<span>
 		<span class="uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></span>

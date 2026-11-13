@@ -8,33 +8,33 @@
 	<div class="uk-grid-column-large uk-child-width-1-2@s uk-grid" uk-grid>
 		<div class="first_of_grid tr_ragione_sociale uk-margin uk-margin-remove-bottom">
 			<div class="uk-text-small uk-text-primary uk-text-bold uk-margin-bottom-small"><?php echo gtextPlain("Dettaglio della richiesta di assistenza");?></div>
-			<label class="uk-form-label"><?php echo gtextPlain("Tipologia della richiesta di assistenza");?> *</label>
+			<label for="ticket-tipologia" class="uk-form-label"><?php echo gtextPlain("Tipologia della richiesta di assistenza");?> <span aria-hidden="true">*</span></label>
 			<div class="uk-form-controls uk-margin-bottom">
-				<?php echo Html_Form::select("id_ticket_tipologia",$values['id_ticket_tipologia'],$tipologie,"uk-select class_id_ticket_tipologia",null,"yes");?>
+				<?php echo Html_Form::select("id_ticket_tipologia",$values['id_ticket_tipologia'],$tipologie,"uk-select class_id_ticket_tipologia","ticket-tipologia","yes","aria-required='true'");?>
 			</div>
 			
 			<?php if ($tipologia["tipo"] == "ORDINE") { ?>
-			<label class="uk-form-label"><?php echo gtextPlain("Seleziona l'ordine per cui chiedi assistenza");?> *</label>
+			<label for="ticket-ordine" class="uk-form-label"><?php echo gtextPlain("Seleziona l'ordine per cui chiedi assistenza");?> <span aria-hidden="true">*</span></label>
 			<div class="uk-form-controls uk-margin-bottom">
-				<?php echo Html_Form::select("id_o",$values['id_o'],$ordini,"uk-select class_id_o",null,"yes");?>
+				<?php echo Html_Form::select("id_o",$values['id_o'],$ordini,"uk-select class_id_o","ticket-ordine","yes","aria-required='true'");?>
 			</div>
 			<?php } ?>
 			
 			<?php if ($tipologia["tipo"] == "LISTA REGALO") { ?>
-			<label class="uk-form-label"><?php echo gtextPlain("Seleziona la lista regalo per cui chiedi assistenza");?> *</label>
+			<label for="ticket-lista-regalo" class="uk-form-label"><?php echo gtextPlain("Seleziona la lista regalo per cui chiedi assistenza");?> <span aria-hidden="true">*</span></label>
 			<div class="uk-form-controls uk-margin-bottom">
-				<?php echo Html_Form::select("id_lista_regalo",$values['id_lista_regalo'],$listeRegalo,"uk-select class_id_lista_regalo",null,"yes");?>
+				<?php echo Html_Form::select("id_lista_regalo",$values['id_lista_regalo'],$listeRegalo,"uk-select class_id_lista_regalo","ticket-lista-regalo","yes","aria-required='true'");?>
 			</div>
 			<?php } ?>
 			
-			<label class="uk-form-label"><?php echo gtext("Oggetto della richiesta");?> *</label>
+			<label for="ticket-oggetto" class="uk-form-label"><?php echo gtextPlain("Oggetto della richiesta");?> <span aria-hidden="true">*</span></label>
 			<div class="uk-form-controls uk-margin-bottom">
-				<?php echo Html_Form::input("oggetto",$values['oggetto'],"uk-input class_oggetto",null,"placeholder='".gtextAttr("Oggetto della richiesta", false)."'");?>
+				<?php echo Html_Form::input("oggetto",$values['oggetto'],"uk-input class_oggetto","ticket-oggetto","aria-required='true' placeholder='".gtextAttr("Oggetto della richiesta", false)."'");?>
 			</div>
 			
-			<label class="uk-form-label"><?php echo gtextPlain("Descrizione");?> (<?php echo gtextPlain("massimo")." ".v("numero_massimo_caratteri_ticket")." ".gtextPlain("caratteri")?>) *</label>
+			<label for="ticket-descrizione" class="uk-form-label"><?php echo gtextPlain("Descrizione");?> (<?php echo gtextPlain("massimo")." ".v("numero_massimo_caratteri_ticket")." ".gtextPlain("caratteri")?>) <span aria-hidden="true">*</span></label>
 			<div class="uk-form-controls">
-				<?php echo Html_Form::textarea("descrizione",$values['descrizione'],"uk-textarea class_descrizione",null,"maxlength='".v("numero_massimo_caratteri_ticket")."' rows='4' placeholder='".gtextAttr("Descrizione", false)."'");?>
+				<?php echo Html_Form::textarea("descrizione",$values['descrizione'],"uk-textarea class_descrizione","ticket-descrizione","aria-required='true' maxlength='".v("numero_massimo_caratteri_ticket")."' rows='4' placeholder='".gtextAttr("Descrizione", false)."'");?>
 			</div>
 			
 			<?php /*include (tpf("Elementi/Pagine/campo-captcha.php"));*/?>
@@ -80,7 +80,7 @@
 	<hr />
 	<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
 		<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
-		<label><?php echo Html_Form::checkbox('accetto',$values['accetto'],'1','uk-checkbox');?><span class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della");?> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("privacy policy");?></a></span></label>
+		<?php echo Html_Form::checkbox('accetto',$values['accetto'],'1','uk-checkbox',"ticket-accetto-privacy","aria-required='true'");?> <label for="ticket-accetto-privacy" class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della privacy policy.");?></label> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("Leggi la privacy policy");?></a>
 	</div>
 	
 	<div class="uk-margin">

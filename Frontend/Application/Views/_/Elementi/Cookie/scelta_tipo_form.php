@@ -6,13 +6,13 @@
 		<?php echo Html_Form::hidden(v("var_query_string_no_cookie"),"Y");?>
 		<?php echo Html_Form::hidden("redirect",RegusersModel::$redirect);?>
 		<div class="box_check_cookies uk-margin-top">
-			<?php echo Html_Form::checkbox("accetto",1,1,null,null,"disabled readonly");?> <span class="uk-margin-small-left uk-margin-small-right"><?php echo gtextPlain("Cookie tecnici");?></span>
+			<?php echo Html_Form::checkbox("accetto",1,1,null,"cookie-tecnici","disabled readonly");?> <label class="uk-margin-small-left uk-margin-small-right" for="cookie-tecnici"><?php echo gtextPlain("Cookie tecnici");?></label>
 			<?php if (VariabiliModel::$usatiCookieTerzi) { ?>
 			<br />
 			<?php
 			$valoreCookieTerzi = isset($_COOKIE["ok_cookie_terzi"]) ? 1 : 0;
 			
-			echo Html_Form::checkbox("all_cookie",$valoreCookieTerzi,1);?> <span class="uk-margin-small-left"><?php echo gtextPlain("Cookie statistiche + marketing");?></span>
+			echo Html_Form::checkbox("all_cookie",$valoreCookieTerzi,1,null,"cookie-statistiche-marketing");?> <label class="uk-margin-small-left" for="cookie-statistiche-marketing"><?php echo gtextPlain("Cookie statistiche + marketing");?></label>
 			<?php } ?>
 		</div>
 		<div class="<?php if (!User::$isPhone) { ?>uk-flex uk-flex-between<?php } ?>">

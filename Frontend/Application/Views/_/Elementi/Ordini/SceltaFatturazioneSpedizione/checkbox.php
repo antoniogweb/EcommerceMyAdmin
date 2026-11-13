@@ -3,10 +3,10 @@
 <div class="spedizione_box uk-width-1-1">
 	<div class="uk-flex uk-flex-middle">
 		<div>
-			<?php echo Html_Form::checkbox("spedizione_come_fatturazione",$values["spedisci_dati_fatturazione"],"Y","imposta_fatt","none");?>
+			<?php echo Html_Form::checkbox("spedizione_come_fatturazione",$values["spedisci_dati_fatturazione"],"Y","imposta_fatt","checkout-spedizione-come-fatturazione");?>
 		</div>
 		<div class="uk-margin-left uk-text-small">
-			<?php echo gtextPlain("Coincide con i dati di fatturazione");?>
+			<label for="checkout-spedizione-come-fatturazione"><?php echo gtextPlain("Coincide con i dati di fatturazione");?></label>
 		</div>
 	</div>
 </div>

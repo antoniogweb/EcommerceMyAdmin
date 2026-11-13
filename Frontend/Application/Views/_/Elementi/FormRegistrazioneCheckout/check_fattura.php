@@ -3,10 +3,10 @@
 <div class="uk-margin uk-margin-remove-bottom uk-width-1-1 nascondi_fuori_italia campo_check_fattura">
 	<div class="uk-flex uk-flex-middle">
 		<div>
-			<?php echo Html_Form::checkbox('fattura',$values['fattura'],'1','uk-checkbox');?>
+			<?php echo Html_Form::checkbox('fattura',$values['fattura'],'1','uk-checkbox','checkout-fattura');?>
 		</div>
 		<div class="uk-margin-left uk-text-small">
-			<?php echo gtextPlain("Mi serve la fattura");?>
+			<label for="checkout-fattura"><?php echo gtextPlain("Mi serve la fattura");?></label>
 		</div>
 	</div>
 </div>

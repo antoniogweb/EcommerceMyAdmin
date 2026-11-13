@@ -56,16 +56,16 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 <form class="" action="<?php echo $this->baseUrl."/ordini/modifica/".$ordine["id_o"]."/".$ordine["cart_uid"]."/".$ordine["admin_token"];?>#form_main" method="POST">
 	
 	<div class="uk-margin">
-		<label class="uk-form-label"><?php echo gtextPlain("Metodo di pagamento");?> *</label>
+		<label for="ordine-pagamento" class="uk-form-label"><?php echo gtextPlain("Metodo di pagamento");?> <span aria-hidden="true">*</span></label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::select("pagamento",$ordine["pagamento"], OrdiniModel::$pagamenti, "uk-select class_pagamento", null, "yes");?>
+			<?php echo Html_Form::select("pagamento",$ordine["pagamento"], OrdiniModel::$pagamenti, "uk-select class_pagamento", "ordine-pagamento", "yes", "aria-required='true'");?>
 		</div>
 	</div>
 	
 	<div class="uk-margin">
-		<label class="uk-form-label"><?php echo gtextPlain("Indirizzo di spedizione");?> *</label>
+		<label for="ordine-indirizzo-spedizione" class="uk-form-label"><?php echo gtextPlain("Indirizzo di spedizione");?> <span aria-hidden="true">*</span></label>
 		<div class="uk-form-controls">
-			<?php echo Html_Form::select("id_spedizione",$ordine["id_spedizione"], $tendinaIndirizzi, "uk-select class_id_spedizione", null, "yes");?>
+			<?php echo Html_Form::select("id_spedizione",$ordine["id_spedizione"], $tendinaIndirizzi, "uk-select class_id_spedizione", "ordine-indirizzo-spedizione", "yes", "aria-required='true'");?>
 		</div>
 	</div>
 	

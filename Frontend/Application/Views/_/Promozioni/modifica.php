@@ -24,9 +24,9 @@ include(tpf("/Elementi/Pagine/riservata_top.php"));
 	<div class="">
 		<div class="uk-grid uk-grid-column-small uk-child-width-1-2@s" uk-grid>
 			<div class="uk-margin uk-margin-remove-bottom">
-				<label class="uk-form-label"><?php echo gtextPlain("Descrizione del coupon");?> *</label>
+				<label for="promozione-titolo" class="uk-form-label"><?php echo gtextPlain("Descrizione del coupon");?> <span aria-hidden="true">*</span></label>
 				<div class="uk-form-controls">
-					<?php echo Html_Form::input("titolo",$values['titolo'],"uk-input class_titolo",null);?>
+					<?php echo Html_Form::input("titolo",$values['titolo'],"uk-input class_titolo","promozione-titolo","aria-required='true'");?>
 				</div>
 			</div>
 		</div>

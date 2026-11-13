@@ -9,11 +9,11 @@ if (!isset($eliminaButton))
 	<div class="uk-form-controls">
 		<div class="uk-grid-collapse uk-grid uk-flex uk-flex-bottom" uk-grid>
 			<div class="uk-width-3-4">
-				<label class="uk-form-label"><?php echo gtextPlain("Seleziona il prodotto");?> *</label>
-				<div class="uk-form-controls uk-margin-bottom"><?php echo Html_Form::select("id_page",0,$prodotti,"uk-select class_id_page",null,"yes");?></div>
+				<label for="ticket-prodotto" class="uk-form-label"><?php echo gtextPlain("Seleziona il prodotto");?> <span aria-hidden="true">*</span></label>
+				<div class="uk-form-controls uk-margin-bottom"><?php echo Html_Form::select("id_page",0,$prodotti,"uk-select class_id_page","ticket-prodotto","yes","aria-required='true'");?></div>
 				
-				<label class="uk-form-label"><?php echo gtextPlain("Scrivi il numero seriale del prodotto");?></label>
-				<div class="uk-form-controls"><?php echo Html_Form::input("numero_seriale","","uk-input class_numero_seriale",null,"placeholder='".gtextAttr("Numero seriale", false)."'");?></div>
+				<label for="ticket-numero-seriale" class="uk-form-label"><?php echo gtextPlain("Scrivi il numero seriale del prodotto");?></label>
+				<div class="uk-form-controls"><?php echo Html_Form::input("numero_seriale","","uk-input class_numero_seriale","ticket-numero-seriale","placeholder='".gtextAttr("Numero seriale", false)."'");?></div>
 			</div>
 			<div class="uk-width-1-4 uk-text-right">
 				<div class="uk-button uk-button-primary spinner uk-hidden" uk-spinner="ratio: .70"></div>
