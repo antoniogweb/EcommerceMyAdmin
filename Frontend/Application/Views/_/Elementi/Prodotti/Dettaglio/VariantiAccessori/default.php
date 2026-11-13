@@ -8,28 +8,21 @@ if (!isset($classeTendinaVarianti))
 	<?php foreach ($lista_valori_attributi_acc as $col => $valori_attributo) {
 		$tipoAttributo = PagesModel::getAttributoDaCol($acc["pages"]["id_page"], $col);
 		$tipoAttributo = isset($tipoAttributo["tipo"]) ? $tipoAttributo["tipo"] : "TENDINA";
-		$idVarianteAcc = "variante-accessorio-".(int)$acc["pages"]["id_page"]."-".encodeUrl($col);
-		$idDescrizioneVarianteAcc = "descrizione-variante-accessorio-".(int)$acc["pages"]["id_page"]."-".encodeUrl($col);
 	?>
-		<span id="<?php echo $idDescrizioneVarianteAcc;?>" class="accessibility-visually-hidden"><?php echo $lista_attributi_acc[$col];?></span>
+		<label style="display:none;" class="pa_size nome_attributo nome_attributo_<?php echo encodeUrl($lista_attributi_acc[$col]);?>"><?php echo $lista_attributi_acc[$col];?></label>
 			<?php if ($tipoAttributo == "RADIO") { ?>
-				<span role="group" aria-labelledby="<?php echo $idDescrizioneVarianteAcc;?>">
-				<?php foreach ($valori_attributo as $valoreVarianteAcc => $titoloVarianteAcc) {
-					$idRadioVarianteAcc = "variante-radio-accessorio-".(int)$acc["pages"]["id_page"]."-".encodeUrl($col)."-".encodeUrl($valoreVarianteAcc);
-					echo Html_Form::radio($col.$acc["pages"]["id_page"],getAttributoDaCarrello($col, $acc["pages"]["id_page"]),array($titoloVarianteAcc => $valoreVarianteAcc),"form_radio_attributo form_select_attributo_".encodeUrl($lista_attributi_acc[$col]), "none", $idRadioVarianteAcc, null, "col='".$col."' rel='".$lista_attributi_acc[$col]."'");
-				?><label for="<?php echo $idRadioVarianteAcc;?>"><?php echo $titoloVarianteAcc;?></label><?php } ?>
-				</span>
+				<?php echo Html_Form::radio($col.$acc["pages"]["id_page"],getAttributoDaCarrello($col, $acc["pages"]["id_page"]),$valori_attributo,"form_radio_attributo form_select_attributo_".encodeUrl($lista_attributi_acc[$col]), "after", null, "yes", "col='".$col."' rel='".$lista_attributi_acc[$col]."'");?>
 			<?php } else if ($tipoAttributo == "IMMAGINE" || $tipoAttributo == "COLORE") {
 				$actionImmagine = ($tipoAttributo == "IMMAGINE") ? "valoreattributo" : "colore";
 			?>
 				<div class="box_attributo_immagine_colore box_attributo_<?php echo strtolower($tipoAttributo);?>">
-					<label for="<?php echo $idVarianteAcc;?>" class="uk-text-small uk-text-bold">
+					<div class="uk-text-small uk-text-bold">
 						<?php echo $lista_attributi_acc[$col];?>
 						<?php if ($tipoAttributo == "COLORE") { ?>
 						: <span class="uk-text-meta label_variante_colore"></span>
 						<?php } ?>
-					</label>
-					<select id="<?php echo $idVarianteAcc;?>" class="image-picker uk-select form_select_attributo form_select_attributo_<?php echo encodeUrl($lista_attributi_acc[$col]);?>" name="<?php echo $col.$acc["pages"]["id_page"];?>" col="<?php echo $col;?>" rel="<?php echo $lista_attributi_acc[$col];?>">
+					</div>
+					<select class="image-picker uk-select form_select_attributo form_select_attributo_<?php echo encodeUrl($lista_attributi_acc[$col]);?>" name="<?php echo $col.$acc["pages"]["id_page"];?>" col="<?php echo $col;?>" rel="<?php echo $lista_attributi_acc[$col];?>">
 						<?php
 						$indice = 0;
 						foreach ($valori_attributo as $v => $i) {
@@ -48,8 +41,7 @@ if (!isset($classeTendinaVarianti))
 				</div>
 			<?php } else { ?>
 				<div class="<?php echo $classeTendinaVarianti;?>">
-					<label for="<?php echo $idVarianteAcc;?>" class="accessibility-visually-hidden"><?php echo $lista_attributi_acc[$col];?></label>
-					<?php echo Html_Form::select($col.$acc["pages"]["id_page"],getAttributoDaCarrello($col, $acc["pages"]["id_page"]),$valori_attributo,"uk-select form_select_attributo form_select_attributo_".encodeUrl($lista_attributi_acc[$col]),$idVarianteAcc,"yes","style='width:100%;' col='".$col."' rel='".$lista_attributi_acc[$col]."'");?>
+					<?php echo Html_Form::select($col.$acc["pages"]["id_page"],getAttributoDaCarrello($col, $acc["pages"]["id_page"]),$valori_attributo,"uk-select form_select_attributo form_select_attributo_".encodeUrl($lista_attributi_acc[$col]),null,"yes","style='width:100%;' col='".$col."' rel='".$lista_attributi_acc[$col]."'");?>
 				</div>
 			<?php } ?>
 	<?php } ?>

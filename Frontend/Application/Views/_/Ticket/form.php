@@ -79,8 +79,10 @@
 	</div>
 	<hr />
 	<div uk-grid class="uk-margin uk-grid-small uk-child-width-auto uk-grid condizioni_privacy_box class_accetto">
+		<div>
 		<?php $idPrivacy = PagineModel::gTipoPagina("PRIVACY"); ?>
 		<?php echo Html_Form::checkbox('accetto',$values['accetto'],'1','uk-checkbox',"ticket-accetto-privacy","aria-required='true'");?> <label for="ticket-accetto-privacy" class="uk-text-small uk-margin-left"><?php echo gtextPlain("Ho letto e accetto le condizioni della privacy policy.");?></label> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("Leggi la privacy policy");?></a>
+		</div>
 	</div>
 	
 	<div class="uk-margin">
