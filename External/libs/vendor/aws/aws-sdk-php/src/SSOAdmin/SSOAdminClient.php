@@ -476,9 +476,9 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise listCustomerManagedPolicyReferencesInPermissionSetAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise listCustomerManagedPolicyReferencesInPermissionSetAsync(array{InstanceArn?: string, PermissionSetArn?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
  * @method \Aws\Result listInstances(array $args = [])
- * @phpstan-method \Aws\Result listInstances(array{MaxResults?: int, NextToken?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result listInstances(array{MaxResults?: int, NextToken?: string, RegionScope?: 'ALL_REGIONS'|'CURRENT_REGION', ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listInstancesAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise listInstancesAsync(array{MaxResults?: int, NextToken?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listInstancesAsync(array{MaxResults?: int, NextToken?: string, RegionScope?: 'ALL_REGIONS'|'CURRENT_REGION', ...} $args = [])
  * @method \Aws\Result listManagedPoliciesInPermissionSet(array $args = [])
  * @phpstan-method \Aws\Result listManagedPoliciesInPermissionSet(array{InstanceArn?: string, PermissionSetArn?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listManagedPoliciesInPermissionSetAsync(array $args = [])
@@ -663,6 +663,13 @@ use Aws\AwsClient;
  *     InstanceArn?: string,
  *     EncryptionConfiguration?: array{KeyType?: 'AWS_OWNED_KMS_KEY'|'CUSTOMER_MANAGED_KEY', KmsKeyArn?: string, ...},
  *     PermissionSetsEnabled?: bool,
+ *     NetworkConfiguration?: array{
+ *         VpceAccessRequired?: bool,
+ *         RestrictSourceVpcs?: list<string>,
+ *         AllowSourceIps?: list<string>,
+ *         ExcludeApplicationArns?: list<string>,
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateInstanceAsync(array $args = [])
@@ -671,6 +678,13 @@ use Aws\AwsClient;
  *     InstanceArn?: string,
  *     EncryptionConfiguration?: array{KeyType?: 'AWS_OWNED_KMS_KEY'|'CUSTOMER_MANAGED_KEY', KmsKeyArn?: string, ...},
  *     PermissionSetsEnabled?: bool,
+ *     NetworkConfiguration?: array{
+ *         VpceAccessRequired?: bool,
+ *         RestrictSourceVpcs?: list<string>,
+ *         AllowSourceIps?: list<string>,
+ *         ExcludeApplicationArns?: list<string>,
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateInstanceAccessControlAttributeConfiguration(array $args = [])

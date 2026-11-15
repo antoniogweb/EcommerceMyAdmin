@@ -29,6 +29,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result attachStaticIp(array{staticIpName?: string, instanceName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise attachStaticIpAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise attachStaticIpAsync(array{staticIpName?: string, instanceName?: string, ...} $args = [])
+ * @method \Aws\Result checkSubdomainAvailability(array $args = [])
+ * @phpstan-method \Aws\Result checkSubdomainAvailability(array{subdomainName?: string, reserve?: bool, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise checkSubdomainAvailabilityAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise checkSubdomainAvailabilityAsync(array{subdomainName?: string, reserve?: bool, ...} $args = [])
  * @method \Aws\Result closeInstancePublicPorts(array $args = [])
  * @phpstan-method \Aws\Result closeInstancePublicPorts(array{
  *     portInfo?: array{
@@ -353,6 +357,9 @@ use Aws\AwsClient;
  *     enablePrivateOriginAccess?: bool,
  *     defaultRootObject?: string,
  *     customErrorResponses?: list<array{errorCode?: int, responseCode?: string, responsePagePath?: string, errorCachingMinTTL?: int, ...}>,
+ *     enableWaf?: bool,
+ *     wafRules?: list<array{name?: string, atpConfig?: array, acfpConfig?: array, botControlConfig?: array, ...}>,
+ *     subdomainName?: string,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createDistributionAsync(array $args = [])
@@ -391,6 +398,9 @@ use Aws\AwsClient;
  *     enablePrivateOriginAccess?: bool,
  *     defaultRootObject?: string,
  *     customErrorResponses?: list<array{errorCode?: int, responseCode?: string, responsePagePath?: string, errorCachingMinTTL?: int, ...}>,
+ *     enableWaf?: bool,
+ *     wafRules?: list<array{name?: string, atpConfig?: array, acfpConfig?: array, botControlConfig?: array, ...}>,
+ *     subdomainName?: string,
  *     ...,
  * } $args = [])
  * @method \Aws\Result createDomain(array $args = [])
@@ -643,6 +653,10 @@ use Aws\AwsClient;
  *     tags?: list<array{key?: string, value?: string, ...}>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result createSubdomain(array $args = [])
+ * @phpstan-method \Aws\Result createSubdomain(array{subdomainName?: string, tags?: list<array{key?: string, value?: string, ...}>, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise createSubdomainAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise createSubdomainAsync(array{subdomainName?: string, tags?: list<array{key?: string, value?: string, ...}>, ...} $args = [])
  * @method \Aws\Result deleteAlarm(array $args = [])
  * @phpstan-method \Aws\Result deleteAlarm(array{alarmName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteAlarmAsync(array $args = [])
@@ -761,6 +775,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result deleteRelationalDatabaseSnapshot(array{relationalDatabaseSnapshotName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteRelationalDatabaseSnapshotAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise deleteRelationalDatabaseSnapshotAsync(array{relationalDatabaseSnapshotName?: string, ...} $args = [])
+ * @method \Aws\Result deleteSubdomain(array $args = [])
+ * @phpstan-method \Aws\Result deleteSubdomain(array{subdomainName?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise deleteSubdomainAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise deleteSubdomainAsync(array{subdomainName?: string, ...} $args = [])
  * @method \Aws\Result detachCertificateFromDistribution(array $args = [])
  * @phpstan-method \Aws\Result detachCertificateFromDistribution(array{distributionName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise detachCertificateFromDistributionAsync(array $args = [])
@@ -990,7 +1008,7 @@ use Aws\AwsClient;
  * @method \Aws\Result getDistributionMetricData(array $args = [])
  * @phpstan-method \Aws\Result getDistributionMetricData(array{
  *     distributionName?: string,
- *     metricName?: 'BytesDownloaded'|'BytesUploaded'|'Http4xxErrorRate'|'Http5xxErrorRate'|'Requests'|'TotalErrorRate',
+ *     metricName?: 'BytesDownloaded'|'BytesUploaded'|'Http4xxErrorRate'|'Http5xxErrorRate'|'Requests'|'TotalErrorRate'|'WafAllowedRequests'|'WafBlockedRequests',
  *     startTime?: int|string|\DateTimeInterface,
  *     endTime?: int|string|\DateTimeInterface,
  *     period?: int,
@@ -1001,7 +1019,7 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise getDistributionMetricDataAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getDistributionMetricDataAsync(array{
  *     distributionName?: string,
- *     metricName?: 'BytesDownloaded'|'BytesUploaded'|'Http4xxErrorRate'|'Http5xxErrorRate'|'Requests'|'TotalErrorRate',
+ *     metricName?: 'BytesDownloaded'|'BytesUploaded'|'Http4xxErrorRate'|'Http5xxErrorRate'|'Requests'|'TotalErrorRate'|'WafAllowedRequests'|'WafBlockedRequests',
  *     startTime?: int|string|\DateTimeInterface,
  *     endTime?: int|string|\DateTimeInterface,
  *     period?: int,
@@ -1026,9 +1044,9 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise getExportSnapshotRecordsAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getExportSnapshotRecordsAsync(array{pageToken?: string, ...} $args = [])
  * @method \Aws\Result getInstance(array $args = [])
- * @phpstan-method \Aws\Result getInstance(array{instanceName?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result getInstance(array{instanceName?: string, includeHealthStatus?: bool, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getInstanceAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise getInstanceAsync(array{instanceName?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getInstanceAsync(array{instanceName?: string, includeHealthStatus?: bool, ...} $args = [])
  * @method \Aws\Result getInstanceAccessDetails(array $args = [])
  * @phpstan-method \Aws\Result getInstanceAccessDetails(array{instanceName?: string, protocol?: 'rdp'|'ssh', ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getInstanceAccessDetailsAsync(array $args = [])
@@ -1072,9 +1090,9 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise getInstanceStateAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getInstanceStateAsync(array{instanceName?: string, ...} $args = [])
  * @method \Aws\Result getInstances(array $args = [])
- * @phpstan-method \Aws\Result getInstances(array{pageToken?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result getInstances(array{pageToken?: string, includeHealthStatus?: bool, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getInstancesAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise getInstancesAsync(array{pageToken?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getInstancesAsync(array{pageToken?: string, includeHealthStatus?: bool, ...} $args = [])
  * @method \Aws\Result getKeyPair(array $args = [])
  * @phpstan-method \Aws\Result getKeyPair(array{keyPairName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getKeyPairAsync(array $args = [])
@@ -1235,6 +1253,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result getStaticIps(array{pageToken?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getStaticIpsAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getStaticIpsAsync(array{pageToken?: string, ...} $args = [])
+ * @method \Aws\Result getSubdomains(array $args = [])
+ * @phpstan-method \Aws\Result getSubdomains(array{subdomainName?: string, pageToken?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise getSubdomainsAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getSubdomainsAsync(array{subdomainName?: string, pageToken?: string, ...} $args = [])
  * @method \Aws\Result importKeyPair(array $args = [])
  * @phpstan-method \Aws\Result importKeyPair(array{keyPairName?: string, publicKeyBase64?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise importKeyPairAsync(array $args = [])
@@ -1361,7 +1383,7 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise sendContactMethodVerificationAsync(array{protocol?: 'Email', ...} $args = [])
  * @method \Aws\Result setIpAddressType(array $args = [])
  * @phpstan-method \Aws\Result setIpAddressType(array{
- *     resourceType?: 'Alarm'|'Bucket'|'Certificate'|'CloudFormationStackRecord'|'ContactMethod'|'ContainerService'|'Disk'|'DiskSnapshot'|'Distribution'|'Domain'|'ExportSnapshotRecord'|'Instance'|'InstanceSnapshot'|'KeyPair'|'LoadBalancer'|'LoadBalancerTlsCertificate'|'PeeredVpc'|'RelationalDatabase'|'RelationalDatabaseSnapshot'|'StaticIp',
+ *     resourceType?: 'Alarm'|'Bucket'|'Certificate'|'CloudFormationStackRecord'|'ContactMethod'|'ContainerService'|'Disk'|'DiskSnapshot'|'Distribution'|'Domain'|'ExportSnapshotRecord'|'Instance'|'InstanceSnapshot'|'KeyPair'|'LoadBalancer'|'LoadBalancerTlsCertificate'|'PeeredVpc'|'RelationalDatabase'|'RelationalDatabaseSnapshot'|'StaticIp'|'Subdomain',
  *     resourceName?: string,
  *     ipAddressType?: 'dualstack'|'ipv4'|'ipv6',
  *     acceptBundleUpdate?: bool,
@@ -1369,7 +1391,7 @@ use Aws\AwsClient;
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise setIpAddressTypeAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise setIpAddressTypeAsync(array{
- *     resourceType?: 'Alarm'|'Bucket'|'Certificate'|'CloudFormationStackRecord'|'ContactMethod'|'ContainerService'|'Disk'|'DiskSnapshot'|'Distribution'|'Domain'|'ExportSnapshotRecord'|'Instance'|'InstanceSnapshot'|'KeyPair'|'LoadBalancer'|'LoadBalancerTlsCertificate'|'PeeredVpc'|'RelationalDatabase'|'RelationalDatabaseSnapshot'|'StaticIp',
+ *     resourceType?: 'Alarm'|'Bucket'|'Certificate'|'CloudFormationStackRecord'|'ContactMethod'|'ContainerService'|'Disk'|'DiskSnapshot'|'Distribution'|'Domain'|'ExportSnapshotRecord'|'Instance'|'InstanceSnapshot'|'KeyPair'|'LoadBalancer'|'LoadBalancerTlsCertificate'|'PeeredVpc'|'RelationalDatabase'|'RelationalDatabaseSnapshot'|'StaticIp'|'Subdomain',
  *     resourceName?: string,
  *     ipAddressType?: 'dualstack'|'ipv4'|'ipv6',
  *     acceptBundleUpdate?: bool,
@@ -1400,9 +1422,9 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise startGUISessionAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise startGUISessionAsync(array{resourceName?: string, ...} $args = [])
  * @method \Aws\Result startInstance(array $args = [])
- * @phpstan-method \Aws\Result startInstance(array{instanceName?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result startInstance(array{instanceName?: string, attributeUpdates?: array{bundleId?: string, ...}, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise startInstanceAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise startInstanceAsync(array{instanceName?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise startInstanceAsync(array{instanceName?: string, attributeUpdates?: array{bundleId?: string, ...}, ...} $args = [])
  * @method \Aws\Result startRelationalDatabase(array $args = [])
  * @phpstan-method \Aws\Result startRelationalDatabase(array{relationalDatabaseName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise startRelationalDatabaseAsync(array $args = [])
@@ -1514,6 +1536,8 @@ use Aws\AwsClient;
  *     enablePrivateOriginAccess?: bool,
  *     defaultRootObject?: string,
  *     customErrorResponses?: list<array{errorCode?: int, responseCode?: string, responsePagePath?: string, errorCachingMinTTL?: int, ...}>,
+ *     enableWaf?: bool,
+ *     wafRules?: list<array{name?: string, atpConfig?: array, acfpConfig?: array, botControlConfig?: array, ...}>,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateDistributionAsync(array $args = [])
@@ -1551,6 +1575,8 @@ use Aws\AwsClient;
  *     enablePrivateOriginAccess?: bool,
  *     defaultRootObject?: string,
  *     customErrorResponses?: list<array{errorCode?: int, responseCode?: string, responsePagePath?: string, errorCachingMinTTL?: int, ...}>,
+ *     enableWaf?: bool,
+ *     wafRules?: list<array{name?: string, atpConfig?: array, acfpConfig?: array, botControlConfig?: array, ...}>,
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateDistributionBundle(array $args = [])
@@ -1679,5 +1705,9 @@ use Aws\AwsClient;
  *     }>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result updateSubdomainAssociation(array $args = [])
+ * @phpstan-method \Aws\Result updateSubdomainAssociation(array{subdomainName?: string, action?: 'ASSOCIATE'|'DISASSOCIATE'|'TRANSFER', targetResourceArn?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateSubdomainAssociationAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateSubdomainAssociationAsync(array{subdomainName?: string, action?: 'ASSOCIATE'|'DISASSOCIATE'|'TRANSFER', targetResourceArn?: string, ...} $args = [])
  */
 class LightsailClient extends AwsClient {}

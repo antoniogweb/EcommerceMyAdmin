@@ -5,6 +5,10 @@ use Aws\AwsClient;
 
 /**
  * This client is used to interact with the **AmazonMWAAServerless** service.
+ * @method \Aws\Result createAirflowUiUrl(array $args = [])
+ * @phpstan-method \Aws\Result createAirflowUiUrl(array{ExpiresInSeconds?: int, SessionDurationInSeconds?: int, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise createAirflowUiUrlAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise createAirflowUiUrlAsync(array{ExpiresInSeconds?: int, SessionDurationInSeconds?: int, ...} $args = [])
  * @method \Aws\Result createWorkflow(array $args = [])
  * @phpstan-method \Aws\Result createWorkflow(array{
  *     Name?: string,
@@ -17,6 +21,7 @@ use Aws\AwsClient;
  *     LoggingConfiguration?: array{LogGroupName?: string, ...},
  *     EngineVersion?: int,
  *     NetworkConfiguration?: array{SecurityGroupIds?: list<string>, SubnetIds?: list<string>, ...},
+ *     Environment?: array{Variables?: array<string, string>, ...},
  *     Tags?: array<string, string>,
  *     TriggerMode?: string,
  *     ...,
@@ -33,6 +38,7 @@ use Aws\AwsClient;
  *     LoggingConfiguration?: array{LogGroupName?: string, ...},
  *     EngineVersion?: int,
  *     NetworkConfiguration?: array{SecurityGroupIds?: list<string>, SubnetIds?: list<string>, ...},
+ *     Environment?: array{Variables?: array<string, string>, ...},
  *     Tags?: array<string, string>,
  *     TriggerMode?: string,
  *     ...,
@@ -111,6 +117,7 @@ use Aws\AwsClient;
  *     LoggingConfiguration?: array{LogGroupName?: string, ...},
  *     EngineVersion?: int,
  *     NetworkConfiguration?: array{SecurityGroupIds?: list<string>, SubnetIds?: list<string>, ...},
+ *     Environment?: array{Variables?: array<string, string>, ...},
  *     TriggerMode?: string,
  *     ...,
  * } $args = [])
@@ -124,6 +131,7 @@ use Aws\AwsClient;
  *     LoggingConfiguration?: array{LogGroupName?: string, ...},
  *     EngineVersion?: int,
  *     NetworkConfiguration?: array{SecurityGroupIds?: list<string>, SubnetIds?: list<string>, ...},
+ *     Environment?: array{Variables?: array<string, string>, ...},
  *     TriggerMode?: string,
  *     ...,
  * } $args = [])

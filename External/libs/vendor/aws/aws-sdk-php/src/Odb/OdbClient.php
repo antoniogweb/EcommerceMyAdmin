@@ -13,6 +13,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result associateIamRoleToResource(array{iamRoleArn?: string, awsIntegration?: 'KmsTde', resourceArn?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise associateIamRoleToResourceAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise associateIamRoleToResourceAsync(array{iamRoleArn?: string, awsIntegration?: 'KmsTde', resourceArn?: string, ...} $args = [])
+ * @method \Aws\Result associateVirtualMachinesToCloudVmCluster(array $args = [])
+ * @phpstan-method \Aws\Result associateVirtualMachinesToCloudVmCluster(array{cloudVmClusterId?: string, dbServers?: list<string>, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise associateVirtualMachinesToCloudVmClusterAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise associateVirtualMachinesToCloudVmClusterAsync(array{cloudVmClusterId?: string, dbServers?: list<string>, ...} $args = [])
  * @method \Aws\Result associateVirtualMachinesToExadbVmCluster(array $args = [])
  * @phpstan-method \Aws\Result associateVirtualMachinesToExadbVmCluster(array{exadbVmClusterId?: string, desiredNodeCount?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise associateVirtualMachinesToExadbVmClusterAsync(array $args = [])
@@ -402,6 +406,10 @@ use Aws\AwsClient;
  * @method \Aws\Result createCloudVmCluster(array $args = [])
  * @phpstan-method \Aws\Result createCloudVmCluster(array{
  *     cloudExadataInfrastructureId?: string,
+ *     exascaleDbStorageVaultId?: string,
+ *     vmFileSystemStorageType?: 'EXASCALE'|'LOCAL',
+ *     vmBackupStorageType?: 'EXASCALE'|'LOCAL',
+ *     fileSystemConfigurationDetails?: list<array{mountPoint?: string, fileSystemSizeInGBs?: int, ...}>,
  *     cpuCoreCount?: int,
  *     displayName?: string,
  *     giVersion?: string,
@@ -427,6 +435,10 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise createCloudVmClusterAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise createCloudVmClusterAsync(array{
  *     cloudExadataInfrastructureId?: string,
+ *     exascaleDbStorageVaultId?: string,
+ *     vmFileSystemStorageType?: 'EXASCALE'|'LOCAL',
+ *     vmBackupStorageType?: 'EXASCALE'|'LOCAL',
+ *     fileSystemConfigurationDetails?: list<array{mountPoint?: string, fileSystemSizeInGBs?: int, ...}>,
  *     cpuCoreCount?: int,
  *     displayName?: string,
  *     giVersion?: string,
@@ -505,6 +517,7 @@ use Aws\AwsClient;
  *     highCapacityDatabaseStorageTotalSizeInGBs?: int,
  *     additionalFlashCacheInPercent?: int,
  *     autoscaleLimitInGBs?: int,
+ *     cloudExadataInfrastructureId?: string,
  *     availabilityZoneId?: string,
  *     availabilityZone?: string,
  *     description?: string,
@@ -520,6 +533,7 @@ use Aws\AwsClient;
  *     highCapacityDatabaseStorageTotalSizeInGBs?: int,
  *     additionalFlashCacheInPercent?: int,
  *     autoscaleLimitInGBs?: int,
+ *     cloudExadataInfrastructureId?: string,
  *     availabilityZoneId?: string,
  *     availabilityZone?: string,
  *     description?: string,
@@ -633,6 +647,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result disassociateIamRoleFromResource(array{iamRoleArn?: string, awsIntegration?: 'KmsTde', resourceArn?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise disassociateIamRoleFromResourceAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise disassociateIamRoleFromResourceAsync(array{iamRoleArn?: string, awsIntegration?: 'KmsTde', resourceArn?: string, ...} $args = [])
+ * @method \Aws\Result disassociateVirtualMachinesFromCloudVmCluster(array $args = [])
+ * @phpstan-method \Aws\Result disassociateVirtualMachinesFromCloudVmCluster(array{cloudVmClusterId?: string, dbServers?: list<string>, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise disassociateVirtualMachinesFromCloudVmClusterAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise disassociateVirtualMachinesFromCloudVmClusterAsync(array{cloudVmClusterId?: string, dbServers?: list<string>, ...} $args = [])
  * @method \Aws\Result disassociateVirtualMachinesFromExadbVmCluster(array $args = [])
  * @phpstan-method \Aws\Result disassociateVirtualMachinesFromExadbVmCluster(array{exadbVmClusterId?: string, dbNodeIds?: list<string>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise disassociateVirtualMachinesFromExadbVmClusterAsync(array $args = [])
@@ -786,9 +804,21 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise listExadbVmClustersAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise listExadbVmClustersAsync(array{exascaleDbStorageVaultId?: string, maxResults?: int, nextToken?: string, ...} $args = [])
  * @method \Aws\Result listExascaleDbStorageVaults(array $args = [])
- * @phpstan-method \Aws\Result listExascaleDbStorageVaults(array{maxResults?: int, nextToken?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result listExascaleDbStorageVaults(array{
+ *     maxResults?: int,
+ *     nextToken?: string,
+ *     cloudExadataInfrastructureId?: string,
+ *     vaultType?: 'DEDICATED_INFRASTRUCTURE'|'EXASCALE_INFRASTRUCTURE',
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise listExascaleDbStorageVaultsAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise listExascaleDbStorageVaultsAsync(array{maxResults?: int, nextToken?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listExascaleDbStorageVaultsAsync(array{
+ *     maxResults?: int,
+ *     nextToken?: string,
+ *     cloudExadataInfrastructureId?: string,
+ *     vaultType?: 'DEDICATED_INFRASTRUCTURE'|'EXASCALE_INFRASTRUCTURE',
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result listFlexComponents(array $args = [])
  * @phpstan-method \Aws\Result listFlexComponents(array{maxResults?: int, nextToken?: string, shape?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listFlexComponentsAsync(array $args = [])
@@ -1039,9 +1069,14 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result updateAutonomousDatabaseBackup(array{autonomousDatabaseBackupId?: string, retentionPeriodInDays?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise updateAutonomousDatabaseBackupAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise updateAutonomousDatabaseBackupAsync(array{autonomousDatabaseBackupId?: string, retentionPeriodInDays?: int, ...} $args = [])
- * @method \Aws\Result updateCloudExadataInfrastructure(array $args = [])
- * @phpstan-method \Aws\Result updateCloudExadataInfrastructure(array{
- *     cloudExadataInfrastructureId?: string,
+ * @method \Aws\Result updateCloudAutonomousVmCluster(array $args = [])
+ * @phpstan-method \Aws\Result updateCloudAutonomousVmCluster(array{
+ *     cloudAutonomousVmClusterId?: string,
+ *     autonomousDataStorageSizeInTBs?: float,
+ *     cpuCoreCountPerNode?: int,
+ *     description?: string,
+ *     displayName?: string,
+ *     licenseModel?: 'BRING_YOUR_OWN_LICENSE'|'LICENSE_INCLUDED',
  *     maintenanceWindow?: array{
  *         customActionTimeoutInMins?: int,
  *         daysOfWeek?: list<array>,
@@ -1055,11 +1090,59 @@ use Aws\AwsClient;
  *         weeksOfMonth?: list<int>,
  *         ...,
  *     },
+ *     totalContainerDatabases?: int,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateCloudAutonomousVmClusterAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateCloudAutonomousVmClusterAsync(array{
+ *     cloudAutonomousVmClusterId?: string,
+ *     autonomousDataStorageSizeInTBs?: float,
+ *     cpuCoreCountPerNode?: int,
+ *     description?: string,
+ *     displayName?: string,
+ *     licenseModel?: 'BRING_YOUR_OWN_LICENSE'|'LICENSE_INCLUDED',
+ *     maintenanceWindow?: array{
+ *         customActionTimeoutInMins?: int,
+ *         daysOfWeek?: list<array>,
+ *         hoursOfDay?: list<int>,
+ *         isCustomActionTimeoutEnabled?: bool,
+ *         leadTimeInWeeks?: int,
+ *         months?: list<array>,
+ *         patchingMode?: 'NONROLLING'|'ROLLING',
+ *         preference?: 'CUSTOM_PREFERENCE'|'NO_PREFERENCE',
+ *         skipRu?: bool,
+ *         weeksOfMonth?: list<int>,
+ *         ...,
+ *     },
+ *     totalContainerDatabases?: int,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result updateCloudExadataInfrastructure(array $args = [])
+ * @phpstan-method \Aws\Result updateCloudExadataInfrastructure(array{
+ *     cloudExadataInfrastructureId?: string,
+ *     displayName?: string,
+ *     computeCount?: int,
+ *     maintenanceWindow?: array{
+ *         customActionTimeoutInMins?: int,
+ *         daysOfWeek?: list<array>,
+ *         hoursOfDay?: list<int>,
+ *         isCustomActionTimeoutEnabled?: bool,
+ *         leadTimeInWeeks?: int,
+ *         months?: list<array>,
+ *         patchingMode?: 'NONROLLING'|'ROLLING',
+ *         preference?: 'CUSTOM_PREFERENCE'|'NO_PREFERENCE',
+ *         skipRu?: bool,
+ *         weeksOfMonth?: list<int>,
+ *         ...,
+ *     },
+ *     storageCount?: int,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateCloudExadataInfrastructureAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise updateCloudExadataInfrastructureAsync(array{
  *     cloudExadataInfrastructureId?: string,
+ *     displayName?: string,
+ *     computeCount?: int,
  *     maintenanceWindow?: array{
  *         customActionTimeoutInMins?: int,
  *         daysOfWeek?: list<array>,
@@ -1073,6 +1156,39 @@ use Aws\AwsClient;
  *         weeksOfMonth?: list<int>,
  *         ...,
  *     },
+ *     storageCount?: int,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result updateCloudExadataInfrastructureStorageCapacity(array $args = [])
+ * @phpstan-method \Aws\Result updateCloudExadataInfrastructureStorageCapacity(array{cloudExadataInfrastructureId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateCloudExadataInfrastructureStorageCapacityAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateCloudExadataInfrastructureStorageCapacityAsync(array{cloudExadataInfrastructureId?: string, ...} $args = [])
+ * @method \Aws\Result updateCloudVmCluster(array $args = [])
+ * @phpstan-method \Aws\Result updateCloudVmCluster(array{
+ *     cloudVmClusterId?: string,
+ *     cpuCoreCount?: int,
+ *     dataCollectionOptions?: array{isDiagnosticsEventsEnabled?: bool, isHealthMonitoringEnabled?: bool, isIncidentLogsEnabled?: bool, ...},
+ *     dataStorageSizeInTBs?: float,
+ *     dbNodeStorageSizeInGBs?: int,
+ *     displayName?: string,
+ *     sshPublicKeys?: list<string>,
+ *     licenseModel?: 'BRING_YOUR_OWN_LICENSE'|'LICENSE_INCLUDED',
+ *     memorySizeInGBs?: int,
+ *     storageSizeInGBs?: int,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateCloudVmClusterAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateCloudVmClusterAsync(array{
+ *     cloudVmClusterId?: string,
+ *     cpuCoreCount?: int,
+ *     dataCollectionOptions?: array{isDiagnosticsEventsEnabled?: bool, isHealthMonitoringEnabled?: bool, isIncidentLogsEnabled?: bool, ...},
+ *     dataStorageSizeInTBs?: float,
+ *     dbNodeStorageSizeInGBs?: int,
+ *     displayName?: string,
+ *     sshPublicKeys?: list<string>,
+ *     licenseModel?: 'BRING_YOUR_OWN_LICENSE'|'LICENSE_INCLUDED',
+ *     memorySizeInGBs?: int,
+ *     storageSizeInGBs?: int,
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateExadbVmCluster(array $args = [])
@@ -1105,6 +1221,10 @@ use Aws\AwsClient;
  *     vmFileSystemStorageTotalSizeInGBs?: int,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result updateExascaleCloudExadataInfrastructure(array $args = [])
+ * @phpstan-method \Aws\Result updateExascaleCloudExadataInfrastructure(array{cloudExadataInfrastructureId?: string, totalStorageSizeInGBs?: int, totalVmStorageSizeInGBs?: int, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateExascaleCloudExadataInfrastructureAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateExascaleCloudExadataInfrastructureAsync(array{cloudExadataInfrastructureId?: string, totalStorageSizeInGBs?: int, totalVmStorageSizeInGBs?: int, ...} $args = [])
  * @method \Aws\Result updateExascaleDbStorageVault(array $args = [])
  * @phpstan-method \Aws\Result updateExascaleDbStorageVault(array{
  *     exascaleDbStorageVaultId?: string,

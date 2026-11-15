@@ -196,6 +196,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     serviceRole?: string,
@@ -228,6 +229,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     serviceRole?: string,
@@ -306,7 +308,7 @@ use Aws\AwsClient;
  *     applicationId?: string,
  *     agentSpaceId?: string,
  *     membershipId?: string,
- *     memberType?: 'USER',
+ *     memberType?: 'GROUP'|'USER',
  *     config?: array{user?: array{role?: 'MEMBER', ...}, ...},
  *     ...,
  * } $args = [])
@@ -315,7 +317,7 @@ use Aws\AwsClient;
  *     applicationId?: string,
  *     agentSpaceId?: string,
  *     membershipId?: string,
- *     memberType?: 'USER',
+ *     memberType?: 'GROUP'|'USER',
  *     config?: array{user?: array{role?: 'MEMBER', ...}, ...},
  *     ...,
  * } $args = [])
@@ -330,6 +332,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     excludeRiskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
@@ -338,6 +341,7 @@ use Aws\AwsClient;
  *     vpcConfig?: array{vpcArn?: string, securityGroupArns?: list<string>, subnetArns?: list<string>, ...},
  *     networkTrafficConfig?: array{rules?: list<array>, customHeaders?: list<array>, ...},
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
+ *     cleanUpStrategy?: 'BEST_EFFORT_DELETE'|'RETAIN_ALL',
  *     disableManagedSkills?: list<'FINDING_PERSONALIZATION'|'LOGIN_OPTIMIZATION'>,
  *     maxTaskHours?: float,
  *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
@@ -367,6 +371,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     excludeRiskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
@@ -375,6 +380,7 @@ use Aws\AwsClient;
  *     vpcConfig?: array{vpcArn?: string, securityGroupArns?: list<string>, subnetArns?: list<string>, ...},
  *     networkTrafficConfig?: array{rules?: list<array>, customHeaders?: list<array>, ...},
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
+ *     cleanUpStrategy?: 'BEST_EFFORT_DELETE'|'RETAIN_ALL',
  *     disableManagedSkills?: list<'FINDING_PERSONALIZATION'|'LOGIN_OPTIMIZATION'>,
  *     maxTaskHours?: float,
  *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
@@ -521,6 +527,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     scopeDocs?: list<array{s3Location?: string, artifactId?: string, integratedDocument?: array, ...}>,
@@ -541,6 +548,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     scopeDocs?: list<array{s3Location?: string, artifactId?: string, integratedDocument?: array, ...}>,
@@ -566,9 +574,9 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise deleteIntegrationAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise deleteIntegrationAsync(array{integrationId?: string, ...} $args = [])
  * @method \Aws\Result deleteMembership(array $args = [])
- * @phpstan-method \Aws\Result deleteMembership(array{applicationId?: string, agentSpaceId?: string, membershipId?: string, memberType?: 'USER', ...} $args = [])
+ * @phpstan-method \Aws\Result deleteMembership(array{applicationId?: string, agentSpaceId?: string, membershipId?: string, memberType?: 'GROUP'|'USER', ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteMembershipAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise deleteMembershipAsync(array{applicationId?: string, agentSpaceId?: string, membershipId?: string, memberType?: 'USER', ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise deleteMembershipAsync(array{applicationId?: string, agentSpaceId?: string, membershipId?: string, memberType?: 'GROUP'|'USER', ...} $args = [])
  * @method \Aws\Result deletePrivateConnection(array $args = [])
  * @phpstan-method \Aws\Result deletePrivateConnection(array{privateConnectionName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deletePrivateConnectionAsync(array $args = [])
@@ -771,7 +779,7 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result listMemberships(array{
  *     applicationId?: string,
  *     agentSpaceId?: string,
- *     memberType?: 'ALL'|'USER',
+ *     memberType?: 'ALL'|'GROUP'|'USER',
  *     maxResults?: int,
  *     nextToken?: string,
  *     ...,
@@ -780,7 +788,7 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise listMembershipsAsync(array{
  *     applicationId?: string,
  *     agentSpaceId?: string,
- *     memberType?: 'ALL'|'USER',
+ *     memberType?: 'ALL'|'GROUP'|'USER',
  *     maxResults?: int,
  *     nextToken?: string,
  *     ...,
@@ -989,6 +997,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     serviceRole?: string,
@@ -1022,6 +1031,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     serviceRole?: string,
@@ -1103,6 +1113,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     excludeRiskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
@@ -1111,6 +1122,7 @@ use Aws\AwsClient;
  *     vpcConfig?: array{vpcArn?: string, securityGroupArns?: list<string>, subnetArns?: list<string>, ...},
  *     networkTrafficConfig?: array{rules?: list<array>, customHeaders?: list<array>, ...},
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
+ *     cleanUpStrategy?: 'BEST_EFFORT_DELETE'|'RETAIN_ALL',
  *     disableManagedSkills?: list<'FINDING_PERSONALIZATION'|'LOGIN_OPTIMIZATION'>,
  *     maxTaskHours?: float,
  *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
@@ -1141,6 +1153,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     excludeRiskTypes?: list<'ARBITRARY_FILE_UPLOAD'|'BUSINESS_LOGIC_VULNERABILITIES'|'CODE_INJECTION'|'COMMAND_INJECTION'|'CROSS_SITE_SCRIPTING'|'CRYPTOGRAPHIC_VULNERABILITIES'|'DATABASE_ACCESS'|'DATABASE_MODIFICATION'|'DEFAULT_CREDENTIALS'|'DENIAL_OF_SERVICE'|'FILE_ACCESS'|'FILE_CREATION'|'FILE_DELETION'|'GRAPHQL_VULNERABILITIES'|'INFORMATION_DISCLOSURE'|'INSECURE_DESERIALIZATION'|'INSECURE_DIRECT_OBJECT_REFERENCE'|'JSON_WEB_TOKEN_VULNERABILITIES'|'LOCAL_FILE_INCLUSION'|'OTHER'|'OUTBOUND_SERVICE_REQUEST'|'PATH_TRAVERSAL'|'PRIVILEGE_ESCALATION'|'SERVER_SIDE_REQUEST_FORGERY'|'SERVER_SIDE_TEMPLATE_INJECTION'|'SQL_INJECTION'|'UNKNOWN'|'XML_EXTERNAL_ENTITY'>,
@@ -1149,6 +1162,7 @@ use Aws\AwsClient;
  *     vpcConfig?: array{vpcArn?: string, securityGroupArns?: list<string>, subnetArns?: list<string>, ...},
  *     networkTrafficConfig?: array{rules?: list<array>, customHeaders?: list<array>, ...},
  *     codeRemediationStrategy?: 'AUTOMATIC'|'DISABLED',
+ *     cleanUpStrategy?: 'BEST_EFFORT_DELETE'|'RETAIN_ALL',
  *     disableManagedSkills?: list<'FINDING_PERSONALIZATION'|'LOGIN_OPTIMIZATION'>,
  *     maxTaskHours?: float,
  *     reportDestination?: array{integrationId?: string, containerId?: string, parentId?: string, documentId?: string, ...},
@@ -1232,6 +1246,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     scopeDocs?: list<array{s3Location?: string, artifactId?: string, integratedDocument?: array, ...}>,
@@ -1253,6 +1268,7 @@ use Aws\AwsClient;
  *         sourceCode?: list<array>,
  *         integratedRepositories?: list<array>,
  *         trustedCaCertificates?: list<array>,
+ *         clientCertificates?: list<array>,
  *         ...,
  *     },
  *     scopeDocs?: list<array{s3Location?: string, artifactId?: string, integratedDocument?: array, ...}>,

@@ -10,10 +10,8 @@ use Aws\Middleware;
 use Aws\Retry\Configuration as RetryConfiguration;
 use Aws\Retry\ConfigurationInterface as RetryConfigurationInterface;
 use Aws\Retry\ConfigurationProvider as RetryConfigurationProvider;
-use Aws\Retry\V3\OptIn as NewRetriesOptIn;
 use Aws\Retry\V3\RetryMiddleware as RetryV3Middleware;
 use Aws\RetryMiddleware;
-use Aws\RetryMiddlewareV2;
 use GuzzleHttp\Promise\Create;
 
 /**
@@ -735,6 +733,10 @@ use GuzzleHttp\Promise\Create;
  *     ReturnConsumedCapacity?: 'INDEXES'|'NONE'|'TOTAL',
  *     ...,
  * } $args = [])
+ * @method \Aws\Result cancelBulkOperation(array $args = []) (supported in versions 2012-08-10)
+ * @phpstan-method \Aws\Result cancelBulkOperation(array{BulkOperationArn?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise cancelBulkOperationAsync(array $args = []) (supported in versions 2012-08-10)
+ * @phpstan-method \GuzzleHttp\Promise\Promise cancelBulkOperationAsync(array{BulkOperationArn?: string, ...} $args = [])
  * @method \Aws\Result createBackup(array $args = []) (supported in versions 2012-08-10)
  * @phpstan-method \Aws\Result createBackup(array{TableName?: string, BackupName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise createBackupAsync(array $args = []) (supported in versions 2012-08-10)
@@ -755,6 +757,10 @@ use GuzzleHttp\Promise\Create;
  * @phpstan-method \Aws\Result describeBackup(array{BackupArn?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeBackupAsync(array $args = []) (supported in versions 2012-08-10)
  * @phpstan-method \GuzzleHttp\Promise\Promise describeBackupAsync(array{BackupArn?: string, ...} $args = [])
+ * @method \Aws\Result describeBulkOperation(array $args = []) (supported in versions 2012-08-10)
+ * @phpstan-method \Aws\Result describeBulkOperation(array{BulkOperationArn?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeBulkOperationAsync(array $args = []) (supported in versions 2012-08-10)
+ * @phpstan-method \GuzzleHttp\Promise\Promise describeBulkOperationAsync(array{BulkOperationArn?: string, ...} $args = [])
  * @method \Aws\Result describeContinuousBackups(array $args = []) (supported in versions 2012-08-10)
  * @phpstan-method \Aws\Result describeContinuousBackups(array{TableName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeContinuousBackupsAsync(array $args = []) (supported in versions 2012-08-10)
@@ -1019,6 +1025,10 @@ use GuzzleHttp\Promise\Create;
  *     BackupType?: 'ALL'|'AWS_BACKUP'|'SYSTEM'|'USER',
  *     ...,
  * } $args = [])
+ * @method \Aws\Result listBulkOperations(array $args = []) (supported in versions 2012-08-10)
+ * @phpstan-method \Aws\Result listBulkOperations(array{MaxResults?: int, NextToken?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise listBulkOperationsAsync(array $args = []) (supported in versions 2012-08-10)
+ * @phpstan-method \GuzzleHttp\Promise\Promise listBulkOperationsAsync(array{MaxResults?: int, NextToken?: string, ...} $args = [])
  * @method \Aws\Result listContributorInsights(array $args = []) (supported in versions 2012-08-10)
  * @phpstan-method \Aws\Result listContributorInsights(array{TableName?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listContributorInsightsAsync(array $args = []) (supported in versions 2012-08-10)
@@ -1251,6 +1261,56 @@ use GuzzleHttp\Promise\Create;
  *     TopK?: int,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result startBulkPutItems(array $args = []) (supported in versions 2012-08-10)
+ * @phpstan-method \Aws\Result startBulkPutItems(array{
+ *     ClientToken?: string,
+ *     InputS3Configuration?: array{
+ *         S3BucketOwner?: string,
+ *         S3Bucket?: string,
+ *         S3KeyPrefix?: string,
+ *         InputFormat?: 'DYNAMODB_JSON'|'ION',
+ *         InputCompressionType?: 'GZIP'|'NONE'|'ZSTD',
+ *         ...,
+ *     },
+ *     OutputS3Configuration?: array{
+ *         S3BucketOwner?: string,
+ *         S3Bucket?: string,
+ *         S3KeyPrefix?: string,
+ *         S3SseAlgorithm?: 'AES256'|'KMS',
+ *         S3SseKmsKeyId?: string,
+ *         OutputType?: list<'CONDITION_CHECK_FAILURE'|'ERROR'>,
+ *         ...,
+ *     },
+ *     TableName?: string,
+ *     MaxWriteRequestUnits?: int,
+ *     PerformanceTier?: 'ACCELERATED'|'STANDARD',
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise startBulkPutItemsAsync(array $args = []) (supported in versions 2012-08-10)
+ * @phpstan-method \GuzzleHttp\Promise\Promise startBulkPutItemsAsync(array{
+ *     ClientToken?: string,
+ *     InputS3Configuration?: array{
+ *         S3BucketOwner?: string,
+ *         S3Bucket?: string,
+ *         S3KeyPrefix?: string,
+ *         InputFormat?: 'DYNAMODB_JSON'|'ION',
+ *         InputCompressionType?: 'GZIP'|'NONE'|'ZSTD',
+ *         ...,
+ *     },
+ *     OutputS3Configuration?: array{
+ *         S3BucketOwner?: string,
+ *         S3Bucket?: string,
+ *         S3KeyPrefix?: string,
+ *         S3SseAlgorithm?: 'AES256'|'KMS',
+ *         S3SseKmsKeyId?: string,
+ *         OutputType?: list<'CONDITION_CHECK_FAILURE'|'ERROR'>,
+ *         ...,
+ *     },
+ *     TableName?: string,
+ *     MaxWriteRequestUnits?: int,
+ *     PerformanceTier?: 'ACCELERATED'|'STANDARD',
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result tagResource(array $args = []) (supported in versions 2012-08-10)
  * @phpstan-method \Aws\Result tagResource(array{ResourceArn?: string, Tags?: list<array{Key?: string, Value?: string, ...}>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise tagResourceAsync(array $args = []) (supported in versions 2012-08-10)
@@ -1430,22 +1490,20 @@ use GuzzleHttp\Promise\Create;
  */
 class DynamoDbClient extends AwsClient
 {
-    /** @internal Default attempts for the AWS_NEW_RETRIES_2026 path. */
+    /** @internal Default attempts in standard and adaptive mode. */
     private const DYNAMODB_MAX_ATTEMPTS = 4;
-    /** @internal Base backoff in ms for the AWS_NEW_RETRIES_2026 path. */
+    /** @internal Base backoff in ms in standard and adaptive mode. */
     private const DEFAULT_BASE_DELAY_MS = 25;
     /**
      * @internal Legacy-mode fallback when an array config does not specify
-     *           max_attempts. Only consulted on the AWS_NEW_RETRIES_2026 path.
+     *           max_attempts.
      */
     public const DEFAULT_LEGACY_MAX_ATTEMPTS = 10;
 
     public static function getArguments()
     {
         $args = parent::getArguments();
-        $args['retries']['default'] = NewRetriesOptIn::isEnabled()
-            ? [__CLASS__, '_defaultRetries']
-            : self::DEFAULT_LEGACY_MAX_ATTEMPTS;
+        $args['retries']['default'] = [__CLASS__, '_defaultRetries'];
         $args['retries']['fn'] = [__CLASS__, '_applyRetryConfig'];
         $args['api_provider']['fn'] = [__CLASS__, '_applyApiProvider'];
 
@@ -1453,10 +1511,10 @@ class DynamoDbClient extends AwsClient
     }
 
     /**
-     * @internal Default retry-config provider for the AWS_NEW_RETRIES_2026
-     *           path. Resolves the mode and max_attempts independently from
-     *           env and the shared config file. Unless max_attempts is set,
-     *           the attempt count is the DynamoDB default for the mode:
+     * @internal Default retry-config provider. Resolves the mode and
+     *           max_attempts independently from env and the shared config
+     *           file. Unless max_attempts is set, the attempt count is the
+     *           DynamoDB default for the mode:
      *           {@see self::DYNAMODB_MAX_ATTEMPTS} attempts in standard and
      *           adaptive mode, {@see self::DEFAULT_LEGACY_MAX_ATTEMPTS}
      *           retries in legacy mode.
@@ -1508,12 +1566,7 @@ class DynamoDbClient extends AwsClient
             return;
         }
 
-        if (NewRetriesOptIn::isEnabled()) {
-            self::appendStandardModeRetriesNew($value, $config, $args, $list);
-            return;
-        }
-
-        self::appendStandardModeRetries($config, $args, $list);
+        self::appendStandardModeRetries($value, $config, $args, $list);
     }
 
     private static function appendLegacyModeRetries(
@@ -1547,10 +1600,7 @@ class DynamoDbClient extends AwsClient
         RetryConfigurationInterface $config
     ): int
     {
-        if (NewRetriesOptIn::isEnabled()
-            && is_array($value)
-            && !isset($value['max_attempts'])
-        ) {
+        if (is_array($value) && !isset($value['max_attempts'])) {
             return self::DEFAULT_LEGACY_MAX_ATTEMPTS;
         }
 
@@ -1562,10 +1612,7 @@ class DynamoDbClient extends AwsClient
         RetryConfigurationInterface $config
     ): RetryConfigurationInterface
     {
-        if (NewRetriesOptIn::isEnabled()
-            && is_array($value)
-            && !isset($value['max_attempts'])
-        ) {
+        if (is_array($value) && !isset($value['max_attempts'])) {
             return new RetryConfiguration(
                 $config->getMode(),
                 self::DYNAMODB_MAX_ATTEMPTS
@@ -1576,24 +1623,6 @@ class DynamoDbClient extends AwsClient
     }
 
     private static function appendStandardModeRetries(
-        RetryConfigurationInterface $config,
-        array &$args,
-        HandlerList $list
-    ): void
-    {
-        $list->appendSign(
-            RetryMiddlewareV2::wrap(
-                $config,
-                [
-                    'collect_stats' => $args['stats']['retries'],
-                    'transient_error_codes' => ['TransactionInProgressException'],
-                ]
-            ),
-            'retry'
-        );
-    }
-
-    private static function appendStandardModeRetriesNew(
         $value,
         RetryConfigurationInterface $config,
         array &$args,

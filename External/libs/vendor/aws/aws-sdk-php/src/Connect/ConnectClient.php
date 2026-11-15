@@ -466,7 +466,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -498,7 +498,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -749,7 +749,10 @@ use Aws\AwsClient;
  *     Tags?: array<string, string>,
  *     ReviewConfiguration?: array{ReviewNotificationRecipients?: list<array>, EligibilityDays?: int, ...},
  *     TargetConfiguration?: array{ContactInteractionType?: 'AGENT'|'AUTOMATED'|'CUSTOMER', ...},
- *     LanguageConfiguration?: array{FormLanguage?: 'de-DE'|'en-US'|'es-ES'|'fr-FR'|'it-IT'|'ja-JP'|'ko-KR'|'ms-MY'|'pt-BR'|'zh-CN', ...},
+ *     LanguageConfiguration?: array{
+ *         FormLanguage?: 'af-ZA'|'am-ET'|'ar-AE'|'ar-SA'|'be-BY'|'bg-BG'|'bn-BD'|'bs-BA'|'ca-ES'|'ckb-IQ'|'ckb-IR'|'cs-CZ'|'cy-GB'|'da-DK'|'de-AT'|'de-CH'|'de-DE'|'el-GR'|'en-AB'|'en-AU'|'en-GB'|'en-IE'|'en-IN'|'en-NZ'|'en-SG'|'en-US'|'en-WL'|'en-ZA'|'es-ES'|'es-MX'|'es-US'|'et-EE'|'eu-ES'|'fa-AF'|'fa-IR'|'fi-FI'|'fr-BE'|'fr-CA'|'fr-FR'|'ga-IE'|'gl-ES'|'gu-IN'|'he-IL'|'hi-IN'|'hmn'|'hr-HR'|'ht-HT'|'hu-HU'|'hy-AM'|'id-ID'|'is-IS'|'it-IT'|'ja-JP'|'jv-ID'|'ka-GE'|'kk-KZ'|'km-KH'|'kn-IN'|'ko-KR'|'lg-UG'|'lo-LA'|'lt-LT'|'lv-LV'|'mk-MK'|'ml-IN'|'mr-IN'|'ms-MY'|'my-MM'|'ne-NP'|'nl-BE'|'nl-NL'|'no-NO'|'or-IN'|'pa-IN'|'pl-PL'|'ps-AF'|'pt-BR'|'pt-PT'|'ro-RO'|'ru-RU'|'si-LK'|'sk-SK'|'sl-SI'|'so-SO'|'sq-AL'|'sr-RS'|'su-ID'|'sv-SE'|'sw-BI'|'sw-KE'|'sw-RW'|'sw-TZ'|'sw-UG'|'ta-IN'|'te-IN'|'th-TH'|'tl-PH'|'tr-TR'|'uk-UA'|'uz-UZ'|'vi-VN'|'xh-ZA'|'yue-HK'|'zh-CN'|'zh-TW'|'zu-ZA',
+ *         ...,
+ *     },
  *     AIVersion?: string,
  *     ...,
  * } $args = [])
@@ -771,7 +774,10 @@ use Aws\AwsClient;
  *     Tags?: array<string, string>,
  *     ReviewConfiguration?: array{ReviewNotificationRecipients?: list<array>, EligibilityDays?: int, ...},
  *     TargetConfiguration?: array{ContactInteractionType?: 'AGENT'|'AUTOMATED'|'CUSTOMER', ...},
- *     LanguageConfiguration?: array{FormLanguage?: 'de-DE'|'en-US'|'es-ES'|'fr-FR'|'it-IT'|'ja-JP'|'ko-KR'|'ms-MY'|'pt-BR'|'zh-CN', ...},
+ *     LanguageConfiguration?: array{
+ *         FormLanguage?: 'af-ZA'|'am-ET'|'ar-AE'|'ar-SA'|'be-BY'|'bg-BG'|'bn-BD'|'bs-BA'|'ca-ES'|'ckb-IQ'|'ckb-IR'|'cs-CZ'|'cy-GB'|'da-DK'|'de-AT'|'de-CH'|'de-DE'|'el-GR'|'en-AB'|'en-AU'|'en-GB'|'en-IE'|'en-IN'|'en-NZ'|'en-SG'|'en-US'|'en-WL'|'en-ZA'|'es-ES'|'es-MX'|'es-US'|'et-EE'|'eu-ES'|'fa-AF'|'fa-IR'|'fi-FI'|'fr-BE'|'fr-CA'|'fr-FR'|'ga-IE'|'gl-ES'|'gu-IN'|'he-IL'|'hi-IN'|'hmn'|'hr-HR'|'ht-HT'|'hu-HU'|'hy-AM'|'id-ID'|'is-IS'|'it-IT'|'ja-JP'|'jv-ID'|'ka-GE'|'kk-KZ'|'km-KH'|'kn-IN'|'ko-KR'|'lg-UG'|'lo-LA'|'lt-LT'|'lv-LV'|'mk-MK'|'ml-IN'|'mr-IN'|'ms-MY'|'my-MM'|'ne-NP'|'nl-BE'|'nl-NL'|'no-NO'|'or-IN'|'pa-IN'|'pl-PL'|'ps-AF'|'pt-BR'|'pt-PT'|'ro-RO'|'ru-RU'|'si-LK'|'sk-SK'|'sl-SI'|'so-SO'|'sq-AL'|'sr-RS'|'su-ID'|'sv-SE'|'sw-BI'|'sw-KE'|'sw-RW'|'sw-TZ'|'sw-UG'|'ta-IN'|'te-IN'|'th-TH'|'tl-PH'|'tr-TR'|'uk-UA'|'uz-UZ'|'vi-VN'|'xh-ZA'|'yue-HK'|'zh-CN'|'zh-TW'|'zu-ZA',
+ *         ...,
+ *     },
  *     AIVersion?: string,
  *     ...,
  * } $args = [])
@@ -1204,7 +1210,7 @@ use Aws\AwsClient;
  *     },
  *     Function?: string,
  *     Actions?: list<array{
- *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
+ *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_EMAILS'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
  *         TaskAction?: array,
  *         EventBridgeAction?: array,
  *         AssignContactCategoryAction?: array,
@@ -1213,6 +1219,7 @@ use Aws\AwsClient;
  *         UpdateCaseAction?: array,
  *         AssignSlaAction?: array,
  *         EndAssociatedTasksAction?: array,
+ *         EndAssociatedEmailsAction?: array,
  *         SubmitAutoEvaluationAction?: array,
  *         ExtractInformationAction?: array,
  *         SendInAppNotificationAction?: array,
@@ -1235,7 +1242,7 @@ use Aws\AwsClient;
  *     },
  *     Function?: string,
  *     Actions?: list<array{
- *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
+ *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_EMAILS'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
  *         TaskAction?: array,
  *         EventBridgeAction?: array,
  *         AssignContactCategoryAction?: array,
@@ -1244,6 +1251,7 @@ use Aws\AwsClient;
  *         UpdateCaseAction?: array,
  *         AssignSlaAction?: array,
  *         EndAssociatedTasksAction?: array,
+ *         EndAssociatedEmailsAction?: array,
  *         SubmitAutoEvaluationAction?: array,
  *         ExtractInformationAction?: array,
  *         SendInAppNotificationAction?: array,
@@ -1302,6 +1310,7 @@ use Aws\AwsClient;
  *     Description?: string,
  *     ContactFlowId?: string,
  *     SelfAssignFlowId?: string,
+ *     ContactHooks?: array{WrapUpFlowId?: string, ...},
  *     Constraints?: array{RequiredFields?: list<array>, ReadOnlyFields?: list<array>, InvisibleFields?: list<array>, ...},
  *     Defaults?: array{DefaultFieldValues?: list<array>, ...},
  *     Status?: 'ACTIVE'|'INACTIVE',
@@ -1322,6 +1331,7 @@ use Aws\AwsClient;
  *     Description?: string,
  *     ContactFlowId?: string,
  *     SelfAssignFlowId?: string,
+ *     ContactHooks?: array{WrapUpFlowId?: string, ...},
  *     Constraints?: array{RequiredFields?: list<array>, ReadOnlyFields?: list<array>, InvisibleFields?: list<array>, ...},
  *     Defaults?: array{DefaultFieldValues?: list<array>, ...},
  *     Status?: 'ACTIVE'|'INACTIVE',
@@ -2813,6 +2823,10 @@ use Aws\AwsClient;
  *     NextToken?: string,
  *     OutputType?: 'Raw'|'Redacted',
  *     SegmentTypes?: list<'Attachments'|'Categories'|'Event'|'ExtractedInformation'|'Issues'|'PostContactSummary'|'Transcript'>,
+ *     ListFilter?: array{
+ *         CategoriesAttributeFilter?: array{OrConditions?: list<array>, AndCondition?: array, TagCondition?: array, ...},
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise listRealtimeContactAnalysisSegmentsV2Async(array $args = [])
@@ -2823,6 +2837,10 @@ use Aws\AwsClient;
  *     NextToken?: string,
  *     OutputType?: 'Raw'|'Redacted',
  *     SegmentTypes?: list<'Attachments'|'Categories'|'Event'|'ExtractedInformation'|'Issues'|'PostContactSummary'|'Transcript'>,
+ *     ListFilter?: array{
+ *         CategoriesAttributeFilter?: array{OrConditions?: list<array>, AndCondition?: array, TagCondition?: array, ...},
+ *         ...,
+ *     },
  *     ...,
  * } $args = [])
  * @method \Aws\Result listReplicationFindings(array $args = [])
@@ -4500,7 +4518,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -4536,7 +4554,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -4680,7 +4698,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -4707,7 +4725,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -4741,7 +4759,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -4773,7 +4791,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -4815,7 +4833,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -4847,7 +4865,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -5038,7 +5056,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -5063,6 +5081,7 @@ use Aws\AwsClient;
  *         Address?: string,
  *         ...,
  *     },
+ *     AdditionalRecipients?: array{CcEmailAddresses?: list<array>, ...},
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateContactAsync(array $args = [])
@@ -5074,7 +5093,7 @@ use Aws\AwsClient;
  *     References?: array<string, array{
  *         Value?: string,
  *         Type?: 'ATTACHMENT'|'CONTACT_ANALYSIS'|'DATE'|'EMAIL'|'EMAIL_MESSAGE'|'EMAIL_MESSAGE_PLAIN_TEXT'|'EMAIL_MESSAGE_PLAIN_TEXT_REDACTED'|'EMAIL_MESSAGE_REDACTED'|'NUMBER'|'STRING'|'URL',
- *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'FAILED'|'PROCESSING'|'REJECTED',
+ *         Status?: 'APPROVED'|'AVAILABLE'|'DELETED'|'DRAFTING'|'FAILED'|'PROCESSING'|'REJECTED',
  *         Arn?: string,
  *         StatusReason?: string,
  *         ...,
@@ -5099,6 +5118,7 @@ use Aws\AwsClient;
  *         Address?: string,
  *         ...,
  *     },
+ *     AdditionalRecipients?: array{CcEmailAddresses?: list<array>, ...},
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateContactAttributes(array $args = [])
@@ -5367,7 +5387,10 @@ use Aws\AwsClient;
  *     AsDraft?: bool,
  *     ClientToken?: string,
  *     TargetConfiguration?: array{ContactInteractionType?: 'AGENT'|'AUTOMATED'|'CUSTOMER', ...},
- *     LanguageConfiguration?: array{FormLanguage?: 'de-DE'|'en-US'|'es-ES'|'fr-FR'|'it-IT'|'ja-JP'|'ko-KR'|'ms-MY'|'pt-BR'|'zh-CN', ...},
+ *     LanguageConfiguration?: array{
+ *         FormLanguage?: 'af-ZA'|'am-ET'|'ar-AE'|'ar-SA'|'be-BY'|'bg-BG'|'bn-BD'|'bs-BA'|'ca-ES'|'ckb-IQ'|'ckb-IR'|'cs-CZ'|'cy-GB'|'da-DK'|'de-AT'|'de-CH'|'de-DE'|'el-GR'|'en-AB'|'en-AU'|'en-GB'|'en-IE'|'en-IN'|'en-NZ'|'en-SG'|'en-US'|'en-WL'|'en-ZA'|'es-ES'|'es-MX'|'es-US'|'et-EE'|'eu-ES'|'fa-AF'|'fa-IR'|'fi-FI'|'fr-BE'|'fr-CA'|'fr-FR'|'ga-IE'|'gl-ES'|'gu-IN'|'he-IL'|'hi-IN'|'hmn'|'hr-HR'|'ht-HT'|'hu-HU'|'hy-AM'|'id-ID'|'is-IS'|'it-IT'|'ja-JP'|'jv-ID'|'ka-GE'|'kk-KZ'|'km-KH'|'kn-IN'|'ko-KR'|'lg-UG'|'lo-LA'|'lt-LT'|'lv-LV'|'mk-MK'|'ml-IN'|'mr-IN'|'ms-MY'|'my-MM'|'ne-NP'|'nl-BE'|'nl-NL'|'no-NO'|'or-IN'|'pa-IN'|'pl-PL'|'ps-AF'|'pt-BR'|'pt-PT'|'ro-RO'|'ru-RU'|'si-LK'|'sk-SK'|'sl-SI'|'so-SO'|'sq-AL'|'sr-RS'|'su-ID'|'sv-SE'|'sw-BI'|'sw-KE'|'sw-RW'|'sw-TZ'|'sw-UG'|'ta-IN'|'te-IN'|'th-TH'|'tl-PH'|'tr-TR'|'uk-UA'|'uz-UZ'|'vi-VN'|'xh-ZA'|'yue-HK'|'zh-CN'|'zh-TW'|'zu-ZA',
+ *         ...,
+ *     },
  *     AIVersion?: string,
  *     ...,
  * } $args = [])
@@ -5391,7 +5414,10 @@ use Aws\AwsClient;
  *     AsDraft?: bool,
  *     ClientToken?: string,
  *     TargetConfiguration?: array{ContactInteractionType?: 'AGENT'|'AUTOMATED'|'CUSTOMER', ...},
- *     LanguageConfiguration?: array{FormLanguage?: 'de-DE'|'en-US'|'es-ES'|'fr-FR'|'it-IT'|'ja-JP'|'ko-KR'|'ms-MY'|'pt-BR'|'zh-CN', ...},
+ *     LanguageConfiguration?: array{
+ *         FormLanguage?: 'af-ZA'|'am-ET'|'ar-AE'|'ar-SA'|'be-BY'|'bg-BG'|'bn-BD'|'bs-BA'|'ca-ES'|'ckb-IQ'|'ckb-IR'|'cs-CZ'|'cy-GB'|'da-DK'|'de-AT'|'de-CH'|'de-DE'|'el-GR'|'en-AB'|'en-AU'|'en-GB'|'en-IE'|'en-IN'|'en-NZ'|'en-SG'|'en-US'|'en-WL'|'en-ZA'|'es-ES'|'es-MX'|'es-US'|'et-EE'|'eu-ES'|'fa-AF'|'fa-IR'|'fi-FI'|'fr-BE'|'fr-CA'|'fr-FR'|'ga-IE'|'gl-ES'|'gu-IN'|'he-IL'|'hi-IN'|'hmn'|'hr-HR'|'ht-HT'|'hu-HU'|'hy-AM'|'id-ID'|'is-IS'|'it-IT'|'ja-JP'|'jv-ID'|'ka-GE'|'kk-KZ'|'km-KH'|'kn-IN'|'ko-KR'|'lg-UG'|'lo-LA'|'lt-LT'|'lv-LV'|'mk-MK'|'ml-IN'|'mr-IN'|'ms-MY'|'my-MM'|'ne-NP'|'nl-BE'|'nl-NL'|'no-NO'|'or-IN'|'pa-IN'|'pl-PL'|'ps-AF'|'pt-BR'|'pt-PT'|'ro-RO'|'ru-RU'|'si-LK'|'sk-SK'|'sl-SI'|'so-SO'|'sq-AL'|'sr-RS'|'su-ID'|'sv-SE'|'sw-BI'|'sw-KE'|'sw-RW'|'sw-TZ'|'sw-UG'|'ta-IN'|'te-IN'|'th-TH'|'tl-PH'|'tr-TR'|'uk-UA'|'uz-UZ'|'vi-VN'|'xh-ZA'|'yue-HK'|'zh-CN'|'zh-TW'|'zu-ZA',
+ *         ...,
+ *     },
  *     AIVersion?: string,
  *     ...,
  * } $args = [])
@@ -5587,6 +5613,20 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result updateNotificationContent(array{InstanceId?: string, NotificationId?: string, Content?: array<string, string>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise updateNotificationContentAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise updateNotificationContentAsync(array{InstanceId?: string, NotificationId?: string, Content?: array<string, string>, ...} $args = [])
+ * @method \Aws\Result updateOutboundEmailContactMessage(array $args = [])
+ * @phpstan-method \Aws\Result updateOutboundEmailContactMessage(array{
+ *     InstanceId?: string,
+ *     ContactId?: string,
+ *     EmailMessage?: array{MessageSourceType?: 'RAW', RawMessage?: array{Body?: string, ContentType?: string, ...}, ...},
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateOutboundEmailContactMessageAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateOutboundEmailContactMessageAsync(array{
+ *     InstanceId?: string,
+ *     ContactId?: string,
+ *     EmailMessage?: array{MessageSourceType?: 'RAW', RawMessage?: array{Body?: string, ContentType?: string, ...}, ...},
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result updateParticipantAuthentication(array $args = [])
  * @phpstan-method \Aws\Result updateParticipantAuthentication(array{State?: string, InstanceId?: string, Code?: string, Error?: string, ErrorDescription?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise updateParticipantAuthenticationAsync(array $args = [])
@@ -5780,7 +5820,7 @@ use Aws\AwsClient;
  *     Name?: string,
  *     Function?: string,
  *     Actions?: list<array{
- *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
+ *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_EMAILS'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
  *         TaskAction?: array,
  *         EventBridgeAction?: array,
  *         AssignContactCategoryAction?: array,
@@ -5789,6 +5829,7 @@ use Aws\AwsClient;
  *         UpdateCaseAction?: array,
  *         AssignSlaAction?: array,
  *         EndAssociatedTasksAction?: array,
+ *         EndAssociatedEmailsAction?: array,
  *         SubmitAutoEvaluationAction?: array,
  *         ExtractInformationAction?: array,
  *         SendInAppNotificationAction?: array,
@@ -5805,7 +5846,7 @@ use Aws\AwsClient;
  *     Name?: string,
  *     Function?: string,
  *     Actions?: list<array{
- *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
+ *         ActionType?: 'ASSIGN_CONTACT_CATEGORY'|'ASSIGN_SLA'|'CREATE_CASE'|'CREATE_TASK'|'END_ASSOCIATED_EMAILS'|'END_ASSOCIATED_TASKS'|'EXTRACT_INFORMATION'|'GENERATE_EVENTBRIDGE_EVENT'|'SEND_IN_APP_NOTIFICATION'|'SEND_NOTIFICATION'|'SUBMIT_AUTO_EVALUATION'|'UPDATE_CASE',
  *         TaskAction?: array,
  *         EventBridgeAction?: array,
  *         AssignContactCategoryAction?: array,
@@ -5814,6 +5855,7 @@ use Aws\AwsClient;
  *         UpdateCaseAction?: array,
  *         AssignSlaAction?: array,
  *         EndAssociatedTasksAction?: array,
+ *         EndAssociatedEmailsAction?: array,
  *         SubmitAutoEvaluationAction?: array,
  *         ExtractInformationAction?: array,
  *         SendInAppNotificationAction?: array,
@@ -5869,6 +5911,7 @@ use Aws\AwsClient;
  *     Description?: string,
  *     ContactFlowId?: string,
  *     SelfAssignFlowId?: string,
+ *     ContactHooks?: array{WrapUpFlowId?: string, ...},
  *     Constraints?: array{RequiredFields?: list<array>, ReadOnlyFields?: list<array>, InvisibleFields?: list<array>, ...},
  *     Defaults?: array{DefaultFieldValues?: list<array>, ...},
  *     Status?: 'ACTIVE'|'INACTIVE',
@@ -5889,6 +5932,7 @@ use Aws\AwsClient;
  *     Description?: string,
  *     ContactFlowId?: string,
  *     SelfAssignFlowId?: string,
+ *     ContactHooks?: array{WrapUpFlowId?: string, ...},
  *     Constraints?: array{RequiredFields?: list<array>, ReadOnlyFields?: list<array>, InvisibleFields?: list<array>, ...},
  *     Defaults?: array{DefaultFieldValues?: list<array>, ...},
  *     Status?: 'ACTIVE'|'INACTIVE',

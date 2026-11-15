@@ -16,6 +16,7 @@ use Aws\AwsClient;
  *     enabled?: bool,
  *     tags?: list<array{key?: string, value?: string, ...}>,
  *     acceptRoleSessionName?: bool,
+ *     aliasName?: string,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createProfileAsync(array $args = [])
@@ -29,6 +30,7 @@ use Aws\AwsClient;
  *     enabled?: bool,
  *     tags?: list<array{key?: string, value?: string, ...}>,
  *     acceptRoleSessionName?: bool,
+ *     aliasName?: string,
  *     ...,
  * } $args = [])
  * @method \Aws\Result createTrustAnchor(array $args = [])
@@ -40,6 +42,7 @@ use Aws\AwsClient;
  *         ...,
  *     },
  *     enabled?: bool,
+ *     crlDpRevocationEnabled?: bool,
  *     tags?: list<array{key?: string, value?: string, ...}>,
  *     notificationSettings?: list<array{
  *         enabled?: bool,
@@ -48,6 +51,7 @@ use Aws\AwsClient;
  *         channel?: 'ALL',
  *         ...,
  *     }>,
+ *     aliasName?: string,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createTrustAnchorAsync(array $args = [])
@@ -59,6 +63,7 @@ use Aws\AwsClient;
  *         ...,
  *     },
  *     enabled?: bool,
+ *     crlDpRevocationEnabled?: bool,
  *     tags?: list<array{key?: string, value?: string, ...}>,
  *     notificationSettings?: list<array{
  *         enabled?: bool,
@@ -67,6 +72,7 @@ use Aws\AwsClient;
  *         channel?: 'ALL',
  *         ...,
  *     }>,
+ *     aliasName?: string,
  *     ...,
  * } $args = [])
  * @method \Aws\Result deleteAttributeMapping(array $args = [])
@@ -142,6 +148,7 @@ use Aws\AwsClient;
  *     enabled?: bool,
  *     tags?: list<array{key?: string, value?: string, ...}>,
  *     trustAnchorArn?: string,
+ *     aliasName?: string,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise importCrlAsync(array $args = [])
@@ -151,6 +158,7 @@ use Aws\AwsClient;
  *     enabled?: bool,
  *     tags?: list<array{key?: string, value?: string, ...}>,
  *     trustAnchorArn?: string,
+ *     aliasName?: string,
  *     ...,
  * } $args = [])
  * @method \Aws\Result listCrls(array $args = [])
@@ -232,9 +240,21 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise untagResourceAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise untagResourceAsync(array{resourceArn?: string, tagKeys?: list<string>, ...} $args = [])
  * @method \Aws\Result updateCrl(array $args = [])
- * @phpstan-method \Aws\Result updateCrl(array{crlId?: string, name?: string, crlData?: string|resource|\Psr\Http\Message\StreamInterface, ...} $args = [])
+ * @phpstan-method \Aws\Result updateCrl(array{
+ *     crlId?: string,
+ *     name?: string,
+ *     crlData?: string|resource|\Psr\Http\Message\StreamInterface,
+ *     aliasName?: string,
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateCrlAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise updateCrlAsync(array{crlId?: string, name?: string, crlData?: string|resource|\Psr\Http\Message\StreamInterface, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateCrlAsync(array{
+ *     crlId?: string,
+ *     name?: string,
+ *     crlData?: string|resource|\Psr\Http\Message\StreamInterface,
+ *     aliasName?: string,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result updateProfile(array $args = [])
  * @phpstan-method \Aws\Result updateProfile(array{
  *     profileId?: string,
@@ -244,6 +264,7 @@ use Aws\AwsClient;
  *     managedPolicyArns?: list<string>,
  *     durationSeconds?: int,
  *     acceptRoleSessionName?: bool,
+ *     aliasName?: string,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateProfileAsync(array $args = [])
@@ -255,6 +276,7 @@ use Aws\AwsClient;
  *     managedPolicyArns?: list<string>,
  *     durationSeconds?: int,
  *     acceptRoleSessionName?: bool,
+ *     aliasName?: string,
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateTrustAnchor(array $args = [])
@@ -266,6 +288,8 @@ use Aws\AwsClient;
  *         sourceData?: array{x509CertificateData?: string, acmPcaArn?: string, ...},
  *         ...,
  *     },
+ *     crlDpRevocationEnabled?: bool,
+ *     aliasName?: string,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateTrustAnchorAsync(array $args = [])
@@ -277,6 +301,8 @@ use Aws\AwsClient;
  *         sourceData?: array{x509CertificateData?: string, acmPcaArn?: string, ...},
  *         ...,
  *     },
+ *     crlDpRevocationEnabled?: bool,
+ *     aliasName?: string,
  *     ...,
  * } $args = [])
  */

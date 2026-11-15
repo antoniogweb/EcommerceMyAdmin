@@ -1379,6 +1379,72 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result getSecurityControlDefinition(array{SecurityControlId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getSecurityControlDefinitionAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getSecurityControlDefinitionAsync(array{SecurityControlId?: string, ...} $args = [])
+ * @method \Aws\Result getSoftwareResourcesV2(array $args = [])
+ * @phpstan-method \Aws\Result getSoftwareResourcesV2(array{
+ *     PackageName?: string,
+ *     PackageType?: string,
+ *     PackageVersion?: string,
+ *     Filters?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *     Scopes?: array{AwsOrganizations?: list<array>, ...},
+ *     SortCriteria?: list<array{Field?: string, SortOrder?: 'asc'|'desc', ...}>,
+ *     NextToken?: string,
+ *     MaxResults?: int,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise getSoftwareResourcesV2Async(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getSoftwareResourcesV2Async(array{
+ *     PackageName?: string,
+ *     PackageType?: string,
+ *     PackageVersion?: string,
+ *     Filters?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *     Scopes?: array{AwsOrganizations?: list<array>, ...},
+ *     SortCriteria?: list<array{Field?: string, SortOrder?: 'asc'|'desc', ...}>,
+ *     NextToken?: string,
+ *     MaxResults?: int,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result getSoftwareStatisticsV2(array $args = [])
+ * @phpstan-method \Aws\Result getSoftwareStatisticsV2(array{
+ *     GroupByRules?: list<array{
+ *         GroupByField?: 'AccountId'|'PackageName'|'PackageType'|'PackageVersion'|'Region'|'ResourceCloudPartition'|'ResourceId'|'ResourceOwnerAccountId'|'ResourceOwnerOrgId'|'ResourceProvider'|'ResourceRegion'|'ResourceType',
+ *         Filters?: array,
+ *         ...,
+ *     }>,
+ *     Scopes?: array{AwsOrganizations?: list<array>, ...},
+ *     SortOrder?: 'asc'|'desc',
+ *     MaxStatisticResults?: int,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise getSoftwareStatisticsV2Async(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getSoftwareStatisticsV2Async(array{
+ *     GroupByRules?: list<array{
+ *         GroupByField?: 'AccountId'|'PackageName'|'PackageType'|'PackageVersion'|'Region'|'ResourceCloudPartition'|'ResourceId'|'ResourceOwnerAccountId'|'ResourceOwnerOrgId'|'ResourceProvider'|'ResourceRegion'|'ResourceType',
+ *         Filters?: array,
+ *         ...,
+ *     }>,
+ *     Scopes?: array{AwsOrganizations?: list<array>, ...},
+ *     SortOrder?: 'asc'|'desc',
+ *     MaxStatisticResults?: int,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result getSoftwareV2(array $args = [])
+ * @phpstan-method \Aws\Result getSoftwareV2(array{
+ *     Filters?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *     Scopes?: array{AwsOrganizations?: list<array>, ...},
+ *     SortCriteria?: list<array{Field?: string, SortOrder?: 'asc'|'desc', ...}>,
+ *     NextToken?: string,
+ *     MaxResults?: int,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise getSoftwareV2Async(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getSoftwareV2Async(array{
+ *     Filters?: array{CompositeFilters?: list<array>, CompositeOperator?: 'AND'|'OR', ...},
+ *     Scopes?: array{AwsOrganizations?: list<array>, ...},
+ *     SortCriteria?: list<array{Field?: string, SortOrder?: 'asc'|'desc', ...}>,
+ *     NextToken?: string,
+ *     MaxResults?: int,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result inviteMembers(array $args = [])
  * @phpstan-method \Aws\Result inviteMembers(array{AccountIds?: list<string>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise inviteMembersAsync(array $args = [])
@@ -1406,7 +1472,7 @@ use Aws\AwsClient;
  *     Filters?: array{
  *         ConfigurationPolicyId?: string,
  *         AssociationType?: 'APPLIED'|'INHERITED',
- *         AssociationStatus?: 'FAILED'|'PENDING'|'SUCCESS',
+ *         AssociationStatus?: 'DISABLED'|'FAILED'|'PENDING'|'SUCCESS',
  *         ...,
  *     },
  *     ...,
@@ -1418,7 +1484,7 @@ use Aws\AwsClient;
  *     Filters?: array{
  *         ConfigurationPolicyId?: string,
  *         AssociationType?: 'APPLIED'|'INHERITED',
- *         AssociationStatus?: 'FAILED'|'PENDING'|'SUCCESS',
+ *         AssociationStatus?: 'DISABLED'|'FAILED'|'PENDING'|'SUCCESS',
  *         ...,
  *     },
  *     ...,
@@ -2195,7 +2261,7 @@ use Aws\AwsClient;
  *     AutoEnableStandards?: 'DEFAULT'|'NONE',
  *     OrganizationConfiguration?: array{
  *         ConfigurationType?: 'CENTRAL'|'LOCAL',
- *         Status?: 'ENABLED'|'FAILED'|'PENDING',
+ *         Status?: 'DISABLED'|'ENABLED'|'FAILED'|'PENDING',
  *         StatusMessage?: string,
  *         ...,
  *     },
@@ -2207,7 +2273,7 @@ use Aws\AwsClient;
  *     AutoEnableStandards?: 'DEFAULT'|'NONE',
  *     OrganizationConfiguration?: array{
  *         ConfigurationType?: 'CENTRAL'|'LOCAL',
- *         Status?: 'ENABLED'|'FAILED'|'PENDING',
+ *         Status?: 'DISABLED'|'ENABLED'|'FAILED'|'PENDING',
  *         StatusMessage?: string,
  *         ...,
  *     },

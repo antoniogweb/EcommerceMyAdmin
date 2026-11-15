@@ -64,14 +64,16 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
  *         ...,
  *     },
  *     requestHeaderConfiguration?: array{requestHeaderAllowlist?: list<string>, ...},
- *     protocolConfiguration?: array{serverProtocol?: 'A2A'|'AGUI'|'HTTP'|'MCP', ...},
+ *     protocolConfiguration?: array{serverProtocol?: 'A2A'|'AGUI'|'HTTP'|'MCP', port?: int, path?: string, ...},
  *     lifecycleConfiguration?: array{idleRuntimeSessionTimeout?: int, maxLifetime?: int, ...},
+ *     hooksConfiguration?: array{build?: array{warmup?: array, ...}, ...},
  *     environmentVariables?: array<string, string>,
  *     filesystemConfigurations?: list<array{
  *         sessionStorage?: array,
@@ -83,6 +85,8 @@ use Aws\AwsClient;
  *     capacityProviderConfiguration?: array{capacityProviderArn?: string, ...},
  *     tags?: array<string, string>,
  *     platformVersion?: string,
+ *     allowedPorts?: list<array{port?: int, portRange?: array, ...}>,
+ *     resourceConfigurations?: list<array{minimumMemoryInMiB?: int, ...}>,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createAgentRuntimeAsync(array $args = [])
@@ -116,14 +120,16 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
  *         ...,
  *     },
  *     requestHeaderConfiguration?: array{requestHeaderAllowlist?: list<string>, ...},
- *     protocolConfiguration?: array{serverProtocol?: 'A2A'|'AGUI'|'HTTP'|'MCP', ...},
+ *     protocolConfiguration?: array{serverProtocol?: 'A2A'|'AGUI'|'HTTP'|'MCP', port?: int, path?: string, ...},
  *     lifecycleConfiguration?: array{idleRuntimeSessionTimeout?: int, maxLifetime?: int, ...},
+ *     hooksConfiguration?: array{build?: array{warmup?: array, ...}, ...},
  *     environmentVariables?: array<string, string>,
  *     filesystemConfigurations?: list<array{
  *         sessionStorage?: array,
@@ -135,6 +141,8 @@ use Aws\AwsClient;
  *     capacityProviderConfiguration?: array{capacityProviderArn?: string, ...},
  *     tags?: array<string, string>,
  *     platformVersion?: string,
+ *     allowedPorts?: list<array{port?: int, portRange?: array, ...}>,
+ *     resourceConfigurations?: list<array{minimumMemoryInMiB?: int, ...}>,
  *     ...,
  * } $args = [])
  * @method \Aws\Result createAgentRuntimeEndpoint(array $args = [])
@@ -423,6 +431,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -433,6 +442,7 @@ use Aws\AwsClient;
  *     policyEngineConfiguration?: array{arn?: string, mode?: 'ENFORCE'|'LOG_ONLY', ...},
  *     exceptionLevel?: 'DEBUG',
  *     tags?: array<string, string>,
+ *     domainOverride?: array{defaultDomain?: string, alternateDomains?: list<string>, ...},
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createGatewayAsync(array $args = [])
@@ -465,6 +475,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -475,6 +486,7 @@ use Aws\AwsClient;
  *     policyEngineConfiguration?: array{arn?: string, mode?: 'ENFORCE'|'LOG_ONLY', ...},
  *     exceptionLevel?: 'DEBUG',
  *     tags?: array<string, string>,
+ *     domainOverride?: array{defaultDomain?: string, alternateDomains?: list<string>, ...},
  *     ...,
  * } $args = [])
  * @method \Aws\Result createGatewayRateLimit(array $args = [])
@@ -649,6 +661,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -756,6 +769,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -917,6 +931,7 @@ use Aws\AwsClient;
  *             privateKeyJwtConfig?: array,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             ...,
  *         },
  *         googleOauth2ProviderConfig?: array{
@@ -1000,6 +1015,7 @@ use Aws\AwsClient;
  *             privateKeyJwtConfig?: array,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             ...,
  *         },
  *         googleOauth2ProviderConfig?: array{
@@ -1230,6 +1246,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -1256,6 +1273,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -1332,6 +1350,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -1356,6 +1375,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -1871,6 +1891,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result putResourcePolicy(array{resourceArn?: string, policy?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise putResourcePolicyAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise putResourcePolicyAsync(array{resourceArn?: string, policy?: string, ...} $args = [])
+ * @method \Aws\Result resetTokenVaultKeyMaterial(array $args = [])
+ * @phpstan-method \Aws\Result resetTokenVaultKeyMaterial(array{tokenVaultId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise resetTokenVaultKeyMaterialAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise resetTokenVaultKeyMaterialAsync(array{tokenVaultId?: string, ...} $args = [])
  * @method \Aws\Result rotatePaymentConnectorCredentials(array $args = [])
  * @phpstan-method \Aws\Result rotatePaymentConnectorCredentials(array{
  *     paymentManagerId?: string,
@@ -1963,14 +1987,16 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
  *         ...,
  *     },
  *     requestHeaderConfiguration?: array{requestHeaderAllowlist?: list<string>, ...},
- *     protocolConfiguration?: array{serverProtocol?: 'A2A'|'AGUI'|'HTTP'|'MCP', ...},
+ *     protocolConfiguration?: array{serverProtocol?: 'A2A'|'AGUI'|'HTTP'|'MCP', port?: int, path?: string, ...},
  *     lifecycleConfiguration?: array{idleRuntimeSessionTimeout?: int, maxLifetime?: int, ...},
+ *     hooksConfiguration?: array{build?: array{warmup?: array, ...}, ...},
  *     metadataConfiguration?: array{requireMMDSV2?: bool, ...},
  *     environmentVariables?: array<string, string>,
  *     filesystemConfigurations?: list<array{
@@ -1982,6 +2008,8 @@ use Aws\AwsClient;
  *     }>,
  *     capacityProviderConfiguration?: array{capacityProviderArn?: string, ...},
  *     platformVersion?: string,
+ *     allowedPorts?: list<array{port?: int, portRange?: array, ...}>,
+ *     resourceConfigurations?: list<array{minimumMemoryInMiB?: int, ...}>,
  *     clientToken?: string,
  *     ...,
  * } $args = [])
@@ -2015,14 +2043,16 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
  *         ...,
  *     },
  *     requestHeaderConfiguration?: array{requestHeaderAllowlist?: list<string>, ...},
- *     protocolConfiguration?: array{serverProtocol?: 'A2A'|'AGUI'|'HTTP'|'MCP', ...},
+ *     protocolConfiguration?: array{serverProtocol?: 'A2A'|'AGUI'|'HTTP'|'MCP', port?: int, path?: string, ...},
  *     lifecycleConfiguration?: array{idleRuntimeSessionTimeout?: int, maxLifetime?: int, ...},
+ *     hooksConfiguration?: array{build?: array{warmup?: array, ...}, ...},
  *     metadataConfiguration?: array{requireMMDSV2?: bool, ...},
  *     environmentVariables?: array<string, string>,
  *     filesystemConfigurations?: list<array{
@@ -2034,6 +2064,8 @@ use Aws\AwsClient;
  *     }>,
  *     capacityProviderConfiguration?: array{capacityProviderArn?: string, ...},
  *     platformVersion?: string,
+ *     allowedPorts?: list<array{port?: int, portRange?: array, ...}>,
+ *     resourceConfigurations?: list<array{minimumMemoryInMiB?: int, ...}>,
  *     clientToken?: string,
  *     ...,
  * } $args = [])
@@ -2197,6 +2229,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -2208,6 +2241,7 @@ use Aws\AwsClient;
  *     policyEngineConfiguration?: array{arn?: string, mode?: 'ENFORCE'|'LOG_ONLY', ...},
  *     exceptionLevel?: 'DEBUG',
  *     wafConfiguration?: array{failureMode?: 'FAIL_CLOSE'|'FAIL_OPEN', ...},
+ *     domainOverride?: array{defaultDomain?: string, alternateDomains?: list<string>, ...},
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateGatewayAsync(array $args = [])
@@ -2240,6 +2274,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -2251,6 +2286,7 @@ use Aws\AwsClient;
  *     policyEngineConfiguration?: array{arn?: string, mode?: 'ENFORCE'|'LOG_ONLY', ...},
  *     exceptionLevel?: 'DEBUG',
  *     wafConfiguration?: array{failureMode?: 'FAIL_CLOSE'|'FAIL_OPEN', ...},
+ *     domainOverride?: array{defaultDomain?: string, alternateDomains?: list<string>, ...},
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateGatewayRateLimit(array $args = [])
@@ -2633,6 +2669,7 @@ use Aws\AwsClient;
  *             privateKeyJwtConfig?: array,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             ...,
  *         },
  *         googleOauth2ProviderConfig?: array{
@@ -2715,6 +2752,7 @@ use Aws\AwsClient;
  *             privateKeyJwtConfig?: array,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             ...,
  *         },
  *         googleOauth2ProviderConfig?: array{
@@ -2938,6 +2976,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
@@ -2963,6 +3002,7 @@ use Aws\AwsClient;
  *             customClaims?: list<array>,
  *             privateEndpoint?: array,
  *             privateEndpointOverrides?: list<array>,
+ *             certificateConfigurations?: list<array>,
  *             allowedWorkloadConfiguration?: array,
  *             ...,
  *         },
