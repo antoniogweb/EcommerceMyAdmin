@@ -73,8 +73,15 @@ class ContenutiController extends BaseController
 		
 		$fields = "lingua,attivo";
 		
-		if (!empty($recordTipo) && trim($recordTipo["campi"]))
-			$fields .= ",".$recordTipo["campi"];
+		if (!empty($recordTipo) && !empty($recordTipo["campi"]))
+		{
+			$campiRichiesti = array_map("trim", explode(",", $recordTipo["campi"]));
+			$campiAmmessi = array_intersect($campiRichiesti, ContenutiModel::$campiEditabiliContenuti);
+			$campiAmmessi = array_values(array_unique(array_filter($campiAmmessi, function($campo) { return $campo !== ""; })));
+			
+			if ($campiAmmessi)
+				$fields .= ",".implode(",", $campiAmmessi);
+		}
 		else
 		{
 			if ($this->viewArgs["tipo"] == "GENERICO")

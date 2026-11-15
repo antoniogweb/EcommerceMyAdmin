@@ -22,7 +22,43 @@
 
 if (!defined('EG')) die('Direct access not allowed!');
 
-class ContenutiModel extends GenericModel {
+class ContenutiModel extends GenericModel
+{
+	public static $campiEditabiliContenuti = array(
+		"animazione",
+		"attivo",
+		"coordinate",
+		"descrizione",
+		"filename",
+		"id_page",
+		"id_tipo",
+		"immagine_1",
+		"immagine_2",
+		"lingua",
+		"link_id_c",
+		"link_id_marchio",
+		"link_id_page",
+		"link_id_tag",
+		"link_libero",
+		"margine_inferiore",
+		"margine_superiore",
+		"posizione",
+		"posizione_l",
+		"posizione_m",
+		"posizione_s",
+		"posizione_xl",
+		"posizione_xs",
+		"sottotitolo",
+		"target",
+		"testo_link",
+		"tipo_layer",
+		"titolo",
+		"visibile_l",
+		"visibile_m",
+		"visibile_s",
+		"visibile_xl",
+		"visibile_xs",
+	);
 	
 	public static $posizioni = array(
 		"eg-position-top-left"		=>	"In alto a sinistra",
