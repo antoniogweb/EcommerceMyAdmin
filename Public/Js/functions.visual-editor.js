@@ -116,7 +116,7 @@
 	]);
 
 	window.editorVisualeConfig = {
-		language: "it",
+		language: window.editorVisualeLanguage,
 		width: "100%",
 		height: 250,
 		enter: "br",

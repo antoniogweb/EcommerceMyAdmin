@@ -15,4 +15,5 @@
 	var fawe_folder_opened_class = "<?php echo v("fawe_folder_opened_class");?>";
 	var fawe_folder_closed_class = "<?php echo v("fawe_folder_closed_class");?>";
 	var permetti_upload_generico = "<?php echo v("permetti_upload_generico");?>";
+	var editorVisualeLanguage = <?php echo json_encode(Params::$lang !== null ? Params::$lang : "it", JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);?>;
 </script>
