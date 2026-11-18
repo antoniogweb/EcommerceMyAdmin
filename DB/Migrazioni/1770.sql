@@ -1,0 +1,1 @@
+ALTER TABLE spedizioni_negozio_info ADD INDEX idx_spedizione_codice_info (id_spedizione_negozio,codice_info);
