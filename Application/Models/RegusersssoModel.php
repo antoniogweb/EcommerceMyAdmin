@@ -128,8 +128,7 @@ class RegusersssoModel extends GenericModel
 			return $this->ssoRedemptionResult('KO', 'Impossibile completare il riscatto del token SSO.');
 		}
 
-		if (!$this->db->commit())
-			return $this->ssoRedemptionResult('KO', 'Impossibile completare il riscatto del token SSO.');
+		$this->db->commit();
 
 		return $this->ssoRedemptionResult('OK', '', $idUser);
 	}
