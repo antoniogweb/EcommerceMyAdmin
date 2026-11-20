@@ -521,6 +521,12 @@ class VariabiliModel extends GenericModel {
 		"abilita_login_tramite_app"	=>	0, // se impostato a 1 permette il login tramite le app attive
 		"token_eliminazione_account_da_app"	=>	"", // verrà utilizzato come accesso per l'eliminazione dell'utente da app esterna (Facebook, ...)
 		"path_instagram_media_json_file"	=>	"", // path assoluto dove salvare il file json con i media scaricati da instagram
+		## SSO ##
+		"attiva_sso"	=>	0, // se impostato a 1 viene attivato il SSO - Single Sign-On
+		"sso_durata_token_secondi"	=>	60, // durata del token SSO
+		"sso_token_variable_name"	=>	"token", // name of the token variable in the query string for SSO
+		"sso_state_variable_name"	=>	"state", // name of the state variable in the query string for SSO
+		"sso_redirect_url_after_token_creation"	=>	"", // redirect URL after SSO creation
 		## UTENTI ##
 		"elimina_account_ad_ordine_se_parcheggiato"	=>	0, // se impostato ad 1, all'ordine il sistema controlla che non sia un account bloccante e in caso lo cancella
 		"permetti_sempre_eliminazione_account_backend"=>	0, // se impostato a 1, utilizza deleteAccount se non può eliminare il cliente

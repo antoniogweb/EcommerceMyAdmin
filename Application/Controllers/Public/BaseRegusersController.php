@@ -26,7 +26,7 @@ class BaseRegusersController extends BaseController
 {
 	protected $permalinkPaginaRegistrazione = "crea-account";
 	private $creaAccountViewFile = "form";
-	
+
 	public $redirectUrlErroreTwoFactor = ""; // url di atterraggio quando c'è un errore nell'autenticazione a due fattori
 	
 	public function __construct($model, $controller, $queryString = array(), $application = null, $action = null)
@@ -520,6 +520,73 @@ class BaseRegusersController extends BaseController
 		}
 	}
 	
+	// Create SSO token and redirect to v("sso_redirect_url_after_token_creation")
+	public function sso()
+	{
+		// L'SSO deve essere attivato esplicitamente.
+		if ((string)v("attiva_sso") !== '1')
+			$this->responseCode(403);
+
+		$stateVariable = trim((string)v("sso_state_variable_name"));
+		$tokenVariable = trim((string)v("sso_token_variable_name"));
+		$redirectUrl = trim((string)v("sso_redirect_url_after_token_creation"));
+		$tokenDuration = (int)v("sso_durata_token_secondi");
+
+		if (!$stateVariable || !$tokenVariable || !$redirectUrl || $tokenDuration <= 0)
+			$this->responseCode(403);
+
+		// Accetta solo redirect assoluti HTTP(S) configurati lato server.
+		$redirectParts = parse_url($redirectUrl);
+		if ($redirectParts === false || empty($redirectParts['scheme']) || empty($redirectParts['host']) ||
+			!in_array(strtolower($redirectParts['scheme']), array('https', 'http'), true))
+			$this->responseCode(403);
+
+		// Lo state viene generato e conservato dal Selector e deve tornare invariato.
+		$state = $this->request->get($stateVariable, "", "sanitizeAll");
+		if (!is_string($state) || $state === "" || strlen($state) > 512)
+			$this->responseCode(403);
+
+		// Richiedi una sessione registrata e autenticata su Brofer.
+		if (!isset($this->s['registered']->status['status']) || $this->s['registered']->status['status'] !== 'logged')
+		{
+			$this->redirect("regusers/login");
+			return;
+		}
+
+		$idUser = (int)$this->s['registered']->status['id_user'];
+		if ($idUser <= 0)
+			$this->responseCode(403);
+
+		// Il token casuale viene mostrato una sola volta; nel database si conserva
+		// soltanto il suo hash SHA-256.
+		$token = randomToken32();
+		$tokenHash = hash('sha256', $token);
+		$expiresAt = date('Y-m-d H:i:s', time() + $tokenDuration);
+
+		$this->model('RegusersssoModel');
+		$this->m['RegusersssoModel']->sValues(array(
+			'id_user' => $idUser,
+			'token_hash' => $tokenHash,
+			'expires_at' => $expiresAt,
+		));
+
+		if (!$this->m['RegusersssoModel']->insert())
+			$this->responseCode(500);
+
+		// L'URL di ritorno è configurato lato server e può già contenere una
+		// query string. Aggiungi lo state richiesto e il token appena creato.
+		$querySeparator = strpos($redirectUrl, '?') === false ? '?' : '&';
+		if (substr($redirectUrl, -1) === '?' || substr($redirectUrl, -1) === '&')
+			$querySeparator = '';
+
+		$targetUrl = $redirectUrl . $querySeparator .
+			rawurlencode($stateVariable) . '=' . rawurlencode($state) . '&' .
+			rawurlencode($tokenVariable) . '=' . rawurlencode($token);
+
+		header('Location: ' . $targetUrl, true, 302);
+		exit;
+	}
+
 	protected function unsetAccessToken()
 	{
 		if (isset($_SESSION["access_token"]))
