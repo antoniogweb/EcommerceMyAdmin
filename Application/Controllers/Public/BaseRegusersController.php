@@ -561,12 +561,14 @@ class BaseRegusersController extends BaseController
 		// soltanto il suo hash SHA-256.
 		$token = randomToken32();
 		$tokenHash = hash('sha256', $token);
+		$stateHash = hash('sha256', $state);
 		$expiresAt = date('Y-m-d H:i:s', time() + $tokenDuration);
 
 		$this->model('RegusersssoModel');
 		$this->m['RegusersssoModel']->sValues(array(
 			'id_user' => $idUser,
 			'token_hash' => $tokenHash,
+			'state_hash' => $stateHash,
 			'expires_at' => $expiresAt,
 		));
 
