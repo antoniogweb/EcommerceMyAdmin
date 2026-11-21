@@ -334,6 +334,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result associateSoftwareToken(array{AccessToken?: string, Session?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise associateSoftwareTokenAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise associateSoftwareTokenAsync(array{AccessToken?: string, Session?: string, ...} $args = [])
+ * @method \Aws\Result cancelPointInTimeRecovery(array $args = [])
+ * @phpstan-method \Aws\Result cancelPointInTimeRecovery(array{UserPoolId?: string, RestoreId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise cancelPointInTimeRecoveryAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise cancelPointInTimeRecoveryAsync(array{UserPoolId?: string, RestoreId?: string, ...} $args = [])
  * @method \Aws\Result changePassword(array $args = [])
  * @phpstan-method \Aws\Result changePassword(array{PreviousPassword?: string, ProposedPassword?: string, AccessToken?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise changePasswordAsync(array $args = [])
@@ -406,6 +410,24 @@ use Aws\AwsClient;
  *     UserContextData?: array{IpAddress?: string, EncodedData?: string, ...},
  *     ClientMetadata?: array<string, string>,
  *     Session?: string,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result createCIMDPolicy(array $args = [])
+ * @phpstan-method \Aws\Result createCIMDPolicy(array{
+ *     UserPoolId?: string,
+ *     ClientId?: string,
+ *     PolicyName?: string,
+ *     CacheDuration?: int,
+ *     URLPatterns?: list<string>,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise createCIMDPolicyAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise createCIMDPolicyAsync(array{
+ *     UserPoolId?: string,
+ *     ClientId?: string,
+ *     PolicyName?: string,
+ *     CacheDuration?: int,
+ *     URLPatterns?: list<string>,
  *     ...,
  * } $args = [])
  * @method \Aws\Result createGroup(array $args = [])
@@ -769,7 +791,7 @@ use Aws\AwsClient;
  *     },
  *     ReadAttributes?: list<string>,
  *     WriteAttributes?: list<string>,
- *     ExplicitAuthFlows?: list<'ADMIN_NO_SRP_AUTH'|'ALLOW_ADMIN_USER_PASSWORD_AUTH'|'ALLOW_CUSTOM_AUTH'|'ALLOW_REFRESH_TOKEN_AUTH'|'ALLOW_USER_AUTH'|'ALLOW_USER_PASSWORD_AUTH'|'ALLOW_USER_SRP_AUTH'|'CUSTOM_AUTH_FLOW_ONLY'|'USER_PASSWORD_AUTH'>,
+ *     ExplicitAuthFlows?: list<'ADMIN_NO_SRP_AUTH'|'ALLOW_ADMIN_USER_PASSWORD_AUTH'|'ALLOW_CUSTOM_AUTH'|'ALLOW_REFRESH_TOKEN_AUTH'|'ALLOW_TOKEN_EXCHANGE_DELEGATION'|'ALLOW_TOKEN_EXCHANGE_IMPERSONATION'|'ALLOW_USER_AUTH'|'ALLOW_USER_PASSWORD_AUTH'|'ALLOW_USER_SRP_AUTH'|'CUSTOM_AUTH_FLOW_ONLY'|'USER_PASSWORD_AUTH'>,
  *     SupportedIdentityProviders?: list<string>,
  *     CallbackURLs?: list<string>,
  *     LogoutURLs?: list<string>,
@@ -790,6 +812,7 @@ use Aws\AwsClient;
  *     EnablePropagateAdditionalUserContextData?: bool,
  *     AuthSessionValidity?: int,
  *     RefreshTokenRotation?: array{Feature?: 'DISABLED'|'ENABLED', RetryGracePeriodSeconds?: int, ...},
+ *     PublishSecretsInAWSSecretsManager?: bool,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createUserPoolClientAsync(array $args = [])
@@ -809,7 +832,7 @@ use Aws\AwsClient;
  *     },
  *     ReadAttributes?: list<string>,
  *     WriteAttributes?: list<string>,
- *     ExplicitAuthFlows?: list<'ADMIN_NO_SRP_AUTH'|'ALLOW_ADMIN_USER_PASSWORD_AUTH'|'ALLOW_CUSTOM_AUTH'|'ALLOW_REFRESH_TOKEN_AUTH'|'ALLOW_USER_AUTH'|'ALLOW_USER_PASSWORD_AUTH'|'ALLOW_USER_SRP_AUTH'|'CUSTOM_AUTH_FLOW_ONLY'|'USER_PASSWORD_AUTH'>,
+ *     ExplicitAuthFlows?: list<'ADMIN_NO_SRP_AUTH'|'ALLOW_ADMIN_USER_PASSWORD_AUTH'|'ALLOW_CUSTOM_AUTH'|'ALLOW_REFRESH_TOKEN_AUTH'|'ALLOW_TOKEN_EXCHANGE_DELEGATION'|'ALLOW_TOKEN_EXCHANGE_IMPERSONATION'|'ALLOW_USER_AUTH'|'ALLOW_USER_PASSWORD_AUTH'|'ALLOW_USER_SRP_AUTH'|'CUSTOM_AUTH_FLOW_ONLY'|'USER_PASSWORD_AUTH'>,
  *     SupportedIdentityProviders?: list<string>,
  *     CallbackURLs?: list<string>,
  *     LogoutURLs?: list<string>,
@@ -830,6 +853,7 @@ use Aws\AwsClient;
  *     EnablePropagateAdditionalUserContextData?: bool,
  *     AuthSessionValidity?: int,
  *     RefreshTokenRotation?: array{Feature?: 'DISABLED'|'ENABLED', RetryGracePeriodSeconds?: int, ...},
+ *     PublishSecretsInAWSSecretsManager?: bool,
  *     ...,
  * } $args = [])
  * @method \Aws\Result createUserPoolDomain(array $args = [])
@@ -854,6 +878,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result createUserPoolReplica(array{UserPoolId?: string, RegionName?: string, UserPoolTags?: array<string, string>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise createUserPoolReplicaAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise createUserPoolReplicaAsync(array{UserPoolId?: string, RegionName?: string, UserPoolTags?: array<string, string>, ...} $args = [])
+ * @method \Aws\Result deleteCIMDPolicy(array $args = [])
+ * @phpstan-method \Aws\Result deleteCIMDPolicy(array{UserPoolId?: string, CIMDPolicyId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise deleteCIMDPolicyAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise deleteCIMDPolicyAsync(array{UserPoolId?: string, CIMDPolicyId?: string, ...} $args = [])
  * @method \Aws\Result deleteGroup(array $args = [])
  * @phpstan-method \Aws\Result deleteGroup(array{GroupName?: string, UserPoolId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteGroupAsync(array $args = [])
@@ -906,6 +934,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result deleteWebAuthnCredential(array{AccessToken?: string, CredentialId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteWebAuthnCredentialAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise deleteWebAuthnCredentialAsync(array{AccessToken?: string, CredentialId?: string, ...} $args = [])
+ * @method \Aws\Result describeCIMDPolicy(array $args = [])
+ * @phpstan-method \Aws\Result describeCIMDPolicy(array{UserPoolId?: string, CIMDPolicyId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeCIMDPolicyAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise describeCIMDPolicyAsync(array{UserPoolId?: string, CIMDPolicyId?: string, ...} $args = [])
  * @method \Aws\Result describeIdentityProvider(array $args = [])
  * @phpstan-method \Aws\Result describeIdentityProvider(array{UserPoolId?: string, ProviderName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeIdentityProviderAsync(array $args = [])
@@ -918,6 +950,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result describeManagedLoginBrandingByClient(array{UserPoolId?: string, ClientId?: string, ReturnMergedResources?: bool, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeManagedLoginBrandingByClientAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise describeManagedLoginBrandingByClientAsync(array{UserPoolId?: string, ClientId?: string, ReturnMergedResources?: bool, ...} $args = [])
+ * @method \Aws\Result describePointInTimeRecovery(array $args = [])
+ * @phpstan-method \Aws\Result describePointInTimeRecovery(array{UserPoolId?: string, RestoreId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise describePointInTimeRecoveryAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise describePointInTimeRecoveryAsync(array{UserPoolId?: string, RestoreId?: string, ...} $args = [])
  * @method \Aws\Result describeResourceServer(array $args = [])
  * @phpstan-method \Aws\Result describeResourceServer(array{UserPoolId?: string, Identifier?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeResourceServerAsync(array $args = [])
@@ -982,6 +1018,38 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result getClientToken(array{ClientId?: string, Secret?: string, Scopes?: list<string>, ClientMetadata?: array<string, string>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getClientTokenAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getClientTokenAsync(array{ClientId?: string, Secret?: string, Scopes?: list<string>, ClientMetadata?: array<string, string>, ...} $args = [])
+ * @method \Aws\Result getDerivedToken(array $args = [])
+ * @phpstan-method \Aws\Result getDerivedToken(array{
+ *     ClientId?: string,
+ *     ClientSecret?: string,
+ *     SubjectToken?: string,
+ *     SubjectTokenType?: 'ACCESS_TOKEN'|'ID_TOKEN'|'SAML2',
+ *     SubjectTokenProviderName?: string,
+ *     ActorToken?: string,
+ *     ActorTokenType?: 'ACCESS_TOKEN'|'ID_TOKEN'|'SAML2',
+ *     ActorTokenProviderName?: string,
+ *     Scopes?: list<string>,
+ *     Audiences?: list<string>,
+ *     Resources?: list<string>,
+ *     RequestedTokenType?: 'ACCESS_TOKEN'|'ID_TOKEN',
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise getDerivedTokenAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getDerivedTokenAsync(array{
+ *     ClientId?: string,
+ *     ClientSecret?: string,
+ *     SubjectToken?: string,
+ *     SubjectTokenType?: 'ACCESS_TOKEN'|'ID_TOKEN'|'SAML2',
+ *     SubjectTokenProviderName?: string,
+ *     ActorToken?: string,
+ *     ActorTokenType?: 'ACCESS_TOKEN'|'ID_TOKEN'|'SAML2',
+ *     ActorTokenProviderName?: string,
+ *     Scopes?: list<string>,
+ *     Audiences?: list<string>,
+ *     Resources?: list<string>,
+ *     RequestedTokenType?: 'ACCESS_TOKEN'|'ID_TOKEN',
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result getDevice(array $args = [])
  * @phpstan-method \Aws\Result getDevice(array{DeviceKey?: string, AccessToken?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getDeviceAsync(array $args = [])
@@ -1078,6 +1146,18 @@ use Aws\AwsClient;
  *     Session?: string,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result initiatePointInTimeRecovery(array $args = [])
+ * @phpstan-method \Aws\Result initiatePointInTimeRecovery(array{UserPoolId?: string, RestoreTimestamp?: int|string|\DateTimeInterface, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise initiatePointInTimeRecoveryAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise initiatePointInTimeRecoveryAsync(array{UserPoolId?: string, RestoreTimestamp?: int|string|\DateTimeInterface, ...} $args = [])
+ * @method \Aws\Result listCIMDPolicies(array $args = [])
+ * @phpstan-method \Aws\Result listCIMDPolicies(array{UserPoolId?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise listCIMDPoliciesAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listCIMDPoliciesAsync(array{UserPoolId?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
+ * @method \Aws\Result listClientMetadataURLs(array $args = [])
+ * @phpstan-method \Aws\Result listClientMetadataURLs(array{UserPoolId?: string, CIMDPolicyId?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise listClientMetadataURLsAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listClientMetadataURLsAsync(array{UserPoolId?: string, CIMDPolicyId?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
  * @method \Aws\Result listDevices(array $args = [])
  * @phpstan-method \Aws\Result listDevices(array{AccessToken?: string, Limit?: int, PaginationToken?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listDevicesAsync(array $args = [])
@@ -1090,6 +1170,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result listIdentityProviders(array{UserPoolId?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listIdentityProvidersAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise listIdentityProvidersAsync(array{UserPoolId?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
+ * @method \Aws\Result listPointInTimeRecoveries(array $args = [])
+ * @phpstan-method \Aws\Result listPointInTimeRecoveries(array{UserPoolId?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise listPointInTimeRecoveriesAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listPointInTimeRecoveriesAsync(array{UserPoolId?: string, NextToken?: string, MaxResults?: int, ...} $args = [])
  * @method \Aws\Result listResourceServers(array $args = [])
  * @phpstan-method \Aws\Result listResourceServers(array{UserPoolId?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise listResourceServersAsync(array $args = [])
@@ -1418,6 +1502,10 @@ use Aws\AwsClient;
  *     ClientMetadata?: array<string, string>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result startPointInTimeRecovery(array $args = [])
+ * @phpstan-method \Aws\Result startPointInTimeRecovery(array{UserPoolId?: string, RestoreId?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise startPointInTimeRecoveryAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise startPointInTimeRecoveryAsync(array{UserPoolId?: string, RestoreId?: string, ...} $args = [])
  * @method \Aws\Result startUserImportJob(array $args = [])
  * @phpstan-method \Aws\Result startUserImportJob(array{UserPoolId?: string, JobId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise startUserImportJobAsync(array $args = [])
@@ -1456,6 +1544,30 @@ use Aws\AwsClient;
  *     FeedbackValue?: 'Invalid'|'Valid',
  *     ...,
  * } $args = [])
+ * @method \Aws\Result updateCIMDPolicy(array $args = [])
+ * @phpstan-method \Aws\Result updateCIMDPolicy(array{
+ *     UserPoolId?: string,
+ *     CIMDPolicyId?: string,
+ *     ClientId?: string,
+ *     PolicyName?: string,
+ *     CacheDuration?: int,
+ *     URLPatterns?: list<string>,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateCIMDPolicyAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateCIMDPolicyAsync(array{
+ *     UserPoolId?: string,
+ *     CIMDPolicyId?: string,
+ *     ClientId?: string,
+ *     PolicyName?: string,
+ *     CacheDuration?: int,
+ *     URLPatterns?: list<string>,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result updateClientMetadataURLState(array $args = [])
+ * @phpstan-method \Aws\Result updateClientMetadataURLState(array{UserPoolId?: string, CIMDPolicyId?: string, URL?: string, Action?: 'INVALIDATE'|'REFRESH', ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateClientMetadataURLStateAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateClientMetadataURLStateAsync(array{UserPoolId?: string, CIMDPolicyId?: string, URL?: string, Action?: 'INVALIDATE'|'REFRESH', ...} $args = [])
  * @method \Aws\Result updateDeviceStatus(array $args = [])
  * @phpstan-method \Aws\Result updateDeviceStatus(array{AccessToken?: string, DeviceKey?: string, DeviceRememberedStatus?: 'not_remembered'|'remembered', ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise updateDeviceStatusAsync(array $args = [])
@@ -1804,7 +1916,7 @@ use Aws\AwsClient;
  *     },
  *     ReadAttributes?: list<string>,
  *     WriteAttributes?: list<string>,
- *     ExplicitAuthFlows?: list<'ADMIN_NO_SRP_AUTH'|'ALLOW_ADMIN_USER_PASSWORD_AUTH'|'ALLOW_CUSTOM_AUTH'|'ALLOW_REFRESH_TOKEN_AUTH'|'ALLOW_USER_AUTH'|'ALLOW_USER_PASSWORD_AUTH'|'ALLOW_USER_SRP_AUTH'|'CUSTOM_AUTH_FLOW_ONLY'|'USER_PASSWORD_AUTH'>,
+ *     ExplicitAuthFlows?: list<'ADMIN_NO_SRP_AUTH'|'ALLOW_ADMIN_USER_PASSWORD_AUTH'|'ALLOW_CUSTOM_AUTH'|'ALLOW_REFRESH_TOKEN_AUTH'|'ALLOW_TOKEN_EXCHANGE_DELEGATION'|'ALLOW_TOKEN_EXCHANGE_IMPERSONATION'|'ALLOW_USER_AUTH'|'ALLOW_USER_PASSWORD_AUTH'|'ALLOW_USER_SRP_AUTH'|'CUSTOM_AUTH_FLOW_ONLY'|'USER_PASSWORD_AUTH'>,
  *     SupportedIdentityProviders?: list<string>,
  *     CallbackURLs?: list<string>,
  *     LogoutURLs?: list<string>,
@@ -1825,6 +1937,7 @@ use Aws\AwsClient;
  *     EnablePropagateAdditionalUserContextData?: bool,
  *     AuthSessionValidity?: int,
  *     RefreshTokenRotation?: array{Feature?: 'DISABLED'|'ENABLED', RetryGracePeriodSeconds?: int, ...},
+ *     PublishSecretsInAWSSecretsManager?: bool,
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise updateUserPoolClientAsync(array $args = [])
@@ -1843,7 +1956,7 @@ use Aws\AwsClient;
  *     },
  *     ReadAttributes?: list<string>,
  *     WriteAttributes?: list<string>,
- *     ExplicitAuthFlows?: list<'ADMIN_NO_SRP_AUTH'|'ALLOW_ADMIN_USER_PASSWORD_AUTH'|'ALLOW_CUSTOM_AUTH'|'ALLOW_REFRESH_TOKEN_AUTH'|'ALLOW_USER_AUTH'|'ALLOW_USER_PASSWORD_AUTH'|'ALLOW_USER_SRP_AUTH'|'CUSTOM_AUTH_FLOW_ONLY'|'USER_PASSWORD_AUTH'>,
+ *     ExplicitAuthFlows?: list<'ADMIN_NO_SRP_AUTH'|'ALLOW_ADMIN_USER_PASSWORD_AUTH'|'ALLOW_CUSTOM_AUTH'|'ALLOW_REFRESH_TOKEN_AUTH'|'ALLOW_TOKEN_EXCHANGE_DELEGATION'|'ALLOW_TOKEN_EXCHANGE_IMPERSONATION'|'ALLOW_USER_AUTH'|'ALLOW_USER_PASSWORD_AUTH'|'ALLOW_USER_SRP_AUTH'|'CUSTOM_AUTH_FLOW_ONLY'|'USER_PASSWORD_AUTH'>,
  *     SupportedIdentityProviders?: list<string>,
  *     CallbackURLs?: list<string>,
  *     LogoutURLs?: list<string>,
@@ -1864,6 +1977,7 @@ use Aws\AwsClient;
  *     EnablePropagateAdditionalUserContextData?: bool,
  *     AuthSessionValidity?: int,
  *     RefreshTokenRotation?: array{Feature?: 'DISABLED'|'ENABLED', RetryGracePeriodSeconds?: int, ...},
+ *     PublishSecretsInAWSSecretsManager?: bool,
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateUserPoolDomain(array $args = [])

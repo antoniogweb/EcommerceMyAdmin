@@ -19,6 +19,10 @@ use Aws\AwsClient;
  *     AssociationType?: 'AssociatedWith'|'ContributedTo'|'DerivedFrom'|'Produced'|'SameAs',
  *     ...,
  * } $args = [])
+ * @method \Aws\Result addInferenceGateway(array $args = [])
+ * @phpstan-method \Aws\Result addInferenceGateway(array{Identifier?: string, ClusterArn?: string, Namespace?: string, Name?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise addInferenceGatewayAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise addInferenceGatewayAsync(array{Identifier?: string, ClusterArn?: string, Namespace?: string, Name?: string, ...} $args = [])
  * @method \Aws\Result addTags(array $args = [])
  * @phpstan-method \Aws\Result addTags(array{ResourceArn?: string, Tags?: list<array{Key?: string, Value?: string, ...}>, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise addTagsAsync(array $args = [])
@@ -1479,6 +1483,7 @@ use Aws\AwsClient;
  *         MetricPublishFrequencyInSeconds?: int,
  *         ...,
  *     },
+ *     CrossRegionTrafficConfig?: array{MaxInvocationsPerSecondPerInstance?: int, MaxCrossRegionPercentPerEndpoint?: int, ...},
  *     ...,
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise createEndpointConfigAsync(array $args = [])
@@ -1557,6 +1562,7 @@ use Aws\AwsClient;
  *         MetricPublishFrequencyInSeconds?: int,
  *         ...,
  *     },
+ *     CrossRegionTrafficConfig?: array{MaxInvocationsPerSecondPerInstance?: int, MaxCrossRegionPercentPerEndpoint?: int, ...},
  *     ...,
  * } $args = [])
  * @method \Aws\Result createExperiment(array $args = [])
@@ -1696,6 +1702,32 @@ use Aws\AwsClient;
  *     },
  *     OutputConfig?: array{S3OutputPath?: string, KmsKeyId?: string, ...},
  *     RoleArn?: string,
+ *     Tags?: list<array{Key?: string, Value?: string, ...}>,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result createGlobalInferenceGateway(array $args = [])
+ * @phpstan-method \Aws\Result createGlobalInferenceGateway(array{
+ *     Name?: string,
+ *     Routing?: array{
+ *         Weights?: array{KVHeadroom?: float, QueueDepth?: float, RegionProximity?: float, ErrorRate?: float, ...},
+ *         ...,
+ *     },
+ *     ExecutionRoleArn?: string,
+ *     Gateways?: list<array{Name?: string, Namespace?: string, ClusterArn?: string, ...}>,
+ *     ClientToken?: string,
+ *     Tags?: list<array{Key?: string, Value?: string, ...}>,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise createGlobalInferenceGatewayAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise createGlobalInferenceGatewayAsync(array{
+ *     Name?: string,
+ *     Routing?: array{
+ *         Weights?: array{KVHeadroom?: float, QueueDepth?: float, RegionProximity?: float, ErrorRate?: float, ...},
+ *         ...,
+ *     },
+ *     ExecutionRoleArn?: string,
+ *     Gateways?: list<array{Name?: string, Namespace?: string, ClusterArn?: string, ...}>,
+ *     ClientToken?: string,
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
  *     ...,
  * } $args = [])
@@ -2229,11 +2261,39 @@ use Aws\AwsClient;
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result createInferenceRouter(array $args = [])
+ * @phpstan-method \Aws\Result createInferenceRouter(array{
+ *     InferenceRouterName?: string,
+ *     RoutingTargets?: list<array{
+ *         Name?: string,
+ *         Destinations?: list<array>,
+ *         AsyncInferenceConfig?: array,
+ *         RoutingPreference?: 'InstancePoolOrder'|'LocalRegionFirst',
+ *         ...,
+ *     }>,
+ *     ClientToken?: string,
+ *     Tags?: list<array{Key?: string, Value?: string, ...}>,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise createInferenceRouterAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise createInferenceRouterAsync(array{
+ *     InferenceRouterName?: string,
+ *     RoutingTargets?: list<array{
+ *         Name?: string,
+ *         Destinations?: list<array>,
+ *         AsyncInferenceConfig?: array,
+ *         RoutingPreference?: 'InstancePoolOrder'|'LocalRegionFirst',
+ *         ...,
+ *     }>,
+ *     ClientToken?: string,
+ *     Tags?: list<array{Key?: string, Value?: string, ...}>,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result createJob(array $args = [])
  * @phpstan-method \Aws\Result createJob(array{
  *     JobName?: string,
  *     RoleArn?: string,
- *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation',
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
  *     JobConfigSchemaVersion?: string,
  *     JobConfigDocument?: string,
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
@@ -2243,7 +2303,7 @@ use Aws\AwsClient;
  * @phpstan-method \GuzzleHttp\Promise\Promise createJobAsync(array{
  *     JobName?: string,
  *     RoleArn?: string,
- *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation',
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
  *     JobConfigSchemaVersion?: string,
  *     JobConfigDocument?: string,
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
@@ -4073,6 +4133,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result deleteEndpointConfig(array{EndpointConfigName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteEndpointConfigAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise deleteEndpointConfigAsync(array{EndpointConfigName?: string, ...} $args = [])
+ * @method \Aws\Result deleteEndpointPolicy(array $args = [])
+ * @phpstan-method \Aws\Result deleteEndpointPolicy(array{EndpointName?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise deleteEndpointPolicyAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise deleteEndpointPolicyAsync(array{EndpointName?: string, ...} $args = [])
  * @method \Aws\Result deleteExperiment(array $args = [])
  * @phpstan-method \Aws\Result deleteExperiment(array{ExperimentName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteExperimentAsync(array $args = [])
@@ -4085,6 +4149,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result deleteFlowDefinition(array{FlowDefinitionName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteFlowDefinitionAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise deleteFlowDefinitionAsync(array{FlowDefinitionName?: string, ...} $args = [])
+ * @method \Aws\Result deleteGlobalInferenceGateway(array $args = [])
+ * @phpstan-method \Aws\Result deleteGlobalInferenceGateway(array{Identifier?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise deleteGlobalInferenceGatewayAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise deleteGlobalInferenceGatewayAsync(array{Identifier?: string, ...} $args = [])
  * @method \Aws\Result deleteHub(array $args = [])
  * @phpstan-method \Aws\Result deleteHub(array{HubName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteHubAsync(array $args = [])
@@ -4143,10 +4211,22 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result deleteInferenceExperiment(array{Name?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteInferenceExperimentAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise deleteInferenceExperimentAsync(array{Name?: string, ...} $args = [])
+ * @method \Aws\Result deleteInferenceRouter(array $args = [])
+ * @phpstan-method \Aws\Result deleteInferenceRouter(array{InferenceRouterName?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise deleteInferenceRouterAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise deleteInferenceRouterAsync(array{InferenceRouterName?: string, ...} $args = [])
  * @method \Aws\Result deleteJob(array $args = [])
- * @phpstan-method \Aws\Result deleteJob(array{JobName?: string, JobCategory?: 'AgentRFT'|'AgentRFTEvaluation', ...} $args = [])
+ * @phpstan-method \Aws\Result deleteJob(array{
+ *     JobName?: string,
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteJobAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise deleteJobAsync(array{JobName?: string, JobCategory?: 'AgentRFT'|'AgentRFTEvaluation', ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise deleteJobAsync(array{
+ *     JobName?: string,
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result deleteMlflowApp(array $args = [])
  * @phpstan-method \Aws\Result deleteMlflowApp(array{Arn?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteMlflowAppAsync(array $args = [])
@@ -4317,6 +4397,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result describeAutoMLJobV2(array{AutoMLJobName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeAutoMLJobV2Async(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise describeAutoMLJobV2Async(array{AutoMLJobName?: string, ...} $args = [])
+ * @method \Aws\Result describeCapacityReservation(array $args = [])
+ * @phpstan-method \Aws\Result describeCapacityReservation(array{SMCapacityReservationArn?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeCapacityReservationAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise describeCapacityReservationAsync(array{SMCapacityReservationArn?: string, ...} $args = [])
  * @method \Aws\Result describeCluster(array $args = [])
  * @phpstan-method \Aws\Result describeCluster(array{ClusterName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeClusterAsync(array $args = [])
@@ -4405,6 +4489,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result describeFlowDefinition(array{FlowDefinitionName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeFlowDefinitionAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise describeFlowDefinitionAsync(array{FlowDefinitionName?: string, ...} $args = [])
+ * @method \Aws\Result describeGlobalInferenceGateway(array $args = [])
+ * @phpstan-method \Aws\Result describeGlobalInferenceGateway(array{Identifier?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeGlobalInferenceGatewayAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise describeGlobalInferenceGatewayAsync(array{Identifier?: string, ...} $args = [])
  * @method \Aws\Result describeHub(array $args = [])
  * @phpstan-method \Aws\Result describeHub(array{HubName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeHubAsync(array $args = [])
@@ -4453,14 +4541,34 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result describeInferenceRecommendationsJob(array{JobName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeInferenceRecommendationsJobAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise describeInferenceRecommendationsJobAsync(array{JobName?: string, ...} $args = [])
+ * @method \Aws\Result describeInferenceRouter(array $args = [])
+ * @phpstan-method \Aws\Result describeInferenceRouter(array{InferenceRouterName?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeInferenceRouterAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise describeInferenceRouterAsync(array{InferenceRouterName?: string, ...} $args = [])
  * @method \Aws\Result describeJob(array $args = [])
- * @phpstan-method \Aws\Result describeJob(array{JobName?: string, JobCategory?: 'AgentRFT'|'AgentRFTEvaluation', ...} $args = [])
+ * @phpstan-method \Aws\Result describeJob(array{
+ *     JobName?: string,
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise describeJobAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise describeJobAsync(array{JobName?: string, JobCategory?: 'AgentRFT'|'AgentRFTEvaluation', ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise describeJobAsync(array{
+ *     JobName?: string,
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result describeJobSchemaVersion(array $args = [])
- * @phpstan-method \Aws\Result describeJobSchemaVersion(array{JobCategory?: 'AgentRFT'|'AgentRFTEvaluation', JobConfigSchemaVersion?: string, ...} $args = [])
+ * @phpstan-method \Aws\Result describeJobSchemaVersion(array{
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
+ *     JobConfigSchemaVersion?: string,
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise describeJobSchemaVersionAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise describeJobSchemaVersionAsync(array{JobCategory?: 'AgentRFT'|'AgentRFTEvaluation', JobConfigSchemaVersion?: string, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise describeJobSchemaVersionAsync(array{
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
+ *     JobConfigSchemaVersion?: string,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result describeLabelingJob(array $args = [])
  * @phpstan-method \Aws\Result describeLabelingJob(array{LabelingJobName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeLabelingJobAsync(array $args = [])
@@ -4553,6 +4661,10 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result describeReservedCapacity(array{ReservedCapacityArn?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeReservedCapacityAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise describeReservedCapacityAsync(array{ReservedCapacityArn?: string, ...} $args = [])
+ * @method \Aws\Result describeResourceAssociations(array $args = [])
+ * @phpstan-method \Aws\Result describeResourceAssociations(array{SMCapacityReservationArn?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise describeResourceAssociationsAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise describeResourceAssociationsAsync(array{SMCapacityReservationArn?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
  * @method \Aws\Result describeSpace(array $args = [])
  * @phpstan-method \Aws\Result describeSpace(array{DomainId?: string, SpaceName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise describeSpaceAsync(array $args = [])
@@ -4625,10 +4737,18 @@ use Aws\AwsClient;
  * @phpstan-method \Aws\Result extendTrainingPlan(array{TrainingPlanExtensionOfferingId?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise extendTrainingPlanAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise extendTrainingPlanAsync(array{TrainingPlanExtensionOfferingId?: string, ...} $args = [])
+ * @method \Aws\Result getCapacityReservationUsage(array $args = [])
+ * @phpstan-method \Aws\Result getCapacityReservationUsage(array{SMCapacityReservationArn?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise getCapacityReservationUsageAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getCapacityReservationUsageAsync(array{SMCapacityReservationArn?: string, MaxResults?: int, NextToken?: string, ...} $args = [])
  * @method \Aws\Result getDeviceFleetReport(array $args = [])
  * @phpstan-method \Aws\Result getDeviceFleetReport(array{DeviceFleetName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getDeviceFleetReportAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise getDeviceFleetReportAsync(array{DeviceFleetName?: string, ...} $args = [])
+ * @method \Aws\Result getEndpointPolicy(array $args = [])
+ * @phpstan-method \Aws\Result getEndpointPolicy(array{EndpointName?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise getEndpointPolicyAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise getEndpointPolicyAsync(array{EndpointName?: string, ...} $args = [])
  * @method \Aws\Result getLineageGroupPolicy(array $args = [])
  * @phpstan-method \Aws\Result getLineageGroupPolicy(array{LineageGroupName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise getLineageGroupPolicyAsync(array $args = [])
@@ -4973,6 +5093,20 @@ use Aws\AwsClient;
  *     SortBy?: 'CreationTime'|'FinalObjectiveMetricValue'|'Status',
  *     MaxResults?: int,
  *     NextToken?: string,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result listCapacityReservations(array $args = [])
+ * @phpstan-method \Aws\Result listCapacityReservations(array{
+ *     MaxResults?: int,
+ *     NextToken?: string,
+ *     Filters?: list<array{Name?: 'Status', Values?: list<string>, ...}>,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise listCapacityReservationsAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listCapacityReservationsAsync(array{
+ *     MaxResults?: int,
+ *     NextToken?: string,
+ *     Filters?: list<array{Name?: 'Status', Values?: list<string>, ...}>,
  *     ...,
  * } $args = [])
  * @method \Aws\Result listClusterEvents(array $args = [])
@@ -5477,6 +5611,10 @@ use Aws\AwsClient;
  *     MaxResults?: int,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result listGlobalInferenceGateways(array $args = [])
+ * @phpstan-method \Aws\Result listGlobalInferenceGateways(array{Filters?: list<array{Name?: 'Status', Value?: string, ...}>, NextToken?: string, MaxResults?: int, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise listGlobalInferenceGatewaysAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listGlobalInferenceGatewaysAsync(array{Filters?: list<array{Name?: 'Status', Value?: string, ...}>, NextToken?: string, MaxResults?: int, ...} $args = [])
  * @method \Aws\Result listHubContentVersions(array $args = [])
  * @phpstan-method \Aws\Result listHubContentVersions(array{
  *     HubName?: string,
@@ -5721,6 +5859,22 @@ use Aws\AwsClient;
  *     MaxResults?: int,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result listInferenceGateways(array $args = [])
+ * @phpstan-method \Aws\Result listInferenceGateways(array{
+ *     Identifier?: string,
+ *     Filters?: list<array{Name?: 'ClusterArn'|'Status', Value?: string, ...}>,
+ *     NextToken?: string,
+ *     MaxResults?: int,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise listInferenceGatewaysAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listInferenceGatewaysAsync(array{
+ *     Identifier?: string,
+ *     Filters?: list<array{Name?: 'ClusterArn'|'Status', Value?: string, ...}>,
+ *     NextToken?: string,
+ *     MaxResults?: int,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result listInferenceRecommendationsJobSteps(array $args = [])
  * @phpstan-method \Aws\Result listInferenceRecommendationsJobSteps(array{
  *     JobName?: string,
@@ -5771,13 +5925,27 @@ use Aws\AwsClient;
  *     ModelPackageVersionArnEquals?: string,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result listInferenceRouters(array $args = [])
+ * @phpstan-method \Aws\Result listInferenceRouters(array{MaxResults?: int, NextToken?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise listInferenceRoutersAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listInferenceRoutersAsync(array{MaxResults?: int, NextToken?: string, ...} $args = [])
  * @method \Aws\Result listJobSchemaVersions(array $args = [])
- * @phpstan-method \Aws\Result listJobSchemaVersions(array{JobCategory?: 'AgentRFT'|'AgentRFTEvaluation', NextToken?: string, MaxResults?: int, ...} $args = [])
+ * @phpstan-method \Aws\Result listJobSchemaVersions(array{
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
+ *     NextToken?: string,
+ *     MaxResults?: int,
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise listJobSchemaVersionsAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise listJobSchemaVersionsAsync(array{JobCategory?: 'AgentRFT'|'AgentRFTEvaluation', NextToken?: string, MaxResults?: int, ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise listJobSchemaVersionsAsync(array{
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
+ *     NextToken?: string,
+ *     MaxResults?: int,
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result listJobs(array $args = [])
  * @phpstan-method \Aws\Result listJobs(array{
- *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation',
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
  *     NextToken?: string,
  *     MaxResults?: int,
  *     CreationTimeAfter?: int|string|\DateTimeInterface,
@@ -5792,7 +5960,7 @@ use Aws\AwsClient;
  * } $args = [])
  * @method \GuzzleHttp\Promise\Promise listJobsAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise listJobsAsync(array{
- *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation',
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
  *     NextToken?: string,
  *     MaxResults?: int,
  *     CreationTimeAfter?: int|string|\DateTimeInterface,
@@ -6817,6 +6985,34 @@ use Aws\AwsClient;
  *     MaxResults?: int,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result moveClusterNodes(array $args = [])
+ * @phpstan-method \Aws\Result moveClusterNodes(array{
+ *     SourceClusterArn?: string,
+ *     SourceInstanceGroupName?: string,
+ *     TargetClusterArn?: string,
+ *     TargetInstanceGroupName?: string,
+ *     InstanceCount?: int,
+ *     NodeIds?: list<string>,
+ *     NodeLogicalIds?: list<string>,
+ *     ClientToken?: string,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise moveClusterNodesAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise moveClusterNodesAsync(array{
+ *     SourceClusterArn?: string,
+ *     SourceInstanceGroupName?: string,
+ *     TargetClusterArn?: string,
+ *     TargetInstanceGroupName?: string,
+ *     InstanceCount?: int,
+ *     NodeIds?: list<string>,
+ *     NodeLogicalIds?: list<string>,
+ *     ClientToken?: string,
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result putEndpointPolicy(array $args = [])
+ * @phpstan-method \Aws\Result putEndpointPolicy(array{EndpointName?: string, ResourcePolicy?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise putEndpointPolicyAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise putEndpointPolicyAsync(array{EndpointName?: string, ResourcePolicy?: string, ...} $args = [])
  * @method \Aws\Result putModelPackageGroupPolicy(array $args = [])
  * @phpstan-method \Aws\Result putModelPackageGroupPolicy(array{ModelPackageGroupName?: string, ResourcePolicy?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise putModelPackageGroupPolicyAsync(array $args = [])
@@ -6875,6 +7071,10 @@ use Aws\AwsClient;
  *     Tags?: list<array{Key?: string, Value?: string, ...}>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result removeInferenceGateway(array $args = [])
+ * @phpstan-method \Aws\Result removeInferenceGateway(array{Identifier?: string, ClusterArn?: string, Namespace?: string, Name?: string, ...} $args = [])
+ * @method \GuzzleHttp\Promise\Promise removeInferenceGatewayAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise removeInferenceGatewayAsync(array{Identifier?: string, ClusterArn?: string, Namespace?: string, Name?: string, ...} $args = [])
  * @method \Aws\Result renderUiTemplate(array $args = [])
  * @phpstan-method \Aws\Result renderUiTemplate(array{
  *     UiTemplate?: array{Content?: string, ...},
@@ -7112,9 +7312,17 @@ use Aws\AwsClient;
  * @method \GuzzleHttp\Promise\Promise stopInferenceRecommendationsJobAsync(array $args = [])
  * @phpstan-method \GuzzleHttp\Promise\Promise stopInferenceRecommendationsJobAsync(array{JobName?: string, ...} $args = [])
  * @method \Aws\Result stopJob(array $args = [])
- * @phpstan-method \Aws\Result stopJob(array{JobName?: string, JobCategory?: 'AgentRFT'|'AgentRFTEvaluation', ...} $args = [])
+ * @phpstan-method \Aws\Result stopJob(array{
+ *     JobName?: string,
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
+ *     ...,
+ * } $args = [])
  * @method \GuzzleHttp\Promise\Promise stopJobAsync(array $args = [])
- * @phpstan-method \GuzzleHttp\Promise\Promise stopJobAsync(array{JobName?: string, JobCategory?: 'AgentRFT'|'AgentRFTEvaluation', ...} $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise stopJobAsync(array{
+ *     JobName?: string,
+ *     JobCategory?: 'AgentRFT'|'AgentRFTEvaluation'|'DataQualityEvaluation'|'DataTransformation'|'SyntheticDataGeneration',
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result stopLabelingJob(array $args = [])
  * @phpstan-method \Aws\Result stopLabelingJob(array{LabelingJobName?: string, ...} $args = [])
  * @method \GuzzleHttp\Promise\Promise stopLabelingJobAsync(array $args = [])
@@ -7913,6 +8121,24 @@ use Aws\AwsClient;
  *     ParameterRemovals?: list<string>,
  *     ...,
  * } $args = [])
+ * @method \Aws\Result updateGlobalInferenceGateway(array $args = [])
+ * @phpstan-method \Aws\Result updateGlobalInferenceGateway(array{
+ *     Identifier?: string,
+ *     Routing?: array{
+ *         Weights?: array{KVHeadroom?: float, QueueDepth?: float, RegionProximity?: float, ErrorRate?: float, ...},
+ *         ...,
+ *     },
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateGlobalInferenceGatewayAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateGlobalInferenceGatewayAsync(array{
+ *     Identifier?: string,
+ *     Routing?: array{
+ *         Weights?: array{KVHeadroom?: float, QueueDepth?: float, RegionProximity?: float, ErrorRate?: float, ...},
+ *         ...,
+ *     },
+ *     ...,
+ * } $args = [])
  * @method \Aws\Result updateHub(array $args = [])
  * @phpstan-method \Aws\Result updateHub(array{
  *     HubName?: string,
@@ -8157,6 +8383,30 @@ use Aws\AwsClient;
  *         ...,
  *     },
  *     ShadowModeConfig?: array{SourceModelVariantName?: string, ShadowModelVariants?: list<array>, ...},
+ *     ...,
+ * } $args = [])
+ * @method \Aws\Result updateInferenceRouter(array $args = [])
+ * @phpstan-method \Aws\Result updateInferenceRouter(array{
+ *     InferenceRouterName?: string,
+ *     RoutingTargets?: list<array{
+ *         Name?: string,
+ *         Destinations?: list<array>,
+ *         AsyncInferenceConfig?: array,
+ *         RoutingPreference?: 'InstancePoolOrder'|'LocalRegionFirst',
+ *         ...,
+ *     }>,
+ *     ...,
+ * } $args = [])
+ * @method \GuzzleHttp\Promise\Promise updateInferenceRouterAsync(array $args = [])
+ * @phpstan-method \GuzzleHttp\Promise\Promise updateInferenceRouterAsync(array{
+ *     InferenceRouterName?: string,
+ *     RoutingTargets?: list<array{
+ *         Name?: string,
+ *         Destinations?: list<array>,
+ *         AsyncInferenceConfig?: array,
+ *         RoutingPreference?: 'InstancePoolOrder'|'LocalRegionFirst',
+ *         ...,
+ *     }>,
  *     ...,
  * } $args = [])
  * @method \Aws\Result updateMlflowApp(array $args = [])

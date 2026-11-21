@@ -1,6 +1,34 @@
 CHANGELOG
 =========
 
+0.12.0 (2026-11-17)
+-------------------
+
+* `Client` now throws `WebServiceException` for cURL and CA bundle setup
+  failures. Request setup failures preserve the original exception as the
+  previous exception. The client reads the cURL version once during
+  construction.
+* Successful responses with scalar JSON bodies now throw `WebServiceException`
+  instead of `TypeError`.
+* CA certificate directories now use cURL's `CURLOPT_CAPATH` option.
+* Clients now share the temporary copy of a CA bundle stored in a phar archive.
+  The copy remains available until process shutdown.
+* Added `@throws` tags for the exceptions that `Client`, the `Request`
+  interface, and `RequestFactory::request()` can throw. This includes the
+  `WebServiceException` for a client setup failure and `RuntimeException`
+  from `RequestFactory::request()` if a cURL handle cannot be initialized.
+* These classes are now marked `@final`. They will be `final` in the next
+  major version. Static analyzers such as PHPStan report a class that extends
+  them.
+  * `MaxMind\Exception\AuthenticationException`
+  * `MaxMind\Exception\InsufficientFundsException`
+  * `MaxMind\Exception\InvalidInputException`
+  * `MaxMind\Exception\IpAddressNotFoundException`
+  * `MaxMind\Exception\PermissionRequiredException`
+  * The internal classes `MaxMind\WebService\Client`,
+    `MaxMind\WebService\Http\CurlRequest`, and
+    `MaxMind\WebService\Http\RequestFactory`
+
 0.11.1 (2026-01-13)
 -------------------
 

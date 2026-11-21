@@ -61,5 +61,4 @@ return array(
     'Brevo\\Client\\' => array($vendorDir . '/getbrevo/brevo-php/lib'),
     'Aws\\' => array($vendorDir . '/aws/aws-sdk-php/src'),
     'Amnuts\\' => array($vendorDir . '/amnuts/opcache-gui/src'),
-    'Algolia\\AlgoliaSearch\\' => array($vendorDir . '/algolia/algoliasearch-client-php/src'),
 );
