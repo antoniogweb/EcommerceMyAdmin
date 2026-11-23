@@ -1,4 +1,4 @@
-/*! UIkit 3.25.27 | https://www.getuikit.com | (c) 2014 - 2026 YOOtheme | MIT License */
+/*! UIkit 3.25.31 | https://www.getuikit.com | (c) 2014 - 2026 YOOtheme | MIT License */
 
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -156,28 +156,17 @@
     function pointInRect(point, rect) {
       return point.x <= rect.right && point.x >= rect.left && point.y <= rect.bottom && point.y >= rect.top;
     }
-    function ratio(dimensions, prop, value) {
-      const aProp = prop === "width" ? "height" : "width";
+    function cover$1(dimensions, maxDimensions) {
+      const scale = Math.max(
+        dimensions.width ? maxDimensions.width / dimensions.width : 0,
+        dimensions.height ? maxDimensions.height / dimensions.height : 0
+      );
       return {
-        [aProp]: dimensions[prop] ? Math.round(value * dimensions[aProp] / dimensions[prop]) : dimensions[aProp],
-        [prop]: value
+        width: Math.round(dimensions.width * scale),
+        height: Math.round(dimensions.height * scale)
       };
     }
-    function contain(dimensions, maxDimensions) {
-      dimensions = { ...dimensions };
-      for (const prop in dimensions) {
-        dimensions = dimensions[prop] > maxDimensions[prop] ? ratio(dimensions, prop, maxDimensions[prop]) : dimensions;
-      }
-      return dimensions;
-    }
-    function cover$1(dimensions, maxDimensions) {
-      dimensions = contain(dimensions, maxDimensions);
-      for (const prop in dimensions) {
-        dimensions = dimensions[prop] < maxDimensions[prop] ? ratio(dimensions, prop, maxDimensions[prop]) : dimensions;
-      }
-      return dimensions;
-    }
-    const Dimensions = { ratio, contain, cover: cover$1 };
+    const Dimensions = { cover: cover$1 };
     function getIndex(i, elements, current = 0, finite = false) {
       elements = toNodes(elements);
       const { length } = elements;
@@ -350,7 +339,11 @@
     function getTargetedElement(el) {
       if (isSameSiteAnchor(el)) {
         const { hash, ownerDocument } = toNode(el);
-        const id = decodeURIComponent(hash).slice(1);
+        let id = hash.slice(1);
+        try {
+          id = decodeURIComponent(id);
+        } catch {
+        }
         return id ? ownerDocument.getElementById(id) || ownerDocument.getElementsByName(id)[0] : ownerDocument.documentElement;
       }
     }
@@ -568,6 +561,7 @@
 
     const cssNumber = {
       "animation-iteration-count": true,
+      "aspect-ratio": true,
       "column-count": true,
       "fill-opacity": true,
       "flex-grow": true,
@@ -1338,7 +1332,7 @@
     }
     function getCoveringElement(target) {
       const { document } = toWindow(target);
-      target = target || document.body;
+      target || (target = document.body);
       const { left, width, top } = dimensions$1(target);
       for (const position of top ? [0, top] : [0]) {
         let coverEl;
@@ -1744,8 +1738,8 @@
         stop() {
           if (this.timer) {
             clearInterval(this.timer);
-            trigger(this.$el, "countdownstop");
             this.timer = null;
+            trigger(this.$el, "countdownstop");
           }
         },
         update() {
@@ -1753,8 +1747,8 @@
           if (!timespan.total) {
             this.stop();
             if (!this.end) {
-              trigger(this.$el, "countdownend");
               this.end = true;
+              trigger(this.$el, "countdownend");
               if (this.reload && this.started) {
                 window.location.reload();
               }
@@ -1911,22 +1905,23 @@
       if (!instance._updates.length) {
         return;
       }
-      if (!instance._updateCount) {
-        instance._updateCount = 0;
-        requestAnimationFrame(() => instance._updateCount = 0);
-      }
       if (!instance._queued) {
         instance._queued = /* @__PURE__ */ new Set();
         fastdom.read(() => {
           if (instance._connected) {
-            runUpdates(instance, instance._queued);
+            if (!instance._updateCount) {
+              instance._updateCount = 0;
+              requestAnimationFrame(() => instance._updateCount = 0);
+            }
+            if (instance._updateCount < 10) {
+              instance._updateCount++;
+              runUpdates(instance, instance._queued);
+            }
           }
           instance._queued = null;
         });
       }
-      if (instance._updateCount++ < 20) {
-        instance._queued.add(e.type || e);
-      }
+      instance._queued.add(e.type || e);
     }
     function runUpdates(instance, types) {
       for (const { read, write, events = [] } of instance._updates) {
@@ -2001,8 +1996,11 @@
           const pos = getEventPos(e);
           const target = "tagName" in e.target ? e.target : parent(e.target);
           once(document, `${pointerUp$1} ${pointerCancel} scroll`, (e2) => {
+            if (e2.type !== pointerUp$1 || !target) {
+              return;
+            }
             const { x, y } = getEventPos(e2);
-            if (e2.type !== "scroll" && target && x && Math.abs(pos.x - x) > 100 || y && Math.abs(pos.y - y) > 100) {
+            if (x && Math.abs(pos.x - x) > 100 || y && Math.abs(pos.y - y) > 100) {
               setTimeout(() => {
                 trigger(target, "swipe");
                 trigger(target, `swipe${swipeDirection(pos.x, pos.y, x, y)}`);
@@ -2104,7 +2102,7 @@
           }
           const offsetCurrent = getOffset(current[0], withOffset);
           if (offset.top >= offsetCurrent.bottom - 1 && offset.top !== offsetCurrent.top) {
-            sorted.push([el]);
+            sorted.splice(i + 1, 0, [el]);
             break;
           }
           if (offset.bottom - 1 > offsetCurrent.top || offset.top === offsetCurrent.top) {
@@ -2368,7 +2366,7 @@
     }
 
     function maybeDefaultPreventClick(e) {
-      if (e.target.closest('a[href="#"],a[href=""]')) {
+      if (e.type === "keydown" && e.keyCode === keyMap.SPACE || e.target.closest('a[href="#"],a[href=""]')) {
         e.preventDefault();
       }
     }
@@ -2607,8 +2605,9 @@
         const elements = isTag(parentNode, "picture") ? children(parentNode) : [el];
         elements.forEach((el2) => setSourceProps(el2, el2));
       } else if (src) {
-        if (!includes(el.style.backgroundImage, src)) {
-          css(el, "backgroundImage", `url(${escape(src)})`);
+        const previousBackground = el.style.backgroundImage;
+        css(el, "backgroundImage", `url(${escape(src)})`);
+        if (el.style.backgroundImage !== previousBackground) {
           trigger(el, createEvent("load", false));
         }
       }
@@ -2661,7 +2660,7 @@
       return isTag(el, "img");
     }
 
-    let prevented;
+    let scrollLocks = 0;
     function preventBackgroundScroll(el) {
       const off = on(
         el,
@@ -2696,21 +2695,25 @@
         },
         { passive: true }
       );
-      if (prevented) {
-        return off;
-      }
-      prevented = true;
       const { scrollingElement } = document;
       const props = {
         overflowY: CSS.supports("overflow", "clip") ? "clip" : "hidden",
         touchAction: "none",
         scrollbarGutter: width(window) - scrollingElement.clientWidth ? "stable" : ""
       };
-      css(scrollingElement, props);
+      if (!scrollLocks++) {
+        css(scrollingElement, props);
+      }
+      let released = false;
       return () => {
-        prevented = false;
+        if (released) {
+          return;
+        }
+        released = true;
         off();
-        resetProps(scrollingElement, props);
+        if (!--scrollLocks) {
+          resetProps(scrollingElement, props);
+        }
       };
     }
 
@@ -3064,13 +3067,13 @@
       let rejectAnimation;
       return new Promise(
         (resolve, reject) => once(el, "show hide", () => {
-          var _a, _b, _c;
+          var _a, _b;
           (_a = pendingReject.get(el)) == null ? void 0 : _a();
           rejectAnimation = reject;
           pendingReject.set(el, reject);
           _toggle(el, show);
           Promise.all(
-            ((_c = (_b = transitionElement == null ? void 0 : transitionElement.getAnimations) == null ? void 0 : _b.call(transitionElement)) != null ? _c : []).map(({ finished }) => finished)
+            (((_b = transitionElement == null ? void 0 : transitionElement.getAnimations) == null ? void 0 : _b.call(transitionElement)) || []).map(({ finished }) => finished)
           ).then(resolve, reject);
         })
       ).then(() => {
@@ -3418,7 +3421,7 @@
       return Math.atan2(Math.abs(pos2.y - pos1.y), Math.abs(pos2.x - pos1.x)) * 180 / Math.PI;
     }
 
-    var VERSION = '3.25.27';
+    var VERSION = '3.25.31';
 
     function initWatches(instance) {
       instance._watches = [];
@@ -3501,7 +3504,7 @@
       });
     }
     function resetComputed(instance) {
-      const values = { ...instance._computed };
+      const values = instance._computed;
       instance._computed = {};
       return values;
     }
@@ -3537,16 +3540,15 @@
     }
 
     function initObservers(instance) {
-      for (const observer of instance.$options.observe || []) {
-        registerObservable(instance, observer);
+      for (const [index, observer] of (instance.$options.observe || []).entries()) {
+        registerObservable(instance, observer, `_observe${index}`);
       }
     }
-    function registerObservable(instance, observable) {
+    function registerObservable(instance, observable, key) {
       let { observe, target = instance.$el, handler, options, filter, args } = observable;
       if (filter && !filter.call(instance, instance)) {
         return;
       }
-      const key = `_observe${instance._disconnect.length}`;
       if (isFunction(target) && !hasOwn(instance, key)) {
         registerComputed(instance, key, () => {
           const targets2 = target.call(instance, instance);
@@ -3747,7 +3749,7 @@
     const elementComponents = /* @__PURE__ */ new WeakMap();
     const components$2 = {};
     function component(name, options) {
-      var _a, _b;
+      var _a;
       const id = PREFIX + hyphenate(name);
       if (!options) {
         if (!components$2[id].options) {
@@ -3757,10 +3759,10 @@
       }
       name = camelize(name);
       App[name] = (element, data) => createComponent(name, element, data);
-      const opt = (_a = options.options) != null ? _a : { ...options };
+      const opt = options.options || { ...options };
       opt.id = id;
       opt.name = name;
-      (_b = opt.install) == null ? void 0 : _b.call(opt, App, opt, name);
+      (_a = opt.install) == null ? void 0 : _a.call(opt, App, opt, name);
       if (App._initialized && !opt.functional) {
         requestAnimationFrame(() => createComponent(name, `[${id}],[data-${id}]`));
       }
@@ -3946,6 +3948,7 @@
           this.updateNav();
         },
         navItems(items) {
+          var _a;
           for (const el of items) {
             const cmd = data(el, this.attrItem);
             const button = $("a,button", el) || el;
@@ -3955,24 +3958,18 @@
               const item = toNumber(cmd);
               const slide = this.slides[item];
               if (slide) {
-                if (!slide.id) {
-                  slide.id = generateId(this, slide);
-                }
-                ariaControls = slide.id;
+                ariaControls = slide.id || (slide.id = generateId(this, slide));
               }
               ariaLabel = this.t("slideX", toFloat(cmd) + 1);
               button.role = "tab";
             } else {
               if (this.list) {
-                if (!this.list.id) {
-                  this.list.id = generateId(this, this.list);
-                }
-                ariaControls = this.list.id;
+                ariaControls = (_a = this.list).id || (_a.id = generateId(this, this.list));
               }
               ariaLabel = this.t(cmd);
             }
             attr(button, "aria-controls", ariaControls);
-            button.ariaLabel = button.ariaLabel || ariaLabel;
+            button.ariaLabel || (button.ariaLabel = ariaLabel);
           }
         },
         slides(slides) {
@@ -4611,7 +4608,7 @@
             } else if (matches2 = src.match(/\/\/.*?vimeo\.[a-z]+\/(\d+)[&?]?(.*)?/)) {
               try {
                 const { height, width } = await (await fetch(
-                  `https://vimeo.com/api/oembed.json?maxwidth=1920&url=${encodeURI(
+                  `https://vimeo.com/api/oembed.json?maxwidth=1920&url=${encodeURIComponent(
                 src
               )}`,
                   { credentials: "omit" }
@@ -4702,10 +4699,10 @@
       return el;
     }
     function isImage(src) {
-      return src == null ? void 0 : src.match(/\.(avif|jpe?g|jfif|a?png|gif|svg|webp)($|\?)/i);
+      return src == null ? void 0 : src.match(/\.(avif|jpe?g|jfif|a?png|gif|svg|webp)($|[?#])/i);
     }
     function isVideo(src) {
-      return src == null ? void 0 : src.match(/\.(mp4|webm|ogv)($|\?)/i);
+      return src == null ? void 0 : src.match(/\.(mp4|webm|ogv)($|[?#])/i);
     }
 
     const selDisabled$1 = ".uk-disabled *, .uk-disabled, [disabled]";
@@ -4752,7 +4749,7 @@
             const { source } = toItem(index);
             index = findIndex(items, ({ source: src }) => source === src);
           }
-          this.panel = this.panel || this.$create("lightboxPanel", { ...this.$props, items });
+          this.panel || (this.panel = this.$create("lightboxPanel", { ...this.$props, items }));
           on(this.panel.$el, "hidden", () => this.panel = null);
           return this.panel.show(index);
         },
@@ -4928,12 +4925,16 @@
     }
 
     function getMaxPathLength(el) {
-      return isVisible(el) ? Math.ceil(
-        Math.max(0, ...$$("[stroke]", el).map((stroke) => {
-          var _a;
-          return ((_a = stroke.getTotalLength) == null ? void 0 : _a.call(stroke)) || 0;
-        }))
-      ) : 0;
+      try {
+        return Math.ceil(
+          Math.max(0, ...$$("[stroke]", el).map((stroke) => {
+            var _a;
+            return ((_a = stroke.getTotalLength) == null ? void 0 : _a.call(stroke)) || 0;
+          }))
+        );
+      } catch {
+        return 0;
+      }
     }
 
     const props = {
@@ -5275,7 +5276,7 @@
       ],
       update: {
         read({ percent }, types) {
-          if (!types.has("scroll")) {
+          if (!types.has("scroll") || types.has("resize")) {
             percent = false;
           }
           if (!isVisible(this.$el)) {
@@ -5916,7 +5917,7 @@
       watch: {
         list(list) {
           css(list, {
-            aspectRatio: this.ratio ? this.ratio.replace(":", "/") : void 0,
+            aspectRatio: this.ratio && this.ratio !== "false" ? this.ratio.replace(":", "/") : "",
             minHeight: this.minHeight,
             maxHeight: this.maxHeight,
             width: "100%"
@@ -6517,37 +6518,37 @@
       },
       methods: {
         async upload(files) {
-          files = toArray(files);
-          if (!files.length) {
-            return;
-          }
-          if (!this.multiple) {
-            files = files.slice(0, 1);
-          }
-          trigger(this.$el, "upload", [files]);
-          for (const file of files) {
-            if (this.maxSize && this.maxSize * 1e3 < file.size) {
-              this.fail(this.t("invalidSize", this.maxSize));
+          try {
+            files = toArray(files);
+            if (!files.length) {
               return;
             }
-            if (this.allow && !match$1(this.allow, file.name)) {
-              this.fail(this.t("invalidName", this.allow));
-              return;
+            if (!this.multiple) {
+              files = files.slice(0, 1);
             }
-            if (this.mime && !match$1(this.mime, file.type)) {
-              this.fail(this.t("invalidMime", this.mime));
-              return;
+            trigger(this.$el, "upload", [files]);
+            for (const file of files) {
+              if (this.maxSize && this.maxSize * 1e3 < file.size) {
+                this.fail(this.t("invalidSize", this.maxSize));
+                return;
+              }
+              if (this.allow && !match$1(this.allow, file.name)) {
+                this.fail(this.t("invalidName", this.allow));
+                return;
+              }
+              if (this.mime && !match$1(this.mime, file.type)) {
+                this.fail(this.t("invalidMime", this.mime));
+                return;
+              }
             }
-          }
-          this.beforeAll(this, files);
-          const chunks = chunk(files, this.concurrent);
-          const upload = async (files2) => {
-            const data = new FormData();
-            files2.forEach((file) => data.append(this.name, file));
-            for (const key in this.params) {
-              data.append(key, this.params[key]);
-            }
-            try {
+            await this.beforeAll(this, files);
+            const size = this.concurrent;
+            for (let i = 0; i < files.length; i += size) {
+              const data = new FormData();
+              files.slice(i, i + size).forEach((file) => data.append(this.name, file));
+              for (const key in this.params) {
+                data.append(key, this.params[key]);
+              }
               const xhr = await ajax(this.url, {
                 data,
                 method: this.method,
@@ -6562,35 +6563,24 @@
                 }
               });
               this.complete(xhr);
-              if (chunks.length) {
-                await upload(chunks.shift());
-              } else {
+              if (i + size >= files.length) {
                 this.completeAll(xhr);
               }
-            } catch (e) {
-              if (e.name !== "AbortError") {
-                this.error(e);
-              }
             }
-          };
-          await upload(chunks.shift());
+          } catch (e) {
+            if ((e == null ? void 0 : e.name) !== "AbortError") {
+              this.error(e);
+            }
+          }
         }
       }
     };
     function match$1(pattern, path) {
-      return path.match(
-        new RegExp(
-          `^${pattern.replace(/\//g, "\\/").replace(/\*\*/g, "(\\/[^\\/]+)*").replace(/\*/g, "[^\\/]+").replace(/((?!\\))\?/g, "$1.")}$`,
-          "i"
-        )
+      const expression = pattern.replace(
+        /\*\*|[.*+?^${}()|[\]\\]/g,
+        (s) => ({ "**": ".*", "*": "[^/]+", "?": "[^/]", "|": "|" })[s] || `\\${s}`
       );
-    }
-    function chunk(files, size) {
-      const chunks = [];
-      for (let i = 0; i < files.length; i += size) {
-        chunks.push(files.slice(i, i + size));
-      }
-      return chunks;
+      return new RegExp(`^(?:${expression})$`, "i").test(path);
     }
     function stop(e) {
       e.preventDefault();
@@ -6920,11 +6910,10 @@
       mixins: [Class, Togglable],
       args: "animation",
       props: {
-        animation: Boolean,
         close: String
       },
       data: {
-        animation: true,
+        animation: [true],
         selClose: ".uk-alert-close",
         duration: 150
       },
@@ -6938,7 +6927,11 @@
       },
       methods: {
         async close() {
-          await this.toggleElement(this.$el, false, this.animation ? animate : false);
+          await this.toggleElement(
+            this.$el,
+            false,
+            this.animation[0] === true || this.animation[0] === 1 ? animate : true
+          );
           this.$destroy(true);
         }
       }
@@ -7170,10 +7163,9 @@
         attr(this.targetEl, "aria-expanded", false);
         this._style = pick(this.$el.style, ["width", "height"]);
       },
-      disconnected() {
-        if (this.isActive()) {
-          this.hide(false);
-          active = null;
+      beforeDisconnect() {
+        if (!this.$el.isConnected || this.isActive()) {
+          this.hide(false, false);
         }
         css(this.$el, this._style);
       },
@@ -7425,15 +7417,12 @@
       return offsetViewport(overflowParents(target).find((parent2) => parent2.contains(el)));
     }
     function createToggleComponent(drop) {
-      const el = query(drop.toggle, drop.$el);
+      const target = drop.$el;
+      const el = query(drop.toggle, target);
       if (el) {
-        drop.$create("toggle", el, { target: drop.$el, mode: drop.mode });
-        el.ariaHasPopup = true;
-        const dropEl = drop.$el;
-        if (!dropEl.id) {
-          dropEl.id = generateId(drop, dropEl);
-        }
-        attr(el, "aria-controls", dropEl.id);
+        drop.$create("toggle", el, { target, mode: drop.mode });
+        target.id = generateId(drop, target);
+        attr(el, "aria-controls", target.id);
       }
       return el;
     }
@@ -7606,7 +7595,7 @@
           el: ({ dropContainer }) => dropContainer,
           delegate: ({ clsDrop }) => `.${clsDrop}`,
           handler(e) {
-            var _a;
+            var _a, _b;
             const { current, keyCode, target } = e;
             if (isInput(target) || !includes(this.dropdowns, current)) {
               return;
@@ -7616,15 +7605,15 @@
             if (~next) {
               e.preventDefault();
               const elements = $$(selFocusable, current);
-              elements[getIndex(
+              (_a = elements[getIndex(
                 next,
                 elements,
                 findIndex(elements, (el) => matches(el, ":focus"))
-              )].focus();
+              )]) == null ? void 0 : _a.focus();
               return;
             }
             if (keyCode === keyMap.ESC) {
-              (_a = active2.targetEl) == null ? void 0 : _a.focus();
+              (_b = active2.targetEl) == null ? void 0 : _b.focus();
             }
             handleNavItemNavigation(e, this.items, active2);
           }
@@ -7803,15 +7792,14 @@
         }
       },
       update() {
-        var _a;
+        var _a, _b, _c, _d, _e, _f;
         const { target, input } = this;
         if (!target) {
           return;
         }
-        let option;
         const prop = isInput(target) ? "value" : "textContent";
         const prev = target[prop];
-        const value = ((_a = input.files) == null ? void 0 : _a[0]) ? input.files[0].name : matches(input, "select") && (option = $$("option", input).find((el) => el.selected)) ? option.textContent : input.value;
+        const value = (_f = (_e = (_b = (_a = input.files) == null ? void 0 : _a[0]) == null ? void 0 : _b.name) != null ? _e : (_d = (_c = input.selectedOptions) == null ? void 0 : _c[0]) == null ? void 0 : _d.label) != null ? _f : input.value;
         if (prev !== value) {
           target[prop] = value;
         }
@@ -7924,7 +7912,7 @@
             };
           },
           write({ columns, scrolled, scrollColumns, translates }) {
-            if (!scrolled && !translates) {
+            if (scrolled === false && !translates) {
               return;
             }
             columns.forEach(
@@ -7981,9 +7969,7 @@
       return columns;
     }
     function push(array, index, value) {
-      if (!array[index]) {
-        array[index] = [];
-      }
+      array[index] || (array[index] = []);
       array[index].push(value);
     }
 
@@ -8343,16 +8329,9 @@
       beforeConnect() {
         const isToggle = hasClass(this.$el, "uk-search-toggle") || hasClass(this.$el, "uk-navbar-toggle");
         this.icon = isToggle ? "search-toggle-icon" : hasClass(this.$el, "uk-search-icon") && this.$el.closest(".uk-search-large") ? "search-large" : this.$el.closest(".uk-search-medium") ? "search-medium" : this.$props.icon;
-        if (hasAttr(this.$el, "aria-label")) {
-          return;
-        }
-        if (isToggle) {
-          this.$el.ariaLabel = this.t("toggle");
-        } else {
-          const button = this.$el.closest("a,button");
-          if (button) {
-            button.ariaLabel = this.t("submit");
-          }
+        const target = isToggle ? this.$el : this.$el.closest("a,button");
+        if (target && !hasAttr(target, "aria-label")) {
+          target.ariaLabel = this.t(isToggle ? "toggle" : "submit");
         }
       }
     };
@@ -8438,7 +8417,7 @@
           apply(
             document.body,
             (el) => each(UIkit.getComponents(el), (cmp) => {
-              cmp.$options.isIcon && cmp.icon in added && cmp.$reset();
+              cmp.$options.isIcon && (aliases[cmp.icon] || cmp.icon) in added && cmp.$reset();
             })
           );
         }
@@ -8450,9 +8429,7 @@
       if (!icons[icon]) {
         return null;
       }
-      if (!parsed[icon]) {
-        parsed[icon] = parseSVG(icons[applyRtl(icon)] || icons[icon]);
-      }
+      parsed[icon] || (parsed[icon] = parseSVG(icons[applyRtl(icon)] || icons[icon]));
       return parsed[icon].cloneNode(true);
     }
     function applyRtl(icon) {
@@ -8505,6 +8482,7 @@
               [...toNodes(target), document.documentElement],
               handler
             );
+            const transitionObserver = observeResize([], handler);
             const listener = [
               on(document, "scroll itemshown itemhidden", handler, {
                 passive: true,
@@ -8512,11 +8490,11 @@
               }),
               on(document, "show hide transitionstart", (e) => {
                 handler();
-                return observer.observe(e.target);
+                return transitionObserver.observe(e.target);
               }),
               on(document, "shown hidden transitionend transitioncancel", (e) => {
                 handler();
-                return observer.unobserve(e.target);
+                return transitionObserver.unobserve(e.target);
               })
             ];
             return {
@@ -8524,6 +8502,7 @@
               unobserve: observer.unobserve.bind(observer),
               disconnect() {
                 observer.disconnect();
+                transitionObserver.disconnect();
                 listener.forEach((off) => off());
               }
             };
@@ -8726,7 +8705,7 @@
         const dialog = modal.dialog(tmpl(options), options);
         return assign(
           new Promise((resolve) => {
-            const off = on(dialog.$el, "hide", () => resolve(hideFn()));
+            const off = on(dialog.$el, "hide", () => resolve(hideFn()), { self: true });
             on(dialog.$el, "submit", "form", (e) => {
               e.preventDefault();
               resolve(submitFn(dialog));
@@ -9029,7 +9008,8 @@
             );
             if (!overflow[i - 1]) {
               const dir = i ? "Top" : "Left";
-              const percent = overflow[i] ? this.$el[`scroll${dir}`] / overflow[i] : 0;
+              const position = this.$el[`scroll${dir}`] + (!i && isRtl ? overflow[i] : 0);
+              const percent = overflow[i] ? position / overflow[i] : 0;
               const toValue = (value) => overflow[i] ? clamp((this.fadeDuration - value) / this.fadeDuration) : 1;
               css(this.$el, {
                 "--uk-overflow-fade-start-opacity": toValue(percent),
@@ -9051,7 +9031,7 @@
       const { $el: el, threshold, $options } = this;
       let started;
       const off = on(document, pointerMove$1, move(e), pointerOptions);
-      on(document, [pointerUp$1, pointerCancel], end, { capture: true, once: true });
+      once(document, [pointerUp$1, pointerCancel], end, true);
       function move(e2) {
         let origin = getEventPos(e2);
         let pos = origin;
@@ -9311,7 +9291,6 @@
           write({ active }) {
             const { elements } = this;
             const changed = active !== false && !hasClass(elements[active], this.cls);
-            this.links.forEach((el) => el.blur());
             for (let i = 0; i < elements.length; i++) {
               toggleClass(elements[i], this.cls, +i === active);
             }
@@ -9726,24 +9705,38 @@
       methods: {
         async getSvg() {
           if (isTag(this.$el, "img") && !this.$el.complete && this.$el.loading === "lazy") {
-            await new Promise((resolve) => once(this.$el, "load", resolve));
+            await new Promise(
+              (resolve, reject) => once(
+                this.$el,
+                "load error",
+                (event) => event.type === "load" ? resolve() : reject(event)
+              )
+            );
           }
           return parseSVG(await loadSVG(this.src), this.icon) || Promise.reject("SVG not found.");
         }
       }
     };
     function applyAttributes(el) {
-      const { $el } = this;
+      const { $el, attributes } = this;
       addClass(el, attr($el, "class"), "uk-svg");
       for (let i = 0; i < $el.style.length; i++) {
         const prop = $el.style[i];
         css(el, prop, css($el, prop));
       }
-      for (const attribute in this.attributes) {
-        const [prop, value] = this.attributes[attribute].split(":", 2);
+      for (const attribute in attributes) {
+        const [prop, value] = attributes[attribute].split(":", 2);
         attr(el, prop, value);
       }
-      el.ariaHidden = this.$el.ariaHidden;
+      el.ariaHidden || (el.ariaHidden = $el.ariaHidden);
+      if (!el.ariaHidden) {
+        el.ariaLabel || (el.ariaLabel = $el.ariaLabel || $el.alt || null);
+        if (el.ariaLabel) {
+          el.role || (el.role = "img");
+        } else if (hasAttr($el, "alt")) {
+          el.ariaHidden = true;
+        }
+      }
       if (!this.$el.id) {
         removeAttr(el, "id");
       }
@@ -9751,7 +9744,7 @@
     const loadSVG = memoize(async (src) => {
       if (src) {
         const response = await fetch(src);
-        if (response.headers.get("Content-Type") === "image/svg+xml") {
+        if (/^image\/svg\+xml\s*(;|$)/i.test(response.headers.get("Content-Type"))) {
           return response.text();
         }
       }
@@ -9834,7 +9827,7 @@
           name: "click keydown",
           delegate: ({ toggle }) => toggle,
           handler(e) {
-            if (!matches(e.current, selDisabled) && (e.type === "click" || e.keyCode === keyMap.SPACE)) {
+            if (!e.defaultPrevented && !matches(e.current, selDisabled) && (e.type === "click" || e.keyCode === keyMap.SPACE)) {
               maybeDefaultPreventClick(e);
               this.show(e.current);
             }
@@ -10073,7 +10066,6 @@
         {
           name: "mediachange",
           filter: ({ mode }) => includes(mode, "media"),
-          el: ({ target }) => target,
           handler(e, mediaObj) {
             if (mediaObj.matches ^ this.isToggled(this.target)) {
               this.toggle();
