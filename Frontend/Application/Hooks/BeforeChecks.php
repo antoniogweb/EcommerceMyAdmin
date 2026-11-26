@@ -34,7 +34,8 @@ if (session_status() === PHP_SESSION_NONE)
     ]);
 }
 
-$timeZone = defined("APPLICATION_TIMEZONE") ? APPLICATION_TIMEZONE : 'Europe/Rome';
+$validTimeZone = defined("APPLICATION_TIMEZONE") && preg_match("/^(?:UTC|[A-Za-z][A-Za-z0-9_-]*(?:\/[A-Za-z0-9_-]+)+)$/", APPLICATION_TIMEZONE) === 1;
+$timeZone = $validTimeZone ? APPLICATION_TIMEZONE : 'Europe/Rome';
 
 date_default_timezone_set($timeZone);
 
@@ -60,8 +61,8 @@ if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
 	$mysqli->query("set session sql_mode=''");
 	
 	// Imposto il timezone di MySQL
-	if (defined("APPLICATION_TIMEZONE"))
-		$mysqli->query("SET SESSION time_zone = '$timeZone'");
+	if ($validTimeZone)
+		$mysqli->query("SET SESSION time_zone = '".date("P")."'");
 }
 
 VariabiliModel::ottieniVariabili();

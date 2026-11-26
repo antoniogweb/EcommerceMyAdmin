@@ -28,7 +28,10 @@ if (!defined('EG')) die('Direct access not allowed!');
 
 //you can access the whole set of classes and functions of MvcMyLibrary
 
-$timeZone = defined("APPLICATION_TIMEZONE") ? APPLICATION_TIMEZONE : 'Europe/Rome';
+$validTimeZone = defined("APPLICATION_TIMEZONE") && preg_match("/^(?:UTC|[A-Za-z][A-Za-z0-9_-]*(?:\/[A-Za-z0-9_-]+)+)$/", APPLICATION_TIMEZONE) === 1;
+$timeZone = $validTimeZone ? APPLICATION_TIMEZONE : 'Europe/Rome';
+
+date_default_timezone_set($timeZone);
 
 Users_CheckAdmin::$usersModel = "UsersModel";
 Users_CheckAdmin::$groupsModel = "GroupsModel";
@@ -50,16 +53,14 @@ if (defined('LOG_QUERIES_ENABLED'))
 $mysqli->query("set session sql_mode=''");
 
 // Imposto il timezone di MySQL
-if (defined("APPLICATION_TIMEZONE"))
-	$mysqli->query("SET SESSION time_zone = '$timeZone'");
+if ($validTimeZone)
+	$mysqli->query("SET SESSION time_zone = '".date("P")."'");
 
 Url::$routes = array(
 	"ordine"	=>	"ordini/vedi/%d",
 );
 
 // Params::$logFunctionBeforeRedirect = array("F","checkPreparedStatement");
-
-date_default_timezone_set($timeZone);
 
 // Carica le App
 if (!defined("APPS"))
