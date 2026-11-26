@@ -119,7 +119,7 @@ class RegusersController extends BaseController
 	{
 		$this->shift();
 		
-		$mainFields = array('[[ledit]];regusers.username;','nome','regusers.tipo_cliente','regusers.codice_fiscale','regusers.p_iva','getYesNoUtenti|regusers:has_confirmed');
+		$mainFields = array('[[ledit]];regusers.username;','nome','tipoClienteCrud','regusers.codice_fiscale','regusers.p_iva','getYesNoUtenti|regusers:has_confirmed');
 		$headLabels = 'Email,Nome/r.soc,Tipo cliente,C.F., P.IVA,Attivo?';
 		
 		$filtri = array('q','username','codice_fiscale','p_iva');

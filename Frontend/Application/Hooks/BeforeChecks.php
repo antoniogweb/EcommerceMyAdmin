@@ -34,7 +34,9 @@ if (session_status() === PHP_SESSION_NONE)
     ]);
 }
 
-date_default_timezone_set('Europe/Rome');
+$timeZone = defined("APPLICATION_TIMEZONE") ? APPLICATION_TIMEZONE : 'Europe/Rome';
+
+date_default_timezone_set($timeZone);
 
 // Params::$logFunctionBeforeRedirect = array("F","checkPreparedStatement");
 
@@ -54,7 +56,13 @@ if (defined('LOG_QUERIES_ENABLED'))
 }
 
 if (!isset($_GET["url"]) || substr( $_GET["url"], 0, 6 ) !== "thumb/")
+{
 	$mysqli->query("set session sql_mode=''");
+	
+	// Imposto il timezone di MySQL
+	if (defined("APPLICATION_TIMEZONE"))
+		$mysqli->query("SET SESSION time_zone = '$timeZone'");
+}
 
 VariabiliModel::ottieniVariabili();
 

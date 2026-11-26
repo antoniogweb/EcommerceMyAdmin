@@ -638,4 +638,9 @@ class RegusersModel extends FormModel {
 			$indice++;
 		}
 	}
+	
+	public function tipoClienteCrud($record)
+	{
+		return gtext($record["regusers"]["tipo_cliente"]);
+	}
 }
