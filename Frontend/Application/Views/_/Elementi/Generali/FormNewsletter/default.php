@@ -28,5 +28,9 @@
         <div class="class_accetto" data-field-name="<?php echo gtextAttr("privacy policy");?>">
 			<?php echo Html_Form::checkbox('accetto',Form::gValue("accetto"),'1','uk-checkbox',"newsletter-accetto","aria-required='true'");?> <label class="uk-text-small uk-margin-left" for="newsletter-accetto"><?php echo gtextPlain("Ho letto e accetto le condizioni della privacy policy.");?></label> <a target="_blank" href="<?php echo $this->baseUrl."/".getUrlAlias($idPrivacy);?>"><?php echo gtextPlain("Leggi la privacy policy");?></a>
 		</div>
+		
+		<?php if (v("attiva_check_tracking_newsletter")) { ?>
+			<?php echo Html_Form::checkbox('tracking',Form::gValue("tracking"),'1','uk-checkbox', "newsletter-tracking");?> <label class="uk-text-small uk-margin-left" for="newsletter-tracking"><?php echo gtext("Acconsento al tracciamento delle aperture delle newsletter e dei clic sui link in esse contenuti, per finalità statistiche e di analisi dell’efficacia delle comunicazioni.");?></label>
+		<?php } ?>
     </form>
 </div> 
