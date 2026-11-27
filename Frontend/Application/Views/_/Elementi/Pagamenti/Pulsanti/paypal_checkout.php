@@ -1,11 +1,10 @@
 <?php if (!defined('EG')) die('Direct access not allowed!'); ?>
 <div id="result-message"></div>
 <div id="paypal-button-container"></div>
-<script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypalClientId;?>&currency=EUR&disable-funding=credit,mybank"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypalClientId;?>&currency=EUR&buyer-country=<?php echo urlencode($ordine["nazione"]);?>&disable-funding=credit,mybank,card&enable-funding=paylater"></script>
 
 <script>
-window.paypal
-  .Buttons({
+const paypalButtonConfig = {
     async createOrder() {
       try {
         const response = await fetch("<?php echo Url::getRoot();?>paypal/createorder/<?php echo $ordine["cart_uid"];?>/<?php echo $ordine["banca_token"];?>?paypal_csrf=<?php echo $paypalCsrf;?>", {
@@ -21,6 +20,7 @@ window.paypal
         });
         
         const orderData = await response.json();
+        // console.log("PayPal createOrder response", { status: response.status, body: orderData });
         
         if (orderData.id != 0) {
           return orderData.id;
@@ -44,6 +44,7 @@ window.paypal
         });
         
         const orderData = await response.json();
+        // console.log("PayPal captureOrder response", { status: response.status, body: orderData });
         // Three cases to handle:
         //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
         //   (2) Other non-recoverable errors -> Show a failure message
@@ -71,8 +72,9 @@ window.paypal
         );
       }
     },
-  })
-  .render("#paypal-button-container");
+};
+
+window.paypal.Buttons(paypalButtonConfig).render("#paypal-button-container");
   
 // Example function to show a result to the user. Your site's UI library can be used instead.
 function resultMessage(message, result) {
