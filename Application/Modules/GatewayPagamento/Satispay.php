@@ -116,8 +116,6 @@ class Satispay
 		\SatispayGBusiness\Api::setPrivateKey($this->private_key);
 		\SatispayGBusiness\Api::setKeyId($this->keyId);
 		
-		$prefissoTelefonico = NazioniModel::g()->getPrefissoTelefonicoDaCodice($this->ordine["nazione"]);
-		
 		$pagamento = [
 			'flow' => 'MATCH_CODE',
 			'amount_unit' => $this->setImporto($this->ordine["total"]),
@@ -126,7 +124,7 @@ class Satispay
 			'callback_url' => $this->notifyUrl,
 			'redirect_url' => $this->okUrl,    
 			'metadata' => [
-				"phone_number"  =>  $prefissoTelefonico.str_replace(" ","",$this->ordine["telefono"]),
+				"phone_number"  =>  F::aggiungiPrefissoNazione($this->ordine["telefono"], $this->ordine["nazione"]),
 				// 'order_id' => '1234',
 				// 'user_id' => '5678',
 				// 'payment_id' => 'payment1234',

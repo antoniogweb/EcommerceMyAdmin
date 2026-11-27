@@ -222,6 +222,14 @@ class F
 		return $telefono;
 	}
 	
+	public static function aggiungiPrefissoNazione($telefono, $codiceNazione)
+	{
+		$telefono = self::rimuoviPrefissoNazione($telefono, $codiceNazione);
+		$prefissoTelefonico = NazioniModel::g()->getPrefissoTelefonicoDaCodice($codiceNazione);
+		
+		return $prefissoTelefonico.$telefono;
+	}
+	
 	public static function attributi($html, $params = array())
 	{
 		foreach ($params as $attributo => $valore)
