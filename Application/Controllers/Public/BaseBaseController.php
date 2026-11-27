@@ -1390,12 +1390,15 @@ class BaseBaseController extends Controller
 			{
 				$isNewsletter = true;
 				$campiForm = v("campo_form_newsletter");
-				$campiObbligatori = v("campo_form_newsletter_obbligatori");
+				$campiObbligatori = v("campo_form_newsletter_obbligatori") ? v("campo_form_newsletter_obbligatori") : $campiForm;
+				
+				if (v("attiva_check_tracking_newsletter"))
+					$campiForm .= ",tracking";
 			}
 			else
 			{
 				$campiForm = v("campo_form_contatti");
-				$campiObbligatori = v("campo_form_contatti_obbligatori");
+				$campiObbligatori = v("campo_form_contatti_obbligatori") ? v("campo_form_contatti_obbligatori") : $campiForm;
 			}
 		}
 		else
@@ -1409,7 +1412,7 @@ class BaseBaseController extends Controller
 		);
 		
 		$this->m('ContattiModel')->strongConditions['insert'] = array(
-			'checkNotEmpty'	=>	$campiObbligatori ? $campiObbligatori : $campiForm,
+			'checkNotEmpty'	=>	$campiObbligatori,
 			'checkMail'		=>	'email|'.gtext("Si prega di controllare il campo Email").'<div class="evidenzia">class_email</div>',
 		);
 		

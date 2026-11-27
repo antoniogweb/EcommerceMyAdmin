@@ -1008,6 +1008,12 @@ Helper_List::$filtersFormLayout = array(
 				"placeholder"	=>	"Rifer. vendita..",
 			),
 		),
+		"tracking"		=>	array(
+			"type"	=>	"select",
+			"attributes"	=>	array(
+				"class"	=>	"form-control",
+			),
+		),
 	),
 	"clear"	=>	"",
 	"submit"	=>	array(

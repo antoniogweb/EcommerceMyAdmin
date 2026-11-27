@@ -26,7 +26,13 @@ class ContattiController extends BaseController
 {
 	public $setAttivaDisattivaBulkActions = false;
 	
-	public $argKeys = array('dal:sanitizeAll'=>'tutti', 'al:sanitizeAll'=>'tutti', 'fonte:sanitizeAll'=>'tutti', 'verificato:sanitizeAll'=>'tutti');
+	public $argKeys = array(
+		'dal:sanitizeAll'=>'tutti',
+		'al:sanitizeAll'=>'tutti',
+		'fonte:sanitizeAll'=>'tutti',
+		'verificato:sanitizeAll'=>'tutti',
+		'tracking:sanitizeAll'=>'tutti'
+	);
 	
 	public $sezionePannello = "marketing";
 	
@@ -50,11 +56,24 @@ class ContattiController extends BaseController
 		) + ContattiModel::$elencoFonti;
 		
 		$filtri = array("dal","al",array("fonte",null,$filtroFonte));
+		
+		if (v("attiva_check_tracking_newsletter"))
+		{
+			$this->mainFields[] = "trackingCrud";
+			$this->mainHead .= ",Tracking aperture";
+			$filtri[] = array("tracking",null,array(
+				"tutti"	=>	gtext("Tracking aperture"),
+				"1"		=>	gtext("Tracking accettato"),
+				"0"		=>	gtext("Tracking non accettato"),
+			));
+		}
+		
 		$this->filters = $filtri;
 		
 		$this->m[$this->modelName]->clear()->where(array(
 			"fonte_iniziale"	=>	$this->viewArgs["fonte"],
 			"verificato"		=>	$this->viewArgs["verificato"],
+			"tracking"			=>	$this->viewArgs["tracking"],
 			"in"	=>	array(
 				"fonte_iniziale"	=>	explode(",", v("fonti_contatti_da_mostrare_admin")),
 			),

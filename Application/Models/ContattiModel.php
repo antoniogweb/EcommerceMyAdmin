@@ -80,6 +80,7 @@ class ContattiModel extends GenericModel {
 			"azienda"	=>	$azienda,
 			"accetto"	=>	(isset($dati["accetto"]) && $dati["accetto"]) ? 1 : 0,
 			"fonte"		=>	$fonte,
+			"tracking"	=>	(isset($dati["tracking"]) && $dati["tracking"]) ? 1 : 0,
 		));
 		
 		$arrayCampi = array(
@@ -363,5 +364,13 @@ class ContattiModel extends GenericModel {
 		}
 		
 		return "";
+	}
+	
+	public function trackingCrud($record)
+	{
+		if ($record["contatti"]["tracking"])
+			return !isset($_GET["esporta"]) ? "<i class='fa fa-check text-success'></i>" : gtext("Sì");
+		
+		return !isset($_GET["esporta"]) ? "<i class='fa fa-ban'></i>" : gtext("No");
 	}
 }

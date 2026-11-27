@@ -784,6 +784,7 @@ class VariabiliModel extends GenericModel {
 		### NEWSLETTER ##
 		"campo_form_newsletter"		=>	"email,accetto", // campi del form newsletter
 		"campo_form_newsletter_obbligatori"		=>	"", // campi obbligatori del form newsletter
+		"attiva_check_tracking_newsletter"		=>	0, // se impostato su 1, mostra il check per l'approvazione del tracking nel form di iscrizione alla newsletter
 		"permetti_di_collegare_gruppi_utenti_a_newsletter"	=>	0, // Se impostato ad 1, permette la gestione del campo "Sincronizza con la newsletter" nella gestione dei gruppi clienti
 		### TICKET ##
 		"attiva_gestiobe_ticket"	=>	0, // se impostato a 1, attiva la gestione dei ticket di assistenza
