@@ -81,7 +81,6 @@ class PaypalCheckout
 		));
 
 		$result= curl_exec($curl);
-		curl_close($curl);
 		
 		$array = json_decode($result, true); 
 		
@@ -116,7 +115,6 @@ class PaypalCheckout
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);   
 				
 				$result = $output = curl_exec($ch);
-				curl_close($ch);
 				
 				$result = json_decode($result, true);
 				
@@ -234,7 +232,6 @@ class PaypalCheckout
 			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($valori));                                                                                                                 
 			
 			$result = $fullLog = curl_exec($ch);
-			curl_close($ch);
 			
 			$result = json_decode($result, true); 
 			
