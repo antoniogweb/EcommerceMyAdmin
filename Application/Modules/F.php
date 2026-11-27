@@ -201,6 +201,27 @@ class F
 		return str_replace(" ","",$stringa);
 	}
 	
+	public static function rimuoviPrefissoNazione($telefono, $codiceNazione)
+	{
+		$telefono = preg_replace('/\s+/', '', $telefono);
+		$prefissoTelefonico = NazioniModel::g()->getPrefissoTelefonicoDaCodice($codiceNazione, false);
+		$prefissoNumerico = preg_replace('/\D+/', '', $prefissoTelefonico);
+		
+		if ($prefissoNumerico !== "")
+		{
+			foreach (array("+".$prefissoNumerico, "00".$prefissoNumerico) as $prefissoDaRimuovere)
+			{
+				if (strpos($telefono, $prefissoDaRimuovere) === 0)
+				{
+					$telefono = substr($telefono, strlen($prefissoDaRimuovere));
+					break;
+				}
+			}
+		}
+		
+		return $telefono;
+	}
+	
 	public static function attributi($html, $params = array())
 	{
 		foreach ($params as $attributo => $valore)

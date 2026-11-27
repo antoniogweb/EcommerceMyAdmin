@@ -165,6 +165,7 @@ class PaypalCheckout
 		$logSubmit = new LogModel();
 		$logSubmit->setSvuota(0);
 		$logSubmit->setCartUid($this->ordine["cart_uid"]);
+		$description = "";
 		
 		if ($accessToken !== null)
 		{
@@ -211,9 +212,11 @@ class PaypalCheckout
 			
 			if (strcmp($this->ordine["telefono"], "") !== 0)
 			{
+				$telefono = F::rimuoviPrefissoNazione($this->ordine["telefono"], $this->ordine["nazione"]);
+				
 				$valori["payment_source"]["paypal"]["phone"] = array(
 					"phone_number"	=>	array(
-						"national_number"	=>	$this->ordine["telefono"],
+						"national_number"	=>	$telefono,
 					),
 				);
 			}
@@ -237,7 +240,7 @@ class PaypalCheckout
 			
 			$logSubmit->setFullLog($fullLog);
 			
-			if (isset($result["id"]))
+			if (is_array($result) && isset($result["id"]))
 			{
 				$oModel = new OrdiniModel();
 				
@@ -253,13 +256,43 @@ class PaypalCheckout
 					"id"	=>	sanitizeAll($result["id"]),
 				);
 			}
+			
+			if (is_array($result))
+			{
+				if (!empty($result["details"]) && is_array($result["details"]))
+				{
+					$errors = array();
+					
+					foreach ($result["details"] as $detail)
+					{
+						$error = array();
+						
+						if (!empty($detail["field"]))
+							$error[] = gtext("Campo").": ".$detail["field"];
+						
+						if (!empty($detail["issue"]))
+							$error[] = gtext("Codice errore").": ".$detail["issue"];
+						
+						if (!empty($detail["description"]))
+							$error[] = gtext($detail["description"]);
+						
+						if (!empty($error))
+							$errors[] = implode("; ", $error);
+					}
+					
+					$description = implode(" ", array_unique($errors));
+				}
+				
+				if ($description === "" && !empty($result["message"]))
+					$description = gtext($result["message"]);
+			}
 		}
 		
 		$logSubmit->write("PAYPAL_CREATE_ORDER", "KO", true);
 		
 		return array(
 			"id"			=>	0,
-			"description"	=>	gtext("Non è possibile iniziare il pagamento tramite PayPal. Si prega di contattare il negozio."),
+			"description"	=>	$description !== "" ? $description : gtext("Non è possibile iniziare il pagamento tramite PayPal. Si prega di contattare il negozio."),
 		);
 	}
 	
